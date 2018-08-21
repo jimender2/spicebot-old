@@ -91,25 +91,36 @@ def execute_main(bot, trigger, triggerargsarray):
 
 
 def reddit_u(bot, triggerargsarray, rclass):
-    osd(bot, rclass.channel_current, 'say', "Reddit user functionality is not available yet.")
+
+    subcommand_valid = ['check']
+    subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
+
+    userreal = user_exists(rclass.urlsearch)
+    if not userreal:
+        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
+        return
+    if subcommand == 'check':
+        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!")
+        return
+
+    # osd(bot, rclass.channel_current, 'say', "Reddit user functionality is not available yet.")
     return
 
 
 def reddit_r(bot, triggerargsarray, rclass):
 
-    subcommand_valid = []
+    subcommand_valid = ['check']
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
     subreal = sub_exists(rclass.urlsearch)
     if not subreal:
         osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
         return
-
-    subreddit = reddit.subreddit(rclass.urlsearch)
-
     if subcommand == 'check':
         osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!")
         return
+
+    subreddit = reddit.subreddit(rclass.urlsearch)
 
 
 def sub_exists(sub):
@@ -117,5 +128,14 @@ def sub_exists(sub):
     try:
         reddit.subreddits.search_by_name(sub, exact=True)
     except NotFound:
+        exists = False
+    return exists
+
+
+def user_exists(user):
+    exists = True
+    try:
+        reddit.get_redditor(user).fullname
+    except praw.errors.NotFound:
         exists = False
     return exists
