@@ -119,7 +119,8 @@ def reddit_r(bot, triggerargsarray, rclass):
     if subcommand == 'check':
         dispmsg = []
         dispmsg.append("[Reddit " + rclass.urltype + "/" + rclass.urlsearch + "]")
-        bot.say(str(subreddit.over18))
+        if subreddit.over18:
+            dispmsg.append("{NSFW}")
         dispmsg.append(str(subreddit.public_description))
         dispmsg.append(fullrurul)
         osd(bot, rclass.channel_current, 'say', dispmsg)
@@ -137,6 +138,8 @@ def reddit_r(bot, triggerargsarray, rclass):
     for submission in submissions:
         dispmsg = []
         dispmsg.append("[Reddit " + rclass.urltype + "/" + rclass.urlsearch + " " + subcommand + "]")
+        if subreddit.over18:
+            dispmsg.append("{NSFW}")
         dispmsg.append("{" + str(submission.score) + "}")
         dispmsg.append(submission.title)
         dispmsg.append(submission.url)
