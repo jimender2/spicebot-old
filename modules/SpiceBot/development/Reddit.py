@@ -55,7 +55,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     rclass = class_create('reddit')
 
-    rclass.channel_current = rclass.channel_current
+    rclass.channel_current = trigger.sender
 
     rclass.urlinput = get_trigger_arg(bot, triggerargsarray, 1)
 
