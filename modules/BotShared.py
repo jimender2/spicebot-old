@@ -553,7 +553,7 @@ def osd(bot, target_array, text_type_array, text_array):
     textarraycomplete = []
     for string in textarraycompletestart:
 
-        unicode(string).encode('utf8')
+        string = unicode(string).encode('utf8')
 
         #for r in (("\u2013", "-"), ("\u2019", "'"), ("\u2026", "...")):
         #    string = string.replace(*r)
