@@ -138,7 +138,7 @@ def reddit_r(bot, triggerargsarray, rclass):
         osd(bot, rclass.channel_current, 'say', "An error has occured.")
         return
     if subcommand == 'random':
-        submission = submissions[randint(0, 499)]
+        submission = submissions[randint(0, len(list(submissions)))]
     else:
         submission = submissions[0]
 
