@@ -33,6 +33,22 @@ reddit = praw.Reddit(client_id=USERNAME,
                      user_agent=USERNAME)
 
 
+@rule(r"""(?:)r/
+          (
+            (?:\\/ | [^/])+
+          )
+          """)
+@rule(r"""(?:)u/
+          (
+            (?:\\/ | [^/])+
+          )
+          """)
+@sopel.module.thread(True)
+def mainfunctionnobeguine(bot, trigger):
+    triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
+    execute_main(bot, trigger, triggerargsarray)
+
+
 def execute_main(bot, trigger, triggerargsarray):
 
     urlinput = get_trigger_arg(bot, triggerargsarray, 1)
@@ -57,27 +73,12 @@ def execute_main(bot, trigger, triggerargsarray):
         return
 
     # perform check of valid now
+    subreddit = reddit.subreddit(urlsearch)
+    bot.say(str(subreddit.display_name))
 
     if triggerargsarray == []:
         url = 'temp'
         osd(bot, trigger.sender, 'say', urlsearch + " appears to be a valid " + urltype + "!")
         return
 
-    bot.say(str(triggerargsarray))
     return
-
-
-@rule(r"""(?:)r/
-          (
-            (?:\\/ | [^/])+
-          )
-          """)
-@rule(r"""(?:)u/
-          (
-            (?:\\/ | [^/])+
-          )
-          """)
-@sopel.module.thread(True)
-def mainfunctionnobeguine(bot, trigger):
-    triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
-    execute_main(bot, trigger, triggerargsarray)
