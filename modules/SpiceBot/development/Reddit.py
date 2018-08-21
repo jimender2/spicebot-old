@@ -136,6 +136,6 @@ def user_exists(user):
     exists = True
     try:
         reddit.redditor(user).fullname
-    except praw.errors.NotFound:
+    except NotFound:
         exists = False
     return exists
