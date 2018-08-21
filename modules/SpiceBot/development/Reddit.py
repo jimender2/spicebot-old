@@ -23,10 +23,11 @@ def execute_main(bot, trigger, triggerargsarray):
 
     urlinput = get_trigger_arg(bot, triggerargsarray, 0)
 
-    urltype = urlinput.split("/", 0)
-    bot.say(str(urltype))
+    urlsplit = urlinput.split("/", 1)
+    urltype = get_trigger_arg(bot, urlsplit, 1)
+    urlsearch = get_trigger_arg(bot, urlsplit, 2)
 
-    urlsearch = urlinput.split("/", 1)
+    bot.say(str(urltype))
     bot.say(str(urlsearch))
 
     return
