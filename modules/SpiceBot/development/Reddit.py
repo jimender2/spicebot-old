@@ -99,13 +99,22 @@ def reddit_r(bot, triggerargsarray, rclass):
     subcommand_valid = []
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
-    subreddit = reddit.subreddit(rclass.urlsearch)
-    try:
-        createdtime = subreddit.created_utc
-    except Redirect:
+    subreal = sub_exists(rclass.urlsearch)
+    if not subreal:
         osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
         return
+
+    subreddit = reddit.subreddit(rclass.urlsearch)
 
     if subcommand == 'check':
         osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!")
         return
+
+
+def sub_exists(sub):
+    exists = True
+    try:
+        reddit.subreddits.search_by_name(sub, exact=True)
+    except NotFound:
+        exists = False
+    return exists
