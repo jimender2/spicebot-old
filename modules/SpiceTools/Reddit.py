@@ -138,6 +138,12 @@ def reddit_r(bot, triggerargsarray, rclass):
         submissions = subreddit.top(limit=targnum)
     elif subcommand == 'hot':
         submissions = subreddit.hot(limit=targnum)
+    elif subcommand == 'controversial':
+        submissions = subreddit.controversial(limit=targnum)
+    elif subcommand == 'gilded':
+        submissions = subreddit.gilded(limit=targnum)
+    elif subcommand == 'rising':
+        submissions = subreddit.rising(limit=targnum)
     elif subcommand == 'random':
         submissions = subreddit.hot(limit=targnum)
     else:
