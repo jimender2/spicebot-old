@@ -21,12 +21,23 @@ header = {'User-Agent': str(ua.chrome)}
 
 def execute_main(bot, trigger, triggerargsarray):
 
-    if str(get_trigger_arg(bot, triggerargsarray, 0)).startswith("u"):
+    urlinput = get_trigger_arg(bot, triggerargsarray, 0)
+
+    urltype = urlinput.split("/", 0)
+    bot.say(str(urltype))
+
+    urlsearch = urlinput.split("/", 1)
+    bot.say(str(urlsearch))
+
+    return
+
+    if urlinput.startswith("u"):
         urltype = 'user'
     else:
         urltype = 'subreddit'
+
     url = str("https://www.reddit.com/")
-    url = str(url + get_trigger_arg(bot, triggerargsarray, 0))
+    url = str(url + urlinput)
 
     page = requests.get(url, headers=header)
     tree = html.fromstring(page.content)
