@@ -100,8 +100,11 @@ def reddit_r(bot, triggerargsarray, rclass):
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
     subreddit = reddit.subreddit(rclass.urlsearch)
-    bot.say("test")
-    bot.say(str(subreddit.created_utc))
+    try:
+        createdtime = subreddit.created_utc
+    except Redirect:
+        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
+        return
 
     if subcommand == 'check':
         osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!")
