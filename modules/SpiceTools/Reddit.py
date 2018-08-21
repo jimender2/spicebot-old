@@ -150,7 +150,7 @@ def reddit_r(bot, triggerargsarray, rclass):
     if subcommand == 'random':
         submission = listarray[randint(0, len(list(listarray)))]
     else:
-        submission = listarray[targnum]
+        submission = listarray[targnum - 1]
 
     dispmsg = []
     dispmsg.append("[Reddit " + rclass.urltype + "/" + rclass.urlsearch + " " + subcommand + "]")
