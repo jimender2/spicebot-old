@@ -41,7 +41,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     page = requests.get(redditurl, headers=header)
     tree = html.fromstring(page.content)
-    if page.status_code == 200:
+    if page.status_code != 200:
         osd(bot, trigger.sender, 'say', "Reddit appears to be down right now.")
         return
 
