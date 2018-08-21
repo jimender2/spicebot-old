@@ -55,6 +55,8 @@ def execute_main(bot, trigger, triggerargsarray):
 
     rclass = class_create('reddit')
 
+    rclass.channel_current = rclass.channel_current
+
     rclass.urlinput = get_trigger_arg(bot, triggerargsarray, 1)
 
     urlsplit = rclass.urlinput.split("/", 1)
@@ -65,7 +67,7 @@ def execute_main(bot, trigger, triggerargsarray):
     elif rclass.urltype == 'u':
         rclass.urltypetxt = 'user'
     else:
-        osd(bot, trigger.sender, 'say', "An error has occured.")
+        osd(bot, rclass.channel_current, 'say', "An error has occured.")
         return
 
     triggerargsarray.remove(triggerargsarray[0])
@@ -73,7 +75,7 @@ def execute_main(bot, trigger, triggerargsarray):
     page = requests.get(redditurl, headers=header)
     tree = html.fromstring(page.content)
     if page.status_code != 200:
-        osd(bot, trigger.sender, 'say', "Reddit appears to be down right now.")
+        osd(bot, rclass.channel_current, 'say', "Reddit appears to be down right now.")
         return
 
     # Run the command's function
@@ -82,7 +84,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
 
 def reddit_u(bot, triggerargsarray, rclass):
-    osd(bot, trigger.sender, 'say', "Reddit user functionality is not available yet.")
+    osd(bot, rclass.channel_current, 'say', "Reddit user functionality is not available yet.")
     return
 
 
@@ -94,5 +96,5 @@ def reddit_r(bot, triggerargsarray, rclass):
 
     if triggerargsarray == []:
         url = 'temp'
-        osd(bot, trigger.sender, 'say', rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!")
+        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!")
         return
