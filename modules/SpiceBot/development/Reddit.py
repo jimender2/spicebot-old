@@ -62,6 +62,7 @@ def execute_main(bot, trigger, triggerargsarray):
         urltype = 'subreddit'
     elif urltype == 'u':
         urltype = 'user'
+        osd(bot, trigger.sender, 'say', "User ")
     else:
         osd(bot, trigger.sender, 'say', "An error has occured.")
         return
@@ -72,6 +73,10 @@ def execute_main(bot, trigger, triggerargsarray):
     tree = html.fromstring(page.content)
     if page.status_code != 200:
         osd(bot, trigger.sender, 'say', "Reddit appears to be down right now.")
+        return
+
+    if urltype == 'u':
+        osd(bot, trigger.sender, 'say', "Reddit user functionality is not available yet.")
         return
 
     # perform check of valid now
