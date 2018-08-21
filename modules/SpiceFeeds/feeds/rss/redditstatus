@@ -1,7 +1,7 @@
 [configuration]
 type = rss
-displayname = Lifehacker
-url = https://lifehacker.com/rss
+displayname = Reddit Status
+url = https://reddit.statuspage.io/history.rss
 lastbuildtype = pubDate
 lastbuildparent = 0
 lastbuildchild = 0
