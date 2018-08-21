@@ -8,6 +8,8 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
+import praw
+
 import requests
 from fake_useragent import UserAgent
 from lxml import html
@@ -17,6 +19,7 @@ ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
 
 # author deathbybandaid
+redditurl = "https://www.reddit.com/"
 
 
 def execute_main(bot, trigger, triggerargsarray):
@@ -26,27 +29,30 @@ def execute_main(bot, trigger, triggerargsarray):
     urlsplit = urlinput.split("/", 1)
     urltype = get_trigger_arg(bot, urlsplit, 1)
     urlsearch = get_trigger_arg(bot, urlsplit, 2)
-
-    bot.say(str(urltype))
-    bot.say(str(urlsearch))
-
-    return
-
-    if urlinput.startswith("u"):
+    if urltype == 'r':
+        urltype = 'subreddit'
+    elif urltype == 'u':
         urltype = 'user'
     else:
-        urltype = 'subreddit'
+        osd(bot, trigger.sender, 'say', "An error has occured.")
+        return
 
-    url = str("https://www.reddit.com/")
-    url = str(url + urlinput)
+    triggerargsarray.remove(triggerargsarray[0])
 
-    page = requests.get(url, headers=header)
+    page = requests.get(redditurl, headers=header)
     tree = html.fromstring(page.content)
-
     if page.status_code == 200:
-        osd(bot, trigger.sender, 'say', url + " is a valid " + urltype + "!")
-    else:
-        osd(bot, trigger.sender, 'say', url + " is not a valid " + urltype + ".")
+        osd(bot, trigger.sender, 'say', "Reddit appears to be down right now.")
+        return
+
+    # perform check of valid now
+
+    if triggerargsarray == []:
+        osd(bot, trigger.sender, 'say', url + " appears to be a valid " + urltype + "!")
+        return
+
+    bot.say(str(triggerargsarray))
+    return
 
 
 @rule(r"""(?:)r/
