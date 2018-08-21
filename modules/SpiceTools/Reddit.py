@@ -115,11 +115,11 @@ def reddit_r(bot, triggerargsarray, rclass):
         osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
         return
     fullrurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
-    if subcommand == 'check':
-        osd(bot, rclass.channel_current, 'say', [rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!", fullrurul])
-        return
-
     subreddit = reddit.subreddit(rclass.urlsearch)
+    if subcommand == 'check':
+        # osd(bot, rclass.channel_current, 'say', [rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!", fullrurul])
+        osd(bot, rclass.channel_current, 'say', ["[" + rclass.urlsearch + "]" + str(subreddit.description) + "!", fullrurul])
+        return
 
     if subcommand == 'new':
         submissions = subreddit.new(limit=1)
