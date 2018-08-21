@@ -99,12 +99,10 @@ def reddit_u(bot, triggerargsarray, rclass):
     if not userreal:
         osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
         return
+    fulluurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
     if subcommand == 'check':
-        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!")
+        osd(bot, rclass.channel_current, 'say', [rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!", fulluurul])
         return
-
-    # osd(bot, rclass.channel_current, 'say', "Reddit user functionality is not available yet.")
-    return
 
 
 def reddit_r(bot, triggerargsarray, rclass):
@@ -116,11 +114,12 @@ def reddit_r(bot, triggerargsarray, rclass):
     if not subreal:
         osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
         return
+    fullrurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
     if subcommand == 'check':
-        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!")
+        osd(bot, rclass.channel_current, 'say', [rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!", fullrurul])
         return
 
-    subreddit = reddit.subreddit(rclass.urlsearch)
+    # subreddit = reddit.subreddit(rclass.urlsearch)
 
 
 def sub_exists(sub):
