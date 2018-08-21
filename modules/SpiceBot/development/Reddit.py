@@ -74,7 +74,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # perform check of valid now
     subreddit = reddit.subreddit(urlsearch)
-    bot.say(str(subreddit.display_name))
+    bot.say(str(subreddit.description))
 
     if triggerargsarray == []:
         url = 'temp'
