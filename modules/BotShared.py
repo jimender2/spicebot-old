@@ -548,7 +548,7 @@ def osd(bot, target_array, text_type_array, text_array):
         textarraycomplete.append(text_array)
     else:
         for x in text_array:
-            textarraycomplete.append(str(x))
+            textarraycomplete.append(x)
 
     # if target_array is a string, make it an array
     texttargetarray = []
