@@ -11,7 +11,7 @@ from BotShared import *
 import praw
 from prawcore import NotFound
 import ConfigParser
-import random
+from random import randint
 import requests
 from fake_useragent import UserAgent
 from lxml import html
