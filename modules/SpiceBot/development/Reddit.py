@@ -58,6 +58,12 @@ def execute_main(bot, trigger, triggerargsarray):
     rclass.channel_current = trigger.sender
 
     rclass.urlinput = get_trigger_arg(bot, triggerargsarray, 1)
+    if rclass.urlinput.endswith("/"):
+        searchterm = get_trigger_arg(bot, triggerargsarray, 2)
+        rclass.urlinput = str(rclass.urlinput + searchterm)
+        triggerargsarray.remove(triggerargsarray[0])
+        triggerargsarray.remove(triggerargsarray[1])
+        triggerargsarray.insert(0, rclass.urlinput)
 
     urlsplit = rclass.urlinput.split("/", 1)
     rclass.urltype = get_trigger_arg(bot, urlsplit, 1)
@@ -89,6 +95,12 @@ def reddit_u(bot, triggerargsarray, rclass):
 
 
 def reddit_r(bot, triggerargsarray, rclass):
+
+    subcommand_valid = []
+    subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
+
+    if subcommand == 'check':
+
 
     # perform check of valid now
     subreddit = reddit.subreddit(rclass.urlsearch)
