@@ -100,6 +100,7 @@ def reddit_r(bot, triggerargsarray, rclass):
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
     subreddit = reddit.subreddit(rclass.urlsearch)
+    bot.say("test")
     bot.say(str(subreddit.created_utc))
 
     if subcommand == 'check':
