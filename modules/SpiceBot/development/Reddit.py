@@ -99,18 +99,9 @@ def reddit_r(bot, triggerargsarray, rclass):
     subcommand_valid = []
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
-    if reddit.subreddit.search_by_name(rclass.urlsearch, exact=True):
-        bot.say("true")
-    else:
-        bot.say("false")
+    subreddit = reddit.subreddit(rclass.urlsearch)
+    bot.say(str(subreddit.created_utc))
 
     if subcommand == 'check':
-
-        # perform check of valid now
-        subreddit = reddit.subreddit(rclass.urlsearch)
-        bot.say(str(subreddit.description))
-
-        if triggerargsarray == []:
-            url = 'temp'
-            osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!")
-            return
+        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!")
+        return
