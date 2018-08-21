@@ -28,6 +28,10 @@ config.read("/home/spicebot/spicebot.conf")
 USERNAME = config.get("reddit", "username")
 PASSWORD = config.get("reddit", "password")
 
+reddit = praw.Reddit(client_id=USERNAME,
+                     client_secret=PASSWORD,
+                     user_agent=USERNAME)
+
 
 def execute_main(bot, trigger, triggerargsarray):
 
@@ -36,7 +40,6 @@ def execute_main(bot, trigger, triggerargsarray):
     urlsplit = urlinput.split("/", 1)
     urltype = get_trigger_arg(bot, urlsplit, 1)
     urlsearch = get_trigger_arg(bot, urlsplit, 2)
-    bot.say("test: " + str(urlsearch) + " :test")
     if urltype == 'r':
         urltype = 'subreddit'
     elif urltype == 'u':
