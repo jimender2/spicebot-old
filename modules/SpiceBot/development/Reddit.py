@@ -31,7 +31,7 @@ PASSWORD = config.get("reddit", "password")
 
 def execute_main(bot, trigger, triggerargsarray):
 
-    urlinput = get_trigger_arg(bot, triggerargsarray, 0)
+    urlinput = get_trigger_arg(bot, triggerargsarray, 1)
 
     urlsplit = urlinput.split("/", 1)
     urltype = get_trigger_arg(bot, urlsplit, 1)
