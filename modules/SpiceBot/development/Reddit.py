@@ -99,6 +99,11 @@ def reddit_r(bot, triggerargsarray, rclass):
     subcommand_valid = []
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
+    if reddit.search_by_name(rclass.urlsearch, exact=True):
+        bot.say("true")
+    else:
+        bot.say("false")
+
     if subcommand == 'check':
 
         # perform check of valid now
