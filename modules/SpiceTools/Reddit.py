@@ -107,7 +107,7 @@ def reddit_u(bot, triggerargsarray, rclass):
 
 def reddit_r(bot, triggerargsarray, rclass):
 
-    subcommand_valid = ['check', 'hot', 'new', 'top', 'random']
+    subcommand_valid = ['check', 'hot', 'new', 'top', 'random', 'controversial', 'gilded', 'rising']
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
     subreal = sub_exists(rclass.urlsearch)
