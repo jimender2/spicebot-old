@@ -149,7 +149,7 @@ def reddit_r(bot, triggerargsarray, rclass):
         listarray.append(submission)
 
     if subcommand == 'random':
-        submission = listarray[randint(0, len(list(listarray)))]
+        submission = listarray[randint(0, len(listarray) - 1)]
     else:
         submission = listarray[targnum - 1]
 
