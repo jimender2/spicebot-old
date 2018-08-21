@@ -134,7 +134,7 @@ def sub_exists(sub):
 
 def user_exists(user):
     exists = True
-    reddit.get_redditor(user).fullname
+    reddit.redditor(user).fullname
     # try:
     #    reddit.get_redditor(user).fullname
     # except praw.errors.NotFound:
