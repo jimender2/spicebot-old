@@ -27,10 +27,12 @@ config = ConfigParser.ConfigParser()
 config.read("/home/spicebot/spicebot.conf")
 USERNAME = config.get("reddit", "username")
 PASSWORD = config.get("reddit", "password")
+CLIENTID = config.get("reddit", "clientid")
+SECRET = config.get("reddit", "secret")
 
-reddit = praw.Reddit(client_id=USERNAME,
-                     client_secret=PASSWORD,
-                     user_agent=USERNAME)
+reddit = praw.Reddit(client_id=CLIENTID,
+                     client_secret=SECRET,
+                     user_agent='spicebot:net.example.myredditapp:v1.2.3 (by /u/SpiceBot-dbb)')
 
 
 @rule(r"""(?:)r/
@@ -73,7 +75,7 @@ def execute_main(bot, trigger, triggerargsarray):
         return
 
     # perform check of valid now
-    subreddit = reddit.subreddit('redditdev')
+    subreddit = reddit.subreddit(urlsearch)
     bot.say(str(subreddit.description))
 
     if triggerargsarray == []:
