@@ -119,11 +119,21 @@ def reddit_r(bot, triggerargsarray, rclass):
         osd(bot, rclass.channel_current, 'say', [rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!", fullrurul])
         return
 
-    submissions = reddit.subreddit(rclass.urlsearch).hot(limit=1)
-
-    command_function_run = str('reddit.subreddit(' + rclass.urlsearch + '.' + subcommand + '(limit=1)')
-    submissions = eval(command_function_run)
-
+    if subcommand == 'controversial':
+        submission = reddit.subreddit(rclass.urlsearch).controversial(limit=1)
+    elif subcommand == 'gilded':
+        submission = reddit.subreddit(rclass.urlsearch).gilded(limit=1)
+    elif subcommand == 'new':
+        submission = reddit.subreddit(rclass.urlsearch).new(limit=1)
+    elif subcommand == 'rising':
+        submission = reddit.subreddit(rclass.urlsearch).rising(limit=1)
+    elif subcommand == 'top':
+        submission = reddit.subreddit(rclass.urlsearch).top(limit=1)
+    elif subcommand == 'hot':
+        submission = reddit.subreddit(rclass.urlsearch).hot(limit=1)
+    else:
+        osd(bot, rclass.channel_current, 'say', "An error has occured.")
+        return
     bot.say(str(submission.title))
 
 
