@@ -59,9 +59,9 @@ def execute_main(bot, trigger, triggerargsarray):
     urltype = get_trigger_arg(bot, urlsplit, 1)
     urlsearch = get_trigger_arg(bot, urlsplit, 2)
     if urltype == 'r':
-        urltype = 'subreddit'
+        urltypetxt = 'subreddit'
     elif urltype == 'u':
-        urltype = 'user'
+        urltypetxt = 'user'
         osd(bot, trigger.sender, 'say', "User ")
     else:
         osd(bot, trigger.sender, 'say', "An error has occured.")
@@ -85,7 +85,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     if triggerargsarray == []:
         url = 'temp'
-        osd(bot, trigger.sender, 'say', urlsearch + " appears to be a valid " + urltype + "!")
+        osd(bot, trigger.sender, 'say', urlsearch + " appears to be a valid " + urltypetxt + "!")
         return
 
     return
