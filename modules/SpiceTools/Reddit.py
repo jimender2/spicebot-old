@@ -118,7 +118,7 @@ def reddit_r(bot, triggerargsarray, rclass):
     subreddit = reddit.subreddit(rclass.urlsearch)
     if subcommand == 'check':
         # osd(bot, rclass.channel_current, 'say', [rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!", fullrurul])
-        osd(bot, rclass.channel_current, 'say', ["[" + rclass.urlsearch + "]" + str(subreddit.description) + "!", fullrurul])
+        osd(bot, rclass.channel_current, 'say', ["[" + rclass.urlsearch + "]" + str(subreddit.public_description) + "!", fullrurul])
         return
 
     if subcommand == 'new':
