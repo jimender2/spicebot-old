@@ -48,6 +48,7 @@ def execute_main(bot, trigger, triggerargsarray):
     # perform check of valid now
 
     if triggerargsarray == []:
+        url = 'temp'
         osd(bot, trigger.sender, 'say', url + " appears to be a valid " + urltype + "!")
         return
 
