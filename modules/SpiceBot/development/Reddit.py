@@ -73,7 +73,7 @@ def execute_main(bot, trigger, triggerargsarray):
         return
 
     # perform check of valid now
-    subreddit = reddit.subreddit(urlsearch)
+    subreddit = reddit.subreddit('redditdev')
     bot.say(str(subreddit.description))
 
     if triggerargsarray == []:
