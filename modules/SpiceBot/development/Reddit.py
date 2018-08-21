@@ -53,16 +53,17 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
 
-    urlinput = get_trigger_arg(bot, triggerargsarray, 1)
+    rclass = class_create('reddit')
 
-    urlsplit = urlinput.split("/", 1)
-    urltype = get_trigger_arg(bot, urlsplit, 1)
-    urlsearch = get_trigger_arg(bot, urlsplit, 2)
-    if urltype == 'r':
-        urltypetxt = 'subreddit'
-    elif urltype == 'u':
-        urltypetxt = 'user'
-        osd(bot, trigger.sender, 'say', "User ")
+    rclass.urlinput = get_trigger_arg(bot, triggerargsarray, 1)
+
+    urlsplit = rclass.urlinput.split("/", 1)
+    rclass.urltype = get_trigger_arg(bot, urlsplit, 1)
+    rclass.urlsearch = get_trigger_arg(bot, urlsplit, 2)
+    if rclass.urltype == 'r':
+        rclass.urltypetxt = 'subreddit'
+    elif rclass.urltype == 'u':
+        rclass.urltypetxt = 'user'
     else:
         osd(bot, trigger.sender, 'say', "An error has occured.")
         return
@@ -75,17 +76,23 @@ def execute_main(bot, trigger, triggerargsarray):
         osd(bot, trigger.sender, 'say', "Reddit appears to be down right now.")
         return
 
-    if urltype == 'u':
-        osd(bot, trigger.sender, 'say', "Reddit user functionality is not available yet.")
-        return
+    # Run the command's function
+    command_function_run = str('reddit_' + rclass.urltype.lower() + '(bot, triggerargsarray, rclass)')
+    eval(command_function_run)
+
+
+def reddit_u(bot, triggerargsarray, rclass):
+    osd(bot, trigger.sender, 'say', "Reddit user functionality is not available yet.")
+    return
+
+
+def reddit_r(bot, triggerargsarray, rclass):
 
     # perform check of valid now
-    subreddit = reddit.subreddit(urlsearch)
+    subreddit = reddit.subreddit(rclass.urlsearch)
     bot.say(str(subreddit.description))
 
     if triggerargsarray == []:
         url = 'temp'
-        osd(bot, trigger.sender, 'say', urlsearch + " appears to be a valid " + urltypetxt + "!")
+        osd(bot, trigger.sender, 'say', rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!")
         return
-
-    return
