@@ -130,6 +130,7 @@ def reddit_r(bot, triggerargsarray, rclass):
         targnum = get_trigger_arg(bot, [x for x in triggerargsarray if str(x).isdigit()], 1) or 500
     else:
         targnum = get_trigger_arg(bot, [x for x in triggerargsarray if str(x).isdigit()], 1) or 1
+    targnum = int(targnum)
 
     if subcommand == 'new':
         submissions = subreddit.new(limit=targnum)
