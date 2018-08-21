@@ -107,7 +107,7 @@ def reddit_u(bot, triggerargsarray, rclass):
 
 def reddit_r(bot, triggerargsarray, rclass):
 
-    subcommand_valid = ['check']
+    subcommand_valid = ['check', 'controversial', 'gilded', 'hot', 'new', 'rising', 'top']
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
     subreal = sub_exists(rclass.urlsearch)
@@ -119,7 +119,23 @@ def reddit_r(bot, triggerargsarray, rclass):
         osd(bot, rclass.channel_current, 'say', [rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!", fullrurul])
         return
 
-    # subreddit = reddit.subreddit(rclass.urlsearch)
+    submissions = reddit.subreddit(rclass.urlsearch).hot(limit=1)
+
+    command_function_run = str('reddit.subreddit(' + rclass.urlsearch + '.' + subcommand + '(limit=1)')
+    submissions = eval(command_function_run)
+
+    bot.say(str(submission.title))
+
+
+"""
+    # assume you have a Subreddit instance bound to variable `subreddit`
+for submission in subreddit.hot(limit=10):
+    print(submission.title)  # Output: the submission's title
+    print(submission.score)  # Output: the submission's score
+    print(submission.id)     # Output: the submission's ID
+    print(submission.url)    # Output: the URL the submission points to
+                             # or the submission's URL if it's a self post
+"""
 
 
 def sub_exists(sub):
