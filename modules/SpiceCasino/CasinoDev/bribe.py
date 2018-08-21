@@ -6,6 +6,8 @@ import sys
 import os
 import random
 moduledir = os.path.dirname(__file__)
+gamesdir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "Games")
+sys.path.append(gamesdir)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
@@ -17,6 +19,7 @@ databasekey = "bribe"
 
 @sopel.module.commands('bribe')
 def mainfunction(bot, trigger):
+    bot.say(str(gamesdir))
     """Checks whether the module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
