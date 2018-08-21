@@ -19,7 +19,6 @@ databasekey = "bribe"
 
 @sopel.module.commands('bribe')
 def mainfunction(bot, trigger):
-    bot.say(str(gamesdir))
     """Checks whether the module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
