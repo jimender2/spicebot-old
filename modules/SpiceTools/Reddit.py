@@ -101,13 +101,13 @@ def reddit_u(bot, triggerargsarray, rclass):
         return
     fulluurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
     if subcommand == 'check':
-        osd(bot, rclass.channel_current, 'say', [rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!", fulluurul])
+        osd(bot, rclass.channel_current, 'say', [rclass.urlsearch + " appears to be a valid reddit " + rclass.urltypetxt + "!", fulluurul])
         return
 
 
 def reddit_r(bot, triggerargsarray, rclass):
 
-    subcommand_valid = ['check', 'hot', 'new', 'top']
+    subcommand_valid = ['check', 'hot', 'new', 'top', 'random']
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
     subreal = sub_exists(rclass.urlsearch)
@@ -120,7 +120,7 @@ def reddit_r(bot, triggerargsarray, rclass):
         dispmsg = []
         dispmsg.append("[Reddit " + rclass.urltype + "/" + rclass.urlsearch + "]")
         if subreddit.over18:
-            dispmsg.append("{NSFW}")
+            dispmsg.append("<NSFW>")
         dispmsg.append(str(subreddit.public_description))
         dispmsg.append(fullrurul)
         osd(bot, rclass.channel_current, 'say', dispmsg)
@@ -132,18 +132,24 @@ def reddit_r(bot, triggerargsarray, rclass):
         submissions = subreddit.top(limit=1)
     elif subcommand == 'hot':
         submissions = subreddit.hot(limit=1)
+    elif subcommand == 'random':
+        submissions = subreddit.hot(limit=500)
     else:
         osd(bot, rclass.channel_current, 'say', "An error has occured.")
         return
-    for submission in submissions:
-        dispmsg = []
-        dispmsg.append("[Reddit " + rclass.urltype + "/" + rclass.urlsearch + " " + subcommand + "]")
-        if subreddit.over18:
-            dispmsg.append("{NSFW}")
-        dispmsg.append("{" + str(submission.score) + "}")
-        dispmsg.append(submission.title)
-        dispmsg.append(submission.url)
-        osd(bot, rclass.channel_current, 'say', dispmsg)
+    if subcommand == 'random':
+        submission = submissions[0]
+    else:
+        submission = submissions[0]
+
+    dispmsg = []
+    dispmsg.append("[Reddit " + rclass.urltype + "/" + rclass.urlsearch + " " + subcommand + "]")
+    if subreddit.over18:
+        dispmsg.append("<NSFW>")
+    dispmsg.append("{" + str(submission.score) + "}")
+    dispmsg.append(submission.title)
+    dispmsg.append(submission.url)
+    osd(bot, rclass.channel_current, 'say', dispmsg)
 
 
 def sub_exists(sub):
