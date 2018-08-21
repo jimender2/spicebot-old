@@ -62,7 +62,7 @@ def execute_main(bot, trigger, triggerargsarray):
         searchterm = get_trigger_arg(bot, triggerargsarray, 2)
         rclass.urlinput = str(rclass.urlinput + searchterm)
         triggerargsarray.remove(triggerargsarray[0])
-        triggerargsarray.remove(triggerargsarray[1])
+        triggerargsarray.remove(triggerargsarray[0])
         triggerargsarray.insert(0, rclass.urlinput)
 
     urlsplit = rclass.urlinput.split("/", 1)
