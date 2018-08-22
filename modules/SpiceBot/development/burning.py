@@ -12,7 +12,7 @@ from BotShared import *
 # author jimender2
 
 
-@sopel.module.commands('burn')
+@sopel.module.commands('burning','bdth')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'burn')
     if not enablestatus:
