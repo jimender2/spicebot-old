@@ -117,7 +117,7 @@ def reddit_r(bot, triggerargsarray, rclass):
     if not subpass:
         return
 
-    fullrurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
+    rclass.fullrurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
     subreddit = reddit.subreddit(rclass.urlsearch)
     if subcommand == 'check':
         dispmsg = []
@@ -125,7 +125,7 @@ def reddit_r(bot, triggerargsarray, rclass):
         if subreddit.over18:
             dispmsg.append("<NSFW>")
         dispmsg.append(str(subreddit.public_description))
-        dispmsg.append(fullrurul)
+        dispmsg.append(rclass.fullrurul)
         osd(bot, rclass.channel_current, 'say', dispmsg)
         return
 
@@ -191,7 +191,7 @@ def sub_banned_private(bot, rclass, sub):
         if str(e) == "received 403 HTTP response":
             osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an banned " + rclass.urltypetxt + "!")
         elif str(e) == "received 404 HTTP response":
-            osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an private " + rclass.urltypetxt + "!")
+            osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an private " + rclass.urltypetxt + "!    " + rclass.fullrurul)
     return proceed
 
 
