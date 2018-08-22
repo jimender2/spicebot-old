@@ -97,7 +97,6 @@ def reddit_u(bot, triggerargsarray, rclass):
 
     userreal = user_exists(rclass.urlsearch)
     if not userreal:
-        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
         return
     fulluurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
     if subcommand == 'check':
@@ -112,9 +111,12 @@ def reddit_r(bot, triggerargsarray, rclass):
 
     subreal = sub_exists(rclass.urlsearch)
     if not subreal:
-        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
         return
-    bot.say("here")
+
+    subpass = sub_banned_private(rclass.urlsearch)
+    if not subpass:
+        return
+
     fullrurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
     subreddit = reddit.subreddit(rclass.urlsearch)
     if subcommand == 'check':
@@ -175,8 +177,22 @@ def sub_exists(sub):
     try:
         reddit.subreddits.search_by_name(sub, exact=True)
     except NotFound:
+        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
         exists = False
     return exists
+
+
+def sub_banned_private(sub):
+    proceed = True
+    try:
+        rclass.subtype = reddit.subreddit(sub).subreddit_type
+    except Exception as e:
+        proceed = False
+        if str(e) == "received 403 HTTP response":
+            osd(bot, rclass.channel_current, 'say', "This subreddit appears to be banned.")
+        elif str(e) == "received 404 HTTP response":
+            osd(bot, rclass.channel_current, 'say', "This subreddit appears to be private.")
+    return proceed
 
 
 def user_exists(user):
@@ -184,5 +200,6 @@ def user_exists(user):
     try:
         reddit.redditor(user).fullname
     except NotFound:
+        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid reddit " + rclass.urltypetxt + "!")
         exists = False
     return exists
