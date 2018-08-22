@@ -109,6 +109,8 @@ def reddit_r(bot, triggerargsarray, rclass):
     subcommand_valid = ['check', 'hot', 'new', 'top', 'random', 'controversial', 'gilded', 'rising']
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
+    rclass.fullrurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
+
     subreal = sub_exists(bot, rclass, rclass.urlsearch)
     if not subreal:
         return
@@ -117,7 +119,6 @@ def reddit_r(bot, triggerargsarray, rclass):
     if not subpass:
         return
 
-    rclass.fullrurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
     subreddit = reddit.subreddit(rclass.urlsearch)
     if subcommand == 'check':
         dispmsg = []
