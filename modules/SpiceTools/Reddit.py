@@ -95,7 +95,7 @@ def reddit_u(bot, triggerargsarray, rclass):
     subcommand_valid = ['check']
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
-    userreal = user_exists(bot, rclass.urlsearch)
+    userreal = user_exists(bot, rclass, rclass.urlsearch)
     if not userreal:
         return
     fulluurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
@@ -109,11 +109,11 @@ def reddit_r(bot, triggerargsarray, rclass):
     subcommand_valid = ['check', 'hot', 'new', 'top', 'random', 'controversial', 'gilded', 'rising']
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
-    subreal = sub_exists(bot, rclass.urlsearch)
+    subreal = sub_exists(bot, rclass, rclass.urlsearch)
     if not subreal:
         return
 
-    subpass = sub_banned_private(bot, rclass.urlsearch)
+    subpass = sub_banned_private(bot, rclass, rclass.urlsearch)
     if not subpass:
         return
 
@@ -172,7 +172,7 @@ def reddit_r(bot, triggerargsarray, rclass):
     osd(bot, rclass.channel_current, 'say', dispmsg)
 
 
-def sub_exists(bot, sub):
+def sub_exists(bot, rclass, sub):
     exists = True
     try:
         reddit.subreddits.search_by_name(sub, exact=True)
@@ -182,7 +182,7 @@ def sub_exists(bot, sub):
     return exists
 
 
-def sub_banned_private(bot, sub):
+def sub_banned_private(bot, rclass, sub):
     proceed = True
     try:
         rclass.subtype = reddit.subreddit(sub).subreddit_type
@@ -195,7 +195,7 @@ def sub_banned_private(bot, sub):
     return proceed
 
 
-def user_exists(bot, user):
+def user_exists(bot, rclass, user):
     exists = True
     try:
         reddit.redditor(user).fullname
