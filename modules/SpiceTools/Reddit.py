@@ -189,9 +189,9 @@ def sub_banned_private(bot, rclass, sub):
     except Exception as e:
         proceed = False
         if str(e) == "received 403 HTTP response":
-            osd(bot, rclass.channel_current, 'say', "This subreddit appears to be banned.")
+            osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an banned " + rclass.urltypetxt + "!")
         elif str(e) == "received 404 HTTP response":
-            osd(bot, rclass.channel_current, 'say', "This subreddit appears to be private.")
+            osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an private " + rclass.urltypetxt + "!")
     return proceed
 
 
