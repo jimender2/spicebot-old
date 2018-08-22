@@ -114,6 +114,7 @@ def reddit_r(bot, triggerargsarray, rclass):
     if not subreal:
         osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
         return
+    bot.say("here")
     fullrurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
     subreddit = reddit.subreddit(rclass.urlsearch)
     if subcommand == 'check':
