@@ -556,6 +556,11 @@ def osd(bot, target_array, text_type_array, text_array):
     # unicode patch
     textarraycomplete = []
     for string in textarraycompletestart:
+        string = string.decode('utf-8')
+        # try:
+            # string = string.decode('utf-8')
+        # except:
+        #    pass
         string = unicode(string).encode('utf8')
         textarraycomplete.append(string)
 
