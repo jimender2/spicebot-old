@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+# coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import datetime
 import arrow
@@ -556,8 +556,8 @@ def osd(bot, target_array, text_type_array, text_array):
     # unicode patch
     textarraycomplete = []
     for string in textarraycompletestart:
-        #string = unicode(string).encode('utf8')
-        string = string.encode('utf8')
+        string = unicode(string, 'utf-8')
+        # string = unicode(string).encode('utf8')
         textarraycomplete.append(string)
 
     # if target_array is a string, make it an array
