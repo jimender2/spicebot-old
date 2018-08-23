@@ -20,8 +20,8 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    complete = get_trigger_arg(bot, triggerargsarray, 0)
-    osd(bot, trigger.sender, 'say', complete + "Fuck-it-allᵀᴹ")
+    message = ["Fuck-it-allᵀᴹ"]
+    osd(bot, trigger.sender, 'say', message)
     return
     message = ["Find that caring has made you a gasping ball of stress?",
                "Tired of giving a flying fuck about the next chucklehead that decides you need to fix their problems?",
