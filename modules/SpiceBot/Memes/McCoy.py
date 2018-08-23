@@ -34,5 +34,5 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         message = "He's dead, Jim."
     if target:
-        message.replace("Jim", target)
+        message = message.replace("Jim", target)
     osd(bot, trigger.sender, 'say', message)
