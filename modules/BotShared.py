@@ -644,8 +644,7 @@ def osd(bot, target_array, text_type_array, text_array):
                         currentstring = ''
                     combinedtextarray.append(textstring)
                 else:
-                    tempstring = unicode(currentstring + "   " + textstring).encode('utf8')
-                    # tempstring = str(currentstring + "   " + textstring)
+                    tempstring = str(currentstring + "   " + textstring)
                     if len(tempstring) <= osd_limit:
                         currentstring = tempstring
                     else:
