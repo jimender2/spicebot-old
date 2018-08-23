@@ -32,7 +32,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not target:
         osd(bot, trigger.sender, 'say', trigger.nick + ' poops in the designated corner!')
     elif target == 'group':
-        osd(bot, trigger.sender, 'say', trigger.nick + ', get your poop in a group.')
+        target = get_trigger_arg(bot, triggerargsarray, 2) or trigger.nick
+        osd(bot, trigger.sender, 'say', target + ', get your poop in a group.')
     elif target == 'all' or target == 'everyone' or target == 'everyones':
         osd(bot, trigger.sender, 'say', trigger.nick + " poops on everyone's desk, one at a time!")
     elif target != bot.nick:
