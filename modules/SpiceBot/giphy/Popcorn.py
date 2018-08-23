@@ -29,4 +29,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'say', "https://media2.giphy.com/media/daJWXqaZFqh0s/giphy.gif")
         osd(bot, trigger.sender, 'action', "munch, munch")
     else:
-        osd(bot, trigger.sender, 'action', "grabs popcorn and goes to watch " + target + "'s situation unfold.'")
+        osd(bot, trigger.sender, 'action', "grabs popcorn and goes to watch " + target + "'s situation unfold.")
