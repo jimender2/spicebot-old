@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    message = ["Find that caring has made you a gasping ball of stress?",
+    message = [
                "Fuck-it-allᵀᴹ"]
     osd(bot, trigger.sender, 'say', message)
     return
