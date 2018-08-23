@@ -20,6 +20,9 @@ import fnmatch
 import random
 import urllib
 from os.path import exists
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
@@ -70,8 +73,11 @@ def spicebot_prerun(bot, trigger, commandused):
     if botcom.channel_current.startswith("#"):
         channelmodulesarray = get_database_value(bot, botcom.channel_current, 'modules_enabled') or []
         if commandused not in channelmodulesarray:
-            osd(bot, instigator.default, 'notice', "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
-            return enablestatus, triggerargsarray, botcom, instigator
+            if botcom.instigator in botcom.opadmin:
+                adjust_database_array(bot, botcom.channel_current, commandused, 'modules_enabled', 'add')
+            else:
+                osd(bot, instigator.default, 'notice', "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
+                return enablestatus, triggerargsarray, botcom, instigator
 
     # Bot Enabled Status (botcom.now in an array)
     botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
@@ -548,7 +554,7 @@ def osd(bot, target_array, text_type_array, text_array):
         textarraycomplete.append(text_array)
     else:
         for x in text_array:
-            textarraycomplete.append(str(x))
+            textarraycomplete.append(x)
 
     # if target_array is a string, make it an array
     texttargetarray = []
@@ -635,7 +641,7 @@ def osd(bot, target_array, text_type_array, text_array):
                         currentstring = ''
                     combinedtextarray.append(textstring)
                 else:
-                    tempstring = str(currentstring + "   " + textstring)
+                    tempstring = currentstring + "   " + textstring
                     if len(tempstring) <= osd_limit:
                         currentstring = tempstring
                     else:

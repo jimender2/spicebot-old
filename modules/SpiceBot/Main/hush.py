@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
+import random
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
@@ -12,15 +13,16 @@ from BotShared import *
 # author jimender2
 
 
-@sopel.module.commands('boot')
+@sopel.module.commands('hush')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'boot')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'hush')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    instigator = trigger.nick
-    target = get_trigger_arg(bot, triggerargsarray, 1)
-    message = instigator + " kicks " + target + " with a big old boot!"
-    osd(bot, trigger.sender, 'say', message)
+    rand = random.randint(1,2)
+    if rand == 1:
+        osd(bot, trigger.sender, 'say', "A hush falls over the crowd")
+    else:
+        osd(bot, trigger.sender, 'say', "SSSSHHHHHHHHH!!!!!!!")

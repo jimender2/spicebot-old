@@ -26,6 +26,8 @@ from fake_useragent import UserAgent
 from lxml import html
 from statistics import mean
 import itertools
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 # Global Vars
@@ -5049,29 +5051,6 @@ def duels_user_lists(bot, duels):
                 if user not in duels.users_current_allchan_opted:
                     duels.users_current_allchan_opted.append(user)
 
-        # Players in locations
-        locationunknown = []
-        for user in users_opted_current_channel:
-            locationunknown.append(user)
-        for location in duels_commands_locations:
-            currentlocationusers = get_database_value(bot, 'duelrecorduser', location+"_users") or []
-            current_location_list = eval("duels.users_current_allchan_" + location)
-            for user in currentlocationusers:
-                if user in locationunknown:
-                    locationunknown.remove(user)
-                if user not in current_location_list:
-                    current_location_list.append(user)
-        if locationunknown != []:
-            for user in locationunknown:
-                duels.users_current_allchan_town.append(user)
-            adjust_database_array(bot, 'duelrecorduser', locationunknown, "town_users", 'add')
-
-        for location in duels_commands_locations:
-            current_location_list = eval("duels.users_current_allchan_" + location)
-            for user in current_location_list:
-                if user not in duels.users_current_allchan:
-                    current_location_list.remove(user)
-
         # Some commands are valid targets for target check
         othervalidtargets = ['monster', 'random']
         for validtarget in othervalidtargets:
@@ -5096,6 +5075,29 @@ def duels_user_lists(bot, duels):
         for user in users_canduel_current_channel:
             if user not in duels.users_canduel_allchan:
                 duels.users_canduel_allchan.append(user)
+
+        # Players in locations
+        locationunknown = []
+        for user in users_opted_current_channel:
+            locationunknown.append(user)
+        for location in duels_commands_locations:
+            currentlocationusers = get_database_value(bot, 'duelrecorduser', location+"_users") or []
+            current_location_list = eval("duels.users_current_allchan_" + location)
+            for user in currentlocationusers:
+                if user in locationunknown:
+                    locationunknown.remove(user)
+                if user not in current_location_list:
+                    current_location_list.append(user)
+        if locationunknown != []:
+            for user in locationunknown:
+                duels.users_current_allchan_town.append(user)
+            adjust_database_array(bot, 'duelrecorduser', locationunknown, "town_users", 'add')
+
+        for location in duels_commands_locations:
+            current_location_list = eval("duels.users_current_allchan_" + location)
+            for user in current_location_list:
+                if user not in duels.users_canduel_allchan:
+                    current_location_list.remove(user)
 
         # Bot owner
         for user in users_current_channel:
@@ -6081,7 +6083,7 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
                 if effectamount <= endurancemath:
                     effectamount = 0
                 else:
-                    endurancemath = randint(endurancemath, effectamount)
+                    endurancemath = randint(int(endurancemath), int(effectamount))
                     damagenew = effectamount - endurancemath
                     if damagenew <= 0:
                         effectamount == 0
@@ -6571,7 +6573,7 @@ def duels_criteria(bot, player_two, duels, verbose):
     if deathblow:
         deathblowtargettime = duels_time_since(bot, targetbio.actual, 'deathblowtargettime') or 0
         if deathblowtargettime <= 120:
-            deathblowkiller = get_database_value(bot, nick, 'deathblowkiller') or 'unknown'
+            deathblowkiller = get_database_value(bot, targetbio.actual, 'deathblowkiller') or 'unknown'
             validtargetmsg.append(targetbio.nametext + " can't run duels for " + str(duels_hours_minutes_seconds((120 - deathblowtargettime))) + " due to a potential deathblow from " + deathblowkiller + ".")
             validtarget = 0
 
@@ -7696,7 +7698,7 @@ def osd(bot, target_array, text_type_array, text_array):
         textarraycomplete.append(text_array)
     else:
         for x in text_array:
-            textarraycomplete.append(str(x))
+            textarraycomplete.append(x)
 
     # if target_array is a string, make it an array
     texttargetarray = []
@@ -7783,7 +7785,7 @@ def osd(bot, target_array, text_type_array, text_array):
                         currentstring = ''
                     combinedtextarray.append(textstring)
                 else:
-                    tempstring = str(currentstring + "   " + textstring)
+                    tempstring = currentstring + "   " + textstring
                     if len(tempstring) <= osd_limit:
                         currentstring = tempstring
                     else:

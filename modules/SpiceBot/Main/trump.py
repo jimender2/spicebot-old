@@ -12,15 +12,14 @@ from BotShared import *
 # author jimender2
 
 
-@sopel.module.commands('boot')
+@sopel.module.commands('trump')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'boot')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'trump')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    instigator = trigger.nick
-    target = get_trigger_arg(bot, triggerargsarray, 1)
-    message = instigator + " kicks " + target + " with a big old boot!"
+    instigator = bot.trigger
+    message = "Spicebot builds a wall around " + instigator
     osd(bot, trigger.sender, 'say', message)
