@@ -36,4 +36,3 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if target:
         message.replace("Jim", target)
     osd(bot, trigger.sender, 'say', message)
-f
