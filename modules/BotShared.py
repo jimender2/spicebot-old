@@ -557,7 +557,6 @@ def osd(bot, target_array, text_type_array, text_array):
     textarraycomplete = []
     for string in textarraycompletestart:
         string = string.decode('utf-8')
-        string = unicode(string, 'utf-8')
         string = unicode(string).encode('utf8')
         textarraycomplete.append(string)
 
