@@ -550,22 +550,12 @@ On Screen Text
 def osd(bot, target_array, text_type_array, text_array):
 
     # if text_array is a string, make it an array
-    textarraycompletestart = []
+    textarraycomplete = []
     if not isinstance(text_array, list):
-        textarraycompletestart.append(text_array)
+        textarraycomplete.append(text_array)
     else:
         for x in text_array:
-            textarraycompletestart.append(x)
-
-    # unicode patch
-    textarraycomplete = []
-    for string in textarraycompletestart:
-        # try:
-        #    string = unicode(string, 'utf-8')
-        # except TypeError:
-        #    string = string.encode("utf-8")
-            # string = unicode(string).encode('utf8')
-        textarraycomplete.append(string)
+            textarraycomplete.append(x)
 
     # if target_array is a string, make it an array
     texttargetarray = []
