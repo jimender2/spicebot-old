@@ -30,7 +30,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                  " trips over taking their pants off and shits everywhere BUT the desk."]
 
     if not target:
-        osd(bot, trigger.sender, 'say', trigger.nick + ' poops in the designated corner!')
+        versionblank = get_trigger_arg(bot, ['corner', 'boss'], 'random')
+        if versionblank == 'corner':
+            osd(bot, trigger.sender, 'say', trigger.nick + ' poops in the designated corner!')
+        elif versionblank == 'boss':
+            osd(bot, trigger.sender, 'say', "Boss makes a dollar, I make a dime. That's why I poop on company time.")
     elif target == 'group':
         target = get_trigger_arg(bot, triggerargsarray, 2) or trigger.nick
         osd(bot, trigger.sender, 'say', target + ', get your poop in a group.')
