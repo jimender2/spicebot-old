@@ -20,7 +20,6 @@ import fnmatch
 import random
 import urllib
 from os.path import exists
-
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
