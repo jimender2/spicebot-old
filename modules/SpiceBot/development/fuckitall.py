@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                "Tired of giving a flying fuck about the next chucklehead that decides you need to fix their problems?",
                "Wish the whole world would eat 3 handfuls of Sugar-Free Haribo Gummy Bears so they wouldn't be so full of shit anymore?",
                "Try all new and improved Fuck-It-Allᵀᴹ",
-               "With Fuck-It-Allsᵀᴹ patented formula of THC, alcohol, and traces of MDMA, the whole world will feel great!"
+               "With Fuck-It-Allᵀᴹ patented formula of THC, alcohol, and traces of MDMA, the whole world will feel great!"
                ]
     osd(bot, trigger.sender, 'say', message)
     message = ["Side effects may include:",
