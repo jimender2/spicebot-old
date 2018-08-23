@@ -20,6 +20,9 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    complete = get_trigger_arg(bot, triggerargsarray, 0)
+    osd(bot, trigger.sender, 'say', complete + "ᵀᴹ")
+    return
     message = ["Find that caring has made you a gasping ball of stress?",
                "Tired of giving a flying fuck about the next chucklehead that decides you need to fix their problems?",
                "Wish the whole world would eat 3 handfuls of Sugar-Free Haribo Gummy Bears so they wouldn't be so full of shit anymore?",
