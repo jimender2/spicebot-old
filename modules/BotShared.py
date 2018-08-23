@@ -21,6 +21,10 @@ import random
 import urllib
 from os.path import exists
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+
 osd_limit = 420  # Ammount of text allowed to display per line
 
 devbot = 'dev'  # If using a development bot and want to bypass commands, this is what the bots name ends in
