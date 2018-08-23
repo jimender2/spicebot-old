@@ -636,7 +636,7 @@ def osd(bot, target_array, text_type_array, text_array):
             combinedtextarray = []
             currentstring = ''
             for textstring in texttargetarray:
-                textstring = textstring.decode('utf8').encode('utf-8')
+                textstring = str(textstring.decode('utf8').encode('utf-8'))
                 if currentstring == '':
                     currentstring = textstring
                 elif len(textstring) > osd_limit:
