@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
+import random
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
@@ -20,4 +21,8 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "do the thing")
+    rand = random.randint(1, 5)
+    if rand == 1:
+        osd(bot, trigger.sender, 'say', "       .''.             *''*    :_\/_:     . \n      :_\/_:   .    .:.*_\/_*   : /\ :  .'.:.'.\n  .''.: /\ : _\(/_  ':'* /\ *  : '..'.  -=:o:=- \n:_\/_:'.:::. /)\*''*  .|.* '.\'/.'_\(/_'.':'.' \n: /\ : :::::  '*_\/_* | |  -= o =- /)\    '  *\n  '..'  ':::'   * /\ * |'|  .'/.\'.  '._____\n      *        __*..* |  |     :      |.   |' .---"|\n       _*   .-'   '-. |  |     .--'|  ||   | _|    |\n    .-'|  _.|  |    ||   '-__  |   |  |    ||      |\n    |' | |.    |    ||       | |   |  |    ||      |\n ___|  '-'     '    ""       '-'   '-.'    '`      |____")
+    else:
+        osd(bot, trigger.sender, 'say', "https://media1.tenor.com/images/25f11267d63bc6a6193e3fb69cbc2857/tenor.gif?itemid=7323300")
