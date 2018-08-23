@@ -14,7 +14,7 @@ from BotShared import *
 
 @sopel.module.commands('fuckitall', 'fia')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'doesitall')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'fuckitall')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
