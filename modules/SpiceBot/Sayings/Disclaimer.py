@@ -10,7 +10,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-specifics = ['brightlights', 'doctor', 'EULA', 'IT', 'legal', 'law', 'Cipher-0', 'Cipher', 'IT_Sean', 'parent', 'pornhub', 'porn','penis','penispump']
+specifics = ['brightlights', 'doctor', 'EULA', 'IT', 'legal', 'law', 'Cipher-0', 'Cipher', 'IT_Sean', 'parent', 'pornhub', 'porn', 'penis', 'penispump']
 
 
 @sopel.module.commands('disclaimer')
