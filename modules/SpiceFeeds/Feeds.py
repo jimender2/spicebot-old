@@ -15,12 +15,25 @@ from dateutil import tz
 from xml.dom import minidom
 import json
 from fake_useragent import UserAgent
+import praw
+from prawcore import NotFound
 import sys
 import os
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
+
+# Reddit Creds
+config = ConfigParser.ConfigParser()
+config.read("/home/spicebot/spicebot.conf")
+USERNAME = config.get("reddit", "username")
+PASSWORD = config.get("reddit", "password")
+CLIENTID = config.get("reddit", "clientid")
+SECRET = config.get("reddit", "secret")
+reddit = praw.Reddit(client_id=CLIENTID,
+                     client_secret=SECRET,
+                     user_agent='spicebot:net.example.myredditapp:v1.2.3 (by /u/SpiceBot-dbb)')
 
 
 # user agent and header
