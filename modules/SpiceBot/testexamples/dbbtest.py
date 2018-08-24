@@ -32,6 +32,6 @@ def execute_main(bot, trigger):
 
     # bot.say(str(thisdict["apple"]))
 
-    dict = get_database_value(bot, bot.nick, 'rpg') or dict()
+    dict = get_database_value(bot, bot.nick, 'rpg') or {}
 
     bot.say(str(dict))
