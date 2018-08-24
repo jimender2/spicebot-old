@@ -458,7 +458,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             dispmsg.append("{" + str(submission.score) + "}")
             dispmsg.append(submission.title)
-            dispmsg.append(submission.short_link)
+            dispmsg.append(submission.permalink)
 
         if titleappend:
             dispmsg.insert(0, "[" + displayname + "]")
