@@ -28,6 +28,12 @@ from sopel.module import commands, rule, example, priority
 def execute_main(bot, trigger):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    thisdict =dict(apple="green", banana="yellow", cherry="red")
+    rpg = class_create('main')
 
-    bot.say(str(thisdict["apple"]))
+    # thisdict = dict(apple="green", banana="yellow", cherry="red")
+
+    # bot.say(str(thisdict["apple"]))
+
+    dict = get_database_value(bot, nick, databasekey) or dict()
+
+    bot.say(str(dict))
