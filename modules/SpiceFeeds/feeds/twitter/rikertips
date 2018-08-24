@@ -1,5 +1,5 @@
 [configuration]
-type = subreddit
+type = twitter
 displayname =	RikerTips
 url = https://twitter.com
 tweetat = RikerTips
