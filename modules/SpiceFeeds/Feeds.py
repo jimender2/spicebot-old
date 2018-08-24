@@ -467,8 +467,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             if not displayifnotnew:
                 set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(scrapedtime))
 
-
-
         elif feed_type == 'subreddit':
 
             currentsubreddit = eval("feeds." + feed + ".rslash")
