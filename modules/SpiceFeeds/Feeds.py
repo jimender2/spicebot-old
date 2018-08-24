@@ -448,7 +448,12 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             currenttweetat = eval("feeds." + feed + ".tweetat")
 
             currenttweats = twiterapi.GetSearch(currenttweetat)
-            bot.say(str(currenttweats))
+            listarray = []
+            for tweet in currenttweats:
+                listarray.append(submission)
+            tweet = listarray[0]
+
+            bot.says(str(tweet))
 
             # lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
             # if displayifnotnew or (str(submission.permalink) == str(lastbuildcurrent)):
@@ -457,7 +462,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             #    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(submission.permalink))
 
             return
-            tweets = [i.AsDict() for i in currenttweats]
+
             for tweet in tweets:
                 dispmsg.append(tweet[id])
                 dispmsg.append(tweet[text])
