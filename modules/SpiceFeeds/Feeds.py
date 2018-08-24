@@ -452,6 +452,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             for tweet in currenttweats:
                 listarray.append(tweet)
             tweet = listarray[0]
+            bot.say(str(tweet))
 
             scrapedtime = parser.parse(str(tweet.created_at)).replace(tzinfo=pytz.UTC)
 
