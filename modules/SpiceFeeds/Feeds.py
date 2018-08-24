@@ -447,7 +447,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             titleappend = 1
 
-            submissions = subreddit.hot(limit=1)
+            submissions = subreddit.new(limit=1)
             listarray = []
             for submission in submissions:
                 listarray.append(submission)
