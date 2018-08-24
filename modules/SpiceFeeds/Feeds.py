@@ -443,7 +443,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             if not subpass:
                 return
 
-            subreddit = reddit.subreddit(rclass.urlsearch)
+            subreddit = reddit.subreddit(currentsubreddit)
 
             titleappend = 1
 
