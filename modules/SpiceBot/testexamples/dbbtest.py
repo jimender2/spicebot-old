@@ -28,6 +28,6 @@ from sopel.module import commands, rule, example, priority
 def execute_main(bot, trigger):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    map = ["town" = "12x12"]
+    map = {"town" = "12x12"}
 
     bot.say(str(map.town))
