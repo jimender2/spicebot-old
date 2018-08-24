@@ -448,7 +448,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             currenttweetat = eval("feeds." + feed + ".tweetat")
 
             # currenttweats = twiterapi.GetSearch(currenttweetat)
-            currenttweats = twiterapi.GetUserTimeline(screen_name=currenttweetat, count=1)
+            currenttweats = twiterapi.GetUserStream(screen_name=currenttweetat, count=1)
             listarray = []
             for tweet in currenttweats:
                 listarray.append(tweet)
