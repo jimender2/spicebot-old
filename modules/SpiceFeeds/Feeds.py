@@ -450,7 +450,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             currenttweats = twiterapi.GetSearch(currenttweetat)
             listarray = []
             for tweet in currenttweats:
-                listarray.append(submission)
+                listarray.append(tweet)
             tweet = listarray[0]
 
             bot.says(str(tweet))
