@@ -32,7 +32,7 @@ def execute_main(bot, trigger):
 
     bot.say(str(thisdict["apple"]))
 
-    botdict = get_database_dict(bot, nick, databasekey)
+    botdict = get_database_dict(bot, bot.nick, 'dicttest')
     botdict['a']=1
     botdict['fart']=1
 
