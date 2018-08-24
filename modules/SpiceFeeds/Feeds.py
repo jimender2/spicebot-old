@@ -447,13 +447,14 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             currenttweetat = eval("feeds." + feed + ".tweetat")
 
-            currenttweats = twiterapi.GetUserTimeline(screen_name=currenttweetat, count=1)
+            currenttweats = twiterapi.GetSearch(currenttweetat)
             bot.say(str(currenttweats))
 
             # lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
             # if displayifnotnew or (str(submission.permalink) == str(lastbuildcurrent)):
             #    return
-            # set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(submission.permalink))
+            #if not displayifnotnew:
+            #    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(submission.permalink))
 
             return
             tweets = [i.AsDict() for i in currenttweats]
@@ -491,7 +492,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
             if displayifnotnew or (str(submission.permalink) == str(lastbuildcurrent)):
                 return
-            set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(submission.permalink))
+            if not displayifnotnew:
+                set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(submission.permalink))
 
             dispmsg.append("{" + str(submission.score) + "}")
             dispmsg.append(submission.title)
