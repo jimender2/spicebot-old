@@ -449,15 +449,11 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             currenttweats = twiterapi.GetUserTimeline(screen_name=currenttweetat, count=1)
             tweets = [i.AsDict() for i in currenttweats]
-            listarray = []
             for tweet in tweets:
-                listarray.append(tweet)
-            tweet = listarray[0]
+                dispmsg.append(tweet[id])
+                dispmsg.append(tweet[text])
 
             titleappend = 1
-
-            dispmsg.append(tweet[id])
-            dispmsg.append(tweet[text])
 
         elif feed_type == 'subreddit':
 
