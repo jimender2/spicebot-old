@@ -251,3 +251,7 @@ rpg_error_docs = [
 rpg_error_usage = [
                     ""
 ]
+
+rpg_error_travel = [
+                    ""
+]
