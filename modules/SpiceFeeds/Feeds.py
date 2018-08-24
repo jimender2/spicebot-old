@@ -17,6 +17,7 @@ import json
 from fake_useragent import UserAgent
 import praw
 from prawcore import NotFound
+import twitter
 import sys
 import os
 moduledir = os.path.dirname(__file__)
@@ -24,16 +25,27 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-# Reddit Creds
+
+# creds
 config = ConfigParser.ConfigParser()
 config.read("/home/spicebot/spicebot.conf")
-USERNAME = config.get("reddit", "username")
-PASSWORD = config.get("reddit", "password")
-CLIENTID = config.get("reddit", "clientid")
-SECRET = config.get("reddit", "secret")
-reddit = praw.Reddit(client_id=CLIENTID,
-                     client_secret=SECRET,
+
+# Reddit Creds
+RCLIENTID = config.get("reddit", "clientid")
+RSECRET = config.get("reddit", "secret")
+reddit = praw.Reddit(client_id=RCLIENTID,
+                     client_secret=RSECRET,
                      user_agent='spicebot:net.example.myredditapp:v1.2.3 (by /u/SpiceBot-dbb)')
+
+# Twitter Creds
+TKEY = config.get("twitter", "token")
+TSECRET = config.get("twitter", "tokensecret")
+TTOKEN = config.get("twitter", "accesstoken")
+TTOKENSECRET = config.get("twitter", "tokenaccesssecret")
+twiterapi = twitter.Api(consumer_key=TKEY,
+                        consumer_secret=TSECRET,
+                        access_token_key=TTOKEN,
+                        access_token_secret=TTOKENSECRET)
 
 
 # user agent and header
@@ -430,6 +442,22 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             # if not displayifnotnew:
             #    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
+
+        elif feed_type == 'twitter':
+
+            currenttweetat = eval("feeds." + feed + ".tweetat")
+
+            currenttweats = twiterapi.GetUserTimeline(screen_name=currenttweetat, count=1)
+            tweets = [i.AsDict() for i in currenttweats]
+            listarray = []
+            for tweet in tweets:
+                listarray.append(tweet)
+            tweet = listarray[0]
+
+            titleappend = 1
+
+            dispmsg.append(tweet[id])
+            dispmsg.append(tweet[text])
 
         elif feed_type == 'subreddit':
 
