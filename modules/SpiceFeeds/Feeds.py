@@ -460,7 +460,10 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             if displayifnotnew or scrapedtime > lastbuildcurrent:
 
-                dispmsg.append("test")
+                dispmsg.append(tweet.id)
+
+                dispmsg.append(tweet.text)
+
 
                 titleappend = 1
 
