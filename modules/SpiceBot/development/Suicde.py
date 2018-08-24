@@ -18,5 +18,5 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     url = "https://suicidepreventionlifeline.org/"
     phonenumber = "1-800-273-8255"
-    message = "If you or/mg someone you know is having a crisis and needs someone to talk to call " + phonenumber + " or visit: " + url
+    message = "If you or someone you know is having a crisis and needs someone to talk to call " + phonenumber + " or visit: " + url
     osd(bot, trigger.sender, 'say', message)
