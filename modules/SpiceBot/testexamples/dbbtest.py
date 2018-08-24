@@ -32,6 +32,13 @@ def execute_main(bot, trigger):
 
     bot.say(str(thisdict["apple"]))
 
-    botdict = get_database_value(bot, bot.nick, 'rpg') or dict()
+    botdict = get_database_dict(bot, nick, databasekey)
+    botdict['a']=1
+    botdict['fart']=1
 
     bot.say(str(botdict))
+
+
+def get_database_dict(bot, nick, databasekey):
+    database_value = get_database_value(bot, nick, databasekey) or dict()
+    return database_value
