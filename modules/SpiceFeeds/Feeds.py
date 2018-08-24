@@ -459,13 +459,15 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
             if displayifnotnew or scrapedtime > lastbuildcurrent:
-                return
+
+                dispmsg.append("test")
+
+                titleappend = 1
+
             if not displayifnotnew:
                 set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(scrapedtime))
 
-            dispmsg.append("test")
 
-            titleappend = 1
 
         elif feed_type == 'subreddit':
 
