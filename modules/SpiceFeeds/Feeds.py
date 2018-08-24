@@ -452,8 +452,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             for tweet in currenttweats:
                 listarray.append(tweet)
             tweet = listarray[0]
-            bot.say(str(tweet.created_at))
-            return
 
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(tweet.created_at))
@@ -462,7 +460,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             if displayifnotnew or scrapedtime > lastbuildcurrent:
                 return
             if not displayifnotnew:
-                set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(tweet.permalink))
+                set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
 
             dispmsg.append("test")
 
