@@ -28,7 +28,7 @@ from sopel.module import commands, rule, example, priority
 def execute_main(bot, trigger):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    thisdict = {apple="green", banana="yellow", cherry="red"}
+    thisdict = {apple: "green", banana: "yellow", cherry: "red"}
 
     bot.say(str(thisdict["apple"]))
 
