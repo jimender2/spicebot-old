@@ -451,7 +451,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             bot.say(str(currenttweats))
 
             # lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
-            # if str(submission.permalink) == str(lastbuildcurrent):
+            # if displayifnotnew or (str(submission.permalink) == str(lastbuildcurrent)):
             #    return
             # set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(submission.permalink))
 
@@ -489,7 +489,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 dispmsg.append("<NSFW>")
 
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
-            if str(submission.permalink) == str(lastbuildcurrent):
+            if displayifnotnew or (str(submission.permalink) == str(lastbuildcurrent)):
                 return
             set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(submission.permalink))
 
