@@ -418,13 +418,42 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             # if not displayifnotnew:
             #    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
 
+        elif feed_type == 'subreddit':
+
+            currentsubreddit = eval("feeds." + feed + ".rslash")
+
+            subreal = sub_exists(bot, currentsubreddit)
+            if not subreal:
+                return
+
+            subpass = sub_banned_private(bot, currentsubreddit)
+            if not subpass:
+                return
+
+            subreddit = reddit.subreddit(rclass.urlsearch)
+
+            titleappend = 1
+
+            submissions = subreddit.hot(limit=1)
+            listarray = []
+            for submission in submissions:
+                listarray.append(submission)
+            submission = listarray[0]
+
+            if subreddit.over18:
+                dispmsg.append("<NSFW>")
+
+            dispmsg.append("{" + str(submission.score) + "}")
+            dispmsg.append(submission.title)
+            dispmsg.append(submission.url)
+
         if titleappend:
             dispmsg.insert(0, "[" + displayname + "]")
 
     return dispmsg
 
 
-# rss feeds list
+# feed configs
 def feeds_configs(bot, feeds):
     feeds.list = []
     for feed_dir_type in os.listdir(feeds_file_path):
@@ -461,3 +490,21 @@ def hashave(mylist):
     else:
         hashave = 'has'
     return hashave
+
+
+def sub_exists(bot, sub):
+    exists = True
+    try:
+        reddit.subreddits.search_by_name(sub, exact=True)
+    except NotFound:
+        exists = False
+    return exists
+
+
+def sub_banned_private(bot, sub):
+    proceed = True
+    try:
+        subtype = reddit.subreddit(sub).subreddit_type
+    except Exception as e:
+        proceed = False
+    return proceed
