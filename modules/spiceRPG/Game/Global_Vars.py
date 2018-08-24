@@ -101,6 +101,8 @@ rpg_commands_valid_alt_version = []
 # usage
 rpg_commands_valid_alt_usage = []
 
+# travel
+rpg_commands_valid_alt_travel = []
 
 """
 Command Tiers
