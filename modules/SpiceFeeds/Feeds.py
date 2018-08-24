@@ -453,8 +453,10 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 listarray.append(tweet)
             tweet = listarray[0]
 
+            scrapedtime = parser.parse(str(tweet.created_at)).replace(tzinfo=pytz.UTC)
+
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            lastbuildcurrent = parser.parse(str(tweet.created_at))
+            lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
             if displayifnotnew or scrapedtime > lastbuildcurrent:
