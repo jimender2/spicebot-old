@@ -28,13 +28,13 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    command = get_trigger_arg(bot, triggerargsarray, 1)
+    command = get_trigger_arg(bot, triggerargsarray, 1) or 'get'
 
     # RPG dynamic Class
     rpg = class_create('rpg')
     rpg.default = 'rpg'
 
-    if not command or command == 'get':
+    if command == 'get':
         coin = get_rpg_user_dict(bot, rpg, bot.nick, 'coin')
         bot.say(str(coin))
     elif command == 'set':
@@ -51,6 +51,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     """
 
     save_rpg_user_dict(bot, rpg)
+    if command != 'get':
+        bot.say("done")
 
 
 # Database Users
