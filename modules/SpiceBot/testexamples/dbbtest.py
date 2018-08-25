@@ -55,7 +55,7 @@ def get_rpg_user_dict(bot, rpg, nick, value):
     if nick not in rpg.userdb.list:
         rpg.userdb.list.append(nick)
         nickdict = get_database_value(bot, nick, 'rpg') or dict()
-        createuserdict = str("rpg.userdb." + nick " = nickdict")
+        createuserdict = str("rpg.userdb." + nick + " = nickdict")
         exec(createuserdict)
     else:
         nickdict = eval()
