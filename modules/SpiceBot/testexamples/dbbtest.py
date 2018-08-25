@@ -62,13 +62,13 @@ def get_rpg_user_dict(bot, dclass, nick, value):
     else:
         nickdict = eval('dclass.userdb.' + nick)
 
-    if value in nickdict.values():
+    if value in nickdict.keys():
         returnvalue = thisdict[value]
     else:
         nickdict[value] = 0
         returnvalue = 0
 
-    if value in nickdict.values():
+    if value in nickdict.keys():
         bot.say("yes!")
 
     bot.say(str(nickdict))
