@@ -28,10 +28,27 @@ from sopel.module import commands, rule, example, priority
 def execute_main(bot, trigger):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    thisdict = dict(apple="green", banana="yellow", cherry="red")
+    # RPG dynamic Class
+    rpg = class_create('main')
 
-    bot.say(str(thisdict["apple"]))
+    # thisdict = dict(apple="green", banana="yellow", cherry="red")
 
-    botdict = get_database_dict(bot, bot.nick, 'dicttest')
+    # bot.say(str(thisdict["apple"]))
 
-    bot.say(str(botdict))
+    strength = get_rpg_user_dict(bot, rpg, nick, 'strength')
+
+
+# Database Users
+def get_rpg_user_dict(bot, rpg, nick, value):
+
+    value = 0
+
+    # check if nick has been pulled from db already
+    if nick not in rpg.userdb:
+        rpg.userdb.append(nick)
+        nickdict = get_database_value(bot, nick, 'rpg') or or dict()
+        bot.say(str(nickdict))
+    # else:
+        # nickdict = eval()
+
+    return value
