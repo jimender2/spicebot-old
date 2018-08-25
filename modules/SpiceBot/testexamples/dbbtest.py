@@ -38,7 +38,28 @@ def execute_main(bot, trigger):
 
     coin = get_rpg_user_dict(bot, rpg, bot.nick, 'coin')
 
-    bot.say(str(coin))
+    """
+    End of all of the rpg stuff after error handling
+    """
+
+    save_rpg_user_dict(bot, rpg)
+
+
+# Save all database users in list
+def save_rpg_user_dict(bot, dclass):
+
+    # check that db list is there
+    if not hasattr(dclass, 'userdb'):
+        dclass.userdb = class_create('userdblist')
+    if not hasattr(dclass.userdb, 'list'):
+        dclass.userdb.list = []
+
+    for player in dclass.userdb.list:
+        if not hasattr(dclass.userdb, nick):
+            nickdict = dict()
+        else:
+            nickdict = eval('dclass.userdb.' + nick)
+        set_database_value(bot, player, dclass.default, nickdict)
 
 
 # Database Users
@@ -54,23 +75,22 @@ def get_rpg_user_dict(bot, dclass, nick, value):
 
     # check if nick has been pulled from db already
     if nick not in dclass.userdb.list:
-        bot.say("nope")
         dclass.userdb.list.append(nick)
         nickdict = get_database_value(bot, nick, dclass.default) or dict()
         createuserdict = str("dclass.userdb." + nick + " = nickdict")
         exec(createuserdict)
     else:
-        nickdict = eval('dclass.userdb.' + nick)
+        if not hasattr(dclass.userdb, nick):
+            nickdict = dict()
+        else:
+            nickdict = eval('dclass.userdb.' + nick)
 
     if value in nickdict.keys():
+        bot.say("yes")
         returnvalue = thisdict[value]
     else:
+        bot.say("no")
         nickdict[value] = 0
         returnvalue = 0
-
-    if value in nickdict.keys():
-        bot.say("yes!")
-
-    bot.say(str(nickdict))
 
     return returnvalue
