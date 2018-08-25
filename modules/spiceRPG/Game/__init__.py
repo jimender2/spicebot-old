@@ -845,6 +845,18 @@ def rpg_command_users(bot, rpg):
     return rpg
 
 
+# Database Users
+def get_rpg_user_dict(bot, rpg, nick, value):
+
+    # check if nick has been pulled from db already
+    if nick not in rpg.userdb:
+        rpg.userdb.append(nick)
+        nickdict = get_database_value(bot, nick, 'rpg') or or dict()
+        bot.say(str(nickdict))
+    # else:
+        # nickdict = eval()
+
+
 # Bot Nicks
 def bot_config_names(bot):
     config_listing = []
