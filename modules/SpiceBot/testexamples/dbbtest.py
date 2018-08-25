@@ -68,6 +68,9 @@ def get_rpg_user_dict(bot, dclass, nick, value):
         nickdict[value] = 0
         returnvalue = 0
 
+    if value in nickdict.itervalues():
+        bot.say("yes!")
+
     bot.say(str(nickdict))
 
     return returnvalue
