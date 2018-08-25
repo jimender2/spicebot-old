@@ -1441,7 +1441,7 @@ def reset_database_value(bot, nick, databasekey):
 def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey) or 0
     databasecolumn = str('rpg_' + databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+    bot.db.set_nick_value(nick, databasecolumn, float(oldvalue) + float(value))
 
 
 # array stored in database length

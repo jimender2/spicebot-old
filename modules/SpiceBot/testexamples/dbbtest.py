@@ -37,33 +37,22 @@ def execute_main(bot, trigger):
     # bot.say(str(thisdict["apple"]))
 
     coin = get_rpg_user_dict(bot, rpg, bot.nick, 'coin')
+    bot.say(str(coin))
+
+    adjust_rpg_user_dict(bot, rpg, bot.nick, 'coin', 20)
 
     """
     End of all of the rpg stuff after error handling
     """
 
+    coin = get_rpg_user_dict(bot, rpg, bot.nick, 'coin')
+    bot.say(str(coin))
+
     save_rpg_user_dict(bot, rpg)
 
 
-# Save all database users in list
-def save_rpg_user_dict(bot, dclass):
-
-    # check that db list is there
-    if not hasattr(dclass, 'userdb'):
-        dclass.userdb = class_create('userdblist')
-    if not hasattr(dclass.userdb, 'list'):
-        dclass.userdb.list = []
-
-    for nick in dclass.userdb.list:
-        if not hasattr(dclass.userdb, nick):
-            nickdict = dict()
-        else:
-            nickdict = eval('dclass.userdb.' + nick)
-        set_database_value(bot, nick, dclass.default, nickdict)
-
-
 # Database Users
-def get_rpg_user_dict(bot, dclass, nick, value):
+def get_rpg_user_dict(bot, dclass, nick, dictkey):
 
     # check that db list is there
     if not hasattr(dclass, 'userdb'):
@@ -85,12 +74,49 @@ def get_rpg_user_dict(bot, dclass, nick, value):
         else:
             nickdict = eval('dclass.userdb.' + nick)
 
-    if value in nickdict.keys():
-        bot.say("yes")
-        returnvalue = nickdict[value]
+    if dictkey in nickdict.keys():
+        returnvalue = nickdict[dictkey]
     else:
-        bot.say("no")
-        nickdict[value] = 0
+        nickdict[dictkey] = 0
         returnvalue = 0
 
     return returnvalue
+
+
+# set a value
+def set_rpg_user_dict(bot, dclass, nick, dictkey, value):
+    currentvalue = get_rpg_user_dict(bot, dclass, nick, dictkey)
+    nickdict = eval('dclass.userdb.' + nick)
+    nickdict[dictkey] = value
+
+
+# reset a value
+def reset_rpg_user_dict(bot, dclass, nick, dictkey):
+    currentvalue = get_rpg_user_dict(bot, dclass, nick, dictkey)
+    nickdict = eval('dclass.userdb.' + nick)
+    if dictkey in nickdict:
+        del nickdict[dictkey]
+
+
+# add or subtract from current value
+def adjust_rpg_user_dict(bot, dclass, nick, dictkey, value):
+    oldvalue = get_rpg_user_dict(bot, dclass, nick, dictkey)
+    nickdict = eval('dclass.userdb.' + nick)
+    nickdict[dictkey] = float(oldvalue) + float(value)
+
+
+# Save all database users in list
+def save_rpg_user_dict(bot, dclass):
+
+    # check that db list is there
+    if not hasattr(dclass, 'userdb'):
+        dclass.userdb = class_create('userdblist')
+    if not hasattr(dclass.userdb, 'list'):
+        dclass.userdb.list = []
+
+    for nick in dclass.userdb.list:
+        if not hasattr(dclass.userdb, nick):
+            nickdict = dict()
+        else:
+            nickdict = eval('dclass.userdb.' + nick)
+        set_database_value(bot, nick, dclass.default, nickdict)
