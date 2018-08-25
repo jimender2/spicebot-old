@@ -34,7 +34,7 @@ def execute_main(bot, trigger):
     rpg = class_create('rpg')
     rpg.default = 'rpg'
 
-    if command == 'get':
+    if not command or command == 'get':
         coin = get_rpg_user_dict(bot, rpg, bot.nick, 'coin')
         bot.say(str(coin))
     elif command == 'set':
