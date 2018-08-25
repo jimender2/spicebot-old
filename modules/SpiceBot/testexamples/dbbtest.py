@@ -54,6 +54,7 @@ def get_rpg_user_dict(bot, dclass, nick, value):
 
     # check if nick has been pulled from db already
     if nick not in dclass.userdb.list:
+        bot.say("nope")
         dclass.userdb.list.append(nick)
         nickdict = get_database_value(bot, nick, dclass.default) or dict()
         createuserdict = str("dclass.userdb." + nick + " = nickdict")
