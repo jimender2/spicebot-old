@@ -46,7 +46,7 @@ def get_rpg_user_dict(bot, rpg, nick, value):
     # check if nick has been pulled from db already
     if nick not in rpg.userdb:
         rpg.userdb.append(nick)
-        nickdict = get_database_value(bot, nick, 'rpg') or or dict()
+        nickdict = get_database_value(bot, nick, 'rpg') or dict()
         bot.say(str(nickdict))
     # else:
         # nickdict = eval()
