@@ -55,7 +55,8 @@ Command Processing
 def execute_start(bot, trigger, triggerargsarray, command_type):
 
     # RPG dynamic Class
-    rpg = class_create('main')
+    rpg = class_create('rpg')
+    rpg.default = 'rpg'
 
     # Command type
     rpg.command_type = command_type

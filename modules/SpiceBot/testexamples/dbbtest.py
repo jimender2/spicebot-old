@@ -29,7 +29,8 @@ def execute_main(bot, trigger):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
     # RPG dynamic Class
-    rpg = class_create('main')
+    rpg = class_create('rpg')
+    rpg.default = 'rpg'
 
     # thisdict = dict(apple="green", banana="yellow", cherry="red")
 
@@ -41,30 +42,31 @@ def execute_main(bot, trigger):
 
 
 # Database Users
-def get_rpg_user_dict(bot, rpg, nick, value):
+def get_rpg_user_dict(bot, dclass, nick, value):
 
     # check that db list is there
-    if not hasattr(rpg, 'userdb'):
-        rpg.userdb = class_create('userdblist')
-    if not hasattr(rpg.userdb, 'list'):
-        rpg.userdb.list = []
+    if not hasattr(dclass, 'userdb'):
+        dclass.userdb = class_create('userdblist')
+    if not hasattr(dclass.userdb, 'list'):
+        dclass.userdb.list = []
 
-    value = 0
+    returnvalue = 0
 
     # check if nick has been pulled from db already
-    if nick not in rpg.userdb.list:
-        rpg.userdb.list.append(nick)
-        nickdict = get_database_value(bot, nick, 'rpg') or dict()
-        createuserdict = str("rpg.userdb." + nick + " = nickdict")
+    if nick not in dclass.userdb.list:
+        dclass.userdb.list.append(nick)
+        nickdict = get_database_value(bot, nick, dclass.default) or dict()
+        createuserdict = str("dclass.userdb." + nick + " = nickdict")
         exec(createuserdict)
     else:
-        nickdict = eval('rpg.userdb.' + nick)
+        nickdict = eval('dclass.userdb.' + nick)
 
     if value in nickdict.itervalues():
-        bot.say("in")
+        returnvalue = thisdict[value]
     else:
-        bot.say("not in")
+        botdict[value] = 0
+        returnvalue = 0
 
     bot.say(str(nickdict))
 
-    return value
+    return returnvalue
