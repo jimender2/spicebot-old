@@ -35,28 +35,28 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     rpg.default = 'rpg'
 
     if command == 'get':
-        coin = get_rpg_user_dict(bot, rpg, bot.nick, 'coin')
+        coin = get_user_dict(bot, rpg, bot.nick, 'coin')
         bot.say(str(coin))
     elif command == 'set':
-        set_rpg_user_dict(bot, rpg, bot.nick, 'coin', 20)
+        set_user_dict(bot, rpg, bot.nick, 'coin', 20)
     elif command == 'reset':
-        reset_rpg_user_dict(bot, rpg, bot.nick, 'coin')
+        reset_user_dict(bot, rpg, bot.nick, 'coin')
     elif command == 'adjustup':
-        adjust_rpg_user_dict(bot, rpg, bot.nick, 'coin', 20)
+        adjust_user_dict(bot, rpg, bot.nick, 'coin', 20)
     elif command == 'adjustdown':
-        adjust_rpg_user_dict(bot, rpg, bot.nick, 'coin', -20)
+        adjust_user_dict(bot, rpg, bot.nick, 'coin', -20)
 
     """
     End of all of the rpg stuff after error handling
     """
 
-    save_rpg_user_dict(bot, rpg)
+    save_rpg_user_dicts(bot, rpg)
     if command != 'get':
         bot.say("done")
 
 
 # Database Users
-def get_rpg_user_dict(bot, dclass, nick, dictkey):
+def get_user_dict(bot, dclass, nick, dictkey):
 
     # check that db list is there
     if not hasattr(dclass, 'userdb'):
@@ -88,14 +88,14 @@ def get_rpg_user_dict(bot, dclass, nick, dictkey):
 
 
 # set a value
-def set_rpg_user_dict(bot, dclass, nick, dictkey, value):
+def set_user_dict(bot, dclass, nick, dictkey, value):
     currentvalue = get_rpg_user_dict(bot, dclass, nick, dictkey)
     nickdict = eval('dclass.userdb.' + nick)
     nickdict[dictkey] = value
 
 
 # reset a value
-def reset_rpg_user_dict(bot, dclass, nick, dictkey):
+def reset_user_dict(bot, dclass, nick, dictkey):
     currentvalue = get_rpg_user_dict(bot, dclass, nick, dictkey)
     nickdict = eval('dclass.userdb.' + nick)
     if dictkey in nickdict:
@@ -103,14 +103,16 @@ def reset_rpg_user_dict(bot, dclass, nick, dictkey):
 
 
 # add or subtract from current value
-def adjust_rpg_user_dict(bot, dclass, nick, dictkey, value):
+def adjust_user_dict(bot, dclass, nick, dictkey, value):
     oldvalue = get_rpg_user_dict(bot, dclass, nick, dictkey)
+    if not str(oldvalue).isdigit():
+        oldvalue = 0
     nickdict = eval('dclass.userdb.' + nick)
     nickdict[dictkey] = float(oldvalue) + float(value)
 
 
 # Save all database users in list
-def save_rpg_user_dict(bot, dclass):
+def save_user_dicts(bot, dclass):
 
     # check that db list is there
     if not hasattr(dclass, 'userdb'):
