@@ -35,7 +35,9 @@ def execute_main(bot, trigger):
 
     # bot.say(str(thisdict["apple"]))
 
-    strength = get_rpg_user_dict(bot, rpg, nick, 'strength')
+    strength = get_rpg_user_dict(bot, rpg, bot.nick, 'strength')
+
+    bot.say(str(strength))
 
 
 # Database Users
