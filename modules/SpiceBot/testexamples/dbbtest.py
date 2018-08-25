@@ -35,9 +35,9 @@ def execute_main(bot, trigger):
 
     # bot.say(str(thisdict["apple"]))
 
-    strength = get_rpg_user_dict(bot, rpg, bot.nick, 'strength')
+    coin = get_rpg_user_dict(bot, rpg, bot.nick, 'coin')
 
-    bot.say(str(strength))
+    bot.say(str(coin))
 
 
 # Database Users
@@ -58,8 +58,13 @@ def get_rpg_user_dict(bot, rpg, nick, value):
         createuserdict = str("rpg.userdb." + nick + " = nickdict")
         exec(createuserdict)
     else:
-        nickdict = eval()
-        eval('rpg.' + comtype)
+        nickdict = eval('rpg.userdb.' + nick)
+
+    if value in nickdict.itervalues():
+        bot.say("in")
+    else:
+        bot.say("not in")
+
     bot.say(str(nickdict))
 
     return value
