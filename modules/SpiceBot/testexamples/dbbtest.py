@@ -25,7 +25,7 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
     command = get_trigger_arg(bot, triggerargsarray, 1)
