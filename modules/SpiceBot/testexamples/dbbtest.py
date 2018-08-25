@@ -54,12 +54,12 @@ def save_rpg_user_dict(bot, dclass):
     if not hasattr(dclass.userdb, 'list'):
         dclass.userdb.list = []
 
-    for player in dclass.userdb.list:
+    for nick in dclass.userdb.list:
         if not hasattr(dclass.userdb, nick):
             nickdict = dict()
         else:
             nickdict = eval('dclass.userdb.' + nick)
-        set_database_value(bot, player, dclass.default, nickdict)
+        set_database_value(bot, nick, dclass.default, nickdict)
 
 
 # Database Users
