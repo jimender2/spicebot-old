@@ -45,16 +45,21 @@ def get_rpg_user_dict(bot, rpg, nick, value):
 
     # check that db list is there
     if not hasattr(rpg, 'userdb'):
-        rpg.userdb = []
+        rpg.userdb = class_create('userdblist')
+    if not hasattr(rpg.userdb, 'list'):
+        rpg.userdb.list = []
 
     value = 0
 
     # check if nick has been pulled from db already
-    if nick not in rpg.userdb:
-        rpg.userdb.append(nick)
+    if nick not in rpg.userdb.list:
+        rpg.userdb.list.append(nick)
         nickdict = get_database_value(bot, nick, 'rpg') or dict()
-        bot.say(str(nickdict))
-    # else:
-        # nickdict = eval()
+        createuserdict = str("rpg.userdb." + nick " = nickdict")
+        exec(createuserdict)
+    else:
+        nickdict = eval()
+        eval('rpg.' + comtype)
+    bot.say(str(nickdict))
 
     return value
