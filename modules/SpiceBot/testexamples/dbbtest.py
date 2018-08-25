@@ -43,6 +43,10 @@ def execute_main(bot, trigger):
 # Database Users
 def get_rpg_user_dict(bot, rpg, nick, value):
 
+    # check that db list is there
+    if not hasattr(rpg, 'userdb'):
+        rpg.userdb = []
+
     value = 0
 
     # check if nick has been pulled from db already
