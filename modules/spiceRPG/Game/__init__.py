@@ -1554,11 +1554,6 @@ def save_user_dicts(bot, dclass):
         set_database_value(bot, nick, dclass.default, nickdict)
 
 
-"""
-array todo
-"""
-
-
 # add or subtract from current value
 def adjust_user_dict_array(bot, dclass, nick, dictkey, entries, adjustmentdirection):
     if not isinstance(entries, list):
