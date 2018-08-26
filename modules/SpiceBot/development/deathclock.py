@@ -12,7 +12,7 @@ from BotShared import *
 # author SniperClif
 
 
-@sopel.module.commands('.num')
+@sopel.module.commands('num')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
