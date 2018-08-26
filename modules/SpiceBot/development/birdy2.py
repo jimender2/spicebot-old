@@ -23,7 +23,6 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     rand = random.randint(1, 2)
     if rand == 1:
-<<<<<<< HEAD
         bot.say("\n_________$$____________\n\n"
                 "\n________$__$___________\n\n"
                 "\n________$__$___________\n\n"
@@ -40,22 +39,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 "\n_____$_____________$___\n\n"
                 "\n______$___________$____\n\n"
                 "\n_______$$$$$$$$$$$_____\n\n")
-=======
-        bot.say("_________$$____________'\n'________$__$___________'\n'________$__$___________'\n'_______$$__$$__________'\n'______$__$__$_$$_$$____'\n'______$__$__$__$$__$___'\
-                 '_$$$__$__$__$__$$__$___'\
-                 '$___$$_______________$_'\
-                 '$____$$_______________$'\
-                 '_$____________________$'\
-                 '__$___________________$'\
-                 '___$_________________$_'\
-                 '____$_______________$__'\
-                 '_____$_____________$___'\
-                 '______$___________$____'\
-                 '_______$$$$$$$$$$$_____")
->>>>>>> 41c94ad981db391be22ca743ce1b60025bb15fd7
     else:
         target = get_trigger_arg(bot, triggerargsarray, 1)
         instigator = trigger.nick
         if not target:
-            message = instigator + " shows the birdy off to everyone in the room"
+            message = instigator + " shows the birdy off to everyone in the room "
         osd(bot, trigger.sender, 'say', "Your shit is broken")
