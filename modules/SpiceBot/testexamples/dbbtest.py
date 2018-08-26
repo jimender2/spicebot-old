@@ -100,14 +100,14 @@ def get_user_dict(bot, dclass, nick, dictkey):
 
 # set a value
 def set_user_dict(bot, dclass, nick, dictkey, value):
-    currentvalue = get_rpg_user_dict(bot, dclass, nick, dictkey)
+    currentvalue = get_user_dict(bot, dclass, nick, dictkey)
     nickdict = eval('dclass.userdb.' + nick)
     nickdict[dictkey] = value
 
 
 # reset a value
 def reset_user_dict(bot, dclass, nick, dictkey):
-    currentvalue = get_rpg_user_dict(bot, dclass, nick, dictkey)
+    currentvalue = get_user_dict(bot, dclass, nick, dictkey)
     nickdict = eval('dclass.userdb.' + nick)
     if dictkey in nickdict:
         del nickdict[dictkey]
@@ -115,7 +115,7 @@ def reset_user_dict(bot, dclass, nick, dictkey):
 
 # add or subtract from current value
 def adjust_user_dict(bot, dclass, nick, dictkey, value):
-    oldvalue = get_rpg_user_dict(bot, dclass, nick, dictkey)
+    oldvalue = get_user_dict(bot, dclass, nick, dictkey)
     if not str(oldvalue).isdigit():
         oldvalue = 0
     nickdict = eval('dclass.userdb.' + nick)
@@ -142,7 +142,7 @@ def save_user_dicts(bot, dclass):
 def adjust_user_dict_array(bot, dclass, nick, dictkey, entries, adjustmentdirection):
     if not isinstance(entries, list):
         entries = [entries]
-    oldvalue = get_rpg_user_dict(bot, dclass, nick, dictkey)
+    oldvalue = get_user_dict(bot, dclass, nick, dictkey)
     nickdict = eval('dclass.userdb.' + nick)
     if not isinstance(oldvalue, list):
         oldvalue = []
