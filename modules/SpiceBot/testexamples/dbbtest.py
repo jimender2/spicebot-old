@@ -29,6 +29,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
     command = get_trigger_arg(bot, triggerargsarray, 1) or 'get'
+    if command in triggerargsarray:
+        triggerargsarray.remove(command)
+
+    whatisleft = get_trigger_arg(bot, triggerargsarray, 0)
 
     # RPG dynamic Class
     rpg = class_create('rpg')
@@ -45,6 +49,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         adjust_user_dict(bot, rpg, bot.nick, 'coin', 20)
     elif command == 'adjustdown':
         adjust_user_dict(bot, rpg, bot.nick, 'coin', -20)
+    elif command == 'viewarray':
+        coin = get_user_dict(bot, rpg, bot.nick, 'weapons')
+    elif command == 'addarray':
+        adjust_user_dict_array(bot, rpg, bot.nick, 'weapons', [whatisleft], 'add')
+    elif command == 'delarray':
+        adjust_user_dict_array(bot, rpg, bot.nick, 'weapons', [whatisleft], 'del')
 
     """
     End of all of the rpg stuff after error handling
@@ -126,3 +136,20 @@ def save_user_dicts(bot, dclass):
         else:
             nickdict = eval('dclass.userdb.' + nick)
         set_database_value(bot, nick, dclass.default, nickdict)
+
+
+def adjust_user_dict_array(bot, dclass, nick, dictkey, entries, adjustmentdirection):
+    if not isinstance(entries, list):
+        entries = [entries]
+    oldvalue = get_rpg_user_dict(bot, dclass, nick, dictkey)
+    nickdict = eval('dclass.userdb.' + nick)
+    if not isinstance(oldvalue, list):
+        oldvalue = []
+    for x in entries:
+        if adjustmentdirection == 'add':
+            if x not in oldvalue:
+                oldvalue.append(x)
+        elif adjustmentdirection == 'del':
+            if x in oldvalue:
+                oldvalue.remove(x)
+    nickdict[dictkey] = oldvalue
