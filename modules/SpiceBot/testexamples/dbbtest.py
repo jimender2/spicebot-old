@@ -50,7 +50,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif command == 'adjustdown':
         adjust_user_dict(bot, rpg, bot.nick, 'coin', -20)
     elif command == 'viewarray':
-        coin = get_user_dict(bot, rpg, bot.nick, 'weapons')
+        weapons = get_user_dict(bot, rpg, bot.nick, 'weapons')
+        bot.say(str(weapons))
     elif command == 'addarray':
         adjust_user_dict_array(bot, rpg, bot.nick, 'weapons', [whatisleft], 'add')
     elif command == 'delarray':
