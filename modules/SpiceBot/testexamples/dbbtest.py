@@ -60,7 +60,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     End of all of the rpg stuff after error handling
     """
 
-    save_rpg_user_dicts(bot, rpg)
+    save_user_dicts(bot, rpg)
     if command != 'get':
         bot.say("done")
 
