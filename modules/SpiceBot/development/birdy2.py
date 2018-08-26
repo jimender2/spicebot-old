@@ -37,5 +37,3 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             "\n_____$_____________$___\n"
             "\n______$___________$____\n"
             "\n_______$$$$$$$$$$$_____\n")
-    else:
-        osd(bot, trigger.sender, 'say', "Your shit is broken")
