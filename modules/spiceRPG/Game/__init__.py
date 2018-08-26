@@ -1482,7 +1482,7 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
 
 
 # Database Users
-def get_rpg_user_dict(bot, dclass, nick, dictkey):
+def get_user_dict(bot, dclass, nick, dictkey):
 
     # check that db list is there
     if not hasattr(dclass, 'userdb'):
@@ -1552,6 +1552,29 @@ def save_user_dicts(bot, dclass):
         else:
             nickdict = eval('dclass.userdb.' + nick)
         set_database_value(bot, nick, dclass.default, nickdict)
+
+
+"""
+array todo
+"""
+
+
+# add or subtract from current value
+def adjust_user_dict_array(bot, dclass, nick, dictkey, entries, adjustmentdirection):
+    if not isinstance(entries, list):
+        entries = [entries]
+    oldvalue = get_rpg_user_dict(bot, dclass, nick, dictkey)
+    nickdict = eval('dclass.userdb.' + nick)
+    if not isinstance(oldvalue, list):
+        oldvalue = []
+    for x in entries:
+        if adjustmentdirection == 'add':
+            if x not in oldvalue:
+                oldvalue.append(x)
+        elif adjustmentdirection == 'del':
+            if x in oldvalue:
+                oldvalue.remove(x)
+    nickdict[dictkey] = oldvalue
 
 
 """
