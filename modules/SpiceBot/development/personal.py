@@ -23,4 +23,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     instigator = trigger.nick
     if not target:
-        osd(bot, trigger.sender, 'say', "do the thing")
+        osd(bot, trigger.sender, 'say', "Sounds like a personal problem...")
