@@ -9,7 +9,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-# author yournamehere
+# author SniperClif
 
 
 @sopel.module.commands('oldyet')
@@ -20,4 +20,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "do the thing")
+    osd(bot, trigger.sender, 'say', "Feel old yet?")
