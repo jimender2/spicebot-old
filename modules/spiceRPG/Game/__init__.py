@@ -343,7 +343,7 @@ def rpg_get_map(bot, dclass):
                 mapdict = eval('dclass.map' + 'map')
 
         if 'maptier' not in mapdict.keys():
-            mapdict[maptier] = cyclemapnumber
+            mapdict['maptier'] = cyclemapnumber
 
         bot.say(str(map) + "(" + str(cyclemapnumber) + ")" + " = " + str(mapdict))
 
