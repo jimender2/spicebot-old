@@ -107,7 +107,7 @@ def get_user_dict(bot, dclass, nick, dictkey):
     while dictkeyarray != []:
         currentdictkey = get_trigger_arg(bot, dictkeyarray, 1)
         dictkeyarray.remove(currentdictkey)
-        dicteval = str(dicteval + "[" + str(currentdictkey) + "]")
+        dicteval = str(dicteval + "['" + str(currentdictkey) + "']")
     bot.say(str(dicteval))
 
     coin = eval(dicteval)
