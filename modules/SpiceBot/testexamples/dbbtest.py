@@ -108,8 +108,11 @@ def get_user_dict(bot, dclass, nick, dictkey):
         else:
             dictfail = True
             continue
-    returnvalue = eval(dicteval)
-    bot.say(str(dicteval))
+    if dictfail == True:
+        nickdict[dictkey] = 0
+        returnvalue = 0
+    else:
+        returnvalue = eval(dicteval)
 
     return returnvalue
 
