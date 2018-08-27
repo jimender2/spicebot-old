@@ -342,10 +342,23 @@ def rpg_get_map(bot, dclass):
             else:
                 mapdict = eval('dclass.map' + 'map')
 
+        # set tier that the map is accessible to a player
         if 'maptier' not in mapdict.keys():
             mapdict['maptier'] = cyclemapnumber
 
-        bot.say(str(map) + "(" + str(cyclemapnumber) + ")" + " = " + str(mapdict))
+        # max height/width (from zero center)
+        if 'mapsize' not in mapdict.keys():
+            mapdict['mapsize'] = rpg_map_scale * cyclemapnumber
+
+        maxfromcenter = mapdict['mapsize']
+
+        # set town location
+        if 'town_latitude' not in mapdict.keys():
+            mapdict['town_latitude'] = randint(-abs(maxfromcenter), maxfromcenter)
+        if 'town_longitude' not in mapdict.keys():
+            mapdict['town_longitude'] = randint(-abs(maxfromcenter), maxfromcenter)
+
+        bot.say(str(map) + " = " + str(mapdict))
 
     return
     for x in stuff:
