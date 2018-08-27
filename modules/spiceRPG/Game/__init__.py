@@ -362,6 +362,7 @@ def rpg_map_read(bot, dclass):
 
         # generate dictionary values for all locations
         for latitude, longitude in zip(latitudearray, longitudearray):
+
             bot.say(str(latitude) + "x" + str(longitude))
 
         # set town location
@@ -369,7 +370,6 @@ def rpg_map_read(bot, dclass):
         #    mapdict['town_latitude'] = randint(-abs(maxfromcenter), maxfromcenter)
         # if 'town_longitude' not in mapdict.keys():
         #    mapdict['town_longitude'] = randint(-abs(maxfromcenter), maxfromcenter)
-
 
 
 def rpg_map_save(bot, dclass):
