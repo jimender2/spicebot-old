@@ -119,11 +119,11 @@ def get_user_dict(bot, dclass, nick, dictkey):
         except KeyError:
             returnvalue = 0
 
-    if dictkey in nickdict.keys():
-        returnvalue = nickdict[dictkey]
-    else:
-        nickdict[dictkey] = 0
-        returnvalue = 0
+    # if dictkey in nickdict.keys():
+    #    returnvalue = nickdict[dictkey]
+    # else:
+    #    nickdict[dictkey] = 0
+    #    returnvalue = 0
 
     bot.say(str(nickdict))
 
