@@ -359,7 +359,7 @@ def rpg_map_read(bot, dclass):
         # map size from center
         maxfromcenter = mapdict['mapsize']
         latitudearray, longitudearray = [], []
-        for i in range(-abs(maxfromcenter), maxfromcenter):
+        for i in range(-abs(maxfromcenter), maxfromcenter + 1):
             latitudearray.append(i)
             longitudearray.append(i)
 
