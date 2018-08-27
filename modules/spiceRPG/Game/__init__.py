@@ -154,17 +154,6 @@ def command_process(bot, trigger, rpg, instigator):
 
     rpg.command_run = 0
 
-    # Verify Game enabled in current channel
-    if rpg.channel_current not in rpg.channels_game_enabled and rpg.channel_real and rpg.command_main.lower() not in rpg_commands_valid_administrator:
-        if rpg.channels_game_enabled == []:
-            errors(bot, rpg, 'commands', 1, 1)
-            if rpg.instigator not in rpg.botadmins:
-                return rpg
-        else:
-            errors(bot, rpg, 'commands', 2, 1)
-            if rpg.instigator not in rpg.botadmins:
-                return rpg
-
     # block instigator if
     if rpg.instigator.lower() in rpg.valid_commands_all and rpg.instigator.lower() in rpg.valid_commands_alts and rpg.instigator.lower() in [x.lower() for x in rpg.bots_list]:
         errors(bot, rpg, 'commands', 17, 1)
@@ -249,6 +238,17 @@ def command_process(bot, trigger, rpg, instigator):
     if rpg.command_main.lower() not in rpg.valid_commands_all:
         errors(bot, rpg, 'commands', 6, rpg.command_main)
         return rpg
+
+    # Verify Game enabled in current channel
+    if rpg.channel_current not in rpg.channels_game_enabled and rpg.channel_real and rpg.command_main.lower() not in rpg_commands_valid_administrator:
+        if rpg.channels_game_enabled == []:
+            errors(bot, rpg, 'commands', 1, 1)
+            if rpg.instigator not in rpg.botadmins:
+                return rpg
+        else:
+            errors(bot, rpg, 'commands', 2, 1)
+            if rpg.instigator not in rpg.botadmins:
+                return rpg
 
     # Admin Block
     if rpg.command_main.lower() in rpg_commands_valid_administrator and not rpg.admin:
