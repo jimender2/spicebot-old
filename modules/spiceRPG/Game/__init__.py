@@ -54,6 +54,9 @@ Command Processing
 
 def execute_start(bot, trigger, triggerargsarray, command_type):
 
+    # make a value that contains an ordered list of nicks in a triggerarg TODO
+    # new user check for dictionary method
+
     # RPG dynamic Class
     rpg = class_create('rpg')
     rpg.default = 'rpg'
