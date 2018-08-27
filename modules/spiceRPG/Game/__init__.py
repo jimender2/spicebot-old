@@ -333,7 +333,7 @@ def rpg_get_map(bot, dclass):
 
         # Get current map subdictionary
         if not hasattr(dclass.map, map):
-            mapdict = get_user_dict(bot, dclass, 'rpg_map_records', map) or dict()
+            mapdict = get_user_dict(bot, dclass, 'rpg_game_records', map) or dict()
             createmapdict = str("dclass.map." + map + " = mapdict")
             exec(createmapdict)
         else:
@@ -342,7 +342,11 @@ def rpg_get_map(bot, dclass):
             else:
                 mapdict = eval('dclass.map' + 'map')
 
-        bot.say(str(map) + " = " + str(mapdict))
+        if 'maptier' not in mapdict.keys():
+            mapdict[maptier] = cyclemapnumber
+
+        bot.say(str(map) + "(" + str(cyclemapnumber) + ")" + " = " + str(mapdict))
+
     return
     for x in stuff:
 
