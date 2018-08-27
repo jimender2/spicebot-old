@@ -101,11 +101,10 @@ def get_user_dict(bot, dclass, nick, dictkey):
         dictkeysplit = dictkey.split("/")
         for dictkey in dictkeysplit:
             if dictkey in eval(dicteval).keys():
-                dicteval = str(str(dictkey) + "['" + str(currentdictkey) + "']")
+                dicteval = str(str(dicteval) + "['" + str(dictkey) + "']")
         returnvalue = eval(dicteval)
 
     return returnvalue
-
 
 
 # set a value
