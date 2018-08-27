@@ -338,7 +338,6 @@ def rpg_map_read(bot, dclass):
         cyclemapnumber += 1
 
         # Get current map subdictionary
-        mapdicteval = str('dclass.map' + map)
         if not hasattr(dclass.map, map):
             mapdict = get_user_dict(bot, dclass, 'rpg_game_records', map) or dict()
             createmapdict = str("dclass.map." + map + " = mapdict")
@@ -347,7 +346,7 @@ def rpg_map_read(bot, dclass):
             if not hasattr(dclass.map, map):
                 mapdict = dict()
             else:
-                mapdict = eval(mapdicteval)
+                mapdict = eval('dclass.map' + map)
 
         # set tier that the map is accessible to a player
         if 'maptier' not in mapdict.keys():
@@ -359,12 +358,20 @@ def rpg_map_read(bot, dclass):
 
         # map size from center
         maxfromcenter = mapdict['mapsize']
+        latitudearray, longitudearray = [], []
+        for i in range(-abs(maxfromcenter), maxfromcenter):
+            latitudearray.append(i)
+            longitudearray.append(i)
+
+        # generate dictionary values for all locations
+        for latitude, longitude in zip(latitudearray, longitudearray):
+            bot.say(str(latitude) + "x" + str(longitude))
 
         # set town location
-        if 'town_latitude' not in mapdict.keys():
-            mapdict['town_latitude'] = randint(-abs(maxfromcenter), maxfromcenter)
-        if 'town_longitude' not in mapdict.keys():
-            mapdict['town_longitude'] = randint(-abs(maxfromcenter), maxfromcenter)
+        # if 'town_latitude' not in mapdict.keys():
+        #    mapdict['town_latitude'] = randint(-abs(maxfromcenter), maxfromcenter)
+        # if 'town_longitude' not in mapdict.keys():
+        #    mapdict['town_longitude'] = randint(-abs(maxfromcenter), maxfromcenter)
 
 
 
