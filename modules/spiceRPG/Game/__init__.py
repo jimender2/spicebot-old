@@ -830,6 +830,8 @@ def rpg_command_users(bot, rpg):
 
     rpg.bots_list = bot_config_names(bot)
 
+    bot.say(str(rpg.users_current))
+
     for user in rpg.users_current:
 
         if user in bot.config.core.owner:
