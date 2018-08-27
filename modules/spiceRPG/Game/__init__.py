@@ -413,7 +413,7 @@ def rpg_command_main_settings(bot, rpg, instigator):
             errors(bot, rpg, rpg.command_main, 3, target)
             return
 
-    # Hokey
+    # Hotkey
     if subcommand == 'hotkey':
         rpg.triggerargsarray.remove(subcommand)
 
@@ -471,7 +471,7 @@ def rpg_command_main_settings(bot, rpg, instigator):
                 errors(bot, rpg, rpg.command_main, 8, str(actualcommand_main))
                 return
 
-            set_user_dict(bot, rpg, rpg.instigato, 'hotkey_'+str(numberused), newcommandhot)
+            set_user_dict(bot, rpg, rpg.instigator, 'hotkey_'+str(numberused), newcommandhot)
             adjust_user_dict_array(bot, rpg, target, 'hotkey_complete', [numberused], 'add')
             osd(bot, rpg.channel_current, 'say', "Your "+str(numberused)+" command has been set to '" + newcommandhot+"'")
             return
