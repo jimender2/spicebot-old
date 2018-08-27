@@ -38,6 +38,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     rpg = class_create('rpg')
     rpg.default = 'rpg'
 
+    coin = get_user_dict(bot, rpg, bot.nick, 'this/is/a/test/of/coin')
+    bot.say(str(coin))
+
     if command == 'get':
         coin = get_user_dict(bot, rpg, bot.nick, 'coin')
         bot.say(str(coin))
@@ -91,24 +94,18 @@ def get_user_dict(bot, dclass, nick, dictkey):
 
     # Build array of dictkey
     dictkeyarray = []
+    dicteval = 'nickdict'
     if "/" not in dictkey:
         dictkeyarray.append(dictkey)
     else:
         dictkeysplit = dictkey.split("/")
         for dictkey in dictkeysplit:
-            dictkeyarray.append(dictkey)
-
-    dicteval = 'nickdict'
-    while dictkeyarray != []:
-        currentdictkey = get_trigger_arg(bot, dictkeyarray, 1)
-        dictkeyarray.remove(currentdictkey)
-        dicteval = str(str(dicteval) + "['" + str(currentdictkey) + "']")
-    try:
+            if dictkey in eval(dicteval).keys():
+                dicteval = str(str(dictkey) + "['" + str(currentdictkey) + "']")
         returnvalue = eval(dicteval)
-    except KeyError:
-        returnvalue = None
 
     return returnvalue
+
 
 
 # set a value
