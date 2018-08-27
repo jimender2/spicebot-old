@@ -107,17 +107,11 @@ def get_user_dict(bot, dclass, nick, dictkey):
     while dictkeyarray != []:
         currentdictkey = get_trigger_arg(bot, dictkeyarray, 1)
         dictkeyarray.remove(currentdictkey)
-        if currentdictkey not in eval(dicteval).keys():
-            dicteval = str(dicteval + "['" + str(currentdictkey) + "']")
-            if dictkeyarray != []:
-                exec("dicteval = dict()")
-            else:
-                exec("dicteval = 0")
         dicteval = str(str(dicteval) + "['" + str(currentdictkey) + "']")
-        try:
-            returnvalue = eval(dicteval)
-        except KeyError:
-            returnvalue = 0
+    try:
+        returnvalue = eval(dicteval)
+    except KeyError:
+        returnvalue = None
 
     # if dictkey in nickdict.keys():
     #    returnvalue = nickdict[dictkey]
