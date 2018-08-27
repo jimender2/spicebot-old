@@ -836,6 +836,7 @@ def rpg_command_users(bot, rpg):
             rpg.owner.append(user)
 
         if user in bot.config.core.admins:
+            bot.say(str(user))
             rpg.botadmins.append(user)
             rpg.opadmin.append(user)
 
