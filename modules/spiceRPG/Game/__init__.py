@@ -84,13 +84,16 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     rpg_errors_start(bot, rpg)
 
     # Get Map
-    rpg_map_read(bot, rpg)
+    # rpg_map_read(bot, rpg)
 
     # Run the Process
     execute_main(bot, rpg, instigator, trigger, triggerargsarray)
 
     # Error Display System Display
     rpg_errors_end(bot, rpg)
+
+    for map in rpg_map_names:
+        reset_user_dict(bot, rpg, 'rpg_game_records', map)
 
     # Save map
     rpg_map_save(bot, rpg)
@@ -335,6 +338,7 @@ def rpg_map_read(bot, dclass):
         cyclemapnumber += 1
 
         # Get current map subdictionary
+        mapdicteval = str('dclass.map' + map)
         if not hasattr(dclass.map, map):
             mapdict = get_user_dict(bot, dclass, 'rpg_game_records', map) or dict()
             createmapdict = str("dclass.map." + map + " = mapdict")
@@ -343,7 +347,7 @@ def rpg_map_read(bot, dclass):
             if not hasattr(dclass.map, map):
                 mapdict = dict()
             else:
-                mapdict = eval('dclass.map' + map)
+                mapdict = eval(mapdicteval)
 
         # set tier that the map is accessible to a player
         if 'maptier' not in mapdict.keys():
@@ -362,7 +366,6 @@ def rpg_map_read(bot, dclass):
         if 'town_longitude' not in mapdict.keys():
             mapdict['town_longitude'] = randint(-abs(maxfromcenter), maxfromcenter)
 
-        bot.say(str(map) + " = " + str(mapdict))
 
 
 def rpg_map_save(bot, dclass):
