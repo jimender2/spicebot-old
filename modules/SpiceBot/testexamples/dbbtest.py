@@ -113,6 +113,7 @@ def get_user_dict(bot, dclass, nick, dictkey):
         returnvalue = 0
     else:
         returnvalue = eval(dicteval)
+    bot.say(str(dicteval))
 
     return returnvalue
 
