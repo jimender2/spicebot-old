@@ -813,8 +813,7 @@ Users
 
 
 def rpg_command_users(bot, rpg):
-    # rpg.opadmin, rpg.owner, rpg.chanops, rpg.chanvoice, rpg.botadmins, rpg.users_current = [], [], [], [], [], []
-    usertypes = ['users_all', 'opadmin', 'owner', 'chanops', 'chanvoice', 'botadmins', 'users_current', 'bots_list']
+    usertypes = ['users_all', 'opadmin', 'owner', 'chanops', 'chanvoice', 'botadmins', 'users_current', 'users_offline', 'bots_list']
     for x in usertypes:
         currentvalue = str("rpg."+x+"=[]")
         exec(currentvalue)
@@ -823,15 +822,12 @@ def rpg_command_users(bot, rpg):
         if user not in rpg.valid_commands_all and user not in rpg.valid_commands_alts:
             rpg.users_current.append(str(user))
     users_all = get_user_dict(bot, rpg, 'channel', 'users_all') or []
-    bot.say(str(users_all))
     for user in users_all:
-        if user in rpg.users_current:
-            rpg.users_current.remove(user)
+        if user not in rpg.users_current and user in users_all:
+            rpg.users_offline.append(user)
     adjust_user_dict_array(bot, rpg, 'channel', 'users_all', rpg.users_current, 'add')
 
     rpg.bots_list = bot_config_names(bot)
-
-    bot.say(str(rpg.users_current))
 
     for user in rpg.users_current:
 
