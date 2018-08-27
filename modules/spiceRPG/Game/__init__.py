@@ -109,7 +109,6 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
                     user_capable_coms.append(vcom)
             else:
                 user_capable_coms.append(vcom)
-        valid_commands_list = get_trigger_arg(bot, user_capable_coms, 'andlist')
         errors(bot, rpg, 'commands', 3, 1)
         return
 
@@ -156,7 +155,7 @@ def command_process(bot, trigger, rpg, instigator):
     rpg.command_run = 0
 
     # Verify Game enabled in current channel
-    if rpg.channel_current not in rpg.channels_game_enabled and rpg.channel_real:
+    if rpg.channel_current not in rpg.channels_game_enabled and rpg.channel_real and rpg.command_main.lower() not in rpg_commands_valid_administrator:
         if rpg.channels_game_enabled == []:
             errors(bot, rpg, 'commands', 1, 1)
             if rpg.instigator not in rpg.botadmins:
