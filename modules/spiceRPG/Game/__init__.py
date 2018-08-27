@@ -92,9 +92,6 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Error Display System Display
     rpg_errors_end(bot, rpg)
 
-    for map in rpg_map_names:
-        reset_user_dict(bot, rpg, 'rpg_game_records', map)
-
     # Save map
     rpg_map_save(bot, rpg)
 
