@@ -43,7 +43,7 @@ rpg_map_center_latitude = "0"
 rpg_map_center_longitude = "0"
 rpg_map_scale = 10
 rpg_map_names = ["Bouldersummit"]
-rpg_map_names_ = ["Bouldersummit",  # 1
+rpg_map_namea = ["Bouldersummit",  # 1
                  "Cliffstall",  # 2
                  "Whitfield",  # 3
                  "Deepharbor",  # 4
