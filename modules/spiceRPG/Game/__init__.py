@@ -335,7 +335,7 @@ def rpg_get_map(bot, dclass):
         if not hasattr(dclass.map, map):
             mapdict = get_user_dict(bot, dclass, 'rpg_map_records', map) or dict()
             createmapdict = str("dclass.map." + map + " = mapdict")
-            exec(createuserdict)
+            exec(createmapdict)
         else:
             if not hasattr(dclass.map, map):
                 mapdict = dict()
