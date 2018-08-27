@@ -105,6 +105,7 @@ def get_user_dict(bot, dclass, nick, dictkey):
         if dictkey in eval(dicteval).keys():
             dicteval = str(str(dicteval) + "['" + str(dictkey) + "']")
     returnvalue = eval(dicteval)
+    bot.say(str(dicteval))
 
     return returnvalue
 
