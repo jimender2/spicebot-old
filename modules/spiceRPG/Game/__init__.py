@@ -818,8 +818,9 @@ def rpg_command_users(bot, rpg):
     for x in usertypes:
         currentvalue = str("rpg."+x+"=[]")
         exec(currentvalue)
-    bot.say(str(bot.users))
+
     for user in bot.users:
+        bot.say(str(user))
         if user not in rpg.valid_commands_all and user not in rpg.valid_commands_alts:
             rpg.users_current.append(str(user))
     users_all = get_user_dict(bot, rpg, 'channel', 'users_all') or []
