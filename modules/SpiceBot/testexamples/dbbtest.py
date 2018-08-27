@@ -113,7 +113,7 @@ def get_user_dict(bot, dclass, nick, dictkey):
                 exec("dicteval = dict()")
             else:
                 exec("dicteval = 0")
-        dicteval = str(dicteval + "['" + str(currentdictkey) + "']")
+        dicteval = str(str(dicteval) + "['" + str(currentdictkey) + "']")
         try:
             returnvalue = eval(dicteval)
         except KeyError:
