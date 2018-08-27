@@ -100,22 +100,6 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
 
 def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
 
-    # Verify Game enabled in current channel
-    if rpg.channel_current not in rpg.channels_game_enabled and rpg.channel_real:
-        if rpg.channels_game_enabled == []:
-            errors(bot, rpg, 'commands', 1, 1)
-            if rpg.instigator not in rpg.botadmins:
-                return
-        else:
-            errors(bot, rpg, 'commands', 2, 1)
-            if rpg.instigator not in rpg.botadmins:
-                return
-
-    # block instigator if
-    if rpg.instigator.lower() in rpg.valid_commands_all and rpg.instigator.lower() in rpg.valid_commands_alts and rpg.instigator.lower() in [x.lower() for x in rpg.bots_list]:
-        errors(bot, rpg, 'commands', 17, 1)
-        return
-
     # No Empty Commands
     if triggerargsarray == []:
         user_capable_coms = []
@@ -170,6 +154,22 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
 def command_process(bot, trigger, rpg, instigator):
 
     rpg.command_run = 0
+
+    # Verify Game enabled in current channel
+    if rpg.channel_current not in rpg.channels_game_enabled and rpg.channel_real:
+        if rpg.channels_game_enabled == []:
+            errors(bot, rpg, 'commands', 1, 1)
+            if rpg.instigator not in rpg.botadmins:
+                return rpg
+        else:
+            errors(bot, rpg, 'commands', 2, 1)
+            if rpg.instigator not in rpg.botadmins:
+                return rpg
+
+    # block instigator if
+    if rpg.instigator.lower() in rpg.valid_commands_all and rpg.instigator.lower() in rpg.valid_commands_alts and rpg.instigator.lower() in [x.lower() for x in rpg.bots_list]:
+        errors(bot, rpg, 'commands', 17, 1)
+        return rpg
 
     # allow players to set custom shortcuts to numbers
     if str(rpg.command_main).isdigit():
