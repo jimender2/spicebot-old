@@ -52,11 +52,11 @@ rpg_map_names = ["Bouldersummit",  # 1
                  "Boneshade",  # 7
                  "Faymeadow",  # 8
                  "Bonehollow",  # 9
-                 "Honeygulf"  # 10
-                 "Rimeshell"  # 11
-                 "Wolfbarrow"  # 12
-                 "Rivershield"  # 13
-                 "Millsummit"  # 14
+                 "Honeygulf",  # 10
+                 "Rimeshell",  # 11
+                 "Wolfbarrow",  # 12
+                 "Rivershield",  # 13
+                 "Millsummit",  # 14
                  "Dryharbor"  # 15
                  ]
 
