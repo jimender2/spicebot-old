@@ -38,7 +38,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     rpg = class_create('rpg')
     rpg.default = 'rpg'
 
-    coin = get_user_dict(bot, rpg, bot.nick, 'this/is/a/test/of/coin')
+    coin = get_user_dict(bot, rpg, bot.nick, ['this', 'is', 'a', 'test', 'of', 'coin'])
     bot.say(str(coin))
 
     return
@@ -74,6 +74,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 # Database Users
 def get_user_dict(bot, dclass, nick, dictkey):
 
+    if not isinstance(dictkey, list):
+        dictkeyarray = create_array(bot, dictkey)
+    else:
+        dictkeyarray = dictkey
+
     # check that db list is there
     if not hasattr(dclass, 'userdb'):
         dclass.userdb = class_create('userdblist')
@@ -95,14 +100,7 @@ def get_user_dict(bot, dclass, nick, dictkey):
             nickdict = eval('dclass.userdb.' + nick)
 
     # Build array of dictkey
-    dictkeyarray = []
     dicteval = 'nickdict'
-    if "/" not in dictkey:
-        dictkeyarray.append(dictkey)
-    else:
-        dictkeysplit = dictkey.split("/")
-        for dictkey in dictkeysplit:
-            dictkeyarray.append(dictkey)
     for dictkey in dictkeyarray:
         if dictkey in eval(dicteval).keys():
             dicteval = str(str(dicteval) + "['" + str(dictkey) + "']")
