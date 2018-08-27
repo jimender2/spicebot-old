@@ -132,8 +132,6 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
         rpg.triggerargsarray = get_trigger_arg(bot, command_split_partial, 'create')
 
         # Admin only
-        bot.say(str(rpg.instigator))
-        bot.say(str(rpg.botadmins))
         rpg.adminswitch = 0
         if [x for x in rpg.triggerargsarray if x == "-a"]:
             rpg.triggerargsarray.remove("-a")
