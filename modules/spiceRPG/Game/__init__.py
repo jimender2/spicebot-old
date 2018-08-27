@@ -84,7 +84,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     rpg_errors_start(bot, rpg)
 
     # Get Map
-    # rpg_map_read(bot, rpg)
+    rpg_map_read(bot, rpg)
 
     # Run the Process
     execute_main(bot, rpg, instigator, trigger, triggerargsarray)
