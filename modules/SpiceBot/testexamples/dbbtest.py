@@ -99,10 +99,10 @@ def get_user_dict(bot, dclass, nick, dictkey):
         dictkeyarray.append(dictkey)
     else:
         dictkeysplit = dictkey.split("/")
-        for dictkey in dictkeysplit:
-            if dictkey in eval(dicteval).keys():
-                dicteval = str(str(dicteval) + "['" + str(dictkey) + "']")
-        returnvalue = eval(dicteval)
+    for dictkey in dictkeysplit:
+        if dictkey in eval(dicteval).keys():
+            dicteval = str(str(dicteval) + "['" + str(dictkey) + "']")
+    returnvalue = eval(dicteval)
 
     return returnvalue
 
