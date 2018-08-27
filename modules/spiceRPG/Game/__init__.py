@@ -379,6 +379,7 @@ def rpg_map_save(bot, dclass):
             mapdict = dict()
         else:
             mapdict = eval('dclass.map' + map)
+        bot.say(str(mapdict))
         set_user_dict(bot, dclass, 'rpg_game_records', map, mapdict)
 
 
