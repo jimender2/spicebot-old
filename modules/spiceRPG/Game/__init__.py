@@ -132,11 +132,11 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
         rpg.triggerargsarray = get_trigger_arg(bot, command_split_partial, 'create')
 
         # Admin only
-        rpg.admin = 0
+        rpg.adminswitch = 0
         if [x for x in rpg.triggerargsarray if x == "-a"]:
             rpg.triggerargsarray.remove("-a")
             if rpg.instigator in rpg.botadmins:
-                rpg.admin = 1
+                rpg.adminswitch = 1
             else:
                 errors(bot, rpg, 'commands', 4, 1)
 
@@ -196,12 +196,12 @@ def command_process(bot, trigger, rpg, instigator):
             rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
 
     # Instigator versus Instigator
-    if rpg.command_main.lower() == rpg.instigator.lower() and not rpg.admin:
+    if rpg.command_main.lower() == rpg.instigator.lower() and not rpg.adminswitch:
         errors(bot, rpg, 'commands', 13, 1)
         return rpg
 
     # Instigator versus Bot
-    if rpg.command_main.lower() == bot.nick.lower() and not rpg.admin:
+    if rpg.command_main.lower() == bot.nick.lower() and not rpg.adminswitch:
         errors(bot, rpg, 'commands', 12, 1)
         return rpg
 
@@ -228,7 +228,7 @@ def command_process(bot, trigger, rpg, instigator):
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
 
     # multicom multiple of the same
-    if rpg.command_main.lower() in rpg.commands_ran and not rpg.admin:
+    if rpg.command_main.lower() in rpg.commands_ran and not rpg.adminswitch:
         errors(bot, rpg, 'commands', 5, 1)
         return rpg
 
@@ -251,12 +251,12 @@ def command_process(bot, trigger, rpg, instigator):
                 return rpg
 
     # Admin Block
-    if rpg.command_main.lower() in rpg_commands_valid_administrator and not rpg.admin:
+    if rpg.command_main.lower() in rpg_commands_valid_administrator and not rpg.adminswitch:
         errors(bot, rpg, 'commands', 7, rpg.command_main)
         return rpg
 
     # Commands that Must be run in a channel
-    if rpg.command_main.lower() in rpg_commands_valid_inchannel and not rpg.admin:
+    if rpg.command_main.lower() in rpg_commands_valid_inchannel and not rpg.adminswitch:
         errors(bot, rpg, 'commands', 10, rpg.command_main)
         return rpg
 
@@ -406,7 +406,7 @@ def rpg_command_main_settings(bot, rpg, instigator):
     # Who is the target
     target = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all], 1) or rpg.instigator
     if target != rpg.instigator:
-        if not rpg.admin:
+        if not rpg.adminswitch:
             errors(bot, rpg, rpg.command_main, 2, 1)
             return
         if target not in rpg.users_all:
