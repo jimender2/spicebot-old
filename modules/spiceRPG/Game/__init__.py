@@ -821,9 +821,9 @@ def rpg_command_users(bot, rpg):
 
     for user in bot.users:
         if user not in rpg.valid_commands_all and user not in rpg.valid_commands_alts:
-            bot.say(str(user))
             rpg.users_current.append(str(user))
     users_all = get_user_dict(bot, rpg, 'channel', 'users_all') or []
+    bot.say(str(users_all))
     for user in users_all:
         if user in rpg.users_current:
             rpg.users_current.remove(user)
@@ -837,9 +837,7 @@ def rpg_command_users(bot, rpg):
 
         if user in bot.config.core.owner:
             rpg.owner.append(user)
-        bot.say(str(bot.config.core.admins))
         if user in bot.config.core.admins:
-            bot.say(str(user))
             rpg.botadmins.append(user)
             rpg.opadmin.append(user)
 
