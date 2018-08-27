@@ -110,6 +110,9 @@ def get_user_dict(bot, dclass, nick, dictkey):
         dicteval = str(dicteval + "[" + str(currentdictkey) + "]")
     bot.say(str(dicteval))
 
+    coin = eval(dicteval)
+    bot.say(str(coin))
+
     if dictkey in nickdict.keys():
         returnvalue = nickdict[dictkey]
     else:
