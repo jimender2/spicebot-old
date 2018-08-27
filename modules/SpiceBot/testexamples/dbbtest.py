@@ -38,11 +38,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     rpg = class_create('rpg')
     rpg.default = 'rpg'
 
-    coin = get_user_dict(bot, rpg, bot.nick, 'this/is/a/test/of/coin')
-    bot.say(str(coin))
-
-    return
-
     if command == 'get':
         coin = get_user_dict(bot, rpg, bot.nick, 'coin')
         bot.say(str(coin))
@@ -112,14 +107,6 @@ def get_user_dict(bot, dclass, nick, dictkey):
         returnvalue = eval(dicteval)
     except KeyError:
         returnvalue = None
-
-    # if dictkey in nickdict.keys():
-    #    returnvalue = nickdict[dictkey]
-    # else:
-    #    nickdict[dictkey] = 0
-    #    returnvalue = 0
-
-    bot.say(str(nickdict))
 
     return returnvalue
 
