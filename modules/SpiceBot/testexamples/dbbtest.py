@@ -101,9 +101,12 @@ def get_user_dict(bot, dclass, nick, dictkey):
 
     # Build array of dictkey
     dicteval = 'nickdict'
+    dictfail = False
     for dictkey in dictkeyarray:
-        if dictkey in eval(dicteval).keys():
+        if dictkey in eval(dicteval).keys() and dictfail is False:
             dicteval = str(str(dicteval) + "['" + str(dictkey) + "']")
+        else:
+            dictfail = True
     returnvalue = eval(dicteval)
     bot.say(str(dicteval))
 
