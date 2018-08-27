@@ -107,6 +107,7 @@ def get_user_dict(bot, dclass, nick, dictkey):
             dicteval = str(str(dicteval) + "['" + str(dictkey) + "']")
         else:
             dictfail = True
+            continue
     returnvalue = eval(dicteval)
     bot.say(str(dicteval))
 
