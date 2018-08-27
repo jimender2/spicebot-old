@@ -108,7 +108,7 @@ def get_user_dict(bot, dclass, nick, dictkey):
         else:
             dictfail = True
             continue
-    if dictfail == True:
+    if dictfail is True:
         nickdict[dictkey] = 0
         returnvalue = 0
     else:
