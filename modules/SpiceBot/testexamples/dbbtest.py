@@ -103,10 +103,12 @@ def get_user_dict(bot, dclass, nick, dictkey):
         for dictkey in dictkeysplit:
             dictkeyarray.append(dictkey)
 
+    dicteval = 'nickdict'
     while dictkeyarray != []:
         currentdictkey = get_trigger_arg(bot, dictkeyarray, 1)
-        bot.say(str(currentdictkey))
         dictkeyarray.remove(currentdictkey)
+        dicteval = str(dicteval + "[" + str(currentdictkey) + "]")
+    bot.say(str(dicteval))
 
     if dictkey in nickdict.keys():
         returnvalue = nickdict[dictkey]
