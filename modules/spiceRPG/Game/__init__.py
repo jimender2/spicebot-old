@@ -378,8 +378,7 @@ def rpg_map_save(bot, dclass):
         if not hasattr(dclass.map, map):
             mapdict = dict()
         else:
-            mapdict = eval('dclass.map' + map)
-        bot.say(str(mapdict))
+            mapdict = eval('dclass.map.' + map)
         set_user_dict(bot, dclass, 'rpg_game_records', map, mapdict)
 
 
