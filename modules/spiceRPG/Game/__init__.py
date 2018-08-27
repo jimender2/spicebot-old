@@ -380,8 +380,7 @@ def rpg_get_map(bot, dclass):
         returnvalue = 0
 
 
-
-
+"""
 def rpg_map_location(bot, rpg):
 
     'rpg_game_records'
@@ -396,6 +395,7 @@ def rpg_map_location(bot, rpg):
     longitude = get_user_dict(bot, rpg, nick, 'longitude')
 
     #
+"""
 
 
 """
