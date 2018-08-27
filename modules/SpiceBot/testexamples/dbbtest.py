@@ -34,6 +34,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     whatisleft = get_trigger_arg(bot, triggerargsarray, 0)
 
+    coin = get_user_dict(bot, rpg, bot.nick, 'this/is/a/test/of/coin')
+    bot.say(str(coin))
+
     # RPG dynamic Class
     rpg = class_create('rpg')
     rpg.default = 'rpg'
