@@ -80,7 +80,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
 
-    # TODO valid stats
+    # map dictionary TODO
 
     # Error Display System Create
     rpg_errors_start(bot, rpg)
@@ -305,6 +305,15 @@ def command_run(bot, rpg, instigator):
 
 
 """
+Exploration
+"""
+
+
+def rpg_command_main_travel(bot, rpg, instigator):
+    bot.say("wip")
+
+
+"""
 Combat
 """
 
@@ -384,10 +393,6 @@ def rpg_command_main_administrator(bot, rpg, instigator):
             errors_reset(bot, rpg, 'commands', 1)
 
         return
-
-
-def rpg_command_main_travel(bot, rpg, instigator):
-    bot.say("wip")
 
 
 def rpg_command_main_settings(bot, rpg, instigator):
