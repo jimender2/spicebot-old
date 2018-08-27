@@ -834,7 +834,7 @@ def rpg_command_users(bot, rpg):
 
         if user in bot.config.core.owner:
             rpg.owner.append(user)
-
+        bot.say(str(bot.config.core.admins))
         if user in bot.config.core.admins:
             bot.say(str(user))
             rpg.botadmins.append(user)
