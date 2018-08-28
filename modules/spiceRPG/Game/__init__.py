@@ -342,102 +342,6 @@ def rpg_map_read(bot, dclass):
     for map in dclass.map.list:
         cyclemapnumber += 1
 
-        if not hasattr(dclass.map, map):
-            currentmapclass = class_create(map)
-            exec("dclass.map." + str(map) + " = currentmapclass")
-        currentmapeval = eval("dclass.map." + str(map))
-
-        mapdict = dict()
-        if not hasattr(currentmapeval, 'mapdict'):
-            mapdict = get_user_dict(bot, dclass, 'rpg_game_records', map) or dict()
-            currentmapeval.mapdict = mapdict
-
-        # set tier that the map is accessible to a player
-        if 'maptier' not in mapdict.keys():
-            mapdict['maptier'] = cyclemapnumber
-
-        # max height/width (from zero center)
-        if 'mapsize' not in mapdict.keys():
-            mapdict['mapsize'] = rpg_map_scale * cyclemapnumber
-
-        # map size from center
-        maxfromcenter = mapdict['mapsize']
-        latitudearray, longitudearray = [], []
-        for i in range(-abs(maxfromcenter), maxfromcenter + 1):
-            latitudearray.append(i)
-            longitudearray.append(i)
-
-        # generate dictionary values for all locations
-        if not hasattr(currentmapeval, 'list'):
-            currentmapeval.list = []
-
-        maptown = False
-        for latitude, longitude in zip(latitudearray, longitudearray):
-
-            if str(latitude).startswith("-"):
-                latitude = str(latitude).replace("-", "n")
-            else:
-                latitude = str("p" + (str(latitude)))
-            if str(longitude).startswith("-"):
-                longitude = str(longitude).replace("-", "n")
-            else:
-                longitude = str("p" + str(longitude))
-
-            latlong = str(str(latitude) + "x" + str(longitude))
-            if latlong not in currentmapeval.list:
-                currentmapeval.list.append(latlong)
-
-            if latlong not in mapdict.keys():
-                mapdict[latlong] = dict()
-            latlongdict = mapdict[latlong]
-            exec("currentmapeval." + latlong + " = latlongdict")
-            currentlatlongeval = eval("currentmapeval." + str(latlong))
-
-            bot.say(latlong)
-
-            if 'town' in currentlatlongeval.keys():
-                maptown = True
-
-        if not maptown:
-            townlatitude = randint(-abs(maxfromcenter), maxfromcenter + 1)
-            townlongitude = randint(-abs(maxfromcenter), maxfromcenter + 1)
-            townlocation = str(str(townlatitude) + "x" + str(townlongitude))
-            townlocation = townlocation.replace("-", "n")
-            mapdict[townlocation]['town'] = 1
-
-        bot.say(str(mapdict))
-
-
-def rpg_map_save(bot, dclass):
-
-    # check that db list is there
-    if not hasattr(dclass, 'map'):
-        dclass.map = class_create('map')
-    if not hasattr(dclass.map, 'list'):
-        dclass.map.list = rpg_map_names
-
-    for map in dclass.map.list:
-
-        if not hasattr(dclass.map, map):
-            mapdict = dict()
-        else:
-            mapdict = eval('dclass.map.' + map)
-        set_user_dict(bot, dclass, 'rpg_game_records', map, mapdict)
-
-
-# Database map
-def rpg_map_read_old(bot, dclass):
-
-    # check that db list is there
-    if not hasattr(dclass, 'map'):
-        dclass.map = class_create('map')
-    if not hasattr(dclass.map, 'list'):
-        dclass.map.list = rpg_map_names
-
-    cyclemapnumber = 0
-    for map in dclass.map.list:
-        cyclemapnumber += 1
-
         # Get current map subdictionary
         if not hasattr(dclass.map, map):
             mapdict = get_user_dict(bot, dclass, 'rpg_game_records', map) or dict()
@@ -476,7 +380,7 @@ def rpg_map_read_old(bot, dclass):
         #    mapdict['town_longitude'] = randint(-abs(maxfromcenter), maxfromcenter)
 
 
-def rpg_map_save_old(bot, dclass):
+def rpg_map_save(bot, dclass):
 
     # check that db list is there
     if not hasattr(dclass, 'map'):
