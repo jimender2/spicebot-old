@@ -97,7 +97,7 @@ def get_user_dict(bot, dclass, nick, dictkey):
 
     for dkey in dictkeys:
         dictkeys.remove(dkey)
-        dkeyeval = str(nickdict + "['" + dkey +"']")
+        dkeyeval = str(str(nickdict) + "['" + str(dkey) +"']")
         if dkey not in nickdict.keys():
             if dictkeys != []:
                 exec(dkeyeval + " = dict()")
