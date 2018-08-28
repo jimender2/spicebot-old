@@ -20,4 +20,8 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "Like I always say, 'Fuck you, pay me!'")
+    target = get_trigger_arg(bot, triggerargsarray, 1)
+    if not target:
+        osd(bot, trigger.sender, 'say', "Like I always say, 'Fuck you, pay me!'")
+    else:
+        osd(bot, trigger.sender, 'say', target() + ", fuck you, pay me! ")
