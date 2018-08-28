@@ -347,7 +347,11 @@ def rpg_map_read(bot, dclass):
             exec("dclass.map." + str(map) + " = currentmapclass")
         currentmapeval = eval("dclass.map." + str(map))
 
-        bot.say(str(currentmapeval))
+        if not hasattr(currentmapeval, 'mapdict'):
+            mapdict = get_user_dict(bot, dclass, 'rpg_game_records', map) or dict()
+
+
+        bot.say(str(mapdict))
 
 
 
