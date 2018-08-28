@@ -375,11 +375,11 @@ def rpg_map_read(bot, dclass):
         for latitude, longitude in zip(latitudearray, longitudearray):
 
             if str(latitude).startswith("-"):
-                latitude = latitude.replace("-", "n")
+                latitude = str(latitude).replace("-", "n")
             else:
                 latitude = str("p" + latitude)
             if str(longitude).startswith("-"):
-                longitude = longitude.replace("-", "n")
+                longitude = str(longitude).replace("-", "n")
             else:
                 longitude = str("p" + longitude)
 
