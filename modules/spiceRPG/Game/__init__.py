@@ -379,6 +379,9 @@ def rpg_map_read(bot, dclass):
 
             if latlong not in mapdict.keys():
                 mapdict[latlong] = dict()
+            latlongdict = mapdict[latlong]
+            bot.say(str(latlongdict))
+            return
 
             if not hasattr(currentmapeval, latlong):
                 exec("currentmapeval." + str(latlong) + " = mapdict[latlong]")
