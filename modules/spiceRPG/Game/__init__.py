@@ -371,6 +371,7 @@ def rpg_map_read(bot, dclass):
         if not hasattr(currentmapeval, 'list'):
             currentmapeval.list = []
 
+        maptown = False
         for latitude, longitude in zip(latitudearray, longitudearray):
 
             latlong = str(str(latitude) + "x" + str(longitude))
@@ -381,13 +382,20 @@ def rpg_map_read(bot, dclass):
             if latlong not in mapdict.keys():
                 mapdict[latlong] = dict()
             latlongdict = mapdict[latlong]
-            bot.say("herea")
-            bot.say(str(latlong))
             exec("currentmapeval." + latlong + " = latlongdict")
-            bot.say("hereb")
             currentlatlongeval = eval("currentmapeval." + str(latlong))
 
-            bot.say(str(currentlatlongeval))
+            if 'town' in currentlatlongeval.keys():
+                maptown = True
+
+        if not maptown:
+            townlatitude = randint(-abs(maxfromcenter), maxfromcenter + 1)
+            townlongitude = randint(-abs(maxfromcenter), maxfromcenter + 1)
+            townlocation = str(str(townlatitude) + "x" + str(townlongitude))
+            townlocation = townlocation.replace("-", "n")
+            exec("currentmapeval.townlocation['town'] = 1")
+
+        bot.say(str(mapdict))
 
 
 def rpg_map_save(bot, dclass):
