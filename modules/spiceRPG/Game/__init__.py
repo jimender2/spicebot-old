@@ -374,8 +374,16 @@ def rpg_map_read(bot, dclass):
         maptown = False
         for latitude, longitude in zip(latitudearray, longitudearray):
 
+            if str(latitude).startswith("-"):
+                latitude = latitude.replace("-", "n")
+            else:
+                latitude = str("p" + latitude)
+            if str(longitude).startswith("-"):
+                longitude = longitude.replace("-", "n")
+            else:
+                longitude = str("p" + longitude)
+
             latlong = str(str(latitude) + "x" + str(longitude))
-            latlong = latlong.replace("-", "n")
             if latlong not in currentmapeval.list:
                 currentmapeval.list.append(latlong)
 
