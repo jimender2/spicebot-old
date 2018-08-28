@@ -72,6 +72,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 # Database Users
 def get_user_dict(bot, dclass, nick, dictkey):
 
+    if not isinstance(dictkey, list):
+        dictkeys = create_array(bot, inputs)
+
     # check that db list is there
     if not hasattr(dclass, 'userdb'):
         dclass.userdb = class_create('userdblist')
@@ -92,11 +95,22 @@ def get_user_dict(bot, dclass, nick, dictkey):
         else:
             nickdict = eval('dclass.userdb.' + nick)
 
-    if dictkey in nickdict.keys():
-        returnvalue = nickdict[dictkey]
-    else:
-        nickdict[dictkey] = 0
-        returnvalue = 0
+    for dkey in dictkeys:
+        dictkeys.remove(dkey)
+        dkeyeval = str(nickdict + "['" + dkey +"']")
+        if dkey not in nickdict.keys():
+            if dictkeys != []:
+                exec(dkeyeval + " = dict()")
+            else:
+                exec(dkeyeval + " = 0")
+        nickdict = eval(dkeyeval)
+    returnvalue = nickdict[dictkey]
+
+    #if dictkey in nickdict.keys():
+    #    returnvalue = nickdict[dictkey]
+    #else:
+    #    nickdict[dictkey] = 0
+    #    returnvalue = 0
 
     return returnvalue
 
