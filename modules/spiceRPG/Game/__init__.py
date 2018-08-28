@@ -377,11 +377,11 @@ def rpg_map_read(bot, dclass):
             if str(latitude).startswith("-"):
                 latitude = str(latitude).replace("-", "n")
             else:
-                latitude = str("p" + latitude)
+                latitude = str("p" + (str(latitude)))
             if str(longitude).startswith("-"):
                 longitude = str(longitude).replace("-", "n")
             else:
-                longitude = str("p" + longitude)
+                longitude = str("p" + str(longitude))
 
             latlong = str(str(latitude) + "x" + str(longitude))
             if latlong not in currentmapeval.list:
