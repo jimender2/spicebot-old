@@ -44,7 +44,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     # return
 
     if command == 'get':
-        coin = get_user_dict(bot, rpg, bot.nick, 'coin')
+        coin = get_user_dict(bot, rpg, bot.nick, ['coin'])
         bot.say(str(coin))
     elif command == 'set':
         set_user_dict(bot, rpg, bot.nick, 'coin', 20)
