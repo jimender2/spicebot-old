@@ -381,7 +381,8 @@ def rpg_map_read(bot, dclass):
                 mapdict[latlong] = dict()
             latlongdict = mapdict[latlong]
             bot.say("herea")
-            exec("currentmapeval." + latlong + " = 0")
+            bot.say(str(latlong))
+            exec("currentmapeval." + latlong + " = latlongdict")
             bot.say("hereb")
             currentlatlongeval = eval("currentmapeval." + str(latlong))
 
