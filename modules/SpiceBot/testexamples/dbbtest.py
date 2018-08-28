@@ -38,13 +38,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     rpg = class_create('rpg')
     rpg.default = 'rpg'
 
-    coin = get_user_dict(bot, rpg, bot.nick, ['this', 'is', 'a', 'test', 'of', 'coin'])
-    bot.say(str(coin))
-
-    # return
-
     if command == 'get':
-        coin = get_user_dict(bot, rpg, bot.nick, ['coin'])
+        coin = get_user_dict(bot, rpg, bot.nick, 'coin')
         bot.say(str(coin))
     elif command == 'set':
         set_user_dict(bot, rpg, bot.nick, 'coin', 20)
@@ -74,11 +69,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 # Database Users
 def get_user_dict(bot, dclass, nick, dictkey):
 
-    if not isinstance(dictkey, list):
-        dictkeyarray = create_array(bot, dictkey)
-    else:
-        dictkeyarray = dictkey
-
     # check that db list is there
     if not hasattr(dclass, 'userdb'):
         dclass.userdb = class_create('userdblist')
@@ -99,21 +89,11 @@ def get_user_dict(bot, dclass, nick, dictkey):
         else:
             nickdict = eval('dclass.userdb.' + nick)
 
-    # Build array of dictkey
-    dicteval = 'nickdict'
-    dictfail = False
-    for dictkey in dictkeyarray:
-        if dictkey in eval(dicteval).keys() and dictfail is False:
-            dicteval = str(str(dicteval) + "['" + str(dictkey) + "']")
-        else:
-            dictfail = True
-            continue
-    if dictfail is True:
+    if dictkey in nickdict.keys():
+        returnvalue = nickdict[dictkey]
+    else:
         nickdict[dictkey] = 0
         returnvalue = 0
-    else:
-        returnvalue = eval(dicteval)
-    bot.say(str(dicteval))
 
     return returnvalue
 
