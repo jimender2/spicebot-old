@@ -73,7 +73,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 def get_user_dict(bot, dclass, nick, dictkey):
 
     if not isinstance(dictkey, list):
-        dictkeys = create_array(bot, inputs)
+        dictkeys = create_array(bot, dictkey)
 
     # check that db list is there
     if not hasattr(dclass, 'userdb'):
