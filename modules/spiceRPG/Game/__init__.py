@@ -370,8 +370,9 @@ def rpg_map_read(bot, dclass):
 
         # generate dictionary values for all locations
         for latitude, longitude in zip(latitudearray, longitudearray):
+            latlong = str(str(latitude) + "x" + str(longitude))
 
-            bot.say(str(latitude) + "x" + str(longitude))
+            bot.say(latlong)
 
         # set town location
         # if 'town_latitude' not in mapdict.keys():
