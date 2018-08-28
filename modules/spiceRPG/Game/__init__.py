@@ -156,7 +156,14 @@ def command_process(bot, trigger, rpg, instigator):
     rpg.command_run = 0
 
     # block instigator if
-    if rpg.instigator.lower() in rpg.valid_commands_all and rpg.instigator.lower() in rpg.valid_commands_alts and rpg.instigator.lower() in [x.lower() for x in rpg.bots_list]:
+    instigatorcantplayarray = []
+    instigatorcantplayarrays = ['rpg.valid_commands_all', 'rpg.valid_commands_alts', 'rpg.bots_list', 'rpg_map_names']
+    for nicklist in instigatorcantplayarrays:
+        currentnicklist = eval(nicklist)
+        for x in currentnicklist:
+            if x not in instigatorcantplayarray:
+                instigatorcantplayarray.append(x)
+    if rpg.instigator.lower() in [x.lower() for x in instigatorcantplayarray]:
         errors(bot, rpg, 'commands', 17, 1)
         return rpg
 
@@ -334,6 +341,8 @@ def rpg_map_read(bot, dclass):
     for map in dclass.map.list:
         cyclemapnumber += 1
 
+
+
         # Get current map subdictionary
         if not hasattr(dclass.map, map):
             mapdict = get_user_dict(bot, dclass, 'rpg_game_records', map) or dict()
@@ -362,7 +371,7 @@ def rpg_map_read(bot, dclass):
 
         # generate dictionary values for all locations
         for latitude, longitude in zip(latitudearray, longitudearray):
-            
+
             bot.say(str(latitude) + "x" + str(longitude))
 
         # set town location
