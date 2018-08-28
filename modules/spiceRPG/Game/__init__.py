@@ -385,7 +385,7 @@ def rpg_map_read(bot, dclass):
             exec("currentmapeval." + latlong + " = latlongdict")
             currentlatlongeval = eval("currentmapeval." + str(latlong))
 
-            bot.say("here")
+            bot.say(latlong)
 
             if 'town' in currentlatlongeval.keys():
                 maptown = True
