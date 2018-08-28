@@ -393,7 +393,7 @@ def rpg_map_read(bot, dclass):
             townlongitude = randint(-abs(maxfromcenter), maxfromcenter + 1)
             townlocation = str(str(townlatitude) + "x" + str(townlongitude))
             townlocation = townlocation.replace("-", "n")
-            exec("currentmapeval.townlocation['town'] = 1")
+            mapdict[townlocation]['town'] = 1
 
         bot.say(str(mapdict))
 
