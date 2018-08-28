@@ -85,6 +85,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
 
     # Get Map
     rpg_map_read(bot, rpg)
+    return
 
     # Run the Process
     execute_main(bot, rpg, instigator, trigger, triggerargsarray)
@@ -341,6 +342,46 @@ def rpg_map_read(bot, dclass):
     for map in dclass.map.list:
         cyclemapnumber += 1
 
+        if not hasattr(dclass.map, map):
+            currentmapclass = class_create(map)
+            exec("dclass.map." + str(map) + " = currentmapclass")
+        currentmapeval = eval("dclass.map." + str(map))
+
+        bot.say(str(currentmapeval))
+
+
+
+
+def rpg_map_save(bot, dclass):
+
+    # check that db list is there
+    if not hasattr(dclass, 'map'):
+        dclass.map = class_create('map')
+    if not hasattr(dclass.map, 'list'):
+        dclass.map.list = rpg_map_names
+
+    for map in dclass.map.list:
+
+        if not hasattr(dclass.map, map):
+            mapdict = dict()
+        else:
+            mapdict = eval('dclass.map.' + map)
+        set_user_dict(bot, dclass, 'rpg_game_records', map, mapdict)
+
+
+# Database map
+def rpg_map_read_old(bot, dclass):
+
+    # check that db list is there
+    if not hasattr(dclass, 'map'):
+        dclass.map = class_create('map')
+    if not hasattr(dclass.map, 'list'):
+        dclass.map.list = rpg_map_names
+
+    cyclemapnumber = 0
+    for map in dclass.map.list:
+        cyclemapnumber += 1
+
         # Get current map subdictionary
         if not hasattr(dclass.map, map):
             mapdict = get_user_dict(bot, dclass, 'rpg_game_records', map) or dict()
@@ -379,7 +420,7 @@ def rpg_map_read(bot, dclass):
         #    mapdict['town_longitude'] = randint(-abs(maxfromcenter), maxfromcenter)
 
 
-def rpg_map_save(bot, dclass):
+def rpg_map_save_old(bot, dclass):
 
     # check that db list is there
     if not hasattr(dclass, 'map'):
