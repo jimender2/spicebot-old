@@ -529,6 +529,8 @@ def rpg_map_read(bot, rpg):
         for coordcombo in itertools.product(latitudearray, longitudearray):
             coordinatecombinations.append(coordcombo)
         for coordinates in coordinatecombinations:
+            coordlatitude = coordinates[0]
+            coordlongitude = coordinates[1]
             latlongdict = rpg_get_latlong(bot, rpg, map, str(coordinates), 'returndict')
             if 'town' in latlongdict.keys():
                 townfound += 1
@@ -536,6 +538,19 @@ def rpg_map_read(bot, rpg):
             if not mapnicklist:
                 mapnicklist = []
                 rpg_set_latlong(bot, rpg, map, str(coordinates), 'mapnicklist', mapnicklist)
+            coordquadrant = rpg_get_latlong(bot, rpg, map, str(coordinates), 'coordquadrant')
+            if not coordquadrant:
+                if int(coordlatitude) > 0 and int(coordlongitude) > 0:
+                    coordquadrant = 'northeast'
+                elif int(coordlatitude) > 0 and int(coordlongitude) < 0:
+                    coordquadrant = 'northwest'
+                elif int(coordlatitude) < 0 and int(coordlongitude) > 0:
+                    coordquadrant = 'southeast'
+                elif int(coordlatitude) < 0 and int(coordlongitude) < 0:
+                    coordquadrant = 'southwest'
+                else:
+                    coordquadrant = 'center'
+                rpg_set_latlong(bot, rpg, map, str(coordinates), 'coordquadrant', coordquadrant)
         if not townfound:
             townlatitude = randint(-abs(mapsize), mapsize)
             townlongitude = randint(-abs(mapsize), mapsize)
