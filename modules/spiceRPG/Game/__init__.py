@@ -390,7 +390,7 @@ def rpg_set_latlong(bot, dclass, map, latitude, longitude, dictkey, value):
 
 
 def rpg_reset_latlong(bot, dclass, map, latitude, longitude, dictkey):
-
+    bot.say("wip")
 
 def reset_user_dict(bot, dclass, nick, dictkey):
     currentvalue = get_user_dict(bot, dclass, nick, dictkey)
