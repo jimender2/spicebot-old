@@ -353,7 +353,7 @@ def rpg_map_read(bot, dclass):
             latlong = str(str(latitude) + "x" + str(longitude))
 
             latlongdict = get_user_dict(bot, dclass, map, latlong)
-            bot.say(latlong + " = " + str(latlongdict))
+            # bot.say(latlong + " = " + str(latlongdict))
             if not latlongdict:
                 latlongdict = dict()
                 set_user_dict(bot, dclass, map, latlong, latlongdict)
@@ -385,6 +385,7 @@ def rpg_get_latlong(bot, dclass, map, latitude, longitude, dictkey):
 def rpg_set_latlong(bot, dclass, map, latitude, longitude, dictkey, value):
     latlong = str(str(latitude) + "x" + str(longitude))
     latlongdict = get_user_dict(bot, dclass, map, latlong) or dict()
+    bot.say(str(latlongdict))
     latlongdict[dictkey] = value
     set_user_dict(bot, dclass, map, latlong, latlongdict)
 
