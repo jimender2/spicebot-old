@@ -318,18 +318,64 @@ Exploration
 
 
 def rpg_command_main_travel(bot, rpg, instigator):
-    bot.say("wip")
 
+    subcommand_valid = ['north', 'south', 'east', 'west', 'town', 'current']
+    subcommand = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in subcommand_valid], 1) or 'current'
 
-def rpg_command_main_map(bot, rpg, instigator):
     nickmap, nickcoord = rpg_map_nick_get(bot, rpg, rpg.instigator)
-
-    bot.say(str(nickmap))
-    bot.say(str(nickcoord))
-
     locationdict = rpg_get_latlong(bot, rpg, nickmap, str(nickcoord), 'returndict')
 
-    bot.say(str(locationdict))
+    if subcommand == 'current':
+        bot.say(str(nickmap))
+        bot.say(str(nickcoord))
+        bot.say(str(locationdict))
+        return
+
+    latlong = nickcoord.replace("(", "")
+    latlong = latlong.replace(")", "")
+    coordarray = []
+    for x in latlong.split(","):
+        coordarray.append(x)
+    latitude = get_trigger_arg(bot, coordarray, 1)
+    longitude = get_trigger_arg(bot, coordarray, 2)
+    newlatitude = latitude
+    newlongitude = longitude
+
+    if subcommand == 'north':
+        newlatitude = int(latitude) + 1
+    if subcommand == 'south':
+        newlatitude = int(latitude) - 1
+    if subcommand == 'east':
+        newlongitude = int(longitude) + 1
+    if subcommand == 'west':
+        newlongitude = int(longitude) - 1
+    if subcommand == 'town':
+        towncoordinates = rpg_map_town(bot, rpg, map)
+        townlatlong = towncoordinates.replace("(", "")
+        townlatlong = townlatlong.replace(")", "")
+        towncoordarray = []
+        for x in townlatlong.split(","):
+            towncoordarray.append(x)
+        newlatitude = get_trigger_arg(bot, coordarray, 1)
+        newlongitude = get_trigger_arg(bot, coordarray, 2)
+
+    mapsize = get_user_dict(bot, rpg, map, 'mapsize')
+    if newlatitude > mapsize:
+        bot.say("cant go north anymore")
+        return
+    if newlatitude < -abs(mapsize):
+        bot.say("cant go south anymore")
+        return
+    if newlongitude > mapsize:
+        bot.say("cant go east anymore")
+        return
+    if newlongitude < -abs(mapsize):
+        bot.say("cant go west anymore")
+        return
+
+    newnickcoord = str("(" + str(newlatitude) + "," + str(newlongitude) + ")")
+
+    rpg_map_move_nick(bot, rpg, nick, nickmap, str(newnickcoord))
 
 
 def rpg_map_nick_get(bot, rpg, nick):
@@ -516,17 +562,6 @@ def rpg_set_latlong(bot, rpg, map, coordinates, dictkey, value):
     latlongdict = get_user_dict(bot, rpg, map, str(coordinates)) or dict()
     latlongdict[dictkey] = value
     set_user_dict(bot, rpg, map, str(coordinates), latlongdict)
-
-
-def rpg_reset_latlong(bot, rpg, map, coordinates, dictkey):
-    bot.say("wip")
-
-
-def reset_user_dict_good(bot, rpg, nick, dictkey):
-    currentvalue = get_user_dict(bot, rpg, nick, dictkey)
-    nickdict = eval('rpg.userdb.' + nick)
-    if dictkey in nickdict:
-        del nickdict[dictkey]
 
 
 """
