@@ -335,7 +335,6 @@ def rpg_command_main_travel(bot, rpg, instigator):
     longitude = nickcoord[1]
     newlatitude = latitude
     newlongitude = longitude
-    bot.say("here")
 
     if subcommand == 'north':
         newlatitude = int(latitude) + 1
@@ -349,7 +348,6 @@ def rpg_command_main_travel(bot, rpg, instigator):
         towncoordinates = rpg_map_town(bot, rpg, nickmap)
         newlatitude = towncoordinates[0]
         newlongitude = towncoordinates[1]
-    bot.say("hereb")
 
     mapsize = get_user_dict(bot, rpg, nickmap, 'mapsize')
     if int(newlatitude) > abs(mapsize):
@@ -364,11 +362,10 @@ def rpg_command_main_travel(bot, rpg, instigator):
     if int(newlongitude) < -abs(mapsize):
         bot.say("cant go west anymore")
         return
-    bot.say("herec")
 
     newnickcoord = str("(" + str(newlatitude) + "," + str(newlongitude) + ")")
 
-    rpg_map_move_nick(bot, rpg, nick, nickmap, str(newnickcoord))
+    rpg_map_move_nick(bot, rpg, rpg.instigator, nickmap, str(newnickcoord))
 
 
 def rpg_map_nick_get(bot, rpg, nick):
