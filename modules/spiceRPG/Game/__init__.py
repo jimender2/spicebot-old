@@ -351,7 +351,7 @@ def rpg_map_read(bot, dclass):
         coordinatecombinations = []
         for playercombo in itertools.product(latitudearray, longitudearray):
             coordinatecombinations.append(playercombo)
-        for coordinates in playercombinations:
+        for coordinates in coordinatecombinations:
             bot.say(str(coordinates))
             # latlong = str(str(latitude) + "x" + str(longitude))
         townfound = 0
