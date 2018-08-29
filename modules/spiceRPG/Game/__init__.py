@@ -361,7 +361,7 @@ def rpg_map_read(bot, dclass):
                 set_user_dict(bot, dclass, map, latlong, latlongdict)
 
             bot.say(latlong + " = " + str(latlongdict))
-        currentmapeval = eval("rpg." + map)
+        currentmapeval = eval("dclass." + map)
         bot.say(str(currentmapeval))
 
 
