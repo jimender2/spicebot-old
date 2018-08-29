@@ -409,14 +409,14 @@ def rpg_map_nick_get(bot, rpg, nick):
             for coordcombo in itertools.product(latitudearray, longitudearray):
                 coordinatecombinations.append(coordcombo)
             for coordinates in coordinatecombinations:
-                latlongnicklist = rpg_get_latlong(bot, rpg, map, str(coordinates), 'mapnicklist')
-                if not latlongnicklist:
-                    latlongnicklist = []
-                    rpg_set_latlong(bot, rpg, map, str(coordinates), 'mapnicklist', latlongnicklist)
+                latlongnicklist = rpg_get_latlong(bot, rpg, map, str(coordinates), 'mapnicklist') or []
                 if nick in latlongnicklist:
                     nickcoord = coordinates
                     nicknocoord += 1
-                    bot.say("huh")
+                else:
+                    nickcoord = rpg_map_town(bot, rpg, nickmap)
+                    nicknocoord += 1
+                rpg_set_latlong(bot, rpg, map, str(coordinates), 'mapnicklist', latlongnicklist)
 
     if not nicknomap or not nicknocoord:
         bot.say("shit")
