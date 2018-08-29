@@ -322,7 +322,7 @@ def rpg_command_main_travel(bot, rpg, instigator):
 
 
 def rpg_command_main_map(bot, rpg, instigator):
-    nickmap, nickcoord = rpg_map_nick_get(bot, rpg, nick)
+    nickmap, nickcoord = rpg_map_nick_get(bot, rpg, rpg.instigator)
 
     bot.say(str(nickmap))
     bot.say(str(nickcoord))
