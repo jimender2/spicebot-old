@@ -356,8 +356,14 @@ def rpg_map_read(bot, dclass):
             if not latlongdict:
                 latlongdict = dict()
                 set_user_dict(bot, dclass, map, latlong, latlongdict)
+            bot.say(str(latlongdict))
             if 'town' in latlongdict.keys():
-                townfound = 1
+                townfound += 1
+        # if townfound > 1:
+        #    townfound = 0
+        #    for latitude, longitude in zip(latitudearray, longitudearray):
+        #        latlongdict = get_user_dict(bot, dclass, map, latlong) or dict()
+
         if not townfound:
             townlatitude = randint(-abs(mapsize), mapsize)
             townlongitude = randint(-abs(mapsize), mapsize)
@@ -382,6 +388,15 @@ def rpg_set_latlong(bot, dclass, map, latitude, longitude, dictkey, value):
     latlongdict[dictkey] = value
     set_user_dict(bot, dclass, map, latlong, latlongdict)
 
+
+def rpg_reset_latlong(bot, dclass, map, latitude, longitude, dictkey):
+
+
+def reset_user_dict(bot, dclass, nick, dictkey):
+    currentvalue = get_user_dict(bot, dclass, nick, dictkey)
+    nickdict = eval('dclass.userdb.' + nick)
+    if dictkey in nickdict:
+        del nickdict[dictkey]
 
 """
 Combat
