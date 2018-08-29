@@ -363,8 +363,8 @@ def rpg_map_read(bot, dclass):
             if 'town' in latlongdict.keys():
                 townfound = 1
         if not townfound:
-            townlatitude = randint(-abs(maxfromcenter), maxfromcenter + 1)
-            townlongitude = randint(-abs(maxfromcenter), maxfromcenter + 1)
+            townlatitude = randint(-abs(mapsize), mapsize + 1)
+            townlongitude = randint(-abs(mapsize), mapsize + 1)
             bot.say(str(townlatitude) + "x" + str(townlongitude))
             rpg_set_latlong(bot, dclass, map, townlatitude, townlongitude, 'town', 1)
 
