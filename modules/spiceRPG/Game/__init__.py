@@ -358,6 +358,7 @@ def rpg_map_read(bot, dclass):
                 latlongdict = dict()
                 set_user_dict(bot, dclass, map, latlong, latlongdict)
             if 'town' in latlongdict.keys():
+                bot.say(str(latlong))
                 townfound += 1
         if townfound > 1:
             townfound = 0
@@ -386,12 +387,12 @@ def rpg_set_latlong(bot, dclass, map, latitude, longitude, dictkey, value):
     latlong = str(str(latitude) + "x" + str(longitude))
     latlongdict = get_user_dict(bot, dclass, map, latlong) or dict()
     latlongdict[dictkey] = value
-    bot.say(str(latlongdict[dictkey]))
     set_user_dict(bot, dclass, map, latlong, latlongdict)
 
 
 def rpg_reset_latlong(bot, dclass, map, latitude, longitude, dictkey):
     bot.say("wip")
+
 
 def reset_user_dict(bot, dclass, nick, dictkey):
     currentvalue = get_user_dict(bot, dclass, nick, dictkey)
