@@ -333,21 +333,24 @@ def rpg_command_main_travel(bot, rpg, instigator):
 
     latitude = nickcoord[0]
     longitude = nickcoord[1]
-    newlatitude = latitude
-    newlongitude = longitude
+    bot.say(str(latitude))
+    bot.say(str(longitude))
 
     if subcommand == 'north':
         newlatitude = int(latitude) + 1
-    if subcommand == 'south':
+    elif subcommand == 'south':
         newlatitude = int(latitude) - 1
-    if subcommand == 'east':
+    elif subcommand == 'east':
         newlongitude = int(longitude) + 1
-    if subcommand == 'west':
+    elif subcommand == 'west':
         newlongitude = int(longitude) - 1
-    if subcommand == 'town':
+    elif subcommand == 'town':
         towncoordinates = rpg_map_town(bot, rpg, nickmap)
         newlatitude = towncoordinates[0]
         newlongitude = towncoordinates[1]
+    else:
+        newlatitude = latitude
+        newlongitude = longitude
 
     mapsize = get_user_dict(bot, rpg, nickmap, 'mapsize')
     if int(newlatitude) > abs(mapsize):
@@ -361,6 +364,9 @@ def rpg_command_main_travel(bot, rpg, instigator):
         return
     if int(newlongitude) < -abs(mapsize):
         bot.say("cant go west anymore")
+        return
+    if str(latitude) == str(newlatitude) and str(longitude) == str(newlongitude):
+        bot.say("stay current location")
         return
 
     newnickcoord = str("(" + str(newlatitude) + "," + str(newlongitude) + ")")
