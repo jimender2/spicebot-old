@@ -356,7 +356,7 @@ def rpg_map_read(bot, dclass):
             if not latlongdict:
                 latlongdict = dict()
                 set_user_dict(bot, dclass, map, latlong, latlongdict)
-            bot.say(str(latlongdict))
+            bot.say(latlong + " = " + str(latlongdict))
             if 'town' in latlongdict.keys():
                 townfound += 1
         # if townfound > 1:
