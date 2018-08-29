@@ -413,9 +413,9 @@ def rpg_map_nick_get(bot, rpg, nick):
                     nickcoord = coordinates
                     nicknocoord += 1
 
-    if not nicknomap or not nicknocoord:
-        bot.say("shit")
+    if not nicknomap:
         nickmap = get_trigger_arg(bot, rpg_map_names, 1)
+    if not nicknocoord:
         nickcoord = rpg_map_town(bot, rpg, nickmap)
     rpg_map_move_nick(bot, rpg, nick, nickmap, str(nickcoord))
 
