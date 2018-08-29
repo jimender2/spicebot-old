@@ -355,7 +355,6 @@ def rpg_map_read(bot, dclass):
         for coordinates in coordinatecombinations:
             latlongdict = rpg_get_latlong(bot, dclass, map, str(coordinates), 'returndict')
             if 'town' in latlongdict.keys():
-                bot.say(str(latlong))
                 townfound += 1
         if not townfound:
             townlatitude = randint(-abs(mapsize), mapsize)
