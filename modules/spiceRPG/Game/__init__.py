@@ -335,19 +335,19 @@ def rpg_map_read(bot, dclass):
     for map in rpg_map_names:
         cyclemapnumber += 1
 
-        mapdict = get_user_dict(bot, dclass, map, 'rpg_game_records') or dict()
+        maptier = get_user_dict(bot, dclass, map, 'maptier')
+        if not maptier:
+            maptier = cyclemapnumber
+            set_user_dict(bot, dclass, map, 'maptier', maptier)
 
-        if 'maptier' not in mapdict.keys():
-            mapdict['maptier'] = cyclemapnumber
-
-        # max height/width (from zero center)
-        if 'mapsize' not in mapdict.keys():
-            mapdict['mapsize'] = rpg_map_scale * cyclemapnumber
+        mapsize = get_user_dict(bot, dclass, map, 'mapsize')
+        if not mapsize:
+            mapsize = rpg_map_scale * cyclemapnumber
+            set_user_dict(bot, dclass, map, 'mapsize', mapsize)
 
         # map size from center
-        maxfromcenter = mapdict['mapsize']
         latitudearray, longitudearray = [], []
-        for i in range(-abs(maxfromcenter), maxfromcenter + 1):
+        for i in range(-abs(mapsize), mapsize + 1):
             latitudearray.append(i)
             longitudearray.append(i)
 
@@ -355,8 +355,14 @@ def rpg_map_read(bot, dclass):
         for latitude, longitude in zip(latitudearray, longitudearray):
             latlong = str(str(latitude) + "x" + str(longitude))
 
-            bot.say(latlong)
-        bot.say(str(mapdict))
+            latlongdict = get_user_dict(bot, dclass, map, latlong)
+            if not latlongdict:
+                latlongdict = dict()
+                set_user_dict(bot, dclass, map, latlong, latlongdict)
+
+            bot.say(latlong + " = " + str(latlongdict))
+        currentmapeval = eval("rpg." + map)
+        bot.say(str(currentmapeval))
 
 
 # Database map
