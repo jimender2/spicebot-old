@@ -378,6 +378,8 @@ def rpg_map_nick_get(bot, rpg, nick):
 
     nickmap, nickcoord = 0, 0
 
+    nicknomap, nicknocoord = 0, 0
+
     cyclemapnumber = 0
     for map in rpg_map_names:
         cyclemapnumber += 1
@@ -388,6 +390,7 @@ def rpg_map_nick_get(bot, rpg, nick):
             set_user_dict(bot, rpg, map, 'mapnicklist', mapnicklist)
         if nick in mapnicklist:
             nickmap = map
+            nicknomap += 1
 
             mapsize = get_user_dict(bot, rpg, map, 'mapsize')
             if not mapsize:
@@ -411,11 +414,12 @@ def rpg_map_nick_get(bot, rpg, nick):
                     rpg_set_latlong(bot, rpg, map, str(coordinates), 'mapnicklist', latlongnicklist)
                 if nick in latlongnicklist:
                     nickcoord = coordinates
+                    nicknocoord += 1
 
-    # if not nickmap or not nickcoord:
-    #    bot.say("shit")
-    #    nickmap = get_trigger_arg(bot, rpg_map_names, 1)
-    #    nickcoord = rpg_map_town(bot, rpg, nickmap)
+    if not nicknomap or not nicknocoord:
+        bot.say("shit")
+        nickmap = get_trigger_arg(bot, rpg_map_names, 1)
+        nickcoord = rpg_map_town(bot, rpg, nickmap)
     rpg_map_move_nick(bot, rpg, nick, nickmap, str(nickcoord))
 
     return nickmap, nickcoord
