@@ -349,37 +349,28 @@ def rpg_map_read(bot, dclass):
 
         # generate dictionary values for all locations
         coordinatecombinations = []
+        townfound = 0
         for playercombo in itertools.product(latitudearray, longitudearray):
             coordinatecombinations.append(playercombo)
         for coordinates in coordinatecombinations:
-            bot.say(str(coordinates))
-            # latlong = str(str(latitude) + "x" + str(longitude))
-        townfound = 0
-        for latitude, longitude in zip(latitudearray, longitudearray):
-            latlong = str(str(latitude) + "x" + str(longitude))
-
-            latlongdict = rpg_get_latlong(bot, dclass, map, latitude, longitude, 'returndict')
-            bot.say(latlong + " = " + str(latlongdict))
+            latlongdict = rpg_get_latlong(bot, dclass, map, coordinates, 'returndict')
             if 'town' in latlongdict.keys():
                 bot.say(str(latlong))
                 townfound += 1
-
         if not townfound:
             townlatitude = randint(-abs(mapsize), mapsize)
             townlongitude = randint(-abs(mapsize), mapsize)
-            bot.say(str(townlatitude) + "x" + str(townlongitude))
-            rpg_set_latlong(bot, dclass, map, townlatitude, townlongitude, 'town', 1)
+            rpg_set_latlong(bot, dclass, map, (townlatitude, townlongitude), 'town', 1)
 
         currentmapeval = eval("dclass.userdb." + map)
         bot.say(str(currentmapeval))
 
 
-def rpg_get_latlong(bot, dclass, map, latitude, longitude, dictkey):
-    latlong = str(str(latitude) + "x" + str(longitude))
-    latlongdict = get_user_dict(bot, dclass, map, latlong)
+def rpg_get_latlong(bot, dclass, map, coordinates, dictkey):
+    latlongdict = get_user_dict(bot, dclass, map, coordinates)
     if not latlongdict:
         latlongdict = dict()
-        set_user_dict(bot, dclass, map, latlong, latlongdict)
+        set_user_dict(bot, dclass, map, coordinates, latlongdict)
     if dictkey == 'returndict':
         returnvalue = latlongdict
     else:
@@ -389,14 +380,13 @@ def rpg_get_latlong(bot, dclass, map, latitude, longitude, dictkey):
     return returnvalue
 
 
-def rpg_set_latlong(bot, dclass, map, latitude, longitude, dictkey, value):
-    latlong = str(str(latitude) + "x" + str(longitude))
-    latlongdict = get_user_dict(bot, dclass, map, latlong) or dict()
+def rpg_set_latlong(bot, dclass, map, coordinates, dictkey, value):
+    latlongdict = get_user_dict(bot, dclass, map, coordinates) or dict()
     latlongdict[dictkey] = value
-    set_user_dict(bot, dclass, map, latlong, latlongdict)
+    set_user_dict(bot, dclass, map, coordinates, latlongdict)
 
 
-def rpg_reset_latlong(bot, dclass, map, latitude, longitude, dictkey):
+def rpg_reset_latlong(bot, dclass, map, coordinates, dictkey):
     bot.say("wip")
 
 
