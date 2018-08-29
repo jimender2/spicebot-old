@@ -85,16 +85,12 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
 
     # Get Map
     rpg_map_read(bot, rpg)
-    return
 
     # Run the Process
     execute_main(bot, rpg, instigator, trigger, triggerargsarray)
 
     # Error Display System Display
     rpg_errors_end(bot, rpg)
-
-    # Save map
-    rpg_map_save(bot, rpg)
 
     # Save any open user values
     save_user_dicts(bot, rpg)
@@ -385,75 +381,6 @@ def rpg_set_latlong(bot, dclass, map, latitude, longitude, dictkey, value):
     latlongdict = get_user_dict(bot, dclass, map, latlong) or dict()
     latlongdict[dictkey] = value
     set_user_dict(bot, dclass, map, latlong, latlongdict)
-
-
-# Database map
-def rpg_map_read_old(bot, dclass):
-
-    # check that db list is there
-    if not hasattr(dclass, 'map'):
-        dclass.map = class_create('map')
-    if not hasattr(dclass.map, 'list'):
-        dclass.map.list = rpg_map_names
-
-    cyclemapnumber = 0
-    for map in dclass.map.list:
-        cyclemapnumber += 1
-
-        # Get current map subdictionary
-        if not hasattr(dclass.map, map):
-            mapdict = get_user_dict(bot, dclass, 'rpg_game_records', map) or dict()
-            createmapdict = str("dclass.map." + map + " = mapdict")
-            exec(createmapdict)
-        else:
-            if not hasattr(dclass.map, map):
-                mapdict = dict()
-            else:
-                mapdict = eval('dclass.map' + map)
-
-        # set tier that the map is accessible to a player
-        if 'maptier' not in mapdict.keys():
-            mapdict['maptier'] = cyclemapnumber
-
-        # max height/width (from zero center)
-        if 'mapsize' not in mapdict.keys():
-            mapdict['mapsize'] = rpg_map_scale * cyclemapnumber
-
-        # map size from center
-        maxfromcenter = mapdict['mapsize']
-        latitudearray, longitudearray = [], []
-        for i in range(-abs(maxfromcenter), maxfromcenter + 1):
-            latitudearray.append(i)
-            longitudearray.append(i)
-
-        # generate dictionary values for all locations
-        for latitude, longitude in zip(latitudearray, longitudearray):
-            latlong = str(str(latitude) + "x" + str(longitude))
-
-            bot.say(latlong)
-
-        # set town location
-        # if 'town_latitude' not in mapdict.keys():
-        #    mapdict['town_latitude'] = randint(-abs(maxfromcenter), maxfromcenter)
-        # if 'town_longitude' not in mapdict.keys():
-        #    mapdict['town_longitude'] = randint(-abs(maxfromcenter), maxfromcenter)
-
-
-def rpg_map_save(bot, dclass):
-
-    # check that db list is there
-    if not hasattr(dclass, 'map'):
-        dclass.map = class_create('map')
-    if not hasattr(dclass.map, 'list'):
-        dclass.map.list = rpg_map_names
-
-    for map in dclass.map.list:
-
-        if not hasattr(dclass.map, map):
-            mapdict = dict()
-        else:
-            mapdict = eval('dclass.map.' + map)
-        set_user_dict(bot, dclass, 'rpg_game_records', map, mapdict)
 
 
 """
