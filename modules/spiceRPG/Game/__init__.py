@@ -331,8 +331,8 @@ def rpg_command_main_travel(bot, rpg, instigator):
         bot.say(str(locationdict))
         return
 
-    latitude = get_trigger_arg(bot, nickcoord, 1)
-    longitude = get_trigger_arg(bot, nickcoord, 2)
+    latitude = nickcoord[0]
+    longitude = nickcoord[1]
     newlatitude = latitude
     newlongitude = longitude
 
@@ -346,8 +346,8 @@ def rpg_command_main_travel(bot, rpg, instigator):
         newlongitude = int(longitude) - 1
     if subcommand == 'town':
         towncoordinates = rpg_map_town(bot, rpg, map)
-        newlatitude = get_trigger_arg(bot, towncoordinates, 1)
-        newlongitude = get_trigger_arg(bot, towncoordinates, 2)
+        newlatitude = towncoordinates[0]
+        newlongitude = towncoordinates[1]
 
     mapsize = get_user_dict(bot, rpg, map, 'mapsize')
     if newlatitude > mapsize:
