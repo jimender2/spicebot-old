@@ -348,6 +348,12 @@ def rpg_map_read(bot, dclass):
             longitudearray.append(i)
 
         # generate dictionary values for all locations
+        coordinatecombinations = []
+        for playercombo in itertools.product(latitudearray, longitudearray):
+            coordinatecombinations.append(playercombo)
+        for coordinates in playercombinations:
+            bot.say(str(coordinates))
+            # latlong = str(str(latitude) + "x" + str(longitude))
         townfound = 0
         for latitude, longitude in zip(latitudearray, longitudearray):
             latlong = str(str(latitude) + "x" + str(longitude))
@@ -357,10 +363,6 @@ def rpg_map_read(bot, dclass):
             if 'town' in latlongdict.keys():
                 bot.say(str(latlong))
                 townfound += 1
-        if townfound > 1:
-            townfound = 0
-            for latitude, longitude in zip(latitudearray, longitudearray):
-                latlongdict = get_user_dict(bot, dclass, map, latlong) or dict()
 
         if not townfound:
             townlatitude = randint(-abs(mapsize), mapsize)
