@@ -356,6 +356,7 @@ def rpg_map_read(bot, dclass):
             latlong = str(str(latitude) + "x" + str(longitude))
 
             bot.say(latlong)
+        bot.say(str(mapdict))
 
 
 # Database map
@@ -402,7 +403,6 @@ def rpg_map_read_old(bot, dclass):
             latlong = str(str(latitude) + "x" + str(longitude))
 
             bot.say(latlong)
-        bot.say(str(mapdict))
 
         # set town location
         # if 'town_latitude' not in mapdict.keys():
