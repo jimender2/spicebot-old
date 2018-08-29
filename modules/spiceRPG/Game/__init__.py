@@ -334,6 +334,8 @@ def rpg_command_main_travel(bot, rpg, instigator):
 
     latitude = nickcoord[0]
     longitude = nickcoord[1]
+    newlatitude = latitude
+    newlongitude = longitude
 
     if subcommand == 'north':
         newlatitude = int(latitude) + 1
@@ -348,9 +350,6 @@ def rpg_command_main_travel(bot, rpg, instigator):
         towncoordinates = eval(towncoordinates)
         newlatitude = towncoordinates[0]
         newlongitude = towncoordinates[1]
-    else:
-        newlatitude = latitude
-        newlongitude = longitude
 
     mapsize = get_user_dict(bot, rpg, nickmap, 'mapsize')
     if int(newlatitude) > abs(mapsize):
