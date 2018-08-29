@@ -412,10 +412,10 @@ def rpg_map_nick_get(bot, rpg, nick):
                 if nick in latlongnicklist:
                     nickcoord = coordinates
 
-    if not nickmap or not nickcoord:
-        bot.say("shit")
-        nickmap = get_trigger_arg(bot, rpg_map_names, 1)
-        nickcoord = rpg_map_town(bot, rpg, nickmap)
+    # if not nickmap or not nickcoord:
+    #    bot.say("shit")
+    #    nickmap = get_trigger_arg(bot, rpg_map_names, 1)
+    #    nickcoord = rpg_map_town(bot, rpg, nickmap)
     rpg_map_move_nick(bot, rpg, nick, nickmap, str(nickcoord))
 
     return nickmap, nickcoord
