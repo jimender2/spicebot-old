@@ -323,6 +323,7 @@ def rpg_command_main_travel(bot, rpg, instigator):
     subcommand = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in subcommand_valid], 1) or 'current'
 
     nickmap, nickcoord = rpg_map_nick_get(bot, rpg, rpg.instigator)
+    nickcoord = eval(nickcoord)
     locationdict = rpg_get_latlong(bot, rpg, nickmap, str(nickcoord), 'returndict')
 
     if subcommand == 'current':
@@ -333,8 +334,6 @@ def rpg_command_main_travel(bot, rpg, instigator):
 
     latitude = nickcoord[0]
     longitude = nickcoord[1]
-    bot.say(str(latitude))
-    bot.say(str(longitude))
 
     if subcommand == 'north':
         newlatitude = int(latitude) + 1
@@ -346,6 +345,7 @@ def rpg_command_main_travel(bot, rpg, instigator):
         newlongitude = int(longitude) - 1
     elif subcommand == 'town':
         towncoordinates = rpg_map_town(bot, rpg, nickmap)
+        towncoordinates = eval(towncoordinates)
         newlatitude = towncoordinates[0]
         newlongitude = towncoordinates[1]
     else:
