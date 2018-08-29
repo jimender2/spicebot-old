@@ -363,7 +363,7 @@ def rpg_map_read(bot, dclass):
             rpg_set_latlong(bot, dclass, map, str((townlatitude, townlongitude)), 'town', 1)
 
         currentmapeval = eval("dclass.userdb." + map)
-        bot.say(str(currentmapeval))
+        osd(bot, dclass.channel_current, 'say', str(currentmapeval))
 
 
 def rpg_get_latlong(bot, dclass, map, coordinates, dictkey):
@@ -395,6 +395,7 @@ def reset_user_dict_good(bot, dclass, nick, dictkey):
     nickdict = eval('dclass.userdb.' + nick)
     if dictkey in nickdict:
         del nickdict[dictkey]
+
 
 """
 Combat
