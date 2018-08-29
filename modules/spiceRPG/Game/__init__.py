@@ -349,20 +349,22 @@ def rpg_command_main_travel(bot, rpg, instigator):
         towncoordinates = rpg_map_town(bot, rpg, map)
         newlatitude = towncoordinates[0]
         newlongitude = towncoordinates[1]
+    bot.say("hereb")
 
     mapsize = get_user_dict(bot, rpg, map, 'mapsize')
-    if newlatitude > mapsize:
+    if int(newlatitude) > abs(mapsize):
         bot.say("cant go north anymore")
         return
-    if newlatitude < -abs(mapsize):
+    if int(newlatitude) < -abs(mapsize):
         bot.say("cant go south anymore")
         return
-    if newlongitude > mapsize:
+    if int(newlongitude) > abs(mapsize):
         bot.say("cant go east anymore")
         return
-    if newlongitude < -abs(mapsize):
+    if int(newlongitude) < -abs(mapsize):
         bot.say("cant go west anymore")
         return
+    bot.say("herec")
 
     newnickcoord = str("(" + str(newlatitude) + "," + str(newlongitude) + ")")
 
