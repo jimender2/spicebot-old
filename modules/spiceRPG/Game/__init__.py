@@ -504,7 +504,7 @@ def rpg_get_latlong(bot, dclass, map, coordinates, dictkey):
     else:
         if dictkey not in latlongdict.keys():
             latlongdict[dictkey] = 0
-            returnvalue = latlongdict[dictkey]
+        returnvalue = latlongdict[dictkey]
     return returnvalue
 
 
