@@ -335,6 +335,7 @@ def rpg_command_main_travel(bot, rpg, instigator):
     longitude = nickcoord[1]
     newlatitude = latitude
     newlongitude = longitude
+    bot.say("here")
 
     if subcommand == 'north':
         newlatitude = int(latitude) + 1
