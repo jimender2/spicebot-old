@@ -327,7 +327,7 @@ def rpg_command_main_map(bot, rpg, instigator):
     bot.say(str(nickmap))
     bot.say(str(nickcoord))
 
-    locationdict = rpg_get_latlong(bot, rpg, map, str(coordinates), 'returndict')
+    locationdict = rpg_get_latlong(bot, rpg, nickmap, str(nickcoord), 'returndict')
 
     bot.say(str(locationdict))
 
