@@ -346,12 +346,12 @@ def rpg_command_main_travel(bot, rpg, instigator):
     if subcommand == 'west':
         newlongitude = int(longitude) - 1
     if subcommand == 'town':
-        towncoordinates = rpg_map_town(bot, rpg, map)
+        towncoordinates = rpg_map_town(bot, rpg, nickmap)
         newlatitude = towncoordinates[0]
         newlongitude = towncoordinates[1]
     bot.say("hereb")
 
-    mapsize = get_user_dict(bot, rpg, map, 'mapsize')
+    mapsize = get_user_dict(bot, rpg, nickmap, 'mapsize')
     if int(newlatitude) > abs(mapsize):
         bot.say("cant go north anymore")
         return
