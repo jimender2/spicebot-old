@@ -353,24 +353,24 @@ def rpg_map_read(bot, dclass):
         for playercombo in itertools.product(latitudearray, longitudearray):
             coordinatecombinations.append(playercombo)
         for coordinates in coordinatecombinations:
-            latlongdict = rpg_get_latlong(bot, dclass, map, coordinates, 'returndict')
+            latlongdict = rpg_get_latlong(bot, dclass, map, str(coordinates), 'returndict')
             if 'town' in latlongdict.keys():
                 bot.say(str(latlong))
                 townfound += 1
         if not townfound:
             townlatitude = randint(-abs(mapsize), mapsize)
             townlongitude = randint(-abs(mapsize), mapsize)
-            rpg_set_latlong(bot, dclass, map, (townlatitude, townlongitude), 'town', 1)
+            rpg_set_latlong(bot, dclass, map, str((townlatitude, townlongitude)), 'town', 1)
 
         currentmapeval = eval("dclass.userdb." + map)
         bot.say(str(currentmapeval))
 
 
 def rpg_get_latlong(bot, dclass, map, coordinates, dictkey):
-    latlongdict = get_user_dict(bot, dclass, map, coordinates)
+    latlongdict = get_user_dict(bot, dclass, map, str(coordinates))
     if not latlongdict:
         latlongdict = dict()
-        set_user_dict(bot, dclass, map, coordinates, latlongdict)
+        set_user_dict(bot, dclass, map, str(coordinates), latlongdict)
     if dictkey == 'returndict':
         returnvalue = latlongdict
     else:
@@ -381,16 +381,16 @@ def rpg_get_latlong(bot, dclass, map, coordinates, dictkey):
 
 
 def rpg_set_latlong(bot, dclass, map, coordinates, dictkey, value):
-    latlongdict = get_user_dict(bot, dclass, map, coordinates) or dict()
+    latlongdict = get_user_dict(bot, dclass, map, str(coordinates)) or dict()
     latlongdict[dictkey] = value
-    set_user_dict(bot, dclass, map, coordinates, latlongdict)
+    set_user_dict(bot, dclass, map, str(coordinates), latlongdict)
 
 
 def rpg_reset_latlong(bot, dclass, map, coordinates, dictkey):
     bot.say("wip")
 
 
-def reset_user_dict(bot, dclass, nick, dictkey):
+def reset_user_dict_good(bot, dclass, nick, dictkey):
     currentvalue = get_user_dict(bot, dclass, nick, dictkey)
     nickdict = eval('dclass.userdb.' + nick)
     if dictkey in nickdict:
