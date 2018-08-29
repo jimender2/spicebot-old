@@ -371,7 +371,7 @@ def rpg_command_main_travel(bot, rpg, instigator):
     newnickcoord = str("(" + str(newlatitude) + "," + str(newlongitude) + ")")
 
     rpg_map_move_nick(bot, rpg, rpg.instigator, nickmap, str(newnickcoord))
-    bot.say("moved to " + str(newlatitude) + "x" + str(newlongitude))
+    bot.say("moved to " + str(newnickcoord))
 
 
 def rpg_map_nick_get(bot, rpg, nick):
