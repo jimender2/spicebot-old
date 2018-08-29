@@ -352,6 +352,7 @@ def rpg_map_read(bot, dclass):
             longitudearray.append(i)
 
         # generate dictionary values for all locations
+        townfound = False
         for latitude, longitude in zip(latitudearray, longitudearray):
             latlong = str(str(latitude) + "x" + str(longitude))
 
@@ -359,10 +360,30 @@ def rpg_map_read(bot, dclass):
             if not latlongdict:
                 latlongdict = dict()
                 set_user_dict(bot, dclass, map, latlong, latlongdict)
+            if 'town' not in latlongdict.keys():
+                townfound = True
+        if not townfound:
+            townlatitude = randint(-abs(maxfromcenter), maxfromcenter + 1)
+            townlongitude = randint(-abs(maxfromcenter), maxfromcenter + 1)
+            rpg_set_latlong(bot, dclass, map, townlatitude, townlongitude, 'town', 1)
 
-            bot.say(latlong + " = " + str(latlongdict))
         currentmapeval = eval("dclass.userdb." + map)
         bot.say(str(currentmapeval))
+
+
+def rpg_get_latlong(bot, dclass, map, latitude, longitude, dictkey):
+    latlong = str(str(latitude) + "x" + str(longitude))
+    latlongdict = get_user_dict(bot, dclass, map, latlong) or dict()
+    if dictkey not in latlongdict.keys():
+        latlongdict[dictkey] = 0
+    return latlongdict[dictkey]
+
+
+def rpg_set_latlong(bot, dclass, map, latitude, longitude, dictkey, value):
+    latlong = str(str(latitude) + "x" + str(longitude))
+    latlongdict = get_user_dict(bot, dclass, map, latlong) or dict()
+    latlongdict[dictkey] = value
+    set_user_dict(bot, dclass, map, latlong, latlongdict)
 
 
 # Database map
