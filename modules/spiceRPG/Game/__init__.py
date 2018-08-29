@@ -412,9 +412,6 @@ def rpg_map_nick_get(bot, rpg, nick):
                 if nick in latlongnicklist:
                     nickcoord = coordinates
                     nicknocoord += 1
-                else:
-                    nickcoord = rpg_map_town(bot, rpg, map)
-                    nicknocoord += 1
 
     if not nicknomap or not nicknocoord:
         bot.say("shit")
