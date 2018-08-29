@@ -353,16 +353,16 @@ def rpg_map_read(bot, dclass):
             latlong = str(str(latitude) + "x" + str(longitude))
 
             latlongdict = get_user_dict(bot, dclass, map, latlong)
+            bot.say(latlong + " = " + str(latlongdict))
             if not latlongdict:
                 latlongdict = dict()
                 set_user_dict(bot, dclass, map, latlong, latlongdict)
-            bot.say(latlong + " = " + str(latlongdict))
             if 'town' in latlongdict.keys():
                 townfound += 1
-        # if townfound > 1:
-        #    townfound = 0
-        #    for latitude, longitude in zip(latitudearray, longitudearray):
-        #        latlongdict = get_user_dict(bot, dclass, map, latlong) or dict()
+        if townfound > 1:
+            townfound = 0
+            for latitude, longitude in zip(latitudearray, longitudearray):
+                latlongdict = get_user_dict(bot, dclass, map, latlong) or dict()
 
         if not townfound:
             townlatitude = randint(-abs(mapsize), mapsize)
