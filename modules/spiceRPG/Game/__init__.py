@@ -414,7 +414,7 @@ def rpg_map_nick_get(bot, rpg, nick):
                     nickcoord = coordinates
                     nicknocoord += 1
                 else:
-                    nickcoord = rpg_map_town(bot, rpg, nickmap)
+                    nickcoord = rpg_map_town(bot, rpg, map)
                     nicknocoord += 1
                 rpg_set_latlong(bot, rpg, map, str(coordinates), 'mapnicklist', latlongnicklist)
 
