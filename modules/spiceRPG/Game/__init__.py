@@ -452,9 +452,11 @@ def rpg_map_move_nick(bot, rpg, nick, newmap, newcoordinates):
         for coordinates in coordinatecombinations:
             latlongnicklist = rpg_get_latlong(bot, rpg, map, str(coordinates), 'mapnicklist') or []
             if str(coordinates) == str(newcoordinates):
+                bot.say("move to " + str(coordinates))
                 if nick not in latlongnicklist:
                     latlongnicklist.append(nick)
             else:
+                bot.say("move from " + str(coordinates))
                 if nick in latlongnicklist:
                     latlongnicklist.remove(nick)
             rpg_set_latlong(bot, rpg, map, str(coordinates), 'mapnicklist', latlongnicklist)
