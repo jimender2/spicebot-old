@@ -391,6 +391,7 @@ def rpg_map_nick_get(bot, rpg, nick):
         if nick in mapnicklist:
             nickmap = map
             nicknomap += 1
+            bot.say("what?")
 
             mapsize = get_user_dict(bot, rpg, map, 'mapsize')
             if not mapsize:
