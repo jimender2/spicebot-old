@@ -329,8 +329,37 @@ def rpg_command_main_map(bot, rpg, instigator):
     bot.say("wip")
 
 
-# Database map
 def rpg_map_read(bot, dclass):
+
+    cyclemapnumber = 0
+    for map in rpg_map_names:
+        cyclemapnumber += 1
+
+        mapdict = get_user_dict(bot, dclass, map, 'rpg_game_records') or dict()
+
+        if 'maptier' not in mapdict.keys():
+            mapdict['maptier'] = cyclemapnumber
+
+        # max height/width (from zero center)
+        if 'mapsize' not in mapdict.keys():
+            mapdict['mapsize'] = rpg_map_scale * cyclemapnumber
+
+        # map size from center
+        maxfromcenter = mapdict['mapsize']
+        latitudearray, longitudearray = [], []
+        for i in range(-abs(maxfromcenter), maxfromcenter + 1):
+            latitudearray.append(i)
+            longitudearray.append(i)
+
+        # generate dictionary values for all locations
+        for latitude, longitude in zip(latitudearray, longitudearray):
+            latlong = str(str(latitude) + "x" + str(longitude))
+
+            bot.say(latlong)
+
+
+# Database map
+def rpg_map_read_old(bot, dclass):
 
     # check that db list is there
     if not hasattr(dclass, 'map'):
@@ -373,6 +402,7 @@ def rpg_map_read(bot, dclass):
             latlong = str(str(latitude) + "x" + str(longitude))
 
             bot.say(latlong)
+        bot.say(str(mapdict))
 
         # set town location
         # if 'town_latitude' not in mapdict.keys():
