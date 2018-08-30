@@ -29,4 +29,8 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    answer = get_trigger_arg(bot, insalton, 'random')
+    answer = get_trigger_arg(bot, insalttw, 'random')
+    answer = get_trigger_arg(bot, insaltth, 'random')
+
     osd(bot, trigger.sender, 'say', "do the thing")
