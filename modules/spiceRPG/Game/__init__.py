@@ -58,14 +58,6 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     rpg = class_create('rpg')
     rpg.default = 'rpg'
 
-    # (-6, -9)
-
-    rpg.'(-6, -9)' = 'test'
-
-    bot.say(str(eval(rpg.(-6, -9))))
-
-    return
-
     # Command type
     rpg.command_type = command_type
 
