@@ -39,7 +39,7 @@ insalttw = ["douche",
             "cock",
             "shit",
             "crotch",
-            "bitch"
+            "bitch",
             "turd",
             "prick",
             "slut",
@@ -51,25 +51,25 @@ insalttw = ["douche",
             "nut",
             "sphincter"]
 
-insaltth = ["",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""]
+insaltth = ["pilot",
+            "canoe",
+            "captain",
+            "pirate",
+            "hammer",
+            "knob",
+            "box",
+            "jockey",
+            "nazi",
+            "waffle",
+            "goblin",
+            "blossum",
+            "biscuit",
+            "clown",
+            "socket",
+            "monster",
+            "hound",
+            "dragon",
+            "balloon"]
 
 
 @sopel.module.commands('insult')
@@ -84,5 +84,5 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     answer2 = get_trigger_arg(bot, insalttw, 'random')
     answer3 = get_trigger_arg(bot, insaltth, 'random')
 
-    message = "You are "
+    message = "You are a " + answer1 + " " + answer2 + " " + answer3 + "."
     osd(bot, trigger.sender, 'say', message)
