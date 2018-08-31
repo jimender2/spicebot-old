@@ -114,7 +114,7 @@ def urbansearch(bot, searchterm):
         data = json.loads(data)
     except:
         return osd(bot, trigger.sender, 'say', "Error connecting to urban dictionary")
-    if data['Response'] == 'False':
+    if data['result_type'] == 'no_results':
         return "No results found for {0}".format(searchterm)
     result = data['list'][0]
     url = 'http://www.urbandictionary.com/define.php?term={0}'.format(web.quote(searchterm))
