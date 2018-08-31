@@ -11,14 +11,65 @@ from BotShared import *
 
 # author jimender2
 
-insalton = ["clock speed",
-            "test"]
+insalton = ["lazy",
+            "stupid",
+            "insecure",
+            "idiotic",
+            "slimy",
+            "slutty",
+            "smelly",
+            "pompous",
+            "communist"
+            "dicknose",
+            "pie-eating",
+            "racist",
+            "elitist",
+            "white trash",
+            "drug-loving",
+            "butterface",
+            "tone deaf",
+            "ugly",
+            "creepy"]
 
-insalttw = ["clock speed",
-            "test"]
+insalttw = ["douche",
+            "ass",
+            "turd",
+            "rectum",
+            "butt",
+            "cock",
+            "shit",
+            "crotch",
+            "bitch"
+            "turd",
+            "prick",
+            "slut",
+            "taint",
+            "fuck",
+            "dick",
+            "boner",
+            "shart",
+            "nut",
+            "sphincter"]
 
-insaltth = ["clock speed",
-            "test"]
+insaltth = ["",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""]
 
 
 @sopel.module.commands('insult')
@@ -29,8 +80,9 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    answer = get_trigger_arg(bot, insalton, 'random')
-    answer = get_trigger_arg(bot, insalttw, 'random')
-    answer = get_trigger_arg(bot, insaltth, 'random')
+    answer1 = get_trigger_arg(bot, insalton, 'random')
+    answer2 = get_trigger_arg(bot, insalttw, 'random')
+    answer3 = get_trigger_arg(bot, insaltth, 'random')
 
-    osd(bot, trigger.sender, 'say', "do the thing")
+    message = "You are "
+    osd(bot, trigger.sender, 'say', message)
