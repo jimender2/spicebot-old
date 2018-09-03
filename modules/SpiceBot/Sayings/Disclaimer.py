@@ -8,6 +8,10 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+# Dictionary for looking up disclaimers.
+# Use dictionaryname[key] to get the value from a single-layer dictionary.
+# Be sure to run a .replace function on the placeholder text in the values (including the curly brackets - they're to make it easy to spot),
+# To list all the options in a dictionary, call dictionaryname.keys(). To make it into a comma-separated list, use ', '.join(dictionaryname.keys()).
 specific_disclaimer = {
     'brightlights':"Individuals sensitive to bright lights or with epilepsy may find the quick bright text the bot speaks with to be troublesome. Any epileptic reaction is not the fault of the bot, the channel, or its denizens.",
     'doctor':"{disclaimer_target} is not your doctor. The views/opinions/information expressed by {disclaimer_target} are not intended or implied to be a substitute for professional medical advice, diagnosis or treatment.",
