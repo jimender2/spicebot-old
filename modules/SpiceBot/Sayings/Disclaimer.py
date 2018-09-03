@@ -31,7 +31,7 @@ specific_disclaimer = {
 }
 
 
-@sopel.module.commands('nested')
+@sopel.module.commands('disclaimer')
 def mainfunction(bot, trigger):
     """Check to see if module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'disclaimer')
