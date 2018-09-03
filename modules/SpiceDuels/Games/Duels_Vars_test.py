@@ -50,9 +50,6 @@ class_special = {
         "luck":3,
         "magic":4}
 }
-duels_character_special_race_human =        [    2     ,       3     ,      3     ,      2    ,        3      ,     4    ,    3  ,    3   ]
-duels_character_special_race_centaur =      [    5     ,       4     ,      5     ,      2    ,        3      ,     1    ,    1  ,    1   ]
-duels_character_special_race_gnome =        [    2     ,       3     ,      3     ,      2    ,        3      ,     5    ,    3  ,    3   ]
 race_special = {
     "human":{
         "strength":2,
