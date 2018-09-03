@@ -19,6 +19,8 @@ duels_character_valid_race = ['human','barbarian','fiend','vampire','centaur','g
 # SPECIALM Dictionary
 # Request items from this like so: class_special[class][type].
 # For example, to get mage perception: class_special["mage"]["perception"]
+# Could make it per stat, then you could call the total value as special["strength"][player_class] + special["strength"][player_race],
+# rather than player_strength = class_special[player_class]["strength"] + race_special[player_class]["strength"]
 class_special = {
     "mage":{
         "strength":1,
@@ -48,7 +50,38 @@ class_special = {
         "luck":3,
         "magic":4}
 }
-
+duels_character_special_race_human =        [    2     ,       3     ,      3     ,      2    ,        3      ,     4    ,    3  ,    3   ]
+duels_character_special_race_centaur =      [    5     ,       4     ,      5     ,      2    ,        3      ,     1    ,    1  ,    1   ]
+duels_character_special_race_gnome =        [    2     ,       3     ,      3     ,      2    ,        3      ,     5    ,    3  ,    3   ]
+race_special = {
+    "human":{
+        "strength":2,
+        "perception":3,
+        "endurance":3,
+        "charisma":2,
+        "intelligence":3,
+        "agility":4,
+        "luck":3,
+        "magic":3},
+    "centaur":{
+        "strength":5,
+        "perception":4,
+        "endurance":5,
+        "charisma":2,
+        "intelligence":3,
+        "agility":1,
+        "luck":1,
+        "magic":1},
+    "gnome":{
+        "strength":2,
+        "perception":3,
+        "endurance":3,
+        "charisma":2,
+        "intelligence":3,
+        "agility":5,
+        "luck":3,
+        "magic":3}
+}
 # SPECIAL+M
 duels_special_full =                        ['strength', 'perception', 'endurance', 'charisma', 'intelligence', 'agility', 'luck', 'magic']
 # Classes SPECIAL
