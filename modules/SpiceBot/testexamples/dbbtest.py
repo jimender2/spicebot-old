@@ -122,7 +122,7 @@ def adjust_user_dict(bot, dclass, nick, dictkey, value):
     if not str(oldvalue).isdigit():
         oldvalue = 0
     nickdict = eval('dclass.userdb.' + nick)
-    nickdict[dictkey] = float(oldvalue) + float(value)
+    nickdict[dictkey] = oldvalue + value
 
 
 # Save all database users in list
