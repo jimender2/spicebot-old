@@ -52,6 +52,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if subdisclaimer in specific_disclaimer.keys():
         message = specific_disclaimer[subdisclaimer].replace("{disclaimer_target}", person)
     elif subdisclaimer == 'options':
+        validoptions = get_trigger_arg(bot, specific_disclaimer.keys(), 'andlist')
         message = "Current options for this module are: " + ', '.join(specific_disclaimer.keys())
     else:
         message = "I hate to tell you this, but either I don't have a warning for that, or something is very borked right now."
