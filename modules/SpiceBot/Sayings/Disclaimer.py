@@ -8,6 +8,8 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+# author = dysonparkes
+
 # Dictionary for looking up disclaimers.
 # Use dictionaryname[key] to get the value from a single-layer dictionary.
 # Be sure to run a .replace function on the placeholder text in the values (including the curly brackets - they're to make it easy to spot),
