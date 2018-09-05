@@ -1,6 +1,4 @@
 import sopel.module
-import random
-import urllib
 import sys
 import os
 moduledir = os.path.dirname(__file__)
