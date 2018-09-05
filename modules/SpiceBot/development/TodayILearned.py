@@ -21,3 +21,33 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    instigator = trigger.nick
+    databasekey = 'todayILearned'
+    command = get_trigger_arg(bot, triggerargsarray, 1)
+    inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
+    existingarray = get_database_value(bot, trigger.nick, databasekey) or []
+    if command in commandarray:
+        if command == "add":
+            if inputstring not in existingarray:
+                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
+                message = "Added to database."
+            else:
+                message = "That is already in the database."
+        elif command == "remove":
+            if inputstring not in existingarray:
+                message = "That was not found in the database."
+            else:
+                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
+                message = "Removed from database."
+        elif command == "count":
+            messagecount = len(existingarray)
+            message = "There are currently " + str(messagecount) + " responses in the database for that."
+        elif command == "last":
+            message = get_trigger_arg(bot, existingarray, "last")
+    else:
+        message1 = get_trigger_arg(bot, existingarray, "random") or ''
+        if message1 == '':
+            message = "No response found. Have any been added?"
+        else:
+            message = "Today I Learned that " + message1 + "!"
+    osd(bot, trigger.sender, 'say', message)
