@@ -10,22 +10,23 @@ sys.path.append(shareddir)
 from BotShared import *
 
 # author jimender2
+defaultoptions = ["I dunno", "I don't wanna", "*shrug*"]
 
 
 @sopel.module.commands('guess')
 def mainfunction(bot, trigger):
+    """Check to see if module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    """Get sayings from function."""
     databasekey = 'guess'
     command = get_trigger_arg(bot, triggerargsarray, 1) or 'get'
-    if not sayingscheck:
-        for entry in defaultsayings:
-            entry = "load up " + entry
-            sayingsmodule(bot, databasekey, entry, 'add')
+    if not sayingscheck and command != "add":
+            sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
     message = sayingsmodule(bot, databasekey, triggerargsarray, command)
     osd(bot, trigger.sender, 'say', message)
 
@@ -36,7 +37,10 @@ def sayingsmodule(bot, databasekey, triggerargsarray, thingtodo):
     response = "Something went wrong. Oops."
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
     existingarray = get_database_value(bot, bot.nick, databasekey) or []
-    if thingtodo == "add":
+    if thingtodo == "initialise":
+        for entry in triggerargsarray:
+            adjust_database_array(bot, bot.nick, entry, databasekey, 'add')
+    elif thingtodo == "add":
         if inputstring not in existingarray:
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
             response = "Added to database."
