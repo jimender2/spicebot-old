@@ -9,43 +9,26 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-# add reset and sort list
+defaultoptions = [
+    "Have you tried turning it off and on again?", "Four! I mean five! I mean FIRE!", "Have you tried clicking on it repeatedly?", "No, 'any' key means push any key you like. There is no specific'any' key.",
+    "Let me just remote in and... yes, that's me moving your mouse. No, I'm not a virus. You know who I am. You've met me. Oh for... stop moving the mouse while I'm fixing things!",
+    "Oh, you've Googled the issue yourself and tried to fix it yourself before lodging a ticket? Thanks for that.", "Have you tried chewing the cable?", "Instructions unclear, dick stuck in ceiling fan."
+]
 
 
 @sopel.module.commands('techsupport', 'itsupport')
 def mainfunction(bot, trigger):
+    """Check that the module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'techsupport')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    instigator = trigger.nick
-    inchannel = trigger.sender
+    """Retrieve an entry from the database."""
     databasekey = 'techsupport'
-    command = get_trigger_arg(bot, triggerargsarray, 1)
-    inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
-    existingarray = get_database_value(bot, bot.nick, databasekey) or []
-    if command == "add":
-        if inputstring not in existingarray:
-            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
-            message = "Added to database."
-        else:
-            message = "That response is already in the database."
-    elif command == "remove":
-        if inputstring not in existingarray:
-            message = "That response was not found in the database."
-        else:
-            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
-            message = "Removed from database."
-    elif command == "count":
-        messagecount = len(existingarray)
-        message = "There are currently " + str(messagecount) + " responses for that in the database."
-    elif command == "last":
-        message = get_trigger_arg(bot, existingarray, "last")
-
-    else:
-        message = get_trigger_arg(bot, existingarray, "random") or ''
-        if message == '':
-            message = "No response found. Have any been added?"
+    command = get_trigger_arg(bot, triggerargsarray, 1) or 'get'
+    if not sayingscheck(bot, databasekey) and command != "add":
+        sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
+    message = sayingsmodule(bot, databasekey, triggerargsarray, command)
     osd(bot, trigger.sender, 'say', message)
