@@ -21,7 +21,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     databasekey = 'guess'
-    command = get_trigger_arg(bot, triggerargsarray, 1)
+    command = get_trigger_arg(bot, triggerargsarray, 1) or 'get'
     message = sayingsmodule(bot, databasekey, triggerargsarray, command)
     osd(bot, trigger.sender, 'say', message)
 
@@ -46,7 +46,7 @@ def sayingsmodule(bot, databasekey, triggerargsarray, thingtodo):
             response = "Removed from database."
     elif thingtodo == "count":
         messagecount = len(existingarray)
-        response = "I guess there are currently " + str(messagecount) + " responses in the database."
+        response = "I'm seeing " + str(messagecount) + " responses in the database."
     elif thingtodo == "last":
         response = get_trigger_arg(bot, existingarray, "last")
     else:
