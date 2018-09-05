@@ -26,6 +26,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     databasekey = 'guess'
     command = get_trigger_arg(bot, triggerargsarray, 1) or 'get'
     if not sayingscheck(bot, databasekey) and command != "add":
-            sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
+        sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
     message = sayingsmodule(bot, databasekey, triggerargsarray, command)
     osd(bot, trigger.sender, 'say', message)
