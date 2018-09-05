@@ -26,24 +26,23 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
     existingarray = get_database_value(bot, bot.nick, databasekey) or []
-    if command in commandarray:
-        if command == "add":
-            if inputstring not in existingarray:
-                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
-                message = "Added to database."
-            else:
-                message = "That is already in the database."
-        elif command == "remove":
-            if inputstring not in existingarray:
-                message = "That was not found in the database."
-            else:
-                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
-                message = "Removed from database."
-        elif command == "count":
-            messagecount = len(existingarray)
-            message = "I guess there are currently " + str(messagecount) + " responses in the database."
-        elif command == "last":
-            message = get_trigger_arg(bot, existingarray, "last")
+    if command == "add":
+        if inputstring not in existingarray:
+            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
+            message = "Added to database."
+        else:
+            message = "That is already in the database."
+    elif command == "remove":
+        if inputstring not in existingarray:
+            message = "That was not found in the database."
+        else:
+            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
+            message = "Removed from database."
+    elif command == "count":
+        messagecount = len(existingarray)
+        message = "I guess there are currently " + str(messagecount) + " responses in the database."
+    elif command == "last":
+        message = get_trigger_arg(bot, existingarray, "last")
     else:
         message = get_trigger_arg(bot, existingarray, "random") or ''
         if message == '':
