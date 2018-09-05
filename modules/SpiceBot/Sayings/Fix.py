@@ -10,7 +10,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 # author = dysonparkes
-defaultfixes = ["User complained monitor was hurting their eyes. Cut out users eyes.", "User complained mouse was too small for their hand. Cut off half users hand to fit mouse."]
+defaultoptions = ["User complained monitor was hurting their eyes. Cut out users eyes.", "User complained mouse was too small for their hand. Cut off half users hand to fit mouse."]
 
 
 @sopel.module.commands('fix', 'user')
