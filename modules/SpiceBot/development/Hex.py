@@ -20,6 +20,9 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    command = get_trigger_arg(bot, triggerargsarray, '1+')
-    message = command.encode("hex")
+    command = get_trigger_arg(bot, triggerargsarray, '1+') or 'none'
+    if command.isdigit():
+        message = command.decode("hex")
+    else:
+        message = command.encode("hex")
     osd(bot, trigger.sender, 'say', message)
