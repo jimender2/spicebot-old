@@ -31,7 +31,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     command = get_trigger_arg(bot, triggerargsarray, 1) or 'get'
     if not sayingscheck(bot, databasekey) and command != "add":
         sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
-    message = get_trigger_arg(bot, existingarray, "random") or ''
+    message = sayingsmodule(bot, databasekey, triggerargsarray, command)
     if not message.startswith("Confucius"):
         message = "Confucius say... " + message
     osd(bot, trigger.sender, 'say', message)
