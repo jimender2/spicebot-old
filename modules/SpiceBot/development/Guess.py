@@ -25,21 +25,20 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     """Get sayings from function."""
     databasekey = 'guess'
     command = get_trigger_arg(bot, triggerargsarray, 1) or 'get'
-    if not sayingscheck and command != "add":
+    if not sayingscheck(bot, databasekey) and command != "add":
             sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
     message = sayingsmodule(bot, databasekey, triggerargsarray, command)
     osd(bot, trigger.sender, 'say', message)
 
 
-def sayingsmodule(bot, databasekey, triggerargsarray, thingtodo):
+def sayingsmodule(bot, databasekey, inputarray, thingtodo):
     """Handle the creation and manipulation of modules that return sayings."""
     # add, remove, last, count, list, initialise?
     response = "Something went wrong. Oops."
-    inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
+    inputstring = get_trigger_arg(bot, inputarray, '2+')
     existingarray = get_database_value(bot, bot.nick, databasekey) or []
     if thingtodo == "initialise":
-        for entry in triggerargsarray:
-            adjust_database_array(bot, bot.nick, entry, databasekey, 'add')
+        database_initialize(bot, bot.nick, inputarray, databasekey)
     elif thingtodo == "add":
         if inputstring not in existingarray:
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
@@ -56,7 +55,7 @@ def sayingsmodule(bot, databasekey, triggerargsarray, thingtodo):
         messagecount = len(existingarray)
         response = "I'm seeing " + str(messagecount) + " responses in the database."
     elif thingtodo == "last":
-        response = get_trigger_arg(bot, existingarray, "last")
+        response = get_trigger_arg(bot, existingarray, "last") or "I appear to have nothing for that."
     else:
         response = get_trigger_arg(bot, existingarray, "random") or ''
         if response == '':
@@ -68,7 +67,7 @@ def sayingscheck(bot, databasekey):
     """Confirm that there are responses for the given key."""
     saying_entries = get_database_value(bot, bot.nick, databasekey) or []
     saying_entrycount = len(saying_entries)
-    if saying_entrycount > 0:
+    if saying_entrycount != 0:
         return True
     else:
         return False
