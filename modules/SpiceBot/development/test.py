@@ -21,4 +21,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "bye")
-    os.system("/sbin/shutdown -h now")
+    os.system("sudo /sbin/shutdown -h now")
