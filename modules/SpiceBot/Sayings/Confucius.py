@@ -13,7 +13,7 @@ from BotShared import *
 defaultoptions = [
     "Man who lie on back, fucks up.", "Man who piss into wind get wet.", "Panties not best thing on earth, but next to it.", "Virginity like bubble: one prick, all gone.", "Man who stand on toilet high on pot.",
     "Man who stand on toilet high on pot.", "If a bulldog and a Shitsu are mated, it would be called a Bullshit.", "Nail on board is not good as screw on bench.",
-    "Tight dress is like a barbed fence… it protects the premises without restricting the view."
+    "Tight dress is like a barbed fence; it protects the premises without restricting the view."
 ]
 
 
