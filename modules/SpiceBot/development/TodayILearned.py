@@ -22,47 +22,32 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
-
-    databasekey = 'til'
+    databasekey = 'todayILearned'
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
-    existingarray = get_database_value(bot, instigator, databasekey) or []
-    if command == "add":
-        if inputstring not in existingarray:
-            adjust_database_array(bot, instigator, inputstring, databasekey, 'add')
-            message = "Added to database."
-            osd(bot, trigger.sender, 'say', message)
-        else:
-            message = "That response is already in the database."
-            osd(bot, trigger.sender, 'say', message)
-    elif command == "remove":
-        if inputstring not in existingarray:
-            message = "That response was not found in the database."
-            osd(bot, trigger.sender, 'say', message)
-        else:
-            adjust_database_array(bot, instigator, inputstring, databasekey, 'del')
-            message = "Removed from database."
-            osd(bot, trigger.sender, 'say', message)
-    elif command == "count":
-        messagecount = len(existingarray)
-        message = "There are currently " + str(messagecount) + " responses for that in the database."
-        osd(bot, trigger.sender, 'say', message)
-    elif command == "last":
-        message = get_trigger_arg(bot, existingarray, "last")
-        osd(bot, trigger.sender, 'say', message)
-
+    existingarray = get_database_value(bot, trigger.nick, databasekey) or []
+    if command in commandarray:
+        if command == "add":
+            if inputstring not in existingarray:
+                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
+                message = "Added to database."
+            else:
+                message = "That is already in the database."
+        elif command == "remove":
+            if inputstring not in existingarray:
+                message = "That was not found in the database."
+            else:
+                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
+                message = "Removed from database."
+        elif command == "count":
+            messagecount = len(existingarray)
+            message = "There are currently " + str(messagecount) + " responses in the database for that."
+        elif command == "last":
+            message = get_trigger_arg(bot, existingarray, "last")
     else:
-        day = get_trigger_arg(bot, existingarray, "random") or ''
-        if weapontype == '':
+        message1 = get_trigger_arg(bot, existingarray, "random") or ''
+        if message1 == '':
             message = "No response found. Have any been added?"
-    target = get_trigger_arg(bot, triggerargsarray, 1)
-    reason = get_trigger_arg(bot, triggerargsarray, '2+')
-    msg = "a " + weapontype
-
-    # Target is fine
-    if not reason:
-        message = instigator + " tils " + target + " with " + msg + "."
-        osd(bot, trigger.sender, 'say', message)
-    else:
-        message = instigator + " tils " + target + " with " + msg + " for " + reason + "."
-        osd(bot, trigger.sender, 'say', message)
+        else:
+            message = "Today I Learned that " + message1 + "!"
+    osd(bot, trigger.sender, 'say', message)
