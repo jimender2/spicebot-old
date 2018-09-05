@@ -537,8 +537,31 @@ def database_initialize(bot, nick, array, database):
 def sayingsmodule(bot, databasekey, triggerargsarray, thingtodo):
     """Handle the creation and manipulation of modules that return sayings."""
     # add, remove, last, count, list, initialise?
-    resultstring = "test"
-    return resultstring
+    response = "Something went wrong. Oops."
+    inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
+    existingarray = get_database_value(bot, bot.nick, databasekey) or []
+    if thingtodo == "add":
+        if inputstring not in existingarray:
+            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
+            response = "Added to database."
+        else:
+            response = "That is already in the database."
+    elif thingtodo == "remove":
+        if inputstring not in existingarray:
+            response = "That was not found in the database."
+        else:
+            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
+            response = "Removed from database."
+    elif thingtodo == "count":
+        messagecount = len(existingarray)
+        response = "I'm seeing " + str(messagecount) + " responses in the database."
+    elif thingtodo == "last":
+        response = get_trigger_arg(bot, existingarray, "last")
+    else:
+        response = get_trigger_arg(bot, existingarray, "random") or ''
+        if response == '':
+            response = "I'm afraid I couldn't find an entry for that."
+    return response
 
 
 """
