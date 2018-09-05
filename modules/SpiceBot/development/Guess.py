@@ -20,31 +20,37 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    instigator = trigger.nick
-    inchannel = trigger.sender
     databasekey = 'guess'
     command = get_trigger_arg(bot, triggerargsarray, 1)
+    message = sayingsmodule(bot, databasekey, triggerargsarray, command)
+    osd(bot, trigger.sender, 'say', message)
+
+
+def sayingsmodule(bot, databasekey, triggerargsarray, thingtodo):
+    """Handle the creation and manipulation of modules that return sayings."""
+    # add, remove, last, count, list, initialise?
+    response = "Something went wrong. Oops."
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
     existingarray = get_database_value(bot, bot.nick, databasekey) or []
-    if command == "add":
+    if thingtodo == "add":
         if inputstring not in existingarray:
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
-            message = "Added to database."
+            response = "Added to database."
         else:
-            message = "That is already in the database."
-    elif command == "remove":
+            response = "That is already in the database."
+    elif thingtodo == "remove":
         if inputstring not in existingarray:
-            message = "That was not found in the database."
+            response = "That was not found in the database."
         else:
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
-            message = "Removed from database."
-    elif command == "count":
+            response = "Removed from database."
+    elif thingtodo == "count":
         messagecount = len(existingarray)
-        message = "I guess there are currently " + str(messagecount) + " responses in the database."
-    elif command == "last":
-        message = get_trigger_arg(bot, existingarray, "last")
+        response = "I guess there are currently " + str(messagecount) + " responses in the database."
+    elif thingtodo == "last":
+        response = get_trigger_arg(bot, existingarray, "last")
     else:
-        message = get_trigger_arg(bot, existingarray, "random") or ''
-        if message == '':
-            message = "No response found. I guess none have been added."
-    osd(bot, trigger.sender, 'say', message)
+        response = get_trigger_arg(bot, existingarray, "random") or ''
+        if response == '':
+            response = "I'm afraid I couldn't find an entry for that."
+    return response
