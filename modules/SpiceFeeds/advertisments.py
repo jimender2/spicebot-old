@@ -16,22 +16,11 @@ from BotShared import *
 
 # author jimender2
 
-testarray = ["DoubleD recommends these new drapes https://goo.gl/BMTMde",
-             "Spiceduck for spicerex mascot 2k18",
-             "Deathbybandaid is looking for developers for spicebot and spicethings",
-             "Upgrade to premium to remove ads",
-             "Selling panties cheap. Msg DoubleD for more info.",
-             "On sale now: tears of an orphan child!",
-             "One-way ticket to hell just $199",
-             "Get a free xboner here",
-             "Extra, Extra, read all about it. A giant Bever is attacking Canadian people",
-             "Want to make fast money? Sell Drugs",
-             "Syrup",
-             "I love Apple products .... In the trash",
-             "Did you know that I am a female?",
-             "Wanna be friends?",
-             "New Features released every day",
-             "I feel neglected. Use me more. Duel assualt in me!"]
+defaultoptions = [
+            "DoubleD recommends these new drapes https://goo.gl/BMTMde", "Spiceduck for spicerex mascot 2k18", "Deathbybandaid is looking for developers for spicebot and spicethings",
+            "Upgrade to premium to remove ads", "Selling panties cheap. Msg DoubleD for more info.", "On sale now: tears of an orphan child!", "One-way ticket to hell just $199",
+            "Get a free xboner here", "Extra, Extra, read all about it. A giant Bever is attacking Canadian people", "Want to make fast money? Sell Drugs", "Syrup",
+            "I love Apple products .... In the trash", "Did you know that I am a female?", "Wanna be friends?", "New Features released every day", "I feel neglected. Use me more. Duel assault in me!"]
 
 
 hardcoded_not_in_this_chan = ["#spiceworks", "##spicebottest", "#spicebottest"]
@@ -39,49 +28,19 @@ hardcoded_not_in_this_chan = ["#spiceworks", "##spicebottest", "#spicebottest"]
 
 @sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement', 'spam')
 def mainfunction(bot, trigger):
+    """Check to see if module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'ads')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    instigator = trigger.nick
-    inchannel = trigger.sender
-
-    # database_initialize(bot, bot.nick, testarray, 'ads')
-    existingarray = get_database_value(bot, bot.nick, 'ads') or []
-    if existingarray == []:
-        adjust_database_array(bot, bot.nick, testarray, 'ads', 'add')
-        existingarray = testarray
-
-    command = get_trigger_arg(bot, triggerargsarray, 1)
-    inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
-
-    if command == "add":
-        if inputstring not in existingarray:
-            adjust_database_array(bot, bot.nick, inputstring, 'ads', 'add')
-            osd(bot, trigger.sender, 'say', "Added to database.")
-        else:
-            osd(bot, trigger.sender, 'say', "That response is already in the database.")
-        return
-
-    if command == "remove":
-        if inputstring not in existingarray:
-            osd(bot, trigger.sender, 'say', "That response was not found in the database.")
-        else:
-            adjust_database_array(bot, bot.nick, inputstring, 'ads', 'del')
-            osd(bot, trigger.sender, 'say', "Removed from database.")
-        return
-
-    if command == "count":
-        osd(bot, trigger.sender, 'say', "There are currently " + str(len(existingarray)) + " ads in the database.")
-        return
-
-    if command == "last":
-        osd(bot, trigger.sender, 'say', ["[Advertisement]", get_trigger_arg(bot, existingarray, "last"), "[Advertisement]"])
-        return
-
-    message = get_trigger_arg(bot, existingarray, "random") or "No response found. Have any been added?"
+    """Check to see if there are ads and retrieve one."""
+    databasekey = 'ads'
+    command = get_trigger_arg(bot, triggerargsarray, 1) or 'get'
+    if not sayingscheck(bot, databasekey) and command != "add":
+        sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
+    message = sayingsmodule(bot, databasekey, triggerargsarray, command)
     osd(bot, trigger.sender, 'say', ["[Advertisement]", message, "[Advertisement]"])
 
 
@@ -102,8 +61,7 @@ def advertisement(bot):
     next_timeout = randint(1200, 7200)
     set_database_value(bot, bot.nick, "ads_next_timeout", next_timeout)
 
-    existingarray = get_database_value(bot, bot.nick, 'ads') or []
-    message = get_trigger_arg(bot, existingarray, "random") or "Spiceduck for Spiceworks mascot 2k18"
+    message = sayingsmodule(bot, databasekey, defaultoptions, 'get') or "Spiceduck for Spiceworks mascot 2k18"
 
     for channel in bot.channels:
         if channel not in hardcoded_not_in_this_chan:
