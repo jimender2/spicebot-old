@@ -452,9 +452,13 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             bot.say("yupyup")
 
+            bot.say(str(gcalstore))
+            bot.say(str(gcalcreds))
+
             currentcalendar = eval("feeds." + feed + ".calendar")
 
             service = build('calendar', 'v3', http=gcalcreds.authorize(Http()))
+
             events_result = service.events().list(calendarId=currentcalendar, timeMin=now,
                                                   maxResults=1, singleEvents=True,
                                                   orderBy='startTime').execute()
