@@ -452,7 +452,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             #    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
         elif feed_type == 'googlecalendar':
 
-            with open(gcaljsonpath) as gcalfile:
+            with open(str(gcaljsonpath)) as gcalfile:
                 gcalstore = file.Storage(gcalfile)
                 gcalcreds = gcalstore.get()
 
