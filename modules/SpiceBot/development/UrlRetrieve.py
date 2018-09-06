@@ -26,13 +26,13 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     """Get a line from the given url."""
     line = get_trigger_arg(bot, triggerargsarray, 0) or 'random'
-    message = retrieveurlline(bot, address, line)
+    message = retrieveurlline(bot, address, line) or "Couldn't find shit."
     osd(bot, trigger.sender, 'say', message)
 
 
 def retrieveurlline(bot, fileurl, lineno):
     """Retrieve specified line from given url."""
-    if not lineno:
+    if not lineno or lineno == 'random':
         myline = randomurlline()
     else:
         lineno.lstrip("-")
