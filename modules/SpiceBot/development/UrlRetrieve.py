@@ -18,7 +18,7 @@ address = 'https://raw.githubusercontent.com/SpiceBot/SpiceBot/master/Text-Files
 @sopel.module.commands('getline')
 def mainfunction(bot, trigger):
     """Check to see if module is enabled."""
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'ferengi')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'testline')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
