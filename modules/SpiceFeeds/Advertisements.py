@@ -18,8 +18,8 @@ from BotShared import *
 
 defaultoptions = [
             "DoubleD recommends these new drapes https://goo.gl/BMTMde", "Spiceduck for spicerex mascot 2k18", "Deathbybandaid is looking for developers for spicebot and spicethings",
-            "Upgrade to premium to remove ads", "Selling panties cheap. Msg DoubleD for more info.", "On sale now: tears of an orphan child!", "One-way ticket to hell just $199",
-            "Get a free xboner here", "Extra, Extra, read all about it. A giant Bever is attacking Canadian people", "Want to make fast money? Sell Drugs", "Syrup",
+            "Upgrade to premium to remove ads", "Selling panties cheap. Msg DoubleD for more info.", "On sale now: tears of an orphan child!", "One-way ticket to Hell just $199",
+            "Get a free xboner here", "Extra, Extra, read all about it! A giant Beaver is attacking Canadian people!", "Want to make fast money? Sell Drugs", "Syrup",
             "I love Apple products .... In the trash", "Did you know that I am a female?", "Wanna be friends?", "New Features released every day", "I feel neglected. Use me more. Duel assault in me!"]
 
 
