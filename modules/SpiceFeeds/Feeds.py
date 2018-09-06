@@ -452,9 +452,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             bot.say("yupyup")
 
-            if gcalcreds.invalid:
-                return
-
             currentcalendar = eval("feeds." + feed + ".calendar")
 
             service = build('calendar', 'v3', http=creds.authorize(Http()))
