@@ -453,7 +453,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
         elif feed_type == 'googlecalendar':
 
             with open(str(gcaljsonpath)) as gcalfile:
-                gcalstore = file.Storage(gcalfile)
+                first_line = gcalfile.readline()
+                gcalstore = file.Storage(first_line)
                 gcalcreds = gcalstore.get()
 
             bot.say("yupyup")
