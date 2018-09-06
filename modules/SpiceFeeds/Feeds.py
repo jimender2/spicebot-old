@@ -451,11 +451,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             # if not displayifnotnew:
             #    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
         elif feed_type == 'googlecalendar':
-
-            bot.say("yupyup")
-
-            bot.say(str(gcalstore))
-            bot.say(str(gcalcreds))
+            return
 
             currentcalendar = eval("feeds." + feed + ".calendar")
 
