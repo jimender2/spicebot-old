@@ -34,7 +34,7 @@ config = ConfigParser.ConfigParser()
 config.read("/home/spicebot/spicebot.conf")
 
 # Google Calendar API
-SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+SCOPES = 'https://www.googleapis.com/auth/calendar'
 gcalstore = file.Storage('/home/spicebot/gcal.json')
 gcalcreds = gcalstore.get()
 
