@@ -465,8 +465,9 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             if not events:
                 bot.say("no events")
                 return
+            event = events[0]
 
-            bot.say(str(events))
+            bot.say(str(event))
 
         elif feed_type == 'twitter':
 
