@@ -1,0 +1,4 @@
+[configuration]
+type = googlecalendar
+displayname =	gcaltest
+url = https://google.com/

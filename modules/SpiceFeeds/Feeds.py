@@ -18,6 +18,10 @@ from fake_useragent import UserAgent
 import praw
 from prawcore import NotFound
 import twitter
+from __future__ import print_function
+from googleapiclient.discovery import build
+from httplib2 import Http
+from oauth2client import file, client, tools
 import sys
 import os
 moduledir = os.path.dirname(__file__)
@@ -29,6 +33,11 @@ from BotShared import *
 # creds
 config = ConfigParser.ConfigParser()
 config.read("/home/spicebot/spicebot.conf")
+
+# Google Calendar API
+SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+gcalstore = file.Storage('/home/spicebot/gcal.json')
+gcalcreds = gcalstore.get()
 
 # Reddit Creds
 RCLIENTID = config.get("reddit", "clientid")
@@ -441,6 +450,9 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             # if not displayifnotnew:
             #    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
+        elif feed_type == 'googlecalendar':
+
+            bot.say("yupyup")
 
         elif feed_type == 'twitter':
 
