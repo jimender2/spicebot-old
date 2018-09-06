@@ -454,7 +454,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             currentcalendar = eval("feeds." + feed + ".calendar")
 
-            service = build('calendar', 'v3', http=creds.authorize(Http()))
+            service = build('calendar', 'v3', http=gcalcreds.authorize(Http()))
             events_result = service.events().list(calendarId=currentcalendar, timeMin=now,
                                                   maxResults=1, singleEvents=True,
                                                   orderBy='startTime').execute()
