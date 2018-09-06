@@ -28,6 +28,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+# author deathbybandaid
 
 # creds
 config = ConfigParser.ConfigParser()
@@ -58,8 +59,6 @@ twiterapi = twitter.Api(consumer_key=TKEY,
 # user agent and header
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
-
-# author deathbybandaid
 
 feeds_dir = "feeds/"
 feeds_file_path = os.path.join(moduledir, feeds_dir)
@@ -453,11 +452,26 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             bot.say("yupyup")
 
+            if not gcalcreds or gcalcreds.invalid:
+                return
+
+            currentcalendar = eval("feeds." + feed + ".calendar")
+
+            service = build('calendar', 'v3', http=creds.authorize(Http()))
+            events_result = service.events().list(calendarId=currentcalendar, timeMin=now,
+                                                  maxResults=1, singleEvents=True,
+                                                  orderBy='startTime').execute()
+            events = events_result.get('items', [])
+            if not events:
+                bot.say("no events")
+                return
+
+            bot.say(str(events))
+
         elif feed_type == 'twitter':
 
             currenttweetat = eval("feeds." + feed + ".tweetat")
 
-            # currenttweats = twiterapi.GetSearch(currenttweetat)
             currenttweats = twiterapi.GetUserTimeline(screen_name=currenttweetat, count=1)
             listarray = []
             for tweet in currenttweats:
