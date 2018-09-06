@@ -37,8 +37,10 @@ config.read("/home/spicebot/spicebot.conf")
 # Google Calendar API
 # SCOPES = 'https://www.googleapis.com/auth/calendar'
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-gcalstore = file.Storage('/home/spicebot/gcal.json')
-gcalcreds = gcalstore.get()
+gcaljsonpath = '/home/spicebot/gcal.json'
+with open(gcaljsonpath) as gcalfile:
+    gcalstore = file.Storage(gcalfile)
+    gcalcreds = gcalstore.get()
 
 # Reddit Creds
 RCLIENTID = config.get("reddit", "clientid")
