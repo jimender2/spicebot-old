@@ -38,9 +38,8 @@ config.read("/home/spicebot/spicebot.conf")
 # SCOPES = 'https://www.googleapis.com/auth/calendar'
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 gcaljsonpath = '/home/spicebot/gcal.json'
-with open(gcaljsonpath) as gcalfile:
-    gcalstore = file.Storage(gcalfile)
-    gcalcreds = gcalstore.get()
+gcalstore = file.Storage(gcaljsonpath)
+gcalcreds = gcalstore.get()
 
 # Reddit Creds
 RCLIENTID = config.get("reddit", "clientid")
@@ -452,6 +451,10 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             # if not displayifnotnew:
             #    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
         elif feed_type == 'googlecalendar':
+
+            with open(gcaljsonpath) as gcalfile:
+                gcalstore = file.Storage(gcalfile)
+                gcalcreds = gcalstore.get()
 
             bot.say("yupyup")
 
