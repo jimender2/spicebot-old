@@ -452,7 +452,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             bot.say("yupyup")
 
-            if not gcalcreds or gcalcreds.invalid:
+            if gcalcreds.invalid:
                 return
 
             currentcalendar = eval("feeds." + feed + ".calendar")
