@@ -46,7 +46,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 @sopel.module.interval(60)
 def advertisement(bot):
-
+    """Get and share random advert at random intervals."""
     now = time.time()
 
     last_timesince = time_since(bot, bot.nick, "ads_last_time") or 0
@@ -72,6 +72,7 @@ def advertisement(bot):
 
 # compare timestamps
 def time_since(bot, nick, databasekey):
+    """Figure out when the last ad was."""
     now = time.time()
     last = get_database_value(bot, nick, databasekey)
     return abs(now - int(last))
