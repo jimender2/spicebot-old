@@ -2,10 +2,6 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
-import requests
-from lxml import html
-import calendar
-import arrow
 import sys
 import os
 from random import randint
