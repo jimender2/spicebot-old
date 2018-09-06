@@ -37,7 +37,8 @@ config.read("/home/spicebot/spicebot.conf")
 # Google Calendar API
 # SCOPES = 'https://www.googleapis.com/auth/calendar'
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-gcaljsonpath = '/home/spicebot/gcal.json'
+# gcaljsonpath = '/home/spicebot/gcal.json'
+gcaljsonpath = 'gcal.json'
 gcalstore = file.Storage(gcaljsonpath)
 gcalcreds = gcalstore.get()
 
@@ -451,11 +452,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             # if not displayifnotnew:
             #    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
         elif feed_type == 'googlecalendar':
-
-            with open(str(gcaljsonpath)) as gcalfile:
-                first_line = gcalfile.readline()
-                gcalstore = file.Storage(first_line)
-                gcalcreds = gcalstore.get()
 
             bot.say("yupyup")
 
