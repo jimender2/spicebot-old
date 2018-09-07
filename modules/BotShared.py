@@ -547,7 +547,7 @@ def sayingsmodule(bot, databasekey, inputarray, thingtodo):
             response = "Added to database."
         else:
             response = "That is already in the database."
-    elif thingtodo == "remove":
+    elif thingtodo == "remove" or thingtodo == 'del':
         if inputstring not in existingarray:
             response = "That was not found in the database."
         else:
