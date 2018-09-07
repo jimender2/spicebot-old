@@ -12,7 +12,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-address = 'https://raw.githubusercontent.com/SpiceBot/SpiceBot/master/Text-Files/ferengi_rules.txt'
+fileaddress = 'https://raw.githubusercontent.com/SpiceBot/SpiceBot/master/Text-Files/ferengi_rules.txt'
 
 
 @sopel.module.commands('getline')
@@ -25,47 +25,48 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     """Get a line from the given url."""
-    line = get_trigger_arg(bot, triggerargsarray, 0) or 'random'
-    message = retrieveurlline(bot, address, line) or "Couldn't find shit."
+    linechoice = get_trigger_arg(bot, triggerargsarray, 0) or 'random'
+    message = randomurlline(bot, fileaddress)
     osd(bot, trigger.sender, 'say', message)
 
 
-def retrieveurlline(bot, fileurl, lineno):
-    """Retrieve specified line from given url."""
-    if not lineno or lineno == 'random':
+    myline = ''
+    if not linechoice:
         myline = randomurlline()
     else:
-        lineno.lstrip("-")
-        if (line == '0' or lineno.lower() == 'zero'):
+        linechoice.lstrip("-")
+        if (linechoice == '0' or linechoice.lower() == 'zero'):
             myline = 'That doesnt appear to be a rule number.'
-        elif requested == 'random':
-            myline = randomurlline(bot, fileurl)
+        elif linechoice == 'random':
+            myline = randomurlline()
         else:
-            htmlfile = urllib.urlopen(fileurl)
+            htmlfile = urllib.urlopen(fileaddress)
             lines = htmlfile.readlines()
             numberoflines = len(lines)
 
-            if lineno.isdigit():
-                linenumber = int(requested)
-                if linenumber > numberoflines:
-                    myline = "Please select a line number between 1 and " + str(numberoflines) + "."
+            if linechoice.isdigit():
+                rulenumber = int(linechoice)
+                if rulenumber > numberoflines:
+                    myline = "Please select a rule number between 1 and " + str(numberoflines) + ""
                 else:
-                    myline = get_trigger_arg(bot, lines, linenumber)
+                    myline = get_trigger_arg(bot, lines, rulenumber)
             else:
                 try:
-                    linenumber = w2n.word_to_num(str(requested))
-                    myline = get_trigger_arg(bot, lines, linenumber)
+                    rulenumber = w2n.word_to_num(str(linechoice))
+                    myline = get_trigger_arg(bot, lines, rulenumber)
                 except ValueError:
-                    myline = "That number doesn't appear to have anything associated with it."
+                    myline = 'That doesnt appear to be a rule number.'
     if not myline or myline == '\n':
-        myline = 'There is nothing tied to this number.'
+        myline = 'There is no cannonized rule tied to this number.'
+    osd(bot, trigger.sender, 'say', myline)
 
 
-def randomurlline(bot, address):
-    """Retrieve random line from given raw file."""
-    htmlfile = urllib.urlopen(address)
+# random rule
+def randomurlline(fileurl):
+    """Retrieve random line."""
+    htmlfile = urllib.urlopen(fileurl)
     lines = htmlfile.read().splitlines()
     myline = random.choice(lines)
     if not myline or myline == '\n':
-        myline = randomline()
+        myline = randomurlline()
     return myline
