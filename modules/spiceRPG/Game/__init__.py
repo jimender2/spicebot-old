@@ -1388,18 +1388,15 @@ def spicemanip_string(bot, inputs, outputtask):
     return ' '.join(inputs)
 
 
-# Convert list to string
+# random item from list
 def spicemanip_random(bot, inputs, outputtask):
     randomselectlist = []
     for temppart in inputs:
         randomselectlist.append(temppart)
-    bot.say(str(randomselectlist))
     while len(randomselectlist) > 1:
         random.shuffle(randomselectlist)
         randomselect = randomselectlist[random.randint(0, len(randomselectlist) - 1)]
         randomselectlist.remove(randomselect)
-        # randomselectlist = randomselectlist.remove(random.choice(randomselectlist))
-    # randomselected = random.randint(0, len(randomselectlist) - 1)
     randomselect = randomselectlist[0]
     return randomselect
 
