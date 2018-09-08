@@ -1363,20 +1363,34 @@ Array/List/String Manipulation
 
 # legacy
 def get_trigger_arg(bot, inputs, outputtask):
-    bot.say("legacy")
     return spicemanip(bot, inputs, outputtask)
+
+
+# Turn list into lowercase
+def spicemanip_lower(bot, inputs, outputtask):
+    return [inputspart.lower() for inputspart in inputs]
 
 
 # Hub
 def spicemanip(bot, inputs, outputtask):
 
-    # Input needs to be a list
+    # Input needs to be a list, but don't split a word into letters
     if not isinstance(inputs, list):
         inputs = inputs.split(' ')
 
-    # Create
+    # Create return
     if outputtask == 'create':
         return inputs
+
+    # Convert outputtask to standard
+    if outputtask in [0, 'complete']:
+        outputtask = 'string'
+    if str(outputtask).isdigit():
+        outputtask = 'number'
+
+    if outputtask in ['lower']:
+        return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask)')
+
     # lower
     if outputtask == 'lower':
         return lower_array(bot, inputs)
@@ -1402,10 +1416,10 @@ def spicemanip(bot, inputs, outputtask):
     if outputtask == 'last':
         return last_array(bot, inputs)
     # Complete String
-    if outputtask == 0 or outputtask == 'complete' or outputtask == 'string':
+    if outputtask == 'string':
         return string_array(bot, inputs)
     # Number
-    if str(outputtask).isdigit():
+    if outputtask == 'number':
         return number_array(bot, inputs, outputtask)
     # Exlude from array
     if str(outputtask).endswith("!"):
