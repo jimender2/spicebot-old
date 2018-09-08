@@ -1393,6 +1393,7 @@ def spicemanip_random(bot, inputs, outputtask):
     randomselectlist = []
     for temppart in inputs:
         randomselectlist.append(temppart)
+    bot.say(str(randomselectlist))
     while len(randomselectlist) > 1:
         # random.shuffle(randomselectlist)
         randomselectlist = randomselectlist.remove(random.choice(randomselectlist))
