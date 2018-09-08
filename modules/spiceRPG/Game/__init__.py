@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'last')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 3)
     bot.say(str(triggerargsarray))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
@@ -1388,6 +1388,14 @@ def spicemanip_string(bot, inputs, outputtask):
     return ' '.join(inputs)
 
 
+# Get number item from list
+def spicemanip_number(bot, inputs, outputtask):
+    if len(inputs) < outputtask:
+        return inputs[len(inputs) - 1]
+    else:
+        return inputs[len(outputtask) - 1]
+
+
 # Get Last item from list
 def spicemanip_last(bot, inputs, outputtask):
     return inputs[len(inputs) - 1]
@@ -1423,7 +1431,7 @@ def spicemanip(bot, inputs, outputtask):
     if str(outputtask).isdigit():
         outputtask = 'number'
 
-    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last']:
+    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask)')
 
     # reverse
@@ -1438,9 +1446,6 @@ def spicemanip(bot, inputs, outputtask):
         return orlist_array(bot, inputs)
     if outputtask == 'random':
         return random_array(bot, inputs)
-    # Number
-    if outputtask == 'number':
-        return number_array(bot, inputs, outputtask)
     # Exlude from array
     if str(outputtask).endswith("!"):
         return excludefrom_array(bot, inputs, outputtask)
@@ -1530,33 +1535,6 @@ def orlist_array(bot, inputs):
         else:
             string = str(x)
         inputsnumber = inputsnumber - 1
-    return string
-
-
-# Random element
-def random_array(bot, inputs):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    if inputs == []:
-        return string
-    temparray = []
-    for d in inputs:
-        temparray.append(d)
-    shuffledarray = random.shuffle(temparray)
-    randomselected = random.randint(0, len(temparray) - 1)
-    string = str(temparray[randomselected])
-    return string
-
-
-# Last element
-def last_array(bot, inputs):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    if inputs == []:
-        return string
-    string = inputs[len(inputs)-1]
     return string
 
 
