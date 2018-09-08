@@ -1390,7 +1390,7 @@ def spicemanip_string(bot, inputs, outputtask):
 
 # Get Last item from list
 def spicemanip_last(bot, inputs, outputtask):
-    return randomselectlist[len(inputs)]
+    return inputs[len(inputs)]
 
 
 # random item from list
