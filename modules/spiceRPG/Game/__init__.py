@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 3)
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'reverse')
     bot.say(str(triggerargsarray))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
@@ -1383,6 +1383,16 @@ def spicemanip_title(bot, inputs, outputtask, suboutputtask):
     return [inputspart.title() for inputspart in inputs]
 
 
+# Reverse List Order
+def spicemanip_reverse(bot, inputs, outputtask, suboutputtask):
+    if len(inputs) <= 1:
+        return inputs
+    outputs = []
+    for inputpart in inputs:
+        outputs.append(inputpart)
+    return outputs.reverse()
+
+
 # Convert list to string
 def spicemanip_string(bot, inputs, outputtask, suboutputtask):
     return ' '.join(inputs)
@@ -1433,7 +1443,7 @@ def spicemanip(bot, inputs, outputtask):
     if str(outputtask).isdigit():
         suboutputtask, outputtask = int(outputtask), 'number'
 
-    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number']:
+    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, suboutputtask)')
 
     # reverse
@@ -1446,8 +1456,6 @@ def spicemanip(bot, inputs, outputtask):
         return andlist_array(bot, inputs)
     if outputtask == 'orlist':
         return orlist_array(bot, inputs)
-    if outputtask == 'random':
-        return random_array(bot, inputs)
     # Exlude from array
     if str(outputtask).endswith("!"):
         return excludefrom_array(bot, inputs, outputtask)
@@ -1537,19 +1545,6 @@ def orlist_array(bot, inputs):
         else:
             string = str(x)
         inputsnumber = inputsnumber - 1
-    return string
-
-
-# select a number
-def number_array(bot, inputs, number):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    if str(number).isdigit():
-        numberadjust = int(number) - 1
-        if numberadjust < len(inputs) and numberadjust >= 0:
-            number = int(number) - 1
-            string = inputs[number]
     return string
 
 
