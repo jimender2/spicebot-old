@@ -1393,7 +1393,7 @@ def spicemanip_number(bot, inputs, outputtask):
     if len(inputs) < outputtask:
         return inputs[len(inputs) - 1]
     else:
-        return inputs[len(outputtask) - 1]
+        return inputs[outputtask - 1]
 
 
 # Get Last item from list
