@@ -9,7 +9,7 @@ import sopel
 from sopel import module, tools, formatting
 # Additional
 import random
-from random import randint
+from random import randint, randrange
 import time
 import datetime
 import re
@@ -1388,6 +1388,16 @@ def spicemanip_string(bot, inputs, outputtask):
     return ' '.join(inputs)
 
 
+# Convert list to string
+def spicemanip_random(bot, inputs, outputtask):
+    randomselectlist = []
+    for temppart in inputs:
+        randomselectlist.append(temppart)
+    randomselectlist = random.shuffle(randomselectlist)
+    randomselect = randomselectlist[randrange(len(randomselectlist))]
+    return randomselect
+
+
 # Hub
 def spicemanip(bot, inputs, outputtask):
 
@@ -1405,7 +1415,7 @@ def spicemanip(bot, inputs, outputtask):
     if str(outputtask).isdigit():
         outputtask = 'number'
 
-    if outputtask in ['lower', 'upper', 'title', 'string']:
+    if outputtask in ['lower', 'upper', 'title', 'string', 'random']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask)')
 
     # reverse
@@ -1418,12 +1428,9 @@ def spicemanip(bot, inputs, outputtask):
         return andlist_array(bot, inputs)
     if outputtask == 'orlist':
         return orlist_array(bot, inputs)
-    if outputtask == 'random':
-        return random_array(bot, inputs)
     # Last element
     if outputtask == 'last':
         return last_array(bot, inputs)
-    # Complete String
 
     # Number
     if outputtask == 'number':
@@ -1447,87 +1454,6 @@ def spicemanip(bot, inputs, outputtask):
     if "^" in str(outputtask):
         return rangebetween_array(bot, inputs, outputtask)
     string = ''
-    return string
-
-
-# Convert String to lower
-def lower_array(bot, inputs):
-    if isinstance(inputs, list):
-        string = ''
-        for x in inputs:
-            if string != '':
-                string = str(string + " " + str(x.lower()))
-            else:
-                string = str(x.lower())
-        inputs = string
-    outputs = []
-    if inputs:
-        for word in inputs.split():
-            outputs.append(word.encode('ascii', 'ignore').decode('ascii'))
-    return outputs
-
-
-# Convert String to UPPER
-def upper_array(bot, inputs):
-    if isinstance(inputs, list):
-        string = ''
-        for x in inputs:
-            if string != '':
-                string = str(string + " " + str(x.upper()))
-            else:
-                string = str(x.upper())
-        inputs = string
-    outputs = []
-    if inputs:
-        for word in inputs.split():
-            outputs.append(word.encode('ascii', 'ignore').decode('ascii'))
-    return outputs
-
-
-# Convert String to title
-def title_array(bot, inputs):
-    if isinstance(inputs, list):
-        string = ''
-        for x in inputs:
-            if string != '':
-                string = str(string + " " + str(x.title()))
-            else:
-                string = str(x.title())
-        inputs = string
-    outputs = []
-    if inputs:
-        for word in inputs.split():
-            outputs.append(word.encode('ascii', 'ignore').decode('ascii'))
-    return outputs
-
-
-# Convert String to array
-def create_array(bot, inputs):
-    if isinstance(inputs, list):
-        string = ''
-        for x in inputs:
-            if string != '':
-                string = str(string + " " + str(x))
-            else:
-                string = str(x)
-        inputs = string
-    outputs = []
-    if inputs:
-        for word in inputs.split():
-            outputs.append(word.encode('ascii', 'ignore').decode('ascii'))
-    return outputs
-
-
-# Convert Array to String
-def string_array(bot, inputs):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    for x in inputs:
-        if string != '':
-            string = str(string + " " + str(x))
-        else:
-            string = str(x)
     return string
 
 
