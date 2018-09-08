@@ -1371,7 +1371,7 @@ def get_trigger_arg(bot, inputs, outputtask):
 def spicemanip(bot, inputs, outputtask):
 
     # Input needs to be a list
-    if isinstance(inputs, list):
+    if not isinstance(inputs, list):
         inputsplit = inputs.split(' ')
         inputs = []
         for inputpart in inputsplit:
