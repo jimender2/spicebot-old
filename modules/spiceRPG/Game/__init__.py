@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'random')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'last')
     bot.say(str(triggerargsarray))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
@@ -1388,6 +1388,11 @@ def spicemanip_string(bot, inputs, outputtask):
     return ' '.join(inputs)
 
 
+# Get Last item from list
+def spicemanip_last(bot, inputs, outputtask):
+    return randomselectlist[len(inputs)]
+
+
 # random item from list
 def spicemanip_random(bot, inputs, outputtask):
     randomselectlist = []
@@ -1418,7 +1423,7 @@ def spicemanip(bot, inputs, outputtask):
     if str(outputtask).isdigit():
         outputtask = 'number'
 
-    if outputtask in ['lower', 'upper', 'title', 'string', 'random']:
+    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask)')
 
     # reverse
@@ -1433,10 +1438,6 @@ def spicemanip(bot, inputs, outputtask):
         return orlist_array(bot, inputs)
     if outputtask == 'random':
         return random_array(bot, inputs)
-    # Last element
-    if outputtask == 'last':
-        return last_array(bot, inputs)
-
     # Number
     if outputtask == 'number':
         return number_array(bot, inputs, outputtask)
