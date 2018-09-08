@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'lower')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'upper')
     bot.say(str(triggerargsarray))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
@@ -1368,9 +1368,14 @@ def get_trigger_arg(bot, inputs, outputtask):
     return spicemanip(bot, inputs, outputtask)
 
 
-# Turn list into lowercase
+# Convert list into lowercase
 def spicemanip_lower(bot, inputs, outputtask):
     return [inputspart.lower() for inputspart in inputs]
+
+
+# Convert list to uppercase
+def spicemanip_upper(bot, inputs, outputtask):
+    return [inputspart.upper() for inputspart in inputs]
 
 
 # Hub
@@ -1390,7 +1395,7 @@ def spicemanip(bot, inputs, outputtask):
     if str(outputtask).isdigit():
         outputtask = 'number'
 
-    if outputtask in ['lower']:
+    if outputtask in ['lower', 'upper']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask)')
 
     # lower
