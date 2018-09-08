@@ -1418,6 +1418,8 @@ def spicemanip_random(bot, inputs, outputtask):
 # Hub
 def spicemanip(bot, inputs, outputtask):
 
+    suboutputtask = None
+
     # Input needs to be a list, but don't split a word into letters
     if not isinstance(inputs, list):
         inputs = inputs.split(' ')
@@ -1430,7 +1432,7 @@ def spicemanip(bot, inputs, outputtask):
     if outputtask in [0, 'complete']:
         outputtask = 'string'
     if str(outputtask).isdigit():
-        outputtask = 'number'
+        suboutputtask, outputtask = int(outputtask), 'number'
 
     if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask)')
