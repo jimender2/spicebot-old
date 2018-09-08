@@ -1369,41 +1369,40 @@ def get_trigger_arg(bot, inputs, outputtask):
 
 
 # Convert list into lowercase
-def spicemanip_lower(bot, inputs, outputtask):
+def spicemanip_lower(bot, inputs, outputtask, suboutputtask):
     return [inputspart.lower() for inputspart in inputs]
 
 
 # Convert list to uppercase
-def spicemanip_upper(bot, inputs, outputtask):
+def spicemanip_upper(bot, inputs, outputtask, suboutputtask):
     return [inputspart.upper() for inputspart in inputs]
 
 
 # Convert list to uppercase
-def spicemanip_title(bot, inputs, outputtask):
+def spicemanip_title(bot, inputs, outputtask, suboutputtask):
     return [inputspart.title() for inputspart in inputs]
 
 
 # Convert list to string
-def spicemanip_string(bot, inputs, outputtask):
+def spicemanip_string(bot, inputs, outputtask, suboutputtask):
     return ' '.join(inputs)
 
 
 # Get number item from list
-def spicemanip_number(bot, inputs, outputtask):
-    bot.say(str(len(inputs)))
+def spicemanip_number(bot, inputs, outputtask, suboutputtask):
     if int(outputtask) >= len(inputs):
         return inputs[len(inputs) - 1]
     else:
-        return inputs[outputtask]
+        return inputs[suboutputtask]
 
 
 # Get Last item from list
-def spicemanip_last(bot, inputs, outputtask):
+def spicemanip_last(bot, inputs, outputtask, suboutputtask):
     return inputs[len(inputs) - 1]
 
 
 # random item from list
-def spicemanip_random(bot, inputs, outputtask):
+def spicemanip_random(bot, inputs, outputtask, suboutputtask):
     randomselectlist = []
     for temppart in inputs:
         randomselectlist.append(temppart)
@@ -1435,7 +1434,7 @@ def spicemanip(bot, inputs, outputtask):
         suboutputtask, outputtask = int(outputtask), 'number'
 
     if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number']:
-        return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask)')
+        return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, suboutputtask)')
 
     # reverse
     if outputtask == 'reverse':
