@@ -1366,9 +1366,14 @@ def get_trigger_arg(bot, inputs, outputtask):
 
 # Hub
 def spicemanip(bot, inputs, outputtask):
+
+    # Input needs to be a list
+    if isinstance(inputs, list):
+        inputs = inputs.split(' ')
+
     # Create
     if outputtask == 'create':
-        return create_array(bot, inputs)
+        return inputs
     # lower
     if outputtask == 'lower':
         return lower_array(bot, inputs)
