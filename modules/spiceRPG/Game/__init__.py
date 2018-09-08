@@ -1359,8 +1359,13 @@ Array/List/String Manipulation
 """
 
 
-# Hub
+# legacy
 def get_trigger_arg(bot, inputs, outputtask):
+    return spicemanip(bot, inputs, outputtask)
+
+
+# Hub
+def spicemanip(bot, inputs, outputtask):
     # Create
     if outputtask == 'create':
         return create_array(bot, inputs)
