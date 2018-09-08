@@ -1363,6 +1363,7 @@ Array/List/String Manipulation
 
 # legacy
 def get_trigger_arg(bot, inputs, outputtask):
+    bot.say("legacy")
     return spicemanip(bot, inputs, outputtask)
 
 
