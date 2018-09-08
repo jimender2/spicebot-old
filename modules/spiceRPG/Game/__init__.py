@@ -44,6 +44,8 @@ Triggers for usage
 def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
+    bot.say(str(triggerargsarray))
+    return
     execute_start(bot, trigger, triggerargsarray, command_type)
 
 
