@@ -1431,7 +1431,10 @@ def spicemanip(bot, inputs, outputtask):
 
     # Input needs to be a list, but don't split a word into letters
     if not isinstance(inputs, list):
-        inputs = inputs.split(' ')
+        if ' ' in inputs:
+            inputs = inputs.split(' ')
+        else:
+            inputs = [inputs]
 
     # Create return
     if outputtask == 'create':
