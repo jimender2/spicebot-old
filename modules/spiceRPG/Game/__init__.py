@@ -1378,6 +1378,11 @@ def spicemanip_upper(bot, inputs, outputtask):
     return [inputspart.upper() for inputspart in inputs]
 
 
+# Convert list to uppercase
+def spicemanip_title(bot, inputs, outputtask):
+    return [inputspart.title() for inputspart in inputs]
+
+
 # Hub
 def spicemanip(bot, inputs, outputtask):
 
@@ -1395,18 +1400,9 @@ def spicemanip(bot, inputs, outputtask):
     if str(outputtask).isdigit():
         outputtask = 'number'
 
-    if outputtask in ['lower', 'upper']:
+    if outputtask in ['lower', 'upper', 'title']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask)')
 
-    # lower
-    if outputtask == 'lower':
-        return lower_array(bot, inputs)
-    # UPPER
-    if outputtask == 'upper':
-        return upper_array(bot, inputs)
-    # Title
-    if outputtask == 'title':
-        return title_array(bot, inputs)
     # reverse
     if outputtask == 'reverse':
         return reverse_array(bot, inputs)
