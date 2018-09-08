@@ -1430,6 +1430,8 @@ def spicemanip(bot, inputs, outputtask):
     suboutputtask = None
 
     # Input needs to be a list, but don't split a word into letters
+    if not inputs:
+        inputs = []
     if not isinstance(inputs, list):
         if ' ' in inputs:
             inputs = inputs.split(' ')
