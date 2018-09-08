@@ -1396,9 +1396,9 @@ def spicemanip_random(bot, inputs, outputtask):
     bot.say(str(randomselectlist))
     while len(randomselectlist) > 1:
         random.shuffle(randomselectlist)
-        randomselect = randomselectlist[0]
+        randomselect = randomselectlist[random.randint(0, len(randomselectlist) - 1)]
         randomselectlist.remove(randomselect)
-        #randomselectlist = randomselectlist.remove(random.choice(randomselectlist))
+        # randomselectlist = randomselectlist.remove(random.choice(randomselectlist))
     # randomselected = random.randint(0, len(randomselectlist) - 1)
     randomselect = randomselectlist[0]
     return randomselect
