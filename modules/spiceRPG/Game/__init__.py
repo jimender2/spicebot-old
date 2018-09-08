@@ -1394,7 +1394,8 @@ def spicemanip_random(bot, inputs, outputtask):
     for temppart in inputs:
         randomselectlist.append(temppart)
     randomselectlist = random.shuffle(randomselectlist)
-    randomselect = randomselectlist[randrange(len(randomselectlist))]
+    randomselected = random.randint(0, len(randomselectlist) - 1)
+    randomselect = randomselectlist[randomselected]
     return randomselect
 
 
@@ -1428,6 +1429,8 @@ def spicemanip(bot, inputs, outputtask):
         return andlist_array(bot, inputs)
     if outputtask == 'orlist':
         return orlist_array(bot, inputs)
+    if outputtask == 'random':
+        return random_array(bot, inputs)
     # Last element
     if outputtask == 'last':
         return last_array(bot, inputs)
