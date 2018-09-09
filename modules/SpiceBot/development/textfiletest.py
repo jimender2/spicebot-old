@@ -21,7 +21,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
-    count = txtCount('/home/spicebot/.sopel/SpiceBot/modules/SpiceBot/development/test.txt')
+    count = txtCount("/home/spicebot/.sopel/SpiceBotdev/modules/SpiceBot/development/test.txt")
     osd(bot, trigger.sender, 'say', count)
 
 
