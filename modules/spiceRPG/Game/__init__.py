@@ -1450,6 +1450,8 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
     for i in range(0, len(inputs) + 1):
         if i > mainoutputtask and i < suboutputtask:
             newlist.append(str(inputs[i - 1]))
+    if newlist == []:
+        return ''
     return ' '.join(newlist)
 
 
@@ -1517,7 +1519,7 @@ def spicemanip(bot, inputs, outputtask):
         # if str(outputtask).endswith("<"):
         #    outputtask = 'excrange_minus'
 
-    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude']:
+    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude', 'rangebetween']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
 
     # Inclusive range starting at
