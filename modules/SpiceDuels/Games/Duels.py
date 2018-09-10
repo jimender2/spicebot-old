@@ -5034,6 +5034,8 @@ def duels_user_lists(bot, duels):
             current_channel = current_channel.replace("#", "")
         current_channel = current_channel.strip()
 
+        exec("duels.users_all_current_" + current_channel + " = []")
+
         # Current Channel users
         current_chan_str = str("duels.users_current_" + current_channel + " = []")
         exec(current_chan_str)
@@ -5065,8 +5067,9 @@ def duels_user_lists(bot, duels):
         for validtarget in othervalidtargets:
             if validtarget not in users_all_current_channel:
                 users_all_current_channel.append(validtarget)
-        bot.say(str(str(users_all_current_channel)))
-        exec("duels.users_all_current_" + current_channel + " = " + str(users_all_current_channel))
+        users_all_current_class = eval("duels.users_all_current_" + current_channel)
+        for user in users_all_current_channel:
+            users_all_current_class.append(user)
         duels.users_all_allchan = get_user_dict(bot, duels, 'duelrecorduser', 'users_all_allchan') or []
         for validtarget in othervalidtargets:
             if validtarget not in duels.users_all_allchan:
