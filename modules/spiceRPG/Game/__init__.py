@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), '3+')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), '3-')
     bot.say(str(triggerargsarray))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
@@ -1453,7 +1453,6 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
     newlist = []
     for i in range(0, len(inputs)):
         if i > mainoutputtask and i < suboutputtask:
-            bot.say(str(i))
             newlist.append(str(inputs[i]))
     if newlist == []:
         return ''
@@ -1463,6 +1462,11 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
 # inclusive forward
 def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, len(inputs))
+
+
+# inclusive reverse
+def spicemanip_incrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask)
 
 
 # random item from list
@@ -1568,21 +1572,6 @@ def range_array(bot, inputs, rangea, rangeb):
         else:
             string = str(arg)
     return string
-
-
-# inclusive forward
-def incrange_plus_array(bot, inputs, number):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    rangea = 'error'
-    rangeb = 'handling'
-    if str(number).endswith("+"):
-        rangea = re.sub(r"\+", '', str(number))
-        rangeb = len(inputs)
-    if not str(rangea).isdigit() or not str(rangeb).isdigit():
-        return string
-    return range_array(bot, inputs, rangea, rangeb)
 
 
 # inclusive reverse
