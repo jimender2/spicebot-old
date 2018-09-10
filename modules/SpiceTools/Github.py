@@ -99,6 +99,9 @@ def execute_main(bot, trigger):
 
     reqrepdict['body'] = instigator + reqrepdict['body'] + ": " + inputtext
 
+    if not reqrepdict['assignee']:
+        del reqrepdict['assignee']
+
     bot.say(str(reqrepdict))
     return
 
