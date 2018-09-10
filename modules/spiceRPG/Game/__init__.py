@@ -1449,10 +1449,10 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
         return ''
     mainoutputtask, suboutputtask = int(mainoutputtask), int(suboutputtask)
     bot.say(str(mainoutputtask) + " " + str(suboutputtask))
-    # if suboutputtask == mainoutputtask:
-    #    return spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask)
-    # if suboutputtask < mainoutputtask:
-    #    mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
+    if suboutputtask == mainoutputtask:
+        return spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask)
+    if suboutputtask < mainoutputtask:
+        mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
     newlist = []
     for i in range(0, len(inputs)):
         if i > mainoutputtask and i < suboutputtask:
@@ -1469,7 +1469,7 @@ def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputt
 
 # inclusive reverse
 def spicemanip_incrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, 1, mainoutputtask)
+    return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask)
 
 
 # excluding forward
@@ -1479,7 +1479,7 @@ def spicemanip_excrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputt
 
 # excluding reverse
 def spicemanip_excrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, 1, mainoutputtask - 1)
+    return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask - 1)
 
 
 # random item from list
@@ -1545,6 +1545,8 @@ def spicemanip(bot, inputs, outputtask):
             outputtask = 'excrange_plus'
         if str(outputtask).endswith("<"):
             outputtask = 'excrange_minus'
+
+    bot.say(str(outputtask))
 
     if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude', 'rangebetween', 'incrange_plus', 'incrange_minus', 'excrange_plus', 'excrange_minus']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
