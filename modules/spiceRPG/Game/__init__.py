@@ -1463,22 +1463,22 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
 
 # inclusive forward
 def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, len(inputs))
+    return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask - 1, len(inputs))
 
 
 # inclusive reverse
 def spicemanip_incrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask)
+    return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask - 1)
 
 
 # excluding forward
 def spicemanip_excrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask + 1, len(inputs))
+    return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, len(inputs))
 
 
 # excluding reverse
 def spicemanip_excrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask - 1)
+    return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask)
 
 
 # random item from list
