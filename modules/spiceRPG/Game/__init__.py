@@ -1390,7 +1390,10 @@ def spicemanip_reverse(bot, inputs, outputtask, suboutputtask):
 
 # comma seperated list
 def spicemanip_list(bot, inputs, outputtask, suboutputtask):
-    return ', '.join(str(x) for x in inputs)
+    string = ''
+    for x in inputs:
+        string = str(str(string) + ", " + str(x))
+    return string
 
 
 # Convert list to string
@@ -1456,9 +1459,6 @@ def spicemanip(bot, inputs, outputtask):
     # reverse
     if outputtask == 'reverse':
         return reverse_array(bot, inputs)
-    # Comma Seperated List
-    if outputtask == 'list':
-        return list_array(bot, inputs)
     if outputtask == 'andlist':
         return andlist_array(bot, inputs)
     if outputtask == 'orlist':
