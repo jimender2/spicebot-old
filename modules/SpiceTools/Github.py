@@ -112,27 +112,14 @@ def execute_main(bot, trigger):
     inputtext = get_trigger_arg(bot, triggerargsarray, 0)
     reqrepdict['body'] = instigator + reqrepdict['body'] + ": " + inputtext
 
-    bot.say(str(reqrepdict))
-    return
-
-    if assignee != '':
-        assignee = get_trigger_arg(bot, [x for x in trigger.group(2) if x.startswith("@")], 1) or ''
-    make_github_issue(bot, body, labels, title, assignee, instigator)
+    # make it happen
+    make_github_issue(bot, reqrepdict, instigator)
 
 
-def make_github_issue(bot, body, labels, title, assignee, instigator):
+def make_github_issue(bot, issue, instigator):
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
     session = requests.Session()
     session.auth = (USERNAME, PASSWORD)
-    if assignee == '':
-        issue = {'title': title,
-                 'body': body,
-                 'labels': labels}
-    else:
-        issue = {'title': title,
-                 'body': body,
-                 'assignee': assignee,
-                 'labels': labels}
     r = session.post(url, json.dumps(issue))
     if r.status_code == 201:
         osd(bot, instigator, 'priv', "Successfully created " + title)
