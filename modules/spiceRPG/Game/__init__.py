@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    bot.say("remove random " + str(get_trigger_arg(bot, trigger.group(2), 'exrandom')))
+    bot.say("remove random " + str(get_trigger_arg(bot, trigger.group(2), 'count')))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
 
@@ -1358,6 +1358,19 @@ def versionnumber(bot):
 
 
 """
+Counter
+"""
+
+
+def countX(lst, x):
+    count = 0
+    for ele in lst:
+        if (ele == x):
+            count = count + 1
+    return count
+
+
+"""
 Array/List/String Manipulation
 """
 
@@ -1435,6 +1448,23 @@ def spicemanip_dedupe(bot, inputs, outputtask, mainoutputtask, suboutputtask):
 # Sort list
 def spicemanip_sort(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return sorted(inputs)
+
+
+# count items in list, return dictionary
+def spicemanip_count(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    returndict = dict()
+    if inputs == []:
+        return returndict
+    uniqueinputitems, uniquecount = [], []
+    for inputspart in inputs:
+        if inputspart not in uniqueinputitems:
+            uniqueinputitems.append(inputspart)
+    for uniqueinputspart in uniqueinputitems:
+        currentnumber = countX(inputs, uniqueinputspart)
+        uniquecount.append(currentnumber)
+    for inputsitem, unumber in zip(uniqueinputitems, uniquecount):
+        nickdict[inputsitem] = unumber
+    return returndict
 
 
 # random item from list
