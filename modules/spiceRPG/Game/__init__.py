@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'reverse')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'list')
     bot.say(str(triggerargsarray))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
@@ -1450,7 +1450,7 @@ def spicemanip(bot, inputs, outputtask):
     if str(outputtask).isdigit():
         suboutputtask, outputtask = int(outputtask), 'number'
 
-    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse']:
+    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, suboutputtask)')
 
     # reverse
