@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), '2^4')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), '2^7')
     bot.say(str(triggerargsarray))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
@@ -1535,9 +1535,6 @@ def spicemanip(bot, inputs, outputtask):
     # Exclusive range ending at
     if str(outputtask).endswith("<"):
         return excrange_minus_array(bot, inputs, outputtask)
-    # Range Between Numbers
-    if "^" in str(outputtask):
-        return rangebetween_array(bot, inputs, outputtask)
     string = ''
     return string
 
@@ -1565,21 +1562,6 @@ def range_array(bot, inputs, rangea, rangeb):
         else:
             string = str(arg)
     return string
-
-
-# range between
-def rangebetween_array(bot, inputs, number):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    rangea = 'error'
-    rangeb = 'handling'
-    if "^" in str(number):
-        rangea = number.split("^", 1)[0]
-        rangeb = number.split("^", 1)[1]
-    if not str(rangea).isdigit() or not str(rangeb).isdigit():
-        return string
-    return range_array(bot, inputs, rangea, rangeb)
 
 
 # inclusive forward
