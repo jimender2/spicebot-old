@@ -86,7 +86,7 @@ def execute_main(bot, trigger):
     subtype = get_trigger_arg(bot, triggerargsarray, 0) or None
 
     if str(subtype).endswith(tuple(["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"])):
-
+        bot.say("wip")
 
     if inputtext.startswith('duel') or inputtext.startswith('rpg'):
         title = "DUELS/RPG: " + title
