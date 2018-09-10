@@ -1388,6 +1388,11 @@ def spicemanip_reverse(bot, inputs, outputtask, suboutputtask):
     return inputs[::-1]
 
 
+# comma seperated list
+def spicemanip_list(bot, inputs, outputtask, suboutputtask):
+    return ','.join(str(x) for x in inputs)
+
+
 # Convert list to string
 def spicemanip_string(bot, inputs, outputtask, suboutputtask):
     return ' '.join(inputs)
@@ -1478,21 +1483,6 @@ def spicemanip(bot, inputs, outputtask):
         return rangebetween_array(bot, inputs, outputtask)
     string = ''
     return string
-
-
-# output reverse order
-def reverse_array(bot, inputs):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    if len(inputs) == 1:
-        return inputs
-    outputs = []
-    if inputs == []:
-        return outputs
-    for d in inputs:
-        outputs.append(d)
-    outputs.reverse()
-    return outputs
 
 
 # Comma Seperated List
