@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    bot.say("remove random " + str(get_trigger_arg(bot, trigger.group(2), 'count')))
+    bot.say("count " + str(get_trigger_arg(bot, trigger.group(2), 'count')))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
 
@@ -938,14 +938,6 @@ def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 
-def countX(lst, x):
-    count = 0
-    for ele in lst:
-        if (ele == x):
-            count += 1
-    return count
-
-
 """
 Debug
 """
@@ -1460,10 +1452,14 @@ def spicemanip_count(bot, inputs, outputtask, mainoutputtask, suboutputtask):
         if inputspart not in uniqueinputitems:
             uniqueinputitems.append(inputspart)
     for uniqueinputspart in uniqueinputitems:
-        currentnumber = countX(inputs, uniqueinputspart)
-        uniquecount.append(currentnumber)
+        count = 0
+        for ele in inputs:
+            if (ele == uniqueinputspart):
+                count += 1
+        uniquecount.append(count)
     for inputsitem, unumber in zip(uniqueinputitems, uniquecount):
-        nickdict[inputsitem] = unumber
+        # bot.say(str(inputsitem) + "" + str(unumber))
+        returndict[inputsitem] = unumber
     return returndict
 
 
