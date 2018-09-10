@@ -1451,7 +1451,7 @@ def spicemanip_random(bot, inputs, outputtask, suboutputtask):
 # Hub
 def spicemanip(bot, inputs, outputtask):
 
-    # sorted list and exclude random
+    # sorted list, dedupe list and exclude random
 
     suboutputtask = None
 
