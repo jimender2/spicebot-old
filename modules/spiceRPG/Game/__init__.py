@@ -1419,7 +1419,7 @@ def spicemanip_orlist(bot, inputs, outputtask, suboutputtask):
 
 # comma seperated list with or
 def spicemanip_exclude(bot, inputs, outputtask, suboutputtask):
-    del inputs[suboutputtask]
+    del inputs[suboutputtask - 1]
     return ' '.join(inputs)
 
 
