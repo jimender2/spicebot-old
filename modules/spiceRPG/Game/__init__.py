@@ -86,7 +86,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Get Map
     rpg_map_read(bot, rpg)
 
-    channeltarget = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.channels_list], 1)
+    channeltarget = get_trigger_arg(bot, [x for x in triggerargsarray if x in rpg.channels_list], 1)
     bot.say(str(channeltarget))
     return
 
