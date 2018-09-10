@@ -81,7 +81,7 @@ def execute_main(bot, trigger):
     reqrepdict = github_types[reqreptype]
 
     # Special Handling for modules
-    subtype = get_trigger_arg(bot, triggerargsarray, 0) or None
+    subtype = get_trigger_arg(bot, triggerargsarray, 1) or None
 
     if subtype in ["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"]:
         bot.say("tada")
