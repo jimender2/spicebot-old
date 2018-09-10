@@ -102,6 +102,7 @@ def execute_main(bot, trigger):
     if not reqrepdict['assignee']:
         assignee = get_trigger_arg(bot, [x for x in triggerargsarray if x.startswith("@")], 1) or None
         if assignee:
+            assignee = str(assignee).replace("@", "errorlist")
             reqrepdict['assignee'] = assignee
         else:
             del reqrepdict['assignee']
