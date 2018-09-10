@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), '2^7')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), '3+')
     bot.say(str(triggerargsarray))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
@@ -1446,6 +1446,10 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
     if not str(mainoutputtask).isdigit() or not str(suboutputtask).isdigit():
         return ''
     mainoutputtask, suboutputtask = int(mainoutputtask), int(suboutputtask)
+    if suboutputtask == mainoutputtask:
+        return spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask)
+    if suboutputtask < mainoutputtask:
+        mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
     newlist = []
     for i in range(0, len(inputs)):
         if i > mainoutputtask and i < suboutputtask:
@@ -1454,6 +1458,11 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
     if newlist == []:
         return ''
     return ' '.join(newlist)
+
+
+# inclusive forward
+def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, len(inputs))
 
 
 # random item from list
@@ -1504,15 +1513,15 @@ def spicemanip(bot, inputs, outputtask):
         mainoutputtask = str(outputtask).split("^", 1)[0]
         suboutputtask = str(outputtask).split("^", 1)[1]
         outputtask = 'rangebetween'
-    if str(outputtask).endswith(tuple(["!"])):
+    if str(outputtask).endswith(tuple(["!", "+"])):
         mainoutputtask = str(outputtask)
         for r in (("!", ""), ("+", ""), ("-", "'"), ("<", ""), (">", "")):
             mainoutputtask = mainoutputtask.replace(*r)
         mainoutputtask = int(mainoutputtask)
         if str(outputtask).endswith("!"):
             outputtask = 'exclude'
-        # if str(outputtask).endswith("+"):
-        #    outputtask = 'incrange_plus'
+        if str(outputtask).endswith("+"):
+            outputtask = 'incrange_plus'
         # if str(outputtask).endswith("-"):
         #    outputtask = 'incrange_minus'
         # if str(outputtask).endswith(">"):
@@ -1520,12 +1529,9 @@ def spicemanip(bot, inputs, outputtask):
         # if str(outputtask).endswith("<"):
         #    outputtask = 'excrange_minus'
 
-    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude', 'rangebetween']:
+    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude', 'rangebetween', 'incrange_plus']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
 
-    # Inclusive range starting at
-    if str(outputtask).endswith("+"):
-        return incrange_plus_array(bot, inputs, outputtask)
     # Inclusive range ending at
     if str(outputtask).endswith("-"):
         return incrange_minus_array(bot, inputs, outputtask)
