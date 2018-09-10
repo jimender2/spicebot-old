@@ -1485,9 +1485,12 @@ def spicemanip(bot, inputs, outputtask):
         outputtask = 'string'
     if str(outputtask).isdigit():
         suboutputtask, outputtask = int(outputtask), 'number'
-    if str(outputtask).endswith("!"):
+    if str(outputtask).endswith(["!"]):
         outputtask = re.sub(r"!", '', str(outputtask))
         suboutputtask, outputtask = int(outputtask), 'exclude'
+
+        # for r in (("\u2013", "-"), ("\u2019", "'"), ("\u2026", "...")):
+        #    string = string.replace(*r)
 
     if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, suboutputtask)')
@@ -1536,24 +1539,6 @@ def range_array(bot, inputs, rangea, rangeb):
             string = str(string + " " + arg)
         else:
             string = str(arg)
-    return string
-
-
-# exclude a number
-def excludefrom_array(bot, inputs, number):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    if str(number).endswith("!"):
-        number = re.sub(r"!", '', str(number))
-    if str(number).isdigit():
-        for i in range(1, len(inputs)):
-            if int(i) != int(number):
-                arg = number_array(bot, inputs, i)
-                if string != '':
-                    string = str(string + " " + arg)
-                else:
-                    string = str(arg)
     return string
 
 
