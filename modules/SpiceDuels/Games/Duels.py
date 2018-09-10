@@ -412,7 +412,7 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
             return
 
     # Rebuild again
-    duels = duels_user_lists(bot, duels)
+    # duels = duels_user_lists(bot, duels)
 
     # Stamina Check
     staminapass, stamina, duels.command_stamina_cost = duels_stamina_check(bot, duels.instigator, command_main.lower(), duels)
@@ -434,7 +434,7 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
         duels_location_move(bot, duels, duels.instigator, command_location)
         instigatorbio.location = duels_get_location(bot, duels, duels.instigator)
         # Rebuild again
-        duels = duels_user_lists(bot, duels)
+        # duels = duels_user_lists(bot, duels)
 
     # users_current_arena Check for certain commands
     if command_main.lower() in duels_commands_canduel_generate:
@@ -6610,7 +6610,6 @@ def duels_target_check(bot, target, duels, instigatorbio):
         return validtarget, validtargetmsg
 
     # Null Target
-    bot.say("test" + str(target))
     if not target:
         validtarget = 0
         validtargetmsg.append("You must specify a target.")
