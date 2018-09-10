@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
+import random
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
@@ -25,6 +26,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', str(count))
     test = fileLine("/home/spicebot/.sopel/SpiceBotdev/modules/SpiceBot/development/test.txt", 2)
     osd(bot, trigger.sender, 'say', str(test))
+    temp = randomFileLine("/home/spicebot/.sopel/SpiceBotdev/modules/SpiceBot/development/test.txt")
+    osd(bot, trigger.sender, 'say', str(temp))
 
 
 def txtCount(path):
@@ -45,6 +48,17 @@ def fileLine(path, number):
     file = open(path, "r")
     i = 1
     while i <= number:
+        line = file.readline()
+        i = i + 1
+    return line
+
+
+def randomFileLine(path):
+    maxLines = txtCount(path)
+    rand = random.randint(1, maxLines)
+    file = open(path, "r")
+    i = 1
+    while i <= rand:
         line = file.readline()
         i = i + 1
     return line
