@@ -818,6 +818,7 @@ def duels_command_function_combat(bot, triggerargsarray, command_main, trigger, 
 
     # Who is the target
     target = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.users_all_allchan], 1) or duels.instigator
+    bot.say(str(target))
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if not validtarget and not duels.admin:
         osd(bot, duels.instigator, 'notice', validtargetmsg)
