@@ -79,30 +79,28 @@ def execute_main(bot, trigger):
         reqreptype = 'wiki'
 
     reqrepdict = github_types[reqreptype]
-    bot.say(str(reqrepdict))
-    return
 
     # Special Handling for modules
     subtype = get_trigger_arg(bot, triggerargsarray, 0) or None
 
     if str(subtype).endswith(tuple(["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"])):
-        bot.say("wip")
+        reqrepdict[assignee] = "deathbybandaid"
+
+    bot.say(str(reqrepdict))
+    return
 
     if inputtext.startswith('duel') or inputtext.startswith('rpg'):
         title = "DUELS/RPG: " + title
         assignee = "deathbybandaid"
-        body = inputtext
-        body = str(instigator + action + ": " + body)
+        body = str(instigator + action + ": " + inputtext)
     elif inputtext.startswith('gamble') or inputtext.startswith('casino'):
         title = "CASINO: " + title
         assignee = "josh-cunning"
-        body = inputtext
-        body = str(instigator + action + ": " + body)
+        body = str(instigator + action + ": " + inputtext)
     elif inputtext.startswith("."):
         title = title + ": " + maincommand
-    else:
-        body = inputtext
-        body = str(instigator + action + ": " + body)
+
+    body = str(instigator + action + ": " + inputtext)
     if assignee != '':
         assignee = get_trigger_arg(bot, [x for x in trigger.group(2) if x.startswith("@")], 1) or ''
     make_github_issue(bot, body, labels, title, assignee, instigator)
