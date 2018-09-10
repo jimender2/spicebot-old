@@ -1387,10 +1387,7 @@ def spicemanip_title(bot, inputs, outputtask, suboutputtask):
 def spicemanip_reverse(bot, inputs, outputtask, suboutputtask):
     if len(inputs) <= 1:
         return inputs
-    outputs = []
-    for inputpart in inputs:
-        outputs.append(inputpart)
-    return outputs.reverse()
+    return inputs[::-1]
 
 
 # Convert list to string
@@ -1426,6 +1423,8 @@ def spicemanip_random(bot, inputs, outputtask, suboutputtask):
 
 # Hub
 def spicemanip(bot, inputs, outputtask):
+
+    # returnoutputtype and exclude random
 
     suboutputtask = None
 
