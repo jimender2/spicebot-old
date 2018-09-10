@@ -86,6 +86,7 @@ def execute_main(bot, trigger):
     # Duel/RPG
     if subtype in ["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"]:
         reqrepdict['title'] = "DUELS/RPG: " + reqrepdict['title']
+        reqrepdict['projects'] = ["Duels/RPG"]
         reqrepdict['assignee'] = "deathbybandaid"
 
     # Casino
