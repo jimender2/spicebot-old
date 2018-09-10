@@ -7754,7 +7754,7 @@ def adjust_user_dict(bot, duels, nick, dictkey, value):
     if not str(oldvalue).isdigit():
         oldvalue = 0
     nickdict = eval('duels.userdb.' + nick)
-    nickdict[dictkey] = oldvalue + valueS
+    nickdict[dictkey] = oldvalue + value
 
 
 # Save all database users in list
