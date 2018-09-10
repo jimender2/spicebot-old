@@ -1400,10 +1400,9 @@ def spicemanip_andlist(bot, inputs, outputtask, suboutputtask):
     lastentry = str("and" + str(inputs[len(inputs) - 1]))
     newlist = [l[:-1] for l in inputs]
     newlist = newlist.append(lastentry)
-    if len(newlist) > 2:
-        return ', '.join(str(x) for x in newlist)
-    else:
+    if len(newlist) == 2:
         return ' '.join(newlist)
+    return ', '.join(str(x) for x in newlist)
 
 
 # Convert list to string
@@ -1463,7 +1462,7 @@ def spicemanip(bot, inputs, outputtask):
     if str(outputtask).isdigit():
         suboutputtask, outputtask = int(outputtask), 'number'
 
-    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list']:
+    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, suboutputtask)')
 
     # reverse
