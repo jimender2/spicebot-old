@@ -85,7 +85,7 @@ def execute_main(bot, trigger):
 
     if subtype in ["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"]:
         bot.say("tada")
-        reqrepdict[assignee] = "deathbybandaid"
+        reqrepdict['assignee'] = "deathbybandaid"
 
     bot.say(str(reqrepdict))
     return
