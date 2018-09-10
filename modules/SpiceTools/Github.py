@@ -84,8 +84,10 @@ def execute_main(bot, trigger):
     subtype = get_trigger_arg(bot, triggerargsarray, 1) or None
 
     if subtype in ["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"]:
-        bot.say("tada")
+        reqrepdict['title'] = "DUELS/RPG: " + reqrepdict['title']
         reqrepdict['assignee'] = "deathbybandaid"
+    elif subtype in ["gamble", ".gamble", "casino", ".casino"]:
+        reqrepdict['assignee'] = "josh-cunning"
 
     bot.say(str(reqrepdict))
     return
@@ -93,11 +95,9 @@ def execute_main(bot, trigger):
     if inputtext.startswith('duel') or inputtext.startswith('rpg'):
         title = "DUELS/RPG: " + title
         assignee = "deathbybandaid"
-        body = str(instigator + action + ": " + inputtext)
     elif inputtext.startswith('gamble') or inputtext.startswith('casino'):
         title = "CASINO: " + title
         assignee = "josh-cunning"
-        body = str(instigator + action + ": " + inputtext)
     elif inputtext.startswith("."):
         title = title + ": " + maincommand
 
