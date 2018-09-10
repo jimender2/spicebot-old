@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'list')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'andlist')
     bot.say(str(triggerargsarray))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
@@ -1393,6 +1393,16 @@ def spicemanip_list(bot, inputs, outputtask, suboutputtask):
     return ', '.join(str(x) for x in inputs)
 
 
+# comma seperated list with and
+def spicemanip_andlist(bot, inputs, outputtask, suboutputtask):
+    if len(inputs) < 2:
+        return ' '.join(inputs)
+    lastentry = str("and" + str(inputs[len(inputs) - 1]))
+    newlist = [l[:-1] for l in inputs]
+    newlist = newlist.append(lastentry)
+    return ', '.join(str(x) for x in newlist)
+
+
 # Convert list to string
 def spicemanip_string(bot, inputs, outputtask, suboutputtask):
     return ' '.join(inputs)
@@ -1479,21 +1489,6 @@ def spicemanip(bot, inputs, outputtask):
     if "^" in str(outputtask):
         return rangebetween_array(bot, inputs, outputtask)
     string = ''
-    return string
-
-
-# Comma Seperated List
-def list_array(bot, inputs):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    if inputs == []:
-        return string
-    for x in inputs:
-        if string != '':
-            string = str(str(string) + ", " + str(x))
-        else:
-            string = str(x)
     return string
 
 
