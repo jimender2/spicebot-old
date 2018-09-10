@@ -45,8 +45,10 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), '3-')
-    bot.say(str(triggerargsarray))
+    bot.say("3+ " + str(get_trigger_arg(bot, trigger.group(2), '3-')))
+    bot.say("3- " + str(get_trigger_arg(bot, trigger.group(2), '3-')))
+    bot.say("3> " + str(get_trigger_arg(bot, trigger.group(2), '3-')))
+    bot.say("3< " + str(get_trigger_arg(bot, trigger.group(2), '3-')))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
 
@@ -1466,7 +1468,17 @@ def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputt
 
 # inclusive reverse
 def spicemanip_incrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, -1, mainoutputtask)
+    return spicemanip_rangebetween(bot, inputs, outputtask, 1, mainoutputtask)
+
+
+# excluding forward
+def spicemanip_excrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask + 1, len(inputs))
+
+
+# excluding reverse
+def spicemanip_excrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    return spicemanip_rangebetween(bot, inputs, outputtask, 1, mainoutputtask - 1)
 
 
 # random item from list
@@ -1528,21 +1540,13 @@ def spicemanip(bot, inputs, outputtask):
             outputtask = 'incrange_plus'
         if str(outputtask).endswith("-"):
             outputtask = 'incrange_minus'
-        # if str(outputtask).endswith(">"):
-        #    outputtask = 'excrange_plus'
-        # if str(outputtask).endswith("<"):
-        #    outputtask = 'excrange_minus'
+        if str(outputtask).endswith(">"):
+            outputtask = 'excrange_plus'
+        if str(outputtask).endswith("<"):
+            outputtask = 'excrange_minus'
 
-    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude', 'rangebetween', 'incrange_plus', 'incrange_minus']:
+    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude', 'rangebetween', 'incrange_plus', 'incrange_minus', 'excrange_plus', 'excrange_minus']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
-
-    # Exclusive range starting at
-    if str(outputtask).endswith(">"):
-        return excrange_plus_array(bot, inputs, outputtask)
-    # Exclusive range ending at
-    if str(outputtask).endswith("<"):
-        return excrange_minus_array(bot, inputs, outputtask)
-
     return ''
 
 
@@ -1569,38 +1573,6 @@ def range_array(bot, inputs, rangea, rangeb):
         else:
             string = str(arg)
     return string
-
-
-# excluding forward
-def excrange_plus_array(bot, inputs, number):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    rangea = 'error'
-    rangeb = 'handling'
-    if str(number).endswith(">"):
-        rangea = re.sub(r">", '', str(number))
-        rangea = int(rangea) + 1
-        rangeb = len(inputs)
-    if not str(rangea).isdigit() or not str(rangeb).isdigit():
-        return string
-    return range_array(bot, inputs, rangea, rangeb)
-
-
-# excluding reverse
-def excrange_minus_array(bot, inputs, number):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    rangea = 'error'
-    rangeb = 'handling'
-    if str(number).endswith("<"):
-        rangea = 1
-        rangeb = re.sub(r"<", '', str(number))
-        rangeb = int(rangeb) - 1
-    if not str(rangea).isdigit() or not str(rangeb).isdigit():
-        return string
-    return range_array(bot, inputs, rangea, rangeb)
 
 
 def array_compare(bot, indexitem, arraytoindex, arraytocompare):
