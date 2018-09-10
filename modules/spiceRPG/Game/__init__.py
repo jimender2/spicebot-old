@@ -1448,10 +1448,10 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
     if not str(mainoutputtask).isdigit() or not str(suboutputtask).isdigit():
         return ''
     mainoutputtask, suboutputtask = int(mainoutputtask), int(suboutputtask)
-    if suboutputtask == mainoutputtask:
-        return spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask)
-    if suboutputtask < mainoutputtask:
-        mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
+    # if suboutputtask == mainoutputtask:
+    #    return spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask)
+    # if suboutputtask < mainoutputtask:
+    #    mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
     newlist = []
     for i in range(0, len(inputs)):
         if i > mainoutputtask and i < suboutputtask:
@@ -1548,31 +1548,6 @@ def spicemanip(bot, inputs, outputtask):
     if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude', 'rangebetween', 'incrange_plus', 'incrange_minus', 'excrange_plus', 'excrange_minus']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
     return ''
-
-
-# range
-def range_array(bot, inputs, rangea, rangeb):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    if not str(rangea).isdigit() or not str(rangeb).isdigit():
-        return string
-    if int(rangeb) == int(rangea):
-        return number_array(bot, inputs, rangeb)
-    if int(rangeb) < int(rangea):
-        tempa, tempb = rangeb, rangea
-        rangea, rangeb = tempa, tempb
-    if int(rangea) < 1:
-        rangea = 1
-    if int(rangeb) > len(inputs):
-        return string
-    for i in range(int(rangea), int(rangeb) + 1):
-        arg = number_array(bot, inputs, i)
-        if string != '':
-            string = str(string + " " + arg)
-        else:
-            string = str(arg)
-    return string
 
 
 def array_compare(bot, indexitem, arraytoindex, arraytocompare):
