@@ -110,7 +110,7 @@ def execute_main(bot, trigger):
 
     # Body text
     inputtext = get_trigger_arg(bot, triggerargsarray, 0)
-    reqrepdict['body'] = instigator + reqrepdict['body'] + ": " + inputtext
+    reqrepdict['body'] = instigator + " " + reqrepdict['body'] + ": " + inputtext
 
     # make it happen
     make_github_issue(bot, reqrepdict, instigator)
