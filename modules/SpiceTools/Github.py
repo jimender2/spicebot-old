@@ -61,7 +61,7 @@ def execute_main(bot, trigger):
 
     # create array for input, determine that there is a request/report
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
-    inputtext = get_trigger_arg(bot, triggerargsarray, 0) or 'nothing'
+    inputtext = get_trigger_arg(bot, triggerargsarray, 0)
     if not inputtext:
         return osd(bot, trigger.sender, 'say', "What feature/issue do you want to post?")
 
