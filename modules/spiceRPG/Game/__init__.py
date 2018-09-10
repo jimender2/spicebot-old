@@ -45,10 +45,10 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    bot.say("3+ " + str(get_trigger_arg(bot, trigger.group(2), '3-')))
+    bot.say("3+ " + str(get_trigger_arg(bot, trigger.group(2), '3+')))
     bot.say("3- " + str(get_trigger_arg(bot, trigger.group(2), '3-')))
-    bot.say("3> " + str(get_trigger_arg(bot, trigger.group(2), '3-')))
-    bot.say("3< " + str(get_trigger_arg(bot, trigger.group(2), '3-')))
+    bot.say("3> " + str(get_trigger_arg(bot, trigger.group(2), '3>')))
+    bot.say("3< " + str(get_trigger_arg(bot, trigger.group(2), '3<')))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
 
