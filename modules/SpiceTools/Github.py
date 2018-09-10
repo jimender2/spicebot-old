@@ -31,19 +31,19 @@ github_types = {
                 "feature": {
                             "labels": ['Feature Request'],
                             "title": 'Feature Request',
-                            "action": "requested",
+                            "body": "requested",
                             "assignee": False
                             },
                 "issue": {
                             "labels": ['Issue Report'],
                             "title": 'Issue Report',
-                            "action": "found an issue",
+                            "body": "found an issue",
                             "assignee": False
                             },
                 "wiki": {
                             "labels": ['Wiki Update'],
                             "title": 'Wiki Update Request',
-                            "action": "requested",
+                            "body": "requested",
                             "assignee": "Berserkir-Wolf"
                             }
 }
@@ -81,27 +81,27 @@ def execute_main(bot, trigger):
     reqrepdict = github_types[reqreptype]
 
     # Special Handling for modules
-    subtype = get_trigger_arg(bot, triggerargsarray, 1) or None
+    subtype = get_trigger_arg(bot, triggerargsarray, 1)
 
+    # Duel/RPG
     if subtype in ["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"]:
         reqrepdict['title'] = "DUELS/RPG: " + reqrepdict['title']
         reqrepdict['assignee'] = "deathbybandaid"
+
+    # Casino
     elif subtype in ["gamble", ".gamble", "casino", ".casino"]:
+        reqrepdict['title'] = "CASINO: " + reqrepdict['title']
         reqrepdict['assignee'] = "josh-cunning"
+
+    # possible title catch
+    if subtype.startswith("."):
+        reqrepdict['title'] = reqrepdict['title'] + ": " + str(subtype)
+
+    reqrepdict['body'] = instigator + reqrepdict['body'] + ": " + inputtext
 
     bot.say(str(reqrepdict))
     return
 
-    if inputtext.startswith('duel') or inputtext.startswith('rpg'):
-        title = "DUELS/RPG: " + title
-        assignee = "deathbybandaid"
-    elif inputtext.startswith('gamble') or inputtext.startswith('casino'):
-        title = "CASINO: " + title
-        assignee = "josh-cunning"
-    elif inputtext.startswith("."):
-        title = title + ": " + maincommand
-
-    body = str(instigator + action + ": " + inputtext)
     if assignee != '':
         assignee = get_trigger_arg(bot, [x for x in trigger.group(2) if x.startswith("@")], 1) or ''
     make_github_issue(bot, body, labels, title, assignee, instigator)
