@@ -75,17 +75,19 @@ def execute_main(bot, trigger):
             assignee = "deathbybandaid"
             body = inputtext
             body = str(instigator + action + ": " + body)
-            make_github_issue(bot, body, labels, title, assignee, instigator)
         elif inputtext.startswith('gamble') or inputtext.startswith('casino'):
             title = "CASINO: " + title
             assignee = "josh-cunning"
             body = inputtext
             body = str(instigator + action + ": " + body)
-            make_github_issue(bot, body, labels, title, assignee, instigator)
+        elif maincommand.startswith("."):
+            title = title + ": " + maincommand
         else:
             body = inputtext
             body = str(instigator + action + ": " + body)
-            make_github_issue(bot, body, labels, title, assignee, instigator)
+        if assignee != '':
+            assignee = get_trigger_arg(bot, [x for x in trigger.group(2) if x.startswith("@")], 1) or ''
+        make_github_issue(bot, body, labels, title, assignee, instigator)
 
 
 def make_github_issue(bot, body, labels, title, assignee, instigator):
