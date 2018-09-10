@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'andlist')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'orlist')
     bot.say(str(triggerargsarray))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
@@ -1405,6 +1405,18 @@ def spicemanip_andlist(bot, inputs, outputtask, suboutputtask):
     return ', '.join(str(x) for x in inputs)
 
 
+# comma seperated list with or
+def spicemanip_orlist(bot, inputs, outputtask, suboutputtask):
+    if len(inputs) < 2:
+        return ' '.join(inputs)
+    lastentry = str("or " + str(inputs[len(inputs) - 1]))
+    del inputs[-1]
+    inputs.append(lastentry)
+    if len(inputs) == 2:
+        return ' '.join(inputs)
+    return ', '.join(str(x) for x in inputs)
+
+
 # Convert list to string
 def spicemanip_string(bot, inputs, outputtask, suboutputtask):
     return ' '.join(inputs)
@@ -1456,22 +1468,21 @@ def spicemanip(bot, inputs, outputtask):
     if outputtask == 'create':
         return inputs
 
+    # Make temparray to preserve original order
+    temparray = []
+    for inputpart in inputs:
+        temparray.append(inputpart)
+    inputs = temparray
+
     # Convert outputtask to standard
     if outputtask in [0, 'complete']:
         outputtask = 'string'
     if str(outputtask).isdigit():
         suboutputtask, outputtask = int(outputtask), 'number'
 
-    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist']:
+    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, suboutputtask)')
 
-    # reverse
-    if outputtask == 'reverse':
-        return reverse_array(bot, inputs)
-    if outputtask == 'andlist':
-        return andlist_array(bot, inputs)
-    if outputtask == 'orlist':
-        return orlist_array(bot, inputs)
     # Exlude from array
     if str(outputtask).endswith("!"):
         return excludefrom_array(bot, inputs, outputtask)
