@@ -94,7 +94,7 @@ def execute_main(bot, trigger):
         reqrepdict['assignee'] = "josh-cunning"
 
     # possible title catch
-    if subtype.startswith("."):
+    elif subtype.startswith("."):
         reqrepdict['title'] = reqrepdict['title'] + ": " + str(subtype)
 
     # manual assigning
