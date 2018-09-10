@@ -899,7 +899,11 @@ def spicemanip_string(bot, inputs, outputtask, mainoutputtask, suboutputtask):
 
 # Get number item from list
 def spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if int(mainoutputtask) >= len(inputs):
+    if inputs == []:
+        return 0
+    elif len(inputs) == 1:
+        return inputs[0]
+    elif int(mainoutputtask) >= len(inputs):
         return inputs[len(inputs) - 1]
     else:
         return inputs[int(mainoutputtask) - 1]
