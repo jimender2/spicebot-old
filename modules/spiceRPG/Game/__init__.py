@@ -1486,8 +1486,24 @@ def spicemanip(bot, inputs, outputtask):
     if str(outputtask).isdigit():
         suboutputtask, outputtask = int(outputtask), 'number'
     if str(outputtask).endswith(tuple(["!"])):
-        outputtask = re.sub(r"!", '', str(outputtask))
-        suboutputtask, outputtask = int(outputtask), 'exclude'
+        if str(outputtask).endswith("!"):
+            outputtask = 'exclude'
+        # if str(outputtask).endswith("+"):
+        #    outputtask = 'incrange_plus'
+        # if str(outputtask).endswith("-"):
+        #    outputtask = 'incrange_minus'
+        # if str(outputtask).endswith(">"):
+        #    outputtask = 'excrange_plus'
+        # if str(outputtask).endswith("<"):
+        #    outputtask = 'excrange_minus'
+        # if "^" in str(outputtask):
+            # outputtask = 'rangebetween'
+        for r in (("+", ""), ("-", "'"), ("<", ""), (">", ""), ("^", "")):
+            suboutputtask = str(outputtask).replace(*r)
+        suboutputtask = int(suboutputtask)
+
+        # outputtask = re.sub(r"!", '', str(outputtask))
+        # suboutputtask, outputtask = int(outputtask), 'exclude'
 
         # for r in (("\u2013", "-"), ("\u2019", "'"), ("\u2026", "...")):
         #    string = string.replace(*r)
@@ -1495,9 +1511,6 @@ def spicemanip(bot, inputs, outputtask):
     if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, suboutputtask)')
 
-    # Exlude from array
-    if str(outputtask).endswith("!"):
-        return excludefrom_array(bot, inputs, outputtask)
     # Inclusive range starting at
     if str(outputtask).endswith("+"):
         return incrange_plus_array(bot, inputs, outputtask)
