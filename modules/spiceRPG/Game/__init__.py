@@ -1369,32 +1369,32 @@ def get_trigger_arg(bot, inputs, outputtask):
 
 
 # Convert list into lowercase
-def spicemanip_lower(bot, inputs, outputtask, suboutputtask):
+def spicemanip_lower(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return [inputspart.lower() for inputspart in inputs]
 
 
 # Convert list to uppercase
-def spicemanip_upper(bot, inputs, outputtask, suboutputtask):
+def spicemanip_upper(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return [inputspart.upper() for inputspart in inputs]
 
 
 # Convert list to uppercase
-def spicemanip_title(bot, inputs, outputtask, suboutputtask):
+def spicemanip_title(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return [inputspart.title() for inputspart in inputs]
 
 
 # Reverse List Order
-def spicemanip_reverse(bot, inputs, outputtask, suboutputtask):
+def spicemanip_reverse(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return inputs[::-1]
 
 
 # comma seperated list
-def spicemanip_list(bot, inputs, outputtask, suboutputtask):
+def spicemanip_list(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return ', '.join(str(x) for x in inputs)
 
 
 # comma seperated list with and
-def spicemanip_andlist(bot, inputs, outputtask, suboutputtask):
+def spicemanip_andlist(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if len(inputs) < 2:
         return ' '.join(inputs)
     lastentry = str("and " + str(inputs[len(inputs) - 1]))
@@ -1406,7 +1406,7 @@ def spicemanip_andlist(bot, inputs, outputtask, suboutputtask):
 
 
 # comma seperated list with or
-def spicemanip_orlist(bot, inputs, outputtask, suboutputtask):
+def spicemanip_orlist(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if len(inputs) < 2:
         return ' '.join(inputs)
     lastentry = str("or " + str(inputs[len(inputs) - 1]))
@@ -1418,31 +1418,31 @@ def spicemanip_orlist(bot, inputs, outputtask, suboutputtask):
 
 
 # comma seperated list with or
-def spicemanip_exclude(bot, inputs, outputtask, suboutputtask):
-    del inputs[suboutputtask - 1]
+def spicemanip_exclude(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    del inputs[mainoutputtask - 1]
     return ' '.join(inputs)
 
 
 # Convert list to string
-def spicemanip_string(bot, inputs, outputtask, suboutputtask):
+def spicemanip_string(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return ' '.join(inputs)
 
 
 # Get number item from list
-def spicemanip_number(bot, inputs, outputtask, suboutputtask):
-    if int(suboutputtask) >= len(inputs):
+def spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    if int(mainoutputtask) >= len(inputs):
         return inputs[len(inputs) - 1]
     else:
-        return inputs[suboutputtask - 1]
+        return inputs[mainoutputtask - 1]
 
 
 # Get Last item from list
-def spicemanip_last(bot, inputs, outputtask, suboutputtask):
+def spicemanip_last(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return inputs[len(inputs) - 1]
 
 
 # random item from list
-def spicemanip_random(bot, inputs, outputtask, suboutputtask):
+def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     randomselectlist = []
     for temppart in inputs:
         randomselectlist.append(temppart)
@@ -1459,7 +1459,7 @@ def spicemanip(bot, inputs, outputtask):
 
     # sorted list, dedupe list and exclude random
 
-    suboutputtask = None
+    mainoutputtask, suboutputtask = None, None
 
     # Input needs to be a list, but don't split a word into letters
     if not inputs:
@@ -1484,12 +1484,12 @@ def spicemanip(bot, inputs, outputtask):
     if outputtask in [0, 'complete']:
         outputtask = 'string'
     if str(outputtask).isdigit():
-        suboutputtask, outputtask = int(outputtask), 'number'
+        mainoutputtask, outputtask = int(outputtask), 'number'
     if str(outputtask).endswith(tuple(["!"])):
-        suboutputtask = str(outputtask)
+        mainoutputtask = str(outputtask)
         for r in (("!", ""), ("+", ""), ("-", "'"), ("<", ""), (">", ""), ("^", "")):
-            suboutputtask = suboutputtask.replace(*r)
-        suboutputtask = int(suboutputtask)
+            mainoutputtask = mainoutputtask.replace(*r)
+        mainoutputtask = int(mainoutputtask)
         if str(outputtask).endswith("!"):
             outputtask = 'exclude'
         # if str(outputtask).endswith("+"):
@@ -1503,14 +1503,8 @@ def spicemanip(bot, inputs, outputtask):
         # if "^" in str(outputtask):
             # outputtask = 'rangebetween'
 
-        # outputtask = re.sub(r"!", '', str(outputtask))
-        # suboutputtask, outputtask = int(outputtask), 'exclude'
-
-        # for r in (("\u2013", "-"), ("\u2019", "'"), ("\u2026", "...")):
-        #    string = string.replace(*r)
-
     if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude']:
-        return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, suboutputtask)')
+        return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
 
     # Inclusive range starting at
     if str(outputtask).endswith("+"):
