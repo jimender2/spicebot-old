@@ -23,6 +23,7 @@ PASSWORD = config.get("github", "password")
 # Repo
 REPO_OWNER = 'SpiceBot'
 REPO_NAME = 'SpiceBot'
+valid_colabs = ['zsutton92', 'josh-cunning', 'Berserkir-Wolf', 'deathbybandaid', 'thetechnerd', 'SniperClif', 'jimender2']
 
 # Invalid Requests
 dontaskforthese = ['instakill', 'instant kill', 'random kill', 'random deaths', 'butterfingers', 'bad grenade', 'grenade failure', 'suicide', 'go off in', 'dud grenade']
@@ -61,8 +62,7 @@ def execute_main(bot, trigger):
 
     # create array for input, determine that there is a request/report
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
-    inputtext = get_trigger_arg(bot, triggerargsarray, 0)
-    if not inputtext:
+    if triggerargsarray == []:
         return osd(bot, trigger.sender, 'say', "What feature/issue do you want to post?")
 
     # block request for rejected features
@@ -97,15 +97,20 @@ def execute_main(bot, trigger):
     if subtype.startswith("."):
         reqrepdict['title'] = reqrepdict['title'] + ": " + str(subtype)
 
-    reqrepdict['body'] = instigator + reqrepdict['body'] + ": " + inputtext
-
+    # manual assigning
     if not reqrepdict['assignee']:
         assignee = get_trigger_arg(bot, [x for x in triggerargsarray if x.startswith("@")], 1) or None
         if assignee:
             assignee = str(assignee).replace("@", "")
-            reqrepdict['assignee'] = assignee
+            if assignee in valid_colabs:
+                reqrepdict['assignee'] = assignee
+                triggerargsarray.remove("@" + assignee)
         else:
             del reqrepdict['assignee']
+
+    # Body text
+    inputtext = get_trigger_arg(bot, triggerargsarray, 0)
+    reqrepdict['body'] = instigator + reqrepdict['body'] + ": " + inputtext
 
     bot.say(str(reqrepdict))
     return
