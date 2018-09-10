@@ -1398,12 +1398,11 @@ def spicemanip_andlist(bot, inputs, outputtask, suboutputtask):
     if len(inputs) < 2:
         return ' '.join(inputs)
     lastentry = str("and" + str(inputs[len(inputs) - 1]))
-    newlist = inputs[1:-1]
-    bot.say(str(newlist))
-    newlist = newlist.append(lastentry)
-    if len(newlist) == 2:
-        return ' '.join(newlist)
-    return ', '.join(str(x) for x in newlist)
+    inputs = inputs[1:-1]
+    inputs.append(lastentry)
+    if len(inputs) == 2:
+        return ' '.join(inputs)
+    return ', '.join(str(x) for x in inputs)
 
 
 # Convert list to string
@@ -1440,7 +1439,7 @@ def spicemanip_random(bot, inputs, outputtask, suboutputtask):
 # Hub
 def spicemanip(bot, inputs, outputtask):
 
-    # returnoutputtype and exclude random
+    # sorted list and exclude random
 
     suboutputtask = None
 
