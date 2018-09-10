@@ -1452,7 +1452,8 @@ def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
 
 # remove random item from list
 def spicemanip_exrandom(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return inputs.remove(spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask))
+    randremove = spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask)
+    return inputs.remove(randremove)
 
 
 # Convert list into lowercase
