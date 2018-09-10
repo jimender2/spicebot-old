@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'orlist')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), '2!')
     bot.say(str(triggerargsarray))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
@@ -1417,6 +1417,12 @@ def spicemanip_orlist(bot, inputs, outputtask, suboutputtask):
     return ', '.join(str(x) for x in inputs)
 
 
+# comma seperated list with or
+def spicemanip_exclude(bot, inputs, outputtask, suboutputtask):
+    del inputs[suboutputtask]
+    return ' '.join(inputs)
+
+
 # Convert list to string
 def spicemanip_string(bot, inputs, outputtask, suboutputtask):
     return ' '.join(inputs)
@@ -1479,8 +1485,11 @@ def spicemanip(bot, inputs, outputtask):
         outputtask = 'string'
     if str(outputtask).isdigit():
         suboutputtask, outputtask = int(outputtask), 'number'
+    if str(outputtask).endswith("!"):
+        outputtask = re.sub(r"!", '', str(outputtask))
+        suboutputtask, outputtask = int(outputtask), 'exclude'
 
-    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist']:
+    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, suboutputtask)')
 
     # Exlude from array
@@ -1502,46 +1511,6 @@ def spicemanip(bot, inputs, outputtask):
     if "^" in str(outputtask):
         return rangebetween_array(bot, inputs, outputtask)
     string = ''
-    return string
-
-
-# Comma Seperated List
-def andlist_array(bot, inputs):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    if inputs == []:
-        return string
-    inputnumberstart = len(inputs)
-    inputsnumber = len(inputs)
-    for x in inputs:
-        if inputsnumber == 1 and inputsnumber != inputnumberstart:
-            string = str(str(string) + ", and " + str(x))
-        elif string != '':
-            string = str(str(string) + ", " + str(x))
-        else:
-            string = str(x)
-        inputsnumber = inputsnumber - 1
-    return string
-
-
-# Comma Seperated List
-def orlist_array(bot, inputs):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    if inputs == []:
-        return string
-    inputnumberstart = len(inputs)
-    inputsnumber = len(inputs)
-    for x in inputs:
-        if inputsnumber == 1 and inputsnumber != inputnumberstart:
-            string = str(str(string) + ", or " + str(x))
-        elif string != '':
-            string = str(str(string) + ", " + str(x))
-        else:
-            string = str(x)
-        inputsnumber = inputsnumber - 1
     return string
 
 
