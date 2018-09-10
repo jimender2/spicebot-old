@@ -6610,7 +6610,7 @@ def duels_target_check(bot, target, duels, instigatorbio):
         return validtarget, validtargetmsg
 
     # Null Target
-    bot.say(str(target))
+    bot.say("test" + str(target))
     if not target:
         validtarget = 0
         validtargetmsg.append("You must specify a target.")
