@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    bot.say("sort " + str(get_trigger_arg(bot, trigger.group(2), 'sort')))
+    bot.say("sort " + str(get_trigger_arg(bot, trigger.group(2), 'exrandom')))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
 
@@ -1365,7 +1365,7 @@ Array/List/String Manipulation
 # Hub
 def spicemanip(bot, inputs, outputtask):
 
-    # sorted list and exclude random
+    #exclude random
 
     mainoutputtask, suboutputtask = None, None
 
@@ -1451,6 +1451,10 @@ def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     randomselect = randomselectlist[0]
     return randomselect
 
+
+# remove random item from list
+def spicemanip_exrandom(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    return inputs.remove(spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask))
 
 # Convert list into lowercase
 def spicemanip_lower(bot, inputs, outputtask, mainoutputtask, suboutputtask):
