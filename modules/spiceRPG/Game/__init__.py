@@ -1397,8 +1397,8 @@ def spicemanip_list(bot, inputs, outputtask, suboutputtask):
 def spicemanip_andlist(bot, inputs, outputtask, suboutputtask):
     if len(inputs) < 2:
         return ' '.join(inputs)
-    lastentry = str("and" + str(inputs[len(inputs) - 1]))
-    inputs = inputs[1:-1]
+    lastentry = str("and " + str(inputs[len(inputs) - 1]))
+    del inputs[-1]
     inputs.append(lastentry)
     if len(inputs) == 2:
         return ' '.join(inputs)
