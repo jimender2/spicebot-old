@@ -100,8 +100,10 @@ def execute_main(bot, trigger):
     reqrepdict['body'] = instigator + reqrepdict['body'] + ": " + inputtext
 
     if not reqrepdict['assignee']:
-        reqrepdict['assignee'] = get_trigger_arg(bot, [x for x in triggerargsarray if x.startswith("@")], 1) or None
-        if not reqrepdict['assignee']:
+        assignee = get_trigger_arg(bot, [x for x in triggerargsarray if x.startswith("@")], 1) or None
+        if assignee:
+            reqrepdict['assignee'] = assignee
+        else:
             del reqrepdict['assignee']
 
     bot.say(str(reqrepdict))
