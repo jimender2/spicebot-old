@@ -888,7 +888,7 @@ def spicemanip_orlist(bot, inputs, outputtask, mainoutputtask, suboutputtask):
 
 # comma seperated list with or
 def spicemanip_exclude(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    del inputs[mainoutputtask - 1]
+    del inputs[int(mainoutputtask) - 1]
     return ' '.join(inputs)
 
 
@@ -902,7 +902,7 @@ def spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if int(mainoutputtask) >= len(inputs):
         return inputs[len(inputs) - 1]
     else:
-        return inputs[mainoutputtask - 1]
+        return inputs[int(mainoutputtask) - 1]
 
 
 # Get Last item from list
@@ -930,22 +930,22 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
 
 # Forward Range includes index number
 def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask - 1, len(inputs))
+    return spicemanip_rangebetween(bot, inputs, outputtask, int(mainoutputtask) - 1, len(inputs))
 
 
 # Reverse Range includes index number
 def spicemanip_incrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask - 1)
+    return spicemanip_rangebetween(bot, inputs, outputtask, 0, int(mainoutputtask) - 1)
 
 
 # Forward Range excludes index number
 def spicemanip_excrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask + 1, len(inputs))
+    return spicemanip_rangebetween(bot, inputs, outputtask, int(mainoutputtask) + 1, len(inputs))
 
 
 # Reverse Range excludes index number
 def spicemanip_excrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask - 2)
+    return spicemanip_rangebetween(bot, inputs, outputtask, 0, int(mainoutputtask) - 2)
 
 
 def array_compare(bot, indexitem, arraytoindex, arraytocompare):
