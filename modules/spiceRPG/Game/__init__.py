@@ -1466,7 +1466,7 @@ def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputt
 
 # inclusive reverse
 def spicemanip_incrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask)
+    return spicemanip_rangebetween(bot, inputs, outputtask, 1, mainoutputtask)
 
 
 # random item from list
@@ -1569,21 +1569,6 @@ def range_array(bot, inputs, rangea, rangeb):
         else:
             string = str(arg)
     return string
-
-
-# inclusive reverse
-def incrange_minus_array(bot, inputs, number):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    string = ''
-    rangea = 'error'
-    rangeb = 'handling'
-    if str(number).endswith("-"):
-        rangea = 1
-        rangeb = re.sub(r"-", '', str(number))
-    if not str(rangea).isdigit() or not str(rangeb).isdigit():
-        return string
-    return range_array(bot, inputs, rangea, rangeb)
 
 
 # excluding forward
