@@ -1486,6 +1486,9 @@ def spicemanip(bot, inputs, outputtask):
     if str(outputtask).isdigit():
         suboutputtask, outputtask = int(outputtask), 'number'
     if str(outputtask).endswith(tuple(["!"])):
+        for r in (("+", ""), ("-", "'"), ("<", ""), (">", ""), ("^", "")):
+            suboutputtask = str(outputtask).replace(*r)
+        suboutputtask = int(suboutputtask)
         if str(outputtask).endswith("!"):
             outputtask = 'exclude'
         # if str(outputtask).endswith("+"):
@@ -1498,9 +1501,6 @@ def spicemanip(bot, inputs, outputtask):
         #    outputtask = 'excrange_minus'
         # if "^" in str(outputtask):
             # outputtask = 'rangebetween'
-        for r in (("+", ""), ("-", "'"), ("<", ""), (">", ""), ("^", "")):
-            suboutputtask = str(outputtask).replace(*r)
-        suboutputtask = int(suboutputtask)
 
         # outputtask = re.sub(r"!", '', str(outputtask))
         # suboutputtask, outputtask = int(outputtask), 'exclude'
