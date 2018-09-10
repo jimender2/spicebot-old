@@ -32,3 +32,17 @@ def txtCount(path):
             line_count += 1
 
     return line_count
+
+
+def fileLine(path, number):
+    maxLines = txtCount(path)
+    if number < 0:
+        number = 1
+    if number < maxLines:
+        number = 1
+    file = open(path, "r")
+    i = 1
+    while i < number:
+        line = file.readline()
+        i = i + 1
+    return line
