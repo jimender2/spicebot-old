@@ -44,7 +44,7 @@ def fileLine(path, number):
         number = 1
     file = open(path, "r")
     i = 1
-    while i < number:
+    while i <= number:
         line = file.readline()
         i = i + 1
     return line
