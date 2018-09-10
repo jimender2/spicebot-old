@@ -1400,7 +1400,10 @@ def spicemanip_andlist(bot, inputs, outputtask, suboutputtask):
     lastentry = str("and" + str(inputs[len(inputs) - 1]))
     newlist = [l[:-1] for l in inputs]
     newlist = newlist.append(lastentry)
-    return ', '.join(str(x) for x in newlist)
+    if len(newlist) > 2:
+        return ', '.join(str(x) for x in newlist)
+    else:
+        return ' '.join(newlist)
 
 
 # Convert list to string
