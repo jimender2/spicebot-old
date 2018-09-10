@@ -1448,6 +1448,7 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
     if not str(mainoutputtask).isdigit() or not str(suboutputtask).isdigit():
         return ''
     mainoutputtask, suboutputtask = int(mainoutputtask), int(suboutputtask)
+    bot.say(str(mainoutputtask) + " " + str(suboutputtask))
     # if suboutputtask == mainoutputtask:
     #    return spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask)
     # if suboutputtask < mainoutputtask:
