@@ -1412,7 +1412,10 @@ def spicemanip(bot, inputs, outputtask):
         for r in (("!", ""), ("+", ""), ("-", ""), ("<", ""), (">", "")):
             mainoutputtask = mainoutputtask.replace(*r)
 
-    returnvalue = eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
+    try:
+        returnvalue = eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
+    except NameError:
+        returnvalue = ''
 
     return returnvalue
 
