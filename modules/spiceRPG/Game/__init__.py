@@ -1434,6 +1434,11 @@ def spicemanip_dedupe(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return newlist
 
 
+# Sort list
+def spicemanip_sort(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    return sorted(inputs)
+
+
 # random item from list
 def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     randomselectlist = []
