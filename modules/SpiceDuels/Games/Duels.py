@@ -5065,6 +5065,7 @@ def duels_user_lists(bot, duels):
         for validtarget in othervalidtargets:
             if validtarget not in users_all_current_channel:
                 users_all_current_channel.append(validtarget)
+        bot.say(str(str(users_all_current_channel)))
         exec("duels.users_all_current_" + current_channel + " = " + str(users_all_current_channel))
         duels.users_all_allchan = get_user_dict(bot, duels, 'duelrecorduser', 'users_all_allchan') or []
         for validtarget in othervalidtargets:
