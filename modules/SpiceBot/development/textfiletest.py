@@ -40,7 +40,7 @@ def fileLine(path, number):
     maxLines = txtCount(path)
     if number < 0:
         number = 1
-    if number < maxLines:
+    if number > maxLines:
         number = 1
     file = open(path, "r")
     i = 1
