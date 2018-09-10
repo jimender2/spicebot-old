@@ -1425,7 +1425,7 @@ def spicemanip_dedupe(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     newlist = []
     for inputspart in inputs:
         if inputspart not in newlist:
-            newlist.append(i)
+            newlist.append(inputspart)
     return newlist
 
 
