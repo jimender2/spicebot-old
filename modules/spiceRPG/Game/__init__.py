@@ -1385,8 +1385,6 @@ def spicemanip_title(bot, inputs, outputtask, suboutputtask):
 
 # Reverse List Order
 def spicemanip_reverse(bot, inputs, outputtask, suboutputtask):
-    if len(inputs) <= 1:
-        return inputs
     return inputs[::-1]
 
 
