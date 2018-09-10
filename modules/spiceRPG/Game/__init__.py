@@ -1533,12 +1533,9 @@ def spicemanip(bot, inputs, outputtask):
         # if str(outputtask).endswith("<"):
         #    outputtask = 'excrange_minus'
 
-    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude', 'rangebetween', 'incrange_plus']:
+    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude', 'rangebetween', 'incrange_plus', 'incrange_minus']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
 
-    # Inclusive range ending at
-    if str(outputtask).endswith("-"):
-        return incrange_minus_array(bot, inputs, outputtask)
     # Exclusive range starting at
     if str(outputtask).endswith(">"):
         return excrange_plus_array(bot, inputs, outputtask)
