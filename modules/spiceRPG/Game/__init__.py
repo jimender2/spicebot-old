@@ -1461,22 +1461,22 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
     return ' '.join(newlist)
 
 
-# inclusive forward
+# Forward Range includes index number
 def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask - 1, len(inputs))
 
 
-# inclusive reverse
+# Reverse Range includes index number
 def spicemanip_incrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask - 1)
 
 
-# excluding forward
+# Forward Range excludes index number
 def spicemanip_excrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask - 2, len(inputs))
 
 
-# excluding reverse
+# Reverse Range excludes index number
 def spicemanip_excrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask - 2)
 
