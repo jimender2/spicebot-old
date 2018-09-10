@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), '2!')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), '2^4')
     bot.say(str(triggerargsarray))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
@@ -1441,6 +1441,18 @@ def spicemanip_last(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return inputs[len(inputs) - 1]
 
 
+# range between items in list
+def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    if not str(mainoutputtask).isdigit() or not str(suboutputtask).isdigit():
+        return ''
+    mainoutputtask, suboutputtask = int(mainoutputtask), int(suboutputtask)
+    newlist = []
+    for i in range(0, len(inputs) + 1):
+        if i > mainoutputtask and i < suboutputtask:
+            newlist.append(str(inputs[i - 1]))
+    return ' '.join(newlist)
+
+
 # random item from list
 def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     randomselectlist = []
@@ -1485,9 +1497,13 @@ def spicemanip(bot, inputs, outputtask):
         outputtask = 'string'
     if str(outputtask).isdigit():
         mainoutputtask, outputtask = int(outputtask), 'number'
+    if "^" in str(outputtask):
+        mainoutputtask = str(outputtask).split("^", 1)[0]
+        suboutputtask = str(outputtask).split("^", 1)[1]
+        outputtask = 'rangebetween'
     if str(outputtask).endswith(tuple(["!"])):
         mainoutputtask = str(outputtask)
-        for r in (("!", ""), ("+", ""), ("-", "'"), ("<", ""), (">", ""), ("^", "")):
+        for r in (("!", ""), ("+", ""), ("-", "'"), ("<", ""), (">", "")):
             mainoutputtask = mainoutputtask.replace(*r)
         mainoutputtask = int(mainoutputtask)
         if str(outputtask).endswith("!"):
@@ -1500,8 +1516,6 @@ def spicemanip(bot, inputs, outputtask):
         #    outputtask = 'excrange_plus'
         # if str(outputtask).endswith("<"):
         #    outputtask = 'excrange_minus'
-        # if "^" in str(outputtask):
-            # outputtask = 'rangebetween'
 
     if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude']:
         return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
