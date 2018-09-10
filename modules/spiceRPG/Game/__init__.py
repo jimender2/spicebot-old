@@ -45,7 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    bot.say("deduped " + str(get_trigger_arg(bot, trigger.group(2), 'dedupe')))
+    bot.say("deduped " + str(get_trigger_arg(bot, trigger.group(2), 'exceptionhandle')))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
 
@@ -1365,7 +1365,7 @@ Array/List/String Manipulation
 # Hub
 def spicemanip(bot, inputs, outputtask):
 
-    # sorted list, dedupe list and exclude random
+    # sorted list and exclude random
 
     mainoutputtask, suboutputtask = None, None
 
@@ -1412,7 +1412,9 @@ def spicemanip(bot, inputs, outputtask):
         for r in (("!", ""), ("+", ""), ("-", ""), ("<", ""), (">", "")):
             mainoutputtask = mainoutputtask.replace(*r)
 
-    return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
+    returnvalue = eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
+
+    return returnvalue
 
 
 # legacy
