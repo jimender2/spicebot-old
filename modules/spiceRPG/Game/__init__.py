@@ -1532,9 +1532,7 @@ def spicemanip(bot, inputs, outputtask):
         outputtask = 'rangebetween'
     if str(outputtask).endswith(tuple(["!", "+", "-", "<", ">"])):
         mainoutputtask = str(outputtask)
-        for r in (("!", ""), ("+", ""), ("-", ""), ("<", ""), (">", "")):
-            mainoutputtask = mainoutputtask.replace(*r)
-        mainoutputtask = int(mainoutputtask)
+        bot.say(str(outputtask))
         if str(outputtask).endswith("!"):
             outputtask = 'exclude'
         if str(outputtask).endswith("+"):
@@ -1545,6 +1543,9 @@ def spicemanip(bot, inputs, outputtask):
             outputtask = 'excrange_plus'
         if str(outputtask).endswith("<"):
             outputtask = 'excrange_minus'
+        for r in (("!", ""), ("+", ""), ("-", ""), ("<", ""), (">", "")):
+            mainoutputtask = mainoutputtask.replace(*r)
+        mainoutputtask = int(mainoutputtask)
 
     bot.say(str(outputtask))
 
