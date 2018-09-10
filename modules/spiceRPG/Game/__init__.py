@@ -45,10 +45,7 @@ def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
 
-    bot.say("3+ " + str(get_trigger_arg(bot, trigger.group(2), '3+')))
-    bot.say("3- " + str(get_trigger_arg(bot, trigger.group(2), '3-')))
-    bot.say("3> " + str(get_trigger_arg(bot, trigger.group(2), '3>')))
-    bot.say("3< " + str(get_trigger_arg(bot, trigger.group(2), '3<')))
+    bot.say("deduped " + str(get_trigger_arg(bot, trigger.group(2), 'dedupe')))
     return
     execute_start(bot, trigger, triggerargsarray, command_type)
 
@@ -1365,9 +1362,84 @@ Array/List/String Manipulation
 """
 
 
+# Hub
+def spicemanip(bot, inputs, outputtask):
+
+    # sorted list, dedupe list and exclude random
+
+    mainoutputtask, suboutputtask = None, None
+
+    # Input needs to be a list, but don't split a word into letters
+    if not inputs:
+        inputs = []
+    if not isinstance(inputs, list):
+        if ' ' in inputs:
+            inputs = inputs.split(' ')
+        else:
+            inputs = [inputs]
+
+    # Create return
+    if outputtask == 'create':
+        return inputs
+
+    # Make temparray to preserve original order
+    temparray = []
+    for inputpart in inputs:
+        temparray.append(inputpart)
+    inputs = temparray
+
+    # Convert outputtask to standard
+    if outputtask in [0, 'complete']:
+        outputtask = 'string'
+    elif str(outputtask).isdigit():
+        mainoutputtask, outputtask = int(outputtask), 'number'
+    elif "^" in str(outputtask):
+        mainoutputtask = str(outputtask).split("^", 1)[0]
+        suboutputtask = str(outputtask).split("^", 1)[1]
+        outputtask = 'rangebetween'
+    elif str(outputtask).endswith(tuple(["!", "+", "-", "<", ">"])):
+        mainoutputtask = str(outputtask)
+        if str(outputtask).endswith("!"):
+            outputtask = 'exclude'
+        if str(outputtask).endswith("+"):
+            outputtask = 'incrange_plus'
+        if str(outputtask).endswith("-"):
+            outputtask = 'incrange_minus'
+        if str(outputtask).endswith(">"):
+            outputtask = 'excrange_plus'
+        if str(outputtask).endswith("<"):
+            outputtask = 'excrange_minus'
+        for r in (("!", ""), ("+", ""), ("-", ""), ("<", ""), (">", "")):
+            mainoutputtask = mainoutputtask.replace(*r)
+
+    return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
+
+
 # legacy
 def get_trigger_arg(bot, inputs, outputtask):
     return spicemanip(bot, inputs, outputtask)
+
+
+# dedupe list
+def spicemanip_dedupe(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    newlist = []
+    for inputspart in inputs:
+        if inputspart not in newlist:
+            newlist.append(i)
+    return newlist
+
+
+# random item from list
+def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    randomselectlist = []
+    for temppart in inputs:
+        randomselectlist.append(temppart)
+    while len(randomselectlist) > 1:
+        random.shuffle(randomselectlist)
+        randomselect = randomselectlist[random.randint(0, len(randomselectlist) - 1)]
+        randomselectlist.remove(randomselect)
+    randomselect = randomselectlist[0]
+    return randomselect
 
 
 # Convert list into lowercase
@@ -1479,75 +1551,6 @@ def spicemanip_excrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputt
 # Reverse Range excludes index number
 def spicemanip_excrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return spicemanip_rangebetween(bot, inputs, outputtask, 0, mainoutputtask - 2)
-
-
-# random item from list
-def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    randomselectlist = []
-    for temppart in inputs:
-        randomselectlist.append(temppart)
-    while len(randomselectlist) > 1:
-        random.shuffle(randomselectlist)
-        randomselect = randomselectlist[random.randint(0, len(randomselectlist) - 1)]
-        randomselectlist.remove(randomselect)
-    randomselect = randomselectlist[0]
-    return randomselect
-
-
-# Hub
-def spicemanip(bot, inputs, outputtask):
-
-    # sorted list, dedupe list and exclude random
-
-    mainoutputtask, suboutputtask = None, None
-
-    # Input needs to be a list, but don't split a word into letters
-    if not inputs:
-        inputs = []
-    if not isinstance(inputs, list):
-        if ' ' in inputs:
-            inputs = inputs.split(' ')
-        else:
-            inputs = [inputs]
-
-    # Create return
-    if outputtask == 'create':
-        return inputs
-
-    # Make temparray to preserve original order
-    temparray = []
-    for inputpart in inputs:
-        temparray.append(inputpart)
-    inputs = temparray
-
-    # Convert outputtask to standard
-    if outputtask in [0, 'complete']:
-        outputtask = 'string'
-    if str(outputtask).isdigit():
-        mainoutputtask, outputtask = int(outputtask), 'number'
-    if "^" in str(outputtask):
-        mainoutputtask = str(outputtask).split("^", 1)[0]
-        suboutputtask = str(outputtask).split("^", 1)[1]
-        outputtask = 'rangebetween'
-    if str(outputtask).endswith(tuple(["!", "+", "-", "<", ">"])):
-        mainoutputtask = str(outputtask)
-        if str(outputtask).endswith("!"):
-            outputtask = 'exclude'
-        if str(outputtask).endswith("+"):
-            outputtask = 'incrange_plus'
-        if str(outputtask).endswith("-"):
-            outputtask = 'incrange_minus'
-        if str(outputtask).endswith(">"):
-            outputtask = 'excrange_plus'
-        if str(outputtask).endswith("<"):
-            outputtask = 'excrange_minus'
-        for r in (("!", ""), ("+", ""), ("-", ""), ("<", ""), (">", "")):
-            mainoutputtask = mainoutputtask.replace(*r)
-        mainoutputtask = int(mainoutputtask)
-
-    if outputtask in ['lower', 'upper', 'title', 'string', 'random', 'last', 'number', 'reverse', 'list', 'andlist', 'orlist', 'exclude', 'rangebetween', 'incrange_plus', 'incrange_minus', 'excrange_plus', 'excrange_minus']:
-        return eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
-    return ''
 
 
 def array_compare(bot, indexitem, arraytoindex, arraytocompare):
