@@ -1473,7 +1473,7 @@ def spicemanip_incrange_minus(bot, inputs, outputtask, mainoutputtask, suboutput
 
 # Forward Range excludes index number
 def spicemanip_excrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask - 2, len(inputs))
+    return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask + 1, len(inputs))
 
 
 # Reverse Range excludes index number
