@@ -64,7 +64,6 @@ def execute_main(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
     if triggerargsarray == []:
         return osd(bot, trigger.sender, 'say', "What feature/issue do you want to post?")
-    bot.say("1")
 
     # block request for rejected features
     for inputpart in triggerargsarray:
@@ -83,7 +82,6 @@ def execute_main(bot, trigger):
 
     # Special Handling for modules
     subtype = get_trigger_arg(bot, triggerargsarray, 1)
-    bot.say("2")
 
     # Duel/RPG
     if subtype in ["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"]:
@@ -103,7 +101,6 @@ def execute_main(bot, trigger):
     # manual assigning
     if not reqrepdict['assignee']:
         assignee = get_trigger_arg(bot, [x for x in triggerargsarray if x.startswith("@")], 1) or None
-        bot.say("3")
         if assignee:
             assignee = str(assignee).replace("@", "")
             if assignee in valid_colabs:
@@ -114,7 +111,6 @@ def execute_main(bot, trigger):
 
     # Body text
     inputtext = get_trigger_arg(bot, triggerargsarray, 0)
-    bot.say("4")
     reqrepdict['body'] = instigator + reqrepdict['body'] + ": " + inputtext
 
     # make it happen
