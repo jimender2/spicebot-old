@@ -44,9 +44,6 @@ Triggers for usage
 def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
-
-    bot.say("count " + str(get_trigger_arg(bot, trigger.group(2), 'count')))
-    return
     execute_start(bot, trigger, triggerargsarray, command_type)
 
 
@@ -88,6 +85,10 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
 
     # Get Map
     rpg_map_read(bot, rpg)
+
+    channeltarget = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.channels_list], 1)
+    bot.say(str(channeltarget))
+    return
 
     # Run the Process
     execute_main(bot, rpg, instigator, trigger, triggerargsarray)
