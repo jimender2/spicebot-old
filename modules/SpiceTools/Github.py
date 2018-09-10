@@ -83,7 +83,8 @@ def execute_main(bot, trigger):
     # Special Handling for modules
     subtype = get_trigger_arg(bot, triggerargsarray, 0) or None
 
-    if str(subtype).endswith(tuple(["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"])):
+    if subtype in ["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"]:
+        bot.say("tada")
         reqrepdict[assignee] = "deathbybandaid"
 
     bot.say(str(reqrepdict))
