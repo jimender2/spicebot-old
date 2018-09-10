@@ -1453,7 +1453,6 @@ def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
 # remove random item from list
 def spicemanip_exrandom(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     randremove = spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask)
-    bot.say(str(randremove))
     inputs.remove(randremove)
     return inputs
 
