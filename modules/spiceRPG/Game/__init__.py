@@ -1486,8 +1486,8 @@ def spicemanip(bot, inputs, outputtask):
     if str(outputtask).isdigit():
         suboutputtask, outputtask = int(outputtask), 'number'
     if str(outputtask).endswith(tuple(["!"])):
-        for r in (("!", ""), ("+", ""), ("-", "'"), ("<", ""), (">", ""), ("^", "")):
-            suboutputtask = str(outputtask).replace(*r)
+        for k, v in [("!", ""), ("+", ""), ("-", "'"), ("<", ""), (">", ""), ("^", "")]:
+            suboutputtask = str(outputtask).replace(k, v)
         suboutputtask = int(suboutputtask)
         if str(outputtask).endswith("!"):
             outputtask = 'exclude'
