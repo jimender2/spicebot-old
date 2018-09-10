@@ -1454,7 +1454,7 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
         mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
     newlist = []
     for i in range(0, len(inputs)):
-        if i > mainoutputtask and i < suboutputtask:
+        if i >= mainoutputtask and i <= suboutputtask:
             newlist.append(str(inputs[i]))
     if newlist == []:
         return ''
@@ -1463,7 +1463,7 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
 
 # inclusive forward
 def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask - 1, len(inputs))
+    return spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, len(inputs))
 
 
 # inclusive reverse
