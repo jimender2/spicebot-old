@@ -1080,7 +1080,7 @@ def txtFileCount(path):
 
 
 def fileLine(path, number):
-    maxLines = txtCount(path)
+    maxLines = txtFileCount(path)
     if number < 0:
         number = 1
     if number > maxLines:
@@ -1094,7 +1094,7 @@ def fileLine(path, number):
 
 
 def randomFileLine(path):
-    maxLines = txtCount(path)
+    maxLines = txtFileCount(path)
     rand = random.randint(1, maxLines)
     file = open(path, "r")
     i = 1
