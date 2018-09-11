@@ -32,13 +32,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     testsgood = [
                     0, 1, 2, 3, 4, 5, 6, 7,
-                    "'reverse'", "'count'", "'dedupe'", "'sort'"
+                    "'reverse'", "'count'", "'dedupe'", "'sort'",
+                    "'lower'", "'upper'", "'title'",
+                    "'list'", "'andlist'", "'orlist'", "'last'", "'random'"
                     ]
     triggerargstest = [
                         8, 9,
-                        "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'",
-                        "'lower'", "'upper'", "'title'",
-                        "'list'", "'andlist'", "'orlist'", "'last'", "'random'"]
+                        "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'"
+                        ]
     argtypetest = ["get_trigger_arg", "spicemanip"]
 
     for tasktest in triggerargstest:
