@@ -258,6 +258,9 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
 
     return
 
+    for command_split_partial in commands_array:
+        triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+
         # Admin only
         duels.admin = 0
         if [x for x in triggerargsarray_part if x == "-a"]:
