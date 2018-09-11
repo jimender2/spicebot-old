@@ -274,7 +274,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
             number_command = get_database_value(bot, duels.instigator, 'hotkey_'+str(command_main_part)) or 0
             if not number_command:
                 osd(bot, duels.instigator, 'notice', "You don't have a command hotlinked to "+str(command_main_part)+".")
-                pass
+                continue
             else:
                 number_command_list = get_database_value(bot, duels.instigator, 'hotkey_complete') or []
                 if command_main_part not in number_command_list:
