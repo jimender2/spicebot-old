@@ -31,11 +31,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
     testsgood = [
-                    0, 1, 2, 3, 4, 5, 6, 7, 8,
+                    0, 1, 2, 3, 4, 5, 6, 7,
                     "'reverse'", "'count'", "'dedupe'", "'sort'"
                     ]
     triggerargstest = [
-                        9,
+                        8, 9,
                         "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'",
                         "'lower'", "'upper'", "'title'",
                         "'list'", "'andlist'", "'orlist'", "'last'", "'random'"]
