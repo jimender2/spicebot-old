@@ -322,6 +322,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
 
 # Seperate Targets from Commands. Handle Misspellings of commands, and translate alternate commands
 def command_main_process(bot, trigger, triggerargsarray, command_full, command_main, duels, instigatorbio):
+    bot.say("here")
 
     # Cheap error handling for people that like to find issues
     if command_main == 'invalidcommand':
@@ -387,8 +388,6 @@ def command_main_process(bot, trigger, triggerargsarray, command_full, command_m
 
 # process commands, and run
 def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duels, instigatorbio):
-
-    bot.say("here")
 
     command_restructure = spicemanip(bot, triggerargsarray, '2+')
     duels.command_restructure = spicemanip(bot, command_restructure, 'create')
