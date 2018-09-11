@@ -2151,7 +2151,6 @@ def duels_command_function_stats(bot, triggerargsarray, command_main, trigger, c
 
     # Who is the target
     target = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.users_all_allchan or x == 'everyone'], 1) or duels.instigator
-    bot.say(str(target))
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if target != duels.instigator:
         if not validtarget and not duels.admin:
@@ -2281,7 +2280,6 @@ def duels_command_function_health(bot, triggerargsarray, command_main, trigger, 
 
     # Who is the target
     target = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.users_all_allchan], 1) or duels.instigator
-    bot.say(str(target))
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if target != duels.instigator:
         if not validtarget and not duels.admin:
