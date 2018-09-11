@@ -245,8 +245,8 @@ def spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask):
         return ''
     elif len(inputs) == 1:
         return inputs[0]
-    elif int(mainoutputtask) >= len(inputs):
-        return inputs[len(inputs) - 1]
+    elif int(mainoutputtask) >= len(inputs) or int(mainoutputtask) <= 0:
+        return ''
     else:
         return inputs[int(mainoutputtask) - 1]
 
@@ -270,9 +270,8 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
     if suboutputtask < mainoutputtask:
         mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
     newlist = []
-    for i in range(0, len(inputs)):
-        if i >= mainoutputtask and i <= suboutputtask:
-            newlist.append(str(inputs[i]))
+    for i in range(mainoutputtask, suboutputtask):
+        newlist.append(str(spicemanip_number(bot, inputs, outputtask, i, suboutputtask)))
     if newlist == []:
         return ''
     return ' '.join(newlist)
