@@ -49,7 +49,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 
 # Hub
-def spicemanip(bot, inputs, outputtask):
+def spicemanip(bot, inputs, outputtask, output_type='default'):
 
     mainoutputtask, suboutputtask = None, None
 
