@@ -142,14 +142,11 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
 # split list by string
 def spicemanip_split(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     split_array = []
+    restring = ' '.join(inputs)
     if mainoutputtask not in inputs:
-        split_array = inputs
+        split_array = [restring]
     else:
-        restring = ' '.join(inputs)
         split_array = restring.split(mainoutputtask)
-        # for splitpart in full_split:
-        #    splitpart = list(splitpart.split(" "))
-        #    split_array.append(splitpart)
     return split_array
 
 
