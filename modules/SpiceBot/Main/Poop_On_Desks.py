@@ -31,7 +31,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                      " gets halfway through pooping before realising that this is their own desk, not " + target + "'s.",
                      " trips over taking their pants off and shits everywhere BUT the desk."]
 
-    bot.say(str(target))
     if not target:
         versionblank = spicemanip(bot, ['corner', 'boss'], 'random')
         if versionblank == 'corner':
