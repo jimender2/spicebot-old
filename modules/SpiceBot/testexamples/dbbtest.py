@@ -158,7 +158,7 @@ def spicemanip_split(bot, inputs, outputtask, mainoutputtask, suboutputtask):
         split_array = [restring]
     else:
         split_array = restring.split(mainoutputtask)
-    return [x for x in split_array if x]
+    return [x for x in split_array if x and x not in ['', ' ']]
 
 
 # dedupe list
