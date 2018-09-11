@@ -43,7 +43,6 @@ Triggers for usage
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
-    bot.say("here")
     triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
     execute_start(bot, trigger, triggerargsarray, command_type)
 
@@ -86,10 +85,6 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
 
     # Get Map
     rpg_map_read(bot, rpg)
-
-    channeltarget = spicemanip(bot, [x for x in triggerargsarray if x in rpg.channels_list], 1)
-    bot.say(str(channeltarget))
-    return
 
     # Run the Process
     execute_main(bot, rpg, instigator, trigger, triggerargsarray)
