@@ -285,6 +285,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
                 command_main_part = spicemanip(bot, triggerargsarray_part, 1)
 
         # Run command process
+        bot.say("here")
         command_main_process(bot, trigger, triggerargsarray_part, command_full_part, command_main_part, duels, instigatorbio)
 
     # Deathblow
