@@ -43,6 +43,7 @@ Triggers for usage
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
     command_type = 'normalcom'
+    bot.say("here")
     triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
     execute_start(bot, trigger, triggerargsarray, command_type)
 
