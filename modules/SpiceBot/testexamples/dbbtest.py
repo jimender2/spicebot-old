@@ -28,16 +28,17 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    triggerargstest = [0, 1, 2, 3, 4, 5, 6, 7, 8, "2^6", "3!", "3+", "3-", "3<", "3>"]
+    triggerargstest = [0, 1, 2, 3, 4, 5, 6, 7, 8, "'2^6'", "'3!'", "'3+'", "'3-'", "'3<'", "'3>'"]
     argtypetest = ["spicemanip", "get_trigger_arg"]
 
     for tasktest in triggerargstest:
 
         for testtype in argtypetest:
 
-            testeval = eval(str(testtype) + "(bot, trigger.group(2), " + str(tasktest) + ")")
+            testevalstr = str(str(testtype) + "(bot, trigger.group(2), " + str(tasktest) + ")")
+            testeval = eval()
 
-            bot.say(testtype + "     " + str(testeval))
+            bot.say(str(testtype) + " " + str(tasktest) + "     " + str(testeval))
 
 
 # Hub
