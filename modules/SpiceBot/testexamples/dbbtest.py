@@ -129,7 +129,7 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
 
     # verify output is correct
     if output_type == 'string':
-        if not isinstance(returnvalue, str):
+        if not isinstance(returnvalue, str) and not isinstance(returnvalue, basestring):
             returnvalue = str(' '.join(returnvalue))
     elif output_type in ['list', 'array']:
         if not isinstance(returnvalue, list):
