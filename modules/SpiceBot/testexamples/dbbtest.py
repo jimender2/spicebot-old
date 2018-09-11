@@ -41,8 +41,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             testevalstr = str(str(testtype) + "(bot, trigger.group(2), " + str(tasktest) + ")")
             testeval = eval(testevalstr)
 
+            if testtype == "spicemanip":
+                testtype = str("     " + testtype)
             bot.say(str(testtype) + "     " + str(testeval))
-
 
 # Hub
 def spicemanip(bot, inputs, outputtask):
