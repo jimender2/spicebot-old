@@ -5877,10 +5877,10 @@ def duels_death_handling(bot, duels, inflicter, inflictee):
 
 # Total Health
 def duels_get_health(bot, nick):
+    bot.say(str(nick))
     totalhealth = 0
     for x in duels_bodyparts:
         gethowmany = get_database_value(bot, nick, x) or 0
-        bot.say(str(x) + " " + str(gethowmany))
         if gethowmany:
             totalhealth += gethowmany
     return totalhealth
@@ -7823,8 +7823,8 @@ Array/List/String Manipulation
 
 # Legacy
 def get_trigger_arg(bot, inputs, outputtask, output_type='default'):
-    # return spicemanip(bot, inputs, outputtask, output_type)
-    return get_trigger_arg_old(bot, inputs, outputtask)
+    return spicemanip(bot, inputs, outputtask, output_type)
+    # return get_trigger_arg_old(bot, inputs, outputtask)
 
 
 # Hub
