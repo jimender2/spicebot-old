@@ -33,11 +33,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     bot.say(str(spicemanip(bot, trigger.group(2), '2^6')))
     return
 
+    testsgood = [
+                    0, 1, 2, 3, 4, 5, 6, 7, 8,
+                    "'reverse'", "'count'", "'dedupe'", "'sort'"
+                    ]
     triggerargstest = [
-                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                        9,
                         "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'",
                         "'lower'", "'upper'", "'title'",
-                        "'dedupe'", "'count'", "'sort'", "'reverse'",
                         "'list'", "'andlist'", "'orlist'", "'last'", "'random'"]
     argtypetest = ["get_trigger_arg", "spicemanip"]
 
@@ -119,9 +122,10 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
                             'incrange_plus', 'incrange_minus', 'excrange_plus', 'excrange_minus'
                             ]:
             output_type = 'string'
-            bot.say("here")
         elif outputtask in ['count']:
             output_type = 'dict'
+    bot.say(str(output_type))
+    bot.say(str(returnvalue))
 
     # verify output is correct
     if output_type == 'string':
