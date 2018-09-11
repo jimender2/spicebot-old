@@ -7894,7 +7894,7 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
             try:
                 returnvalue = str(' '.join(returnvalue))
             except TypeError:
-                bot.say("shitty " + str(returnvalue))
+                returnvalue = str(returnvalue)
     elif output_type in ['list', 'array']:
         if not isinstance(returnvalue, list):
             returnvalue = list(returnvalue.split(" "))
