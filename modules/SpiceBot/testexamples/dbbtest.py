@@ -30,9 +30,6 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    bot.say(str(spicemanip(bot, trigger.group(2), '2^6', 'list')))
-    return
-
     testsgood = [
                     0, 1, 2, 3, 4, 5, 6, 7, 8,
                     "'reverse'", "'count'", "'dedupe'", "'sort'"
@@ -63,7 +60,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 # Hub
 def spicemanip(bot, inputs, outputtask, output_type='default'):
-    bot.say(str(output_type))
 
     mainoutputtask, suboutputtask = None, None
 
