@@ -108,10 +108,10 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
 
     # default return if not specified
     if output_type == 'default':
-
+        returnvalue = str(' '.join(inputs))
     elif output_type == 'string':
         if isinstance(returnvalue, list):
-            returnvalue = str(' '.join(inputs))
+            returnvalue = str(' '.join(returnvalue))
     elif output_type in ['list', 'array']:
         if not isinstance(returnvalue, list):
             if ' ' in returnvalue:
