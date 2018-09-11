@@ -30,7 +30,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    triggerargstest = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'", 'random', 'lower', 'upper', 'title', 'dedupe', 'count', 'sort', 'reverse', 'list', 'andlist', 'orlist', 'last']
+    triggerargstest = ['dedupe', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'", 'random', 'lower', 'upper', 'title', 'dedupe', 'count', 'sort', 'reverse', 'list', 'andlist', 'orlist', 'last']
     argtypetest = ["get_trigger_arg", "spicemanip"]
 
     for tasktest in triggerargstest:
@@ -41,7 +41,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         for testtype in argtypetest:
 
             testevalstr = str(str(testtype) + "(bot, trigger.group(2), " + str(tasktest) + ")")
-            testeval = eval(testevalstr)
+            try:
+                testeval = eval(testevalstr)
+            except:
+                testeval = "N/A"
 
             if testtype == "spicemanip":
                 testtype = str("      " + testtype)
