@@ -1007,7 +1007,7 @@ def excludefrom_array(bot, inputs, number):
     if str(number).endswith("!"):
         number = re.sub(r"!", '', str(number))
     if str(number).isdigit():
-        for i in range(1, len(inputs)):
+        for i in range(1, len(inputs) + 1):
             if int(i) != int(number):
                 arg = number_array(bot, inputs, i)
                 if string != '':
