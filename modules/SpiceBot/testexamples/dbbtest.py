@@ -336,4 +336,4 @@ def spicemanip_excrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputt
 def spicemanip_excrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return ''
-    return spicemanip_rangebetween(bot, inputs, outputtask, 0, int(mainoutputtask) - 2)
+    return spicemanip_rangebetween(bot, inputs, outputtask, 1, int(mainoutputtask) - 1)
