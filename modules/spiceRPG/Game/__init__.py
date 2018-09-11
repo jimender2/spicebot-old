@@ -114,18 +114,10 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
     rpg.command_full_complete = spicemanip(bot, triggerargsarray, 0)
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
-    rpg.multi_com_list = []
-
-    # Build array of commands used
-    if not [x for x in triggerargsarray if x == "&&"]:
-        rpg.multi_com_list.append(rpg.command_full_complete)
-    else:
-        command_full_split = rpg.command_full_complete.split("&&")
-        for command_split in command_full_split:
-            rpg.multi_com_list.append(command_split)
+    rpg.multi_com_list = spicemanip(bot, triggerargsarray, "split_&&")
+    rpg.commands_ran = []
 
     # Cycle through command array
-    rpg.commands_ran = []
     for command_split_partial in rpg.multi_com_list:
         rpg.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
 
