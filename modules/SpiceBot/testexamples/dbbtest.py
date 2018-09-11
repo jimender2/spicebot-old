@@ -272,7 +272,7 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
     if suboutputtask < mainoutputtask:
         mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
     newlist = []
-    for i in range(mainoutputtask, suboutputtask):
+    for i in range(mainoutputtask, suboutputtask + 1):
         newlist.append(str(spicemanip_number(bot, inputs, outputtask, i, suboutputtask)))
     if newlist == []:
         return ''
