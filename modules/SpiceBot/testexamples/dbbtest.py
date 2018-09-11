@@ -84,6 +84,8 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
         inputs = []
     if not isinstance(inputs, list):
         inputs = list(inputs.split(" "))
+        inputs = [x for x in inputs if x and x not in ['', ' ']]
+        inputs = [inputspart.strip() for inputspart in inputs]
 
     # Create return
     if outputtask == 'create':
@@ -147,6 +149,8 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
     elif output_type in ['list', 'array']:
         if not isinstance(returnvalue, list):
             returnvalue = list(returnvalue.split(" "))
+            returnvalue = [x for x in returnvalue if x and x not in ['', ' ']]
+            returnvalue = [inputspart.strip() for inputspart in returnvalue]
     return returnvalue
 
 
