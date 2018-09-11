@@ -7850,6 +7850,9 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
         mainoutputtask = str(outputtask).split("^", 1)[0]
         suboutputtask = str(outputtask).split("^", 1)[1]
         outputtask = 'rangebetween'
+    elif str(outputtask).startswith("split_"):
+        mainoutputtask = str(outputtask).replace("split_", "")
+        outputtask = 'split'
     elif str(outputtask).endswith(tuple(["!", "+", "-", "<", ">"])):
         mainoutputtask = str(outputtask)
         if str(outputtask).endswith("!"):
@@ -7891,6 +7894,17 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
         if not isinstance(returnvalue, list):
             returnvalue = list(returnvalue.split(" "))
     return returnvalue
+
+
+# split list by string
+def spicemanip_split(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    split_array = []
+    restring = ' '.join(inputs)
+    if mainoutputtask not in inputs:
+        split_array = [restring]
+    else:
+        split_array = restring.split(mainoutputtask)
+    return split_array
 
 
 # dedupe list
