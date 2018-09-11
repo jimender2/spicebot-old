@@ -36,7 +36,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         for testtype in argtypetest:
 
             testevalstr = str(str(testtype) + "(bot, trigger.group(2), " + str(tasktest) + ")")
-            testeval = eval()
+            testeval = eval(testevalstr)
 
             bot.say(str(testtype) + " " + str(tasktest) + "     " + str(testeval))
 
