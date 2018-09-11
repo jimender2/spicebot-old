@@ -30,7 +30,13 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    triggerargstest = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'", 'random', 'lower', 'upper', 'title', 'dedupe', 'count', 'sort', 'reverse', 'list', 'andlist', 'orlist', 'last']
+    triggerargstest = [
+                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                        "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'",
+                        'lower', 'upper', 'title',
+                        'dedupe', 'count', 'sort', 'reverse',
+                        'list', 'andlist', 'orlist', 'last']
+    # random
     argtypetest = ["get_trigger_arg", "spicemanip"]
 
     for tasktest in triggerargstest:
@@ -169,7 +175,8 @@ def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
         random.shuffle(randomselectlist)
         randomselect = randomselectlist[random.randint(0, len(randomselectlist) - 1)]
         randomselectlist.remove(randomselect)
-    return [randomselectlist]
+    randomselect = randremove[0]
+    return [randomselect]
 
 
 # remove random item from list
