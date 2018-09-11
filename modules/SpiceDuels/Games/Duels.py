@@ -317,6 +317,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         osd(bot, duels.duels_enabled_channels, 'say', "Somebody has Triggered the Endgame! Stats will be reset.")
         duels_endgame(bot, duels)  # TODO
 
+    # save user stats
     save_user_dicts(bot, duels)
 
 
