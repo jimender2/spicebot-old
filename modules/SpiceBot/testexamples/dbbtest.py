@@ -106,7 +106,10 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
 
     # default return if not specified
     if output_type == 'default':
-        if outputtask in ['string', 'number', 'rangebetween', 'exclude', 'incrange_plus', 'incrange_minus', 'excrange_plus', 'excrange_minus']:
+        if outputtask in [
+                            'string', 'number', 'rangebetween', 'exclude', 'random',
+                            'incrange_plus', 'incrange_minus', 'excrange_plus', 'excrange_minus'
+                            ]:
             output_type = 'string'
         elif outputtask in ['count']:
             output_type = 'dict'
