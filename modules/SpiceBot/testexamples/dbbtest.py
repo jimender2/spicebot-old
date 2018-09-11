@@ -35,7 +35,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                         "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'",
                         "'lower'", "'upper'", "'title'",
                         "'dedupe'", "'count'", "'sort'", "'reverse'",
-                        "'list'", "'andlist'", "'orlist'", "'last'"]
+                        "'list'", "'andlist'", "'orlist'", "'last'", "'random'"]
     # random
     argtypetest = ["get_trigger_arg", "spicemanip"]
 
