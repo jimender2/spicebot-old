@@ -172,6 +172,8 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
 
 # sort two lists together
 def spicemanip_arrange(bot, indexitem, outputtask, sortbyarray, arrayb):
+    bot.say(str(sortbyarray))
+    bot.say(str(arrayb))
     sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb), key=itemgetter(0))))
     bot.say("test " + str([sortbyarray, arrayb]))
     return [sortbyarray, arrayb]
