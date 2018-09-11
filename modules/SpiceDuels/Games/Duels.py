@@ -239,15 +239,16 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         return
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
-    commands_array = []
+    commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+    # commands_array = []
 
     # Build array of commands used
-    if not [x for x in triggerargsarray if x == "&&"]:
-        commands_array.append(command_full)
-    else:
-        command_full_split = command_full.split("&&")
-        for command_split in command_full_split:
-            commands_array.append(command_split)
+    # if not [x for x in triggerargsarray if x == "&&"]:
+    #    commands_array.append(command_full)
+    # else:
+    #    command_full_split = command_full.split("&&")
+    #    for command_split in command_full_split:
+    #        commands_array.append(command_split)
 
     # Cycle through command array
     for command_split_partial in commands_array:
