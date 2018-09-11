@@ -18,6 +18,8 @@ import requests
 from sopel.logger import get_logger
 from sopel.module import commands, rule, example, priority
 
+sys.setdefaultencoding('utf-8')
+
 
 @sopel.module.commands('dbbtest')
 def mainfunction(bot, trigger):
@@ -28,7 +30,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    triggerargstest = [0, 1, 2, 3, 4, 5, 6, 7, 8, "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'"]
+    triggerargstest = ["'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'"]  # [0, 1, 2, 3, 4, 5, 6, 7, 8,
     argtypetest = ["get_trigger_arg", "spicemanip"]
 
     for tasktest in triggerargstest:
