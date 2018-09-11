@@ -1446,7 +1446,7 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
 # sort two lists together
 def spicemanip_arrange(bot, indexitem, outputtask, sortbyarray, arrayb):
     sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb), key=itemgetter(0))))
-    return sortbyarray, arrayb
+    return [sortbyarray, arrayb]
 
 
 # compare 2 lists, based on the location of an index item, passthrough needs to be [indexitem, arraytoindex, arraytocompare]
