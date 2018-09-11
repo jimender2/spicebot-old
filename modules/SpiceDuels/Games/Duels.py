@@ -399,7 +399,7 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
     duels.tierpepperrequired = duels_tier_number_to_pepper(bot, duels.tiercommandeval)
     if duels.tiercommandeval > 0 and command_main.lower() not in duels_commands_self:
         tierpass = 0
-        duels.tiermath = int(duels.tiercommandeval) - int(duels.currenttier)
+        duels.tiermath = float(duels.tiercommandeval) - float(duels.currenttier)
         if duels.tiermath > 0:
             if duels.channel_current in duels.duels_dev_channels or duels.admin:
                 tierpass = 1
@@ -425,8 +425,8 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
     if command_main.lower() not in valid_location_commands:
         command_location = duels_location_search(bot, duels, command_main.lower())
         staminarequiredtomove = array_compare(bot, 'location', duels_commands_stamina_required, duels_commands_stamina_cost)
-        combinedstamina = int(duels.command_stamina_cost) + int(staminarequiredtomove)
-        if int(combinedstamina) > int(stamina) and not duels.admin and duels.channel_current not in duels.duels_dev_channels:
+        combinedstamina = float(duels.command_stamina_cost) + float(staminarequiredtomove)
+        if float(combinedstamina) > float(stamina) and not duels.admin and duels.channel_current not in duels.duels_dev_channels:
             osd(bot, duels.instigator, 'notice', "You do not have enough stamina to move from the "+instigatorbio.location+" area to the "+command_location+" area AND perform this action.")
             return
         osd(bot, duels.instigator, 'notice', "You have been moved from the " + instigatorbio.location + " area to the " + command_location + " area at an extra cost of "+str(staminarequiredtomove)+" stamina.")
@@ -543,9 +543,9 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
         randominventoryfind = 0
         if playerbio_target.actual != bot.nick and playerbio_maindueler.actual != playerbio_target.actual and playerbio_maindueler.actual != 'duelsmonster':
             if playerbio_maindueler.luck * 10 > 100:
-                randomfindchance = randint(90, 100)
+                randomfindchance = randfloat(90, 100)
             else:
-                randomfindchance = randint(playerbio_maindueler.luck * 10, 100)
+                randomfindchance = randfloat(playerbio_maindueler.luck * 10, 100)
             if randomfindchance >= 90:
                 randominventoryfind = 1
             if randominventoryfind:
@@ -616,7 +616,7 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
             if playerbio_winner.perception * 10 > 100:
                 deflectodds = 100
             else:
-                deflectodds = randint(playerbio_winner.perception * 10, 100)
+                deflectodds = randfloat(playerbio_winner.perception * 10, 100)
             if deflectodds >= 95:
                 combattextarraycomplete.append(playerbio_loser.nametext + " deflects the attack")
                 # rebase the player bios
@@ -645,7 +645,7 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
             if playerbio_loser.agility * 10 > 100:
                 transformodds = 100
             else:
-                transformodds = randint(playerbio_loser.agility * 10, 100)
+                transformodds = randfloat(playerbio_loser.agility * 10, 100)
             if transformodds >= 80:
                 currentanimals = duels_druid_current_array(bot, playerbio_loser.actual)
                 currentanimal = get_trigger_arg(bot, currentanimals, 'random')
@@ -668,7 +668,7 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
             if anticharisma <= 0:
                 rageodds = 100
             else:
-                rageodds = randint(anticharisma * 10, 100)
+                rageodds = randfloat(anticharisma * 10, 100)
             if rageodds >= 80:
                 extradamage = playerbio_winner.strength * 10
                 extradamage = extradamage * duels.tierscaling
@@ -759,7 +759,7 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
 
         # Tier update
         currenttierend = get_database_value(bot, 'duelrecorduser', 'tier') or 1
-        if int(currenttierend) > int(currenttierstart):
+        if float(currenttierend) > float(currenttierstart):
             combattextarraycomplete.append("New Tier Unlocked!")
             tiercheck = eval("duels_commands_tier_unlocks_"+str(currenttierend))
             if tiercheck != []:
@@ -1184,11 +1184,11 @@ def duels_command_function_colosseum(bot, triggerargsarray, command_main,  trigg
     # Announce
     osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
     totalplayers = len(duels.users_canduel_allchan)
-    riskcoins = int(totalplayers) * 30
-    set_database_value(bot, 'duelrecorduser', 'colosseum_damage', int(riskcoins))
+    riskcoins = float(totalplayers) * 30
+    set_database_value(bot, 'duelrecorduser', 'colosseum_damage', float(riskcoins))
 
     # Individual duels to find victor
-    while int(totalplayers) > 1:
+    while float(totalplayers) > 1:
         totalplayers = totalplayers - 1
         maindueler = get_trigger_arg(bot, duels.users_canduel_allchan, 1)
         current_target = get_trigger_arg(bot, duels.users_canduel_allchan, 2)
@@ -1378,7 +1378,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
     # subcommands
     manualpick = 0
     if str(roulettesubcom).isdigit():
-        if int(roulettesubcom) >= 1 and int(roulettesubcom) <= 6:
+        if float(roulettesubcom) >= 1 and float(roulettesubcom) <= 6:
             manualpick = 1
         else:
             osd(bot, duels.channel_current, 'say', "Invalid Chamber Number!")
@@ -1429,7 +1429,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
     # Get the selected chamber from the database,, or set one
     roulettechamber = get_database_value(bot, 'duelrecorduser', 'roulettechamber')
     if not roulettechamber:
-        roulettechamber = randint(1, 6)
+        roulettechamber = randfloat(1, 6)
         set_database_value(bot, 'duelrecorduser', 'roulettechamber', roulettechamber)
 
     # Display Text
@@ -1438,9 +1438,9 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         osd(bot, duels.channel_current, 'say', duels.instigator + " is blindfolded while the chamber is set to " + str(roulettesubcom) + ".")
     elif instigatorcurse:
         osd(bot, duels.channel_current, 'say', duels.instigator + " spins the cylinder to the bullet's chamber and pulls the trigger.")
-    elif roulettelastplayer == duels.instigator and int(roulettecount) > 1:
+    elif roulettelastplayer == duels.instigator and float(roulettecount) > 1:
         osd(bot, duels.channel_current, 'say', duels.instigator + " spins the revolver and pulls the trigger.")
-    elif int(roulettecount) == 1:
+    elif float(roulettecount) == 1:
         osd(bot, duels.channel_current, 'say', duels.instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
     else:
         osd(bot, duels.channel_current, 'say', duels.instigator + " spins the cylinder and pulls the trigger.")
@@ -1453,7 +1453,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         currentspin = roulettechamber
     # manual number
     elif manualpick == 1:
-        currentspin = int(roulettesubcom)
+        currentspin = float(roulettesubcom)
     # If instigator uses multiple times in a row, decrease odds of success
     elif roulettelastplayer == duels.instigator:
         roulettespinarray = get_database_value(bot, 'duelrecorduser', 'roulettespinarray')
@@ -1462,13 +1462,13 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         if len(roulettespinarray) > 1:
             roulettetemp = []
             for x in roulettespinarray:
-                if int(x) != int(roulettechamber):
+                if float(x) != float(roulettechamber):
                     roulettetemp.append(x)
             rouletteremove = get_trigger_arg(bot, roulettetemp, "random")
             roulettetempb = []
             roulettetempb.append(roulettechamber)
             for j in roulettetemp:
-                if int(j) != int(rouletteremove):
+                if float(j) != float(rouletteremove):
                     roulettetempb.append(j)
             set_database_value(bot, 'duelrecorduser', 'roulettespinarray', roulettetempb)
             currentspin = get_trigger_arg(bot, roulettetempb, "random")
@@ -1481,12 +1481,12 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         currentspin = get_trigger_arg(bot, roulettespinarray, "random")
 
     # current spin is safe
-    if int(currentspin) != int(roulettechamber):
+    if float(currentspin) != float(roulettechamber):
         osd(bot, duels.channel_current, 'say', "*click*")
         if manualpick == 1:
             roulettelastplayeractualtext = str(duels.instigator + " manually picked a chamber without the bullet. The Bullet was moved.")
             osd(bot, duels.channel_current, 'say', duels.instigator + " picked a chamber without the bullet. Bullet will be moved.")
-            roulettechambernew = randint(1, 6)
+            roulettechambernew = randfloat(1, 6)
             set_database_value(bot, 'duelrecorduser', 'roulettechamber', roulettechambernew)
         else:
             roulettelastplayeractualtext = str(duels.instigator + " pulled the trigger and was safe.")
@@ -1510,7 +1510,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
                 dispmsgarray.append("First in the chamber. What bad luck.")
 
         # Dish out the pain
-        damage = randint(50, 120)
+        damage = randfloat(50, 120)
         bodypart = 'head'
         revolver = get_trigger_arg(bot, roulette_revolver_list, 'random')
         damage = duels.tierscaling * damage
@@ -1613,7 +1613,7 @@ def duels_command_function_trebuchet(bot, triggerargsarray, command_main, trigge
     bodypart, bodypartname = duels_bodypart_select(bot, target)
 
     # Damage
-    damage = randint(1, 120)
+    damage = randfloat(1, 120)
     damage = duels.tierscaling * damage
 
     # Display
@@ -1749,7 +1749,7 @@ def duels_command_function_grenade(bot, triggerargsarray, command_main, trigger,
     osd(bot, duels.channel_current, 'say', dispmsgarray)
 
     # Track usage for vendor
-    adjust_database_value(bot, 'duelsmerchant', str("vendor_track_value_grenade"), int(quantity))
+    adjust_database_value(bot, 'duelsmerchant', str("vendor_track_value_grenade"), float(quantity))
 
 
 def duels_docs_grenade(bot):
@@ -1811,10 +1811,10 @@ def duels_command_function_magic(bot, triggerargsarray, command_main, trigger, c
 
     # How much mana is required
     manarequired = array_compare(bot, magicusage, duels_magic_types, duels_magic_required)
-    manarequired = int(manarequired) * int(quantity)
+    manarequired = float(manarequired) * float(quantity)
 
-    if int(manarequired) > int(instigatormana):
-        manamath = int(int(manarequired) - int(instigatormana))
+    if float(manarequired) > float(instigatormana):
+        manamath = float(float(manarequired) - float(instigatormana))
         osd(bot, duels.instigator, 'notice', "You need " + str(manamath) + " more mana to use magic " + magicusage + ".")
         duels.command_stamina_cost = 0
         return
@@ -1835,20 +1835,20 @@ def duels_command_function_magic(bot, triggerargsarray, command_main, trigger, c
     if instigatormagic * 10 > 100:
         damage = abs(damagedealtmax)
     else:
-        damage = randint(instigatormagic * 10, abs(damagedealtmax))
-    damagedealt = int(damage) * int(quantity)
+        damage = randfloat(instigatormagic * 10, abs(damagedealtmax))
+    damagedealt = float(damage) * float(quantity)
 
     durationofeffect = array_compare(bot, magicusage, duels_magic_types, duels_magic_duration)
 
     if magicusage == 'curse':
-        actualcurseduration = int(quantity) * int(durationofeffect)
+        actualcurseduration = float(quantity) * float(durationofeffect)
         set_database_value(bot, targetbio.actual, 'curse', actualcurseduration)
         displaymsg.append("This forces " + targetbio.nametext + " to lose the next " + str(actualcurseduration) + " duels")
 
     if magicusage == 'shield':
-        actualshielddurationmax = int(quantity) * int(durationofeffect)
+        actualshielddurationmax = float(quantity) * float(durationofeffect)
         actualshielddurationmax = actualshielddurationmax * duels.tierscaling
-        actualshieldduration = randint(instigatormagic * 10 * duels.tierscaling, abs(actualshielddurationmax))
+        actualshieldduration = randfloat(instigatormagic * 10 * duels.tierscaling, abs(actualshielddurationmax))
         adjust_database_value(bot, targetbio.actual, 'shield', actualshieldduration)
         displaymsg.append("This allows " + targetbio.nametext + " to take no damage for the duration of " + str(actualshieldduration) + " damage")
         damagedealt = -abs(damagedealt)
@@ -1911,7 +1911,7 @@ def duels_command_function_character(bot, triggerargsarray, command_main, trigge
         duels.tierpepperrequired = duels_tier_number_to_pepper(bot, duels.tiercommandeval)
         if duels.tiercommandeval > 0 and targetbio.actual != duels.instigator and targetbio.actual != 'duelsmonster':
             tierpass = 0
-            duels.tiermath = int(duels.tiercommandeval) - int(duels.currenttier)
+            duels.tiermath = float(duels.tiercommandeval) - float(duels.currenttier)
             if duels.tiermath > 0:
                 if duels.channel_current in duels.duels_dev_channels or duels.admin:
                     tierpass = 1
@@ -2092,7 +2092,7 @@ def duels_command_function_special(bot, triggerargsarray, command_main, trigger,
     duels.tierpepperrequired = duels_tier_number_to_pepper(bot, duels.tiercommandeval)
     if duels.tiercommandeval > 0 and targetbio.actual != duels.instigator and targetbio.actual != 'duelsmonster':
         tierpass = 0
-        duels.tiermath = int(duels.tiercommandeval) - int(duels.currenttier)
+        duels.tiermath = float(duels.tiercommandeval) - float(duels.currenttier)
         if duels.tiermath > 0:
             if duels.channel_current in duels.duels_dev_channels or duels.admin:
                 tierpass = 1
@@ -2166,7 +2166,7 @@ def duels_command_function_stats(bot, triggerargsarray, command_main, trigger, c
     duels.tierpepperrequired = duels_tier_number_to_pepper(bot, duels.tiercommandeval)
     if duels.tiercommandeval > 0 and targetbio.actual != duels.instigator and targetbio.actual != 'duelsmonster':
         tierpass = 0
-        duels.tiermath = int(duels.tiercommandeval) - int(duels.currenttier)
+        duels.tiermath = float(duels.tiercommandeval) - float(duels.currenttier)
         if duels.tiermath > 0:
             if duels.channel_current in duels.duels_dev_channels or duels.admin:
                 tierpass = 1
@@ -2252,7 +2252,7 @@ def duels_command_function_stats(bot, triggerargsarray, command_main, trigger, c
         for player in targets:
             try:
                 if newvalue.isdigit():
-                    newvalue = int(newvalue)
+                    newvalue = float(newvalue)
             except AttributeError:
                 newvalue = newvalue
             if statset == 'all':
@@ -2295,7 +2295,7 @@ def duels_command_function_health(bot, triggerargsarray, command_main, trigger, 
     duels.tierpepperrequired = duels_tier_number_to_pepper(bot, duels.tiercommandeval)
     if duels.tiercommandeval > 0 and targetbio.actual != duels.instigator and targetbio.actual != 'duelsmonster':
         tierpass = 0
-        duels.tiermath = int(duels.tiercommandeval) - int(duels.currenttier)
+        duels.tiermath = float(duels.tiercommandeval) - float(duels.currenttier)
         if duels.tiermath > 0:
             if duels.channel_current in duels.duels_dev_channels or duels.admin:
                 tierpass = 1
@@ -2348,7 +2348,7 @@ def duels_command_function_streaks(bot, triggerargsarray, command_main, trigger,
     duels.tierpepperrequired = duels_tier_number_to_pepper(bot, duels.tiercommandeval)
     if duels.tiercommandeval > 0 and targetbio.actual != duels.instigator and targetbio.actual != 'duelsmonster':
         tierpass = 0
-        duels.tiermath = int(duels.tiercommandeval) - int(duels.currenttier)
+        duels.tiermath = float(duels.tiercommandeval) - float(duels.currenttier)
         if duels.tiermath > 0:
             if duels.channel_current in duels.duels_dev_channels or duels.admin:
                 tierpass = 1
@@ -2399,7 +2399,7 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
     duels.tierpepperrequired = duels_tier_number_to_pepper(bot, duels.tiercommandeval)
     if duels.tiercommandeval > 0 and targetbio.actual != duels.instigator and targetbio.actual != 'duelsmonster':
         tierpass = 0
-        duels.tiermath = int(duels.tiercommandeval) - int(duels.currenttier)
+        duels.tiermath = float(duels.tiercommandeval) - float(duels.currenttier)
         if duels.tiermath > 0:
             if duels.channel_current in duels.duels_dev_channels or duels.admin:
                 tierpass = 1
@@ -2453,7 +2453,7 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
             return
 
         # Block for if the quantity above is greater than the players inventory
-        if int(quantity) > int(gethowmanylootitem):
+        if float(quantity) > float(gethowmanylootitem):
             osd(bot, duels.instigator, 'notice', "You do not have enough " + lootitem + " to use this command! You only have " + str(gethowmanylootitem) + ".")
             duels.command_stamina_cost = 0
             return
@@ -2463,7 +2463,7 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
             mainlootusemessage = []
 
             potionworth = array_compare(bot, 'stimpack', duels_loot_items, duels_loot_worth)
-            potionmaths = int(quantity) * potionworth
+            potionmaths = float(quantity) * potionworth
 
             # Select a body part
             bodypartselect = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels_bodyparts], 1) or 'list'
@@ -2484,14 +2484,14 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
                 duels.command_stamina_cost = 0
                 return
 
-            quantity = int(quantity)
+            quantity = float(quantity)
 
             adjust_database_value(bot, targetbio.actual, 'stimpack', -abs(quantity))
 
             potionworth = array_compare(bot, 'stimpack', duels_loot_items, duels_loot_worth)
-            potionmaths = int(quantity) * potionworth
+            potionmaths = float(quantity) * potionworth
 
-            if int(quantity) == 1:
+            if float(quantity) == 1:
                 mainlootusemessage.append(targetbio.nametext + " uses a stimpack to heal " + bodypartselect + " Results:")
             else:
                 mainlootusemessage.append(targetbio.nametext + " uses "+str(quantity)+" stimpacks to heal " + bodypartselect + " Results:")
@@ -2513,7 +2513,7 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
             quantity = 1
 
         # Sometimes if this isn't set, the game throws errors about strings or unicode
-        quantity = int(quantity)
+        quantity = float(quantity)
 
         # charge the cost
         adjust_database_value(bot, duels.instigator, lootitem, -abs(quantity))
@@ -2523,12 +2523,12 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
 
         # Display based on target and quantity
         if targetbio.actual == duels.instigator:
-            if int(quantity) == 1:
+            if float(quantity) == 1:
                 mainlootusemessage.append(duels.instigator + ' uses a ' + lootitem)
             else:
                 mainlootusemessage.append(duels.instigator + ' uses ' + str(quantity) + " " + lootitem + 's')
         else:
-            if int(quantity) == 1:
+            if float(quantity) == 1:
                 mainlootusemessage.append(duels.instigator + ' uses a ' + lootitem + ' on ' + targetbio.nametext)
             else:
                 mainlootusemessage.append(duels.instigator + " used " + str(quantity) + " " + lootitem + "s on " + targetbio.nametext)
@@ -2545,8 +2545,8 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
         else:
 
             # Build a list of potions, randomly
-            while int(quantity) > 0:
-                quantity = int(quantity) - 1
+            while float(quantity) > 0:
+                quantity = float(quantity) - 1
                 loot = get_trigger_arg(bot, duels_loot_potion_types, 'random')
                 if loot == 'mysterypotion':
                     loot = get_trigger_arg(bot, duels_loot_null, 'random')
@@ -2616,7 +2616,7 @@ def duels_command_function_armor(bot, triggerargsarray, command_main, trigger, c
     duels.tierpepperrequired = duels_tier_number_to_pepper(bot, duels.tiercommandeval)
     if duels.tiercommandeval > 0 and targetbio.actual != duels.instigator and targetbio.actual != 'duelsmonster':
         tierpass = 0
-        duels.tiermath = int(duels.tiercommandeval) - int(duels.currenttier)
+        duels.tiermath = float(duels.tiercommandeval) - float(duels.currenttier)
         if duels.tiermath > 0:
             if duels.channel_current in duels.duels_dev_channels or duels.admin:
                 tierpass = 1
@@ -3142,7 +3142,7 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
         if targetbio.actual != duels.instigator:
             if targetbio.Class == 'blacksmith':
                 costinvolved = costinvolved * armor_cost_blacksmith_cut
-                costinvolved = int(costinvolved)
+                costinvolved = float(costinvolved)
                 if targetbio.coin < costinvolved:
                     osd(bot, duels.channel_current, 'say', "Insufficient Funds.")
                     duels.command_stamina_cost = 0
@@ -3185,7 +3185,7 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
         sellingamount = durabilityremaining * armor_cost
         if targetbio.Class == 'blacksmith':
             sellingamount = sellingamount * armor_sell_blacksmith_cut
-        sellingamount = int(sellingamount)
+        sellingamount = float(sellingamount)
         osd(bot, duels.channel_current, 'say', "Selling " + typearmor + " armor earned you " + str(sellingamount) + " coins.")
         if targetbio.actual != duels.instigator:
             adjust_database_value(bot, targetbio.actual, 'coin', sellingamount)
@@ -3235,7 +3235,7 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
             costinvolved = costinvolved * armor_repair_cost
             if targetbio.Class == 'blacksmith':
                 costinvolved = costinvolved * armor_cost_blacksmith_cut
-                costinvolved = int(costinvolved)
+                costinvolved = float(costinvolved)
             if targetbio.coin < costinvolved:
                 osd(bot, duels.channel_current, 'say', "Insufficient Funds.")
                 duels.command_stamina_cost = 0
@@ -3295,7 +3295,7 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
                 # Cost of item
                 current_loot_cost = eval(str("merchinv."+lootitem+"_cost"))
                 current_loot_cost = current_loot_cost / targetbio.charisma
-                current_loot_cost = int(current_loot_cost)
+                current_loot_cost = float(current_loot_cost)
 
                 # Merchant Quantity
                 merchquant = eval(str("merchinv."+lootitem))
@@ -3340,19 +3340,19 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
     lootitemvalue = get_database_value(bot, 'duelsmerchant', str("vendor_track_value_"+lootitem)) or 1
 
     # Block for if the quantity above is greater than the players inventory
-    if int(quantity) > int(gethowmanylootitem) and lootcommand != 'buy':
+    if float(quantity) > float(gethowmanylootitem) and lootcommand != 'buy':
         osd(bot, duels.instigator, 'notice', "You do not have enough " + lootitem + " to use this command! You only have " + str(gethowmanylootitem) + ".")
         duels.command_stamina_cost = 0
         return
 
-    quantity = int(quantity)
+    quantity = float(quantity)
 
     # Buying
     if lootcommand == 'buy':
 
         current_loot_cost = eval(str("merchinv."+lootitem+"_cost"))
         current_loot_cost = current_loot_cost / targetbio.charisma
-        coinrequired = int(current_loot_cost) * int(quantity)
+        coinrequired = float(current_loot_cost) * float(quantity)
 
         merchquant = eval(str("merchinv."+lootitem))
         if merchquant < quantity:
@@ -3361,7 +3361,7 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
             return
 
         # Block transaction if player doesn not have enough coin
-        if int(targetbio.coin) < coinrequired:
+        if float(targetbio.coin) < coinrequired:
             osd(bot, duels.instigator, 'notice', "You do not have enough coin for this action.")
             duels.command_stamina_cost = 0
             return
@@ -3370,7 +3370,7 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
         adjust_database_value(bot, targetbio.actual, 'coin', -abs(coinrequired))
         adjust_database_value(bot, targetbio.actual, lootitem, quantity)
         adjust_database_value(bot, 'duelsmerchant', lootitem, -abs(quantity))
-        adjust_database_value(bot, 'duelsmerchant', str("vendor_track_value_"+lootitem), int(quantity))
+        adjust_database_value(bot, 'duelsmerchant', str("vendor_track_value_"+lootitem), float(quantity))
         osd(bot, duels.channel_current, 'say', targetbio.nametext + " bought " + str(quantity) + " "+lootitem + "s for " + str(coinrequired) + " coins.")
         osd(bot, duels.channel_current, 'say', 'The Merchant says "Thank you, come again"')
 
@@ -3381,11 +3381,11 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
         charismapricing = targetbio.charisma / 100
         current_loot_cost = eval(str("merchinv."+lootitem+"_cost"))
         current_loot_cost = current_loot_cost * charismapricing
-        current_loot_cost = int(current_loot_cost)
-        reward = current_loot_cost * int(quantity)
+        current_loot_cost = float(current_loot_cost)
+        reward = current_loot_cost * float(quantity)
 
         merchquant = eval(str("merchinv."+lootitem))
-        combinedquant = int(merchquant) + quantity
+        combinedquant = float(merchquant) + quantity
         if combinedquant > duels_merchant_inv_max:
             osd(bot, duels.instigator, 'notice', "The Merchant does not have enough inventory space to meet this request.")
             duels.command_stamina_cost = 0
@@ -3437,7 +3437,7 @@ def duels_command_function_locker(bot, triggerargsarray, command_main, trigger, 
     if lootcommand == 'view':
 
         # Block viewing of other players inventories at lower levels
-        if int(duels.tiercommandeval) > int(duels.currenttier) and targetbio.actual != duels.instigator:
+        if float(duels.tiercommandeval) > float(duels.currenttier) and targetbio.actual != duels.instigator:
             if duels.channel_current in duels.duels_dev_channels or duels.admin:
                 allowpass = 1
             elif not duels.inchannel and len(duels.duels_dev_channels) > 0:
@@ -3530,7 +3530,7 @@ def duels_command_function_locker(bot, triggerargsarray, command_main, trigger, 
         return
 
     # Block for if the quantity above is greater than the players inventory
-    if int(quantity) > int(gethowmanylootitem):
+    if float(quantity) > float(gethowmanylootitem):
         if lootcommand == 'store':
             osd(bot, duels.instigator, 'notice', "You do not have enough " + lootitem + " to use this command! You only have " + str(gethowmanylootitem) + ".")
         if lootcommand == 'take':
@@ -3538,7 +3538,7 @@ def duels_command_function_locker(bot, triggerargsarray, command_main, trigger, 
         duels.command_stamina_cost = 0
         return
 
-    quantity = int(quantity)
+    quantity = float(quantity)
 
     if lootcommand == 'store':
         adjust_database_value(bot, duels.instigator, lootitem, -abs(quantity))
@@ -3605,23 +3605,23 @@ def duels_command_function_craft(bot, triggerargsarray, command_main, trigger, c
         return
 
     quantity = get_trigger_arg(bot, [x for x in duels.command_restructure if str(x).isdigit()], 1) or 1
-    quantity = int(quantity)
+    quantity = float(quantity)
 
     if lootcommand == 'create':
         recipe_required = eval("duel_craft_"+lootitem+"_required")
         recipe_quantity = eval("duel_craft_"+lootitem+"_quantity")
         recipe = []
         for part, number in zip(recipe_required, recipe_quantity):
-            quantityneeded = int(number) * quantity
+            quantityneeded = float(number) * quantity
             gethowmanypart = get_database_value(bot, duels.instigator, part) or 0
-            if int(gethowmanypart) < quantityneeded:
+            if float(gethowmanypart) < quantityneeded:
                 recipe.append(part)
         if recipe != []:
             osd(bot, duels.instigator, 'notice', "you don't have the required components for this recipe")
             duels.command_stamina_cost = 0
             return
         for part, number in zip(recipe_required, recipe_quantity):
-            quantityneeded = int(number) * quantity
+            quantityneeded = float(number) * quantity
             adjust_database_value(bot, duels.instigator, part, -abs(quantityneeded))
         adjust_database_value(bot, duels.instigator, lootitem, quantity)
         osd(bot, duels.channel_current, 'say', duels.instigator + " has successfully crafted "+str(quantity)+" " + lootitem + "(s)!")
@@ -3683,12 +3683,12 @@ def duels_command_function_tavern(bot, triggerargsarray, command_main, trigger, 
 
     # The quantity the player is applyint to this transaction
     quantity = get_trigger_arg(bot, [x for x in duels.command_restructure if x == 'all' or str(x).isdigit()], 1) or 1
-    quantity = int(quantity)
+    quantity = float(quantity)
 
-    coinrequired = int(current_loot_cost) * int(quantity)
+    coinrequired = float(current_loot_cost) * float(quantity)
 
     # Block transaction if player doesn not have enough coin
-    if int(targetbio.coin) < coinrequired:
+    if float(targetbio.coin) < coinrequired:
         osd(bot, duels.instigator, 'notice', "You do not have enough coin for this action.")
         duels.command_stamina_cost = 0
         return
@@ -3709,7 +3709,7 @@ def duels_command_function_tavern(bot, triggerargsarray, command_main, trigger, 
         current_stat_tavern = eval("duels_tavern_special_"+stat)
         currenteffect = array_compare(bot, beveragetype, duels_tavern_items, current_stat_tavern)
         if currenteffect != 0:
-            currenteffect = int(currenteffect) * int(quantity)
+            currenteffect = float(currenteffect) * float(quantity)
             currentvalue = str("lootusing."+stat+"="+str(currenteffect))
             exec(currentvalue)
 
@@ -3795,14 +3795,14 @@ def duels_command_function_tier(bot, triggerargsarray, command_main, trigger, co
             dispmsgarray.append("Feature(s) that are available at tier " + str(commandtier) + " (" + str(command.title()) + "): " + tierlist + ".")
         else:
             dispmsgarray.append("No New Feature(s) available at tier " + str(commandtier) + " (" + str(command.title()) + ").")
-        tiermath = int(commandtier) - duels.currenttier
+        tiermath = float(commandtier) - duels.currenttier
         if tiermath > 0:
             dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
 
     # process a tier number
     elif command.isdigit():
-        command = int(command)
-        if int(command) > 15:
+        command = float(command)
+        if float(command) > 15:
             osd(bot, duels.channel_current, 'say', "Tiers do not got past 15 (Pure Capsaicin).")
             duels.command_stamina_cost = 0
             return
@@ -3813,7 +3813,7 @@ def duels_command_function_tier(bot, triggerargsarray, command_main, trigger, co
             dispmsgarray.append("Feature(s) that are available at tier " + str(command) + " (" + str(commandpepper.title()) + "): " + tierlist + ".")
         else:
             dispmsgarray.append("No New Feature(s) available at tier " + str(command) + " (" + str(commandpepper.title()) + ").")
-        tiermath = int(command) - duels.currenttier
+        tiermath = float(command) - duels.currenttier
         if tiermath > 0:
             dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
 
@@ -3821,7 +3821,7 @@ def duels_command_function_tier(bot, triggerargsarray, command_main, trigger, co
     elif command.lower() == 'closest':
 
         nexttier = duels.currenttier + 1
-        if int(nexttier) > 15:
+        if float(nexttier) > 15:
             osd(bot, duels.channel_current, 'say', "Tiers do not got past 15 (Pure Capsaicin).")
             duels.command_stamina_cost = 0
             return
@@ -3987,7 +3987,7 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
                     leaderclass = get_database_value(bot, statleadername, 'class') or 'unknown'
                     leaderrace = get_database_value(bot, statleadername, 'race') or 'unknown'
                     if leaderclass == 'vampire':
-                        statleadernumber = int(statleadernumber)
+                        statleadernumber = float(statleadernumber)
                         statleadernumber = -abs(statleadernumber)
                 elif x == 'winlossratio':
                     statleadername = get_trigger_arg(bot, playerarray, 'last')
@@ -4004,7 +4004,7 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
         return
 
     if str(subcommand).isdigit():
-        if len(duels.users_current_allchan_opted) >= int(subcommand):
+        if len(duels.users_current_allchan_opted) >= float(subcommand):
             for u in duels.users_current_allchan_opted:
                 if stat.lower() != 'winlossratio' and stat.lower() != 'health':
                     statamount = get_database_value(bot, u, stat.lower())
@@ -4019,13 +4019,13 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
                 if stat != 'health':
                     statvaluearray = get_trigger_arg(bot, statvaluearray, 'reverse')
                     playerarray = get_trigger_arg(bot, playerarray, 'reverse')
-                numberstat = int(subcommand)
+                numberstat = float(subcommand)
                 playeratrankno = get_trigger_arg(bot, playerarray, numberstat)
                 currentranking = array_compare(bot, playeratrankno, playerarray, statvaluearray)
                 if stat == 'health':
                     playerclass = get_database_value(bot, playeratrankno, 'class') or 'unknown'
                     if playerclass == 'vampire':
-                        currentranking = int(currentranking)
+                        currentranking = float(currentranking)
                         currentranking = -abs(currentranking)
                 elif stat == 'winlossratio':
                     currentranking = format(currentranking, '.3f')
@@ -4075,7 +4075,7 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
                 if x == 'health':
                     targetclass = get_database_value(bot, target, 'class') or 'unknown'
                     if targetclass == 'vampire':
-                        currentranking = int(currentranking)
+                        currentranking = float(currentranking)
                         currentranking = -abs(currentranking)
                 elif x == 'winlossratio':
                     currentranking = format(currentranking, '.3f')
@@ -4112,7 +4112,7 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
                 leaderclass = get_database_value(bot, statleadername, 'class') or 'unknown'
                 leaderrace = get_database_value(bot, statleadername, 'race') or 'unknown'
                 if leaderclass == 'vampire':
-                    statleadernumber = int(statleadernumber)
+                    statleadernumber = float(statleadernumber)
                     statleadernumber = -abs(statleadernumber)
             osd(bot, duels.channel_current, 'say', "The " + subcommand + " amount for " + stat + " is " + statleadername + " with " + str(statleadernumber) + ".")
         else:
@@ -4156,7 +4156,7 @@ def duels_command_function_bounty(bot, triggerargsarray, command_main, trigger, 
             return
         else:
             amount = array_compare(bot, 'bugbounty', duels_ingame_coin_usage, duels_ingame_coin)
-    amount = int(amount)
+    amount = float(amount)
 
     if bountytype == 'bug':
         osd(bot, duels.channel_current, 'say', target + ' is awarded ' + str(amount) + " coin for finding a bug in duels.")
@@ -4165,7 +4165,7 @@ def duels_command_function_bounty(bot, triggerargsarray, command_main, trigger, 
         return
 
     instigatorcoin = get_database_value(bot, duels.instigator, 'coin') or 0
-    if int(instigatorcoin) < int(amount):
+    if float(instigatorcoin) < float(amount):
         osd(bot, duels.instigator, 'notice', "Insufficient Funds.")
         duels.command_stamina_cost = 0
         return
@@ -4339,7 +4339,7 @@ def duels_command_function_admin(bot, triggerargsarray, command_main, trigger, c
                 duels.command_stamina_cost = 0
                 return
             osd(bot, duels.instigator, 'notice', target + "'s tier has been set to " + str(newsetting) + ".")
-            set_database_value(bot, target, 'tier', int(newsetting))
+            set_database_value(bot, target, 'tier', float(newsetting))
         else:
             osd(bot, duels.instigator, 'notice', "This looks to be an invalid command.")
 
@@ -4521,7 +4521,7 @@ def duels_command_function_konami(bot, duels):
         konamiset = 600
         osd(bot, duels.instigator, 'notice', "you have found the cheatcode easter egg!!! For this, you gain " + str(konamiset) + " health restoration!!! DO NOT tell others about this command.")
         adjust_database_value(bot, duels.instigator, 'health', konamiset)
-        splitdamage = int(konamiset) / len(duels_bodyparts)
+        splitdamage = float(konamiset) / len(duels_bodyparts)
         for part in duels_bodyparts:
             adjust_database_value(bot, duels.instigator, part, splitdamage)
         set_database_value(bot, duels.instigator, 'konami', 1)
@@ -4708,7 +4708,7 @@ def duels_chanceevents(bot):
     set_database_value(bot, 'duelrecorduser', "chance_event_last_time", duels.now)
 
     # how long until next event
-    chance_event_next_timeout = randint(1200, 7200)
+    chance_event_next_timeout = randfloat(1200, 7200)
     set_database_value(bot, 'duelrecorduser', "chance_event_next_timeout", chance_event_next_timeout)
 
     # next location to effect
@@ -4736,7 +4736,7 @@ def chance_event_run(bot, duels, eventtype, eventlocation):
         effectedplayers = get_trigger_arg(bot, current_location_list, 'list')
 
         chance_event_durationmax = array_compare(bot, eventtype, duels_chance_events_types, duels_chance_events_duration)
-        chance_event_durationtime = randint(1200, chance_event_durationmax)
+        chance_event_durationtime = randfloat(1200, chance_event_durationmax)
         chance_event_damage = array_compare(bot, eventtype, duels_chance_events_types, duels_chance_events_damage)
         chance_event_special = array_compare(bot, eventtype, duels_chance_events_types, duels_chance_events_effected)
 
@@ -5156,7 +5156,7 @@ def duels_opening_monologue(bot, duels, user, opening_monologue, tierset, char_b
             tierarray.append(playertier)
         if tierarray != []:
             playertierarrayaverage = mean(tierarray)
-            playertierarrayaverage = int(playertierarrayaverage)
+            playertierarrayaverage = float(playertierarrayaverage)
         else:
             playertierarrayaverage = 0
         set_database_value(bot, user, 'tier', playertierarrayaverage)
@@ -5551,10 +5551,10 @@ def duels_check_nick_condition(bot, nick, duels):
     nick_minutes_since_regen = nick_regen_last / 60
     health_to_regen = nick_minutes_since_regen * healthsplit
     mana_to_regen = nick_minutes_since_regen * manasmath
-    mana_to_regen = int(mana_to_regen)
-    health_to_regen = int(health_to_regen)
+    mana_to_regen = float(mana_to_regen)
+    health_to_regen = float(health_to_regen)
     stamina_to_regen = nick_minutes_since_regen * staminasmath
-    stamina_to_regen = int(stamina_to_regen)
+    stamina_to_regen = float(stamina_to_regen)
 
     # Verify succesful character setup
     setup_check_missing = []
@@ -5574,7 +5574,7 @@ def duels_check_nick_condition(bot, nick, duels):
         # new player max health
         for part in duels_bodyparts:
             maxhealthpart = array_compare(bot, part, duels_bodyparts, duels_bodyparts_health)
-            currenthealthtier = duels.tierscaling * int(maxhealthpart)
+            currenthealthtier = duels.tierscaling * float(maxhealthpart)
             set_database_value(bot, nick, part, currenthealthtier)
 
         # New Player max stamina
@@ -5594,7 +5594,7 @@ def duels_check_nick_condition(bot, nick, duels):
             duels_location_move(bot, duels, nick, 'town')
             for part in duels_bodyparts:
                 maxhealthpart = array_compare(bot, part, duels_bodyparts, duels_bodyparts_health)
-                currenthealthtier = duels.tierscaling * int(maxhealthpart)
+                currenthealthtier = duels.tierscaling * float(maxhealthpart)
                 set_database_value(bot, nick, part, currenthealthtier)
             reset_database_value(bot, nick, 'deathblow')
             reset_database_value(bot, nick, 'deathblowtargettime')
@@ -5616,7 +5616,7 @@ def duels_check_nick_condition(bot, nick, duels):
         maxhealthpart = array_compare(bot, part, duels_bodyparts, duels_bodyparts_health)
 
         # scale the health maximum
-        currenthealthtier = duels.tierscaling * int(maxhealthpart)
+        currenthealthtier = duels.tierscaling * float(maxhealthpart)
 
         # Verify alive status
         if part == 'head' or part == 'torso':
@@ -5645,7 +5645,7 @@ def duels_check_nick_condition(bot, nick, duels):
         # fresh health
         for part in duels_bodyparts:
             maxhealthpart = array_compare(bot, part, duels_bodyparts, duels_bodyparts_health)
-            currenthealthtier = duels.tierscaling * int(maxhealthpart)
+            currenthealthtier = duels.tierscaling * float(maxhealthpart)
             set_database_value(bot, nick, part, currenthealthtier)
         # fresh stamina
         set_database_value(bot, nick, 'stamina', staminamax)
@@ -5661,7 +5661,7 @@ def duels_check_nick_condition(bot, nick, duels):
 
     # check for negative mana
     mana = get_database_value(bot, nick, 'mana')
-    if int(mana) < 0:
+    if float(mana) < 0:
         reset_database_value(bot, nick, 'mana')
 
     # mages regen mana
@@ -5675,9 +5675,9 @@ def duels_check_nick_condition(bot, nick, duels):
     stamina = get_database_value(bot, nick, 'stamina')
     if nickrace == 'centaur':
         stamina_to_regen = stamina_to_regen * 2
-    if int(stamina) < 0:
+    if float(stamina) < 0:
         reset_database_value(bot, nick, 'stamina')
-    if int(stamina) > staminamax:
+    if float(stamina) > staminamax:
         set_database_value(bot, nick, 'stamina', staminamax)
     combinedstamina = stamina + stamina_to_regen
     if combinedstamina <= staminamax:
@@ -5817,7 +5817,7 @@ def duels_death_handling(bot, duels, inflicter, inflictee):
         if inflicter.actual == inflictee.actual:
             healthtoset = maxhealthpart
         else:
-            healthtoset = duels.tierscaling * int(maxhealthpart)
+            healthtoset = duels.tierscaling * float(maxhealthpart)
         set_database_value(bot, inflictee.actual, part, healthtoset)
 
     # update kills/deaths
@@ -5919,7 +5919,7 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
                     totalhealth = get_database_value(bot, inflictee.actual, bodypart)
                     gethowmanymax = array_compare(bot, bodypart, duels_bodyparts, duels_bodyparts_health)
                     gethowmanymax = gethowmanymax * duels.tierscaling
-                    totalhealthmax = int(gethowmanymax)
+                    totalhealthmax = float(gethowmanymax)
                     if totalhealth < totalhealthmax:
                         bodypartinflictarray.append(bodypart)
 
@@ -5944,13 +5944,13 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
         if situation == 'chance_event':
             durationtime = bodypartselection
         elif situation == 'tavern':
-            durationtime = randint(900, 1800)
+            durationtime = randfloat(900, 1800)
         else:
             antiagility = 10 - inflictee.agility
             if antiagility <= 0:
                 durationtime = 0
             else:
-                durationtime = randint(antiagility * 10, 1800)
+                durationtime = randfloat(antiagility * 10, 1800)
         set_database_value(bot, inflictee.actual, effect+"_effect_duration", durationtime)
         if effectamount > 0:
             effectamounttext = str("+"+str(effectamount))
@@ -5994,9 +5994,9 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
         if effectamount < 0:
 
             effectamount = abs(effectamount)
-            splitdamage = int(effectamount) / len(bodypartinflictarray)
+            splitdamage = float(effectamount) / len(bodypartinflictarray)
             for bodypart in bodypartinflictarray:
-                currentsplitdamage = int(splitdamage)
+                currentsplitdamage = float(splitdamage)
 
                 # current health of part
                 parthealth = get_database_value(bot, inflictee.actual, bodypart) or 0
@@ -6005,7 +6005,7 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
                 maxhealthpart = array_compare(bot, bodypart, duels_bodyparts, duels_bodyparts_health)
 
                 # scale the health maximum
-                currenthealthtier = duels.tierscaling * int(maxhealthpart)
+                currenthealthtier = duels.tierscaling * float(maxhealthpart)
 
                 # Health Regen
                 if parthealth < currenthealthtier:
@@ -6022,7 +6022,7 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
                     totalhealth = totalhealth + gethowmany
                     gethowmanymax = array_compare(bot, x, duels_bodyparts, duels_bodyparts_health)
                     gethowmanymax = gethowmanymax * duels.tierscaling
-                    gethowmanymax = int(gethowmanymax)
+                    gethowmanymax = float(gethowmanymax)
                     totalhealthmax = totalhealthmax + gethowmanymax
                 if totalhealth != totalhealthmax:
                     dispmsgarray.append(inflictee.nametext + " gains " + str(effectamount) + " health, bringing them to " + str(totalhealth) + " of " + str(totalhealthmax))
@@ -6033,7 +6033,7 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
                 totalhealth = get_database_value(bot, inflictee.actual, singlebodypart)
                 gethowmanymax = array_compare(bot, singlebodypart, duels_bodyparts, duels_bodyparts_health)
                 gethowmanymax = gethowmanymax * duels.tierscaling
-                totalhealthmax = int(gethowmanymax)
+                totalhealthmax = float(gethowmanymax)
                 singlebodypart = singlebodypart.replace("_", " ")
                 if totalhealth != totalhealthmax:
                     dispmsgarray.append(inflictee.nametext + " gains " + str(effectamount) + " health for their " + singlebodypart + ", bringing it to " + str(totalhealth) + " of " + str(totalhealthmax))
@@ -6059,7 +6059,7 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
                 if inflictee.agility * 10 > 100:
                     dodge = 100
                 else:
-                    dodge = randint(inflictee.agility * 10, 100)
+                    dodge = randfloat(inflictee.agility * 10, 100)
                 if dodge > 90:
                     effectamount = 0
                     dispmsgarray.append(inflictee.nametext + " manages to dodge out of the way. ")
@@ -6068,8 +6068,8 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
             # Shields
             if effectamount > 0 and situation != 'loot' and inflicter.actual != inflictee.actual:
                 if inflictee.shield:
-                    damagemath = int(inflictee.shield) - effectamount
-                    if int(damagemath) > 0:
+                    damagemath = float(inflictee.shield) - effectamount
+                    if float(damagemath) > 0:
                         adjust_database_value(bot, inflictee.actual, 'shield', -abs(effectamount))
                         effectamount = 0
                         absorbed = 'all'
@@ -6087,7 +6087,7 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
                 if effectamount <= endurancemath:
                     effectamount = 0
                 else:
-                    endurancemath = randint(int(endurancemath), int(effectamount))
+                    endurancemath = randfloat(float(endurancemath), float(effectamount))
                     damagenew = effectamount - endurancemath
                     if damagenew <= 0:
                         effectamount == 0
@@ -6101,10 +6101,10 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
             lootdamagetaken = 0
             inflicteedeath = 0
             if effectamount > 0:
-                splitdamage = int(effectamount) / len(bodypartinflictarray)
+                splitdamage = float(effectamount) / len(bodypartinflictarray)
                 for bodypart in bodypartinflictarray:
                     if not inflicteedeath:
-                        currentsplitdamage = int(splitdamage)
+                        currentsplitdamage = float(splitdamage)
 
                         bodypartname = bodypart.replace("_", " ")
 
@@ -6115,11 +6115,11 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
                             if armorinflictee:
                                 armorname = armortype.replace("_", " ")
                                 adjust_database_value(bot, inflictee.actual, armortype, -1)
-                                damagepercent = randint(1, armor_relief_percentage) / 100
+                                damagepercent = randfloat(1, armor_relief_percentage) / 100
                                 damagereduced = splitdamage * damagepercent
-                                damagereduced = int(damagereduced)
+                                damagereduced = float(damagereduced)
                                 currentsplitdamage = currentsplitdamage - damagereduced
-                                if int(damagereduced) > 0:
+                                if float(damagereduced) > 0:
                                     armorinflictee = get_database_value(bot, inflictee.actual, armortype) or 0
                                     if currentsplitdamage <= 0:
                                         damagereduced = "all"
@@ -6278,7 +6278,7 @@ def duels_stats_view(bot, duels, target_stats_view, targetbio, customview, actua
                 statname = x.replace("_", " ")
                 gethowmanymax = array_compare(bot, x, duels_bodyparts, duels_bodyparts_health)
                 gethowmanymax = gethowmanymax * duels.tierscaling
-                gethowmanymax = int(gethowmanymax)
+                gethowmanymax = float(gethowmanymax)
                 if targetbio.race == 'vampire':
                     gethowmany = -abs(gethowmany)
                     gethowmanymax = -abs(gethowmanymax)
@@ -6294,15 +6294,15 @@ def duels_stats_view(bot, duels, target_stats_view, targetbio, customview, actua
                     if targetbio.Class == 'blacksmith':
                         gethowmanymax = gethowmanymax + 5
                     gethowmanymax = gethowmanymax * duels.tierscaling
-                    gethowmanymax = int(gethowmanymax)
+                    gethowmanymax = float(gethowmanymax)
                     gethowmany = str(str(gethowmany) + "/" + str(gethowmanymax))
             if x == 'health':
                 statname = 'Total Health'
                 totalhealthmax = 0
                 for j in duels_bodyparts:
                     gethowmanymax = array_compare(bot, j, duels_bodyparts, duels_bodyparts_health)
-                    gethowmanymax = int(gethowmanymax) * int(duels.tierscaling)
-                    gethowmanymax = int(gethowmanymax)
+                    gethowmanymax = float(gethowmanymax) * float(duels.tierscaling)
+                    gethowmanymax = float(gethowmanymax)
                     totalhealthmax += gethowmanymax
                 if targetbio.race == 'vampire':
                     gethowmany = -abs(gethowmany)
@@ -6346,7 +6346,7 @@ def duels_tier_command_to_number(bot, command):
     for i in range(0, 16):
         tiercheck = eval("duels_commands_tier_unlocks_"+str(i))
         if command.lower() in tiercheck:
-            tiercommandeval = int(i)
+            tiercommandeval = float(i)
             continue
     return tiercommandeval
 
@@ -6987,10 +6987,10 @@ def duels_combat_winnerdicerolling(bot, rolls):
     rolla = 0
     rollb = 20
     fightarray = []
-    while int(rolls) > 0:
-        fightroll = randint(rolla, rollb)
+    while float(rolls) > 0:
+        fightroll = randfloat(rolla, rollb)
         fightarray.append(fightroll)
-        rolls = int(rolls) - 1
+        rolls = float(rolls) - 1
     try:
         fight = max(fightarray)
     except ValueError:
@@ -7012,12 +7012,12 @@ def duels_combat_damage(bot, duels, playerbio_winner, playerbio_loser):
             damage = 0
             return damage
 
-    damage = randint(playerbio_winner.strength * 10, 120)
+    damage = randfloat(playerbio_winner.strength * 10, 120)
 
     # Damage Tiers
     if damage > 0:
         damage = duels.tierscaling * damage
-        damage = int(damage)
+        damage = float(damage)
 
     return damage
 
@@ -7025,7 +7025,7 @@ def duels_combat_damage(bot, duels, playerbio_winner, playerbio_loser):
 # bodypart selector
 def duels_bodypart_select(bot, nick):
     # selection roll
-    hitchance = randint(1, 101)
+    hitchance = randfloat(1, 101)
     if hitchance <= 50:
         bodypart = 'torso'
     elif hitchance >= 90:
@@ -7074,7 +7074,7 @@ def duels_use_loot_item(bot, duels, nickusing, target, lootitem, quantity, extra
         potionworth = 2
     else:
         potionworth = array_compare(bot, lootitem, duels_loot_items, duels_loot_worth)
-    potionmaths = int(quantity) * potionworth
+    potionmaths = float(quantity) * potionworth
 
     # Null loot
     if lootitem == 'water':
@@ -7126,7 +7126,7 @@ def duels_use_loot_item(bot, duels, nickusing, target, lootitem, quantity, extra
         loottimepotion = 1
 
     # Track usage for vendor
-    adjust_database_value(bot, 'duelsmerchant', str("vendor_track_value_"+lootitem), int(quantity))
+    adjust_database_value(bot, 'duelsmerchant', str("vendor_track_value_"+lootitem), float(quantity))
 
     for x in loot_use_effects:
         currentvalue = str("lootusing."+x+"=""lootusing."+x+" + "+"loot"+x)
@@ -7212,11 +7212,11 @@ def duels_monster_stats_generate(bot, duels, scale):
                     currentstatarray.append(playernumber)
             if currentstatarray != []:
                 playerstatarrayaverage = mean(currentstatarray)
-                playerstatarrayaverage = int(playerstatarrayaverage)
+                playerstatarrayaverage = float(playerstatarrayaverage)
             else:
                 playerstatarrayaverage = 0
             if playerstatarrayaverage > 0:
-                scaledstat = int(playerstatarrayaverage * scale)
+                scaledstat = float(playerstatarrayaverage * scale)
                 set_database_value(bot, 'duelsmonster', x, scaledstat)
 
 
@@ -7234,7 +7234,7 @@ Time
 def duels_time_since(bot, nick, databasekey):
     now = time.time()
     last = get_database_value(bot, nick, databasekey)
-    return abs(now - int(last))
+    return abs(now - float(last))
 
 
 # Convert seconds to a readable format
@@ -7254,7 +7254,7 @@ def duels_hours_minutes_seconds(countdownseconds):
             timetype = x
             if currenttimevar > 1:
                 timetype = str(x+"s")
-            displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype + " ")
+            displaymsg = str(displaymsg + str(float(currenttimevar)) + " " + timetype + " ")
     return displaymsg
 
 
@@ -7266,9 +7266,9 @@ ScoreCard
 # compare wins/losses
 def duels_get_winlossratio(bot, target):
     wins = get_database_value(bot, target, 'wins')
-    wins = int(wins)
+    wins = float(wins)
     losses = get_database_value(bot, target, 'losses')
-    losses = int(losses)
+    losses = float(losses)
     if not losses:
         if not wins:
             winlossratio = 0
@@ -7278,7 +7278,7 @@ def duels_get_winlossratio(bot, target):
         if not losses:
             winlossratio = 0
         else:
-            winlossratio = int(losses) * -1
+            winlossratio = float(losses) * -1
     else:
         winlossratio = float(wins)/losses
     return winlossratio
@@ -7301,8 +7301,8 @@ def duels_set_current_streaks(bot, nick, winlose):
     # Update Best Streak
     beststreak = get_database_value(bot, nick, beststreaktype) or 0
     currentstreak = get_database_value(bot, nick, currentstreaktype) or 0
-    if int(currentstreak) > int(beststreak):
-        set_database_value(bot, nick, beststreaktype, int(currentstreak))
+    if float(currentstreak) > float(beststreak):
+        set_database_value(bot, nick, beststreaktype, float(currentstreak))
 
     # Clear current opposite streak
     reset_database_value(bot, nick, oppositestreaktype)
@@ -7652,7 +7652,7 @@ def reset_database_value(bot, nick, databasekey):
 def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey) or 0
     databasecolumn = str('duels_' + databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+    bot.db.set_nick_value(nick, databasecolumn, float(oldvalue) + float(value))
 
 
 # array stored in database length
@@ -7851,7 +7851,7 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
     if outputtask in [0, 'complete']:
         outputtask = 'string'
     elif str(outputtask).isdigit():
-        mainoutputtask, outputtask = int(outputtask), 'number'
+        mainoutputtask, outputtask = float(outputtask), 'number'
     elif "^" in str(outputtask):
         mainoutputtask = str(outputtask).split("^", 1)[0]
         suboutputtask = str(outputtask).split("^", 1)[1]
@@ -7946,7 +7946,7 @@ def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
         randomselectlist.append(temppart)
     while len(randomselectlist) > 1:
         random.shuffle(randomselectlist)
-        randomselect = randomselectlist[random.randint(0, len(randomselectlist) - 1)]
+        randomselect = randomselectlist[random.randfloat(0, len(randomselectlist) - 1)]
         randomselectlist.remove(randomselect)
     randomselect = randomselectlist[0]
     return randomselect
@@ -8028,7 +8028,7 @@ def spicemanip_orlist(bot, inputs, outputtask, mainoutputtask, suboutputtask):
 def spicemanip_exclude(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return ''
-    del inputs[int(mainoutputtask) - 1]
+    del inputs[float(mainoutputtask) - 1]
     return str(' '.join(inputs))
 
 
@@ -8045,10 +8045,10 @@ def spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask):
         return ''
     elif len(inputs) == 1:
         return inputs[0]
-    elif int(mainoutputtask) > len(inputs) or int(mainoutputtask) < 0:
+    elif float(mainoutputtask) > len(inputs) or float(mainoutputtask) < 0:
         return ''
     else:
-        return inputs[int(mainoutputtask) - 1]
+        return inputs[float(mainoutputtask) - 1]
 
 
 # Get Last item from list
@@ -8064,7 +8064,7 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
         return ''
     if not str(mainoutputtask).isdigit() or not str(suboutputtask).isdigit():
         return ''
-    mainoutputtask, suboutputtask = int(mainoutputtask), int(suboutputtask)
+    mainoutputtask, suboutputtask = float(mainoutputtask), float(suboutputtask)
     if suboutputtask == mainoutputtask:
         return spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask)
     if suboutputtask < mainoutputtask:
@@ -8085,28 +8085,28 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
 def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return ''
-    return spicemanip_rangebetween(bot, inputs, outputtask, int(mainoutputtask), len(inputs))
+    return spicemanip_rangebetween(bot, inputs, outputtask, float(mainoutputtask), len(inputs))
 
 
 # Reverse Range includes index number
 def spicemanip_incrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return ''
-    return spicemanip_rangebetween(bot, inputs, outputtask, 1, int(mainoutputtask))
+    return spicemanip_rangebetween(bot, inputs, outputtask, 1, float(mainoutputtask))
 
 
 # Forward Range excludes index number
 def spicemanip_excrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return ''
-    return spicemanip_rangebetween(bot, inputs, outputtask, int(mainoutputtask) + 1, len(inputs))
+    return spicemanip_rangebetween(bot, inputs, outputtask, float(mainoutputtask) + 1, len(inputs))
 
 
 # Reverse Range excludes index number
 def spicemanip_excrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return ''
-    return spicemanip_rangebetween(bot, inputs, outputtask, 1, int(mainoutputtask) - 1)
+    return spicemanip_rangebetween(bot, inputs, outputtask, 1, float(mainoutputtask) - 1)
 
 
 # Hub
@@ -8328,7 +8328,7 @@ def random_array(bot, inputs):
     for d in inputs:
         temparray.append(d)
     shuffledarray = random.shuffle(temparray)
-    randomselected = random.randint(0, len(temparray) - 1)
+    randomselected = random.randfloat(0, len(temparray) - 1)
     string = str(temparray[randomselected])
     return string
 
@@ -8350,9 +8350,9 @@ def number_array(bot, inputs, number):
         inputs = create_array(bot, inputs)
     string = ''
     if str(number).isdigit():
-        numberadjust = int(number) - 1
+        numberadjust = float(number) - 1
         if numberadjust < len(inputs) and numberadjust >= 0:
-            number = int(number) - 1
+            number = float(number) - 1
             string = inputs[number]
     return string
 
@@ -8364,16 +8364,16 @@ def range_array(bot, inputs, rangea, rangeb):
     string = ''
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
-    if int(rangeb) == int(rangea):
+    if float(rangeb) == float(rangea):
         return number_array(bot, inputs, rangeb)
-    if int(rangeb) < int(rangea):
+    if float(rangeb) < float(rangea):
         tempa, tempb = rangeb, rangea
         rangea, rangeb = tempa, tempb
-    if int(rangea) < 1:
+    if float(rangea) < 1:
         rangea = 1
-    if int(rangeb) > len(inputs):
+    if float(rangeb) > len(inputs):
         return string
-    for i in range(int(rangea), int(rangeb) + 1):
+    for i in range(float(rangea), float(rangeb) + 1):
         arg = number_array(bot, inputs, i)
         if string != '':
             string = str(string + " " + arg)
@@ -8391,7 +8391,7 @@ def excludefrom_array(bot, inputs, number):
         number = re.sub(r"!", '', str(number))
     if str(number).isdigit():
         for i in range(1, len(inputs)):
-            if int(i) != int(number):
+            if float(i) != float(number):
                 arg = number_array(bot, inputs, i)
                 if string != '':
                     string = str(string + " " + arg)
@@ -8454,7 +8454,7 @@ def excrange_plus_array(bot, inputs, number):
     rangeb = 'handling'
     if str(number).endswith(">"):
         rangea = re.sub(r">", '', str(number))
-        rangea = int(rangea) + 1
+        rangea = float(rangea) + 1
         rangeb = len(inputs)
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
@@ -8471,7 +8471,7 @@ def excrange_minus_array(bot, inputs, number):
     if str(number).endswith("<"):
         rangea = 1
         rangeb = re.sub(r"<", '', str(number))
-        rangeb = int(rangeb) - 1
+        rangeb = float(rangeb) - 1
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
     return range_array(bot, inputs, rangea, rangeb)
