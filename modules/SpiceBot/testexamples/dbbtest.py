@@ -30,7 +30,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    triggerargstest = ["'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'"]  # [0, 1, 2, 3, 4, 5, 6, 7, 8,
+    triggerargstest = [9, "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'"]  # [0, 1, 2, 3, 4, 5, 6, 7, 8,
     argtypetest = ["get_trigger_arg", "spicemanip"]
 
     for tasktest in triggerargstest:
