@@ -29,12 +29,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
     triggerargstest = [0, 1, 2, 3, 4, 5, 6, 7, 8, "'2^6'", "'3!'", "'3+'", "'3-'", "'3<'", "'3>'"]
-    argtypetest = ["spicemanip", "get_trigger_arg"]
+    argtypetest = ["get_trigger_arg", "spicemanip"]
 
     for tasktest in triggerargstest:
 
         bot.say("     ")
-        bot.say("     Testing " + str(tasktest))
+        bot.say("                    Testing " + str(tasktest))
 
         for testtype in argtypetest:
 
@@ -42,7 +42,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             testeval = eval(testevalstr)
 
             if testtype == "spicemanip":
-                testtype = str("     " + testtype)
+                testtype = str("      " + testtype)
             bot.say(str(testtype) + "     " + str(testeval))
 
 # Hub
