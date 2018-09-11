@@ -30,14 +30,6 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    arrayone = [1, 3, 2]
-    arraytwo = ['glove', 'boot', 'muzzle']
-
-    riddleme = spicemanip(bot, [arrayone, arraytwo], 'arrange')
-    bot.say(str(riddleme))
-
-    return
-
     triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
     bot.say(str(triggerargsarray))
 
@@ -112,9 +104,6 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
         mainoutputtask = inputs[1]
         suboutputtask = inputs[2]
         inputs = inputs[0]
-    elif outputtask == 'arrange':
-        mainoutputtask = inputs[0]
-        suboutputtask = inputs[1]
     elif str(outputtask).isdigit():
         mainoutputtask, outputtask = int(outputtask), 'number'
     elif "^" in str(outputtask):
@@ -167,14 +156,6 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
             returnvalue = [x for x in returnvalue if x and x not in ['', ' ']]
             returnvalue = [inputspart.strip() for inputspart in returnvalue]
     return returnvalue
-
-
-# sort two lists together
-def spicemanip_arrange(bot, indexitem, outputtask, sortbyarray, arrayb):
-    sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb), key=itemgetter(0))))
-    bot.say("test " + str(sortbyarray))
-    bot.say("test " + str(arrayb))
-    return [sortbyarray, arrayb]
 
 
 # compare 2 lists, based on the location of an index item, passthrough needs to be [indexitem, arraytoindex, arraytocompare]
