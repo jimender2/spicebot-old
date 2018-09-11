@@ -7891,7 +7891,10 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
     # verify output is correct
     if output_type == 'string':
         if not isinstance(returnvalue, str) and not isinstance(returnvalue, basestring):
-            returnvalue = str(' '.join(returnvalue))
+            try:
+                returnvalue = str(' '.join(returnvalue))
+            except TypeError:
+                bot.say("shitty " + str(returnvalue))
     elif output_type in ['list', 'array']:
         if not isinstance(returnvalue, list):
             returnvalue = list(returnvalue.split(" "))
