@@ -263,7 +263,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
             # Block non-admin usage of the admin switch
             if not trigger.admin:
                 osd(bot, duels.channel_current, 'say', "The Admin Switch is meant for Bot Admin use only.")
-                return
+                continue
 
         # Split commands to pass
         command_full_part = spicemanip(bot, triggerargsarray_part, 0)
