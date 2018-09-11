@@ -5877,7 +5877,6 @@ def duels_death_handling(bot, duels, inflicter, inflictee):
 
 # Total Health
 def duels_get_health(bot, nick):
-    bot.say(str(nick))
     totalhealth = 0
     for x in duels_bodyparts:
         gethowmany = get_database_value(bot, nick, x) or 0
@@ -6275,7 +6274,7 @@ def duels_stats_view(bot, duels, target_stats_view, targetbio, customview, actua
                 xname = x.replace("lastfullroom", " ")
                 statname = str(xname + " timeout")
                 gethowmany = str(duels_hours_minutes_seconds((eval(x) - gethowmany)))
-            if x in duels_bodyparts:
+            if x in duels_bodyparts and x == 'shit':
                 statname = x.replace("_", " ")
                 gethowmanymax = array_compare(bot, x, duels_bodyparts, duels_bodyparts_health)
                 gethowmanymax = gethowmanymax * duels.tierscaling
@@ -6297,7 +6296,7 @@ def duels_stats_view(bot, duels, target_stats_view, targetbio, customview, actua
                     gethowmanymax = gethowmanymax * duels.tierscaling
                     gethowmanymax = int(gethowmanymax)
                     gethowmany = str(str(gethowmany) + "/" + str(gethowmanymax))
-            if x == 'health':
+            if x == 'health' and x == 'shit':
                 statname = 'Total Health'
                 totalhealthmax = 0
                 for j in duels_bodyparts:
