@@ -30,6 +30,11 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
+    teststring = trigger.group(2)
+    testlist = list(teststring.split(" "))
+    bot.say(str(testlist))
+    return
+
     triggerargstest = [9, "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'"]  # [0, 1, 2, 3, 4, 5, 6, 7, 8,
     argtypetest = ["get_trigger_arg", "spicemanip"]
 
@@ -101,6 +106,18 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
     except NameError:
         returnvalue = ''
 
+    # default return if not specified
+    if output_type == 'default':
+
+    elif output_type == 'string':
+        if isinstance(returnvalue, list):
+            returnvalue = str(' '.join(inputs))
+    elif output_type in ['list', 'array']:
+        if not isinstance(returnvalue, list):
+            if ' ' in returnvalue:
+                returnvalue = returnvalue.split(' ')
+            else:
+                returnvalue = [returnvalue]
     return returnvalue
 
 
