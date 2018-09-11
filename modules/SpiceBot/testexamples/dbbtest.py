@@ -283,7 +283,7 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
 def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return ''
-    return spicemanip_rangebetween(bot, inputs, outputtask, int(mainoutputtask), len(inputs) + 1)
+    return spicemanip_rangebetween(bot, inputs, outputtask, int(mainoutputtask), len(inputs) + 2)
 
 
 # Reverse Range includes index number
