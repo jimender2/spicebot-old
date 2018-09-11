@@ -5879,7 +5879,7 @@ def duels_death_handling(bot, duels, inflicter, inflictee):
 def duels_get_health(bot, nick):
     totalhealth = 0
     for x in duels_bodyparts:
-        gethowmany = get_database_value(bot, nick, x)
+        gethowmany = get_database_value(bot, nick, x) or 0
         if gethowmany:
             totalhealth = totalhealth + gethowmany
     return totalhealth
