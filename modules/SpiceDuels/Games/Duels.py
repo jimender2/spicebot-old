@@ -254,6 +254,9 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     # Cycle through command array
     for command_split_partial in commands_array:
         triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+        bot.say(str(triggerargsarray_part))
+
+    return
 
         # Admin only
         duels.admin = 0
@@ -322,7 +325,6 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
 
 # Seperate Targets from Commands. Handle Misspellings of commands, and translate alternate commands
 def command_main_process(bot, trigger, triggerargsarray, command_full, command_main, duels, instigatorbio):
-    bot.say(str(triggerargsarray))
 
     # Cheap error handling for people that like to find issues
     if command_main == 'invalidcommand':
