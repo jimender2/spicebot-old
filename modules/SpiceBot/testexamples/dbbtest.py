@@ -30,12 +30,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    teststring = trigger.group(2)
-    testlist = list(teststring.split(" "))
-    bot.say(str(testlist))
-    return
-
-    triggerargstest = [9, "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'"]  # [0, 1, 2, 3, 4, 5, 6, 7, 8,
+    triggerargstest = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'", 'random', 'lower', 'upper', 'title', 'dedupe', 'count', 'sort', 'reverse', 'list', 'andlist', 'orlist', 'last']
     argtypetest = ["get_trigger_arg", "spicemanip"]
 
     for tasktest in triggerargstest:
@@ -62,10 +57,7 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
     if not inputs:
         inputs = []
     if not isinstance(inputs, list):
-        if ' ' in inputs:
-            inputs = inputs.split(' ')
-        else:
-            inputs = [inputs]
+        inputs = list(inputs.split(" "))
 
     # Create return
     if outputtask == 'create':
@@ -101,23 +93,28 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
         for r in (("!", ""), ("+", ""), ("-", ""), ("<", ""), (">", "")):
             mainoutputtask = mainoutputtask.replace(*r)
 
-    try:
-        returnvalue = eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
-    except NameError:
-        returnvalue = ''
+    if outputtask == 'string':
+        returnvalue = inputs
+    else:
+        try:
+            returnvalue = eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
+        except NameError:
+            returnvalue = ''
 
     # default return if not specified
     if output_type == 'default':
-        returnvalue = str(' '.join(inputs))
-    elif output_type == 'string':
-        if isinstance(returnvalue, list):
+        if outputtask in ['string', 'number', 'rangebetween', 'exclude', 'incrange_plus', 'incrange_minus', 'excrange_plus', 'excrange_minus']:
+            output_type = 'string'
+        elif outputtask in ['count']:
+            output_type = 'dict'
+
+    # verify output is correct
+    if output_type == 'string':
+        if not isinstance(returnvalue, str):
             returnvalue = str(' '.join(returnvalue))
     elif output_type in ['list', 'array']:
         if not isinstance(returnvalue, list):
-            if ' ' in returnvalue:
-                returnvalue = returnvalue.split(' ')
-            else:
-                returnvalue = [returnvalue]
+            returnvalue = list(returnvalue.split(" "))
     return returnvalue
 
 
@@ -151,7 +148,6 @@ def spicemanip_count(bot, inputs, outputtask, mainoutputtask, suboutputtask):
                 count += 1
         uniquecount.append(count)
     for inputsitem, unumber in zip(uniqueinputitems, uniquecount):
-        # bot.say(str(inputsitem) + "" + str(unumber))
         returndict[inputsitem] = unumber
     return returndict
 
@@ -167,8 +163,7 @@ def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
         random.shuffle(randomselectlist)
         randomselect = randomselectlist[random.randint(0, len(randomselectlist) - 1)]
         randomselectlist.remove(randomselect)
-    randomselect = randomselectlist[0]
-    return randomselect
+    return [randomselectlist]
 
 
 # remove random item from list
@@ -176,7 +171,8 @@ def spicemanip_exrandom(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return []
     randremove = spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask)
-    inputs.remove(randremove)
+    randomselect = randremove[0]
+    inputs.remove(randomselect)
     return inputs
 
 
@@ -248,13 +244,6 @@ def spicemanip_exclude(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return ''
     del inputs[int(mainoutputtask) - 1]
-    return str(' '.join(inputs))
-
-
-# Convert list to string
-def spicemanip_string(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
     return str(' '.join(inputs))
 
 
