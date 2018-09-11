@@ -33,7 +33,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     arrayone = ['hand', 'foot', 'mouth']
     arraytwo = ['glove', 'boot', 'muzzle']
 
-    riddleme = spicemanip(bot, ['hand', arrayone, arraytwo], 'index')
+    riddleme = spicemanip(bot, ['foot', arrayone, arraytwo], 'index')
     bot.say(str(riddleme))
 
     return
