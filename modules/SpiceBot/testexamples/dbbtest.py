@@ -94,8 +94,8 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
         suboutputtask = str(outputtask).split("^", 1)[1]
         outputtask = 'rangebetween'
     elif str(outputtask).startswith("split_"):
-        outputtask = 'split'
         mainoutputtask = str(outputtask).replace("split_", "")
+        outputtask = 'split'
     elif str(outputtask).endswith(tuple(["!", "+", "-", "<", ">"])):
         mainoutputtask = str(outputtask)
         if str(outputtask).endswith("!"):
