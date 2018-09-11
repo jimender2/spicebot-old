@@ -228,7 +228,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
 
     # Tiers
     duels.currenttier = get_database_value(bot, 'duelrecorduser', 'tier') or 0
-    duels.tierscaling = float(duels_tier_current_to_ratio(bot))
+    duels.tierscaling = duels_tier_current_to_ratio(bot)
 
     # Validate Instigator
     duels_check_nick_condition(bot, duels.instigator, duels)
