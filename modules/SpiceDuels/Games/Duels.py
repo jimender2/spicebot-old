@@ -5880,6 +5880,7 @@ def duels_get_health(bot, nick):
     totalhealth = 0
     for x in duels_bodyparts:
         gethowmany = get_database_value(bot, nick, x) or 0
+        bot.say(str(x) + " " + str(gethowmany))
         if gethowmany:
             totalhealth += gethowmany
     return totalhealth
