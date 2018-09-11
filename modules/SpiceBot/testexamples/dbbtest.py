@@ -160,6 +160,7 @@ def spicemanip_count(bot, inputs, outputtask, mainoutputtask, suboutputtask):
                 count += 1
         uniquecount.append(count)
     for inputsitem, unumber in zip(uniqueinputitems, uniquecount):
+        # bot.say(str(inputsitem) + "" + str(unumber))
         returndict[inputsitem] = unumber
     return returndict
 
@@ -175,8 +176,8 @@ def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
         random.shuffle(randomselectlist)
         randomselect = randomselectlist[random.randint(0, len(randomselectlist) - 1)]
         randomselectlist.remove(randomselect)
-    randomselect = randremove[0]
-    return [randomselect]
+    randomselect = randomselectlist[0]
+    return randomselect
 
 
 # remove random item from list
@@ -184,8 +185,7 @@ def spicemanip_exrandom(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return []
     randremove = spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask)
-    randomselect = randremove[0]
-    inputs.remove(randomselect)
+    inputs.remove(randremove)
     return inputs
 
 
@@ -260,14 +260,21 @@ def spicemanip_exclude(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     return str(' '.join(inputs))
 
 
+# Convert list to string
+def spicemanip_string(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    if inputs == []:
+        return ''
+    return str(' '.join(inputs))
+
+
 # Get number item from list
 def spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return ''
     elif len(inputs) == 1:
         return inputs[0]
-    elif int(mainoutputtask) >= len(inputs) or int(mainoutputtask) <= 0:
-        return ''
+    elif int(mainoutputtask) >= len(inputs):
+        return inputs[len(inputs) - 1]
     else:
         return inputs[int(mainoutputtask) - 1]
 
@@ -291,8 +298,9 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
     if suboutputtask < mainoutputtask:
         mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
     newlist = []
-    for i in range(mainoutputtask, suboutputtask + 1):
-        newlist.append(str(spicemanip_number(bot, inputs, outputtask, i, suboutputtask)))
+    for i in range(0, len(inputs)):
+        if i >= mainoutputtask and i <= suboutputtask:
+            newlist.append(str(inputs[i]))
     if newlist == []:
         return ''
     return ' '.join(newlist)
@@ -302,14 +310,14 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
 def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return ''
-    return spicemanip_rangebetween(bot, inputs, outputtask, int(mainoutputtask), len(inputs) + 2)
+    return spicemanip_rangebetween(bot, inputs, outputtask, int(mainoutputtask) - 1, len(inputs))
 
 
 # Reverse Range includes index number
 def spicemanip_incrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     if inputs == []:
         return ''
-    return spicemanip_rangebetween(bot, inputs, outputtask, 1, int(mainoutputtask))
+    return spicemanip_rangebetween(bot, inputs, outputtask, 0, int(mainoutputtask) - 1)
 
 
 # Forward Range excludes index number
