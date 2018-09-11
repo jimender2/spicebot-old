@@ -142,7 +142,7 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
 # split list by string
 def spicemanip_split(bot, inputs, outputtask, mainoutputtask, suboutputtask):
     split_array = []
-    if not [x for x in inputs if x == mainoutputtask]:
+    if mainoutputtask not in inputs:
         split_array = inputs
     else:
         full_split = inputs.split(mainoutputtask)
