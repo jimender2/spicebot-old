@@ -30,7 +30,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    bot.say(str(spicemanip(bot, trigger.group(2), '2^6')))
+    bot.say(str(spicemanip(bot, trigger.group(2), '2^6', 'list')))
     return
 
     testsgood = [
@@ -124,8 +124,6 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
             output_type = 'string'
         elif outputtask in ['count']:
             output_type = 'dict'
-    bot.say(str(output_type))
-    bot.say(str(returnvalue))
 
     # verify output is correct
     if output_type == 'string':
