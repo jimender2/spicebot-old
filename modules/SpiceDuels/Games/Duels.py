@@ -6301,9 +6301,10 @@ def duels_stats_view(bot, duels, target_stats_view, targetbio, customview, actua
                 totalhealthmax = 0
                 for j in duels_bodyparts:
                     gethowmanymax = array_compare(bot, j, duels_bodyparts, duels_bodyparts_health)
-                    bot.say(str(duels.tierscaling))
                     gethowmanymax = gethowmanymax * duels.tierscaling
                     gethowmanymax = int(gethowmanymax)
+                    bot.say(str(gethowmanymax))
+                    bot.say(str(totalhealthmax))
                     totalhealthmax = totalhealthmax + gethowmanymax
                 if targetbio.race == 'vampire':
                     gethowmany = -abs(gethowmany)
