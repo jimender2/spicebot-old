@@ -274,7 +274,7 @@ def spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask):
         return ''
     elif len(inputs) == 1:
         return inputs[0]
-    elif int(mainoutputtask) >= len(inputs) or int(mainoutputtask) < 0:
+    elif int(mainoutputtask) > len(inputs) or int(mainoutputtask) < 0:
         return ''
     else:
         return inputs[int(mainoutputtask) - 1]
