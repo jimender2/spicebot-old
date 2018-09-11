@@ -119,6 +119,7 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
                             'incrange_plus', 'incrange_minus', 'excrange_plus', 'excrange_minus'
                             ]:
             output_type = 'string'
+            bot.say("here")
         elif outputtask in ['count']:
             output_type = 'dict'
 
