@@ -6274,7 +6274,7 @@ def duels_stats_view(bot, duels, target_stats_view, targetbio, customview, actua
                 xname = x.replace("lastfullroom", " ")
                 statname = str(xname + " timeout")
                 gethowmany = str(duels_hours_minutes_seconds((eval(x) - gethowmany)))
-            if x in duels_bodyparts and x == 'shit':
+            if x in duels_bodyparts:
                 statname = x.replace("_", " ")
                 gethowmanymax = array_compare(bot, x, duels_bodyparts, duels_bodyparts_health)
                 gethowmanymax = gethowmanymax * duels.tierscaling
@@ -6296,7 +6296,7 @@ def duels_stats_view(bot, duels, target_stats_view, targetbio, customview, actua
                     gethowmanymax = gethowmanymax * duels.tierscaling
                     gethowmanymax = int(gethowmanymax)
                     gethowmany = str(str(gethowmany) + "/" + str(gethowmanymax))
-            if x == 'health' and x == 'shit':
+            if x == 'health':
                 statname = 'Total Health'
                 totalhealthmax = 0
                 for j in duels_bodyparts:
@@ -8478,6 +8478,7 @@ def excrange_minus_array(bot, inputs, number):
 
 
 def array_compare(bot, indexitem, arraytoindex, arraytocompare):
+    bot.say(str(indexitem) + " " + str(arraytoindex) + " " + str(arraytocompare))
     item = ''
     for x, y in zip(arraytoindex, arraytocompare):
         if x == indexitem:
