@@ -109,6 +109,7 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
     if outputtask in [0, 'complete']:
         outputtask = 'string'
     elif outputtask == 'index':
+        bot.say(str(inputs))
         mainoutputtask = inputs[1]
         suboutputtask = inputs[2]
         inputs = inputs[0]
