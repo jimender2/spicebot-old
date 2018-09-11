@@ -146,6 +146,7 @@ def spicemanip_split(bot, inputs, outputtask, mainoutputtask, suboutputtask):
         split_array = inputs
     else:
         full_split = inputs.split(mainoutputtask)
+        bot.say(str(full_split))
         for splitpart in full_split:
             split_array.append(splitpart)
     return split_array
