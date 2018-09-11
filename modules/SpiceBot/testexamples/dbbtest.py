@@ -41,11 +41,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         for testtype in argtypetest:
 
             testevalstr = str(str(testtype) + "(bot, trigger.group(2), " + str(tasktest) + ")")
-            testeval = eval(testevalstr)
-            # try:
-            #    testeval = eval(testevalstr)
-            # except:
-            #    testeval = "N/A"
+            try:
+                testeval = eval(testevalstr)
+            except NameError:
+                testeval = "N/A"
 
             if testtype == "spicemanip":
                 testtype = str("      " + testtype)
