@@ -40,7 +40,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                         8, 9,
                         "'2^6'", "'4!'", "'4+'", "'4-'", "'4<'", "'4>'"
                         ]
-    argtypetest = ["get_trigger_arg_old", "spicemanip"]
+    argtypetest = ["spicemanip_old", "spicemanip"]
 
     for tasktest in triggerargstest:
 
