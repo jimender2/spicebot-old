@@ -30,7 +30,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', str(temp))
 
 
-def txtCount(path):
+def txtFileCount(path):
     with open(path) as f:
         line_count = 0
         for line in f:

@@ -1019,3 +1019,42 @@ def class_create(classname):
     exec(compile("class class_" + str(classname) + ": " + compiletext, "", "exec"))
     newclass = eval('class_'+classname+"()")
     return newclass
+
+
+"""
+# File functions
+"""
+
+
+def txtFileCount(path):
+    with open(path) as f:
+        line_count = 0
+        for line in f:
+            line_count += 1
+
+    return line_count
+
+
+def fileLine(path, number):
+    maxLines = txtCount(path)
+    if number < 0:
+        number = 1
+    if number > maxLines:
+        number = 1
+    file = open(path, "r")
+    i = 1
+    while i <= number:
+        line = file.readline()
+        i = i + 1
+    return line
+
+
+def randomFileLine(path):
+    maxLines = txtCount(path)
+    rand = random.randint(1, maxLines)
+    file = open(path, "r")
+    i = 1
+    while i <= rand:
+        line = file.readline()
+        i = i + 1
+    return line
