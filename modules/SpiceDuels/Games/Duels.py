@@ -6301,6 +6301,7 @@ def duels_stats_view(bot, duels, target_stats_view, targetbio, customview, actua
                 totalhealthmax = 0
                 for j in duels_bodyparts:
                     gethowmanymax = array_compare(bot, j, duels_bodyparts, duels_bodyparts_health)
+                    bot.say(str(gethowmanymax))
                     gethowmanymax = gethowmanymax * duels.tierscaling
                     gethowmanymax = int(gethowmanymax)
                     totalhealthmax = totalhealthmax + gethowmanymax
@@ -8478,7 +8479,6 @@ def excrange_minus_array(bot, inputs, number):
 
 
 def array_compare(bot, indexitem, arraytoindex, arraytocompare):
-    bot.say(str(indexitem) + " " + str(arraytoindex) + " " + str(arraytocompare))
     item = ''
     for x, y in zip(arraytoindex, arraytocompare):
         if x == indexitem:
