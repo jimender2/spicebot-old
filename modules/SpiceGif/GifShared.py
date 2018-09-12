@@ -126,9 +126,14 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
         return returngifdict
     returngifdict["querysuccess"] = True
 
+    bot.say(str(searchnum))
+    bot.say(str(resultsamount))
+
     if int(searchnum) > int(resultsamount):
         searchnum = resultsamount
     returngifdict["returnnum"] = searchnum
+
+
 
     returngifdict["returnurl"] = data['results'][searchnum]['media'][0]['gif']['url']
 
