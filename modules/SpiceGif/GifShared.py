@@ -43,7 +43,8 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
                     "querysuccess": False,
                     "returnnum": searchnum,
                     "returnurl": None,
-                    "error": None
+                    "error": None,
+                    "gifapi": 'giphy'
                     }
 
     # Make sure there is a valid input of query and search number
@@ -74,7 +75,7 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
-        returngifdict["error"] = 'No Results were found for ' + returngifdict['query']
+        returngifdict["error"] = 'No Giphy Results were found for ' + returngifdict['query']
         return returngifdict
     returngifdict["querysuccess"] = True
 
@@ -103,7 +104,8 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
                     "querysuccess": False,
                     "returnnum": searchnum,
                     "returnurl": None,
-                    "error": None
+                    "error": None,
+                    "gifapi": 'tenor'
                     }
 
     # Make sure there is a valid input of query and search number
@@ -134,7 +136,7 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
-        returngifdict["error"] = 'No Results were found for ' + returngifdict['query']
+        returngifdict["error"] = 'No Tenor Results were found for ' + returngifdict['query']
         return returngifdict
     returngifdict["querysuccess"] = True
 
