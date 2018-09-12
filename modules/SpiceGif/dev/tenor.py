@@ -31,10 +31,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    target = spicemanip(bot, triggerargsarray, 0)
-    if not target:
-        bot.say("no query")
-        return
+    query = spicemanip(bot, triggerargsarray, 0)
     gif = getGif_giphytest(bot, query, 'random')
     if gif:
         osd(bot, trigger.sender, 'say',  str(gif))
