@@ -64,7 +64,7 @@ def getGif_giphytest(bot, query, searchnum):
     if searchnum == 'random':
         searchnum = randint(0, giphylimit)
 
-    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(searchquery)+'&api_key=' + str(giphyapi) + '&limit=' + str(giphylimit) + '&rating=r'
+    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(searchquery) + '&api_key=' + str(giphyapi) + '&limit=' + str(giphylimit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
 
     # Verifythere are results
