@@ -50,7 +50,11 @@ def getGif_giphytest(bot, query, searchnum):
                     }
 
     # Make sure there is a valid input of query and search number
-    if not query or (not str(searchnum).isdigit() and searchnum != 'random'):
+    if not query:
+        returngifdict["error"] = 'No Query to Search'
+        return returngifdict
+    if not str(searchnum).isdigit() and searchnum != 'random':
+        returngifdict["error"] = 'No Search Number or Random Specified'
         return returngifdict
 
     # spaces in query
