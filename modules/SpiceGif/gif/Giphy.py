@@ -17,7 +17,7 @@ from BotShared import *
 from GifShared import *
 
 
-@sopel.module.commands('gif', 'giphy')
+@sopel.module.commands('gif', 'giphy', 'tenor')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
@@ -37,7 +37,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         query = str(query)
         i = 0
         while i < 3:
-            gif, randno = giphy_getGif(query)
+            gif, randno = getGif_giphy(query)
             if gif:
                 osd(bot, trigger.sender, 'say',  "Giphy Result (" + str(target) + " #" + str(randno) + "): " + gif)
                 i = 5
