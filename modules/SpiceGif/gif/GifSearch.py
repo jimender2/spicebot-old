@@ -40,7 +40,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             gifapiresults.append(gifdict)
 
     if gifapiresults == []:
-        osd(bot, trigger.sender, 'say',  'No Results were found for ' + query + 'in any api')
+        osd(bot, trigger.sender, 'say',  'No Results were found for ' + query + ' in any api')
         return
 
     gifdict = spicemanip(bot, gifapiresults, 'random')
