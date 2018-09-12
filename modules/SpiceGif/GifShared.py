@@ -74,8 +74,8 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
+        returngifdict["error"] = 'No Results were found for ' + returngifdict['query']
         return returngifdict
-    bot.say(str(resultsarray))
     returngifdict["querysuccess"] = True
 
     if int(searchnum) > int(resultsamount):
@@ -134,6 +134,7 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
+        returngifdict["error"] = 'No Results were found for ' + returngifdict['query']
         return returngifdict
     returngifdict["querysuccess"] = True
 
