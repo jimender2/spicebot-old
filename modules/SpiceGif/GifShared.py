@@ -84,33 +84,10 @@ Tenor
 """
 
 tenorapi = config.get("tenor", "apikey")
-tenorlimit = 5
+tenorlimit = 1
 
 
-def getGif_tenor(bot, query, searchnum):
-
-    # load the user's anonymous ID from cookies or some other disk storage
-    anon_id = get_database_value(bot, 'tenoranon', 'anon_id')
-    if not anon_id:
-        r = requests.get("https://api.tenor.com/v1/anonid?key=%s" % tenorapi)
-        if r.status_code == 200:
-            anon_id = json.loads(r.content)["anon_id"]
-            set_database_value(bot, 'tenoranon', 'anon_id', anon_id)
-        else:
-            anon_id = ""
-
-    # get the top 8 GIFs for the search term
-    r = requests.get(
-        "https://api.tenor.com/v1/search?q=%s&key=%s&limit=%s&anon_id=%s" % (query, tenorapi, tenorlimit, anon_id))
-
-    if r.status_code == 200:
-        top_gifs = json.loads(r.content)
-    else:
-        top_gifs = None
-    return top_gifs
-
-
-def getGif_tenortest(bot, query, searchnum, searchlimit=tenorlimit):
+def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
 
     returngifdict = {
                     "query": query,
@@ -139,7 +116,7 @@ def getGif_tenortest(bot, query, searchnum, searchlimit=tenorlimit):
 
     url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchlimit)  # + '&anon_id=r' + str(anon_id)
     data = json.loads(urllib2.urlopen(url).read())
-    bot.say(str(data))
+    osd(bot, trigger.sender, 'say',  str(data))
 
     # Verifythere are results
     resultsamount = data['pagination']['total_count']
