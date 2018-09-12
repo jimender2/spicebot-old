@@ -17,7 +17,7 @@ from BotShared import *
 from GifShared import *
 
 
-@sopel.module.commands('giphy')
+@sopel.module.commands('gif')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
@@ -32,9 +32,12 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     query = spicemanip(bot, triggerargsarray, 0)
-    gifdict = getGif_giphy(bot, query, 'random')
+
+    currentapi = spicemanip(bot, valid_gif_api, 'random')
+    gifdict = eval("getGif_" + currentapi + "(bot, query, 'random')")
+
     if not gifdict["querysuccess"]:
         osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
         return
 
-    osd(bot, trigger.sender, 'say',  "Giphy Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
+    osd(bot, trigger.sender, 'say',  currentapi.title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
