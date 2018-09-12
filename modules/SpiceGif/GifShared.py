@@ -182,6 +182,8 @@ def getGif_all(bot, query, searchnum, searchlimit=giphylimit):
         if gifdict["querysuccess"]:
             gifdictall = gifdict["allgifs"]
             gifapiresults.extend(gifdictall)
+    random.shuffle(gifapiresults)
+    random.shuffle(gifapiresults)
 
     if gifapiresults == []:
         gifdict = {
