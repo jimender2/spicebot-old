@@ -87,7 +87,7 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
         tempdict["returnurl"] = tempresult
         tempresultnum += 1
         allresults.append(tempdict)
-    returngifdict["allgifs"] = searchnum
+    returngifdict["allgifs"] = allresults
 
     if int(searchnum) > int(resultsamount - 1):
         searchnum = randint(0, resultsamount - 1)
@@ -159,7 +159,7 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
         tempdict["returnurl"] = tempresult
         tempresultnum += 1
         allresults.append(tempdict)
-    returngifdict["allgifs"] = searchnum
+    returngifdict["allgifs"] = allresults
 
     if int(searchnum) > int(resultsamount - 1):
         searchnum = randint(0, resultsamount - 1)
