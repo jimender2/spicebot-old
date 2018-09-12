@@ -34,7 +34,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     query = spicemanip(bot, triggerargsarray, 0)
     gifdict = getGif_giphytest(bot, query, 'random')
     if not gifdict["querysuccess"]:
-        osd(bot, trigger.sender, 'say',  str(gif["error"]))
+        osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
         return
 
     osd(bot, trigger.sender, 'say',  "Giphy Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
