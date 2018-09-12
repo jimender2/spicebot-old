@@ -26,6 +26,29 @@ config.read("/home/spicebot/spicebot.conf")
 valid_gif_api = ['giphy', 'tenor']
 
 
+def getGif_all(bot, query, searchnum, searchlimit=giphylimit):
+    gifapiresults = []
+    for currentapi in valid_gif_api:
+        gifdict = eval("getGif_" + currentapi + "(bot, query, 'random', searchlimit)")
+        if gifdict["querysuccess"]:
+            gifapiresults.append(gifdict)
+
+    if gifapiresults == []:
+        gifdict = {
+                        "query": query,
+                        "searchquery": query,
+                        "querysuccess": False,
+                        "returnnum": None,
+                        "returnurl": None,
+                        "error": None,
+                        "gifapi": None
+                        }
+        gifapiresults.append(gifdict)
+
+    gifdict = spicemanip(bot, gifapiresults, 'random')
+    return gifdict
+
+
 """
 Giphy
 """
