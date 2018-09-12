@@ -76,7 +76,7 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
         searchnum = randint(0, resultsamount)
     returngifdict["returnnum"] = searchnum
 
-    id = data['data'][searchnum]['id']
+    id = data['data'][searchnum - 1]['id']
     returngifdict["returnurl"] = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
 
     return returngifdict
