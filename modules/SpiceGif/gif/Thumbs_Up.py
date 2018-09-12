@@ -34,7 +34,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     gif = getGif_all(bot, "thumbs up", 'random')
     instigator = trigger.nick
     responsemsg = [' a thumbs up.', ' a pat on the back.', ' a sarcastic smile.', ' a high five.']
-    if gifdict["querysuccess"]:
+    if gif["querysuccess"]:
         osd(bot, trigger.sender, 'say', "%s Result (#%s): %s" % (gif['gifapi'].title(), gif['returnnum'], gif['returnurl']))
     else:
         osd(bot, trigger.sender, 'action', 'gives ' + instigator + random.choice(responsemsg))
