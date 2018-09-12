@@ -32,24 +32,12 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = spicemanip(bot, triggerargsarray, 0)
-    if target != "roulette":
-        query = target.replace(' ', '%20')
-        query = str(query)
-
-        i = 0
-        while i < 3:
-            randno = randint(0, giphylimit)
-            gif, randno = getGif_tenor(bot, query, randno)
-            if gif:
-                osd(bot, trigger.sender, 'say',  "Tenor Result (" + str(target) + " #" + str(randno) + "): " + gif)
-                i = 5
-            else:
-                i = i + 1
-        if i == 3:
-            osd(bot, trigger.sender, 'say', "Hmm...Couldn't find a gif for that!")
-    elif target == "roulette":
-        gif = roulette()
-        if gif:
-            osd(bot, trigger.sender, 'say', "Click at your own risk! " + gif)
-    else:
-        osd(bot, trigger.sender, 'say', "Tell me what you're looking for!")
+    if not target:
+        bot.say("no query")
+        return
+    query = target.replace(' ', '%20')
+    query = str(query)
+    randno = randint(0, giphylimit)
+    gif = getGif_giphy(bot, query, randno)
+    if gif:
+        osd(bot, trigger.sender, 'say',  str(gif))
