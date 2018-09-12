@@ -108,3 +108,50 @@ def getGif_tenor(bot, query, searchnum):
     else:
         top_gifs = None
     return top_gifs
+
+
+def getGif_tenortest(bot, query, searchnum, searchlimit=tenorlimit):
+
+    returngifdict = {
+                    "query": query,
+                    "searchquery": query,
+                    "querysuccess": False,
+                    "returnnum": searchnum,
+                    "returnurl": None,
+                    "error": None
+                    }
+
+    # Make sure there is a valid input of query and search number
+    if not query:
+        returngifdict["error"] = 'No Query to Search'
+        return returngifdict
+    if not str(searchnum).isdigit() and searchnum != 'random':
+        returngifdict["error"] = 'No Search Number or Random Specified'
+        return returngifdict
+
+    # spaces in query
+    searchquery = query.replace(' ', '%20')
+    returngifdict["searchquery"] = searchquery
+
+    # Random
+    if searchnum == 'random':
+        searchnum = randint(0, searchlimit)
+
+    url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchlimit)# + '&anon_id=r' + str(anon_id)
+    data = json.loads(urllib2.urlopen(url).read())
+
+    # Verifythere are results
+    resultsamount = data['pagination']['total_count']
+    returngifdict["resultsamount"] = resultsamount
+    if not resultsamount:
+        return returngifdict
+    returngifdict["querysuccess"] = True
+
+    if int(searchnum) > int(resultsamount):
+        searchnum = resultsamount
+    returngifdict["returnnum"] = searchnum
+
+    id = data['data'][searchnum]['id']
+    returngifdict["returnurl"] = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
+
+    return returngifdict
