@@ -31,7 +31,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif = getGif_giphy(bot, "Darwin Award", 'random')
+    gif = getGif_all(bot, "Darwin Award", 'random')
     if gif:
         osd(bot, trigger.sender, 'say', "Result no: %s: %s" % (gif['returnnum'], gif['returnurl']))
     else:
