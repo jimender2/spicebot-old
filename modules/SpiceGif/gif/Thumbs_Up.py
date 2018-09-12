@@ -29,7 +29,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     randno = randint(0, giphylimit)
-    gif = getGif_giphy("thumbs%20up", randno)
+    gif = getGif_giphy(bot, "thumbs%20up", randno)
     instigator = trigger.nick
     responsemsg = [' a thumbs up.', ' a pat on the back.', ' a sarcastic smile.', ' a high five.']
     if gif:

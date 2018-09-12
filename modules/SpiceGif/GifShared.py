@@ -30,7 +30,7 @@ giphyapi = config.get("giphy", "apikey")
 giphylimit = 50
 
 
-def getGif_giphy(query, searchnum):
+def getGif_giphy(bot, query, searchnum):
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(giphyapi) + '&limit=' + str(giphylimit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
     try:
@@ -49,7 +49,7 @@ tenorapi = config.get("giphy", "apikey")
 tenorlimit = 5
 
 
-def getGif_tenor(query, searchnum):
+def getGif_tenor(bot, query, searchnum):
 
     # load the user's anonymous ID from cookies or some other disk storage
     anon_id = get_database_value(bot, 'tenoranon', 'anon_id')

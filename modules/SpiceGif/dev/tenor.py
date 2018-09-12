@@ -39,7 +39,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         i = 0
         while i < 3:
             randno = randint(0, giphylimit)
-            gif, randno = getGif_tenor(query, randno)
+            gif, randno = getGif_tenor(bot, query, randno)
             if gif:
                 osd(bot, trigger.sender, 'say',  "Tenor Result (" + str(target) + " #" + str(randno) + "): " + gif)
                 i = 5

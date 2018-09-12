@@ -35,7 +35,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not target:
         query = "facepalm"
         randno = randint(0, giphylimit)
-        gif = getGif_giphy(query, randno)
+        gif = getGif_giphy(bot, query, randno)
         if gif:
             osd(bot, trigger.sender, 'say', "Result number " + str(randno) + ": " + gif)
         else:
