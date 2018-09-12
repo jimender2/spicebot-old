@@ -28,18 +28,8 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif = yourewelcome()
+    gif = getGif_all(bot, "your welcome", 'random')
     if gif:
         osd(bot, trigger.sender, 'say', gif)
     else:
         osd(bot, trigger.sender, 'say', 'You\'re welcome!')
-
-
-def yourewelcome():
-    api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
-    url = 'http://api.giphy.com/v1/gifs/search?q=your+welcome&api_key=' + api + '&limit=100'
-    data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0, 99)
-    id = data['data'][randno]['id']
-    gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
-    return gif
