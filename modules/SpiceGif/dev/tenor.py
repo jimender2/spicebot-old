@@ -38,6 +38,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     query = target.replace(' ', '%20')
     query = str(query)
     randno = randint(0, giphylimit)
-    gif = getGif_giphy(bot, query, randno)
+    gif = getGif_giphytest(bot, query, randno)
     if gif:
         osd(bot, trigger.sender, 'say',  str(gif))
