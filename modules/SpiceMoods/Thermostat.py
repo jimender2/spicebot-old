@@ -21,7 +21,7 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'thermostat')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+        commands_array = spicemanip(bot, triggerargsarray, "split_&&") or []
         for command_split_partial in commands_array:
             triggerargsarray_part = spicemanip(bot, command_split_partial, 'create') or []
             bot.say(str(triggerargsarray_part))
