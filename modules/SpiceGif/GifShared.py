@@ -122,6 +122,9 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
 
     # Verify there are results
     results = data['results']
+    for result in results:
+        cururl = result['url']
+        bot.say(str(cururl))
     bot.say(str(results))
     return
     resultsamount = len(data['results'])
