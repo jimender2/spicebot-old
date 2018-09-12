@@ -137,7 +137,7 @@ def getGif_tenortest(bot, query, searchnum, searchlimit=tenorlimit):
     if searchnum == 'random':
         searchnum = randint(0, searchlimit)
 
-    url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchlimit)# + '&anon_id=r' + str(anon_id)
+    url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchlimit)  # + '&anon_id=r' + str(anon_id)
     data = json.loads(urllib2.urlopen(url).read())
 
     # Verifythere are results
