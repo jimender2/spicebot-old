@@ -34,7 +34,7 @@ def getGif_giphy(query, searchnum):
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(giphyapi) + '&limit=' + str(giphylimit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
     try:
-        id = data['data'][randno]['id']
+        id = data['data'][searchnum]['id']
         gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
     except IndexError:
         gif = ""
