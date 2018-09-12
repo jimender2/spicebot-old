@@ -20,7 +20,13 @@ temp_scales_short = ['k', 'c', 'f', 'ra', 'ro', 'n', 'd', 're']
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'thermostat')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+        # IF "&&" is in the full input, it is treated as multiple commands, and is split
+        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+        if commands_array == []:
+            commands_array = [[]]
+        for command_split_partial in commands_array:
+            triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+            execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
@@ -35,7 +41,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not tempcommand or tempcommand in temp_scales or tempcommand in temp_scales_short:
         if tempcommand in temp_scales or tempcommand in temp_scales_short:
             if tempcommand in temp_scales_short:
-                tempcommand = array_compare(bot, tempcommand, temp_scales_short, temp_scales)
+                tempcommand = spicemanip(bot, [tempcommand, temp_scales_short, temp_scales], 'index')
             tempconvert = tempcommand
         else:
             tempconvert = spicemanip(bot, temp_scales, 'random')
@@ -60,7 +66,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         return
 
     if tempscale in temp_scales_short:
-        tempscale = array_compare(bot, tempscale, temp_scales_short, temp_scales)
+        tempscale = spicemanip(bot, [tempscale, temp_scales_short, temp_scales], 'index')
 
     tempcond = temp_condition(bot, number, tempscale)
 

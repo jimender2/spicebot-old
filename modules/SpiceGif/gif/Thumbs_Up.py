@@ -18,25 +18,20 @@ from BotShared import *
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+        # IF "&&" is in the full input, it is treated as multiple commands, and is split
+        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+        if commands_array == []:
+            commands_array = [[]]
+        for command_split_partial in commands_array:
+            triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+            execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif = getgif()
+    gif = getGif_giphy(bot, "thumbs%20up", 'random')
     instigator = trigger.nick
     responsemsg = [' a thumbs up.', ' a pat on the back.', ' a sarcastic smile.', ' a high five.']
     if gif:
         osd(bot, trigger.sender, 'say', gif)
     else:
         osd(bot, trigger.sender, 'action', 'gives ' + instigator + random.choice(responsemsg))
-
-
-# Get GIF from giphy
-def getgif():
-    api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
-    url = 'http://api.giphy.com/v1/gifs/search?q=thumbsup&api_key=' + api + '&limit=100'
-    data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0, 99)
-    id = data['data'][randno]['id']
-    gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
-    return gif

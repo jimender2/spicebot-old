@@ -24,19 +24,17 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.commands('dbbtest')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
-    execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+    # IF "&&" is in the full input, it is treated as multiple commands, and is split
+    commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+    if commands_array == []:
+        commands_array = [[]]
+    for command_split_partial in commands_array:
+        triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+        execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
-
-    arrayone = ['hand', 'foot', 'mouth']
-    arraytwo = ['glove', 'boot', 'muzzle']
-
-    riddleme = spicemanip(bot, ['foot', arrayone, arraytwo], 'index')
-    bot.say(str(riddleme))
-
-    return
 
     triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
     bot.say(str(triggerargsarray))
@@ -84,6 +82,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 # Hub
 def spicemanip(bot, inputs, outputtask, output_type='default'):
+
+    # TODO 'this*that' or '1*that' replace either all strings matching, or an index value
+    # TODO reverse sort z.sort(reverse = True)
+    # list.extend adds lists to eachother
 
     mainoutputtask, suboutputtask = None, None
 
@@ -185,6 +187,8 @@ def spicemanip_split(bot, inputs, outputtask, mainoutputtask, suboutputtask):
         split_array = restring.split(mainoutputtask)
     split_array = [x for x in split_array if x and x not in ['', ' ']]
     split_array = [inputspart.strip() for inputspart in split_array]
+    if split_array == []:
+        split_array = [[]]
     return split_array
 
 
@@ -392,14 +396,6 @@ def spicemanip_excrange_minus(bot, inputs, outputtask, mainoutputtask, suboutput
     if inputs == []:
         return ''
     return spicemanip_rangebetween(bot, inputs, outputtask, 1, int(mainoutputtask) - 1)
-
-
-def array_compare(bot, indexitem, arraytoindex, arraytocompare):
-    item = ''
-    for x, y in zip(arraytoindex, arraytocompare):
-        if x == indexitem:
-            item = y
-    return item
 
 
 def array_arrangesort(bot, sortbyarray, arrayb):

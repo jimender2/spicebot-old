@@ -536,6 +536,8 @@ def database_initialize(bot, nick, array, database):
 
 def sayingsmodule(bot, databasekey, inputarray, thingtodo):
     """Handle the creation and manipulation of modules that return sayings."""
+    # Usage: message = sayingsmodule(bot, 'techsupport', triggerargsarray, 'random')
+    # Usage: message = sayingsmodule(bot, 'techsupport', triggerargsarray, 'add')
     response = "Something went wrong. Oops."
     inputstring = spicemanip(bot, inputarray, '2+')
     existingarray = get_database_value(bot, bot.nick, databasekey) or []
@@ -721,11 +723,6 @@ Array/List/String Manipulation
 """
 
 
-"""
-Array/List/String Manipulation
-"""
-
-
 # Legacy
 def get_trigger_arg(bot, inputs, outputtask, output_type='default'):
     return spicemanip(bot, inputs, outputtask, output_type)
@@ -757,6 +754,10 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
     # Convert outputtask to standard
     if outputtask in [0, 'complete']:
         outputtask = 'string'
+    elif outputtask == 'index':
+        mainoutputtask = inputs[1]
+        suboutputtask = inputs[2]
+        inputs = inputs[0]
     elif str(outputtask).isdigit():
         mainoutputtask, outputtask = int(outputtask), 'number'
     elif "^" in str(outputtask):
@@ -809,6 +810,15 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
             returnvalue = [x for x in returnvalue if x and x not in ['', ' ']]
             returnvalue = [inputspart.strip() for inputspart in returnvalue]
     return returnvalue
+
+
+# compare 2 lists, based on the location of an index item, passthrough needs to be [indexitem, arraytoindex, arraytocompare]
+def spicemanip_index(bot, indexitem, outputtask, arraytoindex, arraytocompare):
+    item = ''
+    for x, y in zip(arraytoindex, arraytocompare):
+        if x == indexitem:
+            item = y
+    return item
 
 
 # split list by string
@@ -1028,14 +1038,6 @@ def spicemanip_excrange_minus(bot, inputs, outputtask, mainoutputtask, suboutput
     if inputs == []:
         return ''
     return spicemanip_rangebetween(bot, inputs, outputtask, 1, int(mainoutputtask) - 1)
-
-
-def array_compare(bot, indexitem, arraytoindex, arraytocompare):
-    item = ''
-    for x, y in zip(arraytoindex, arraytocompare):
-        if x == indexitem:
-            item = y
-    return item
 
 
 def array_arrangesort(bot, sortbyarray, arrayb):
