@@ -17,6 +17,11 @@ from BotShared import *
 from GifShared import *
 
 
+"""
+Giphy
+"""
+
+
 def giphy_getGif(query):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
     limit = 50
