@@ -73,7 +73,7 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
         resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
-    if not resultsamount:
+    if resultsarray == []:
         return returngifdict
     returngifdict["querysuccess"] = True
 
@@ -132,7 +132,7 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
         resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
-    if not resultsamount:
+    if resultsarray == []:
         return returngifdict
     returngifdict["querysuccess"] = True
 
