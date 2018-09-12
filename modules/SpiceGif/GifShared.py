@@ -116,7 +116,7 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
 
     url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchlimit)  # + '&anon_id=r' + str(anon_id)
     data = json.loads(urllib2.urlopen(url).read())
-    osd(bot, trigger.sender, 'say',  str(data))
+    osd(bot, 'deathbybandaid', 'say',  str(data))
 
     # Verifythere are results
     resultsamount = data['pagination']['total_count']
