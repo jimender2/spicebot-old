@@ -31,10 +31,10 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif = getGif_giphytest(bot, spicemanip(bot, triggerargsarray, 0), 'random')
-    if not gif["querysuccess"]:
-        osd(bot, trigger.sender, 'say',  str(gif["error"]))
+    query = spicemanip(bot, triggerargsarray, 0)
+    gifdict = getGif_tenor(bot, query, 'random')
+    if not gifdict["querysuccess"]:
+        osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
         return
 
-    if gif:
-        osd(bot, trigger.sender, 'say',  str(gif))
+    osd(bot, trigger.sender, 'say',  "Tenor Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))

@@ -32,18 +32,7 @@ giphyapi = config.get("giphy", "apikey")
 giphylimit = 50
 
 
-def getGif_giphy(bot, query, searchnum):
-    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(giphyapi) + '&limit=' + str(giphylimit) + '&rating=r'
-    data = json.loads(urllib2.urlopen(url).read())
-    try:
-        id = data['data'][searchnum]['id']
-        gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
-    except IndexError:
-        gif = ""
-    return gif
-
-
-def getGif_giphytest(bot, query, searchnum, searchlimit=giphylimit):
+def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
 
     returngifdict = {
                     "query": query,
