@@ -35,8 +35,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not target:
         query = "facepalm"
         gif = getGif_all(bot, query, 'random')
-        if gif:
-            osd(bot, trigger.sender, 'say', "Result number " + str(randno) + ": " + gif)
+        if gifdict["querysuccess"]:
+            osd(bot, trigger.sender, 'say', "%s Result (#%s): %s" % (gif['gifapi'].title(), gif['returnnum'], gif['returnurl']))
         else:
             osd(bot, trigger.sender, 'say', "Hmm...Couldn't find a gif for that!")
     elif target == "major":
