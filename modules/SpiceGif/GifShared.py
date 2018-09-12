@@ -181,6 +181,7 @@ def getGif_all(bot, query, searchnum, searchlimit=giphylimit):
         gifdict = eval("getGif_" + currentapi + "(bot, query, 'random', searchlimit)")
         if gifdict["querysuccess"]:
             gifdictall = gifdict["allgifs"]
+            bot.say(str(gifdictall))
             gifapiresults.extend(gifdictall)
     random.shuffle(gifapiresults)
     random.shuffle(gifapiresults)
