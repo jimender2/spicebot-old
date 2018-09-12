@@ -16,16 +16,21 @@ sys.path.append(gifshareddir)
 from BotShared import *
 from GifShared import *
 
+# creds
+config = ConfigParser.ConfigParser()
+config.read("/home/spicebot/spicebot.conf")
+
 
 """
 Giphy
 """
 
+giphyapi = config.get("giphy", "apikey")
+
 
 def getGif_giphy(query):
-    api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
     limit = 50
-    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(api) + '&limit=' + str(limit) + '&rating=r'
+    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(giphyapi) + '&limit=' + str(limit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
     randno = randint(0, limit)
     try:
@@ -39,6 +44,8 @@ def getGif_giphy(query):
 """
 Tenor
 """
+
+tenorapi = config.get("giphy", "apikey")
 
 
 def getGif_tenor(query):
