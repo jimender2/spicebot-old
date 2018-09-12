@@ -83,7 +83,7 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
 Tenor
 """
 
-tenorapi = config.get("giphy", "apikey")
+tenorapi = config.get("tenor", "apikey")
 tenorlimit = 5
 
 
