@@ -46,7 +46,12 @@ def getGif_giphy(bot, query, searchnum):
 def getGif_giphytest(bot, query, searchnum, searchlimit=giphylimit):
 
     returngifdict = {
+                    "query": query,
+                    "searchquery": query,
                     "querysuccess": False,
+                    "returnnum": searchnum,
+                    "returnurl": None,
+                    "error": None
                     }
 
     # Make sure there is a valid input of query and search number
@@ -59,6 +64,7 @@ def getGif_giphytest(bot, query, searchnum, searchlimit=giphylimit):
 
     # spaces in query
     searchquery = query.replace(' ', '%20')
+    returngifdict["searchquery"] = searchquery
 
     # Random
     if searchnum == 'random':
