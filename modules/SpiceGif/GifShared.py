@@ -127,10 +127,10 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
         searchnum = resultsamount
     returngifdict["returnnum"] = searchnum
 
-    resultnum = data['results'][searchnum]['media']
-    for x in resultnum:
-        bot.say(str(x))
-    # bot.say(str(resultnum))
+    resultnum = data['results'][searchnum]['media'][0]
+    # for x in resultnum:
+    #    bot.say(str(x))
+    bot.say(str(resultnum))
     return
 
     returngifdict["returnurl"] = data['results'][searchnum]['media']['gif']['url']
