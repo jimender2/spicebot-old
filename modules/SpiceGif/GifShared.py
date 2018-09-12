@@ -64,6 +64,16 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
 
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(searchquery) + '&api_key=' + str(giphyapi) + '&limit=' + str(searchlimit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
+    osd(bot, 'deathbybandaid', 'say',  str(data))
+
+    # Verify there are results
+    results = data['results']
+    resultsarray = []
+    for result in results:
+        cururl = result['url']
+        resultsarray.append(cururl)
+
+    resultsamount = len(resultsarray)
 
     # Verify there are results
     resultsamount = data['pagination']['total_count']
