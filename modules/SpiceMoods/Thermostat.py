@@ -24,6 +24,7 @@ def mainfunction(bot, trigger):
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
         for command_split_partial in commands_array:
             triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+            bot.say(str(triggerargsarray_part))
             execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
