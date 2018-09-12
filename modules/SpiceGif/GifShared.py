@@ -75,7 +75,7 @@ def getGif_tenor(query):
     if r.status_code == 200:
         # load the GIFs using the urls for the smaller GIF sizes
         top_8gifs = json.loads(r.content)
-        print top_8gifs
+        # print top_8gifs
     else:
         top_8gifs = None
 
