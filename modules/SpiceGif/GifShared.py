@@ -84,7 +84,7 @@ Tenor
 """
 
 tenorapi = config.get("tenor", "apikey")
-tenorlimit = 1
+tenorlimit = 2
 
 
 def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
