@@ -31,8 +31,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    query = spicemanip(bot, triggerargsarray, 0)
-    gif = getGif_giphytest(bot, query, 'random')
+    gif = getGif_giphytest(bot, spicemanip(bot, triggerargsarray, 0), 'random')
     if not gif["querysuccess"]:
         osd(bot, trigger.sender, 'say',  str(gif["error"]))
         return
