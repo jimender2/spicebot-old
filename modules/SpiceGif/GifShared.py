@@ -76,7 +76,7 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
         searchnum = randint(0, resultsamount)
     returngifdict["returnnum"] = searchnum
 
-    id = data['data'][searchnum - 1]['id']
+    id = data['data'][searchnum]['id']
     returngifdict["returnurl"] = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
 
     return returngifdict
@@ -136,6 +136,6 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
         searchnum = randint(0, resultsamount)
     returngifdict["returnnum"] = searchnum
 
-    returngifdict["returnurl"] = resultsarray[searchnum - 1]
+    returngifdict["returnurl"] = resultsarray[searchnum]
 
     return returngifdict
