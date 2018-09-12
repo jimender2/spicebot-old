@@ -65,7 +65,7 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(searchquery) + '&api_key=' + str(giphyapi) + '&limit=' + str(searchlimit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
 
-    # Verifythere are results
+    # Verify there are results
     resultsamount = data['pagination']['total_count']
     returngifdict["resultsamount"] = resultsamount
     if not resultsamount:
@@ -120,7 +120,10 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
     url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchlimit)  # + '&anon_id=r' + str(anon_id)
     data = json.loads(urllib2.urlopen(url).read())
 
-    # Verifythere are results
+    # Verify there are results
+    results = data['results']
+    bot.say(str(results))
+    return
     resultsamount = len(data['results'])
     if not resultsamount:
         return returngifdict
