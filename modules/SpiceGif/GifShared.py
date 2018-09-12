@@ -45,17 +45,22 @@ def getGif_giphy(bot, query, searchnum):
 
 def getGif_giphytest(bot, query, searchnum):
 
+    returngifdict = {
+                    "querysuccess": False,
+                    }
+
+    # Make sure there is a valid input of query and search number
+    if not query or (not str(searchnum).isdigit() and searchnum != 'random'):
+        return returngifdict
+
+    # spaces in query
+    searchquery = query.replace(' ', '%20')
+
     # Random
     if searchnum == 'random':
         searchnum = randint(0, giphylimit)
 
-    returngifdict = {
-                    "querysuccess": False,
-                    "resultsamount": 0,
-                    "returnnum": searchnum
-                    }
-
-    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(giphyapi) + '&limit=' + str(giphylimit) + '&rating=r'
+    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(searchquery)+'&api_key=' + str(giphyapi) + '&limit=' + str(giphylimit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
 
     # Verifythere are results
