@@ -34,7 +34,7 @@ giphylimit = 50
 def getGif_giphy(bot, query, searchnum):
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(giphyapi) + '&limit=' + str(giphylimit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
-    resultsamount = data['pagination']
+    resultsamount = data['pagination']['total_count']
     bot.say(str(resultsamount))
     # osd(bot, 'deathbybandaid', 'say', str(data))
     try:
