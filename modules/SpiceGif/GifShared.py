@@ -43,7 +43,7 @@ def getGif_giphy(bot, query, searchnum):
     return gif
 
 
-def getGif_giphytest(bot, query, searchnum):
+def getGif_giphytest(bot, query, searchnum, searchlimit=giphylimit):
 
     returngifdict = {
                     "querysuccess": False,
@@ -62,9 +62,9 @@ def getGif_giphytest(bot, query, searchnum):
 
     # Random
     if searchnum == 'random':
-        searchnum = randint(0, giphylimit)
+        searchnum = randint(0, searchlimit)
 
-    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(searchquery) + '&api_key=' + str(giphyapi) + '&limit=' + str(giphylimit) + '&rating=r'
+    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(searchquery) + '&api_key=' + str(giphyapi) + '&limit=' + str(searchlimit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
 
     # Verifythere are results
@@ -78,11 +78,9 @@ def getGif_giphytest(bot, query, searchnum):
         searchnum = resultsamount
     returngifdict["returnnum"] = searchnum
 
-    try:
-        id = data['data'][searchnum]['id']
-        gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
-    except IndexError:
-        gif = ""
+    id = data['data'][searchnum]['id']
+    returngifdict["returnurl"] = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
+
     return returngifdict
 
 
