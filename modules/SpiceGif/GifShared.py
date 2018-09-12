@@ -73,7 +73,7 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
     returngifdict["querysuccess"] = True
 
     if int(searchnum) > int(resultsamount):
-        searchnum = resultsamount
+        searchnum = randint(0, resultsamount)
     returngifdict["returnnum"] = searchnum
 
     id = data['data'][searchnum]['id']
@@ -133,7 +133,7 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
     returngifdict["querysuccess"] = True
 
     if int(searchnum) > int(resultsamount):
-        searchnum = resultsamount
+        searchnum = randint(0, resultsamount)
     returngifdict["returnnum"] = searchnum
 
     returngifdict["returnurl"] = resultsarray[searchnum - 1]
