@@ -79,6 +79,16 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
         return returngifdict
     returngifdict["querysuccess"] = True
 
+    allresults = []
+    tempresultnum = 0
+    for tempresult in resultsarray:
+        tempdict = returngifdict.copy()
+        tempdict["returnnum"] = tempresultnum
+        tempdict["returnurl"] = tempresult
+        tempresultnum += 1
+        allresults.append(tempdict)
+    returngifdict["allgifs"] = searchnum
+
     if int(searchnum) > int(resultsamount - 1):
         searchnum = randint(0, resultsamount - 1)
     returngifdict["returnnum"] = searchnum
@@ -105,7 +115,8 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
                     "returnnum": searchnum,
                     "returnurl": None,
                     "error": None,
-                    "gifapi": 'tenor'
+                    "gifapi": 'tenor',
+                    "allgifs": []
                     }
 
     # Make sure there is a valid input of query and search number
@@ -140,6 +151,16 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
         return returngifdict
     returngifdict["querysuccess"] = True
 
+    allresults = []
+    tempresultnum = 0
+    for tempresult in resultsarray:
+        tempdict = returngifdict.copy()
+        tempdict["returnnum"] = tempresultnum
+        tempdict["returnurl"] = tempresult
+        tempresultnum += 1
+        allresults.append(tempdict)
+    returngifdict["allgifs"] = searchnum
+
     if int(searchnum) > int(resultsamount - 1):
         searchnum = randint(0, resultsamount - 1)
     returngifdict["returnnum"] = searchnum
@@ -159,7 +180,8 @@ def getGif_all(bot, query, searchnum, searchlimit=giphylimit):
     for currentapi in valid_gif_api:
         gifdict = eval("getGif_" + currentapi + "(bot, query, 'random', searchlimit)")
         if gifdict["querysuccess"]:
-            gifapiresults.append(gifdict)
+            gifdictall = gifdict["allgifs"]
+            gifapiresults.extend(gifdictall)
 
     if gifapiresults == []:
         gifdict = {
