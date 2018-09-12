@@ -84,7 +84,7 @@ Tenor
 """
 
 tenorapi = config.get("tenor", "apikey")
-tenorlimit = 2
+tenorlimit = 50
 
 
 def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
@@ -119,9 +119,6 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
 
     # Verifythere are results
     resultsamount = len(data['results'])
-    bot.say(str(resultsamount))
-    return
-    returngifdict["resultsamount"] = resultsamount
     if not resultsamount:
         return returngifdict
     returngifdict["querysuccess"] = True
@@ -130,8 +127,7 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
         searchnum = resultsamount
     returngifdict["returnnum"] = searchnum
 
-    id = data['data'][searchnum]['id']
-    returngifdict["returnurl"] = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
+    returngifdict["returnurl"] = data['results'][searchnum]['gif']['url']
 
     return returngifdict
 
