@@ -45,6 +45,10 @@ def getGif_giphy(bot, query, searchnum):
 
 def getGif_giphytest(bot, query, searchnum):
 
+    # Random
+    if searchnum == 'random':
+        searchnum = randint(0, giphylimit)
+
     returngifdict = {
                     "querysuccess": False,
                     "resultsamount": 0,

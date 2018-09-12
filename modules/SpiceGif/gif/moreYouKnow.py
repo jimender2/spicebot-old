@@ -30,7 +30,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif = magicFingers()
+    gif = magicFingers()  # TODO
     if gif:
         osd(bot, trigger.sender, 'say', gif)
     else:

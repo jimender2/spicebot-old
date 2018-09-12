@@ -37,8 +37,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         query = str(query)
         i = 0
         while i < 3:
-            randno = randint(0, giphylimit)
-            gif = getGif_giphy(bot, query, randno)
+            gif = getGif_giphy(bot, query, 'random')
             if gif:
                 osd(bot, trigger.sender, 'say',  "Giphy Result (" + str(target) + " #" + str(randno) + "): " + gif)
                 i = 5

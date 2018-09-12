@@ -34,8 +34,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = spicemanip(bot, triggerargsarray, 0)
     if not target:
         query = "facepalm"
-        randno = randint(0, giphylimit)
-        gif = getGif_giphy(bot, query, randno)
+        gif = getGif_giphy(bot, query, 'random')
         if gif:
             osd(bot, trigger.sender, 'say', "Result number " + str(randno) + ": " + gif)
         else:
