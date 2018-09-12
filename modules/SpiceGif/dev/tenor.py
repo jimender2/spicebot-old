@@ -17,7 +17,7 @@ from BotShared import *
 from GifShared import *
 
 
-@sopel.module.commands('gif', 'giphy')
+@sopel.module.commands('tenor')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
@@ -35,12 +35,13 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if target != "roulette":
         query = target.replace(' ', '%20')
         query = str(query)
+
         i = 0
         while i < 3:
-            randno = randint(0, giphylimit)
-            gif = getGif_giphy(query, randno)
+            
+            gif, randno = getGif_tenor(query)
             if gif:
-                osd(bot, trigger.sender, 'say',  "Giphy Result (" + str(target) + " #" + str(randno) + "): " + gif)
+                osd(bot, trigger.sender, 'say',  "Tenor Result (" + str(target) + " #" + str(randno) + "): " + gif)
                 i = 5
             else:
                 i = i + 1
@@ -52,19 +53,3 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             osd(bot, trigger.sender, 'say', "Click at your own risk! " + gif)
     else:
         osd(bot, trigger.sender, 'say', "Tell me what you're looking for!")
-
-
-def roulette():
-    api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
-    # randno = randint(0,9)
-    # if randno == 4:
-    url = 'http://api.giphy.com/v1/gifs/random?api_key=' + str(api) + '&rating=nsfw'
-    # else:
-    #    url = 'http://api.giphy.com/v1/gifs/random?api_key=' + str(api) + '&rating=g'
-    data = json.loads(urllib2.urlopen(url).read())
-    try:
-        id = data['data']['id']
-        gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
-    except KeyError:
-        gif = ""
-    return gif

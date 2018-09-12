@@ -27,19 +27,18 @@ Giphy
 """
 
 giphyapi = config.get("giphy", "apikey")
+giphylimit = 50
 
 
-def getGif_giphy(query):
-    limit = 50
-    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(giphyapi) + '&limit=' + str(limit) + '&rating=r'
+def getGif_giphy(query, searchnum):
+    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(giphyapi) + '&limit=' + str(giphylimit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0, limit)
     try:
         id = data['data'][randno]['id']
         gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
     except IndexError:
         gif = ""
-    return gif, randno
+    return gif
 
 
 """
@@ -47,37 +46,27 @@ Tenor
 """
 
 tenorapi = config.get("giphy", "apikey")
+tenorlimit = 5
 
 
-def getGif_tenor(query):
-    # set the apikey and limit
-    apikey = "LIVDSRZULELA"  # test value
-    lmt = 8
+def getGif_tenor(query, searchnum):
 
     # load the user's anonymous ID from cookies or some other disk storage
-    # anon_id = <from db/cookies>
-
-    # ELSE - first time user, grab and store their the anonymous ID
-    r = requests.get("https://api.tenor.com/v1/anonid?key=%s" % apikey)
-
-    if r.status_code == 200:
-        anon_id = json.loads(r.content)["anon_id"]
-        # store in db/cookies for re-use later
-    else:
-        anon_id = ""
-
-    # our test search
-    search_term = "excited"
+    anon_id = get_database_value(bot, 'tenoranon', 'anon_id')
+    if not anon_id:
+        r = requests.get("https://api.tenor.com/v1/anonid?key=%s" % tenorapi)
+        if r.status_code == 200:
+            anon_id = json.loads(r.content)["anon_id"]
+            set_database_value(bot, 'tenoranon', 'anon_id', anon_id)
+        else:
+            anon_id = ""
 
     # get the top 8 GIFs for the search term
     r = requests.get(
-        "https://api.tenor.com/v1/search?q=%s&key=%s&limit=%s&anon_id=%s" % (search_term, apikey, lmt, anon_id))
+        "https://api.tenor.com/v1/search?q=%s&key=%s&limit=%s&anon_id=%s" % (query, tenorapi, tenorlimit, anon_id))
 
     if r.status_code == 200:
-        # load the GIFs using the urls for the smaller GIF sizes
-        top_8gifs = json.loads(r.content)
-        # print top_8gifs
+        top_gifs = json.loads(r.content)
     else:
-        top_8gifs = None
-
-    # continue a similar pattern until the user makes a selection or starts a new search.
+        top_gifs = None
+    return top_gifs

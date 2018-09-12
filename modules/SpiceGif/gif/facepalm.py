@@ -12,6 +12,9 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
+gifshareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(gifshareddir)
+from GifShared import *
 
 
 @sopel.module.commands('facepalm')
@@ -31,7 +34,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = spicemanip(bot, triggerargsarray, 0)
     if not target:
         query = "facepalm"
-        gif, randno = getGif_giphy(query)
+        randno = randint(0, giphylimit)
+        gif = getGif_giphy(query, randno)
         if gif:
             osd(bot, trigger.sender, 'say', "Result number " + str(randno) + ": " + gif)
         else:

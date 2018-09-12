@@ -12,6 +12,9 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
+gifshareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(gifshareddir)
+from GifShared import *
 
 
 @sopel.module.commands('darwin')
@@ -28,7 +31,8 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif, randno = getGif_giphy("Darwin Award")
+    randno = randint(0, giphylimit)
+    gif = getGif_giphy("Darwin Award", randno)
     if gif:
         osd(bot, trigger.sender, 'say', "Result no: %s: %s" % (randno, gif))
     else:
