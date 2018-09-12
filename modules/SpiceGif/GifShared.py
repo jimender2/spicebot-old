@@ -75,6 +75,7 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
     resultsamount = len(resultsarray)
     if resultsarray == []:
         return returngifdict
+    bot.say(str(resultsarray))
     returngifdict["querysuccess"] = True
 
     if int(searchnum) > int(resultsamount):
