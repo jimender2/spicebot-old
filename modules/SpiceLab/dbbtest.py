@@ -9,7 +9,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-# comment line
+# load map and users
 SCOPES = {
                 "users": {
                 },
@@ -36,14 +36,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     bot.say(str(SCOPES))
     return
 
-    if 'game_loaded' not in SCOPES.keys():
+    if 'game_loaded' not in testvar.keys():
         bot.say("not loaded")
-        SCOPES = get_database_value(bot, 'rpg_game_records', 'SCOPES') or SCOPES
-        SCOPES['game_loaded'] = True
+        testvar = get_database_value(bot, 'rpg_game_records', 'testvar') or testvar
+        testvar['game_loaded'] = True
     else:
         bot.say("pre loaded")
 
-    bot.say(str(SCOPES))
+    bot.say(str(testvar))
 
 
 # Database Users
