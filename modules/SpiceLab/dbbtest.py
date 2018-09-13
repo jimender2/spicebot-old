@@ -19,7 +19,7 @@ from sopel.logger import get_logger
 from sopel.module import commands, rule, example, priority
 
 sys.setdefaultencoding('utf-8')
-
+rpg_game_dict = 1
 rpg_game_dict = {
                 "users": {
                 },
