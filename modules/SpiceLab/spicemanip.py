@@ -353,9 +353,10 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
     if suboutputtask == mainoutputtask:
         bot.say("here?")
         return spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask)
+    bot.say("testing " + str(mainoutputtask) + " " + str(suboutputtask))
     if suboutputtask < mainoutputtask:
         mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
-    bot.say("testing " + str(mainoutputtask) + " " + str(suboutputtask))
+
     if mainoutputtask < 0:
         mainoutputtask = 1
     if suboutputtask > len(inputs):
