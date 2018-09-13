@@ -29,7 +29,6 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    bot.say(str(triggerargsarray))
     instigator = trigger.nick
     inchannel = trigger.sender
 
@@ -81,8 +80,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         target = spicemanip(bot, triggerargsarray, 1)
         reason = spicemanip(bot, triggerargsarray, '2+')
         msg = "a " + weapontype
-
-        bot.say(str(spicemanip(bot, triggerargsarray, 0)))
 
         # No target specified
         if not target:
