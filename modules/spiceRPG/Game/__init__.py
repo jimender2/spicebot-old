@@ -154,7 +154,21 @@ def open_gamedict(bot, rpg):
     bot.say(str(rpg.gamedict))
 
 
-def merge_copy(d1, d2):
+def merge_copy(child, parent):
+    '''returns parent updated with child values if exists'''
+    d = {}
+    for k in parent:
+        if k in child and isinstance(child[k], dict) and isinstance(parent[k], dict):
+            v = merge_copy(child[k], parent[k])
+        elif k in child:
+            v = child[k]
+        else:
+            v = parent[k]
+        d[k] = v
+    return d
+
+
+def merge_copya(d1, d2):
     return {k: merge_copy(d1[k], d2[k]) if k in d1 and isinstance(d1[k], dict) and isinstance(d2[k], dict) else d2[k] for k in d2}
 
 
