@@ -149,9 +149,25 @@ def open_gamedict(bot, rpg):
     if not rpg.gamedict["game_loaded"]:
         dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or dict()
         bot.say(str(dbgamedict))
-        rpg.gamedict = merge_copy(dbgamedict, rpg.gamedict)
+        rpg.gamedict = merge(dbgamedict, rpg.gamedict)
         rpg.gamedict['game_loaded'] = True
     bot.say(str(rpg.gamedict))
+
+
+def merge(a, b, path=None):
+    "merges b into a"
+    if path is None: path = []
+    for key in b:
+        if key in a:
+            if isinstance(a[key], dict) and isinstance(b[key], dict):
+                merge(a[key], b[key], path + [str(key)])
+            elif a[key] == b[key]:
+                pass # same leaf value
+            else:
+                raise Exception('Conflict at %s' % '.'.join(path + [str(key)]))
+        else:
+            a[key] = b[key]
+    return a
 
 
 def merge_copy(child, parent):
@@ -172,7 +188,7 @@ def merge_copya(d1, d2):
     return {k: merge_copy(d1[k], d2[k]) if k in d1 and isinstance(d1[k], dict) and isinstance(d2[k], dict) else d2[k] for k in d2}
 
 
-def merge(d1, d2):
+def mergea(d1, d2):
     for k in d2:
         if k in d1 and isinstance(d1[k], dict) and isinstance(d2[k], dict):
             merge(d1[k], d2[k])
