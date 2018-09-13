@@ -9,16 +9,13 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-testvar = 72
-
-# testvar = {
-#                "users": {
-#                },
-#                "maps": {
-#                }
-# }
-
-SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+# load map and users
+SCOPES = {
+                "users": {
+                },
+                "maps": {
+                }
+}
 
 
 @sopel.module.commands('dbbtest')
