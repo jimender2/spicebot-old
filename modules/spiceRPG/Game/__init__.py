@@ -73,6 +73,9 @@ Command Processing
 
 def execute_start(bot, trigger, triggerargsarray, command_type):
 
+    bot.say(str(rpg_game_dict))
+    return
+
     # RPG dynamic Class
     rpg = class_create('rpg')
     rpg.default = 'rpg'
