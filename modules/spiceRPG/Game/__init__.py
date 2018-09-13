@@ -123,91 +123,6 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     save_user_dicts(bot, rpg)
 
 
-def save_gamedict(bot, rpg):
-
-    # copy dict to not overwrite
-    savedict = rpg.gamedict.copy()
-
-    # Values to not save to database
-    savedict_del = []
-    for dontsave in savedict_del:
-        if dontsave in savedict.keys():
-            del savedict[dontsave]
-
-    # save to database
-    set_database_value(bot, 'rpg_game_records', 'rpg_game_dict', savedict)
-
-
-def open_gamedict(bot, rpg):
-
-    # open global dict as part of rpg class
-    global rpg_game_dict
-    rpg.gamedict = rpg_game_dict
-    bot.say(str(rpg.gamedict))
-
-    # don't pull from database if already open
-    if not rpg.gamedict["game_loaded"]:
-        opendict = rpg_game_dict.copy()
-        dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or dict()
-        bot.say(str(dbgamedict))
-        opendict = merge(dbgamedict, opendict)
-        rpg.gamedict.update(opendict)
-        rpg.gamedict['game_loaded'] = True
-    bot.say(str(rpg.gamedict))
-
-
-def merge(a, b, path=None):
-    "merges b into a"
-    if path is None:
-        path = []
-    for key in b:
-        if key in a:
-            if isinstance(a[key], dict) and isinstance(b[key], dict):
-                merge(a[key], b[key], path + [str(key)])
-            elif a[key] == b[key]:
-                pass  # same leaf value
-            else:
-                a[key] = b[key]
-                # raise Exception('Conflict at %s' % '.'.join(path + [str(key)]))
-        else:
-            a[key] = b[key]
-    return a
-
-
-def merge_copy(child, parent):
-    '''returns parent updated with child values if exists'''
-    d = {}
-    for k in parent:
-        if k in child and isinstance(child[k], dict) and isinstance(parent[k], dict):
-            v = merge_copy(child[k], parent[k])
-        elif k in child:
-            v = child[k]
-        else:
-            v = parent[k]
-        d[k] = v
-    return d
-
-
-def merge_copya(d1, d2):
-    return {k: merge_copy(d1[k], d2[k]) if k in d1 and isinstance(d1[k], dict) and isinstance(d2[k], dict) else d2[k] for k in d2}
-
-
-def mergea(d1, d2):
-    for k in d2:
-        if k in d1 and isinstance(d1[k], dict) and isinstance(d2[k], dict):
-            merge(d1[k], d2[k])
-        else:
-            d1[k] = d2[k]
-
-
-def dict_merge(dct, merge_dct):
-    for k, v in merge_dct.iteritems():
-        if (k in dct and isinstance(dct[k], dict) and isinstance(merge_dct[k], collections.Mapping)):
-            dict_merge(dct[k], merge_dct[k])
-        else:
-            dct[k] = merge_dct[k]
-
-
 def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
 
     # No Empty Commands
@@ -1850,6 +1765,11 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
         set_database_value(bot, nick, databasekey, adjustarray)
 
 
+"""
+User Dictionaries
+"""
+
+
 # Database Users
 def get_user_dict(bot, rpg, nick, dictkey):
 
@@ -1939,6 +1859,59 @@ def adjust_user_dict_array(bot, rpg, nick, dictkey, entries, adjustmentdirection
             if x in oldvalue:
                 oldvalue.remove(x)
     nickdict[dictkey] = oldvalue
+
+
+"""
+Game Dictionary
+"""
+
+
+def open_gamedict(bot, rpg):
+
+    # open global dict as part of rpg class
+    global rpg_game_dict
+    rpg.gamedict = rpg_game_dict
+
+    # don't pull from database if already open
+    if not rpg.gamedict["game_loaded"]:
+        opendict = rpg_game_dict.copy()
+        dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or dict()
+        opendict = merge_gamedict(dbgamedict, opendict)
+        rpg.gamedict.update(opendict)
+        rpg.gamedict['game_loaded'] = True
+
+
+def save_gamedict(bot, rpg):
+
+    # copy dict to not overwrite
+    savedict = rpg.gamedict.copy()
+
+    # Values to not save to database
+    savedict_del = []
+    for dontsave in savedict_del:
+        if dontsave in savedict.keys():
+            del savedict[dontsave]
+
+    # save to database
+    set_database_value(bot, 'rpg_game_records', 'rpg_game_dict', savedict)
+
+
+def merge_gamedict(a, b, path=None):
+    "merges b into a"
+    if path is None:
+        path = []
+    for key in b:
+        if key in a:
+            if isinstance(a[key], dict) and isinstance(b[key], dict):
+                merge_gamedict(a[key], b[key], path + [str(key)])
+            elif a[key] == b[key]:
+                pass  # same leaf value
+            else:
+                a[key] = b[key]
+                # raise Exception('Conflict at %s' % '.'.join(path + [str(key)]))
+        else:
+            a[key] = b[key]
+    return a
 
 
 """
