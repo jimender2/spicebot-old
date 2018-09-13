@@ -344,24 +344,19 @@ def spicemanip_last(bot, inputs, outputtask, mainoutputtask, suboutputtask):
 
 # range between items in list
 def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    bot.say("here")
     if inputs == []:
         return ''
     if not str(mainoutputtask).isdigit() or not str(suboutputtask).isdigit():
         return ''
     mainoutputtask, suboutputtask = int(mainoutputtask), int(suboutputtask)
     if suboutputtask == mainoutputtask:
-        bot.say("here?")
         return spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask)
-    bot.say("testing " + str(mainoutputtask) + " " + str(suboutputtask))
     if suboutputtask < mainoutputtask:
-        mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
-
+        return []
     if mainoutputtask < 0:
         mainoutputtask = 1
     if suboutputtask > len(inputs):
         suboutputtask = len(inputs)
-
     newlist = []
     for i in range(mainoutputtask, suboutputtask + 1):
         bot.say(str(i))
