@@ -16,7 +16,6 @@ from sopel.logger import get_logger
 from sopel.module import commands, rule, example, priority
 sys.setdefaultencoding('utf-8')
 
-# testvar = 72
 
 rpg_gamedict = {
                 "players": {
