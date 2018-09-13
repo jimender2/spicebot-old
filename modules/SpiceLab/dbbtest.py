@@ -36,14 +36,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     # bot.say(str(SCOPES))
     # return
 
-    if 'game_loaded' not in testvar.keys():
+    if 'game_loaded' not in SCOPES.keys():
         bot.say("not loaded")
-        testvar = get_database_value(bot, 'rpg_game_records', 'testvar') or testvar
-        testvar['game_loaded'] = True
+        SCOPES = get_database_value(bot, 'rpg_game_records', 'SCOPES') or SCOPES
+        SCOPES['game_loaded'] = True
     else:
         bot.say("pre loaded")
 
-    bot.say(str(testvar))
+    bot.say(str(SCOPES))
 
 
 # Database Users
