@@ -37,4 +37,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
         return
 
-    osd(bot, trigger.sender, 'say',  "Giphy Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
+    osd(bot, trigger.sender, 'say',  "Gfycat Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))

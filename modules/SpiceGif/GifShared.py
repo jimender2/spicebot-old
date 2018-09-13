@@ -185,7 +185,7 @@ def getGif_gfycat(bot, query, searchnum, searchlimit=gfycatlimit):
                     "returnnum": searchnum,
                     "returnurl": None,
                     "error": None,
-                    "gifapi": 'gfycatlimit',
+                    "gifapi": 'gfycat',
                     "allgifs": []
                     }
 
