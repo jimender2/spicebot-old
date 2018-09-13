@@ -116,6 +116,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     rpg_errors_end(bot, rpg)
 
     # Save open game dictionary at the end of each usage
+    rpg.gamedict['testingstuff'] = True
     save_gamedict(bot, rpg)
 
     # Save any open user values
