@@ -16,7 +16,7 @@ from sopel.logger import get_logger
 from sopel.module import commands, rule, example, priority
 sys.setdefaultencoding('utf-8')
 
-testvar = 72
+rpg_game_dict = 72
 
 # rpg_game_dict = {
 #                "users": {
@@ -42,7 +42,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
     triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
-    bot.say(str(testvar))
+    bot.say(str(rpg_game_dict))
     return
 
     if 'game_loaded' not in rpg_game_dict.keys():
