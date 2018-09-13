@@ -344,6 +344,7 @@ def spicemanip_last(bot, inputs, outputtask, mainoutputtask, suboutputtask):
 
 # range between items in list
 def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputtask):
+    bot.say("here")
     if inputs == []:
         return ''
     if not str(mainoutputtask).isdigit() or not str(suboutputtask).isdigit():
