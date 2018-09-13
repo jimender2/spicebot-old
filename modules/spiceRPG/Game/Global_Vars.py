@@ -11,11 +11,19 @@ Open Dictionary of Users and Locations
 
 
 rpg_game_dict = {
-                "game_loaded": False
+
+                # Individual small
+                "game_loaded": False,
+
+                # Users list
                 "users": {
                 },
+
+                # Maps list
                 "maps": {
                 }
+
+                # end of dict
                 }
 
 
