@@ -21,7 +21,7 @@ from sopel.module import commands, rule, example, priority
 sys.setdefaultencoding('utf-8')
 
 
-@sopel.module.commands('dbbtest')
+@sopel.module.commands('spicemanip')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
