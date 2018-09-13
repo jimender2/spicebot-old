@@ -142,11 +142,10 @@ def open_gamedict(bot, rpg):
     global rpg_game_dict
     rpg.gamedict = rpg_game_dict
 
-    # copy dict to verify basics are there TODO
-
     # don't pull from database if already open
     if not rpg.gamedict["game_loaded"]:
-        rpg.gamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or rpg.gamedict
+        dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or rpg.gamedict
+        rpg.gamedict.update(dbgamedict)
         rpg.gamedict['game_loaded'] = True
 
 

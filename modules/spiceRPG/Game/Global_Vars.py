@@ -19,6 +19,10 @@ rpg_game_dict = {
                 "users": {
                 },
 
+                # channels list
+                "channels": {
+                },
+
                 # Maps list
                 "maps": {
                 }
