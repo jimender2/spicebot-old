@@ -822,6 +822,10 @@ def get_trigger_arg(bot, inputs, outputtask, output_type='default'):
 # Hub
 def spicemanip(bot, inputs, outputtask, output_type='default'):
 
+    # TODO 'this*that' or '1*that' replace either all strings matching, or an index value
+    # TODO reverse sort z.sort(reverse = True)
+    # list.extend adds lists to eachother
+
     mainoutputtask, suboutputtask = None, None
 
     # Input needs to be a list, but don't split a word into letters
@@ -855,6 +859,8 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
         mainoutputtask = str(outputtask).split("^", 1)[0]
         suboutputtask = str(outputtask).split("^", 1)[1]
         outputtask = 'rangebetween'
+        if int(suboutputtask) < int(mainoutputtask):
+            mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
     elif str(outputtask).startswith("split_"):
         mainoutputtask = str(outputtask).replace("split_", "")
         outputtask = 'split'
@@ -922,6 +928,8 @@ def spicemanip_split(bot, inputs, outputtask, mainoutputtask, suboutputtask):
         split_array = restring.split(mainoutputtask)
     split_array = [x for x in split_array if x and x not in ['', ' ']]
     split_array = [inputspart.strip() for inputspart in split_array]
+    if split_array == []:
+        split_array = [[]]
     return split_array
 
 
@@ -1090,7 +1098,7 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
     if suboutputtask == mainoutputtask:
         return spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask)
     if suboutputtask < mainoutputtask:
-        mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
+        return []
     if mainoutputtask < 0:
         mainoutputtask = 1
     if suboutputtask > len(inputs):
