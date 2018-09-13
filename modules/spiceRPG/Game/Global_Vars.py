@@ -21,6 +21,9 @@ rpg_game_dict = {
                 # channels list
                 "channels": {},
 
+                # channels list
+                "fartcenter": {},
+
                 # Maps list
                 "maps": {
                         "Bouldersummit": {},  # 1
