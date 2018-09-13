@@ -115,6 +115,8 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
         mainoutputtask = str(outputtask).split("^", 1)[0]
         suboutputtask = str(outputtask).split("^", 1)[1]
         outputtask = 'rangebetween'
+        if int(suboutputtask) < int(mainoutputtask):
+            mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
     elif str(outputtask).startswith("split_"):
         mainoutputtask = str(outputtask).replace("split_", "")
         outputtask = 'split'
