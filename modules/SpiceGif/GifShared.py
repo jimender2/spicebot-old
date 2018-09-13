@@ -132,7 +132,7 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
     if searchnum == 'random':
         searchnum = randint(0, searchlimit)
 
-    url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchlimit)  # + '&anon_id=r' + str(anon_id)
+    url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchlimit)
     data = json.loads(urllib2.urlopen(url).read())
 
     # Verify there are results
@@ -172,7 +172,8 @@ gfycat
 """
 
 
-gfycatapi = config.get("gfycat", "apikey")
+gfycatapi_id = config.get("gfycat", "client_id")
+gfycatapi_key = config.get("gfycat", "client_secret")
 gfycatlimit = 50
 
 
@@ -205,7 +206,7 @@ def getGif_gfycat(bot, query, searchnum, searchlimit=gfycatlimit):
     if searchnum == 'random':
         searchnum = randint(0, searchlimit)
 
-    url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(gfycatapi) + '&limit=' + str(searchlimit)  # + '&anon_id=r' + str(anon_id)
+    url = 'https://api.gfycat.com/v1/gfycats/search?search_text=' + str(searchquery)
     data = json.loads(urllib2.urlopen(url).read())
 
     # Verify there are results
