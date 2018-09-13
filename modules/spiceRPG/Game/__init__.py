@@ -74,6 +74,15 @@ Command Processing
 def execute_start(bot, trigger, triggerargsarray, command_type):
 
     bot.say(str(rpg_game_dict))
+
+    if 'game_loaded' not in rpg_game_dict.keys():
+        bot.say("not loaded")
+        rpg_game_dict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or rpg_game_dict
+        rpg_game_dict['game_loaded'] = True
+    else:
+        bot.say("pre loaded")
+
+    bot.say(str(rpg_game_dict))
     return
 
     # RPG dynamic Class
