@@ -10,12 +10,7 @@ Open Dictionary of Users and Locations
 """
 
 
-rpg_game_dict = {
-                "users": {
-                },
-                "maps": {
-                }
-                }
+rpg_game_dict = 42
 
 
 """
