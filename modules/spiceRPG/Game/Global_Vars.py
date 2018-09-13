@@ -24,6 +24,10 @@ rpg_game_dict = {
                 # channels list
                 "channels": {},
 
+                # Commands list
+                "commands": {},
+
+
                 # Maps list
                 "maps": {
 
