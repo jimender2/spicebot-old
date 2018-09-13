@@ -8,6 +8,7 @@ from sopel.formatting import bold
 import sopel
 from sopel import module, tools, formatting
 # Additional
+import collections
 import random
 from random import randint, randrange
 import time
@@ -145,10 +146,19 @@ def open_gamedict(bot, rpg):
 
     # don't pull from database if already open
     if not rpg.gamedict["game_loaded"]:
-        dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or rpg.gamedict
-        rpg.gamedict.update(dbgamedict)
+        dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or dict()
+        dict_merge(dbgamedict, rpg.gamedict)
         rpg.gamedict['game_loaded'] = True
     bot.say(str(rpg.gamedict))
+
+
+def dict_merge(dct, merge_dct):
+    for k, v in merge_dct.iteritems():
+        if (k in dct and isinstance(dct[k], dict)
+                and isinstance(merge_dct[k], collections.Mapping)):
+            dict_merge(dct[k], merge_dct[k])
+        else:
+            dct[k] = merge_dct[k]
 
 
 def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
