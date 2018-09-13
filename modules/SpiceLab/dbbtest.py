@@ -29,7 +29,7 @@ def mainfunction(bot, trigger):
     # for command_split_partial in commands_array:
     #    triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
     #    execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
-    execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
+    execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
