@@ -358,6 +358,7 @@ def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputta
         mainoutputtask = 1
     if suboutputtask > len(inputs):
         suboutputtask = len(inputs)
+    bot.say("testing " + str(mainoutputtask) + " " + str(suboutputtask))
     newlist = []
     for i in range(mainoutputtask, suboutputtask + 1):
         bot.say(str(i))
