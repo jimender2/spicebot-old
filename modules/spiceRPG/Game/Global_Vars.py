@@ -10,7 +10,7 @@ Open Dictionary of Users and Locations
 """
 
 
-rpg_game_dict = 42
+rpg_gamedict = 42
 
 
 """
