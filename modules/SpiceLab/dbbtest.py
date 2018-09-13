@@ -18,7 +18,7 @@ sys.setdefaultencoding('utf-8')
 
 # testvar = 72
 
-rpg_gamedict = {
+testvar = {
                 "users": {
                 },
                 "maps": {
@@ -42,17 +42,17 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
     triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
-    bot.say(str(rpg_gamedict))
+    bot.say(str(testvar))
     return
 
-    if 'game_loaded' not in rpg_gamedict.keys():
+    if 'game_loaded' not in testvar.keys():
         bot.say("not loaded")
-        rpg_gamedict = get_database_value(bot, 'rpg_game_records', 'rpg_gamedict') or rpg_gamedict
-        rpg_gamedict['game_loaded'] = True
+        testvar = get_database_value(bot, 'rpg_game_records', 'testvar') or testvar
+        testvar['game_loaded'] = True
     else:
         bot.say("pre loaded")
 
-    bot.say(str(rpg_gamedict))
+    bot.say(str(testvar))
 
 
 # Database Users
