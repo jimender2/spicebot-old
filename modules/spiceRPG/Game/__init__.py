@@ -75,7 +75,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     global rpg_game_dict
 
     bot.say(str(rpg_game_dict))
-    return
+    # return
 
     if 'game_loaded' not in rpg_game_dict.keys():
         bot.say("not loaded")
