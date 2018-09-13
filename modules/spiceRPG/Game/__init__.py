@@ -147,9 +147,11 @@ def open_gamedict(bot, rpg):
 
     # don't pull from database if already open
     if not rpg.gamedict["game_loaded"]:
+        opendict = rpg_game_dict.copy()
         dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or dict()
         bot.say(str(dbgamedict))
-        rpg.gamedict = merge(dbgamedict, rpg.gamedict)
+        opendict = merge(dbgamedict, opendict)
+        rpg.gamedict.update(opendict)
         rpg.gamedict['game_loaded'] = True
     bot.say(str(rpg.gamedict))
 
