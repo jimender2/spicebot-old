@@ -33,8 +33,8 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    # bot.say(str(SCOPES))
-    # return
+    bot.say(str(SCOPES))
+    return
 
     if 'game_loaded' not in SCOPES.keys():
         bot.say("not loaded")
