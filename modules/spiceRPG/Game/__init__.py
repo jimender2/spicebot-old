@@ -149,9 +149,13 @@ def open_gamedict(bot, rpg):
     if not rpg.gamedict["game_loaded"]:
         dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or dict()
         bot.say(str(dbgamedict))
-        merge(dbgamedict, rpg.gamedict)
+        rpg.gamedict = merge_copy(dbgamedict, rpg.gamedict)
         rpg.gamedict['game_loaded'] = True
     bot.say(str(rpg.gamedict))
+
+
+def merge_copy(d1, d2):
+    return {k: merge_copy(d1[k], d2[k]) if k in d1 and isinstance(d1[k], dict) and isinstance(d2[k], dict) else d2[k] for k in d2}
 
 
 def merge(d1, d2):
