@@ -42,7 +42,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     commands_array = spicemanip(bot, triggerargsarray, "2+")
     bot.say(str(commands_array))
 
-    return
 
     return
 
