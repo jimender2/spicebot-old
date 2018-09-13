@@ -18,6 +18,8 @@ testvar = 72
 #                }
 # }
 
+SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+
 
 @sopel.module.commands('dbbtest')
 def mainfunction(bot, trigger):
@@ -34,7 +36,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    bot.say(str(testvar))
+    bot.say(str(SCOPES))
     return
 
     if 'game_loaded' not in testvar.keys():
