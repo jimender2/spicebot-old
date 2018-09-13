@@ -78,7 +78,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if weapontype == '':
             weapontype = "gun"
         target = spicemanip(bot, triggerargsarray, 1)
-        reason = spicemanip(bot, triggerargsarray, '2+')
+        reason = spicemanip(bot, triggerargsarray, '2+') or 0
         msg = "a " + weapontype
 
         # No target specified
