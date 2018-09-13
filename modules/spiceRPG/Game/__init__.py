@@ -92,7 +92,8 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     instigator.default = trigger.nick
     rpg.instigator = trigger.nick
 
-    rpg.tier_current = get_user_dict(bot, rpg, 'rpg_game_records', 'current_tier') or 0
+    rpg.tier_current = rpg.gamedict['tier_current']
+    bot.say(str(rpg.tier_current))
 
     # Channel Listing
     rpg = rpg_command_channels(bot, rpg, trigger)
@@ -995,7 +996,7 @@ def rpg_errors_start(bot, rpg):
 
 def rpg_errors_end(bot, rpg):
     rpg.error_display = []
-    rpg.tier_current = get_user_dict(bot, rpg, 'rpg_game_records', 'current_tier') or 0
+    rpg.tier_current = rpg.gamedict['tier_current']
     errorscanlist = []
     for vcom in rpg.valid_commands_all:
         errorscanlist.append(vcom)

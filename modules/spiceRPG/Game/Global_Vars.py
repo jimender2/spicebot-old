@@ -15,6 +15,9 @@ rpg_game_dict = {
                 # Individual small
                 "game_loaded": False,
 
+                # Current Channel Tier
+                "tier_current": 0,
+
                 # Users list
                 "users": {},
 
