@@ -34,7 +34,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    bot.say(str(triggerargsarray))
+    bot.say(str(testvar))
     return
 
     if 'game_loaded' not in testvar.keys():
