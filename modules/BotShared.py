@@ -34,17 +34,16 @@ botdevteam = ['deathbybandaid', 'DoubleD', 'Mace_Whatdo', 'dysonparkes', 'PM', '
 def spicebot_prerun(bot, trigger, commandused):
 
     # Enable Status default is 1 = don't run
-    enablestatus = 1
+    botcom.enablestatus = 1
 
     # Custom args
     try:
-        triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
+        botcom.triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
     except IndexError:
-        triggerargsarray = spicemanip(bot, trigger.group(1), 'create')
+        botcom.triggerargsarray = spicemanip(bot, trigger.group(1), 'create')
 
     # Dyno Classes
     botcom = class_create('bot')
-    instigator = class_create('instigator')
     botcom.instigator = trigger.nick
 
     # time
@@ -60,13 +59,13 @@ def spicebot_prerun(bot, trigger, commandused):
     blockedusersarray = get_database_value(bot, botcom.channel_current, 'users_blocked') or []
     if botcom.instigator in blockedusersarray:
         osd(bot, botcom.instigator, 'notice', "It looks like you have been blocked from using commands in " + botcom.channel_current+".")
-        return enablestatus, triggerargsarray, botcom, instigator
+        return botcom.enablestatus, botcom.triggerargsarray, botcom, botcom.instigator
 
     # devmode bypass
     devenabledchannels = get_database_value(bot, bot.nick, 'channels_dev') or []
     if botcom.channel_current in devenabledchannels:
-        enablestatus = 0
-        return enablestatus, triggerargsarray, botcom, instigator
+        botcom.enablestatus = 0
+        return botcom.enablestatus, botcom.triggerargsarray, botcom, botcom.instigator
 
     # Channel activated status
     if botcom.channel_current.startswith("#"):
@@ -76,21 +75,21 @@ def spicebot_prerun(bot, trigger, commandused):
                 adjust_database_array(bot, botcom.channel_current, commandused, 'modules_enabled', 'add')
             else:
                 osd(bot, botcom.instigator, 'notice', "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
-                return enablestatus, triggerargsarray, botcom, instigator
+                return botcom.enablestatus, botcom.triggerargsarray, botcom, botcom.instigator
 
     # Bot Enabled Status (botcom.now in an array)
     botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
 
     if botcom.instigator not in botcom.users_all:
         osd(bot, botcom.instigator, 'notice', "you have to run `" + bot.nick + " on` to allow her to listen to you. For help, see the wiki at https://github.com/SpiceBot/sopel-modules/wiki/Using-the-Bot.")
-        return enablestatus, triggerargsarray, botcom, instigator
+        return botcom.enablestatus, botcom.triggerargsarray, botcom, botcom.instigator
 
-    enablestatus = 0
+    botcom.enablestatus = 0
     increment_counter(bot, trigger, commandused)
 
     # Send Status Forward
 
-    return enablestatus, triggerargsarray, botcom, instigator
+    return botcom.enablestatus, botcom.triggerargsarray, botcom, botcom.instigator
 
 
 """
