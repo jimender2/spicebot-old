@@ -29,6 +29,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    bot.say(str(triggerargsarray))
     instigator = trigger.nick
     inchannel = trigger.sender
 
