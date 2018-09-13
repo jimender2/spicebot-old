@@ -141,14 +141,13 @@ def open_gamedict(bot, rpg):
     # open global dict as part of rpg class
     global rpg_game_dict
     rpg.gamedict = rpg_game_dict
-    bot.say("from open var " + str(rpg.gamedict))
+
+    # copy dict to verify basics are there TODO
 
     # don't pull from database if already open
     if not rpg.gamedict["game_loaded"]:
         rpg.gamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or rpg.gamedict
-        bot.say("from db " + str(rpg.gamedict))
         rpg.gamedict['game_loaded'] = True
-    bot.say("end " + str(rpg.gamedict))
 
 
 def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
