@@ -8,24 +8,22 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
-
 import textwrap
 import collections
 import json
-
 import requests
-
 from sopel.logger import get_logger
 from sopel.module import commands, rule, example, priority
-
 sys.setdefaultencoding('utf-8')
-rpg_game_dict = 1
+
+testvar = 72
+
 # rpg_game_dict = {
 #                "users": {
 #                },
 #                "maps": {
 #                }
-#}
+# }
 
 
 @sopel.module.commands('dbbtest')
@@ -44,7 +42,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
     triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
-    bot.say(str(rpg_game_dict))
+    bot.say(str(testvar))
     return
 
     if 'game_loaded' not in rpg_game_dict.keys():
