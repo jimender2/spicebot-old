@@ -46,6 +46,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
 
+    if 'game_loaded' not in rpg_game_dict.keys():
+        rpg_game_dict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or rpg_game_dict
+        rpg_game_dict['game_loaded'] = True
+
+    bot.say(str(rpg_game_dict))
+
 
 # Database Users
 def get_user_dict(bot, rpg, nick, dictkey):
