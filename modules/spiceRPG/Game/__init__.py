@@ -154,11 +154,11 @@ def open_gamedict(bot, rpg):
 
 
 def dict_merge(dct, merge_dct):
-    for k, v in merge_dct.iteritems():
-        if (k in dct and isinstance(dct[k], dict) and isinstance(merge_dct[k], collections.Mapping)):
-            dict_merge(dct[k], merge_dct[k])
+    for k, v in merge_dct.items():
+        if isinstance(dct.get(k), dict) and isinstance(v, collections.Mapping):
+            dct[k] = dict_merge(dct[k], v, add_keys=add_keys)
         else:
-            dct[k] = merge_dct[k]
+            dct[k] = v
 
 
 def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
