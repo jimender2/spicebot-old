@@ -20,6 +20,13 @@ from sopel.module import commands, rule, example, priority
 
 sys.setdefaultencoding('utf-8')
 
+rpg_game_dict = {
+                "users": {
+                },
+                "maps": {
+                }
+}
+
 
 @sopel.module.commands('dbbtest')
 def mainfunction(bot, trigger):
@@ -31,14 +38,6 @@ def mainfunction(bot, trigger):
     for command_split_partial in commands_array:
         triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
         execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
-
-
-rpg_game_dict = {
-                "users": {
-                },
-                "maps": {
-                }
-}
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
