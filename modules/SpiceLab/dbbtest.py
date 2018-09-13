@@ -7,7 +7,6 @@ import os
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
-sys.path.append(moduledir)
 from BotShared import *
 import textwrap
 import collections
@@ -16,7 +15,15 @@ import requests
 from sopel.logger import get_logger
 from sopel.module import commands, rule, example, priority
 sys.setdefaultencoding('utf-8')
-import dbbtest_vars
+
+# testvar = 72
+
+rpg_gamedict = {
+                "users": {
+                },
+                "maps": {
+                }
+}
 
 
 @sopel.module.commands('dbbtest')
