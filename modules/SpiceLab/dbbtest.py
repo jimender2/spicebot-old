@@ -20,12 +20,12 @@ from sopel.module import commands, rule, example, priority
 
 sys.setdefaultencoding('utf-8')
 rpg_game_dict = 1
-rpg_game_dict = {
-                "users": {
-                },
-                "maps": {
-                }
-}
+# rpg_game_dict = {
+#                "users": {
+#                },
+#                "maps": {
+#                }
+#}
 
 
 @sopel.module.commands('dbbtest')
