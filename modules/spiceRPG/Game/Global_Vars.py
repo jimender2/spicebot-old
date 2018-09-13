@@ -10,12 +10,12 @@ Open Dictionary of Users and Locations
 """
 
 
-rpg_game_dict = dict{
-                "users" = {
+rpg_game_dict = {
+                "users": {
                 },
-                "maps" = {
+                "maps": {
                 }
-}
+                }
 
 
 """
