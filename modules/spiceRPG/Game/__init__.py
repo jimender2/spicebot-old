@@ -72,6 +72,7 @@ Command Processing
 
 
 def execute_start(bot, trigger, triggerargsarray, command_type):
+    global rpg_game_dict
 
     bot.say(str(rpg_game_dict))
     return
