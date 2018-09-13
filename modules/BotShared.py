@@ -45,7 +45,6 @@ def spicebot_prerun(bot, trigger, commandused):
     # Dyno Classes
     botcom = class_create('bot')
     instigator = class_create('instigator')
-    instigator.default = trigger.nick
     botcom.instigator = trigger.nick
 
     # time
@@ -59,8 +58,8 @@ def spicebot_prerun(bot, trigger, commandused):
 
     # User was Blocked by a bot.admin or an OP
     blockedusersarray = get_database_value(bot, botcom.channel_current, 'users_blocked') or []
-    if instigator.default in blockedusersarray:
-        osd(bot, instigator.default, 'notice', "It looks like you have been blocked from using commands in " + botcom.channel_current+".")
+    if botcom.instigator in blockedusersarray:
+        osd(bot, botcom.instigator, 'notice', "It looks like you have been blocked from using commands in " + botcom.channel_current+".")
         return enablestatus, triggerargsarray, botcom, instigator
 
     # devmode bypass
@@ -76,14 +75,14 @@ def spicebot_prerun(bot, trigger, commandused):
             if botcom.instigator in botcom.opadmin:
                 adjust_database_array(bot, botcom.channel_current, commandused, 'modules_enabled', 'add')
             else:
-                osd(bot, instigator.default, 'notice', "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
+                osd(bot, botcom.instigator, 'notice', "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
                 return enablestatus, triggerargsarray, botcom, instigator
 
     # Bot Enabled Status (botcom.now in an array)
     botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
 
-    if instigator.default not in botcom.users_all:
-        osd(bot, instigator.default, 'notice', "you have to run `" + bot.nick + " on` to allow her to listen to you. For help, see the wiki at https://github.com/SpiceBot/sopel-modules/wiki/Using-the-Bot.")
+    if botcom.instigator not in botcom.users_all:
+        osd(bot, botcom.instigator, 'notice', "you have to run `" + bot.nick + " on` to allow her to listen to you. For help, see the wiki at https://github.com/SpiceBot/sopel-modules/wiki/Using-the-Bot.")
         return enablestatus, triggerargsarray, botcom, instigator
 
     enablestatus = 0
@@ -246,7 +245,7 @@ def targetcheck(bot, botcom, target, instigator):
     target = target.lower()
 
     # Target is instigator
-    if target == instigator.default:
+    if target == botcom.instigator:
         validtarget = 2
         validtargetmsg.append("Target is instigator")
         return validtarget, validtargetmsg
