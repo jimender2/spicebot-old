@@ -27,7 +27,6 @@ rpg_game_dict = {
                 # Commands list
                 "commands": {},
 
-
                 # Maps list
                 "maps": {
 
