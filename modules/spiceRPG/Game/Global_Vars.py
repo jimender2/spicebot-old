@@ -11,6 +11,7 @@ Open Dictionary of Users and Locations
 
 
 rpg_game_dict = {
+                "game_loaded": False
                 "users": {
                 },
                 "maps": {

@@ -78,20 +78,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     rpg.default = 'rpg'
 
     # Load Game Players and map
-    global rpg_game_dict
-    rpg.gamedict = rpg_game_dict
-
-    bot.say(str(rpg.gamedict))
-
-    if 'game_loaded' not in rpg.gamedict.keys():
-        bot.say("not loaded")
-        rpg.gamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or rpg.gamedict
-        rpg.gamedict['game_loaded'] = True
-    else:
-        bot.say("pre loaded")
-
-    bot.say(str(rpg.gamedict))
-    return
+    open_gamedict(bot, rpg)
 
     # Command type
     rpg.command_type = command_type
@@ -127,8 +114,41 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Error Display System Display
     rpg_errors_end(bot, rpg)
 
+    # Save open game dictionary at the end of each usage
+    save_gamedict(bot, rpg)
+
     # Save any open user values
     save_user_dicts(bot, rpg)
+
+
+def save_gamedict(bot, rpg):
+
+    # copy dict to not overwrite
+    savedict = rpg.gamedict.copy()
+
+    # Values to not save to database
+    savedict_del = []
+    for dontsave in savedict_del:
+        if dontsave in savedict.keys():
+            del savedict[dontsave]
+
+    # save to database
+    set_database_value(bot, 'rpg_game_records', 'rpg_game_dict', savedict)
+
+
+def open_gamedict(bot, rpg):
+
+    # open global dict as part of rpg class
+    global rpg_game_dict
+    rpg.gamedict = rpg_game_dict
+    bot.say("from open var " + str(rpg.gamedict))
+
+    # don't pull from database if already open
+    if not rpg.gamedict["game_loaded"]:
+        rpg.gamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or rpg.gamedict
+        bot.say("from db " + str(rpg.gamedict))
+        rpg.gamedict['game_loaded'] = True
+    bot.say("end " + str(rpg.gamedict))
 
 
 def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
