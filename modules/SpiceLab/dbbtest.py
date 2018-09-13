@@ -16,14 +16,14 @@ from sopel.logger import get_logger
 from sopel.module import commands, rule, example, priority
 sys.setdefaultencoding('utf-8')
 
-# testvar = 72
+testvar = 72
 
-testvar = {
-                "users": {
-                },
-                "maps": {
-                }
-}
+# testvar = {
+#                "users": {
+#                },
+#                "maps": {
+#                }
+# }
 
 
 @sopel.module.commands('dbbtest')
