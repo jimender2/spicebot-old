@@ -45,6 +45,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
     triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
+    bot.say(str(rpg_game_dict))
+    return
 
     if 'game_loaded' not in rpg_game_dict.keys():
         rpg_game_dict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or rpg_game_dict
