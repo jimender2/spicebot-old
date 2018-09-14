@@ -20,7 +20,7 @@ rpg_game_dict = {
                             "monologuecheck": 1,
 
                             # Indicate if we need to pull the dict from the database
-                            "game_loaded": False
+                            "game_loaded": False,
 
                             # list of channels the bot is in
                             "channels_list": [],
