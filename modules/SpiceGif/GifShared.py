@@ -215,8 +215,6 @@ def getGif_gfycat(bot, query, searchnum, searchlimit=gfycatlimit):
     results = data['gfycats']
     resultsarray = []
     for result in results:
-        osd(bot, 'deathbybandaid', 'say', str(result))
-        return
         cururl = result['gifUrl']
         resultsarray.append(cururl)
 
