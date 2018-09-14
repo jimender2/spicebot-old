@@ -710,13 +710,13 @@ def rpg_command_main_administrator(bot, rpg, instigator):
             if channeltarget.lower() in [x.lower() for x in current_channel_facet]:
                 errors(bot, rpg, rpg.command_main, current_channel_facet_error, 1)
                 return
-            current_channel_facet.append(channeltarget)
+            rpg.gamedict['channels'][activation_type_db].append(channeltarget)
             osd(bot, channeltarget, 'say', "RPG " + activation_type + " has been enabled in " + channeltarget + "!")
         elif activation_direction in deactivate_list:
             if channeltarget.lower() not in [x.lower() for x in current_channel_facet]:
                 errors(bot, rpg, rpg.command_main, current_channel_facet_error, 1)
                 return
-            current_channel_facet.remove(channeltarget)
+            rpg.gamedict['channels'][activation_type_db].remove(channeltarget)
             osd(bot, channeltarget, 'say', "RPG " + activation_type + " has been disabled in " + channeltarget + "!")
 
         if activation_type == 'game':
