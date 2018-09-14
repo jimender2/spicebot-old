@@ -70,7 +70,6 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
     results = data['data']
     resultsarray = []
     for result in results:
-        str(result['id'])
         resultsarray.append('https://media2.giphy.com/media/'+result['id']+'/giphy.gif')
 
     resultsamount = len(resultsarray)
