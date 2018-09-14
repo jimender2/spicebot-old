@@ -260,6 +260,7 @@ def getGif_all(bot, query, searchnum, searchlimit=giphylimit):
                     }
 
     # Make sure there is a valid input of query and search number
+    bot.say(str(query))
     if not query:
         returngifdict["error"] = 'No Query to Search'
         return returngifdict
