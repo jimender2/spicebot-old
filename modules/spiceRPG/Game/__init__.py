@@ -1887,6 +1887,7 @@ def save_gamedict(bot, rpg):
 
     # save to database
     bot.say("saving current")
+    osd(bot, 'deathbybandaid', 'say', str(savedict))
     set_database_value(bot, 'rpg_game_records', 'rpg_game_dict', savedict)
 
 
