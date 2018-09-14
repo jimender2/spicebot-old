@@ -38,4 +38,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'say',  'No Results were found for ' + query + ' in any api')
         return
 
-    osd(bot, trigger.sender, 'say',  gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
+    osd(bot, trigger.sender, 'say',  gifdict['gifapi'].title() + " Result (" + str(query) + "  " + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
