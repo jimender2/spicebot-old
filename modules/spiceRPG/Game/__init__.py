@@ -879,7 +879,8 @@ Bot Startup Monologue
 """
 
 
-@sopel.module.interval(1)  # TODO make this progress with the game
+# @sopel.module.interval(1)  # TODO make this progress with the game
+@sopel.module.interval(rpg_game_dict['tempvals']['monologuecheck'])  # TODO make this progress with the game
 def rpg_bot_start_script(bot):
 
     # Create rp class

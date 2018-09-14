@@ -17,6 +17,7 @@ rpg_game_dict = {
 
                             # startupmonologue
                             "startupmonologue": [],
+                            "monologuecheck": 1,
 
                             # Indicate if we need to pull the dict from the database
                             "game_loaded": False
