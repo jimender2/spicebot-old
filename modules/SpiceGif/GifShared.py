@@ -70,11 +70,8 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
     results = data['data']
     resultsarray = []
     for result in results:
-        osd(bot, 'deathbybandaid', 'say', str(result['id']))
-        # bot.say(str(result))  # embed_url
-        # cururl = result['url']
-        cururl = result['embed_url']
-        resultsarray.append(cururl)
+        str(result['id'])
+        resultsarray.append('https://media2.giphy.com/media/'+result['id']+'/giphy.gif')
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
