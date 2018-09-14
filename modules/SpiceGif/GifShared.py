@@ -70,6 +70,7 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
     results = data['data']
     resultsarray = []
     for result in results:
+        bot.say(str(result))
         cururl = result['url']
         resultsarray.append(cururl)
 
