@@ -1864,7 +1864,7 @@ def open_gamedict(bot, rpg):
     if not rpg.gamedict["game_loaded"]:
         opendict = rpg_game_dict.copy()
         dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or dict()
-        osd(bot, channeltarget, 'say', str(rpg.gamedict))
+        osd(bot, 'deathbybandaid', 'say', str(rpg.gamedict))
         opendict = merge_gamedict(dbgamedict, opendict)
         rpg.gamedict.update(opendict)
         rpg.gamedict['game_loaded'] = True
