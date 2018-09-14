@@ -28,6 +28,37 @@ rpg_game_dict = {
                             # End of Temp Vals
                             },
 
+                # Static content
+                "static": {
+                            # Commands list
+                            "commands": {
+
+                                        "administrator":{},
+
+                                        "settings":{},
+
+                                        "combat":{},
+
+                                        "author":{},
+
+                                        "intent":{},
+
+                                        "about":{},
+
+                                        "version":{},
+
+                                        "docs":{},
+
+                                        "usage":{},
+
+                                        "travel":{},
+
+                                        # End of commands
+                                        },
+
+                            # end of static content
+                            }
+
                 # Current Channel Tier
                 "tier_current": 0,
 
@@ -40,32 +71,6 @@ rpg_game_dict = {
                                 "devmode_enabled": []
 
                                 },
-
-                # Commands list
-                "commands": {
-
-                            "administrator":{},
-
-                            "settings":{},
-
-                            "combat":{},
-
-                            "author":{},
-
-                            "intent":{},
-
-                            "about":{},
-
-                            "version":{},
-
-                            "docs":{},
-
-                            "usage":{},
-
-                            "travel":{},
-
-                            # End of commands
-                            },
 
                 # Maps list
                 "maps": {
