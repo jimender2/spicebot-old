@@ -62,9 +62,6 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Load Game Players and map
     open_gamedict(bot, rpg)
 
-    for dictkey in rpg.gamedict['static']['commands']:
-        bot.say(str(dictkey) + "     " + str(rpg.gamedict['static']['commands'][dictkey]))
-
     # Command type
     rpg.command_type = command_type
 
