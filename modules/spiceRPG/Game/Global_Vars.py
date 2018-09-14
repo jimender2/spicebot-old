@@ -28,6 +28,9 @@ rpg_game_dict = {
                             # Other bots
                             "bots_list": [],
 
+                            # current users
+                            "current_users": [],
+
                             # End of Temp Vals
                             },
 
@@ -233,7 +236,7 @@ rpg_game_dict = {
                 # Current Channel Tier
                 "tier_current": 0,
 
-                # Users list
+                # Users lists
                 "users": {},
 
                 #
