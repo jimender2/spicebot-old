@@ -33,6 +33,9 @@ botdevteam = ['deathbybandaid', 'DoubleD', 'Mace_Whatdo', 'dysonparkes', 'PM', '
 # This runs for every custom module and decides if the module runs or not
 def spicebot_prerun(bot, trigger, commandused):
 
+    # Dyno Classes
+    botcom = class_create('bot')
+
     # Enable Status default is 1 = don't run
     botcom.enablestatus = 1
 
@@ -42,8 +45,7 @@ def spicebot_prerun(bot, trigger, commandused):
     except IndexError:
         botcom.triggerargsarray = spicemanip(bot, trigger.group(1), 'create')
 
-    # Dyno Classes
-    botcom = class_create('bot')
+
     botcom.instigator = trigger.nick
 
     # time
