@@ -1866,7 +1866,7 @@ def open_gamedict(bot, rpg):
         opendict = rpg_game_dict.copy()
         dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or dict()
         bot.say("loading db")
-        osd(bot, 'deathbybandaid', 'say', str(rpg.gamedict))
+        osd(bot, 'deathbybandaid', 'say', str(dbgamedict))
         opendict = merge_gamedict(opendict, dbgamedict)
         rpg.gamedict.update(opendict)
         rpg.gamedict['game_loaded'] = True
