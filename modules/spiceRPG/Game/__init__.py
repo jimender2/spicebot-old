@@ -152,7 +152,7 @@ def command_process(bot, trigger, rpg, instigator):
 
     # block instigator if
     instigatorcantplayarray = []
-    instigatorcantplayarrays = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", 'rpg.gamedict["tempvals"]['bots_list']', 'rpg_map_names']
+    instigatorcantplayarrays = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", "rpg.gamedict['tempvals']['bots_list']", 'rpg_map_names']
     for nicklist in instigatorcantplayarrays:
         currentnicklist = eval(nicklist)
         for x in currentnicklist:
