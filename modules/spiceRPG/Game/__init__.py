@@ -888,6 +888,9 @@ def rpg_bot_start_script(bot):
     # Load Game Players and map
     open_gamedict(bot, rpg)
 
+    if rpg.gamedict['channels']['game_enabled'] == []:
+        return
+
     for channel in rpg.gamedict['channels']['game_enabled']:
         if channel not in rpg.gamedict["tempvals"]['startupmonologue']:
             rpg.gamedict["tempvals"]['startupmonologue'].append(channel)
@@ -897,6 +900,12 @@ def rpg_bot_start_script(bot):
             osd(bot, channel, 'notice', startup_monologue)
     # no need to continually check
     rpg_game_dict['tempvals']['monologuecheck'] = rpg_game_dict['tempvals']['monologuecheck'] + 99999999999999999
+
+    # Channel Listing
+    rpg = rpg_command_channels(bot, rpg, trigger)
+
+    # Bacic User List
+    rpg = rpg_command_users(bot, rpg)
 
 
 """
