@@ -678,7 +678,7 @@ def rpg_command_main_administrator(bot, rpg, instigator):
         activation_type_db = str(activation_type + "_enabled")
 
         # Channel
-        channeltarget = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.channels_list], 1)
+        channeltarget = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.gamedict["tempvals"]['channels_list']], 1)
         if not channeltarget:
             if rpg.channel_current.startswith('#'):
                 channeltarget = rpg.channel_current
@@ -1015,7 +1015,7 @@ def rpg_errors_end(bot, rpg):
                     gamechanlist = spicemanip(bot, rpg.gamedict['channels']['game_enabled'], 'list')
                     errormessage = str(errormessage.replace("$game_chans", gamechanlist))
                 if "$valid_channels" in errormessage:
-                    validchanlist = spicemanip(bot, rpg.channels_list, 'list')
+                    validchanlist = spicemanip(bot, rpg.gamedict["tempvals"]['channels_list'], 'list')
                     errormessage = str(errormessage.replace("$valid_channels", validchanlist))
                 if "$valid_onoff" in errormessage:
                     validtogglelist = spicemanip(bot, onoff_list, 'list')
@@ -1028,7 +1028,7 @@ def rpg_errors_end(bot, rpg):
                     subcommand_arg_valid = spicemanip(bot, subcommands_valid_administrator_channel, 'list')
                     errormessage = str(errormessage.replace("$valid_game_change", subcommand_arg_valid))
                 if "$dev_chans" in errormessage:
-                    devchans = spicemanip(bot, rpg.channels_devmode_enabled, 'list')
+                    devchans = spicemanip(bot, rpg.gamedict['channels']['devmode_enabled'], 'list')
                     errormessage = str(errormessage.replace("$dev_chans", devchans))
                 if "$game_chans" in errormessage:
                     gamechans = spicemanip(bot, rpg.gamedict['channels']['game_enabled'], 'list')
@@ -1116,17 +1116,13 @@ def rpg_command_channels(bot, rpg, trigger):
         rpg.channel_real = 1
 
     # All channels the bot is in
-    rpg.channels_list = []
-    for channel in bot.channels:
-        rpg.channels_list.append(channel)
-
-    # Game Enabled
-    rpg.channels_game_enabled = rpg.gamedict['channels']['game_enabled'] or []
+    if rpg.gamedict["tempvals"]['channels_list'] == []:
+        for channel in bot.channels:
+            rpg.gamedict["tempvals"]['channels_list'].append(channel)
 
     # Development mode
-    rpg.channels_devmode_enabled = rpg.gamedict['channels']['devmode_enabled'] or []
-    rpg.dev_bypass = 0
-    if rpg.channel_current.lower() in [x.lower() for x in rpg.channels_devmode_enabled]:
+    rpg.dev_bypass = 0  # TODO not needed
+    if rpg.channel_current.lower() in [x.lower() for x in rpg.gamedict['channels']['devmode_enabled']]:
         rpg.dev_bypass = 1
     return rpg
 

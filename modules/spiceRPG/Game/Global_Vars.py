@@ -20,6 +20,10 @@ rpg_game_dict = {
 
                             # Indicate if we need to pull the dict from the database
                             "game_loaded": False
+
+                            "channels_list": [],
+
+                            # End of Temp Vals
                             },
 
                 # Current Channel Tier
