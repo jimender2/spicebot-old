@@ -31,6 +31,15 @@ rpg_game_dict = {
                             # current users
                             "current_users": [],
 
+                            # offline users
+                            "offline_users": [],
+
+                            # bot owner users
+                            "bot_owner": [],
+
+                            # bot admin users
+                            "bot_admins": [],
+
                             # End of Temp Vals
                             },
 
@@ -237,7 +246,9 @@ rpg_game_dict = {
                 "tier_current": 0,
 
                 # Users lists
-                "users": {},
+                "users": {
+                            "users_all": [],
+                            },
 
                 #
                 "playerstats": {},

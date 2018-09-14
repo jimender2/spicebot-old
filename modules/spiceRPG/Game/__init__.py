@@ -80,7 +80,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
 
-    bot.say(str(rpg.gamedict["tempvals"]['current_users']))
+    bot.say(str(bot.privileges))
     return
 
     # Error Display System Create
@@ -109,7 +109,7 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
         user_capable_coms = []
         for vcom in rpg.gamedict['static']['commands'].keys():
             if vcom in rpg_commands_valid_administrator:
-                if rpg.instigator in rpg.botadmins:
+                if rpg.instigator in rpg.gamedict["tempvals"]['bot_admins']:
                     user_capable_coms.append(vcom)
             else:
                 user_capable_coms.append(vcom)
@@ -131,7 +131,7 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
         rpg.adminswitch = 0
         if [x for x in rpg.triggerargsarray if x == "-a"]:
             rpg.triggerargsarray.remove("-a")
-            if rpg.instigator in rpg.botadmins:
+            if rpg.instigator in rpg.gamedict["tempvals"]['bot_admins']:
                 rpg.adminswitch = 1
             else:
                 errors(bot, rpg, 'commands', 4, 1)
@@ -179,10 +179,10 @@ def command_process(bot, trigger, rpg, instigator):
             rpg.command_main = spicemanip(bot, rpg.triggerargsarray, 1)
 
     # Spell Check
-    if rpg.command_main.lower() not in rpg.gamedict['static']['commands'].keys() and rpg.command_main.lower() not in rpg.gamedict['static']['alt_commands'].keys() and rpg.command_main.lower() not in [x.lower() for x in rpg.users_all]:
+    if rpg.command_main.lower() not in rpg.gamedict['static']['commands'].keys() and rpg.command_main.lower() not in rpg.gamedict['static']['alt_commands'].keys() and rpg.command_main.lower() not in [x.lower() for x in rpg.gamedict["users"]['users_all']]:
         startcom = rpg.command_main
         sim_com, sim_num = [], []
-        command_type_list = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", 'rpg.users_all']
+        command_type_list = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", "rpg.gamedict['users']['users_all']"]
         for comtype in command_type_list:
             comtype_eval = eval(comtype)
             for com in comtype_eval:
@@ -214,7 +214,7 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Targets
-    if rpg.command_main.lower() in [x.lower() for x in rpg.users_all] and rpg.command_main.lower() not in rpg.gamedict['static']['commands'].keys():
+    if rpg.command_main.lower() in [x.lower() for x in rpg.gamedict["users"]['users_all']] and rpg.command_main.lower() not in rpg.gamedict['static']['commands'].keys():
         rpg.command_main = 'combat'
         rpg.triggerargsarray.insert(0, rpg.command_main)
         rpg.command_full = spicemanip(bot, rpg.triggerargsarray, 0)
@@ -246,11 +246,11 @@ def command_process(bot, trigger, rpg, instigator):
     if rpg.channel_current not in rpg.gamedict['channels']['game_enabled'] and rpg.channel_real and rpg.command_main.lower() not in rpg_commands_valid_administrator:
         if rpg.gamedict['channels']['game_enabled'] == []:
             errors(bot, rpg, 'commands', 1, 1)
-            if rpg.instigator not in rpg.botadmins:
+            if rpg.instigator not in rpg.gamedict["tempvals"]['bot_admins']:
                 return rpg
         else:
             errors(bot, rpg, 'commands', 2, 1)
-            if rpg.instigator not in rpg.botadmins:
+            if rpg.instigator not in rpg.gamedict["tempvals"]['bot_admins']:
                 return rpg
 
     # Admin Block
@@ -736,12 +736,12 @@ def rpg_command_main_settings(bot, rpg, instigator):
         return
 
     # Who is the target
-    target = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all], 1) or rpg.instigator
+    target = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.gamedict["users"]['users_all']], 1) or rpg.instigator
     if target != rpg.instigator:
         if not rpg.adminswitch:
             errors(bot, rpg, rpg.command_main, 2, 1)
             return
-        if target not in rpg.users_all:
+        if target not in rpg.gamedict["users"]['users_all']:
             errors(bot, rpg, rpg.command_main, 3, target)
             return
 
@@ -824,7 +824,7 @@ def rpg_command_main_author(bot, rpg, instigator):
 def rpg_command_main_intent(bot, rpg, instigator):
 
     # Who is the target
-    target = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all], 1) or rpg.instigator
+    target = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.gamedict["users"]['users_all']], 1) or rpg.instigator
 
     osd(bot, rpg.channel_current, 'say', "The intent is to provide " + target + " with a sense of pride and accomplishment...")
 
@@ -852,7 +852,7 @@ def rpg_command_main_usage(bot, rpg, instigator):  # TODO
     subcommand = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.gamedict['static']['commands'].keys()], 1) or 'total'
 
     # Who is the target
-    target = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all or x == 'channel'], 1) or rpg.instigator
+    target = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.gamedict["users"]['users_all'] or x == 'channel'], 1) or rpg.instigator
     targetname = target
     if target == 'channel':
         target = 'rpg_game_records'
@@ -1114,6 +1114,12 @@ def rpg_player_return(bot, trigger):
         if instigator not in rpg.gamedict['static']['commands'].keys() and instigator not in rpg.gamedict['static']['alt_commands'].keys() and instigator not in rpg.gamedict['tempvals']['bots_list']:
             rpg.gamedict["tempvals"]['current_users'].append(instigator)
 
+    if instigator not in rpg.gamedict["users"]['users_all']:
+        rpg.gamedict["users"]['users_all'].append(instigator)
+
+    if instigator in rpg.gamedict["tempvals"]['offline_users']:
+        rpg.gamedict["tempvals"]['offline_users'].remove(instigator)
+
 
 @event('QUIT', 'PART')
 @rule('.*')
@@ -1138,6 +1144,9 @@ def rpg_player_leave(bot, trigger):
     if instigator in rpg.gamedict["tempvals"]['current_users']:
         rpg.gamedict["tempvals"]['current_users'].remove(instigator)
 
+    if instigator not in rpg.gamedict["tempvals"]['offline_users']:
+        rpg.gamedict["tempvals"]['offline_users'].append(instigator)
+
 
 def rpg_command_users(bot, rpg):
 
@@ -1149,33 +1158,35 @@ def rpg_command_users(bot, rpg):
             if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['tempvals']['bots_list']:
                 rpg.gamedict["tempvals"]['current_users'].append(user)
 
-    usertypes = ['users_all', 'opadmin', 'owner', 'chanops', 'chanvoice', 'botadmins', 'users_current', 'users_offline']
+    usertypes = ['chanops', 'chanvoice']
     for x in usertypes:
         currentvalue = str("rpg."+x+"=[]")
         exec(currentvalue)
 
-    for user in bot.users:
-        if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys():
-            rpg.users_current.append(str(user))
-    users_all = get_user_dict(bot, rpg, 'channel', 'users_all') or []
-    for user in users_all:
-        if user not in rpg.users_current and user in users_all:
-            rpg.users_offline.append(user)
-    adjust_user_dict_array(bot, rpg, 'channel', 'users_all', rpg.users_current, 'add')
+    if rpg.gamedict["tempvals"]['current_users'] == []:
+        for user in rpg.gamedict["tempvals"]['current_users']:
+            if user not in rpg.gamedict["users"]['users_all']:
+                rpg.gamedict["users"]['users_all'].append(user)
 
-    for user in rpg.users_current:
+    if rpg.gamedict["tempvals"]['current_users'] == []:
+        for user in rpg.gamedict["users"]['users_all']:
+            if user not in rpg.gamedict["tempvals"]['current_users']:
+                rpg.gamedict["tempvals"]['offline_users'].append(user)
 
-        if user in bot.config.core.owner:
-            rpg.owner.append(user)
-        if user in bot.config.core.admins:
-            rpg.botadmins.append(user)
-            rpg.opadmin.append(user)
+    if rpg.gamedict["tempvals"]['bot_owner'] == []:
+        for user in bot.config.core.owner:
+            rpg.gamedict["tempvals"]['bot_owner'].append(user)
+
+    if rpg.gamedict["tempvals"]['bot_admins'] == []:
+        for user in bot.config.core.admins:
+            rpg.gamedict["tempvals"]['bot_admins'].append(user)
+
+    for user in rpg.gamedict["tempvals"]['current_users']:
 
         for channelcheck in bot.channels:
             try:
                 if bot.privileges[channelcheck][user] == OP:
                     rpg.chanops.append(user)
-                    rpg.opadmin.append(user)
             except KeyError:
                 dummyvar = 1
             try:
