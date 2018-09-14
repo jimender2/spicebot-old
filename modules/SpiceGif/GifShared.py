@@ -141,8 +141,6 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
     results = data['results']
     resultsarray = []
     for result in results:
-        osd(bot, 'deathbybandaid', 'say', str(result))
-        return
         cururl = result['url']
         resultsarray.append(cururl)
 
@@ -217,6 +215,8 @@ def getGif_gfycat(bot, query, searchnum, searchlimit=gfycatlimit):
     results = data['gfycats']
     resultsarray = []
     for result in results:
+        osd(bot, 'deathbybandaid', 'say', str(result))
+        return
         cururl = result['gifUrl']
         resultsarray.append(cururl)
 
