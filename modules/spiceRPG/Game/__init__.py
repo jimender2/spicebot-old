@@ -243,8 +243,8 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Verify Game enabled in current channel
-    if rpg.channel_current not in rpg.channels_game_enabled and rpg.channel_real and rpg.command_main.lower() not in rpg_commands_valid_administrator:
-        if rpg.channels_game_enabled == []:
+    if rpg.channel_current not in rpg.gamedict['channels']['game_enabled'] and rpg.channel_real and rpg.command_main.lower() not in rpg_commands_valid_administrator:
+        if rpg.gamedict['channels']['game_enabled'] == []:
             errors(bot, rpg, 'commands', 1, 1)
             if rpg.instigator not in rpg.botadmins:
                 return rpg
@@ -875,24 +875,26 @@ def rpg_command_main_usage(bot, rpg, instigator):  # TODO
 
 
 """
-Bot Start
+Bot Startup Monologue
 """
 
 
 @sopel.module.interval(1)  # TODO make this progress with the game
 def rpg_bot_start_script(bot):
+
+    # Create rp class
     rpg = class_create('rpg')
-    rpg.default = 'rpg'
-    channels_game_enabled = get_user_dict(bot, rpg, 'rpg_game_records', 'game_enabled') or []
-    for channel in bot.channels:
-        if channel in channels_game_enabled:
-            startupmonologue = str("startup_monologue_" + channel)
-            if startupmonologue not in bot.memory:
-                bot.memory[startupmonologue] = 1
-                startup_monologue = []
-                startup_monologue.append("The Spice Realms are vast; full of wonder, loot, monsters, and peril!")
-                startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
-                osd(bot, channel, 'notice', startup_monologue)
+
+    # Load Game Players and map
+    open_gamedict(bot, rpg)
+
+    for channel in rpg.gamedict['channels']['game_enabled']:
+        if channel not in rpg.gamedict["tempvals"]['startupmonologue']:
+            rpg.gamedict["tempvals"]['startupmonologue'].append(channel)
+            startup_monologue = []
+            startup_monologue.append("The Spice Realms are vast; full of wonder, loot, monsters, and peril!")
+            startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
+            osd(bot, channel, 'notice', startup_monologue)
 
 
 """
@@ -1010,7 +1012,7 @@ def rpg_errors_end(bot, rpg):
                     validcomslist = spicemanip(bot, rpg.valid_commands_all, 'list')
                     errormessage = str(errormessage.replace("$valid_coms", validcomslist))
                 if "$game_chans" in errormessage:
-                    gamechanlist = spicemanip(bot, rpg.channels_game_enabled, 'list')
+                    gamechanlist = spicemanip(bot, rpg.gamedict['channels']['game_enabled'], 'list')
                     errormessage = str(errormessage.replace("$game_chans", gamechanlist))
                 if "$valid_channels" in errormessage:
                     validchanlist = spicemanip(bot, rpg.channels_list, 'list')
@@ -1029,7 +1031,7 @@ def rpg_errors_end(bot, rpg):
                     devchans = spicemanip(bot, rpg.channels_devmode_enabled, 'list')
                     errormessage = str(errormessage.replace("$dev_chans", devchans))
                 if "$game_chans" in errormessage:
-                    gamechans = spicemanip(bot, rpg.channels_game_enabled, 'list')
+                    gamechans = spicemanip(bot, rpg.gamedict['channels']['game_enabled'], 'list')
                     errormessage = str(errormessage.replace("$game_chans", gamechans))
                 if "$current_chan" in errormessage:
                     if rpg.channel_real:
@@ -1874,7 +1876,7 @@ def save_gamedict(bot, rpg):
     savedict = rpg.gamedict.copy()
 
     # Values to not save to database
-    savedict_del = []
+    savedict_del = ['tempvals']
     for dontsave in savedict_del:
         if dontsave in savedict.keys():
             del savedict[dontsave]
