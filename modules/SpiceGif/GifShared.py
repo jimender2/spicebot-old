@@ -247,6 +247,26 @@ All
 
 
 def getGif_all(bot, query, searchnum, searchlimit=giphylimit):
+
+    returngifdict = {
+                    "query": query,
+                    "searchquery": query,
+                    "querysuccess": False,
+                    "returnnum": searchnum,
+                    "returnurl": None,
+                    "error": None,
+                    "gifapi": None,
+                    "allgifs": []
+                    }
+
+    # Make sure there is a valid input of query and search number
+    if not query:
+        returngifdict["error"] = 'No Query to Search'
+        return returngifdict
+    if not str(searchnum).isdigit() and searchnum != 'random':
+        returngifdict["error"] = 'No Search Number or Random Specified'
+        return returngifdict
+
     gifapiresults = []
     for currentapi in valid_gif_api:
         gifdict = eval("getGif_" + currentapi + "(bot, query, 'random', searchlimit)")
