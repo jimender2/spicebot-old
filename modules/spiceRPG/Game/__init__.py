@@ -80,7 +80,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
 
-    bot.say(str(bot.channels))
+    bot.say(str(bot.channels[rpg.channel_current].privileges))
     return
 
     # Error Display System Create
