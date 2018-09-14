@@ -71,8 +71,8 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
     resultsarray = []
     for result in results:
         # bot.say(str(result))  # embed_url
-        # cururl = result['url']
-        cururl = result['embed_url']
+        cururl = result['url']
+        # cururl = result['embed_url']
         resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
