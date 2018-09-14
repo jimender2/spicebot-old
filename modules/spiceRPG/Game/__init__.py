@@ -1858,17 +1858,20 @@ def open_gamedict(bot, rpg):
     # open global dict as part of rpg class
     global rpg_game_dict
     rpg.gamedict = rpg_game_dict
-    # osd(bot, 'deathbybandaid', 'say', str(rpg.gamedict))
+    bot.say("loading global")
+    osd(bot, 'deathbybandaid', 'say', str(rpg.gamedict))
 
     # don't pull from database if already open
     if not rpg.gamedict["game_loaded"]:
         opendict = rpg_game_dict.copy()
         dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or dict()
-        # osd(bot, 'deathbybandaid', 'say', str(rpg.gamedict))
-        opendict = merge_gamedict(dbgamedict, opendict)
+        bot.say("loading db")
+        osd(bot, 'deathbybandaid', 'say', str(rpg.gamedict))
+        opendict = merge_gamedict(opendict, dbgamedict)
         rpg.gamedict.update(opendict)
         rpg.gamedict['game_loaded'] = True
-    # osd(bot, 'deathbybandaid', 'say', str(rpg.gamedict))
+    bot.say("loading merge")
+    osd(bot, 'deathbybandaid', 'say', str(rpg.gamedict))
 
 
 def save_gamedict(bot, rpg):
@@ -1883,7 +1886,7 @@ def save_gamedict(bot, rpg):
             del savedict[dontsave]
 
     # save to database
-    osd(bot, 'deathbybandaid', 'say', str(savedict))
+    bot.say("saving current")
     set_database_value(bot, 'rpg_game_records', 'rpg_game_dict', savedict)
 
 
