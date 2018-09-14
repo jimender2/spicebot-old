@@ -70,9 +70,10 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
     results = data['data']
     resultsarray = []
     for result in results:
+        osd(bot, channeltarget, 'say', str(result))
         # bot.say(str(result))  # embed_url
-        cururl = result['url']
-        # cururl = result['embed_url']
+        # cururl = result['url']
+        cururl = result['embed_url']
         resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
