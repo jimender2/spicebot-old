@@ -62,9 +62,6 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Load Game Players and map
     open_gamedict(bot, rpg)
 
-    bot.say(str(rpg.gamedict["tempvals"]['current_users']))
-    return
-
     # Command type
     rpg.command_type = command_type
 
@@ -82,6 +79,9 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
 
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
+
+    bot.say(str(rpg.gamedict["tempvals"]['current_users']))
+    return
 
     # Error Display System Create
     rpg_errors_start(bot, rpg)
@@ -1095,13 +1095,15 @@ def rpg_player_return(bot, trigger):
     # Load Game Players and map
     open_gamedict(bot, rpg)
 
-    if rpg.gamedict["tempvals"]['current_users'] == []:
-        for user in bot.users:
-            if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys():
-                rpg.gamedict["tempvals"]['current_users'].append(user)
+    # Channel Listing
+    rpg = rpg_command_channels(bot, rpg, trigger)
+
+    # Bacic User List
+    rpg = rpg_command_users(bot, rpg)
 
     if instigator not in rpg.gamedict["tempvals"]['current_users']:
-        rpg.gamedict["tempvals"]['current_users'].append(instigator)
+        if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['static']['bots_list']:
+            rpg.gamedict["tempvals"]['current_users'].append(instigator)
 
 
 @event('QUIT', 'PART')
@@ -1118,10 +1120,11 @@ def rpg_player_leave(bot, trigger):
     # Load Game Players and map
     open_gamedict(bot, rpg)
 
-    if rpg.gamedict["tempvals"]['current_users'] == []:
-        for user in bot.users:
-            if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys():
-                rpg.gamedict["tempvals"]['current_users'].append(user)
+    # Channel Listing
+    rpg = rpg_command_channels(bot, rpg, trigger)
+
+    # Bacic User List
+    rpg = rpg_command_users(bot, rpg)
 
     if instigator in rpg.gamedict["tempvals"]['current_users']:
         rpg.gamedict["tempvals"]['current_users'].remove(instigator)
@@ -1134,7 +1137,7 @@ def rpg_command_users(bot, rpg):
 
     if rpg.gamedict["tempvals"]['current_users'] == []:
         for user in bot.users:
-            if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys():
+            if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['static']['bots_list']:
                 rpg.gamedict["tempvals"]['current_users'].append(user)
 
     usertypes = ['users_all', 'opadmin', 'owner', 'chanops', 'chanvoice', 'botadmins', 'users_current', 'users_offline']
