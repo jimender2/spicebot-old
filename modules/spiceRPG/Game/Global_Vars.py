@@ -30,31 +30,199 @@ rpg_game_dict = {
 
                 # Static content
                 "static": {
+                            #
+                            "tier_reference":[
+
+                                                {
+                                                    'tier_num': 0,
+                                                    'tier_pepper': 'n00b',
+                                                    'tier_ratio': 1
+                                                },
+
+                                                {
+                                                    'tier_num': 1,
+                                                    'tier_pepper': 'pimiento',
+                                                    'tier_ratio': 1
+                                                },
+
+                                                {
+                                                    'tier_num': 2,
+                                                    'tier_pepper': 'sonora',
+                                                    'tier_ratio': 1.1
+                                                },
+
+                                                {
+                                                    'tier_num': 3,
+                                                    'tier_pepper': 'anaheim',
+                                                    'tier_ratio': 1.2
+                                                },
+
+                                                {
+                                                    'tier_num': 4,
+                                                    'tier_pepper': 'poblano',
+                                                    'tier_ratio': 1.3
+                                                },
+
+                                                {
+                                                    'tier_num': 5,
+                                                    'tier_pepper': 'jalapeno',
+                                                    'tier_ratio': 1.4
+                                                },
+
+                                                {
+                                                    'tier_num': 6,
+                                                    'tier_pepper': 'serrano',
+                                                    'tier_ratio': 1.5
+                                                },
+
+                                                {
+                                                    'tier_num': 7,
+                                                    'tier_pepper': 'chipotle',
+                                                    'tier_ratio': 1.6
+                                                },
+
+                                                {
+                                                    'tier_num': 8,
+                                                    'tier_pepper': 'tabasco',
+                                                    'tier_ratio': 1.7
+                                                },
+
+                                                {
+                                                    'tier_num': 9,
+                                                    'tier_pepper': 'cayenne',
+                                                    'tier_ratio': 1.8
+                                                },
+
+                                                {
+                                                    'tier_num': 10,
+                                                    'tier_pepper': 'thai pepper',
+                                                    'tier_ratio': 1.9
+                                                },
+
+                                                {
+                                                    'tier_num': 11,
+                                                    'tier_pepper': 'datil',
+                                                    'tier_ratio': 2
+                                                },
+
+                                                {
+                                                    'tier_num': 12,
+                                                    'tier_pepper': 'habanero',
+                                                    'tier_ratio': 2.1
+                                                },
+
+                                                {
+                                                    'tier_num': 13,
+                                                    'tier_pepper': 'ghost chili',
+                                                    'tier_ratio': 2.3
+                                                },
+
+                                                {
+                                                    'tier_num': 14,
+                                                    'tier_pepper': 'mace',
+                                                    'tier_ratio': 2.4
+                                                },
+
+                                                {
+                                                    'tier_num': 15,
+                                                    'tier_pepper': 'pure capsaicin',
+                                                    'tier_ratio': 2.5
+                                                },
+
+
+                                            ],
+
                             # Commands list
                             "commands": {
 
-                                        "administrator":{},
+                                        "administrator":{
+                                                        "tier_number": 0,
+                                                        "tier_pepper": 'n00b',
+                                                        "altcoms": ['admin'],
+                                                        },
 
-                                        "settings":{},
+                                        "settings":{
+                                                        "tier_number": 0,
+                                                        "tier_pepper": 'n00b',
+                                                        "altcoms": [],
+                                                        },
 
-                                        "combat":{},
+                                        "combat":{
+                                                        "tier_number": 0,
+                                                        "tier_pepper": 'n00b',
+                                                        "altcoms": [],
+                                                        },
 
-                                        "author":{},
+                                        "author":{
+                                                        "tier_number": 0,
+                                                        "tier_pepper": 'n00b',
+                                                        "altcoms": ['credit','credits'],
+                                                        },
 
-                                        "intent":{},
+                                        "intent":{
+                                                        "tier_number": 0,
+                                                        "tier_pepper": 'n00b',
+                                                        "altcoms": [],
+                                                        },
 
-                                        "about":{},
+                                        "about":{
+                                                        "tier_number": 0,
+                                                        "tier_pepper": 'n00b',
+                                                        "altcoms": [],
+                                                        },
 
-                                        "version":{},
+                                        "version":{
+                                                        "tier_number": 0,
+                                                        "tier_pepper": 'n00b',
+                                                        "altcoms": [],
+                                                        },
 
-                                        "docs":{},
+                                        "docs":{
+                                                        "tier_number": 0,
+                                                        "tier_pepper": 'n00b',
+                                                        "altcoms": ['help','man'],
+                                                        },
 
-                                        "usage":{},
+                                        "usage":{
+                                                        "tier_number": 0,
+                                                        "tier_pepper": 'n00b',
+                                                        "altcoms": [],
+                                                        },
 
-                                        "travel":{},
+                                        "travel":{
+                                                        "tier_number": 0,
+                                                        "tier_pepper": 'n00b',
+                                                        "altcoms": [],
+                                                        },
 
                                         # End of commands
                                         },
+
+                            # Alternate Commands, duplicate of above
+                            "alt_commands":{
+
+                                            "admin":{
+                                                    "realcom": "administrator",
+                                                    },
+
+                                            "man":{
+                                                    "realcom": "docs",
+                                                    },
+
+                                            "help":{
+                                                    "realcom": "docs",
+                                                    },
+
+                                            "credit":{
+                                                    "realcom": "author",
+                                                    },
+
+                                            "credits":{
+                                                    "realcom": "author",
+                                                    },
+
+                                            # end of altcoms
+                                            },
 
                             # end of static content
                             },

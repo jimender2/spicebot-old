@@ -81,9 +81,6 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Channel Listing
     rpg = rpg_command_channels(bot, rpg, trigger)
 
-    # Commands list
-    rpg = rpg_valid_commands_all(bot, rpg)
-
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
 
@@ -156,7 +153,7 @@ def command_process(bot, trigger, rpg, instigator):
 
     # block instigator if
     instigatorcantplayarray = []
-    instigatorcantplayarrays = ["rpg.gamedict['static']['commands'].keys()", 'rpg.valid_commands_alts', 'rpg.bots_list', 'rpg_map_names']
+    instigatorcantplayarrays = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", 'rpg.bots_list', 'rpg_map_names']
     for nicklist in instigatorcantplayarrays:
         currentnicklist = eval(nicklist)
         for x in currentnicklist:
@@ -183,10 +180,10 @@ def command_process(bot, trigger, rpg, instigator):
             rpg.command_main = spicemanip(bot, rpg.triggerargsarray, 1)
 
     # Spell Check
-    if rpg.command_main.lower() not in rpg.gamedict['static']['commands'].keys() and rpg.command_main.lower() not in rpg.valid_commands_alts and rpg.command_main.lower() not in [x.lower() for x in rpg.users_all]:
+    if rpg.command_main.lower() not in rpg.gamedict['static']['commands'].keys() and rpg.command_main.lower() not in rpg.gamedict['static']['alt_commands'].keys() and rpg.command_main.lower() not in [x.lower() for x in rpg.users_all]:
         startcom = rpg.command_main
         sim_com, sim_num = [], []
-        command_type_list = ["rpg.gamedict['static']['commands'].keys()", 'rpg.valid_commands_alts', 'rpg.users_all']
+        command_type_list = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", 'rpg.users_all']
         for comtype in command_type_list:
             comtype_eval = eval(comtype)
             for com in comtype_eval:
@@ -224,10 +221,10 @@ def command_process(bot, trigger, rpg, instigator):
         rpg.command_full = spicemanip(bot, rpg.triggerargsarray, 0)
 
     # Alternate commands convert
-    if rpg.command_main.lower() in rpg.valid_commands_alts:
+    if rpg.command_main.lower() in rpg.gamedict['static']['alt_commands'].keys():
         startcom = rpg.command_main
         rpg.triggerargsarray.remove(rpg.command_main)
-        rpg.command_main = eval("rpg." + str(rpg.command_main.lower()) + ".realcom") or 'invalidcommand'
+        rpg.command_main = eval("rpg.gamedict['static']['alt_commands']['" + rpg.command_main.lower() + "']['realcom']") or 'invalidcommand'
         if rpg.command_main.lower() == 'invalidcommand':
             errors(bot, rpg, 'commands', 9, startcom)
             return rpg
@@ -273,7 +270,7 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Tier Check
-    command_tier_required = int(eval("rpg." + rpg.command_main.lower() + ".tier_number")) or 0
+    command_tier_required = int(eval("rpg.gamedict['static']['commands']['" + rpg.command_main.lower() + "']['tier_number']")) or 0
     if command_tier_required > int(rpg.tier_current):
         errors(bot, rpg, 'commands', 15, rpg.command_main)
         return rpg
@@ -1006,9 +1003,9 @@ def rpg_errors_end(bot, rpg):
                 if "$tiers_nums_peppers" in errormessage:
                     numberarray, pepperarray, combinedarray = [], [], []
                     for command in currenterrorvalue:
-                        peppereval = eval("rpg." + command.lower() + ".tier_pepper")
+                        peppereval = eval("rpg.gamedict['static']['commands'][" + rpg.command.lower() + "][tier_pepper]")
                         pepperarray.append(peppereval)
-                        numbereval = int(eval("rpg." + command.lower() + ".tier_number"))
+                        numbereval = int(eval("rpg.gamedict['static']['commands']['" + rpg.command.lower() + "']['tier_number']"))
                         numberarray.append(numbereval)
                     for num, pepp in zip(numberarray, pepperarray):
                         combinedarray.append(str(num) + " " + pepp)
@@ -1048,53 +1045,6 @@ def rpg_errors_end(bot, rpg):
                     rpg.error_display.append(errormessage)
     if rpg.error_display != []:
         osd(bot, rpg.instigator, 'notice', rpg.error_display)
-
-
-"""
-Commands
-"""
-
-
-# All valid commands
-def rpg_valid_commands_all(bot, rpg):
-
-    # make list of all valid commands
-    rpg.valid_commands_alts = []
-
-    # data regarding each command
-    for vcom in rpg.gamedict['static']['commands'].keys():
-
-        # create class
-        currentcommandclass = class_create(vcom)
-        exec("rpg." + str(vcom) + " = currentcommandclass")
-
-        # Tier number
-        currenttiernumber = 0
-        for i in range(0, len(rpg_commands_tier_unlocks)):
-            current_tier_eval_number = i + 1
-            currenttiereval = spicemanip(bot, rpg_commands_tier_unlocks, current_tier_eval_number) or []
-            if vcom in currenttiereval:
-                currenttiernumber = current_tier_eval_number
-        exec("rpg." + str(vcom) + ".tier_number = currenttiernumber")
-
-        # Tier Pepper
-        currentpepper = spicemanip(bot, rpg_commands_pepper_levels, currenttiernumber) or 'Spicy'
-        exec("rpg." + str(vcom) + ".tier_pepper = currentpepper")
-
-        # alternate commands
-        current_alts = eval("rpg_commands_valid_alt_"+vcom) or []
-        for acom in current_alts:
-            if acom not in rpg.valid_commands_alts:
-                rpg.valid_commands_alts.append(acom)
-
-            # create class
-            currentaltcommandclass = class_create(acom)
-            exec("rpg." + str(acom) + " = currentcommandclass")
-            exec("rpg." + str(acom) + ".realcom = vcom")
-
-        exec("rpg." + str(vcom) + ".altcoms = current_alts")
-
-    return rpg
 
 
 """
@@ -1139,7 +1089,7 @@ def rpg_command_users(bot, rpg):
         exec(currentvalue)
 
     for user in bot.users:
-        if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.valid_commands_alts:
+        if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys():
             rpg.users_current.append(str(user))
     users_all = get_user_dict(bot, rpg, 'channel', 'users_all') or []
     for user in users_all:
