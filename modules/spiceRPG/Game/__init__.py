@@ -1111,7 +1111,7 @@ def rpg_player_return(bot, trigger):
     rpg = rpg_command_users(bot, rpg)
 
     if instigator not in rpg.gamedict["tempvals"]['current_users']:
-        if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['tempvals']['bots_list']:
+        if instigator not in rpg.gamedict['static']['commands'].keys() and instigator not in rpg.gamedict['static']['alt_commands'].keys() and instigator not in rpg.gamedict['tempvals']['bots_list']:
             rpg.gamedict["tempvals"]['current_users'].append(instigator)
 
 
