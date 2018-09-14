@@ -12,12 +12,14 @@ Open Dictionary of Users and Locations
 
 rpg_game_dict = {
 
-                # Indicate if we need to pull the dict from the database
-                "game_loaded": False,
-
+                # Some values don't get saved to the database, but stay in memory
                 "tempvals":{
+
                             # startupmonologue
-                            "startupmonologue": []
+                            "startupmonologue": [],
+
+                            # Indicate if we need to pull the dict from the database
+                            "game_loaded": False
                             },
 
                 # Current Channel Tier

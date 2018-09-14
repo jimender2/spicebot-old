@@ -1862,12 +1862,12 @@ def open_gamedict(bot, rpg):
     rpg.gamedict = rpg_game_dict
 
     # don't pull from database if already open
-    if not rpg.gamedict["game_loaded"]:
+    if not rpg.gamedict["tempvals"]["game_loaded"]:
         opendict = rpg_game_dict.copy()
         dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or dict()
         opendict = merge_gamedict(opendict, dbgamedict)
         rpg.gamedict.update(opendict)
-        rpg.gamedict['game_loaded'] = True
+        rpg.gamedict["tempvals"]['game_loaded'] = True
 
 
 def save_gamedict(bot, rpg):
