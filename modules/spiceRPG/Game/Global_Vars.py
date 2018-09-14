@@ -15,6 +15,8 @@ rpg_game_dict = {
                 # Individual small
                 "game_loaded": False,
 
+                "testingdict": True,
+
                 # Current Channel Tier
                 "tier_current": 0,
 
