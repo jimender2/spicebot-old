@@ -693,7 +693,7 @@ def rpg_command_main_administrator(bot, rpg, instigator):
             return
 
         # Evaluate change
-        current_channel_facet = eval(rpg.gamedict['channels'][activation_type_db])
+        current_channel_facet = rpg.gamedict['channels'][activation_type_db]
         if activation_type == 'devmode':
             if activation_direction in activate_list:
                 current_channel_facet_error = 5
