@@ -248,7 +248,7 @@ All
 
 def getGif_all(bot, query, searchnum, searchlimit=giphylimit):
 
-    returngifdict = {
+    gifdict = {
                     "query": query,
                     "searchquery": query,
                     "querysuccess": False,
@@ -260,13 +260,12 @@ def getGif_all(bot, query, searchnum, searchlimit=giphylimit):
                     }
 
     # Make sure there is a valid input of query and search number
-    bot.say(str(query))
     if not query:
-        returngifdict["error"] = 'No Query to Search'
-        return returngifdict
+        gifdict["error"] = 'No Query to Search'
+        return gifdict
     if not str(searchnum).isdigit() and searchnum != 'random':
-        returngifdict["error"] = 'No Search Number or Random Specified'
-        return returngifdict
+        gifdict["error"] = 'No Search Number or Random Specified'
+        return gifdict
 
     gifapiresults = []
     for currentapi in valid_gif_api:
@@ -290,4 +289,8 @@ def getGif_all(bot, query, searchnum, searchlimit=giphylimit):
         gifapiresults.append(gifdict)
 
     gifdict = spicemanip(bot, gifapiresults, 'random')
+    if not gifdict["querysuccess"]:
+        gifdict["error"] = 'No Results were found for ' + query + ' in any api'
+        return gifdict
+
     return gifdict
