@@ -45,7 +45,6 @@ def spicebot_prerun(bot, trigger, commandused):
     except IndexError:
         botcom.triggerargsarray = spicemanip(bot, trigger.group(1), 'create')
 
-
     botcom.instigator = trigger.nick
 
     # time
