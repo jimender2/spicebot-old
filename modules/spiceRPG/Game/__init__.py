@@ -899,7 +899,7 @@ def rpg_bot_start_script(bot):
             startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
             osd(bot, channel, 'notice', startup_monologue)
     # no need to continually check
-    rpg.gamedict["tempvals"]['startupmonologue'] = rpg.gamedict["tempvals"]['startupmonologue'] + 10
+    rpg_game_dict['tempvals']['monologuecheck'] = rpg_game_dict['tempvals']['monologuecheck'] + 10
 
 
 """
