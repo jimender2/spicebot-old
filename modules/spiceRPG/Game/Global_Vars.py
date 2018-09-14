@@ -42,7 +42,30 @@ rpg_game_dict = {
                                 },
 
                 # Commands list
-                "commands": {},
+                "commands": {
+
+                            "administrator":{},
+
+                            "settings":{},
+
+                            "combat":{},
+
+                            "author":{},
+
+                            "intent":{},
+
+                            "about":{},
+
+                            "version":{},
+
+                            "docs":{},
+
+                            "usage":{},
+
+                            "travel":{},
+
+                            # End of commands
+                            },
 
                 # Maps list
                 "maps": {
