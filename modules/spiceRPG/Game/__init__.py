@@ -1875,7 +1875,6 @@ def save_gamedict(bot, rpg):
 
     # copy dict to not overwrite
     savedict = rpg.gamedict.copy()
-    osd(bot, 'deathbybandaid', 'say', str(savedict))
 
     # Values to not save to database
     savedict_del = []
@@ -1884,6 +1883,7 @@ def save_gamedict(bot, rpg):
             del savedict[dontsave]
 
     # save to database
+    osd(bot, 'deathbybandaid', 'say', str(savedict))
     set_database_value(bot, 'rpg_game_records', 'rpg_game_dict', savedict)
 
 
