@@ -1122,7 +1122,7 @@ def rpg_command_channels(bot, rpg, trigger):
     rpg.channels_game_enabled = rpg.gamedict['channels']['game_enabled'] or []
 
     # Development mode
-    rpg.channels_game_enabled = rpg.gamedict['channels']['dev_enabled'] or []
+    rpg.channels_devmode_enabled = rpg.gamedict['channels']['devmode_enabled'] or []
     rpg.dev_bypass = 0
     if rpg.channel_current.lower() in [x.lower() for x in rpg.channels_devmode_enabled]:
         rpg.dev_bypass = 1
