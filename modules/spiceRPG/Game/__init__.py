@@ -879,11 +879,8 @@ Bot Startup Monologue
 """
 
 
-# @sopel.module.interval(1)  # TODO make this progress with the game
 @sopel.module.interval(rpg_game_dict['tempvals']['monologuecheck'])  # TODO make this progress with the game
 def rpg_bot_start_script(bot):
-
-    bot.msg('deathbybandaid', str(rpg_game_dict['tempvals']['monologuecheck']))
 
     # Create rp class
     rpg = class_create('rpg')
@@ -899,7 +896,7 @@ def rpg_bot_start_script(bot):
             startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
             osd(bot, channel, 'notice', startup_monologue)
     # no need to continually check
-    rpg_game_dict['tempvals']['monologuecheck'] = rpg_game_dict['tempvals']['monologuecheck'] + 10
+    rpg_game_dict['tempvals']['monologuecheck'] = rpg_game_dict['tempvals']['monologuecheck'] + 99999999999999999
 
 
 """
