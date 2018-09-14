@@ -63,7 +63,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     open_gamedict(bot, rpg)
 
     for dictkey in rpg.gamedict['static']['commands']:
-        bot.say(str(dictkey))
+        bot.say(str(rpg.gamedict['static']['commands'][dictkey]))
     return
 
     # Command type
