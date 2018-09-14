@@ -25,6 +25,9 @@ rpg_game_dict = {
                             # list of channels the bot is in
                             "channels_list": [],
 
+                            # Other bots
+                            "bots_list": [],
+
                             # End of Temp Vals
                             },
 
@@ -232,6 +235,9 @@ rpg_game_dict = {
 
                 # Users list
                 "users": {},
+
+                #
+                "playerstats": {},
 
                 # channels list
                 "channels": {

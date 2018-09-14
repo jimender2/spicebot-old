@@ -62,6 +62,9 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Load Game Players and map
     open_gamedict(bot, rpg)
 
+    bot.say(str(rpg.gamedict["tempvals"]['current_users']))
+    return
+
     # Command type
     rpg.command_type = command_type
 
@@ -149,7 +152,7 @@ def command_process(bot, trigger, rpg, instigator):
 
     # block instigator if
     instigatorcantplayarray = []
-    instigatorcantplayarrays = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", 'rpg.bots_list', 'rpg_map_names']
+    instigatorcantplayarrays = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", 'rpg.gamedict["tempvals"]['bots_list']', 'rpg_map_names']
     for nicklist in instigatorcantplayarrays:
         currentnicklist = eval(nicklist)
         for x in currentnicklist:
@@ -206,7 +209,7 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Instigator versus Other Bots
-    if rpg.command_main.lower() in [x.lower() for x in rpg.bots_list]:
+    if rpg.command_main.lower() in [x.lower() for x in rpg.gamedict["tempvals"]['bots_list']]:
         errors(bot, rpg, 'commands', 11, nick_actual(bot, rpg.command_main))
         return rpg
 
@@ -1078,8 +1081,63 @@ Users
 """
 
 
+@event('JOIN')
+@rule('.*')
+@sopel.module.thread(True)
+def rpg_player_return(bot, trigger):
+
+    instigator = trigger.nick
+
+    # RPG dynamic Class
+    rpg = class_create('rpg')
+    rpg.default = 'rpg'
+
+    # Load Game Players and map
+    open_gamedict(bot, rpg)
+
+    if rpg.gamedict["tempvals"]['current_users'] == []:
+        for user in bot.users:
+            if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys():
+                rpg.gamedict["tempvals"]['current_users'].append(user)
+
+    if instigator not in rpg.gamedict["tempvals"]['current_users']:
+        rpg.gamedict["tempvals"]['current_users'].append(instigator)
+
+
+@event('QUIT', 'PART')
+@rule('.*')
+@sopel.module.thread(True)
+def rpg_player_leave(bot, trigger):
+
+    instigator = trigger.nick
+
+    # RPG dynamic Class
+    rpg = class_create('rpg')
+    rpg.default = 'rpg'
+
+    # Load Game Players and map
+    open_gamedict(bot, rpg)
+
+    if rpg.gamedict["tempvals"]['current_users'] == []:
+        for user in bot.users:
+            if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys():
+                rpg.gamedict["tempvals"]['current_users'].append(user)
+
+    if instigator in rpg.gamedict["tempvals"]['current_users']:
+        rpg.gamedict["tempvals"]['current_users'].remove(instigator)
+
+
 def rpg_command_users(bot, rpg):
-    usertypes = ['users_all', 'opadmin', 'owner', 'chanops', 'chanvoice', 'botadmins', 'users_current', 'users_offline', 'bots_list']
+
+    if rpg.gamedict["tempvals"]['bots_list'] == []:
+        rpg.gamedict["tempvals"]['bots_list'] = bot_config_names(bot)
+
+    if rpg.gamedict["tempvals"]['current_users'] == []:
+        for user in bot.users:
+            if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys():
+                rpg.gamedict["tempvals"]['current_users'].append(user)
+
+    usertypes = ['users_all', 'opadmin', 'owner', 'chanops', 'chanvoice', 'botadmins', 'users_current', 'users_offline']
     for x in usertypes:
         currentvalue = str("rpg."+x+"=[]")
         exec(currentvalue)
@@ -1092,8 +1150,6 @@ def rpg_command_users(bot, rpg):
         if user not in rpg.users_current and user in users_all:
             rpg.users_offline.append(user)
     adjust_user_dict_array(bot, rpg, 'channel', 'users_all', rpg.users_current, 'add')
-
-    rpg.bots_list = bot_config_names(bot)
 
     for user in rpg.users_current:
 
