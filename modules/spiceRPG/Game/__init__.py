@@ -73,7 +73,6 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     rpg.instigator = trigger.nick
 
     rpg.tier_current = rpg.gamedict['tier_current']
-    bot.say(str(rpg.tier_current))
 
     # Channel Listing
     rpg = rpg_command_channels(bot, rpg, trigger)
@@ -711,13 +710,13 @@ def rpg_command_main_administrator(bot, rpg, instigator):
             if channeltarget.lower() in [x.lower() for x in current_channel_facet]:
                 errors(bot, rpg, rpg.command_main, current_channel_facet_error, 1)
                 return
-            adjust_user_dict_array(bot, rpg, 'rpg_game_records', activation_type_db, [channeltarget], 'add')
+            current_channel_facet.append(channeltarget)
             osd(bot, channeltarget, 'say', "RPG " + activation_type + " has been enabled in " + channeltarget + "!")
         elif activation_direction in deactivate_list:
             if channeltarget.lower() not in [x.lower() for x in current_channel_facet]:
                 errors(bot, rpg, rpg.command_main, current_channel_facet_error, 1)
                 return
-            adjust_user_dict_array(bot, rpg, 'rpg_game_records', activation_type_db, [channeltarget], 'del')
+            current_channel_facet.remove(channeltarget)
             osd(bot, channeltarget, 'say', "RPG " + activation_type + " has been disabled in " + channeltarget + "!")
 
         if activation_type == 'game':
@@ -1120,10 +1119,10 @@ def rpg_command_channels(bot, rpg, trigger):
         rpg.channels_list.append(channel)
 
     # Game Enabled
-    rpg.channels_game_enabled = get_user_dict(bot, rpg, 'rpg_game_records', 'game_enabled') or []
+    rpg.channels_game_enabled = rpg.gamedict['channels']['game_enabled'] or []
 
     # Development mode
-    rpg.channels_devmode_enabled = get_user_dict(bot, rpg, 'rpg_game_records', 'dev_enabled') or []
+    rpg.channels_game_enabled = rpg.gamedict['channels']['dev_enabled'] or []
     rpg.dev_bypass = 0
     if rpg.channel_current.lower() in [x.lower() for x in rpg.channels_devmode_enabled]:
         rpg.dev_bypass = 1
@@ -1859,14 +1858,17 @@ def open_gamedict(bot, rpg):
     # open global dict as part of rpg class
     global rpg_game_dict
     rpg.gamedict = rpg_game_dict
+    osd(bot, 'deathbybandaid', 'say', str(rpg.gamedict))
 
     # don't pull from database if already open
     if not rpg.gamedict["game_loaded"]:
         opendict = rpg_game_dict.copy()
         dbgamedict = get_database_value(bot, 'rpg_game_records', 'rpg_game_dict') or dict()
+        osd(bot, channeltarget, 'say', str(rpg.gamedict))
         opendict = merge_gamedict(dbgamedict, opendict)
         rpg.gamedict.update(opendict)
         rpg.gamedict['game_loaded'] = True
+    osd(bot, 'deathbybandaid', 'say', str(rpg.gamedict))
 
 
 def save_gamedict(bot, rpg):

@@ -22,7 +22,11 @@ rpg_game_dict = {
                 "users": {},
 
                 # channels list
-                "channels": {},
+                "channels": {
+                                "game_enabled": [],
+                                "dev_enabled": []
+
+                                },
 
                 # Commands list
                 "commands": {},
