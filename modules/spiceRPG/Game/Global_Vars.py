@@ -57,7 +57,7 @@ rpg_game_dict = {
                                         },
 
                             # end of static content
-                            }
+                            },
 
                 # Current Channel Tier
                 "tier_current": 0,
