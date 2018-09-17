@@ -1189,7 +1189,7 @@ def rpg_command_users(bot, rpg):
             rpg.gamedict["users"]['users_all'].append(user)
 
     for user in rpg.gamedict["users"]['users_all']:
-        if user not in rpg.gamedict["tempvals"]['offline_users']:
+        if user not in rpg.gamedict["tempvals"]['offline_users'] and user not in rpg.gamedict["tempvals"]['current_users']:
             rpg.gamedict["tempvals"]['offline_users'].append(user)
 
     return rpg
