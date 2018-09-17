@@ -1193,8 +1193,8 @@ def rpg_command_users(bot, rpg):
 
     for user in rpg.gamedict["users"]['users_all']:
         if user not in rpg.gamedict["tempvals"]['cantplayarray']:
-            bot.say(str(user))
-            if user not in rpg.gamedict["tempvals"]['offline_users'] and user not in rpg.gamedict["tempvals"]['current_users']:
+            if user not in rpg.gamedict["tempvals"]['current_users']:
+                bot.say(str(user))
                 rpg.gamedict["tempvals"]['offline_users'].append(user)
 
     return rpg
