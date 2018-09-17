@@ -1147,7 +1147,7 @@ def rpg_player_leave(bot, trigger):
 
 def rpg_command_users(bot, rpg):
 
-    osd(bot, channeltarget, 'say', str(bot.users))
+    osd(bot, 'deathbybandaid', 'say', str(bot.users))
 
     if rpg.gamedict["tempvals"]['bots_list'] == []:
         rpg.gamedict["tempvals"]['bots_list'] = bot_config_names(bot)
