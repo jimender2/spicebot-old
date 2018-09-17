@@ -166,60 +166,70 @@ rpg_game_dict = {
                                                         "tier_number": 0,
                                                         "tier_pepper": 'n00b',
                                                         "altcoms": ['admin'],
+                                                        "admin_only": True,
                                                         },
 
                                         "settings":{
                                                         "tier_number": 0,
                                                         "tier_pepper": 'n00b',
                                                         "altcoms": [],
+                                                        "admin_only": False,
                                                         },
 
                                         "combat":{
                                                         "tier_number": 0,
                                                         "tier_pepper": 'n00b',
                                                         "altcoms": [],
+                                                        "admin_only": False,
                                                         },
 
                                         "author":{
                                                         "tier_number": 0,
                                                         "tier_pepper": 'n00b',
                                                         "altcoms": ['credit','credits'],
+                                                        "admin_only": False,
                                                         },
 
                                         "intent":{
                                                         "tier_number": 0,
                                                         "tier_pepper": 'n00b',
                                                         "altcoms": [],
+                                                        "admin_only": False,
                                                         },
 
                                         "about":{
                                                         "tier_number": 0,
                                                         "tier_pepper": 'n00b',
                                                         "altcoms": [],
+                                                        "admin_only": False,
                                                         },
 
                                         "version":{
                                                         "tier_number": 0,
                                                         "tier_pepper": 'n00b',
                                                         "altcoms": [],
+                                                        "admin_only": False,
                                                         },
 
                                         "docs":{
                                                         "tier_number": 0,
                                                         "tier_pepper": 'n00b',
                                                         "altcoms": ['help','man'],
+                                                        "admin_only": False,
                                                         },
 
                                         "usage":{
                                                         "tier_number": 0,
                                                         "tier_pepper": 'n00b',
                                                         "altcoms": [],
+                                                        "admin_only": False,
                                                         },
 
                                         "travel":{
                                                         "tier_number": 0,
                                                         "tier_pepper": 'n00b',
                                                         "altcoms": [],
+                                                        "admin_only": False,
                                                         },
 
                                         # End of commands
@@ -373,33 +383,6 @@ Activation/Deactivate
 onoff_list = ['activate','enable','on','deactivate','disable','off']
 activate_list = ['activate','enable','on']
 deactivate_list = ['deactivate','disable','off']
-
-
-"""
-Map
-"""
-
-
-rpg_map_center_latitude = "0"
-rpg_map_center_longitude = "0"
-rpg_map_scale = 10
-rpg_map_names = ["adminville"]
-rpg_map_namea = ["Bouldersummit",  # 1
-                 "Cliffstall",  # 2
-                 "Whitfield",  # 3
-                 "Deepharbor",  # 4
-                 "Mightvale",  # 5
-                 "Winterkeep",  # 6
-                 "Boneshade",  # 7
-                 "Faymeadow",  # 8
-                 "Bonehollow",  # 9
-                 "Honeygulf",  # 10
-                 "Rimeshell",  # 11
-                 "Wolfbarrow",  # 12
-                 "Rivershield",  # 13
-                 "Millsummit",  # 14
-                 "Dryharbor"  # 15
-                 ]
 
 
 """

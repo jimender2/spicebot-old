@@ -105,7 +105,7 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
     if triggerargsarray == []:
         user_capable_coms = []
         for vcom in rpg.gamedict['static']['commands'].keys():
-            if vcom in rpg_commands_valid_administrator:
+            if rpg.gamedict['static']['commands'][vcom]['admin_only']:
                 if rpg.instigator in rpg.gamedict["tempvals"]['bot_admins']:
                     user_capable_coms.append(vcom)
             else:
@@ -233,7 +233,7 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Verify Game enabled in current channel
-    if rpg.channel_current not in rpg.gamedict['channels']['game_enabled'] and rpg.channel_real and rpg.command_main.lower() not in rpg_commands_valid_administrator:
+    if rpg.channel_current not in rpg.gamedict['channels']['game_enabled'] and rpg.channel_real and not rpg.gamedict['static']['commands'][rpg.command_main.lower()]['admin_only']:
         if rpg.gamedict['channels']['game_enabled'] == []:
             errors(bot, rpg, 'commands', 1, 1)
             if rpg.instigator not in rpg.gamedict["tempvals"]['bot_admins']:
@@ -244,7 +244,7 @@ def command_process(bot, trigger, rpg, instigator):
                 return rpg
 
     # Admin Block
-    if rpg.command_main.lower() in rpg_commands_valid_administrator and not rpg.adminswitch:
+    if rpg.gamedict['static']['commands'][rpg.command_main.lower()]['admin_only'] and not rpg.adminswitch:
         errors(bot, rpg, 'commands', 7, rpg.command_main)
         return rpg
 
@@ -367,7 +367,7 @@ def rpg_map_nick_get(bot, rpg, nick):
     nickmap, nickcoord = 0, 0
 
     cyclemapnumber = 0
-    for map in rpg_map_names:
+    for map in rpg.gamedict['static']['maps'].keys():
         cyclemapnumber += 1
 
         mapnicklist = get_user_dict(bot, rpg, map, 'mapnicklist')
@@ -379,8 +379,7 @@ def rpg_map_nick_get(bot, rpg, nick):
 
             mapsize = get_user_dict(bot, rpg, map, 'mapsize')
             if not mapsize:
-                mapsize = rpg_map_scale * cyclemapnumber
-                set_user_dict(bot, rpg, map, 'mapsize', mapsize)
+                set_user_dict(bot, rpg, map, 'mapsize', rpg.gamedict['static']['maps'][map]['map_size'])
 
             # map size from center
             latitudearray, longitudearray = [], []
@@ -399,7 +398,7 @@ def rpg_map_nick_get(bot, rpg, nick):
                     nickcoord = coordinates
 
     if not nickmap:
-        nickmap = spicemanip(bot, rpg_map_names, 1)
+        nickmap = spicemanip(bot, rpg.gamedict['static']['maps'].keys(), 1)
     if not nickcoord:
         nickcoord = rpg_map_town(bot, rpg, nickmap)
     rpg_map_move_nick(bot, rpg, nick, nickmap, str(nickcoord))
@@ -409,7 +408,7 @@ def rpg_map_nick_get(bot, rpg, nick):
 
 def rpg_map_move_nick(bot, rpg, nick, newmap, newcoordinates):
 
-    for map in rpg_map_names:
+    for map in rpg.gamedict['static']['maps'].keys():
 
         mapnicklist = get_user_dict(bot, rpg, map, 'mapnicklist') or []
         if map == newmap:
@@ -422,8 +421,7 @@ def rpg_map_move_nick(bot, rpg, nick, newmap, newcoordinates):
 
         mapsize = get_user_dict(bot, rpg, map, 'mapsize')
         if not mapsize:
-            mapsize = rpg_map_scale * cyclemapnumber
-            set_user_dict(bot, rpg, map, 'mapsize', mapsize)
+            set_user_dict(bot, rpg, map, 'mapsize', rpg.gamedict['static']['maps'][map]['map_size'])
 
         # map size from center
         latitudearray, longitudearray = [], []
@@ -456,8 +454,7 @@ def rpg_map_town(bot, rpg, map):
 
     mapsize = get_user_dict(bot, rpg, map, 'mapsize')
     if not mapsize:
-        mapsize = rpg_map_scale * cyclemapnumber
-        set_user_dict(bot, rpg, map, 'mapsize', mapsize)
+        set_user_dict(bot, rpg, map, 'mapsize', rpg.gamedict['static']['maps'][map]['map_size'])
 
     # map size from center
     latitudearray, longitudearray = [], []
@@ -492,7 +489,7 @@ def rpg_map_town(bot, rpg, map):
 def rpg_map_read(bot, rpg):
 
     cyclemapnumber = 0
-    for map in rpg_map_names:
+    for map in rpg.gamedict['static']['maps'].keys():
         cyclemapnumber += 1
 
         maptier = get_user_dict(bot, rpg, map, 'maptier')
@@ -502,8 +499,7 @@ def rpg_map_read(bot, rpg):
 
         mapsize = get_user_dict(bot, rpg, map, 'mapsize')
         if not mapsize:
-            mapsize = rpg_map_scale * cyclemapnumber
-            set_user_dict(bot, rpg, map, 'mapsize', mapsize)
+            set_user_dict(bot, rpg, map, 'mapsize', rpg.gamedict['static']['maps'][map]['map_size'])
 
         # map size from center
         latitudearray, longitudearray = [], []
@@ -552,7 +548,7 @@ def rpg_map_read_old(bot, dclass):
     if not hasattr(dclass, 'map'):
         dclass.map = class_create('map')
     if not hasattr(dclass.map, 'list'):
-        dclass.map.list = rpg_map_names
+        dclass.map.list = rpg.gamedict['static']['maps'].keys()
 
     cyclemapnumber = 0
     for map in dclass.map.list:
@@ -575,7 +571,7 @@ def rpg_map_read_old(bot, dclass):
 
         # max height/width (from zero center)
         if 'mapsize' not in mapdict.keys():
-            mapdict['mapsize'] = rpg_map_scale * cyclemapnumber
+            mapdict['mapsize'] = rpg.gamedict['static']['maps'][map]['map_size']
 
         # map size from center
         maxfromcenter = mapdict['mapsize']
@@ -602,7 +598,7 @@ def rpg_map_save_old(bot, dclass):
     if not hasattr(dclass, 'map'):
         dclass.map = class_create('map')
     if not hasattr(dclass.map, 'list'):
-        dclass.map.list = rpg_map_names
+        dclass.map.list = rpg.gamedict['static']['maps'].keys()
 
     for map in dclass.map.list:
 
@@ -1156,7 +1152,7 @@ def rpg_command_users(bot, rpg):
 
     # users that cannot be part of the game
     if rpg.gamedict["tempvals"]['cantplayarray'] == []:
-        cantplayarrays = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", "rpg.gamedict['tempvals']['bots_list']", 'rpg_map_names']
+        cantplayarrays = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", "rpg.gamedict['tempvals']['bots_list']", "rpg.gamedict['static']['maps'].keys()"]
         for nicklist in cantplayarrays:
             currentnicklist = eval(nicklist)
             for x in currentnicklist:
