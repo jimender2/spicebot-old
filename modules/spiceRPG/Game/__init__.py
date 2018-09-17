@@ -3,7 +3,7 @@
 from __future__ import unicode_literals, absolute_import, print_function, division
 # sopel imports
 import sopel.module
-from sopel.module import commands, nickname_commands, rule, priority, example, OP, ADMIN, VOICE, event, rule
+from sopel.module import commands, nickname_commands, rule, priority, example, OP, HALFOP, ADMIN, VOICE, event, rule
 from sopel.formatting import bold
 import sopel
 from sopel import module, tools, formatting
@@ -79,11 +79,6 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
 
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
-
-    for x in bot.privileges[rpg.channel_current].keys():
-        bot.say(str(x) + " " + str(bot.privileges[rpg.channel_current][x]))
-
-    return
 
     # Error Display System Create
     rpg_errors_start(bot, rpg)
@@ -1152,6 +1147,8 @@ def rpg_player_leave(bot, trigger):
 
 def rpg_command_users(bot, rpg):
 
+    osd(bot, channeltarget, 'say', str(bot.users))
+
     if rpg.gamedict["tempvals"]['bots_list'] == []:
         rpg.gamedict["tempvals"]['bots_list'] = bot_config_names(bot)
 
@@ -1159,11 +1156,6 @@ def rpg_command_users(bot, rpg):
         for user in bot.users:
             if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['tempvals']['bots_list']:
                 rpg.gamedict["tempvals"]['current_users'].append(user)
-
-    usertypes = ['chanops', 'chanvoice']
-    for x in usertypes:
-        currentvalue = str("rpg."+x+"=[]")
-        exec(currentvalue)
 
     if rpg.gamedict["tempvals"]['current_users'] == []:
         for user in rpg.gamedict["tempvals"]['current_users']:
@@ -1177,25 +1169,27 @@ def rpg_command_users(bot, rpg):
 
     if rpg.gamedict["tempvals"]['bot_owner'] == []:
         for user in bot.config.core.owner:
-            rpg.gamedict["tempvals"]['bot_owner'].append(user)
+            if user not in rpg.gamedict["tempvals"]['bot_owner']:
+                rpg.gamedict["tempvals"]['bot_owner'].append(user)
 
     if rpg.gamedict["tempvals"]['bot_admins'] == []:
         for user in bot.config.core.admins:
-            rpg.gamedict["tempvals"]['bot_admins'].append(user)
+            if user not in rpg.gamedict["tempvals"]['bot_admins']:
+                rpg.gamedict["tempvals"]['bot_admins'].append(user)
 
-    for user in rpg.gamedict["tempvals"]['current_users']:
+    for user in bot.privileges[channelcheck].keys():
 
-        for channelcheck in bot.channels:
-            try:
-                if bot.privileges[channelcheck][user] == OP:
-                    rpg.chanops.append(user)
-            except KeyError:
-                dummyvar = 1
-            try:
-                if bot.privileges[channelcheck][user] == VOICE:
-                    rpg.chanvoice.append(user)
-            except KeyError:
-                dummyvar = 1
+        if bot.privileges[channelcheck][user] == OP:
+            if user not in rpg.gamedict["tempvals"]['chanops']:
+                rpg.gamedict["tempvals"]['chanops'].append(user)
+
+        elif bot.privileges[channelcheck][user] == HALFOP:
+            if user not in rpg.gamedict["tempvals"]['chanhalfops']:
+                rpg.gamedict["tempvals"]['chanhalfops'].append(user)
+
+        elif bot.privileges[channelcheck][user] == VOICE:
+            if user not in rpg.gamedict["tempvals"]['chanvoices']:
+                rpg.gamedict["tempvals"]['chanvoices'].append(user)
 
     return rpg
 

@@ -40,6 +40,15 @@ rpg_game_dict = {
                             # bot admin users
                             "bot_admins": [],
 
+                            # bot owner users
+                            "chanops": [],
+
+                            # bot admin users
+                            "chanhalfops": [],
+
+                            # bot admin users
+                            "chanvoices": [],
+
                             # End of Temp Vals
                             },
 
