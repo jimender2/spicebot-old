@@ -1162,7 +1162,7 @@ def rpg_command_users(bot, rpg):
         for nicklist in cantplayarrays:
             currentnicklist = eval(nicklist)
             for x in currentnicklist:
-                if x not in cantplayarray:
+                if x not in rpg.gamedict["tempvals"]['cantplayarray']:
                     rpg.gamedict["tempvals"]['cantplayarray'].append(x)
 
     for channelcheck in rpg.gamedict["tempvals"]['channels_list']:
