@@ -249,7 +249,7 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Commands that Must be run in a channel
-    if rpg.command_main.lower() in rpg_commands_valid_inchannel and not rpg.adminswitch:
+    if rpg.gamedict['static']['commands'][rpg.command_main.lower()]['inchannel_only'] and not rpg.adminswitch:
         errors(bot, rpg, 'commands', 10, rpg.command_main)
         return rpg
 
