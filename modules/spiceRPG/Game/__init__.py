@@ -149,15 +149,8 @@ def command_process(bot, trigger, rpg, instigator):
 
     rpg.command_run = 0
 
-    # block instigator if
-    instigatorcantplayarray = []
-    instigatorcantplayarrays = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", "rpg.gamedict['tempvals']['bots_list']", 'rpg_map_names']
-    for nicklist in instigatorcantplayarrays:
-        currentnicklist = eval(nicklist)
-        for x in currentnicklist:
-            if x not in instigatorcantplayarray:
-                instigatorcantplayarray.append(x)
-    if rpg.instigator.lower() in [x.lower() for x in instigatorcantplayarray]:
+    # block instigator if not a playable
+    if rpg.instigator.lower() in [x.lower() for x in rpg.gamedict["tempvals"]['cantplayarray']]:
         errors(bot, rpg, 'commands', 17, 1)
         return rpg
 
@@ -1163,9 +1156,18 @@ def rpg_command_users(bot, rpg):
             if user not in rpg.gamedict["tempvals"]['bot_admins']:
                 rpg.gamedict["tempvals"]['bot_admins'].append(user)
 
+    # users that cannot be part of the game
+    if rpg.gamedict["tempvals"]['cantplayarray'] == []:
+        cantplayarrays = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", "rpg.gamedict['tempvals']['bots_list']", 'rpg_map_names']
+        for nicklist in cantplayarrays:
+            currentnicklist = eval(nicklist)
+            for x in currentnicklist:
+                if x not in cantplayarray:
+                    rpg.gamedict["tempvals"]['cantplayarray'].append(x)
+
     for channelcheck in rpg.gamedict["tempvals"]['channels_list']:
         for user in bot.privileges[channelcheck].keys():
-            if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['tempvals']['bots_list']:
+            if user not in rpg.gamedict["tempvals"]['cantplayarray']:
 
                 # Start with Channel permissions
                 if bot.privileges[channelcheck][user] == OP:
@@ -1185,14 +1187,14 @@ def rpg_command_users(bot, rpg):
                     rpg.gamedict["tempvals"]['current_users'].append(user)
 
     for user in rpg.gamedict["tempvals"]['current_users']:
-        if user not in rpg.gamedict["users"]['users_all']:
-            if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['tempvals']['bots_list']:
+        if user not in rpg.gamedict["tempvals"]['cantplayarray']:
+            if user not in rpg.gamedict["users"]['users_all']:
                 rpg.gamedict["users"]['users_all'].append(user)
 
     for user in rpg.gamedict["users"]['users_all']:
-        bot.say(str(user))
-        if user not in rpg.gamedict["tempvals"]['offline_users'] and user not in rpg.gamedict["tempvals"]['current_users']:
-            if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['tempvals']['bots_list']:
+        if user not in rpg.gamedict["tempvals"]['cantplayarray']:
+            bot.say(str(user))
+            if user not in rpg.gamedict["tempvals"]['offline_users'] and user not in rpg.gamedict["tempvals"]['current_users']:
                 rpg.gamedict["tempvals"]['offline_users'].append(user)
 
     return rpg
