@@ -80,6 +80,8 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
 
+    bot.say(str(rpg.gamedict["tempvals"]['offline_users']))
+
     # Error Display System Create
     rpg_errors_start(bot, rpg)
 
@@ -1147,25 +1149,9 @@ def rpg_player_leave(bot, trigger):
 
 def rpg_command_users(bot, rpg):
 
-    osd(bot, 'deathbybandaid', 'say', str(bot.users))
-
+    # Userlists that typically don't change when bot is running
     if rpg.gamedict["tempvals"]['bots_list'] == []:
         rpg.gamedict["tempvals"]['bots_list'] = bot_config_names(bot)
-
-    if rpg.gamedict["tempvals"]['current_users'] == []:
-        for user in bot.users:
-            if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['tempvals']['bots_list']:
-                rpg.gamedict["tempvals"]['current_users'].append(user)
-
-    if rpg.gamedict["tempvals"]['current_users'] == []:
-        for user in rpg.gamedict["tempvals"]['current_users']:
-            if user not in rpg.gamedict["users"]['users_all']:
-                rpg.gamedict["users"]['users_all'].append(user)
-
-    if rpg.gamedict["tempvals"]['current_users'] == []:
-        for user in rpg.gamedict["users"]['users_all']:
-            if user not in rpg.gamedict["tempvals"]['current_users']:
-                rpg.gamedict["tempvals"]['offline_users'].append(user)
 
     if rpg.gamedict["tempvals"]['bot_owner'] == []:
         for user in bot.config.core.owner:
@@ -1180,6 +1166,7 @@ def rpg_command_users(bot, rpg):
     for channelcheck in rpg.gamedict["tempvals"]['channels_list']:
         for user in bot.privileges[channelcheck].keys():
 
+            # Start with Channel permissions
             if bot.privileges[channelcheck][user] == OP:
                 if user not in rpg.gamedict["tempvals"]['chanops']:
                     rpg.gamedict["tempvals"]['chanops'].append(user)
@@ -1191,6 +1178,19 @@ def rpg_command_users(bot, rpg):
             elif bot.privileges[channelcheck][user] == VOICE:
                 if user not in rpg.gamedict["tempvals"]['chanvoices']:
                     rpg.gamedict["tempvals"]['chanvoices'].append(user)
+
+            # user lists
+            if user not in rpg.gamedict['static']['commands'].keys() and user not in rpg.gamedict['static']['alt_commands'].keys() and user not in rpg.gamedict['tempvals']['bots_list']:
+                if user not in rpg.gamedict["tempvals"]['current_users']:
+                    rpg.gamedict["tempvals"]['current_users'].append(user)
+
+            for user in rpg.gamedict["tempvals"]['current_users']:
+                if user not in rpg.gamedict["users"]['users_all']:
+                    rpg.gamedict["users"]['users_all'].append(user)
+
+            for user in rpg.gamedict["users"]['users_all']:
+                if user not in rpg.gamedict["tempvals"]['current_users']:
+                    rpg.gamedict["tempvals"]['offline_users'].append(user)
 
     return rpg
 
