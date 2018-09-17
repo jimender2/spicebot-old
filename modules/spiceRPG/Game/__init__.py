@@ -80,8 +80,6 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
 
-    osd(bot, 'deathbybandaid', 'say', str(rpg.gamedict["tempvals"]['offline_users']))
-
     # Error Display System Create
     rpg_errors_start(bot, rpg)
 
@@ -1190,12 +1188,10 @@ def rpg_command_users(bot, rpg):
         if user not in rpg.gamedict["tempvals"]['cantplayarray']:
             if user not in rpg.gamedict["users"]['users_all']:
                 rpg.gamedict["users"]['users_all'].append(user)
-    bot.say(str(rpg.gamedict["tempvals"]['current_users']))
 
     for user in rpg.gamedict["users"]['users_all']:
         if user not in rpg.gamedict["tempvals"]['cantplayarray']:
             if user not in rpg.gamedict["tempvals"]['current_users']:
-                bot.say(str(user))
                 if user not in rpg.gamedict["tempvals"]['offline_users']:
                     rpg.gamedict["tempvals"]['offline_users'].append(user)
 
