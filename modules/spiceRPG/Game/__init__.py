@@ -1177,19 +1177,20 @@ def rpg_command_users(bot, rpg):
             if user not in rpg.gamedict["tempvals"]['bot_admins']:
                 rpg.gamedict["tempvals"]['bot_admins'].append(user)
 
-    for user in bot.privileges[channelcheck].keys():
+    for channelcheck in rpg.gamedict["tempvals"]['channels_list']:
+        for user in bot.privileges[channelcheck].keys():
 
-        if bot.privileges[channelcheck][user] == OP:
-            if user not in rpg.gamedict["tempvals"]['chanops']:
-                rpg.gamedict["tempvals"]['chanops'].append(user)
+            if bot.privileges[channelcheck][user] == OP:
+                if user not in rpg.gamedict["tempvals"]['chanops']:
+                    rpg.gamedict["tempvals"]['chanops'].append(user)
 
-        elif bot.privileges[channelcheck][user] == HALFOP:
-            if user not in rpg.gamedict["tempvals"]['chanhalfops']:
-                rpg.gamedict["tempvals"]['chanhalfops'].append(user)
+            elif bot.privileges[channelcheck][user] == HALFOP:
+                if user not in rpg.gamedict["tempvals"]['chanhalfops']:
+                    rpg.gamedict["tempvals"]['chanhalfops'].append(user)
 
-        elif bot.privileges[channelcheck][user] == VOICE:
-            if user not in rpg.gamedict["tempvals"]['chanvoices']:
-                rpg.gamedict["tempvals"]['chanvoices'].append(user)
+            elif bot.privileges[channelcheck][user] == VOICE:
+                if user not in rpg.gamedict["tempvals"]['chanvoices']:
+                    rpg.gamedict["tempvals"]['chanvoices'].append(user)
 
     return rpg
 
