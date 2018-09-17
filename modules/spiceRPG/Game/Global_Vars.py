@@ -8,8 +8,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 """
 Open Dictionary of Users and Locations
 """
-dummyvar = 2
-
 
 
 rpg_game_dict = {
