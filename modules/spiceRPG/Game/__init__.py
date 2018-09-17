@@ -254,7 +254,7 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # action commands
-    if rpg.command_type == 'action' and rpg.command_main.lower() not in rpg_commands_valid_action:
+    if rpg.command_type == 'action' and rpg.gamedict['static']['commands'][rpg.command_main.lower()]['action_dissallow']:
         errors(bot, rpg, 'commands', 14, rpg.command_main)
         return rpg
 

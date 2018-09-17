@@ -168,6 +168,7 @@ rpg_game_dict = {
                                                         "altcoms": ['admin'],
                                                         "admin_only": True,
                                                         "inchannel_only": False,
+                                                        "action_dissallow": False,
                                                         },
 
                                         "settings":{
@@ -176,6 +177,7 @@ rpg_game_dict = {
                                                         "altcoms": [],
                                                         "admin_only": False,
                                                         "inchannel_only": False,
+                                                        "action_dissallow": False,
                                                         },
 
                                         "combat":{
@@ -184,6 +186,7 @@ rpg_game_dict = {
                                                         "altcoms": [],
                                                         "admin_only": False,
                                                         "inchannel_only": False,
+                                                        "action_dissallow": False,
                                                         },
 
                                         "author":{
@@ -192,6 +195,7 @@ rpg_game_dict = {
                                                         "altcoms": ['credit','credits'],
                                                         "admin_only": False,
                                                         "inchannel_only": False,
+                                                        "action_dissallow": False,
                                                         },
 
                                         "intent":{
@@ -200,6 +204,7 @@ rpg_game_dict = {
                                                         "altcoms": [],
                                                         "admin_only": False,
                                                         "inchannel_only": False,
+                                                        "action_dissallow": False,
                                                         },
 
                                         "about":{
@@ -208,6 +213,7 @@ rpg_game_dict = {
                                                         "altcoms": [],
                                                         "admin_only": False,
                                                         "inchannel_only": False,
+                                                        "action_dissallow": False,
                                                         },
 
                                         "version":{
@@ -216,6 +222,7 @@ rpg_game_dict = {
                                                         "altcoms": [],
                                                         "admin_only": False,
                                                         "inchannel_only": False,
+                                                        "action_dissallow": False,
                                                         },
 
                                         "docs":{
@@ -224,6 +231,7 @@ rpg_game_dict = {
                                                         "altcoms": ['help','man'],
                                                         "admin_only": False,
                                                         "inchannel_only": False,
+                                                        "action_dissallow": False,
                                                         },
 
                                         "usage":{
@@ -232,6 +240,7 @@ rpg_game_dict = {
                                                         "altcoms": [],
                                                         "admin_only": False,
                                                         "inchannel_only": False,
+                                                        "action_dissallow": False,
                                                         },
 
                                         "travel":{
@@ -240,6 +249,7 @@ rpg_game_dict = {
                                                         "altcoms": [],
                                                         "admin_only": False,
                                                         "inchannel_only": False,
+                                                        "action_dissallow": False,
                                                         },
 
                                         # End of commands
@@ -393,105 +403,6 @@ Activation/Deactivate
 onoff_list = ['activate','enable','on','deactivate','disable','off']
 activate_list = ['activate','enable','on']
 deactivate_list = ['deactivate','disable','off']
-
-
-"""
-Commands that must be run in channel
-"""
-
-
-rpg_commands_valid_inchannel = []
-
-
-"""
-Commands that can be run with /me
-"""
-
-
-rpg_commands_valid_action = ['combat']
-
-"""
-Alternative Commands
-"""
-
-# Hotkey
-rpg_commands_valid_alt_administrator = ['admin']
-
-# Docs
-rpg_commands_valid_alt_docs = ['help','man']
-
-# Hotkey
-rpg_commands_valid_alt_hotkey = ['hotlink']
-
-# Author
-rpg_commands_valid_alt_author = ['credit','credits']
-
-# settings
-rpg_commands_valid_alt_settings = []
-
-# combat
-rpg_commands_valid_alt_combat = []
-
-# intent
-rpg_commands_valid_alt_intent = []
-
-# about
-rpg_commands_valid_alt_about = []
-
-# version
-rpg_commands_valid_alt_version = []
-
-# usage
-rpg_commands_valid_alt_usage = []
-
-# travel
-rpg_commands_valid_alt_travel = []
-
-
-"""
-Command Tiers
-"""
-
-
-rpg_commands_tier_unlocks = [
-                            [],  # 1
-                            [],  # 2
-                            [],  # 3
-                            [],  # 4
-                            [],  # 5
-                            [],  # 6
-                            [],  # 7
-                            [],  # 8
-                            [],  # 9
-                            [],  # 10
-                            [],  # 11
-                            [],  # 12
-                            [],  # 13
-                            [],  # 14
-                            [],  # 15
-                            ]
-
-rpg_commands_tier_unlocks_self = [
-                                [],  # 1
-                                [],  # 2
-                                [],  # 3
-                                [],  # 4
-                                [],  # 5
-                                [],  # 6
-                                [],  # 7
-                                [],  # 8
-                                [],  # 9
-                                [],  # 10
-                                [],  # 11
-                                [],  # 12
-                                [],  # 13
-                                [],  # 14
-                                [],  # 15
-                                ]
-
-
-rpg_commands_tier_ratio =    [  1   ,    1.1   ,  1.2   ,   1.3   ,   1.4   ,   1.5    ,   1.6   ,   1.7    ,   1.8   ,   1.9   ,     2       , 2.1   ,   2.2    ,    2.3      , 2.4     ,     2.5        ]  # Tier Ratios
-rpg_commands_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace'   ,'pure capsaicin']  # Pepper Levels
 
 
 """
