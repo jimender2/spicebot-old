@@ -80,7 +80,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
 
-    bot.say(str(rpg.gamedict["tempvals"]['offline_users']))
+    osd(bot, channeltarget, 'say', str(rpg.gamedict["tempvals"]['offline_users']))
 
     # Error Display System Create
     rpg_errors_start(bot, rpg)
