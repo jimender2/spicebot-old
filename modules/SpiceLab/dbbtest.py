@@ -26,12 +26,12 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
+    osdtest = []
 
     cmd = '/bin/systemctl status %s.service' % "SpiceBot"
     proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
-    stdout_list = proc.communicate()  # [0].split('\n')
+    stdout_list = proc.communicate()[0].split('\n')
     for line in stdout_list:
-        bot.say(str(line))
-        # if 'Active:' in line:
-        #    if '(running)' in line:
-        #        bot.say("true")
+        osdtest.append(str(line))
+
+    osd(bot, trigger.sender, 'say', osdtest)
