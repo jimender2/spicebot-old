@@ -30,6 +30,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     p = subprocess.Popen(["ps", "-a"], stdout=subprocess.PIPE)
     out, err = p.communicate()
     if ('SpiceBot' in str(out)):
-        print('SpiceBot running')
+        bot.say('SpiceBot running')
 
     return
