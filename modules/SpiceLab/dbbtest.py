@@ -27,7 +27,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    for runproc in psutil.get_pid_list():
-        bot.say(str(runproc))
+    processes = [psutil.Process(p).name() for p in psutil.pids()]
+    bot.say(str(processes))
 
     return
