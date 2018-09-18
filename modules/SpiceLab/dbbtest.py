@@ -9,7 +9,10 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-testvar = 42
+import logging
+import random
+import time
+from systemd.journal import JournaldLogHandler
 
 
 @sopel.module.commands('dbbtest')
@@ -27,5 +30,22 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    bot.say(str(testvar))
+    bot.say(str(main(bot, bot.nick)))
     return
+
+
+def main(bot, debug):
+    j = systemd.journal.Reader()
+    j.seek_tail()
+    j.get_previous()
+    while True:
+        event = j.wait(-1)
+        if event == systemd.journal.APPEND:
+            for entry in j:
+                bot.say(str(entry['MESSAGE']))
+        elif debug and event == systemd.journal.NOP:
+            bot.say("DEBUG: NOP")
+        elif debug and event == systemd.journal.INVALIDATE:
+            bot.say("DEBUG: INVALIDATE")
+        elif debug:
+            bot.say("Value Error:     " + str(event))
