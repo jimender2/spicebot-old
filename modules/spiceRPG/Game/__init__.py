@@ -82,6 +82,8 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
 
+    bot.say("here")
+
     # Error Display System Create
     rpg_errors_start(bot, rpg)
 
