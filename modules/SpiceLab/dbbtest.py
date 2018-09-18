@@ -9,10 +9,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-import logging
-import random
-import time
-from systemd.journal import JournaldLogHandler
+import systemd.journal
 
 
 @sopel.module.commands('dbbtest')
