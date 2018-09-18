@@ -376,7 +376,7 @@ rpg_game_dict = {
                                                     "The Script works at line $list",  # 1
                                                     ],
 
-                                        'settings' = [
+                                        'settings': [
                                                     "Subcommand missing. Valid subcommands include: $valid_subcoms.",  # 1
                                                     "You cannot adjust settings for other players.",  # 2
                                                     "The following appear to no be valid RPG players: $list",  # 3
@@ -387,7 +387,7 @@ rpg_game_dict = {
                                                     "$list does not appear to be a valid command to hotkey."  # 8
                                                     ],
 
-                                        'administrator' = [
+                                        'administrator': [
                                                             "Subcommand missing. Valid subcommands include: $valid_subcoms.",  # 1
                                                             "You must Specify a valid game facet to activate. Valid options include: $valid_game_change",  # 2
                                                             "You must specify a valid channel. Valid channels include $valid_channels.",  # 3
@@ -398,35 +398,35 @@ rpg_game_dict = {
                                                             "RPG is already off in $game_chans."  # 8
                                                             ],
 
-                                        'combat' = [
+                                        'combat': [
                                                     ""
                                                     ],
 
-                                        'author' = [
+                                        'author': [
                                                     ""
                                                     ],
 
-                                        'intent' = [
+                                        'intent': [
                                                             ""
                                                     ],
 
-                                        'about' = [
+                                        'about': [
                                                     ""
                                                     ],
 
-                                        'version' = [
+                                        'version': [
                                                     ""
                                                     ],
 
-                                        'docs' = [
+                                        'docs': [
                                                     ""
                                                     ],
 
-                                        'usage' = [
+                                        'usage': [
                                                     ""
                                                     ],
 
-                                        'travel' = [
+                                        'travel': [
                                                     ""
                                                     ],
 
