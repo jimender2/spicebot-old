@@ -9,7 +9,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-import subprocess
+import psutil
 
 
 @sopel.module.commands('dbbtest')
@@ -27,9 +27,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    p = subprocess.Popen(["ps", "-a"], stdout=subprocess.PIPE)
-    out, err = p.communicate()
-    if ('SpiceBot' in str(out)):
-        bot.say('SpiceBot running')
+    for runproc in psutil.get_pid_list():
+        bot.say(str(runproc))
 
     return
