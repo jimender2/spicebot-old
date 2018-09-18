@@ -889,11 +889,14 @@ def rpg_bot_start_script(bot):
 
     for channel in rpg.gamedict['channels']['game_enabled']:
         if channel not in rpg.gamedict["tempvals"]['startupmonologue']:
+            rpg.gamedict["tempvals"]['startupmonologue'].append(channel)
+            osd(bot, channel, 'notice', startup_monologue)
+
+            # spacing for extra lines
             amountofspace = len(str(channel))
             spacing = " " * amountofspace
             spacing = str(spacing + "     ")
-            rpg.gamedict["tempvals"]['startupmonologue'].append(channel)
-            osd(bot, channel, 'notice', startup_monologue)
+
             osd(bot, channel, 'say', str(spacing) + "Loading Game Version Revision " + str(rpg.gamedict["tempvals"]['versionnumber']))
 
     # no need to continually check
