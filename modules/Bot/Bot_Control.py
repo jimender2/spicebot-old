@@ -196,12 +196,11 @@ def bot_command_function_on(bot, trigger, botcom, instigator):
         else:
             osd(bot, botcom.instigator, 'notice', "It looks like " + target + " already has " + bot.nick + " " + botcom.command_main+".")
         return
+    if target == botcom.instigator:
+        osd(bot, botcom.instigator, 'notice', "It looks like you now have " + bot.nick + " " + botcom.command_main+".")
     else:
-        if target == botcom.instigator:
-            osd(bot, botcom.instigator, 'notice', "It looks like you now have " + bot.nick + " " + botcom.command_main+".")
-        else:
-            osd(bot, botcom.instigator, 'notice', "It looks like " + target + " now has " + bot.nick + " " + botcom.command_main+".")
-        adjust_database_array(bot, bot.nick, target, 'users_opted', 'add')
+        osd(bot, botcom.instigator, 'notice', "It looks like " + target + " now has " + bot.nick + " " + botcom.command_main+".")
+    adjust_database_array(bot, bot.nick, target, 'users_opted', 'add')
 
 
 def bot_command_function_off(bot, trigger, botcom, instigator):
@@ -217,12 +216,11 @@ def bot_command_function_off(bot, trigger, botcom, instigator):
         else:
             osd(bot, botcom.instigator, 'notice', "It looks like " + target + " already has " + bot.nick + " " + botcom.command_main+".")
         return
+    if target == botcom.instigator:
+        osd(bot, botcom.instigator, 'notice', "It looks like you now have " + bot.nick + " " + botcom.command_main+".")
     else:
-        if target == botcom.instigator:
-            osd(bot, botcom.instigator, 'notice', "It looks like you now have " + bot.nick + " " + botcom.command_main+".")
-        else:
-            osd(bot, botcom.instigator, 'notice', "It looks like " + target + " now has " + bot.nick + " " + botcom.command_main+".")
-        adjust_database_array(bot, bot.nick, target, 'users_opted', 'del')
+        osd(bot, botcom.instigator, 'notice', "It looks like " + target + " now has " + bot.nick + " " + botcom.command_main+".")
+    adjust_database_array(bot, bot.nick, target, 'users_opted', 'del')
 
 
 def bot_command_function_modules(bot, trigger, botcom, instigator):
