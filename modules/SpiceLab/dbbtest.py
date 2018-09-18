@@ -34,8 +34,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     # for line in stdout_list:
     #    osdtest.append(str(line))
 
-    proc = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE)
-    outs, errs = proc.communicate(timeout=15)
+    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    outs, errs = proc.communicate()
     for line in outs:
         osdtest.append(str(line))
 
