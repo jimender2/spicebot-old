@@ -823,9 +823,10 @@ def rpg_command_main_about(bot, rpg, instigator):
 def rpg_command_main_version(bot, rpg, instigator):
 
     # Attempt to get revision date from Github
-    versionfetch = versionnumber(bot)
+    if not rpg.gamedict["tempvals"]['versionnumber']:
+        rpg.gamedict["tempvals"]['versionnumber'] = versionnumber(bot)
 
-    osd(bot, rpg.channel_current, 'say', "The RPG framework was last modified on " + str(versionfetch) + ".")
+    osd(bot, rpg.channel_current, 'say', "The RPG framework was last modified on " + str(rpg.gamedict["tempvals"]['versionnumber']) + ".")
 
 
 def rpg_command_main_docs(bot, rpg, instigator):  # TODO
@@ -1361,11 +1362,11 @@ RPG Version
 
 
 def versionnumber(bot):
-    rpg_version_plainnow = rpg_version_plain
-    page = requests.get(rpg_version_github_page, headers=None)
+    rpg_version_plainnow = rpg.gamedict["tempvals"]['versionnumber']
+    page = requests.get("https://github.com/SpiceBot/SpiceBot/commits/master/modules/spiceRPG/Game/__init__.py", headers=None)
     if page.status_code == 200:
         tree = html.fromstring(page.content)
-        rpg_version_plainnow = str(tree.xpath(rpg_version_github_xpath))
+        rpg_version_plainnow = str(tree.xpath('//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/text()'))
         for r in (("\\n", ""), ("['", ""), ("']", ""), ("'", ""), ('"', ""), (',', ""), ('Commits on', "")):
             rpg_version_plainnow = rpg_version_plainnow.replace(*r)
         rpg_version_plainnow = rpg_version_plainnow.strip()
