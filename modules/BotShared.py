@@ -81,7 +81,8 @@ def spicebot_prerun(bot, trigger, commandused):
     # Bot Enabled Status (botcom.now in an array)
     botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
 
-    if botcom.instigator not in botcom.users_all:
+    bot_opted_users = get_database_value(bot, bot.nick, 'users_opted') or []
+    if botcom.instigator not in bot_opted_users:
         osd(bot, botcom.instigator, 'notice', "you have to run `" + bot.nick + " on` to allow her to listen to you. For help, see the wiki at https://github.com/SpiceBot/sopel-modules/wiki/Using-the-Bot.")
         return botcom.enablestatus, botcom.triggerargsarray, botcom, botcom.instigator
 
