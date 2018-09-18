@@ -9,7 +9,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-import subprocess
+from systemd import journal
 
 
 @sopel.module.commands('dbbtest')
@@ -27,6 +27,12 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    bot.say(str(subprocess.Popen(["journalctl", "--since", "'600 seconds ago'", "--no-pager", "-p", "6..6"], stdout=subprocess.PIPE).stdout.read()))
+    j = journal.Reader()
+    j.this_boot()
+    j.log_level(journal.LOG_INFO)
+    j.add_match(_SYSTEMD_UNIT="SpiceBot.service")
+
+    for entry in j:
+        bot.say(str(entry))
 
     return
