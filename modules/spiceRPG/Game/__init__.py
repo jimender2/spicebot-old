@@ -975,7 +975,7 @@ def rpg_errors_start(bot, rpg):
         for error_type in rpg.gamedict['static']['errors'].keys():
             rpg.gamedict["tempvals"]['errorscanlist'].append(error_type)
     for error_type in rpg.gamedict["tempvals"]['errorscanlist']:
-        for i in range(0, len(rpg.gamedict['static']['errors'][error_type.lower()].keys())):
+        for i in range(0, len(rpg.gamedict['static']['errors'][error_type.lower()])):
             current_error_number = i + 1
             current_error_value = str("rpg.errors." + error_type + str(current_error_number) + " = []")
             exec(current_error_value)
@@ -988,7 +988,7 @@ def rpg_errors_end(bot, rpg):
         for error_type in rpg.gamedict['static']['errors'].keys():
             rpg.gamedict["tempvals"]['errorscanlist'].append(error_type)
     for error_type in rpg.gamedict["tempvals"]['errorscanlist']:
-        for i in range(0, len(rpg.gamedict['static']['errors'][error_type.lower()].keys())):
+        for i in range(0, len(rpg.gamedict['static']['errors'][error_type.lower()])):
             current_error_number = i + 1
             currenterrorvalue = eval("rpg.errors." + error_type.lower() + str(current_error_number)) or []
             if currenterrorvalue != []:
