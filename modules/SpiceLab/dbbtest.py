@@ -35,15 +35,16 @@ def main(bot, debug):
     j = systemd.journal.Reader()
     j.seek_tail()
     j.get_previous()
-    bot.say(str(j))
-    while True:
-        event = j.wait(-1)
-        if event == systemd.journal.APPEND:
-            for entry in j:
-                bot.say(str(entry['MESSAGE']))
-        elif debug and event == systemd.journal.NOP:
-            bot.say("DEBUG: NOP")
-        elif debug and event == systemd.journal.INVALIDATE:
-            bot.say("DEBUG: INVALIDATE")
-        elif debug:
-            bot.say("Value Error:     " + str(event))
+    for entry in j:
+        bot.say(str(entry))
+    # while True:
+    #    event = j.wait(-1)
+    #    if event == systemd.journal.APPEND:
+    #        for entry in j:
+    #            bot.say(str(entry['MESSAGE']))
+    #    elif debug and event == systemd.journal.NOP:
+    #        bot.say("DEBUG: NOP")
+    #    elif debug and event == systemd.journal.INVALIDATE:
+    #        bot.say("DEBUG: INVALIDATE")
+    #    elif debug:
+    #        bot.say("Value Error:     " + str(event))
