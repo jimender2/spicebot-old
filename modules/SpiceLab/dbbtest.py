@@ -29,14 +29,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osdtest = []
 
     cmd = '/bin/systemctl status %s.service' % "SpiceBot"
-    # proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
-    # stdout_list = proc.communicate()[0].split('\n')
-    # for line in stdout_list:
-    #    osdtest.append(str(line))
-
-    proc = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     stdout_list = proc.communicate()[0].split('\n')
-    for line in outs:
+    for line in stdout_list:
         osdtest.append(str(line))
 
     for line in osdtest:
