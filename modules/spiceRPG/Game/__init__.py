@@ -82,13 +82,11 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
 
-    bot.say("here")
-
     # Error Display System Create
     rpg_errors_start(bot, rpg)
 
     # Get Map
-    rpg_map_read(bot, rpg)
+    # rpg_map_read(bot, rpg)
 
     # Run the Process
     execute_main(bot, rpg, instigator, trigger, triggerargsarray)
@@ -974,13 +972,10 @@ def errors_reset(bot, rpg, error_type, number):
 def rpg_errors_start(bot, rpg):
     rpg.errors = class_create('errors')
     if rpg.gamedict["tempvals"]['errorscanlist'] == []:
-        for vcom in rpg.gamedict['static']['commands'].keys():
-            rpg.gamedict["tempvals"]['errorscanlist'].append(vcom)
         for error_type in rpg.gamedict['static']['errors'].keys():
             rpg.gamedict["tempvals"]['errorscanlist'].append(error_type)
-    for error_type in rpg.gamedict["tempvals"]['errorscanlist']:
-        current_error_type = rpg.gamedict['static']['errors'][error_type.lower()]
-        for i in range(0, len(current_error_type)):
+    for error_type in rpg.gamedict["tempvals"]['errorscanlist'].keys():
+        for i in range(0, len(rpg.gamedict['static']['errors'][error_type.lower()].keys())):
             current_error_number = i + 1
             current_error_value = str("rpg.errors." + error_type + str(current_error_number) + " = []")
             exec(current_error_value)
@@ -990,17 +985,14 @@ def rpg_errors_end(bot, rpg):
     rpg.error_display = []
     rpg.tier_current = rpg.gamedict['tier_current']
     if rpg.gamedict["tempvals"]['errorscanlist'] == []:
-        for vcom in rpg.gamedict['static']['commands'].keys():
-            rpg.gamedict["tempvals"]['errorscanlist'].append(vcom)
         for error_type in rpg.gamedict['static']['errors'].keys():
             rpg.gamedict["tempvals"]['errorscanlist'].append(error_type)
-    for error_type in rpg.gamedict["tempvals"]['errorscanlist']:
-        current_error_type = rpg.gamedict['static']['errors'][error_type.lower()]
-        for i in range(0, len(current_error_type)):
+    for error_type in rpg.gamedict["tempvals"]['errorscanlist'].keys():
+        for i in range(0, len(rpg.gamedict['static']['errors'][error_type.lower()].keys())):
             current_error_number = i + 1
             currenterrorvalue = eval("rpg.errors." + error_type.lower() + str(current_error_number)) or []
             if currenterrorvalue != []:
-                errormessage = spicemanip(bot, current_error_type, current_error_number)
+                errormessage = spicemanip(bot, rpg.gamedict['static']['errors'][error_type.lower()], current_error_number)
                 if error_type in rpg.gamedict['static']['commands'].keys():
                     errormessage = str("[" + str(error_type.title()) + "] " + errormessage)
                 totalnumber = len(currenterrorvalue)
