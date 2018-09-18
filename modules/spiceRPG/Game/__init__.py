@@ -895,7 +895,7 @@ def rpg_bot_start_script(bot):
             # spacing for extra lines
             amountofspace = len(str(channel))
             spacing = " " * amountofspace
-            spacing = str(spacing + "        ")
+            spacing = str(spacing + "            ")
 
             osd(bot, channel, 'say', str(spacing) + "Loading Game Version Revision " + str(rpg.gamedict["tempvals"]['versionnumber']))
 
