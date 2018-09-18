@@ -826,7 +826,7 @@ def rpg_command_main_version(bot, rpg, instigator):
 
     # Attempt to get revision date from Github
     if not rpg.gamedict["tempvals"]['versionnumber']:
-        rpg.gamedict["tempvals"]['versionnumber'] = versionnumber(bot)
+        rpg.gamedict["tempvals"]['versionnumber'] = versionnumber(bot, rpg)
 
     osd(bot, rpg.channel_current, 'say', "The RPG framework was last modified on " + str(rpg.gamedict["tempvals"]['versionnumber']) + ".")
 
@@ -885,7 +885,7 @@ def rpg_bot_start_script(bot):
     startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
 
     if not rpg.gamedict["tempvals"]['versionnumber']:
-        rpg.gamedict["tempvals"]['versionnumber'] = versionnumber(bot)
+        rpg.gamedict["tempvals"]['versionnumber'] = versionnumber(bot, rpg)
 
     for channel in rpg.gamedict['channels']['game_enabled']:
         if channel not in rpg.gamedict["tempvals"]['startupmonologue']:
@@ -1357,7 +1357,7 @@ RPG Version
 """
 
 
-def versionnumber(bot):
+def versionnumber(bot, rpg):
     rpg_version_plainnow = rpg.gamedict["tempvals"]['versionnumber']
     page = requests.get("https://github.com/SpiceBot/SpiceBot/commits/master/modules/spiceRPG/Game/__init__.py", headers=None)
     if page.status_code == 200:
