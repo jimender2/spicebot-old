@@ -407,7 +407,7 @@ rpg_game_dict = {
                                                     ],
 
                                         'intent': [
-                                                            ""
+                                                    ""
                                                     ],
 
                                         'about': [
