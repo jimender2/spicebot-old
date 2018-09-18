@@ -881,10 +881,14 @@ def rpg_bot_start_script(bot):
     startup_monologue.append("The Spice Realms are vast; full of wonder, loot, monsters, and peril!")
     startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
 
+    if not rpg.gamedict["tempvals"]['versionnumber']:
+        rpg.gamedict["tempvals"]['versionnumber'] = versionnumber(bot)
+
     for channel in rpg.gamedict['channels']['game_enabled']:
         if channel not in rpg.gamedict["tempvals"]['startupmonologue']:
             rpg.gamedict["tempvals"]['startupmonologue'].append(channel)
             osd(bot, channel, 'notice', startup_monologue)
+            osd(bot, channel, 'notice', "Loading Game Version Revision " + str(rpg.gamedict["tempvals"]['versionnumber']))
 
     # no need to continually check
     rpg_game_dict['tempvals']['monologuecheck'] = rpg_game_dict['tempvals']['monologuecheck'] + 99999999999999999

@@ -22,6 +22,9 @@ rpg_game_dict = {
                             # Indicate if we need to pull the dict from the database
                             "game_loaded": False,
 
+                            # versionnumber
+                            "versionnumber": 0,
+
                             # list of error codes
                             "errorscanlist": [],
 
