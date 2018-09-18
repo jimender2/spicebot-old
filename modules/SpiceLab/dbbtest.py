@@ -34,4 +34,5 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     for line in stdout_list:
         osdtest.append(str(line))
 
-    osd(bot, trigger.sender, 'say', osdtest)
+    for line in osdtest:
+        osd(bot, trigger.sender, 'say', line)
