@@ -190,7 +190,7 @@ def bot_command_function_on(bot, trigger, botcom, instigator):
         return
     bot_opted_users = get_database_value(bot, bot.nick, 'users_opted') or []
     bot.say(str(bot_opted_users))
-    if target not in bot_opted_users:
+    if target in bot_opted_users:
         if target == botcom.instigator:
             osd(bot, botcom.instigator, 'notice', "It looks like you already have " + bot.nick + " " + botcom.command_main+".")
         else:
@@ -211,7 +211,7 @@ def bot_command_function_off(bot, trigger, botcom, instigator):
         return
     bot_opted_users = get_database_value(bot, bot.nick, 'users_opted') or []
     bot.say(str(bot_opted_users))
-    if target in bot_opted_users:
+    if target not in bot_opted_users:
         if target == botcom.instigator:
             osd(bot, botcom.instigator, 'notice', "It looks like you already have " + bot.nick + " " + botcom.command_main+".")
         else:
