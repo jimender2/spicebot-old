@@ -31,6 +31,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     j.this_boot()
     j.log_level(journal.LOG_INFO)
     j.add_match(_SYSTEMD_UNIT="SpiceBot.service")
+    bot.say(str(j))
 
     for entry in j:
         bot.say(str(entry))
