@@ -31,8 +31,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     stdout_list = proc.communicate()[0].split('\n')
     for line in stdout_list:
-        if 'Active:' in line:
-            if '(running)' in line:
-                bot.say("true")
-
-    return
+        bot.say(str(line))
+        # if 'Active:' in line:
+        #    if '(running)' in line:
+        #        bot.say("true")
