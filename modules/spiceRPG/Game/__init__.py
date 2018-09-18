@@ -877,13 +877,15 @@ def rpg_bot_start_script(bot):
     if rpg.gamedict['channels']['game_enabled'] == []:
         return
 
+    startup_monologue = []
+    startup_monologue.append("The Spice Realms are vast; full of wonder, loot, monsters, and peril!")
+    startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
+
     for channel in rpg.gamedict['channels']['game_enabled']:
         if channel not in rpg.gamedict["tempvals"]['startupmonologue']:
             rpg.gamedict["tempvals"]['startupmonologue'].append(channel)
-            startup_monologue = []
-            startup_monologue.append("The Spice Realms are vast; full of wonder, loot, monsters, and peril!")
-            startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
             osd(bot, channel, 'notice', startup_monologue)
+
     # no need to continually check
     rpg_game_dict['tempvals']['monologuecheck'] = rpg_game_dict['tempvals']['monologuecheck'] + 99999999999999999
 
@@ -892,6 +894,9 @@ def rpg_bot_start_script(bot):
 
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
+
+    # TODO enforce loading time to ensure users are loaded corectly as admin/owner/etc
+    # then add to the dialogue "Loading game, version *"
 
 
 """
@@ -959,12 +964,12 @@ def errors_reset(bot, rpg, error_type, number):
 
 def rpg_errors_start(bot, rpg):
     rpg.errors = class_create('errors')
-    errorscanlist = []
-    for vcom in rpg.gamedict['static']['commands'].keys():
-        errorscanlist.append(vcom)
-    for error_type in rpg.gamedict['static']['errors'].keys():
-        errorscanlist.append(error_type)
-    for error_type in errorscanlist:
+    if rpg.gamedict["tempvals"]['errorscanlist'] == []:
+        for vcom in rpg.gamedict['static']['commands'].keys():
+            rpg.gamedict["tempvals"]['errorscanlist'].append(vcom)
+        for error_type in rpg.gamedict['static']['errors'].keys():
+            rpg.gamedict["tempvals"]['errorscanlist'].append(error_type)
+    for error_type in rpg.gamedict["tempvals"]['errorscanlist']:
         current_error_type = rpg.gamedict['static']['errors'][error_type.lower()]
         for i in range(0, len(current_error_type)):
             current_error_number = i + 1
@@ -975,12 +980,12 @@ def rpg_errors_start(bot, rpg):
 def rpg_errors_end(bot, rpg):
     rpg.error_display = []
     rpg.tier_current = rpg.gamedict['tier_current']
-    errorscanlist = []
-    for vcom in rpg.gamedict['static']['commands'].keys():
-        errorscanlist.append(vcom)
-    for error_type in rpg.gamedict['static']['errors'].keys():
-        errorscanlist.append(error_type)
-    for error_type in errorscanlist:
+    if rpg.gamedict["tempvals"]['errorscanlist'] == []:
+        for vcom in rpg.gamedict['static']['commands'].keys():
+            rpg.gamedict["tempvals"]['errorscanlist'].append(vcom)
+        for error_type in rpg.gamedict['static']['errors'].keys():
+            rpg.gamedict["tempvals"]['errorscanlist'].append(error_type)
+    for error_type in rpg.gamedict["tempvals"]['errorscanlist']:
         current_error_type = rpg.gamedict['static']['errors'][error_type.lower()]
         for i in range(0, len(current_error_type)):
             current_error_number = i + 1

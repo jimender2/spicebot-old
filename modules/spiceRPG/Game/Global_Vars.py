@@ -22,6 +22,9 @@ rpg_game_dict = {
                             # Indicate if we need to pull the dict from the database
                             "game_loaded": False,
 
+                            # list of error codes
+                            "errorscanlist": [],
+
                             # list of channels the bot is in
                             "channels_list": [],
 
