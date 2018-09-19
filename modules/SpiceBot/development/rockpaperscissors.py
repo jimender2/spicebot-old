@@ -51,6 +51,7 @@ def computerChoice():
         choice = "scissors"
     else:
         choice = "Somehow I fucked this up"
+    osd(bot, trigger.sender, 'say', bot.nick + " chooses " + choice)
     return choice
 
 
