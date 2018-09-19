@@ -29,6 +29,6 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     input = spicemanip(bot, triggerargsarray, 0)
     if not input:
-        osd(bot, trigger.sender, 'say', "I Can't Even")
+        osd(bot, trigger.sender, 'say', "I Can't Even....")
     else:
-        osd(bot, trigger.sender, 'say', "I Can't Even" + input)
+        osd(bot, trigger.sender, 'say', "I Can't Even " + input)
