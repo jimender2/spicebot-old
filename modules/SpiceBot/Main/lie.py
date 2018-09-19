@@ -11,11 +11,14 @@ sys.path.append(shareddir)
 from BotShared import *
 
 # author jimender2
-# contributers none
+# contributers dysonparkes
+
+defaults = ["The cake", "Your face", "My life", "Everything I believe in", "Everything I stand for"]
 
 
 @sopel.module.commands('lie')
 def mainfunction(bot, trigger):
+    """Check to confirm module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
@@ -28,12 +31,14 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    """Return "x is a lie" style comment based on input arguments."""
     input = spicemanip(bot, triggerargsarray, 0)
     if not input:
-        rand = random.randint(1,5)
+        rand = random.randint(1, 5)
         if rand == 1:
             osd(bot, trigger.sender, 'say', "That's a lie!!")
         else:
-            osd(bot, trigger.sender, 'say', "The cake is a lie!!")
+            randomthing = spicemanip(bot, defaults, 'random')
+            osd(bot, trigger.sender, 'say', "%s is a lie!!" % randomthing)
     else:
         osd(bot, trigger.sender, 'say', "The " + input + " is a lie!!")
