@@ -18,7 +18,7 @@ defaultoptions = [
             "test"]
 
 
-hardcoded_not_in_this_chan = ["#spiceworks", "##spicebottest", "#spicebottest1"]
+hardcoded_not_in_this_chan = ["#spiceworks", "##spicebottest", "#spicebottest"]
 
 
 @sopel.module.commands('lh', 'lifehack', 'lifehacks')
