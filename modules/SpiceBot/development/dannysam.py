@@ -13,7 +13,7 @@ from BotShared import *
 # contributers none
 
 
-@sopel.module.commands('yourcommandhere')
+@sopel.module.commands('dannysam')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
@@ -27,5 +27,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    text = randomFileLine(/home/SpiceBot/.sopel/Spicebot/Text-Files/dannysam.txt)
+    text = randomFileLine("/home/SpiceBot/.sopel/Spicebot/Text-Files/dannysam.txt")
     osd(bot, trigger.sender, 'say', text)
