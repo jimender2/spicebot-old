@@ -32,11 +32,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     selection = selection.lower()
     computer = computerChoice()
     if selection == "rock":
-        test(selection, computer)
+        test(bot, trigger, instigator, selection, computer)
     elif selection == "rock":
-        test(selection, computer)
+        test(bot, trigger, instigator, selection, computer)
     elif selection == "rock":
-        test(selection, computer)
+        test(bot, trigger, instigator, selection, computer)
     else:
         osd(bot, trigger.sender, 'say', "Valid choices are rock, paper, and scissors")
 
@@ -52,3 +52,25 @@ def computerChoice():
     else:
         choice = "Somehow I fucked this up"
     return choice
+
+
+def test(bot, trigger, instigator, selection, computer):
+    if computer == selection:
+        osd(bot, trigger.sender, 'say', "It's a draw")
+    elif computer == "rock":
+        if selection == "paper":
+            osd(bot, trigger.sender, 'say', trigger.sender + " is the winner")
+        elif selection == "scissors":
+            osd(bot, trigger.sender, 'say', bot.nick + " is the winner")
+    elif computer == "paper":
+        if selection == "scissors":
+            osd(bot, trigger.sender, 'say', trigger.sender + " is the winner")
+        elif selection == "rock":
+            osd(bot, trigger.sender, 'say', bot.nick + " is the winner")
+    elif computer == "scissors":
+        if selection == "rock":
+            osd(bot, trigger.sender, 'say', trigger.sender + " is the winner")
+        elif selection == "paper":
+            osd(bot, trigger.sender, 'say', bot.nick + " is the winner")
+    else:
+        osd(bot, trigger.sender, 'say', "I fucked something up")
