@@ -33,9 +33,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     computer = computerChoice()
     if selection == "rock":
         test(bot, trigger, instigator, selection, computer)
-    elif selection == "rock":
+    elif selection == "paper":
         test(bot, trigger, instigator, selection, computer)
-    elif selection == "rock":
+    elif selection == "scissors":
         test(bot, trigger, instigator, selection, computer)
     else:
         osd(bot, trigger.sender, 'say', "Valid choices are rock, paper, and scissors")
