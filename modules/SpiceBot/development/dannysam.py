@@ -27,6 +27,6 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    path = str("/home/SpiceBot/.sopel/SpiceBot/Text-Files/dannysam.txt")
+    path = str("/home/SpiceBot/.sopel/SpiceBotdev/Text-Files/dannysam.txt")
     text = randomFileLine(path)
     osd(bot, trigger.sender, 'say', text)
