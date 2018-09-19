@@ -13,7 +13,7 @@ from BotShared import *
 # contributers none
 
 
-@sopel.module.commands('hiesinburg', 'hiesenburg', 'heisenburg')
+@sopel.module.commands('yourcommandhere')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
@@ -27,4 +27,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "You're god damned right")
+    osd(bot, trigger.sender, 'say', "do the thing")
