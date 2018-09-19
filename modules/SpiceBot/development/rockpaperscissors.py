@@ -28,14 +28,27 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "do the thing")
     selection = spicemanip(bot, triggerargsarray, 1)
     selection = selection.lower()
+    computer = computerChoice()
     if selection == "rock":
-        test
+        test(selection, computer)
     elif selection == "rock":
-        test
+        test(selection, computer)
     elif selection == "rock":
-        test
+        test(selection, computer)
     else:
-        test
+        osd(bot, trigger.sender, 'say', "Valid choices are rock, paper, and scissors")
+
+
+def computerChoice():
+    rand = random.randint(1,3)
+    if rand == 1:
+        choice = "rock"
+    elif rand == 2:
+        choice = "paper"
+    elif rand == 3:
+        choice = "scissors"
+    else:
+        choice = "Somehow I fucked this up"
+    return choice
