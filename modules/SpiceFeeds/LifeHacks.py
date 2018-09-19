@@ -13,10 +13,10 @@ from BotShared import *
 # author jimender2
 
 defaultoptions = [
-            ""]
+            "test"]
 
 
-hardcoded_not_in_this_chan = ["#spiceworks", "##spicebottest", "#spicebottest"]
+hardcoded_not_in_this_chan = ["#spiceworks", "##spicebottest", "#spicebottest1"]
 
 
 @sopel.module.commands('lh', 'lifehack', 'lifehacks')
