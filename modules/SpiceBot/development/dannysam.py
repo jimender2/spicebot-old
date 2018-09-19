@@ -29,4 +29,5 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     path = str("/home/spicebot/.sopel/SpiceBotdev/Text-Files/dannysam.txt")
     text = randomFileLine(path)
-    osd(bot, trigger.sender, 'say', text)
+    say = "I will go make you a " + text + " sandwich!"
+    osd(bot, trigger.sender, 'say', say)
