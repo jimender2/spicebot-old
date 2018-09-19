@@ -12,6 +12,8 @@ from BotShared import *
 
 # author jimender2
 
+databasekey = 'lf'
+
 defaultoptions = [
             "test"]
 
@@ -35,14 +37,18 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     """Check to see if there are Lifehacks and retrieve one."""
-    databasekey = 'lf'
     command = spicemanip(bot, triggerargsarray, 1) or 'get'
     if not sayingscheck(bot, databasekey) and command != "add":
         sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
     message = sayingsmodule(bot, databasekey, triggerargsarray, command)
+<<<<<<< HEAD
     rando = random.randint(1,10000)
     rand = str(rando)
     osd(bot, trigger.sender, 'say', ["[Lifehack Number ", rand,"]", message, "[Lifehack]"])
+=======
+    rand = random.randint(1, 10000)
+    osd(bot, trigger.sender, 'say', ["[Lifehack Number ", rand, "]", message, "[Lifehack]"])
+>>>>>>> 5bd2334ef895bf8d2394e02f7dc65ed19a486d9b
 
 
 @sopel.module.interval(60)
@@ -68,9 +74,14 @@ def lifehack(bot):
         if channel not in hardcoded_not_in_this_chan:
             channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
             if 'lh' in channelmodulesarray:
+<<<<<<< HEAD
                 rando = random.randint(1,10000)
                 rand = str(rando)
                 osd(bot, trigger.sender, 'say', ["[Lifehack Number ", rand,"]", message, "[Lifehack]"])
+=======
+                rand = random.randint(1, 10000)
+                osd(bot, trigger.sender, 'say', ["[Lifehack Number ", rand, "]", message, "[Lifehack]"])
+>>>>>>> 5bd2334ef895bf8d2394e02f7dc65ed19a486d9b
 
 
 # compare timestamps
