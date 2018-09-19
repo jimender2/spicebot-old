@@ -27,4 +27,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "do the thing")
+    text = randomFileLine(/home/SpiceBot/.sopel/Spicebot/Text-Files/dannysam.txt)
+    osd(bot, trigger.sender, 'say', text)
