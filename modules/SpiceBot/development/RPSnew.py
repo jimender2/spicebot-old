@@ -32,7 +32,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     selection = spicemanip(bot, [x.lower() for x in triggerargsarray if x.lower() in validrps], 1)
     if not selection:
-        return osd(bot, trigger.sender, 'say', "Valid choices are rock, paper, and scissors")
+        return osd(bot, trigger.sender, 'say', "Valid choices are " + spicemanip(bot, validrps, "andlist"))
 
     computer = spicemanip(bot, validrps, 'random')
     osd(bot, trigger.sender, 'say', bot.nick + " chooses " + computer)
