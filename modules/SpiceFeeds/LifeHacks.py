@@ -67,6 +67,7 @@ def lifehack(bot):
         if channel not in hardcoded_not_in_this_chan:
             channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
             if 'lh' in channelmodulesarray:
+                rand = random.randint(1,10000)
                 osd(bot, trigger.sender, 'say', ["[Lifehack Number ", rand,"]", message, "[Lifehack]"])
 
 
