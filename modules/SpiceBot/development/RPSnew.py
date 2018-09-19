@@ -45,7 +45,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 
 def whodawinner(bot, trigger, instigator, selection, computer):
-    winner == 'nobody'
+    winner = 'nobody'
     if computer == "rock":
         if selection == "paper":
             winner = trigger.nick
