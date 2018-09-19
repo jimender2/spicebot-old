@@ -51,11 +51,11 @@ def computerChoice():
         choice = "scissors"
     else:
         choice = "Somehow I fucked this up"
-    osd(bot, trigger.sender, 'say', bot.nick + " chooses " + choice)
     return choice
 
 
 def test(bot, trigger, instigator, selection, computer):
+    osd(bot, trigger.sender, 'say', bot.nick + " chooses " + choice)
     if computer == selection:
         osd(bot, trigger.sender, 'say', "It's a draw")
     elif computer == "rock":
