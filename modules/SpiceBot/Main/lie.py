@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
+import random
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
@@ -27,4 +28,12 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "That's a lie!!")
+    input = spicemanip(bot, triggerargsarray, 0)
+    if not input:
+        rand = random.randint(1,5)
+        if rand == 1:
+            osd(bot, trigger.sender, 'say', "That's a lie!!")
+        else:
+            osd(bot, trigger.sender, 'say', "The cake is a lie!!")
+    else:
+        osd(bot, trigger.sender, 'say', "The " + input + " is a lie!!")
