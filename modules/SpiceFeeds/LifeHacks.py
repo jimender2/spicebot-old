@@ -43,7 +43,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = sayingsmodule(bot, databasekey, triggerargsarray, command)
     rando = random.randint(1,10000)
     rand = str(rando)
-    osd(bot, trigger.sender, 'say', ["[Lifehack Number ", rand, "]", message, "[Lifehack]"])
+    osd(bot, trigger.sender, 'say', ["[Lifehack Number", rand,"]", message, "[Lifehack]"])
 
 
 @sopel.module.interval(60)
@@ -71,7 +71,7 @@ def lifehack(bot):
             if 'lh' in channelmodulesarray:
                 rando = random.randint(1,10000)
                 rand = str(rando)
-                osd(bot, trigger.sender, 'say', ["[Lifehack Number ", rand, "]", message, "[Lifehack]"])
+                osd(bot, trigger.sender, 'say', ["[Lifehack Number", rand,"]", message, "[Lifehack]"])
 
 
 # compare timestamps
