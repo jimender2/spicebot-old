@@ -129,8 +129,8 @@ def get_wind(parsed):
     return description + ' ' + str(m_s) + 'm/s (' + degrees + ')'
 
 
-@commands('wet', 'wet')
-@example('.wet London')
+@commands('weather', 'wea')
+@example('.weather London')
 def weather(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:

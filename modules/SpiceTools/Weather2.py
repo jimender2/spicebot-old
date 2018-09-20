@@ -25,7 +25,7 @@ def woeid_search(query):
     None if there is no result, or the woeid field is empty.
     """
     query = 'q=select * from geo.places where text="%s"' % query
-    body = requests.get('http://query.yahooapis.com/v1/public/yql?' + query)
+    body = requests.get('http://api.wunderground.com/api/?' + query)
     parsed = xmltodict.parse(body.text).get('query')
     results = parsed.get('results')
     if results is None or results.get('place') is None:
@@ -129,8 +129,8 @@ def get_wind(parsed):
     return description + ' ' + str(m_s) + 'm/s (' + degrees + ')'
 
 
-@commands('weather', 'wea')
-@example('.weather London')
+@commands('wet', 'water')
+@example('.wet London')
 def weather(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
