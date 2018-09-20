@@ -10,8 +10,9 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('sniperjart','sjart')
+@sopel.module.commands('sniperjart', 'sjart')
 def mainfunction(bot, trigger):
+    """Check to see if module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'sniperjart')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
@@ -24,6 +25,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    """Do the thing."""
     target = spicemanip(bot, triggerargsarray, 1)
     message = ""
     isvalid, validmsg = targetcheck(bot, botcom, target, instigator)
