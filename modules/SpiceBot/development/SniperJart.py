@@ -28,11 +28,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = ""
     isvalid, validmsg = targetcheck(bot, botcom, target, instigator)
     if not target:
-        message = trigger.nick + " orders a Jart with the unique scent of a SniperClif fart. DISCLAIMER: While it is quite potent, the SniperClif Jart™ is a short term scent. It might evoke a gag reflex and vomiting but, within 5 minutes, the scent has faded. It has also been known to bring on PTSD in people who have been removed from exposure for extended periods of time."
+        message = trigger.nick + " orders a Jart™ with the unique scent of a SniperClif™ fart. DISCLAIMER: While it is quite potent, the SniperClif™ Jart™ is a short term scent. It might evoke a gag reflex and vomiting but, within 5 minutes, the scent has faded. It has also been known to bring on PTSD in people who have been removed from exposure for extended periods of time."
     elif isvalid == 0:
-        message = "I'm not sure who that is."
+        message = "I'm not sure who to send this SniperClif™ Jart™ to."
     elif isvalid == 3:
-        message = "Well, that was truly disgusting!"
+        message = "Someone opened a SniperClif™ Jart™, that was truly disgusting!"
     else:
-        message = trigger.nick + " sends a SniperClif Jart to " + target + "."
+        message = trigger.nick + " sends a SniperClif™ Jart™ to " + target + "."
     osd(bot, trigger.sender, 'say', message)
