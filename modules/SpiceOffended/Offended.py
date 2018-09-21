@@ -19,7 +19,7 @@ def offensedetect(bot, trigger):
 
     triggerargsarray = spicemanip(bot, trigger, 'create')
     for x in triggerargsarray:
-        stringx = x
+        stringx = x.lower()
 
         for r in (("?", ""), ("!", ""), (".", "")):
             stringx = stringx.replace(*r)
