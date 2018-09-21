@@ -35,7 +35,7 @@ def joindetect(bot, trigger):
 
 
 # Startup check
-@sopel.module.interval(startupinterval)
+@sopel.module.interval(5)
 def startupcheck(bot, autorun=True):
 
     if "startup_op_check" in bot.memory and autorun:
