@@ -17,10 +17,9 @@ def offensedetect(bot, trigger):
 
     triggerargsarray = spicemanip(bot, trigger, 'create')
     if [x for x in triggerargsarray if x in ['offended', 'offense']]:
-        bot.say("kick")
 
-    # make sure bot is OP
-    if bot.privileges[trigger.sender.lower()][bot.nick.lower()] >= module.OP:
-        bot.write(['KICK', trigger.sender, trigger.nick], "You can't talk like that in " + trigger.sender)
-    else:
-        bot.say("I need to be OP to kick unauthorized users such as " + trigger.nick + " from " + trigger.sender + " for being offended.")
+        # make sure bot is OP
+        if bot.privileges[trigger.sender.lower()][bot.nick.lower()] >= module.OP:
+            bot.write(['KICK', trigger.sender, trigger.nick], "You can't talk like that in " + trigger.sender)
+        else:
+            bot.say("I need to be OP to kick unauthorized users such as " + trigger.nick + " from " + trigger.sender + " for being offended.")
