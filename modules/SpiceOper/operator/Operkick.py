@@ -13,11 +13,6 @@ allowedusers = ['under_score', 'DoubleD', 'deathbybandaid', 'dysonparkes']
 @rule('.*')
 @sopel.module.thread(True)
 def joindetect(bot, trigger):
-    channel = trigger.sender
-    instigator = trigger.nick
 
-    # if instigator not in allowedusers and bot.privileges[channel.lower()][bot.nick.lower()] >= module.OP:
-    #    bot.write(['KICK', channel, instigator], "You are not authorized for this channel")
-
-    if not bot.privileges[channel.lower()][instigator.lower()] >= module.OP and bot.privileges[channel.lower()][bot.nick.lower()] >= module.OP:
-        bot.write(['KICK', channel, instigator], "You are not authorized for this channel")
+    if not bot.privileges[trigger.sender.lower()][trigger.nick.lower()] >= module.OP and bot.privileges[trigger.sender.lower()][bot.nick.lower()] >= module.OP:
+        bot.write(['KICK', trigger.sender, trigger.nick], "You are not authorized to join " + trigger.sender)
