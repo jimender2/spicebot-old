@@ -9,7 +9,7 @@ from BotShared import *
 
 @sopel.module.commands('opersonly')
 def mainfunction(bot, trigger):
-    return startupcheck(bot, True)
+    return startupcheck(bot, False)
 
 
 # watch Joins
@@ -36,9 +36,9 @@ def joindetect(bot, trigger):
 
 # Startup check
 @sopel.module.interval(startupinterval)
-def startupcheck(bot, manualuse=False):
+def startupcheck(bot, autorun=True):
 
-    if "startup_op_check" in bot.memory and not manualuse:
+    if "startup_op_check" in bot.memory and autorun:
         return
 
     # possibly in more than one channel
@@ -54,5 +54,5 @@ def startupcheck(bot, manualuse=False):
                 if not bot.privileges[channel.lower()][user.lower()] >= module.OP:
                     bot.write(['KICK', channel, user], "You are not authorized to join " + channel)
 
-    if not not manualuse:
-        bot.memory["startup_op_check"] = 1
+    if autorun:
+        bot.memory["startup_op_check"] = True
