@@ -11,14 +11,13 @@ from BotShared import *
 @sopel.module.thread(True)
 def offensedetect(bot, trigger):
 
-    triggerargsarray = spicemanip(bot, trigger, 'create')
-    if [x for x in triggerargsarray if x in ['offended', 'offense']]:
-        bot.say("kick")
-
-    return
     # does not apply to bot
     if trigger.nick.lower() == bot.nick.lower():
         return
+
+    triggerargsarray = spicemanip(bot, trigger, 'create')
+    if [x for x in triggerargsarray if x in ['offended', 'offense']]:
+        bot.say("kick")
 
     # make sure bot is OP
     if bot.privileges[trigger.sender.lower()][bot.nick.lower()] >= module.OP:
