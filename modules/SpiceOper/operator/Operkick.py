@@ -11,7 +11,7 @@ startupinterval = 5
 
 @sopel.module.commands('opersonly')
 def mainfunction(bot, trigger):
-    return startupcheck(bot)
+    return startupcheck(bot, True)
 
 
 # watch Joins
@@ -38,9 +38,9 @@ def joindetect(bot, trigger):
 
 # Startup check
 @sopel.module.interval(startupinterval)
-def startupcheck(bot):
+def startupcheck(bot, manualuse=False):
 
-    if "startup_op_check" in bot.memory:
+    if "startup_op_check" in bot.memory and not manualuse:
         return
 
     # possibly in more than one channel
@@ -56,4 +56,5 @@ def startupcheck(bot):
                 if not bot.privileges[channel.lower()][user.lower()] >= module.OP:
                     bot.write(['KICK', channel, user], "You are not authorized to join " + channel)
 
-    bot.memory["startup_op_check"] = 1
+    if not not manualuse:
+        bot.memory["startup_op_check"] = 1
