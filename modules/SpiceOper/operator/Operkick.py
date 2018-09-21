@@ -9,6 +9,11 @@ from BotShared import *
 startupinterval = 5
 
 
+@sopel.module.commands('opersonly')
+def mainfunction(bot, trigger):
+    return startupcheck(bot)
+
+
 # watch Joins
 @event('JOIN')
 @rule('.*')
