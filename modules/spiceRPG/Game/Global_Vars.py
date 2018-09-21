@@ -175,6 +175,13 @@ rpg_game_dict = {
                                                         "admin_only": True,
                                                         "inchannel_only": False,
                                                         "action_dissallow": False,
+                                                        "subcommands_valid": {
+                                                                                "default": 0,
+                                                                                "channel": {
+                                                                                            "game":,
+                                                                                            "devmode":,
+                                                                                            },
+                                                                                },
                                                         },
 
                                         "settings":{
@@ -184,6 +191,10 @@ rpg_game_dict = {
                                                         "admin_only": False,
                                                         "inchannel_only": False,
                                                         "action_dissallow": False,
+                                                        "subcommands_valid": {
+                                                                                "default": 0,
+                                                                                "hotkey": {},
+                                                                                },
                                                         },
 
                                         "combat":{
@@ -193,6 +204,9 @@ rpg_game_dict = {
                                                         "admin_only": False,
                                                         "inchannel_only": False,
                                                         "action_dissallow": False,
+                                                        "subcommands_valid": {
+                                                                                "default": 0,
+                                                                                },
                                                         },
 
                                         "author":{
@@ -202,6 +216,9 @@ rpg_game_dict = {
                                                         "admin_only": False,
                                                         "inchannel_only": False,
                                                         "action_dissallow": False,
+                                                        "subcommands_valid": {
+                                                                                "default": 0,
+                                                                                },
                                                         },
 
                                         "intent":{
@@ -211,6 +228,9 @@ rpg_game_dict = {
                                                         "admin_only": False,
                                                         "inchannel_only": False,
                                                         "action_dissallow": False,
+                                                        "subcommands_valid": {
+                                                                                "default": 0,
+                                                                                },
                                                         },
 
                                         "about":{
@@ -220,6 +240,9 @@ rpg_game_dict = {
                                                         "admin_only": False,
                                                         "inchannel_only": False,
                                                         "action_dissallow": False,
+                                                        "subcommands_valid": {
+                                                                                "default": 0,
+                                                                                },
                                                         },
 
                                         "version":{
@@ -229,6 +252,9 @@ rpg_game_dict = {
                                                         "admin_only": False,
                                                         "inchannel_only": False,
                                                         "action_dissallow": False,
+                                                        "subcommands_valid": {
+                                                                                "default": 0,
+                                                                                },
                                                         },
 
                                         "docs":{
@@ -238,6 +264,9 @@ rpg_game_dict = {
                                                         "admin_only": False,
                                                         "inchannel_only": False,
                                                         "action_dissallow": False,
+                                                        "subcommands_valid": {
+                                                                                "default": 0,
+                                                                                },
                                                         },
 
                                         "usage":{
@@ -247,6 +276,9 @@ rpg_game_dict = {
                                                         "admin_only": False,
                                                         "inchannel_only": False,
                                                         "action_dissallow": False,
+                                                        "subcommands_valid": {
+                                                                                "default": 0,
+                                                                                },
                                                         },
 
                                         "travel":{
@@ -256,6 +288,13 @@ rpg_game_dict = {
                                                         "admin_only": False,
                                                         "inchannel_only": False,
                                                         "action_dissallow": False,
+                                                        "subcommands_valid": {
+                                                                                "default": 0,
+                                                                                "north": {},
+                                                                                "south": {},
+                                                                                "east": {},
+                                                                                "west": {},
+                                                                                },
                                                         },
 
                                         # End of commands
@@ -481,22 +520,3 @@ Activation/Deactivate
 onoff_list = ['activate','enable','on','deactivate','disable','off']
 activate_list = ['activate','enable','on']
 deactivate_list = ['deactivate','disable','off']
-
-
-"""
-Subcommands
-"""
-
-# Administrator
-subcommands_valid_administrator = ['channel']
-subcommands_default_administrator = 0
-subcommands_valid_administrator_channel = ['game','devmode']
-
-# settings
-subcommands_valid_settings = ['hotkey']
-subcommands_default_settings = 0
-subcommands_valid_settings_hotkey = ['view','update','reset','list']
-
-# Travel
-subcommands_valid_travel = ['north','south','east','west']
-subcommands_default_travel = 0
