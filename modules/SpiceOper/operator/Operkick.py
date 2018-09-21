@@ -40,6 +40,8 @@ def startupcheck(bot, autorun=True):
 
     if "startup_op_check" in bot.memory and autorun:
         return
+    if autorun:
+        bot.memory["startup_op_check"] = True
 
     # possibly in more than one channel
     for channel in bot.channels:
@@ -53,6 +55,3 @@ def startupcheck(bot, autorun=True):
             if user.lower() != bot.nick.lower():
                 if not bot.privileges[channel.lower()][user.lower()] >= module.OP:
                     bot.write(['KICK', channel, user], "You are not authorized to join " + channel)
-
-    if autorun:
-        bot.memory["startup_op_check"] = True
