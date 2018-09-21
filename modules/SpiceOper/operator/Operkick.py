@@ -6,8 +6,6 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-startupinterval = 5
-
 
 @sopel.module.commands('opersonly')
 def mainfunction(bot, trigger):
