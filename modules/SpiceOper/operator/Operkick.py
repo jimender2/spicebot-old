@@ -43,22 +43,15 @@ def startupcheck(bot):
     # possibly in more than one channel
     for channel in bot.channels:
 
-        kicklist = []
+        bot.msg(channel, "Running Oper privacy sweep for  " + channel)
+        if not bot.privileges[channel.lower()][bot.nick.lower()] >= module.OP:
+            bot.msg(channel, "I need to be OP to kick unauthorized users from " + channel)
+            return
+
         for user in bot.privileges[channel.lower()].keys():
             if user.lower() != bot.nick.lower():
                 if not bot.privileges[channel.lower()][user.lower()] >= module.OP:
-                    kicklist.append(user)
-
-        # empty list
-        if kicklist == []:
-            return
-
-        # make sure bot is OP
-        if bot.privileges[channel.lower()][bot.nick.lower()] >= module.OP:
-            for user in kicklist:
-                bot.write(['KICK', channel, user], "You are not authorized to join " + channel)
-        else:
-            bot.msg(channel, "I need to be OP to kick unauthorized users such as " + spicemanip(bot, kicklist, 'list') + " from " + channel)
+                    bot.write(['KICK', channel, user], "You are not authorized to join " + channel)
 
     # don't check for a while
     startupinterval = 9999999999999999999999999999999999
