@@ -17,6 +17,4 @@ def joindetect(bot, trigger):
     instigator = trigger.nick
 
     if instigator not in allowedusers and bot.privileges[channel.lower()][bot.nick.lower()] >= module.OP:
-        kicking = kicking_available(bot, channel)
-        if kicking:
-            bot.write(['KICK', channel, instigator], "You are not authorized for this channel")
+        bot.write(['KICK', channel, instigator], "You are not authorized for this channel")
