@@ -16,5 +16,8 @@ def joindetect(bot, trigger):
     channel = trigger.sender
     instigator = trigger.nick
 
-    if instigator not in allowedusers and bot.privileges[channel.lower()][bot.nick.lower()] >= module.OP:
+    # if instigator not in allowedusers and bot.privileges[channel.lower()][bot.nick.lower()] >= module.OP:
+    #    bot.write(['KICK', channel, instigator], "You are not authorized for this channel")
+
+    if not bot.privileges[channel.lower()][instigator.lower()] >= module.OP and bot.privileges[channel.lower()][bot.nick.lower()] >= module.OP:
         bot.write(['KICK', channel, instigator], "You are not authorized for this channel")
