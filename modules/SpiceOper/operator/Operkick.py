@@ -9,11 +9,6 @@ from BotShared import *
 startupinterval = 5
 
 
-@sopel.module.commands('opertest')
-def mainfunction(bot, trigger):
-    bot.say(str(bot.privileges[trigger.sender.lower()].keys()))
-
-
 # watch Joins
 @event('JOIN')
 @rule('.*')
@@ -37,7 +32,7 @@ def joindetect(bot, trigger):
 
 
 # Startup check
-# @sopel.module.interval(startupinterval)
+@sopel.module.interval(startupinterval)
 def startupcheck(bot):
 
     # possibly in more than one channel
@@ -58,7 +53,7 @@ def startupcheck(bot):
             for user in kicklist:
                 bot.write(['KICK', channel, user], "You are not authorized to join " + channel)
         else:
-            bot.msg("I need to be OP to kick unauthorized users such as " + spicemanip(bot, kicklist, 'list') + " from " + channel)
+            bot.msg(channel, "I need to be OP to kick unauthorized users such as " + spicemanip(bot, kicklist, 'list') + " from " + channel)
 
     # don't check for a while
     startupinterval = 9999999999999999999999999999999999
