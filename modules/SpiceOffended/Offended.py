@@ -6,7 +6,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-dontsaylist = ['offended', 'offense', 'offensive']
+dontsaylist = ['offend', 'offended', 'offense', 'offensive']
 
 
 @rule('(.*)')
