@@ -47,7 +47,7 @@ def startupcheck(bot, autorun=True):
         bot.msg(channel, "Running Oper privacy sweep for  " + channel)
         if not bot.privileges[channel.lower()][bot.nick.lower()] >= module.OP:
             bot.msg(channel, "I need to be OP to kick unauthorized users from " + channel)
-            return
+            pass
 
         for user in bot.privileges[channel.lower()].keys():
             if user.lower() != bot.nick.lower():
