@@ -12,6 +12,10 @@ from BotShared import *
 @sopel.module.thread(True)
 def joindetect(bot, trigger):
 
+    # does not apply to bot
+    if trigger.nick.lower() == bot.nick.lower():
+        return
+
     # give chanserv time to OP
     time.sleep(5)
 
