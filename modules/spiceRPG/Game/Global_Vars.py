@@ -178,8 +178,8 @@ rpg_game_dict = {
                                                         "subcommands_valid": {
                                                                                 "default": 0,
                                                                                 "channel": {
-                                                                                            "game":,
-                                                                                            "devmode":,
+                                                                                            "game": {},
+                                                                                            "devmode": {},
                                                                                             },
                                                                                 },
                                                         },
