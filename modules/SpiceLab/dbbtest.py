@@ -30,7 +30,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osdtest = []
 
     cmd = '/bin/systemctl status %s.service' % bot.nick
-    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, shell=True)
+
+    # proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     stdout_list = proc.communicate()[0].split('\n')
     for line in stdout_list:
         osdtest.append(str(line))
