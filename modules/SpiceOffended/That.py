@@ -11,10 +11,9 @@ bemoreofapussy = [
                 ]
 
 
-@rule('(.*)')
+@module.rule('^(?:that)\s+?.*')
 @sopel.module.thread(True)
-def offensedetect(bot, trigger):
-
+def mainfunctionnobeguine(bot, trigger):
     # does not apply to bots
     if trigger.nick.lower() in bot_config_names(bot):
         return
