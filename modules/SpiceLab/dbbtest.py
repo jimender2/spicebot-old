@@ -27,13 +27,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    bot.say(str(bot.config.core.homedir))
-
-
-    return
     osdtest = []
 
-    cmd = '/bin/systemctl status %s.service' % "SpiceBot"
+    cmd = '/bin/systemctl status %s.service' % bot.nick
     proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     stdout_list = proc.communicate()[0].split('\n')
     for line in stdout_list:
