@@ -613,6 +613,10 @@ def rpg_bot_start_script(bot):
     if rpg.gamedict['channels']['game_enabled'] == []:
         return
 
+    # null trigger stuff
+    trigger = class_create('trigger')
+    trigger.sender = "SpiceRealm"
+
     startup_monologue = []
     startup_monologue.append("The Spice Realms are vast; full of wonder, loot, monsters, and peril!")
     startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
