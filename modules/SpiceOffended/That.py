@@ -14,6 +14,7 @@ bemoreofapussy = [
 @module.rule('^(?:that)\s+?.*')
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
+
     # does not apply to bots
     if trigger.nick.lower() in bot_config_names(bot):
         return
@@ -21,4 +22,4 @@ def mainfunctionnobeguine(bot, trigger):
     triggerargsarray = spicemanip(bot, trigger, 'create')
     if spicemanip(bot, triggerargsarray, 1).lower() == 'that':
 
-        osd(bot, channeltarget, 'say', str(spicemanip(bot, bemoreofapussy, 'random')))
+        osd(bot, trigger.sender, 'say', str(spicemanip(bot, bemoreofapussy, 'random')))
