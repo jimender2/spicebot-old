@@ -1097,8 +1097,12 @@ RPG Version
 
 
 def versionnumber(bot, rpg):
+    if bot.nick.endswith("dev"):
+        githubpage = "https://github.com/SpiceBot/SpiceBot/commits/dev/modules/spiceRPG/Game/__init__.py"
+    else:
+        githubpage = "https://github.com/SpiceBot/SpiceBot/commits/master/modules/spiceRPG/Game/__init__.py"
     rpg_version_plainnow = rpg.gamedict["tempvals"]['versionnumber']
-    page = requests.get("https://github.com/SpiceBot/SpiceBot/commits/master/modules/spiceRPG/Game/__init__.py", headers=None)
+    page = requests.get(githubpage, headers=None)
     if page.status_code == 200:
         tree = html.fromstring(page.content)
         rpg_version_plainnow = str(tree.xpath('//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/text()'))
