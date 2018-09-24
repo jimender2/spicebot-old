@@ -10,6 +10,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 import subprocess
+import json
 
 
 @sopel.module.commands('dbbtest')
@@ -26,6 +27,18 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
+
+    key_value = subprocess.check_output(["systemctl", "show", bot.nick], universal_newlines=True).split('\n')
+    json_dict = {}
+    for entry in key_value:
+        kv = entry.split("=", 1)
+        if len(kv) == 2:
+            json_dict[kv[0]] = kv[1]
+    json.dump(json_dict, sys.stdout)
+
+    bot.say(str(json_dict))
+
+    return
 
     osdtest = []
 
