@@ -26,6 +26,11 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
+
+    bot.say(str(bot.config.core.homedir))
+
+
+    return
     osdtest = []
 
     cmd = '/bin/systemctl status %s.service' % "SpiceBot"
