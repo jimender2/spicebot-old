@@ -5,8 +5,6 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 bemoreofapussy = [
                     "Would you like a tissue?",
@@ -21,7 +19,7 @@ bemoreofapussy = [
                     "Are you trying to come across as a whinny little bitch? Cause that's how you come across as a whinny little bitch",
                     "You are why we can't have anything nice",
                     "Bitch, complain, piss and moan...",
-                    "Becasue I have nothing better to do than listen to your bitching; you think skynet is gonna build itself?",
+                    "Because I have nothing better to do than listen to your bitching; you think skynet is gonna build itself?",
                     "This one time, at band camp, NO ONE CARES!",
                     "Will you shuddapp already?",
                     "I’m sorry I suck at empathizing with your first world problems.",
@@ -35,7 +33,7 @@ bemoreofapussy = [
                     "Thanks for sharing your special point of view; again",
                     "Everyone is entitled to be stupid, but you abuse the privilege.",
                     "So.",
-                    "Your what hurts when you pee?",
+                    "Your what hurts when you pee?"
                 ]
 
 
