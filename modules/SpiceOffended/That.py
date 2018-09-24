@@ -12,7 +12,7 @@ bemoreofapussy = [
                     "Would you like some cheese with your whine?",
                     "That must be very difficult for you!",
                     "They say time heals all wounds, but I aint got all day.",
-                    "Do you need to seek counsiling?",
+                    "Do you need to seek counselling?",
                     "Next you'll be crying over spilt milk!",
                     "Suck it up, buttercup!",
                     "Go make some Lemonade!"
