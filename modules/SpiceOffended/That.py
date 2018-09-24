@@ -5,6 +5,8 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 bemoreofapussy = [
                     "Would you like a tissue?",
