@@ -194,7 +194,7 @@ def command_process(bot, trigger, rpg):
 
     # Instigator versus Other Bots
     if rpg.command_main.lower() in [x.lower() for x in rpg.gamedict["tempvals"]['bots_list']]:
-        errors(bot, rpg, 'commands', 11, nick_actual(bot, rpg.command_main))
+        errors(bot, rpg, 'commands', 11, nick_actual(bot, rpg.command_main, rpg.gamedict['users']['users_all']))
         return rpg
 
     # Targets
@@ -1078,20 +1078,19 @@ How to Display Nicks
 
 
 # Outputs Nicks with correct capitalization
-def nick_actual(bot, nick, dclass=None):
+def nick_actual(bot, nick, userlist=None):
     nick_actual = nick
-    if dclass:
-        for u in dclass.gamedict['users']['users_all']:
+    if userlist != []:
+        for u in userlist:
             if u.lower() == nick_actual.lower():
                 nick_actual = u
                 continue
         return nick_actual
-    else:
-        for u in bot.users:
-            if u.lower() == nick_actual.lower():
-                nick_actual = u
-                continue
-        return nick_actual
+    for u in bot.users:
+        if u.lower() == nick_actual.lower():
+            nick_actual = u
+            continue
+    return nick_actual
 
 
 """
