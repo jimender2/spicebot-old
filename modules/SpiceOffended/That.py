@@ -19,7 +19,7 @@ bemoreofapussy = [
                     "Are you trying to come across as a whinny little bitch? Cause that's how you come across as a whinny little bitch",
                     "You are why we can't have anything nice",
                     "Bitch, complain, piss and moan...",
-                    "Becasue I have nothing better to do than listen to your bitching; you think skynet is gonna build itslef?",
+                    "Because I have nothing better to do than listen to your bitching; you think skynet is gonna build itslef?",
                     "This one time, at band camp, NO ONE CARES!",
                     "Will you shuddapp already?",
                     "I’m sorry I suck at empathizing with your first world problems.",
