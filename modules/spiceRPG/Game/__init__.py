@@ -1078,7 +1078,7 @@ How to Display Nicks
 
 
 # Outputs Nicks with correct capitalization
-def nick_actual(bot, nick, userlist=None):
+def nick_actual(bot, nick, userlist=[]):
     nick_actual = nick
     if userlist != []:
         for u in userlist:
