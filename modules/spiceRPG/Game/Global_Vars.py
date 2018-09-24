@@ -6,6 +6,25 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 
 """
+OSD
+"""
+
+
+# How Many characters to put on the display
+osd_limit = 420
+
+
+"""
+Activation/Deactivate
+"""
+
+
+onoff_list = ['activate','enable','on','deactivate','disable','off']
+activate_list = ['activate','enable','on']
+deactivate_list = ['deactivate','disable','off']
+
+
+"""
 Open Dictionary of Users and Locations
 """
 
@@ -501,22 +520,3 @@ rpg_game_dict = {
 
                 # end of dict
                 }
-
-
-"""
-OSD
-"""
-
-
-# How Many characters to put on the display
-osd_limit = 420
-
-
-"""
-Activation/Deactivate
-"""
-
-
-onoff_list = ['activate','enable','on','deactivate','disable','off']
-activate_list = ['activate','enable','on']
-deactivate_list = ['deactivate','disable','off']
