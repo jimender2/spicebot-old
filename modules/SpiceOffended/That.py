@@ -8,7 +8,7 @@ from BotShared import *
 
 bemoreofapussy = [
                     "Would you like a tissue?",
-                    "Do you need atissue for your issue?",
+                    "Do you need a tissue for your issue?",
                     "Would you like some cheese with your whine?",
                     "That must be very difficult for you!",
                     "They say time heals all wounds, but I aint got all day.",
