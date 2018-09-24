@@ -36,7 +36,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             json_dict[kv[0]] = kv[1]
     json.dump(json_dict, sys.stdout)
 
-    bot.say(str(json_dict))
+    for element in json_dict.keys():
+        bot.say(str(json_dict[element]))
 
     return
 
