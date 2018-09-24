@@ -71,7 +71,6 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     rpg.start = time.time()
 
     # instigator
-    instigator = class_create('instigator')  # TODO rm
     rpg.instigator = trigger.nick
 
     rpg.tier_current = rpg.gamedict['tier_current']
@@ -89,7 +88,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # rpg_map_read(bot, rpg)
 
     # Run the Process
-    execute_main(bot, rpg, instigator, trigger, triggerargsarray)
+    execute_main(bot, rpg, trigger, triggerargsarray)
 
     # Error Display System Display
     rpg_errors_end(bot, rpg)
@@ -101,17 +100,10 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     save_user_dicts(bot, rpg)
 
 
-def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
+def execute_main(bot, rpg, trigger, triggerargsarray):
 
     # No Empty Commands
     if triggerargsarray == []:
-        user_capable_coms = []
-        for vcom in rpg.gamedict['static']['commands'].keys():
-            if rpg.gamedict['static']['commands'][vcom]['admin_only']:
-                if rpg.instigator in rpg.gamedict["tempvals"]['bot_admins']:
-                    user_capable_coms.append(vcom)
-            else:
-                user_capable_coms.append(vcom)
         errors(bot, rpg, 'commands', 3, 1)
         return
 
@@ -139,13 +131,13 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
         rpg.command_full = spicemanip(bot, rpg.triggerargsarray, 0)
         rpg.command_main = spicemanip(bot, rpg.triggerargsarray, 1)
         # Check Command can run
-        rpg = command_process(bot, trigger, rpg, instigator)
+        rpg = command_process(bot, trigger, rpg)
         if rpg.command_run:
-            command_run(bot, rpg, instigator)
+            command_run(bot, rpg)
         rpg.commands_ran.append(rpg.command_main.lower())
 
 
-def command_process(bot, trigger, rpg, instigator):
+def command_process(bot, trigger, rpg):
 
     rpg.command_run = 0
 
@@ -272,7 +264,7 @@ def command_process(bot, trigger, rpg, instigator):
     return rpg
 
 
-def command_run(bot, rpg, instigator):
+def command_run(bot, rpg):
 
     # Clear triggerargsarray of the main command
     rpg.triggerargsarray.remove(rpg.command_main)
@@ -283,7 +275,7 @@ def command_run(bot, rpg, instigator):
     """ TODO track rpg.staminarequired  adding/subtracting in comparison to completion of any action, and error if not enough"""
 
     # Run the command's function
-    command_function_run = str('rpg_command_main_' + rpg.command_main.lower() + '(bot, rpg, instigator)')
+    command_function_run = str('rpg_command_main_' + rpg.command_main.lower() + '(bot, rpg)')
     eval(command_function_run)
 
     if rpg.staminacharge:
@@ -307,7 +299,7 @@ Exploration
 """
 
 
-def rpg_command_main_travel(bot, rpg, instigator):
+def rpg_command_main_travel(bot, rpg):
 
     subcommand_valid = ['north', 'south', 'east', 'west', 'town', 'current']
     subcommand = spicemanip(bot, [x for x in rpg.triggerargsarray if x in subcommand_valid], 1) or 'current'
@@ -369,7 +361,7 @@ Combat
 """
 
 
-def rpg_command_main_combat(bot, rpg, instigator):
+def rpg_command_main_combat(bot, rpg):
     bot.say("combat not written yet")
 
 
@@ -378,7 +370,7 @@ Configuration Commands
 """
 
 
-def rpg_command_main_administrator(bot, rpg, instigator):
+def rpg_command_main_administrator(bot, rpg):
 
     # Subcommand
     subcommand_valid = rpg.gamedict['static']['commands'][rpg.command_main.lower()]['subcommands_valid'].keys()
@@ -446,7 +438,7 @@ def rpg_command_main_administrator(bot, rpg, instigator):
         return
 
 
-def rpg_command_main_settings(bot, rpg, instigator):
+def rpg_command_main_settings(bot, rpg):
 
     # Subcommand
     subcommand_valid = rpg.gamedict['static']['commands'][rpg.command_main.lower()]['subcommands_valid'].keys()
@@ -537,12 +529,12 @@ Basic User Commands
 """
 
 
-def rpg_command_main_author(bot, rpg, instigator):
+def rpg_command_main_author(bot, rpg):
 
     osd(bot, rpg.channel_current, 'say', "The author of RPG is deathbybandaid.")
 
 
-def rpg_command_main_intent(bot, rpg, instigator):
+def rpg_command_main_intent(bot, rpg):
 
     # Who is the target
     target = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.gamedict["users"]['users_all']], 1) or rpg.instigator
@@ -550,12 +542,12 @@ def rpg_command_main_intent(bot, rpg, instigator):
     osd(bot, rpg.channel_current, 'say', "The intent is to provide " + target + " with a sense of pride and accomplishment...")
 
 
-def rpg_command_main_about(bot, rpg, instigator):
+def rpg_command_main_about(bot, rpg):
 
     osd(bot, rpg.channel_current, 'say', "The purpose behind RPG is for deathbybandaid to learn python, while providing a fun, evenly balanced gameplay.")
 
 
-def rpg_command_main_version(bot, rpg, instigator):
+def rpg_command_main_version(bot, rpg):
 
     # Attempt to get revision date from Github
     if not rpg.gamedict["tempvals"]['versionnumber']:
@@ -564,11 +556,11 @@ def rpg_command_main_version(bot, rpg, instigator):
     osd(bot, rpg.channel_current, 'say', "The RPG framework was last modified on " + str(rpg.gamedict["tempvals"]['versionnumber']) + ".")
 
 
-def rpg_command_main_docs(bot, rpg, instigator):  # TODO
+def rpg_command_main_docs(bot, rpg):  # TODO
     bot.say("wip")
 
 
-def rpg_command_main_usage(bot, rpg, instigator):  # TODO
+def rpg_command_main_usage(bot, rpg):  # TODO
 
     # Get The Command Used
     subcommand = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.gamedict['static']['commands'].keys()], 1) or 'total'
@@ -1086,13 +1078,20 @@ How to Display Nicks
 
 
 # Outputs Nicks with correct capitalization
-def nick_actual(bot, nick):
+def nick_actual(bot, nick, dclass=None):
     nick_actual = nick
-    for u in bot.users:
-        if u.lower() == nick_actual.lower():
-            nick_actual = u
-            continue
-    return nick_actual
+    if dclass:
+        for u in dclass.gamedict['users']['users_all']:
+            if u.lower() == nick_actual.lower():
+                nick_actual = u
+                continue
+        return nick_actual
+    else:
+        for u in bot.users:
+            if u.lower() == nick_actual.lower():
+                nick_actual = u
+                continue
+        return nick_actual
 
 
 """
