@@ -50,10 +50,12 @@ def watchallthethings(bot, trigger):
 
 
 def botfunction_simple(bot, trigger, triggerargsarray, commandsdict):
-    osd(bot, trigger.sender, 'say', commandsdict[dotcommand]["reply"])
+    reply = commandsdict[dotcommand]["reply"]
+    osd(bot, trigger.sender, 'say', reply)
     return
 
 
 def botfunction_target(bot, trigger, triggerargsarray, commandsdict):
-    osd(bot, trigger.sender, 'say', spicemanip(bot, triggerargsarray, 0).replace("$target", spicemanip(bot, triggerargsarray, 1)))
+    reply = commandsdict[dotcommand]["reply"].replace("$target", spicemanip(bot, triggerargsarray, 1))
+    osd(bot, trigger.sender, 'say', spicemanip(bot, triggerargsarray, 0))
     return
