@@ -12,8 +12,10 @@ from BotShared import *
 import subprocess
 import json
 
+validcoms = "'dbbtest', 'dbbtesta'"
 
-@sopel.module.commands('dbbtest')
+
+@sopel.module.commands(validcoms)
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
@@ -27,6 +29,8 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
+
+    return
 
     key_value = subprocess.check_output(["systemctl", "show", bot.nick], universal_newlines=True).split('\n')
     json_dict = {}
