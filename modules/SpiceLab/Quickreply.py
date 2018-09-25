@@ -31,7 +31,7 @@ def watchallthethings(bot, trigger):
 
     # open global dict as part of modcom class
     global commandsdict
-    modcom.gamedict = commandsdict
+    modcom.commandsdict = commandsdict
 
     # does not apply to bots
     if trigger.nick.lower() in bot_config_names(bot):
