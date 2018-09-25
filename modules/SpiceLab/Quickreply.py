@@ -9,18 +9,19 @@ from BotShared import *
 # author deathbybandaid
 
 
+# TODO a way to import stuff like this directly from other files?
 commandsdict = {
                 "testa": {
                             "type": "simple",
-                            "reply": "Testing Alpha",
+                            "reply": "This is a test of a quick reply to a command",
                             },
                 "testb": {
                             "type": "target",
-                            "reply": "Testing Beta on $target",
+                            "reply": "This is a target test directed at $target.",
                             },
                 "testc": {
                             "type": "target",
-                            "reply": "Testing Beta on $target. Hopefully $target enjoys that kid of thing",
+                            "reply": "This is a target test directed at $target. Hopefully $target enjoys that kid of thing",
                             },
                 }
 
