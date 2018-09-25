@@ -36,14 +36,14 @@ def watchallthethings(bot, trigger):
 
     triggerargsarray = spicemanip(bot, trigger, 'create')
 
-    dotcommand = str(spicemanip(bot, triggerargsarray, 1).lower().replace(".", ""))
+    dotcommand = spicemanip(bot, triggerargsarray, 1).lower().replace(".", "")
     triggerargsarray = spicemanip(bot, triggerargsarray, '2+')
 
     if dotcommand not in commandsdict.keys():
         osd(bot, trigger.sender, 'say', "I don't seem to have a command for " + dotcommand)
         return
 
-    commandtype = str(commandsdict[dotcommand]["type"])
+    commandtype = commandsdict[dotcommand]["type"]
 
     command_function_run = str('botfunction_' + commandtype + '(bot, trigger, triggerargsarray, commandsdict)')
     eval(command_function_run)
