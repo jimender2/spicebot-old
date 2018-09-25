@@ -16,7 +16,7 @@ commandsdict = {
                             },
                 "testb": {
                             "type": "target"
-                            "reply": "Testing Beta on $target",
+                            "reply": "Testing Beta on",
                             }
                 }
 
