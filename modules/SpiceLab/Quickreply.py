@@ -50,7 +50,7 @@ def watchallthethings(bot, trigger):
 
 
 def botfunction_simple(bot, trigger, triggerargsarray, commandsdict):
-    osd(bot, trigger.sender, 'say', str(commandsdict[dotcommand]["reply"]))
+    osd(bot, trigger.sender, 'say', commandsdict[dotcommand]["reply"])
     return
 
 
