@@ -13,7 +13,7 @@ from BotShared import *
 commandsdict = {
                 "testa": {
                             "type": "simple",
-                            "reply": "This is a test of a quick reply to a command",
+                            "reply": "This is a test of a quick reply to a command.",
                             },
                 "testb": {
                             "type": "target",
