@@ -12,9 +12,19 @@ from BotShared import *
 argslist = ['testa', 'testb', 'testc', 'testd']
 
 
+commandsdict = {
+                "testa": "Testing alpha",
+                "testb": "testing beta",
+                "testc": "testing gamma",
+                "testd": "testering delta",
+                }
+
+
 @rule('(.*)')
 @sopel.module.thread(True)
-def offensedetect(bot, trigger):
+def watchallthethings(bot, trigger):
+
+    global commandsdict
 
     # does not apply to bots
     if trigger.nick.lower() in bot_config_names(bot):
@@ -23,7 +33,9 @@ def offensedetect(bot, trigger):
     if not str(spicemanip(bot, trigger, 1)).startswith("."):
         return
 
-    if str(spicemanip(bot, trigger, 1).lower().replace(".", "")) in argslist:
-        bot.say("success")
+    dotcommand = str(spicemanip(bot, trigger, 1).lower().replace(".", ""))
+
+    if dotcommand in commandsdict.keys():
+        bot.say(str(commandsdict[dotcommand]))
     else:
         bot.say("I don't seem to have a command for " + str(spicemanip(bot, trigger, 1)))
