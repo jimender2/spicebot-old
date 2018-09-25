@@ -15,7 +15,7 @@ import json
 validcoms = "'dbbtest', 'dbbtesta'"
 
 
-@sopel.module.commands(eval(validcoms))
+@sopel.module.commands(validcoms)
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
