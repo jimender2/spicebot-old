@@ -102,11 +102,13 @@ def race(bot, botcom, target, instigator, trigger):
 
 
 def resetWin(bot, botcom, person):
+    """Reset consecutive win count."""
     databasekey = "devRaceStreak"
     set_database_value(bot, person, databasekey, 0)
 
 
 def increaseWin(bot, botcom, person):
+    """Increase consecutive win count."""
     databasekey = "devRaceStreak"
     wins = get_database_value(bot, person, databasekey) or 0
     wins = int(wins) + 1
@@ -114,6 +116,7 @@ def increaseWin(bot, botcom, person):
 
 
 def getWins(bot, botcom, trigger, person):
+    """Get consecutive win count."""
     databasekey = "devRaceStreak"
     wins = get_database_value(bot, person, databasekey) or 0
     osd(bot, trigger.sender, 'say', person + " has a streak of " + str(wins) + " wins")
@@ -126,7 +129,7 @@ def damage(vehicleStats):
 
 
 def pickVehicle(bot, botcom, target):
-    rand = random.randint(1,5)
+    rand = random.randint(1, 5)
     vehicle = spicemanip(bot, vehicleType, rand) or 'walkin'
     maxHealth = spicemanip(bot, maximumHealth, rand)
     maxHealth = int(maxHealth)
