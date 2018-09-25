@@ -44,7 +44,7 @@ def watchallthethings(bot, trigger):
     modcom.dotcommand = spicemanip(bot, modcom.triggerargsarray, 1).lower().replace(".", "")
     modcom.triggerargsarray = spicemanip(bot, modcom.triggerargsarray, '2+')
 
-    if dotcommand not in modcom.commandsdict.keys():
+    if modcom.dotcommand not in modcom.commandsdict.keys():
         osd(bot, trigger.sender, 'say', "I don't seem to have a command for " + modcom.dotcommand)
         return
 
