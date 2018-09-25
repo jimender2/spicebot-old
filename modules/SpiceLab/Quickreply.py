@@ -17,11 +17,11 @@ commandsdict = {
                 "testb": {
                             "type": "target",
                             "reply": "Testing Beta on $target",
-                            }
+                            },
                 "testc": {
                             "type": "target",
                             "reply": "Testing Beta on $target. Hopefully $target enjoys that kid of thing",
-                            }
+                            },
                 }
 
 
