@@ -6,6 +6,9 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
+# author deathbybandaid
+
+
 dontsaylist = ['offend', 'offended', 'offense', 'offensive']
 
 

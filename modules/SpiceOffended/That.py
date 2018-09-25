@@ -6,6 +6,9 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
+# author deathbybandaid
+
+
 bemoreofapussy = [
                     "Would you like a tissue?",
                     "Do you need a tissue for your issue?",

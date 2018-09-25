@@ -6,6 +6,8 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
+# author deathbybandaid
+
 
 # watch Joins
 @event('JOIN')
@@ -17,7 +19,14 @@ def joindetect(bot, trigger):
     if trigger.nick.lower() == bot.nick.lower():
         return
 
+    if "join_offend_check" not in bot.memory:
+        bot.memory["join_offend_check"] = []
+
+    if trigger.nick in bot.memory["join_offend_check"]:
+        return
+
     bot.say("Who invited " + trigger.nick + " to " + trigger.sender + "?")
+    bot.memory["join_offend_check"].append(trigger.nick)
 
 
 # Startup check
