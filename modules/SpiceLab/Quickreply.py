@@ -23,9 +23,9 @@ commandsdict = {
 
 @rule('(.*)')
 @sopel.module.thread(True)
-def watchallthethings(bot, trigger, commandsdict):
+def watchallthethings(bot, trigger):
 
-    # global commandsdict
+    global commandsdict
 
     # does not apply to bots
     if trigger.nick.lower() in bot_config_names(bot):
