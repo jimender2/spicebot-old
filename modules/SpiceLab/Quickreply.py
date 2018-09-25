@@ -25,7 +25,13 @@ commandsdict = {
 @sopel.module.thread(True)
 def watchallthethings(bot, trigger):
 
+    # modcom dynamic Class
+    modcom = class_create('modcom')
+    modcom.default = 'modcom'
+
+    # open global dict as part of modcom class
     global commandsdict
+    modcom.gamedict = commandsdict
 
     # does not apply to bots
     if trigger.nick.lower() in bot_config_names(bot):
@@ -34,28 +40,31 @@ def watchallthethings(bot, trigger):
     if not str(spicemanip(bot, trigger, 1)).startswith("."):
         return
 
-    triggerargsarray = spicemanip(bot, trigger, 'create')
+    modcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+    modcom.dotcommand = spicemanip(bot, modcom.triggerargsarray, 1).lower().replace(".", "")
+    modcom.triggerargsarray = spicemanip(bot, modcom.triggerargsarray, '2+')
 
-    dotcommand = spicemanip(bot, triggerargsarray, 1).lower().replace(".", "")
-    triggerargsarray = spicemanip(bot, triggerargsarray, '2+')
-
-    if dotcommand not in commandsdict.keys():
-        osd(bot, trigger.sender, 'say', "I don't seem to have a command for " + dotcommand)
+    if dotcommand not in modcom.commandsdict.keys():
+        osd(bot, trigger.sender, 'say', "I don't seem to have a command for " + modcom.dotcommand)
         return
 
-    commandtype = commandsdict[dotcommand]["type"]
+    modcom.commandtype = modcom.commandsdict[modcom.dotcommand]["type"]
 
-    command_function_run = str('botfunction_' + commandtype + '(bot, trigger, triggerargsarray, commandsdict)')
+    command_function_run = str('botfunction_' + modcom.commandtype + '(bot, trigger, modcom)')
     eval(command_function_run)
 
 
-def botfunction_simple(bot, trigger, triggerargsarray, commandsdict):
-    reply = commandsdict[dotcommand]["reply"]
+def botfunction_simple(bot, trigger, modcom):
+    reply = modcom.commandsdict[modcom.dotcommand]["reply"]
     osd(bot, trigger.sender, 'say', reply)
-    return
 
 
-def botfunction_target(bot, trigger, triggerargsarray, commandsdict):
-    reply = commandsdict[dotcommand]["reply"].replace("$target", spicemanip(bot, triggerargsarray, 1))
+def botfunction_target(bot, trigger, modcom):
+
+    target = spicemanip(bot, modcom.triggerargsarray, 1)
+    if not target:
+        osd(bot, trigger.sender, 'say', "No target provided")
+        return
+
+    reply = modcom.commandsdict[modcom.dotcommand]["reply"].replace("$target", target)
     osd(bot, trigger.sender, 'say', reply)
-    return
