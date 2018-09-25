@@ -9,7 +9,7 @@ from BotShared import *
 # author deathbybandaid
 
 
-dontsaylist = ['offend', 'offended', 'offense', 'offensive']
+argslist = ['testa', 'testb', 'testc', 'testd']
 
 
 @rule('(.*)')
@@ -23,5 +23,7 @@ def offensedetect(bot, trigger):
     if not str(spicemanip(bot, trigger, 1)).startswith("."):
         return
 
-    if str(spicemanip(bot, trigger, 1).lower().replace(".", "")) in dontsaylist:
+    if str(spicemanip(bot, trigger, 1).lower().replace(".", "")) in argslist:
         bot.say("success")
+    else:
+        bot.say("I don't seem to have a command for " + str(spicemanip(bot, trigger, 1)))
