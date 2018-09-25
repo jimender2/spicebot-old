@@ -57,5 +57,5 @@ def botfunction_simple(bot, trigger, triggerargsarray, commandsdict):
 
 def botfunction_target(bot, trigger, triggerargsarray, commandsdict):
     reply = commandsdict[dotcommand]["reply"].replace("$target", spicemanip(bot, triggerargsarray, 1))
-    osd(bot, trigger.sender, 'say', spicemanip(bot, triggerargsarray, 0))
+    osd(bot, trigger.sender, 'say', reply)
     return
