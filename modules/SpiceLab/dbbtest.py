@@ -12,7 +12,7 @@ from BotShared import *
 import subprocess
 import json
 
-validcoms = ('dbbtest', 'dbbtesta')
+validcoms = str('dbbtest'), str('dbbtesta')
 
 
 @sopel.module.commands(validcoms)
