@@ -12,7 +12,7 @@ from BotShared import *
 import subprocess
 import json
 
-validcoms = tuple('dbbtest', 'dbbtesta')
+validcoms = tuple(['dbbtest', 'dbbtesta'])
 
 
 @sopel.module.commands(validcoms)
