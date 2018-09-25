@@ -414,12 +414,15 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 dispmsg.append(scrapedtitle)
 
                 scrapelink = eval("feeds." + feed + ".link")
-                scrapedlink = str(tree.xpath(scrapelink))
-                for r in (("['", ""), ("']", "")):
-                    scrapedlink = scrapedlink.replace(*r)
-                scrapedlinkprecede = eval("feeds." + feed + ".linkprecede")
-                if scrapedlinkprecede != 'noprecede':
-                    scrapedlink = str(scrapedlinkprecede + scrapedlink)
+                if scrapelink == 'url':
+                    scrapedlink = eval("feeds." + feed + ".url")
+                else:
+                    scrapedlink = str(tree.xpath(scrapelink))
+                    for r in (("['", ""), ("']", "")):
+                        scrapedlink = scrapedlink.replace(*r)
+                    scrapedlinkprecede = eval("feeds." + feed + ".linkprecede")
+                    if scrapedlinkprecede != 'noprecede':
+                        scrapedlink = str(scrapedlinkprecede + scrapedlink)
                 dispmsg.append(scrapedlink)
 
             if not displayifnotnew:

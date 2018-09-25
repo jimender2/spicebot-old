@@ -4,5 +4,5 @@ displayname =	Zits Comic
 url = http://zitscomics.com/
 time = //*[@id="comic-date"]/text()
 title = //*[@id="comic-date"]/text()
-link = //*[@id="post-51472"]/div[2]/form/img/text()
+link = url
 linkprecede = noprecede
