@@ -10,6 +10,7 @@ from BotShared import *
 
 
 # TODO a way to import stuff like this directly from other files?
+# TODO redirect dict, this == that
 commandsdict = {
                 "testa": {
                             "type": "simple",
