@@ -51,5 +51,5 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not myline:
         message = "To be " + fair + "..."
     else:
-        message = "To be " + fair + " + myline
+        message = "To be " + fair + "; " + myline
     osd(bot, trigger.sender, 'say', message)
