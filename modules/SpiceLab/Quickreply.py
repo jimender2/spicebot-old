@@ -10,6 +10,7 @@ from BotShared import *
 
 
 # TODO a way to import stuff like this directly from other files?
+# TODO redirect dict, this == that
 commandsdict = {
                 "testa": {
                             "type": "simple",
@@ -42,28 +43,41 @@ def watchallthethings(bot, trigger):
     if trigger.nick.lower() in bot_config_names(bot):
         return
 
+    # make sure first word starts with "."
     if not str(spicemanip(bot, trigger, 1)).startswith("."):
         return
 
+    # create arg list
     modcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+
+    # command issued
     modcom.dotcommand = spicemanip(bot, modcom.triggerargsarray, 1).lower().replace(".", "")
+
+    # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
+    if not modcom.dotcommand:
+        return
+
+    # remainder, if any is the new arg list
     modcom.triggerargsarray = spicemanip(bot, modcom.triggerargsarray, '2+')
 
+    # if there is nt a nested dictionary for the command requested, then privmsg and exit
     if modcom.dotcommand not in modcom.commandsdict.keys():
         osd(bot, trigger.sender, 'say', "I don't seem to have a command for " + modcom.dotcommand)
         return
 
+    # execute function based on command type
     modcom.commandtype = modcom.commandsdict[modcom.dotcommand]["type"]
-
     command_function_run = str('botfunction_' + modcom.commandtype + '(bot, trigger, modcom)')
     eval(command_function_run)
 
 
+# Simple quick replies
 def botfunction_simple(bot, trigger, modcom):
     reply = modcom.commandsdict[modcom.dotcommand]["reply"]
     osd(bot, trigger.sender, 'say', reply)
 
 
+# Quick replies with a target person TODO use the targetfinder logic
 def botfunction_target(bot, trigger, modcom):
 
     target = spicemanip(bot, modcom.triggerargsarray, 1)
