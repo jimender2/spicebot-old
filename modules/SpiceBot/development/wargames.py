@@ -35,4 +35,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif input == 'thermonuclear war':
         osd(bot, trigger.sender, 'say', "Initialising thermonuclear war")
     else:
-        ose(bot, trigger.sender, 'say', "Would you want to play a game?")
+        osd(bot, trigger.sender, 'say', "Would you want to play a game?")
