@@ -13,7 +13,7 @@ from BotShared import *
 
 databasekey = 'gmq'
 
-defaultoptions = ["Yippe Ki Ah Motherfucker"]
+defaultoptions = ["Yippee Ki Yay Motherfucker"]
 
 
 @sopel.module.commands('gmq', 'goodmoviequotes', 'moviequotes')
@@ -31,7 +31,6 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    """Check to see if there are Lifehacks and retrieve one."""
     command = spicemanip(bot, triggerargsarray, 1) or 'get'
     if not sayingscheck(bot, databasekey) and command != "add":
         sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
