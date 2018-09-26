@@ -66,6 +66,7 @@ def watchallthethings(bot, trigger):
 
     # if there is nt a nested dictionary for the command requested, then privmsg and exit
     if modcom.dotcommand not in modcom.commandsdict.keys():
+        return  # temp TODO
         osd(bot, trigger.sender, 'say', "I don't seem to have a command for " + modcom.dotcommand)
         return
 
