@@ -25,8 +25,31 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     myline = spicemanip(bot, triggerargsarray, 0)
+    rand = random.randint(1, 10)
+    i = 1
+    a = ''
+    while i <= rand:
+        a = a + 'a'
+        i = i + 1
+    i = 1
+    j = ''
+    while i <= rand:
+        j = j + 'i'
+        i = i + 1
+    i = 1
+    h = ''
+    while i <= rand:
+        h = h + 'h'
+        i = i + 1
+    i = 1
+    r = ''
+    while i <= rand:
+        r = r + 'r'
+        i = i + 1
+
+    fair = 'f' + a + j + h + r
     if not myline:
-        message = "To be faaaaaaiiiihhhrrrr..."
+        message = "To be " + fair + "..."
     else:
-        message = "To be faaaaaaiiiihhhrrrr; " + myline
+        message = "To be " + fair + " + myline
     osd(bot, trigger.sender, 'say', message)
