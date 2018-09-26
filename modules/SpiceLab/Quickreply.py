@@ -24,6 +24,10 @@ commandsdict = {
                             "type": "target",
                             "reply": "This is a target test directed at $target. Hopefully $target enjoys that kid of thing",
                             },
+                "testd": {
+                            "type": "test",
+                            "reply": "grrrr",
+                            },
                 }
 
 
