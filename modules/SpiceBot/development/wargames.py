@@ -33,6 +33,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif input == 'chess':
         osd(bot, trigger.sender, 'say', "Do you want to play thermonuclear war?")
     elif input == 'thermonuclear war':
-        osd(bot, trigger.sender, 'say', "Initialising thermonuclear war")
+        osd(bot, trigger.sender, 'say', "Wouldn't you like a good game of chess")
     else:
         osd(bot, trigger.sender, 'say', "Would you want to play a game?")
