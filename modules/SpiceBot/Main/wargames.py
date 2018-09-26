@@ -9,10 +9,13 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+# author jimender2
+# contributers none
 
-@sopel.module.commands('tbf')
+
+@sopel.module.commands('wargame','wargames','wg')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'tbf')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'wargame')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
@@ -24,32 +27,12 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    myline = spicemanip(bot, triggerargsarray, 0)
-    rand = random.randint(1, 10)
-    i = 1
-    a = ''
-    while i <= rand:
-        a = a + 'a'
-        i = i + 1
-    i = 1
-    j = ''
-    while i <= rand:
-        j = j + 'i'
-        i = i + 1
-    i = 1
-    h = ''
-    while i <= rand:
-        h = h + 'h'
-        i = i + 1
-    i = 1
-    r = ''
-    while i <= rand:
-        r = r + 'r'
-        i = i + 1
-
-    fair = 'f' + a + j + h + r
-    if not myline:
-        message = "To be " + fair + "..."
+    input = spicemanip(bot, triggerargsarray, 0)
+    if input == 'play':
+        osd(bot, trigger.sender, 'say', "Do you want to play thermonuclear war?")
+    elif input == 'chess':
+        osd(bot, trigger.sender, 'say', "Do you want to play thermonuclear war?")
+    elif input == 'thermonuclear war':
+        osd(bot, trigger.sender, 'say', "Wouldn't you like a good game of chess")
     else:
-        message = "To be " + fair + "; " + myline
-    osd(bot, trigger.sender, 'say', message)
+        osd(bot, trigger.sender, 'say', "Would you want to play a game?")

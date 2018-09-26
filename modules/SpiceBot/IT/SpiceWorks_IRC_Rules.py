@@ -41,6 +41,8 @@ def execute_main(bot, trigger):
                 myline = 'giggles'
             elif rulenumber == 34:
                 myline = 'If it exists, there is porn of it.'
+            elif rulenumber == 96:
+                myline = "Someone did something bad to get this."
             else:
                 try:
                     myline = lines[rulenumber-1]

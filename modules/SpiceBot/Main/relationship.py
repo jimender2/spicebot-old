@@ -5,14 +5,22 @@ import sopel.module
 import sys
 import os
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
+# author jimender2
 
-@sopel.module.commands('tbf')
+databasekey = 'relationship'
+
+defaultoptions = [
+            "Fuck everyone"]
+
+
+@sopel.module.commands('relationship')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'tbf')
+    """Check to see if module is enabled."""
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'lh')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
@@ -24,32 +32,8 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    myline = spicemanip(bot, triggerargsarray, 0)
-    rand = random.randint(1, 10)
-    i = 1
-    a = ''
-    while i <= rand:
-        a = a + 'a'
-        i = i + 1
-    i = 1
-    j = ''
-    while i <= rand:
-        j = j + 'i'
-        i = i + 1
-    i = 1
-    h = ''
-    while i <= rand:
-        h = h + 'h'
-        i = i + 1
-    i = 1
-    r = ''
-    while i <= rand:
-        r = r + 'r'
-        i = i + 1
-
-    fair = 'f' + a + j + h + r
-    if not myline:
-        message = "To be " + fair + "..."
-    else:
-        message = "To be " + fair + "; " + myline
+    command = spicemanip(bot, triggerargsarray, 1) or 'get'
+    if not sayingscheck(bot, databasekey) and command != "add":
+        sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
+    message = sayingsmodule(bot, databasekey, triggerargsarray, command)
     osd(bot, trigger.sender, 'say', message)
