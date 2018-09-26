@@ -48,6 +48,11 @@ def watchallthethings(bot, trigger):
 
     modcom.triggerargsarray = spicemanip(bot, trigger, 'create')
     modcom.dotcommand = spicemanip(bot, modcom.triggerargsarray, 1).lower().replace(".", "")
+
+    # patch for people typing "..."
+    if not modcom.dotcommand:
+        return
+
     modcom.triggerargsarray = spicemanip(bot, modcom.triggerargsarray, '2+')
 
     if modcom.dotcommand not in modcom.commandsdict.keys():
