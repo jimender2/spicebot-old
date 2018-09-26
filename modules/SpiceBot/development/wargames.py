@@ -28,11 +28,11 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     input = spicemanip(bot, triggerargsarray, 0)
-    if input = 'play':
+    if input == 'play':
         osd(bot, trigger.sender, 'say', "Do you want to play thermonuclear war?")
-    elif input = 'chess':
+    elif input == 'chess':
         osd(bot, trigger.sender, 'say', "Do you want to play thermonuclear war?")
-    elif input = 'thermonuclear war':
+    elif input == 'thermonuclear war':
         osd(bot, trigger.sender, 'say', "Initialising thermonuclear war")
     else:
         ose(bot, trigger.sender, 'say', "Would you want to play a game?")
