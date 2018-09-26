@@ -72,7 +72,10 @@ def watchallthethings(bot, trigger):
     # execute function based on command type
     modcom.commandtype = modcom.commandsdict[modcom.dotcommand]["type"]
     command_function_run = str('botfunction_' + modcom.commandtype + '(bot, trigger, modcom)')
-    eval(command_function_run)
+    try:
+        eval(command_function_run)
+    except NameError:
+        osd(bot, trigger.sender, 'say', "This command is not setup with a proper 'type'.")
 
 
 # Simple quick replies
