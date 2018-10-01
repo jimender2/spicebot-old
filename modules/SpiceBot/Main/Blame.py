@@ -47,7 +47,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             osd(bot, trigger.sender, 'say', "It's " + whotoblame + "'s fault.")
         elif forwhat.startswith('for'):
             osd(bot, trigger.sender, 'say', "I blame " + whotoblame + " " + str(forwhat) + ".")
-        elif forw.startswith('because'):
+        elif forwhat.startswith('because'):
             osd(bot, trigger.sender, 'say', "I blame " + whotoblame + " " + str(forwhat) + ".")
         else:
             osd(bot, trigger.sender, 'say', "I blame " + whotoblame + " for " + str(forwhat) + ".")
