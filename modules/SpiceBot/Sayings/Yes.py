@@ -14,7 +14,6 @@ databasekey = 'obviousyes'
 defaultoptions = [
     "Does the Pope shit in the woods?", "Are end-users horrifyingly stupid at times?", "would dysonparkes do this https://www.youtube.com/watch?v=TtC666biAUY", "Is stupidity infectious?",
     "Is Angie a lovely woman?", "Does licking a live wire hurt?"]
-alternatelanguages = []
 
 
 @sopel.module.commands(
