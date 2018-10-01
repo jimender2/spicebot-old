@@ -16,7 +16,11 @@ defaultoptions = [
     "Is ice warm?", "Not at all..."]
 
 
-@sopel.module.commands('no', 'nope', 'yeahnah')
+@sopel.module.commands(
+                        'no', 'nope', 'yeahnah', 'ag', 'ahneo', 'aï', 'aïlle', 'aita', 'aiwa', 'ala', 'ara', 'awa', 'bo', 'cha', 'ei', 'ez', 'hayir', 'hla', 'iié', 'illaï', 'jo', 'kadhu',
+                        'kâni', 'kaore', 'laa', 'le', 'lla', 'lo', 'mba', 'na', 'nae', 'nage', 'nahániri', 'nahin', 'naï', 'nann', 'nanni', 'não', 'ne', 'né', 'nee',
+                        'neen', 'nei', 'nein', 'nej', 'nem', 'neni', 'ni', 'nie', 'niet', 'non', 'nu', 'ohi', 'oya', 'rara', 'te', 'thay', 'tidak', 'tla', 'tsia',
+                        'ug', 've', 'votch', 'xeyir', 'yuk')
 def mainfunction(bot, trigger):
     """Check to see if the module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'no')
