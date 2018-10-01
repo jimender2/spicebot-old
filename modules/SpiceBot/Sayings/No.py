@@ -9,12 +9,16 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-commandarray = ["add", "remove", "count", "last"]
-# add reset and sort list
+
+databasekey = 'obviousno'
+defaultoptions = [
+    "Can you trust an End User?", "Is anyone in I.T. sane?", "Is there a God?", "Can you lick your elbow?",
+    "Is ice warm?", "Not at all..."]
 
 
 @sopel.module.commands('no', 'nope', 'yeahnah')
 def mainfunction(bot, trigger):
+    """Check to see if the module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'no')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
@@ -27,37 +31,9 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    instigator = trigger.nick
-    inchannel = trigger.sender
-    databasekey = 'obviousno'
-    command = spicemanip(bot, triggerargsarray, 1)
-    inputstring = spicemanip(bot, triggerargsarray, '2+')
-    existingarray = get_database_value(bot, bot.nick, databasekey) or []
-    if command in commandarray:
-        if command == "add":
-            if inputstring not in existingarray:
-                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
-                message = "Added to database."
-            else:
-                message = "That is already in the database."
-        elif command == "remove":
-            if inputstring not in existingarray:
-                message = "That was not found in the database."
-            else:
-                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
-                message = "Removed from database."
-        elif command == "count":
-            messagecount = len(existingarray)
-            message = "There are currently " + str(messagecount) + " responses in the database for that."
-        # elif command == "list":
-        #    if inchannel.startswith("#"):
-        #        message = "List can only be run in privmsg to avoid flooding."
-        #    else:
-        #        message = spicemanip(bot, existingarray, "list")
-        elif command == "last":
-            message = spicemanip(bot, existingarray, "last")
-    else:
-        message = spicemanip(bot, existingarray, "random") or ''
-        if message == '':
-            message = "No response found. Have any been added?"
+    """Retrieve a saying for the given database key."""
+    command = spicemanip(bot, triggerargsarray, 1) or 'get'
+    if not sayingscheck(bot, databasekey) and command != "add":
+        sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
+    message = sayingsmodule(bot, databasekey, triggerargsarray, command)
     osd(bot, trigger.sender, 'say', message)
