@@ -14,9 +14,13 @@ databasekey = 'obviousyes'
 defaultoptions = [
     "Does the Pope shit in the woods?", "Are end-users horrifyingly stupid at times?", "would dysonparkes do this https://www.youtube.com/watch?v=TtC666biAUY", "Is stupidity infectious?",
     "Is Angie a lovely woman?", "Does licking a live wire hurt?"]
+alternatelanguages = []
 
 
-@sopel.module.commands('yes', 'yep', 'yeahnahyeah')
+@sopel.module.commands(
+                    'yes', 'yep', 'yeahnahyeah', 'ae', 'ano', 'avunu', 'awo', 'aye', 'ayo', 'baht', 'bai', 'beeni', 'beli', 'cha', 'da', 'dai', 'diakh', 'ein', 'eny', 'ere', 'evet', 'ha', 'hai',
+                    'han-ji', 'hoon', 'igen', 'io', 'iva', 'iya', 'ja', 'jah', 'jes', 'jo', 'ken', 'ki', 'kyllä', 'ndiyo', 'ne', 'oui', 'ova', 'ovu', 'oyi', 'po', 'sci', 'se', 'si', 'sim', 'taip',
+                    'tak', 'vaer', 'vais', 'veire', 'vethe', 'waaw', 'wah', 'wi', 'ya', 'yan', 'ydw', 'yea', 'yebo', 'yego', 'yo', 'yoh')
 def mainfunction(bot, trigger):
     """Check to see if the module is enabled or not."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'yes')
