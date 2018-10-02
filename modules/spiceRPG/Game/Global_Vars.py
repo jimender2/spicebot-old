@@ -10,8 +10,6 @@ OSD
 """
 
 
-testpush = 1
-
 # How Many characters to put on the display
 osd_limit = 420
 
