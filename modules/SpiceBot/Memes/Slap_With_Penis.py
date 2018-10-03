@@ -9,13 +9,13 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-penistypes = ["Pike", "Carp", "Marlin", "Trout", "Cod", "Anchovy", "Venezuelan Beaverpenis", "penis", "Ocean Sunpenis", "Blobpenis", "Red-bellied Pacu", "Oyster Toadpenis",
-              "Slippery Dick", "Humuhumunukunukuāpuaʻa", "Giant Goliath Tiger penis", "Red-lipped Batpenis", "Suckermouth Catpenis", "Northern Red Snapper", "Tasseled Wobbegong", "Sarcastic Fringehead",
+penistypes = ["Venezuelan Beaverpenis", "penis", "Ocean Sunpenis", "Blobpenis", "Oyster Toadpenis",
+              "Slippery Dick", "Humuhumunukunukuāpuaʻa", "Giant Goliath Tiger penis", "Red-lipped Batpenis", "Suckermouth Catpenis",
               "Collared Carpetshark", "Naked-back Knifepenis"]
 vowels = ('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U')
 
 
-@sopel.module.commands('penis')
+@sopel.module.commands('penis', 'dickslap')
 def mainfunction(bot, trigger):
     """Check to see if module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'penis')
