@@ -30,7 +30,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    """Slap some bitch with a penis. Unless it's bear`. He gets fed a tasty penis."""
+    """Slap some bitch with a penis."""
     target = spicemanip(bot, triggerargsarray, 1)
     reason = spicemanip(bot, triggerargsarray, '2+')
     message = "Whoops, something went wrong."
