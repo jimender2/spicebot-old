@@ -95,6 +95,7 @@ def setup(self):
 @example('$nickname, tell Embolalia he broke something again.')
 def execute_main(bot, trigger):
     """Give someone a message the next time they're seen"""
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     teller = trigger.nick
     verb = trigger.group(1)
 
@@ -103,7 +104,8 @@ def execute_main(bot, trigger):
         return
 
     tellee = trigger.group(3).rstrip('.,:;')
-    msg = trigger.group(2).lstrip(tellee).lstrip()
+    #msg = trigger.group(2).lstrip(tellee).lstrip()
+    msg = spicemanip(bot, triggerargsarray, '2+')
     message = str(trigger.group(0))
 
     if not msg:
