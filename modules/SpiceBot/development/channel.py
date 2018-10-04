@@ -9,7 +9,9 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-# author yournamehere
+# author dysonparkes
+
+freenodechannels = ["##spicebot", "##spicebottest", "#spiceworks"]
 
 
 @sopel.module.commands('chaninfo')
@@ -27,5 +29,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     channel = trigger.sender
-    host = trigger.host
-    osd(bot, trigger.sender, 'say', channel + host)
+    if(channel in freenodechannels):
+        osd(bot, trigger.sender, 'say', "This channel appears to be a freenode one.")
+    else:
+        osd(bot, trigger.sender, 'say', "Screw freenode!")
