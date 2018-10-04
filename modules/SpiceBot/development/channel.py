@@ -26,5 +26,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    channel = trigger.sender()
+    channel = trigger.sender
     osd(bot, trigger.sender, 'say', string(channel))
