@@ -123,7 +123,6 @@ def execute_main(bot, trigger):
     if tellee not in (Identifier(teller), bot.nick, 'me'):
         tz = get_timezone(bot.db, bot.config, None, tellee)
         timenow = format_time(bot.db, bot.config, tz, tellee)
-        msg = msg.lstrip('please').rstrip('please').lstrip().rstrip()
         bot.memory['tell_lock'].acquire()
         try:
             if tellee not in bot.memory['reminders']:
