@@ -13,7 +13,7 @@ from BotShared import *
 # contributers none
 
 
-@sopel.module.commands('got')
+@sopel.module.commands('got', 'milk')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'got')
     if not enablestatus:
@@ -30,4 +30,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     command = spicemanip(bot, triggerargsarray, '1+')
     if not command:
         command = "milk"
-    osd(bot, trigger.sender, 'say', "Got" + command + "??")
+    osd(bot, trigger.sender, 'say', "Got " + command + "?")
