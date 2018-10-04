@@ -14,7 +14,6 @@ from BotShared import *
 
 # Commands that work in privmsg
 privcmdlist = ['check', 'admin', 'bladder', 'fridge']
-
 # Admin Commands
 admincommands = ['reset']
 
@@ -41,10 +40,23 @@ bladdersize = 10
 claimcost = 2
 SeanCost = 1
 
+claim_info = {
+                "fridge_items": {
+                        "Gatorade": 0,
+                        "Water": 0,
+                        "Soda": 0,
+                        "Beer": 0},
+                "bladder": 10,
+                "claimcost": 2,
+                "master": "",
+                "slaves": [],
+                "claimedon": ""
+            }
+
 
 @sopel.module.commands('claim')
 def mainfunction(bot, trigger):
-    """Function to check if module is enabled."""
+    """Check if module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
@@ -135,14 +147,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 osd(bot, trigger.sender, 'say', admintarget + "has " + str(int(bladdercontents/SeanCost)) + " claims left in his almighty bladder.")
             else:
                 osd(bot, trigger.sender, 'say', admintarget + " has " + str(int(bladdercontents/claimcost)) + " claims left in their bladder at present.")
-
-    # The fridge houses your drinks (similar to loot). You can buy them with spicebucks
-    elif target.lower() == 'fridge':
-        okaytoclaim = 0
-        if not admintarget:
-            admintarget = instigator
-        fridgecontents = bot.db.get_nick_value(admintarget, 'fridgecontents')
-        osd(bot, trigger.sender, 'say', "The fridge is a Work in Progress, " + admintarget)
 
     # Admin functions
     elif target.lower() == 'admin':
@@ -287,6 +291,20 @@ def spicebucks(bot, target, plusminus, amount):
         # osd(bot, trigger.sender, 'say', "The amount you entered does not appear to be a number.  Transaction failed.")
         success = 'false'
     return success  # returns simple true or false so modules can check the if tranaction was a success
+
+
+def fridge_interactions(bot, target, action, item):
+    fridgecontents = claim_info[fridge_items]
+    return fridgecontents
+
+
+def bladder_interactions(bot, target, action):
+    bladder_level = claim_info[bladder]
+    bladder_cost = claim_info[claimcost]
+    if bladder_level > bladder_cost:
+        return true
+    else:
+        return false
 
 
 @sopel.module.interval(1800)  # 30 minute automation
