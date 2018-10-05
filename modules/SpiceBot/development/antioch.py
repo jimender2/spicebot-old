@@ -26,4 +26,6 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "And the LORD spake, saying, \"First shalt thou take out the Holy Pin, then shalt thou count to three, no more, no less. Three shall be the number thou shalt count, and the number of the counting shall be three. Four shalt thou not count, neither count thou two, excepting that thou then proceed to three. Five is right out. Once the number three, being the third number, be reached, then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who, being naught in My sight, shall snuff it\"")
+    osd(bot, trigger.sender, 'say', "And the LORD spoke, saying, \"First shalt thou take out the Holy Pin, then shalt thou count to three, no more, no less.")
+    osd(bot, trigger.sender, 'say', "Three shall be the number thou shalt count, and the number of the counting shall be three. Four shalt thou not count, neither count thou two, excepting that thou then proceed to three.")
+    osd(bot, trigger.sender, 'say', "Five is right out. Once the number three, being the third number, be reached, then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who, being naught in My sight, shall snuff it\"")
