@@ -11,8 +11,7 @@ from BotShared import *
 
 
 databasekey = 'maybe'
-defaultoptions = [
-    "Possibly (In wife talk: hell no)", "Lets come back to this", "Lets think about it"]
+defaultoptions = ["Possibly (In wife talk: hell no)", "Lets come back to this", "Lets think about it"]
 
 
 @sopel.module.commands('maybe', 'possible')
