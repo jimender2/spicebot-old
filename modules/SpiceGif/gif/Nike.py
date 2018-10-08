@@ -19,6 +19,7 @@ from GifShared import *
 
 @sopel.module.commands('nike')
 def mainfunction(bot, trigger):
+    """Check to see if module is enabled, and if multiple terms have been specified."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
@@ -31,6 +32,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    """Retrieve a gif for each specified search term."""
     gif = getGif_all(bot, "Just do it", 'random')
     if gif["querysuccess"]:
         osd(bot, trigger.sender, 'say', "%s Result (#%s): %s" % (gif['gifapi'].title(), gif['returnnum'], gif['returnurl']))
