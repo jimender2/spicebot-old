@@ -81,6 +81,33 @@ def mainfunction(bot, trigger):
             execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    """Establish whether we're trying to claim or work with an item."""
+    inchannel = trigger.sender  # Channel name
+    todaydate = datetime.date.today()  # Todays date for maths
+    storedate = str(todaydate)  # Todays date for storage
+    botnicks = bot_config_names(bot)  # List all Bots (can't claim them either)
+    instigator = trigger.nick  # who started it?
+
+    target = spicemanip(bot, triggerargsarray, 1)  # target or action
+    admintarget = spicemanip(bot, triggerargsarray, 2)  # if action, now target
+
+    # LOAD TARGET INFO TO MEMORY (or create new)
+    # LOAD INSTIGATOR INFO TO MEMORY (or create new)
+    mastername = player_info[claimedby] or ''  # Who has the claim now?
+    # Good to claim?
+    okaytoclaim = 1
+
+    # Make sure claims happen in channel, not privmsg
+    if not inchannel.startswith("#") and target not in privcmdlist:
+        okaytoclaim = 0
+        osd(bot, trigger.sender, 'say', "Claims must be done in channel")
+
+    # Handle if no target is specified
+    elif not target:
+        okaytoclaim = 0
+        osd(bot, trigger.sender, 'say', "Who do you want to claim?")
+
 
 
 def spicebucks(bot, target, plusminus, amount):
