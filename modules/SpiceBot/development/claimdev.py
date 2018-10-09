@@ -109,6 +109,13 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'say', "Who do you want to claim?")
 
 
+def channel_check(bot, channel):
+    """Check to see if this is a channel or a privmsg."""
+    if channel in channel_list:
+        return False
+    else:
+        return True
+
 
 def spicebucks(bot, target, plusminus, amount):
     """Add or remove Spicebucks from account."""
