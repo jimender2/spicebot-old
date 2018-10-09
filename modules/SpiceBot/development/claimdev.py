@@ -12,17 +12,28 @@ sys.path.append(shareddir)
 from BotShared import *
 # import Spicebucks
 
-# Commands that work in privmsg
-privcmdlist = ['check', 'admin', 'bladder', 'fridge', 'admin']
-# Admin Commands
-admincommands = ['reset']
+privcmdlist = ['check', 'admin', 'bladder', 'fridge', 'admin']  # Commands that work in privmsg
+admincommands = ['reset']  # Admin Commands
+protectednicks = ['rycuda', 'Tech_Angel']  # Users who cannot be claimed
+creatornicks = ["IT_Sean"]  # Users who get godlike recognition
+reclaimtime = 7  # Time before a user can be claimed again
 
-# Protected users
-protectednicks = ['rycuda', 'Tech_Angel']
-# Creator user
-creatornicks = ["IT_Sean"]
+reward_info = {
+                        "firstclaim": {
+                                        "Value": 10,
+                                        "Action": "plus"},
+                        "renewclaim": {
+                                        "Value": 5,
+                                        "Action": "plus"},
+                        "stolenclaim": {
+                                        "Value": 20,
+                                        "Action": "plus"},
+                        "masterclaim": {
+                                        "Value": 10,
+                                        "Action": "minus"}
+}
 
-drinks_list = {
+item_info = {
                 "Gatorade": {
                                 "Cost": 5,
                                 "RefillValue": 4,
@@ -40,15 +51,6 @@ drinks_list = {
                                 "RefillValue": 5,
                                 "MaximumHeld": 12}
 }
-
-# Days before reclaim available
-maxtime = 7
-
-# Spicebuck reward values
-firstclaim = 10
-renewclaim = 5
-stolenclaim = 20
-masterclaim = -10  # Take, not give
 
 player_info = {
                 "fridge_items": {
