@@ -19,7 +19,7 @@ defaultoptions = [
 @sopel.module.commands(
                     'yes', 'yep', 'yeahnahyeah', 'ae', 'ano', 'avunu', 'awo', 'aye', 'ayo', 'baht', 'bai', 'beeni', 'beli', 'cha', 'da', 'dai', 'diakh', 'ein', 'eny', 'ere', 'evet', 'ha', 'hai',
                     'han-ji', 'hoon', 'igen', 'io', 'iva', 'iya', 'ja', 'jah', 'jes', 'jo', 'ken', 'ki', 'kyllä', 'ndiyo', 'ne', 'oui', 'ova', 'ovu', 'oyi', 'po', 'sci', 'se', 'si', 'sim', 'taip',
-                    'tak', 'vaer', 'vais', 'veire', 'vethe', 'waaw', 'wah', 'wi', 'ya', 'yan', 'ydw', 'yea', 'yebo', 'yego', 'yo', 'yoh')
+                    'tak', 'vaer', 'vais', 'veire', 'vethe', 'waaw', 'wi', 'ya', 'yan', 'ydw', 'yea', 'yebo', 'yego', 'yo', 'yoh')
 def mainfunction(bot, trigger):
     """Check to see if the module is enabled or not."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'yes')
