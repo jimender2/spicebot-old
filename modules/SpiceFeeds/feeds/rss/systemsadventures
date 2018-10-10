@@ -1,0 +1,13 @@
+[configuration]
+type = rss
+displayname = Systems & Adventures
+url = https://medium.com/feed/systems-adventures
+lastbuildtype = pubDate
+lastbuildparent = 0
+lastbuildchild = 0
+titletype = title
+titleparent = 2
+titlechild = 0
+linktype = link
+linkparent = 2
+linkchild = 0
