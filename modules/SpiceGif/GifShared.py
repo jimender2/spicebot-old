@@ -69,7 +69,6 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
         returngifdict["error"] = 'No Results for this search'
         return returngifdict
     data = json.loads(urllib2.urlopen(url).read())
-    bot.say("giphy")
 
     # Verify there are results
     results = data['data']
@@ -145,7 +144,6 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
         returngifdict["error"] = 'No Results for this search'
         return returngifdict
     data = json.loads(urllib2.urlopen(url).read())
-    bot.say("tenor")
 
     # Verify there are results
     results = data['results']
@@ -220,7 +218,6 @@ def getGif_gfycat(bot, query, searchnum, searchlimit=gfycatlimit):
 
     url = 'https://api.gfycat.com/v1/gfycats/search?search_text=' + str(searchquery) + '&count=' + str(searchlimit)
 
-    url = str(baseurl + checksite)
     page = requests.get(url, headers=None)
     if page.status_code != 200:
         returngifdict["error"] = 'No Results for this search'
