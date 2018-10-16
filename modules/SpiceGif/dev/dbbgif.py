@@ -11,17 +11,17 @@ import os
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from BotShared import *
 gifshareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(gifshareddir)
+from BotShared import *
 from GifShared import *
 
-# author afsgsadfgsdfg
+# author deathbybandaid
 
 
 @sopel.module.commands('dbbgif')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'borg')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
@@ -33,12 +33,10 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif = getGif(bot, {"query": "star trek", "gifsearch": 'tenor'})
-    rand = random.randint(1, 5)
-    if rand == 1:
-        osd(bot, trigger.sender, 'say', "Resistance is futile")
-    else:
-        if gif["querysuccess"]:
-            osd(bot, trigger.sender, 'say', "%s Result (#%s): %s" % (gif['gifapi'].title(), gif['returnnum'], gif['returnurl']))
-        else:
-            osd(bot, trigger.sender, 'action', 'is not a contender for the Darwin award, thank fuck.')
+    query = spicemanip(bot, triggerargsarray, 0)
+    gifdict = getGif_gifme(bot, {"query": query, "gifsearch": 'giphy'})
+    if not gifdict["querysuccess"]:
+        osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
+        return
+
+    osd(bot, trigger.sender, 'say',  "Gifme Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
