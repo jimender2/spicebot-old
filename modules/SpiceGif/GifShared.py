@@ -407,7 +407,43 @@ def getGif_all(bot, searchdict):
 
 def getGif(bot, searchdict):
 
-    searchdict = gif_searchdict_check(bot, searchdict)
+    # list of defaults
+    query_defaults = {
+                    "query": None,
+                    "searchnum": 'random',
+                    "gifsearch": valid_gif_api,
+                    "searchlimit": 50,
+                    "nsfw": False,
+                    }
+
+    # set defaults if they don't exist
+    for key in query_defaults:
+        if key not in searchdict.keys():
+            searchdict[key] = query_defaults[key]
+
+    # Make sure there is a valid input of query and search number
+    if not searchdict["query"]:
+        gifdict["error"] = 'No Query to Search'
+        return gifdict
+
+    # set api usage
+    if not isinstance(searchdict['gifsearch'], list):
+        if str(searchdict['gifsearch']) in valid_gif_api:
+            searchdict['gifsearch'] = [searchdict['gifsearch']]
+        else:
+            searchdict['gifsearch'] = valid_gif_api
+    else:
+        for apis in searchdict['gifsearch']:
+            if apis not in valid_gif_api:
+                searchdict['gifsearch'].remove(apis)
+
+    # Verify search limit
+    if not isinstance(searchdict['searchlimit'], int):
+        searchdict['searchlimit'] = 50
+
+    # Random handling for searchnum
+    if searchdict["searchnum"] == 'random':
+        searchdict["searchnum"] = randint(0, searchdict['searchlimit'])
 
     gifdict = {
                     "query": searchdict["query"],
@@ -420,11 +456,7 @@ def getGif(bot, searchdict):
                     "allgifs": []
                     }
 
-    # Make sure there is a valid input of query and search number
-    if not searchdict["query"]:
-        gifdict["error"] = 'No Query to Search'
-        return gifdict
-    if not str(searchdict["searchnum"]).isdigit() and searchdict["searchnum"] != 'random':
+    if not str(searchdict["searchnum"]).isdigit():
         gifdict["error"] = 'No Search Number or Random Specified'
         return gifdict
 
@@ -437,20 +469,19 @@ def getGif(bot, searchdict):
 
     if gifapiresults == []:
         gifdict = {
-                        "query": searchdict["query"],
-                        "searchquery": searchdict["query"],
-                        "querysuccess": False,
-                        "returnnum": None,
-                        "returnurl": None,
-                        "error": None,
-                        "gifapi": None
-                        }
-        gifdict["error"] = 'No Results were found for ' + searchdict["query"] + ' in any api'
+                    "query": searchdict["query"],
+                    "searchquery": searchdict["query"],
+                    "querysuccess": False,
+                    }
+        gifdict["error"] = "No Results were found for " + searchdict["query"] + " in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"
         return gifdict
 
+    # shuffle and select random entry
     random.shuffle(gifapiresults)
     random.shuffle(gifapiresults)
     gifdict = spicemanip(bot, gifapiresults, 'random')
+
+    # return dict
     return gifdict
 
 
@@ -460,7 +491,6 @@ Query Defaults
 
 
 def gif_searchdict_check(bot, searchdict):
-    bot.say(str(searchdict))
 
     # list of defaults
     query_defaults = {
@@ -496,5 +526,4 @@ def gif_searchdict_check(bot, searchdict):
         searchdict["searchnum"] = randint(0, searchdict['searchlimit'])
 
     # return search dictionary now that it has been processed
-    bot.say(str(searchdict))
     return searchdict
