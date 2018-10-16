@@ -151,7 +151,9 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
     for result in results:
         cururl = result['url']
         if str(cururl).endswith(".gif"):
-            resultsarray.append(cururl)
+            curlpage = requests.get(url, headers=None)
+            if curlpage.status_code == 200:
+                resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
@@ -232,7 +234,9 @@ def getGif_gfycat(bot, query, searchnum, searchlimit=gfycatlimit):
     for result in results:
         cururl = result['gifUrl']
         if str(cururl).endswith(".gif"):
-            resultsarray.append(cururl)
+            curlpage = requests.get(url, headers=None)
+            if curlpage.status_code == 200:
+                resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
@@ -313,7 +317,9 @@ def getGif_gifme(bot, query, searchnum, searchlimit=gifmelimit):
         cururl = result['link']
         if not str(cururl).startswith("http://forgifs.com"):
             if str(cururl).endswith(".gif"):
-                resultsarray.append(cururl)
+                curlpage = requests.get(url, headers=None)
+                if curlpage.status_code == 200:
+                    resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
