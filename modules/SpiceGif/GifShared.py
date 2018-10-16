@@ -305,6 +305,7 @@ def getGif_gifme(bot, query, searchnum, searchlimit=gifmelimit):
     data = json.loads(urllib2.urlopen(url).read())
 
     # Verify there are results
+    bot.say(str(url))
     results = data['gfycats']
     resultsarray = []
     for result in results:
