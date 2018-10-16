@@ -17,4 +17,5 @@ def execute_main(bot, trigger):
     if trigger.group(1) == "whois" and trigger.group(2).lower() == "therealslimshady":
         osd(bot, trigger.sender, 'say', "Im Slim Shady, yes I'm the real Shady.")
         osd(bot, trigger.sender, 'action', "stands up.")
-    osd(bot, trigger.sender, 'say', 'I believe you wanted to say ' + "/" + trigger.group(1) + " " + spicemanip(bot, triggerargsarray, 0))
+    else:
+        osd(bot, trigger.sender, 'say', 'I believe you wanted to say ' + "/" + trigger.group(1) + " " + spicemanip(bot, triggerargsarray, 0))
