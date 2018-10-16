@@ -258,6 +258,85 @@ def getGif_gfycat(bot, query, searchnum, searchlimit=gfycatlimit):
 
 
 """
+gifme.io
+"""
+
+
+gifmeapi_key = 'rX7kbMzkGu7WJwvG'
+gifmelimit = 50
+
+
+def getGif_gifme(bot, query, searchnum, searchlimit=gifmelimit):
+
+    returngifdict = {
+                    "query": query,
+                    "searchquery": query,
+                    "querysuccess": False,
+                    "returnnum": searchnum,
+                    "returnurl": None,
+                    "error": None,
+                    "gifapi": 'gifme',
+                    "allgifs": []
+                    }
+
+    # Make sure there is a valid input of query and search number
+    if not query:
+        returngifdict["error"] = 'No Query to Search'
+        return returngifdict
+    if not str(searchnum).isdigit() and searchnum != 'random':
+        returngifdict["error"] = 'No Search Number or Random Specified'
+        return returngifdict
+
+    # spaces in query
+    searchquery = query.replace(' ', '%20')
+    returngifdict["searchquery"] = searchquery
+
+    # Random
+    if searchnum == 'random':
+        searchnum = randint(0, searchlimit)
+
+    url = 'http://api.gifme.io/v1/search/query=' + str(searchquery) + '&limit=' + str(searchlimit) + '&nsfw=true' + '&key=' + str(tenorapi)
+
+    page = requests.get(url, headers=None)
+    if page.status_code == 500:
+        returngifdict["error"] = 'No Results for this search'
+        return returngifdict
+
+    data = json.loads(urllib2.urlopen(url).read())
+
+    # Verify there are results
+    results = data['gfycats']
+    resultsarray = []
+    for result in results:
+        cururl = result['gifUrl']
+        resultsarray.append(cururl)
+
+    resultsamount = len(resultsarray)
+    if resultsarray == []:
+        returngifdict["error"] = 'No Gifme Results were found for ' + returngifdict['query']
+        return returngifdict
+    returngifdict["querysuccess"] = True
+
+    allresults = []
+    tempresultnum = 0
+    for tempresult in resultsarray:
+        tempdict = returngifdict.copy()
+        tempdict["returnnum"] = tempresultnum
+        tempdict["returnurl"] = tempresult
+        tempresultnum += 1
+        allresults.append(tempdict)
+    returngifdict["allgifs"] = allresults
+
+    if int(searchnum) > int(resultsamount - 1):
+        searchnum = randint(0, resultsamount - 1)
+    returngifdict["returnnum"] = searchnum
+
+    returngifdict["returnurl"] = resultsarray[searchnum]
+
+    return returngifdict
+
+
+"""
 All
 """
 
