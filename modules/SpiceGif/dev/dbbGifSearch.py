@@ -19,10 +19,11 @@ from GifShared import *
 # author deathbybandaid
 
 
-@sopel.module.commands('dbbgif')
+@sopel.module.commands('dbbgif', 'dbbtenor', 'dbbgiphy', 'dbbgfycat', 'dbbgifme')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
+        botcom.commandused = trigger.group(1)
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
         if commands_array == []:
@@ -33,10 +34,14 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+
+    bot.say(str(botcom.commandused))
+
     query = spicemanip(bot, triggerargsarray, 0)
-    gifdict = getGif(bot, {"query": query, "gifsearch": ['giphy', 'tenor']})
+    gifdict = getGif_all(bot, {"query": query})
+
     if not gifdict["querysuccess"]:
         osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
         return
 
-    osd(bot, trigger.sender, 'say',  "Gifme Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
+    osd(bot, trigger.sender, 'say',  gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
