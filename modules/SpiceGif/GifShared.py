@@ -313,8 +313,8 @@ def getGif_gifme(bot, query, searchnum, searchlimit=gifmelimit):
     resultsarray = []
     for result in results:
         cururl = result['link']
-        brokensites = ["http://forgifs.com", "http://a.dilcdn.com", "http://www.bestgifever.com", "http://s3-ec.buzzfed.com", "http://i.minus.com", "http://fap.to"]
-        if not str(cururl).startswith(tuple(brokensites)):
+        dontusesites = ["http://forgifs.com", "http://a.dilcdn.com", "http://www.bestgifever.com", "http://s3-ec.buzzfed.com", "http://i.minus.com", "http://fap.to"]
+        if not str(cururl).startswith(tuple(dontusesites)):
             if str(cururl).endswith(".gif"):
                 resultsarray.append(cururl)
 
