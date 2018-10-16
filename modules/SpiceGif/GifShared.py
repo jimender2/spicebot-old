@@ -407,6 +407,7 @@ Query Defaults
 
 
 def gif_searchdict_check(bot, searchdict):
+    bot.say(str(searchdict))
 
     # list of defaults
     query_defaults = {
@@ -441,4 +442,5 @@ def gif_searchdict_check(bot, searchdict):
         searchdict["searchnum"] = randint(0, searchdict['searchlimit'])
 
     # return search dictionary now that it has been processed
+    bot.say(str(searchdict))
     return searchdict
