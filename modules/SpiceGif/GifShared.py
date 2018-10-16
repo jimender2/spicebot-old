@@ -23,7 +23,7 @@ config = ConfigParser.ConfigParser()
 config.read("/home/spicebot/spicebot.conf")
 
 # Valid Gif api's
-valid_gif_api = ['giphy', 'tenor', 'gfycat']
+valid_gif_api = ['giphy', 'tenor', 'gfycat', 'gifme']
 
 
 """
