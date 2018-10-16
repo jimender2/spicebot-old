@@ -35,35 +35,35 @@ giphyapi = config.get("giphy", "apikey")
 giphylimit = 50
 
 
-def getGif_giphy(bot, searchdict, query, searchnum, searchlimit=giphylimit):
+def getGif_giphy(bot, searchdict, searchlimit=giphylimit):
 
     searchdict = gif_searchdict_check(bot, searchdict)
 
     returngifdict = {
-                    "query": query,
-                    "searchquery": query,
+                    "query": searchdict["query"],
+                    "searchquery": searchdict["query"],
                     "querysuccess": False,
-                    "returnnum": searchnum,
+                    "returnnum": searchdict["searchnum"],
                     "returnurl": None,
                     "error": None,
                     "gifapi": 'giphy'
                     }
 
     # Make sure there is a valid input of query and search number
-    if not query:
+    if not searchdict["query"]:
         returngifdict["error"] = 'No Query to Search'
         return returngifdict
-    if not str(searchnum).isdigit() and searchnum != 'random':
+    if not str(searchdict["searchnum"]).isdigit() and searchdict["searchnum"] != 'random':
         returngifdict["error"] = 'No Search Number or Random Specified'
         return returngifdict
 
     # spaces in query
-    searchquery = query.replace(' ', '%20')
+    searchquery = searchdict["query"].replace(' ', '%20')
     returngifdict["searchquery"] = searchquery
 
     # Random
-    if searchnum == 'random':
-        searchnum = randint(0, searchlimit)
+    if searchdict["searchnum"] == 'random':
+        searchdict["searchnum"] = randint(0, searchlimit)
 
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(searchquery) + '&api_key=' + str(giphyapi) + '&limit=' + str(searchlimit)
     page = requests.get(url, headers=None)
@@ -96,11 +96,11 @@ def getGif_giphy(bot, searchdict, query, searchnum, searchlimit=giphylimit):
         allresults.append(tempdict)
     returngifdict["allgifs"] = allresults
 
-    if int(searchnum) > int(resultsamount - 1):
-        searchnum = randint(0, resultsamount - 1)
-    returngifdict["returnnum"] = searchnum
+    if int(searchdict["searchnum"]) > int(resultsamount - 1):
+        searchdict["searchnum"] = randint(0, resultsamount - 1)
+    returngifdict["returnnum"] = searchdict["searchnum"]
 
-    returngifdict["returnurl"] = resultsarray[searchnum]
+    returngifdict["returnurl"] = resultsarray[searchdict["searchnum"]]
 
     return returngifdict
 
@@ -113,15 +113,15 @@ tenorapi = config.get("tenor", "apikey")
 tenorlimit = 50
 
 
-def getGif_tenor(bot, searchdict, query, searchnum, searchlimit=tenorlimit):
+def getGif_tenor(bot, searchdict, searchlimit=tenorlimit):
 
     searchdict = gif_searchdict_check(bot, searchdict)
 
     returngifdict = {
-                    "query": query,
-                    "searchquery": query,
+                    "query": searchdict["query"],
+                    "searchquery": searchdict["query"],
                     "querysuccess": False,
-                    "returnnum": searchnum,
+                    "returnnum": searchdict["searchnum"],
                     "returnurl": None,
                     "error": None,
                     "gifapi": 'tenor',
@@ -129,20 +129,20 @@ def getGif_tenor(bot, searchdict, query, searchnum, searchlimit=tenorlimit):
                     }
 
     # Make sure there is a valid input of query and search number
-    if not query:
+    if not searchdict["query"]:
         returngifdict["error"] = 'No Query to Search'
         return returngifdict
-    if not str(searchnum).isdigit() and searchnum != 'random':
+    if not str(searchdict["searchnum"]).isdigit() and searchdict["searchnum"] != 'random':
         returngifdict["error"] = 'No Search Number or Random Specified'
         return returngifdict
 
     # spaces in query
-    searchquery = query.replace(' ', '%20')
+    searchquery = searchdict["query"].replace(' ', '%20')
     returngifdict["searchquery"] = searchquery
 
     # Random
-    if searchnum == 'random':
-        searchnum = randint(0, searchlimit)
+    if searchdict["searchnum"] == 'random':
+        searchdict["searchnum"] = randint(0, searchlimit)
 
     url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchlimit) + '&contentfilter=off'
     page = requests.get(url, headers=None)
@@ -175,11 +175,11 @@ def getGif_tenor(bot, searchdict, query, searchnum, searchlimit=tenorlimit):
         allresults.append(tempdict)
     returngifdict["allgifs"] = allresults
 
-    if int(searchnum) > int(resultsamount - 1):
-        searchnum = randint(0, resultsamount - 1)
-    returngifdict["returnnum"] = searchnum
+    if int(searchdict["searchnum"]) > int(resultsamount - 1):
+        searchdict["searchnum"] = randint(0, resultsamount - 1)
+    returngifdict["returnnum"] = searchdict["searchnum"]
 
-    returngifdict["returnurl"] = resultsarray[searchnum]
+    returngifdict["returnurl"] = resultsarray[searchdict["searchnum"]]
 
     return returngifdict
 
@@ -194,15 +194,15 @@ gfycatapi_key = config.get("gfycat", "client_secret")
 gfycatlimit = 50
 
 
-def getGif_gfycat(bot, searchdict, query, searchnum, searchlimit=gfycatlimit):
+def getGif_gfycat(bot, searchdict, searchlimit=gfycatlimit):
 
     searchdict = gif_searchdict_check(bot, searchdict)
 
     returngifdict = {
-                    "query": query,
-                    "searchquery": query,
+                    "query": searchdict["query"],
+                    "searchquery": searchdict["query"],
                     "querysuccess": False,
-                    "returnnum": searchnum,
+                    "returnnum": searchdict["searchnum"],
                     "returnurl": None,
                     "error": None,
                     "gifapi": 'gfycat',
@@ -210,20 +210,20 @@ def getGif_gfycat(bot, searchdict, query, searchnum, searchlimit=gfycatlimit):
                     }
 
     # Make sure there is a valid input of query and search number
-    if not query:
+    if not searchdict["query"]:
         returngifdict["error"] = 'No Query to Search'
         return returngifdict
-    if not str(searchnum).isdigit() and searchnum != 'random':
+    if not str(searchdict["searchnum"]).isdigit() and searchdict["searchnum"] != 'random':
         returngifdict["error"] = 'No Search Number or Random Specified'
         return returngifdict
 
     # spaces in query
-    searchquery = query.replace(' ', '%20')
+    searchquery = searchdict["query"].replace(' ', '%20')
     returngifdict["searchquery"] = searchquery
 
     # Random
-    if searchnum == 'random':
-        searchnum = randint(0, searchlimit)
+    if searchdict["searchnum"] == 'random':
+        searchdict["searchnum"] = randint(0, searchlimit)
 
     url = 'https://api.gfycat.com/v1/gfycats/search?search_text=' + str(searchquery) + '&count=' + str(searchlimit) + '&nsfw=3'
 
@@ -258,11 +258,11 @@ def getGif_gfycat(bot, searchdict, query, searchnum, searchlimit=gfycatlimit):
         allresults.append(tempdict)
     returngifdict["allgifs"] = allresults
 
-    if int(searchnum) > int(resultsamount - 1):
-        searchnum = randint(0, resultsamount - 1)
-    returngifdict["returnnum"] = searchnum
+    if int(searchdict["searchnum"]) > int(resultsamount - 1):
+        searchdict["searchnum"] = randint(0, resultsamount - 1)
+    returngifdict["returnnum"] = searchdict["searchnum"]
 
-    returngifdict["returnurl"] = resultsarray[searchnum]
+    returngifdict["returnurl"] = resultsarray[searchdict["searchnum"]]
 
     return returngifdict
 
@@ -277,15 +277,15 @@ gifmelimit = 50
 gifme_dontusesites = ["http://forgifs.com", "http://a.dilcdn.com", "http://www.bestgifever.com", "http://s3-ec.buzzfed.com", "http://i.minus.com", "http://fap.to", "http://prafulla.net"]
 
 
-def getGif_gifme(bot, searchdict, query, searchnum, searchlimit=gifmelimit):
+def getGif_gifme(bot, searchdict, searchlimit=gifmelimit):
 
     searchdict = gif_searchdict_check(bot, searchdict)
 
     returngifdict = {
-                    "query": query,
-                    "searchquery": query,
+                    "query": searchdict["query"],
+                    "searchquery": searchdict["query"],
                     "querysuccess": False,
-                    "returnnum": searchnum,
+                    "returnnum": searchdict["searchnum"],
                     "returnurl": None,
                     "error": None,
                     "gifapi": 'gifme',
@@ -293,20 +293,20 @@ def getGif_gifme(bot, searchdict, query, searchnum, searchlimit=gifmelimit):
                     }
 
     # Make sure there is a valid input of query and search number
-    if not query:
+    if not searchdict["query"]:
         returngifdict["error"] = 'No Query to Search'
         return returngifdict
-    if not str(searchnum).isdigit() and searchnum != 'random':
+    if not str(searchdict["searchnum"]).isdigit() and searchdict["searchnum"] != 'random':
         returngifdict["error"] = 'No Search Number or Random Specified'
         return returngifdict
 
     # spaces in query
-    searchquery = query.replace(' ', '%20')
+    searchquery = searchdict["query"].replace(' ', '%20')
     returngifdict["searchquery"] = searchquery
 
     # Random
-    if searchnum == 'random':
-        searchnum = randint(0, searchlimit)
+    if searchdict["searchnum"] == 'random':
+        searchdict["searchnum"] = randint(0, searchlimit)
 
     url = 'http://api.gifme.io/v1/search?query=' + str(searchquery) + '&limit=' + str(searchlimit) + '&nsfw=true&sfw=false' + '&key=' + str(gifmeapi_key)
 
@@ -342,11 +342,11 @@ def getGif_gifme(bot, searchdict, query, searchnum, searchlimit=gifmelimit):
         allresults.append(tempdict)
     returngifdict["allgifs"] = allresults
 
-    if int(searchnum) > int(resultsamount - 1):
-        searchnum = randint(0, resultsamount - 1)
-    returngifdict["returnnum"] = searchnum
+    if int(searchdict["searchnum"]) > int(resultsamount - 1):
+        searchdict["searchnum"] = randint(0, resultsamount - 1)
+    returngifdict["returnnum"] = searchdict["searchnum"]
 
-    returngifdict["returnurl"] = resultsarray[searchnum]
+    returngifdict["returnurl"] = resultsarray[searchdict["searchnum"]]
 
     return returngifdict
 
@@ -356,15 +356,15 @@ All
 """
 
 
-def getGif_all(bot, searchdict, query, searchnum, searchlimit=giphylimit):
+def getGif_all(bot, searchdict, searchlimit=giphylimit):
 
     searchdict = gif_searchdict_check(bot, searchdict)
 
     gifdict = {
-                    "query": query,
-                    "searchquery": query,
+                    "query": searchdict["query"],
+                    "searchquery": searchdict["query"],
                     "querysuccess": False,
-                    "returnnum": searchnum,
+                    "returnnum": searchdict["query"],
                     "returnurl": None,
                     "error": None,
                     "gifapi": None,
@@ -372,31 +372,31 @@ def getGif_all(bot, searchdict, query, searchnum, searchlimit=giphylimit):
                     }
 
     # Make sure there is a valid input of query and search number
-    if not query:
+    if not searchdict["query"]:
         gifdict["error"] = 'No Query to Search'
         return gifdict
-    if not str(searchnum).isdigit() and searchnum != 'random':
+    if not str(searchdict["searchnum"]).isdigit() and searchdict["searchnum"] != 'random':
         gifdict["error"] = 'No Search Number or Random Specified'
         return gifdict
 
     gifapiresults = []
     for currentapi in valid_gif_api:
-        currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict, query, 'random', searchlimit)")
+        currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict, 'random', searchlimit)")
         if currentgifdict["querysuccess"]:
             gifdictall = currentgifdict["allgifs"]
             gifapiresults.extend(gifdictall)
 
     if gifapiresults == []:
         gifdict = {
-                        "query": query,
-                        "searchquery": query,
+                        "query": searchdict["query"],
+                        "searchquery": searchdict["query"],
                         "querysuccess": False,
                         "returnnum": None,
                         "returnurl": None,
                         "error": None,
                         "gifapi": None
                         }
-        gifdict["error"] = 'No Results were found for ' + query + ' in any api'
+        gifdict["error"] = 'No Results were found for ' + searchdict["query"] + ' in any api'
         return gifdict
 
     random.shuffle(gifapiresults)
