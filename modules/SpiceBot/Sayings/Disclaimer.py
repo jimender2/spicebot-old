@@ -30,6 +30,7 @@ specific_disclaimer = {
     'penis': "Please note that {disclaimer_target} is not a penis enlarger manufacturer. {disclaimer_target} is, however, not only their best tester but also their largest purchaser. Any views on penis enlargers given by {disclaimer_target} should be taken as if it is a Michelin Star review, as they are seen as the utmost living expert on the subject of phallic enlargement devices.",
     'penispump': "Please note that {disclaimer_target} is not a penis enlarger manufacturer. {disclaimer_target} is, however, not only their best tester but also their largest purchaser. Any views on penis enlargers given by {disclaimer_target} should be taken as if it is a Michelin Star review, as they are seen as the utmost living expert on the subject of phallic enlargement devices.",
     'prop56': "{disclaimer_target} can expose you to chemicals which are known to the State of California to cause cancer or birth defects or other reproductive harm.",
+    'proof': "You know the rules, {disclaimer_target}: pictures or it never happened."
 }
 
 
@@ -38,13 +39,7 @@ def mainfunction(bot, trigger):
     """Check to see if module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'disclaimer')
     if not enablestatus:
-        # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
-        if commands_array == []:
-            commands_array = [[]]
-        for command_split_partial in commands_array:
-            triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
-            execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
