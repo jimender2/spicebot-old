@@ -29,7 +29,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     """Retrieve a gif for each specified search term."""
-    gif = getGif_all(bot, {"query": "Just do it"})
+    gif = getGif(bot, {"query": "Just do it"})
     if not gif["error"]:
         osd(bot, trigger.sender, 'say', "%s Result (#%s): %s" % (gif['gifapi'].title(), gif['returnnum'], gif['returnurl']))
     else:

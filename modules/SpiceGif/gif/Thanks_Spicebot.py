@@ -31,7 +31,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif = getGif_all(bot, {"query": "your welcome"})
+    gif = getGif(bot, {"query": "your welcome"})
     if not gif["error"]:
         osd(bot, trigger.sender, 'say', "%s Result (#%s): %s" % (gif['gifapi'].title(), gif['returnnum'], gif['returnurl']))
     else:

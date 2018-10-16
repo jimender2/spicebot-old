@@ -33,7 +33,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = spicemanip(bot, triggerargsarray, 0)
     if not target:
-        gif = getGif_all(bot, {"query": "facepalm"})
+        gif = getGif(bot, {"query": "facepalm"})
         if not gif["error"]:
             osd(bot, trigger.sender, 'say', "%s Result (#%s): %s" % (gif['gifapi'].title(), gif['returnnum'], gif['returnurl']))
         else:

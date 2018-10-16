@@ -36,8 +36,6 @@ giphyapi = config.get("giphy", "apikey")
 
 def getGif_giphy(bot, searchdict):
 
-    searchdict = gif_searchdict_check(bot, searchdict)
-
     returngifdict = {
                     "query": searchdict["query"],
                     "searchquery": searchdict["query"],
@@ -110,8 +108,6 @@ tenorapi = config.get("tenor", "apikey")
 
 
 def getGif_tenor(bot, searchdict):
-
-    searchdict = gif_searchdict_check(bot, searchdict)
 
     returngifdict = {
                     "query": searchdict["query"],
@@ -188,8 +184,6 @@ gfycatapi_key = config.get("gfycat", "client_secret")
 
 
 def getGif_gfycat(bot, searchdict):
-
-    searchdict = gif_searchdict_check(bot, searchdict)
 
     returngifdict = {
                     "query": searchdict["query"],
@@ -272,8 +266,6 @@ gifme_dontusesites = [
 
 
 def getGif_gifme(bot, searchdict):
-
-    searchdict = gif_searchdict_check(bot, searchdict)
 
     returngifdict = {
                     "query": searchdict["query"],
@@ -411,6 +403,9 @@ def getGif(bot, searchdict):
         if key not in searchdict.keys():
             searchdict[key] = query_defaults[key]
 
+    # Replace spaces in search query
+    searchdict["searchquery"] = searchdict["query"].replace(' ', '%20')
+
     # set api usage
     if not isinstance(searchdict['gifsearch'], list):
         if str(searchdict['gifsearch']) in valid_gif_api:
@@ -432,7 +427,7 @@ def getGif(bot, searchdict):
 
     gifdict = {
                     "query": searchdict["query"],
-                    "searchquery": searchdict["query"],
+                    "searchquery": searchdict["searchquery"],
                     "returnnum": searchdict["query"],
                     "returnurl": None,
                     "error": None,
