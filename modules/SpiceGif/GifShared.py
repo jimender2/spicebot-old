@@ -423,7 +423,10 @@ def gif_searchdict_check(bot, searchdict):
 
     # set api usage
     if not isinstance(searchdict['gifsearch'], list):
-        searchdict['gifsearch'] = []
+        if str(searchdict['gifsearch']) in valid_gif_api:
+            searchdict['gifsearch'] = [searchdict['gifsearch']]
+        else:
+            searchdict['gifsearch'] = []
     else:
         for apis in searchdict['gifsearch']:
             if apis not in valid_gif_api:

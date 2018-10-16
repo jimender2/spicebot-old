@@ -34,7 +34,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     query = spicemanip(bot, triggerargsarray, 0)
-    gifdict = getGif_gfycat(bot, {"query": query, "searchnum": 'random'})
+    gifdict = getGif_gfycat(bot, {"query": query, "gifsearch": 'gfycat'})
     if not gifdict["querysuccess"]:
         osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
         return
