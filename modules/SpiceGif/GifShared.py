@@ -296,7 +296,6 @@ def getGif_gifme(bot, query, searchnum, searchlimit=gifmelimit):
         searchnum = randint(0, searchlimit)
 
     url = 'http://api.gifme.io/v1/search?query=' + str(searchquery) + '&limit=' + str(searchlimit) + '&nsfw=true' + '&key=' + str(gifmeapi_key)
-    # http://api.gifme.io/v1/search?query=test&limit=1&page=0&key=rX7kbMzkGu7WJwvG&nsfw=true
 
     page = requests.get(url, headers=None)
     if page.status_code == 500:
@@ -306,11 +305,10 @@ def getGif_gifme(bot, query, searchnum, searchlimit=gifmelimit):
     data = json.loads(urllib2.urlopen(url).read())
 
     # Verify there are results
-    bot.say(str(url))
     results = data['data']
     resultsarray = []
     for result in results:
-        cururl = result['link']
+        cururl = result['thumb']
         resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
