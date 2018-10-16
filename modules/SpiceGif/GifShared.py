@@ -41,7 +41,6 @@ def getGif_giphy(bot, searchdict):
     returngifdict = {
                     "query": searchdict["query"],
                     "searchquery": searchdict["query"],
-                    "querysuccess": False,
                     "returnnum": searchdict["searchnum"],
                     "returnurl": None,
                     "error": None,
@@ -83,7 +82,6 @@ def getGif_giphy(bot, searchdict):
     if resultsarray == []:
         returngifdict["error"] = 'No Giphy Results were found for ' + returngifdict['query']
         return returngifdict
-    returngifdict["querysuccess"] = True
 
     allresults = []
     tempresultnum = 0
@@ -118,7 +116,6 @@ def getGif_tenor(bot, searchdict):
     returngifdict = {
                     "query": searchdict["query"],
                     "searchquery": searchdict["query"],
-                    "querysuccess": False,
                     "returnnum": searchdict["searchnum"],
                     "returnurl": None,
                     "error": None,
@@ -161,7 +158,6 @@ def getGif_tenor(bot, searchdict):
     if resultsarray == []:
         returngifdict["error"] = 'No Tenor Results were found for ' + returngifdict['query']
         return returngifdict
-    returngifdict["querysuccess"] = True
 
     allresults = []
     tempresultnum = 0
@@ -198,7 +194,6 @@ def getGif_gfycat(bot, searchdict):
     returngifdict = {
                     "query": searchdict["query"],
                     "searchquery": searchdict["query"],
-                    "querysuccess": False,
                     "returnnum": searchdict["searchnum"],
                     "returnurl": None,
                     "error": None,
@@ -243,7 +238,6 @@ def getGif_gfycat(bot, searchdict):
     if resultsarray == []:
         returngifdict["error"] = 'No Gfycat Results were found for ' + returngifdict['query']
         return returngifdict
-    returngifdict["querysuccess"] = True
 
     allresults = []
     tempresultnum = 0
@@ -284,7 +278,6 @@ def getGif_gifme(bot, searchdict):
     returngifdict = {
                     "query": searchdict["query"],
                     "searchquery": searchdict["query"],
-                    "querysuccess": False,
                     "returnnum": searchdict["searchnum"],
                     "returnurl": None,
                     "error": None,
@@ -330,7 +323,6 @@ def getGif_gifme(bot, searchdict):
     if resultsarray == []:
         returngifdict["error"] = 'No Gifme Results were found for ' + returngifdict['query']
         return returngifdict
-    returngifdict["querysuccess"] = True
 
     allresults = []
     tempresultnum = 0
@@ -363,7 +355,6 @@ def getGif_all(bot, searchdict):
     gifdict = {
                     "query": searchdict["query"],
                     "searchquery": searchdict["query"],
-                    "querysuccess": False,
                     "returnnum": searchdict["query"],
                     "returnurl": None,
                     "error": None,
@@ -382,7 +373,7 @@ def getGif_all(bot, searchdict):
     gifapiresults = []
     for currentapi in valid_gif_api:
         currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict)")
-        if currentgifdict["querysuccess"]:
+        if not currentgifdict["error"]:
             gifdictall = currentgifdict["allgifs"]
             gifapiresults.extend(gifdictall)
 
@@ -390,7 +381,6 @@ def getGif_all(bot, searchdict):
         gifdict = {
                         "query": searchdict["query"],
                         "searchquery": searchdict["query"],
-                        "querysuccess": False,
                         "returnnum": None,
                         "returnurl": None,
                         "error": None,
@@ -412,7 +402,7 @@ def getGif(bot, searchdict):
                     "query": None,
                     "searchnum": 'random',
                     "gifsearch": valid_gif_api,
-                    "searchlimit": 50,
+                    "searchlimit": 'default',
                     "nsfw": False,
                     }
 
@@ -433,7 +423,7 @@ def getGif(bot, searchdict):
                 searchdict['gifsearch'].remove(apis)
 
     # Verify search limit
-    if not isinstance(searchdict['searchlimit'], int):
+    if searchdict['searchlimit'] == 'default' or not isinstance(searchdict['searchlimit'], int):
         searchdict['searchlimit'] = 50
 
     # Random handling for searchnum
@@ -443,7 +433,6 @@ def getGif(bot, searchdict):
     gifdict = {
                     "query": searchdict["query"],
                     "searchquery": searchdict["query"],
-                    "querysuccess": False,
                     "returnnum": searchdict["query"],
                     "returnurl": None,
                     "error": None,
@@ -463,16 +452,11 @@ def getGif(bot, searchdict):
     gifapiresults = []
     for currentapi in searchdict['gifsearch']:
         currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict)")
-        if currentgifdict["querysuccess"]:
+        if not currentgifdict["error"]:
             gifdictall = currentgifdict["allgifs"]
             gifapiresults.extend(gifdictall)
 
     if gifapiresults == []:
-        gifdict = {
-                    "query": searchdict["query"],
-                    "searchquery": searchdict["query"],
-                    "querysuccess": False,
-                    }
         gifdict["error"] = "No Results were found for " + searchdict["query"] + " in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"
         return gifdict
 
