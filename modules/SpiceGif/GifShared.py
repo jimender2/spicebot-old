@@ -74,7 +74,9 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
     results = data['data']
     resultsarray = []
     for result in results:
-        resultsarray.append('https://media2.giphy.com/media/'+result['id']+'/giphy.gif')
+        cururl = 'https://media2.giphy.com/media/'+result['id']+'/giphy.gif'
+        if str(cururl).endswith(".gif"):
+            resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
@@ -151,9 +153,7 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
     for result in results:
         cururl = result['url']
         if str(cururl).endswith(".gif"):
-            curlpage = requests.get(url, headers=None)
-            if curlpage.status_code == 200:
-                resultsarray.append(cururl)
+            resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
@@ -234,9 +234,7 @@ def getGif_gfycat(bot, query, searchnum, searchlimit=gfycatlimit):
     for result in results:
         cururl = result['gifUrl']
         if str(cururl).endswith(".gif"):
-            curlpage = requests.get(url, headers=None)
-            if curlpage.status_code == 200:
-                resultsarray.append(cururl)
+            resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
@@ -315,11 +313,10 @@ def getGif_gifme(bot, query, searchnum, searchlimit=gifmelimit):
     resultsarray = []
     for result in results:
         cururl = result['link']
-        if not str(cururl).startswith("http://forgifs.com"):
+        brokensites = ["http://forgifs.com", "http://a.dilcdn.com"]
+        if not str(cururl).startswith(tuple(brokensites)):
             if str(cururl).endswith(".gif"):
-                curlpage = requests.get(url, headers=None)
-                if curlpage.status_code == 200:
-                    resultsarray.append(cururl)
+                resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
