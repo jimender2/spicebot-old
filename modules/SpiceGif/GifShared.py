@@ -381,7 +381,7 @@ def getGif_all(bot, searchdict, searchlimit=giphylimit):
 
     gifapiresults = []
     for currentapi in valid_gif_api:
-        currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict, 'random', searchlimit)")
+        currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict, searchlimit)")
         if currentgifdict["querysuccess"]:
             gifdictall = currentgifdict["allgifs"]
             gifapiresults.extend(gifdictall)
