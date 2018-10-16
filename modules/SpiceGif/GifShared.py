@@ -410,16 +410,30 @@ Query Defaults
 """
 
 
-query_defaults = {
-                "query": None,
-                "searchnum": 'random'
-                }
-
-
 def gif_searchdict_check(bot, searchdict):
     bot.say(str(searchdict))
+
+    # list of defaults
+    query_defaults = {
+                    "query": None,
+                    "searchnum": 'random'
+                    "gifsearch": valid_gif_api,
+                    }
+
+    # set defaults if they don't exist
     for key in query_defaults:
         if key not in searchdict.keys():
             searchdict[key] = query_defaults[key]
+
+    # set api usage
+    if not isinstance(searchdict['gifsearch'], list):
+        searchdict['gifsearch'] = []
+    else:
+        for apis in searchdict['gifsearch']:
+            if apis not in valid_gif_api:
+                searchdict['gifsearch'].remove(apis)
+
     bot.say(str(searchdict))
+
+    # return search dictionary now that it has been processed
     return searchdict
