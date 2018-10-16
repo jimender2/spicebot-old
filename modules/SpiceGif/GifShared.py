@@ -270,7 +270,11 @@ gifme.io
 
 
 gifmeapi_key = 'rX7kbMzkGu7WJwvG'
-gifme_dontusesites = ["http://forgifs.com", "http://a.dilcdn.com", "http://www.bestgifever.com", "http://s3-ec.buzzfed.com", "http://i.minus.com", "http://fap.to", "http://prafulla.net"]
+gifme_dontusesites = [
+                        "http://forgifs.com", "http://a.dilcdn.com", "http://www.bestgifever.com",
+                        "http://s3-ec.buzzfed.com", "http://i.minus.com", "http://fap.to", "http://prafulla.net",
+                        "http://3.bp.blogspot.com"
+                        ]
 
 
 def getGif_gifme(bot, searchdict):
@@ -415,6 +419,7 @@ def gif_searchdict_check(bot, searchdict):
                     "searchnum": 'random',
                     "gifsearch": valid_gif_api,
                     "searchlimit": 50,
+                    "nsfw": False,
                     }
 
     # set defaults if they don't exist
