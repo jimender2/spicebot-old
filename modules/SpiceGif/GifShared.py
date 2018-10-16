@@ -32,10 +32,9 @@ Giphy
 
 
 giphyapi = config.get("giphy", "apikey")
-giphylimit = 50
 
 
-def getGif_giphy(bot, searchdict, searchlimit=giphylimit):
+def getGif_giphy(bot, searchdict):
 
     searchdict = gif_searchdict_check(bot, searchdict)
 
@@ -63,9 +62,9 @@ def getGif_giphy(bot, searchdict, searchlimit=giphylimit):
 
     # Random
     if searchdict["searchnum"] == 'random':
-        searchdict["searchnum"] = randint(0, searchlimit)
+        searchdict["searchnum"] = randint(0, searchdict['searchlimit'])
 
-    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(searchquery) + '&api_key=' + str(giphyapi) + '&limit=' + str(searchlimit)
+    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(searchquery) + '&api_key=' + str(giphyapi) + '&limit=' + str(searchdict['searchlimit'])
     page = requests.get(url, headers=None)
     if page.status_code == 500:
         returngifdict["error"] = 'No Results for this search'
@@ -110,10 +109,9 @@ Tenor
 """
 
 tenorapi = config.get("tenor", "apikey")
-tenorlimit = 50
 
 
-def getGif_tenor(bot, searchdict, searchlimit=tenorlimit):
+def getGif_tenor(bot, searchdict):
 
     searchdict = gif_searchdict_check(bot, searchdict)
 
@@ -142,9 +140,9 @@ def getGif_tenor(bot, searchdict, searchlimit=tenorlimit):
 
     # Random
     if searchdict["searchnum"] == 'random':
-        searchdict["searchnum"] = randint(0, searchlimit)
+        searchdict["searchnum"] = randint(0, searchdict['searchlimit'])
 
-    url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchlimit) + '&contentfilter=off'
+    url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchdict['searchlimit']) + '&contentfilter=off'
     page = requests.get(url, headers=None)
     if page.status_code == 500:
         returngifdict["error"] = 'No Results for this search'
@@ -191,10 +189,9 @@ gfycat
 
 gfycatapi_id = config.get("gfycat", "client_id")
 gfycatapi_key = config.get("gfycat", "client_secret")
-gfycatlimit = 50
 
 
-def getGif_gfycat(bot, searchdict, searchlimit=gfycatlimit):
+def getGif_gfycat(bot, searchdict):
 
     searchdict = gif_searchdict_check(bot, searchdict)
 
@@ -223,9 +220,9 @@ def getGif_gfycat(bot, searchdict, searchlimit=gfycatlimit):
 
     # Random
     if searchdict["searchnum"] == 'random':
-        searchdict["searchnum"] = randint(0, searchlimit)
+        searchdict["searchnum"] = randint(0, searchdict['searchlimit'])
 
-    url = 'https://api.gfycat.com/v1/gfycats/search?search_text=' + str(searchquery) + '&count=' + str(searchlimit) + '&nsfw=3'
+    url = 'https://api.gfycat.com/v1/gfycats/search?search_text=' + str(searchquery) + '&count=' + str(searchdict['searchlimit']) + '&nsfw=3'
 
     page = requests.get(url, headers=None)
     if page.status_code == 500:
@@ -273,11 +270,10 @@ gifme.io
 
 
 gifmeapi_key = 'rX7kbMzkGu7WJwvG'
-gifmelimit = 50
 gifme_dontusesites = ["http://forgifs.com", "http://a.dilcdn.com", "http://www.bestgifever.com", "http://s3-ec.buzzfed.com", "http://i.minus.com", "http://fap.to", "http://prafulla.net"]
 
 
-def getGif_gifme(bot, searchdict, searchlimit=gifmelimit):
+def getGif_gifme(bot, searchdict):
 
     searchdict = gif_searchdict_check(bot, searchdict)
 
@@ -306,9 +302,9 @@ def getGif_gifme(bot, searchdict, searchlimit=gifmelimit):
 
     # Random
     if searchdict["searchnum"] == 'random':
-        searchdict["searchnum"] = randint(0, searchlimit)
+        searchdict["searchnum"] = randint(0, searchdict['searchlimit'])
 
-    url = 'http://api.gifme.io/v1/search?query=' + str(searchquery) + '&limit=' + str(searchlimit) + '&nsfw=true&sfw=false' + '&key=' + str(gifmeapi_key)
+    url = 'http://api.gifme.io/v1/search?query=' + str(searchquery) + '&limit=' + str(searchdict['searchlimit']) + '&nsfw=true&sfw=false' + '&key=' + str(gifmeapi_key)
 
     page = requests.get(url, headers=None)
     if page.status_code == 500:
@@ -356,7 +352,7 @@ All
 """
 
 
-def getGif_all(bot, searchdict, searchlimit=giphylimit):
+def getGif_all(bot, searchdict):
 
     searchdict = gif_searchdict_check(bot, searchdict)
 
@@ -381,7 +377,7 @@ def getGif_all(bot, searchdict, searchlimit=giphylimit):
 
     gifapiresults = []
     for currentapi in valid_gif_api:
-        currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict, searchlimit)")
+        currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict)")
         if currentgifdict["querysuccess"]:
             gifdictall = currentgifdict["allgifs"]
             gifapiresults.extend(gifdictall)
@@ -411,13 +407,13 @@ Query Defaults
 
 
 def gif_searchdict_check(bot, searchdict):
-    bot.say(str(searchdict))
 
     # list of defaults
     query_defaults = {
                     "query": None,
                     "searchnum": 'random',
                     "gifsearch": valid_gif_api,
+                    "searchlimit": 50,
                     }
 
     # set defaults if they don't exist
@@ -433,7 +429,13 @@ def gif_searchdict_check(bot, searchdict):
             if apis not in valid_gif_api:
                 searchdict['gifsearch'].remove(apis)
 
-    bot.say(str(searchdict))
+    # Verify search limit
+    if not isinstance(searchdict['searchlimit'], int):
+        searchdict['searchlimit'] = 50
+
+    # Random handling for searchnum
+    if searchdict["searchnum"] == 'random':
+        searchdict["searchnum"] = randint(0, searchdict['searchlimit'])
 
     # return search dictionary now that it has been processed
     return searchdict
