@@ -439,7 +439,7 @@ def getGif(bot, searchdict):
         # url query
         url += valid_gif_api_dict[currentapi]['query'] + str(searchquery)
 
-        bot.say(str())
+        bot.say(str(url))
 
 
 
