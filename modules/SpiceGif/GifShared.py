@@ -299,7 +299,7 @@ def getGif_gifme(bot, query, searchnum, searchlimit=gifmelimit):
     if searchnum == 'random':
         searchnum = randint(0, searchlimit)
 
-    url = 'http://api.gifme.io/v1/search?query=' + str(searchquery) + '&limit=' + str(searchlimit) + '&nsfw=true' + '&key=' + str(gifmeapi_key)
+    url = 'http://api.gifme.io/v1/search?query=' + str(searchquery) + '&limit=' + str(searchlimit) + '&nsfw=true&sfw=false' + '&key=' + str(gifmeapi_key)
 
     page = requests.get(url, headers=None)
     if page.status_code == 500:
