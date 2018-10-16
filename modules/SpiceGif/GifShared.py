@@ -411,5 +411,5 @@ Query Defaults
 
 
 def gif_searchdict_check(bot, searchdict):
-    bot.say("processing")
+    bot.say("processing " + str(searchdict))
     return searchdict
