@@ -228,7 +228,6 @@ def getGif_gfycat(bot, query, searchnum, searchlimit=gfycatlimit):
 
     data = json.loads(urllib2.urlopen(url).read())
 
-
     # Verify there are results
     results = data['gfycats']
     resultsarray = []
