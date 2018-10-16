@@ -22,8 +22,41 @@ from BotShared import *
 config = ConfigParser.ConfigParser()
 config.read("/home/spicebot/spicebot.conf")
 
-# Valid Gif api's
-valid_gif_api = ['giphy', 'tenor', 'gfycat', 'gifme']
+
+valid_gif_api_dict = {
+                        "giphy": {
+                                    "url": "http://api.giphy.com/v1/gifs/search?",
+                                    "query": 'q=',
+                                    "limit": '&limit=',
+                                    "key": "&api_key=",
+                                    "apikey": config.get("giphy", "apikey"),
+                                    "nsfw": None,
+                                    },
+                        "tenor": {
+                                    "url": "https://api.tenor.com/v1/search?",
+                                    "query": 'q=',
+                                    "limit": '&limit=',
+                                    "key": "&key=",
+                                    "apikey": config.get("tenor", "apikey"),
+                                    "nsfw": '&contentfilter=off',
+                                    },
+                        "gfycat": {
+                                    "url": "https://api.gfycat.com/v1/gfycats/search?",
+                                    "query": 'search_text=',
+                                    "limit": '&count=',
+                                    "key": None,
+                                    "apikey": None,
+                                    "nsfw": '&nsfw=3',
+                                    },
+                        "gifme": {
+                                    "url": "http://api.gifme.io/v1/search?",
+                                    "query": 'query=',
+                                    "limit": '&limit=',
+                                    "key": "&key=",
+                                    "apikey": 'rX7kbMzkGu7WJwvG',
+                                    "nsfw": '&sfw=false',
+                                    },
+                        }
 
 
 """
@@ -340,60 +373,13 @@ All
 """
 
 
-def getGif_all(bot, searchdict):
-
-    searchdict = gif_searchdict_check(bot, searchdict)
-
-    gifdict = {
-                    "query": searchdict["query"],
-                    "searchquery": searchdict["query"],
-                    "returnnum": searchdict["query"],
-                    "returnurl": None,
-                    "error": None,
-                    "gifapi": None,
-                    "allgifs": []
-                    }
-
-    # Make sure there is a valid input of query and search number
-    if not searchdict["query"]:
-        gifdict["error"] = 'No Query to Search'
-        return gifdict
-    if not str(searchdict["searchnum"]).isdigit() and searchdict["searchnum"] != 'random':
-        gifdict["error"] = 'No Search Number or Random Specified'
-        return gifdict
-
-    gifapiresults = []
-    for currentapi in valid_gif_api:
-        currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict)")
-        if not currentgifdict["error"]:
-            gifdictall = currentgifdict["allgifs"]
-            gifapiresults.extend(gifdictall)
-
-    if gifapiresults == []:
-        gifdict = {
-                        "query": searchdict["query"],
-                        "searchquery": searchdict["query"],
-                        "returnnum": None,
-                        "returnurl": None,
-                        "error": None,
-                        "gifapi": None
-                        }
-        gifdict["error"] = 'No Results were found for ' + searchdict["query"] + ' in any api'
-        return gifdict
-
-    random.shuffle(gifapiresults)
-    random.shuffle(gifapiresults)
-    gifdict = spicemanip(bot, gifapiresults, 'random')
-    return gifdict
-
-
 def getGif(bot, searchdict):
 
     # list of defaults
     query_defaults = {
                     "query": None,
                     "searchnum": 'random',
-                    "gifsearch": valid_gif_api,
+                    "gifsearch": valid_gif_api_dict.keys(),
                     "searchlimit": 'default',
                     "nsfw": False,
                     }
@@ -408,13 +394,13 @@ def getGif(bot, searchdict):
 
     # set api usage
     if not isinstance(searchdict['gifsearch'], list):
-        if str(searchdict['gifsearch']) in valid_gif_api:
+        if str(searchdict['gifsearch']) in valid_gif_api_dict.keys():
             searchdict['gifsearch'] = [searchdict['gifsearch']]
         else:
-            searchdict['gifsearch'] = valid_gif_api
+            searchdict['gifsearch'] = valid_gif_api_dict.keys()
     else:
         for apis in searchdict['gifsearch']:
-            if apis not in valid_gif_api:
+            if apis not in valid_gif_api_dict.keys():
                 searchdict['gifsearch'].remove(apis)
 
     # Verify search limit
@@ -446,6 +432,14 @@ def getGif(bot, searchdict):
 
     gifapiresults = []
     for currentapi in searchdict['gifsearch']:
+
+
+
+
+
+
+
+
         currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict)")
         if not currentgifdict["error"]:
             gifdictall = currentgifdict["allgifs"]
@@ -462,47 +456,3 @@ def getGif(bot, searchdict):
 
     # return dict
     return gifdict
-
-
-"""
-Query Defaults
-"""
-
-
-def gif_searchdict_check(bot, searchdict):
-
-    # list of defaults
-    query_defaults = {
-                    "query": None,
-                    "searchnum": 'random',
-                    "gifsearch": valid_gif_api,
-                    "searchlimit": 50,
-                    "nsfw": False,
-                    }
-
-    # set defaults if they don't exist
-    for key in query_defaults:
-        if key not in searchdict.keys():
-            searchdict[key] = query_defaults[key]
-
-    # set api usage
-    if not isinstance(searchdict['gifsearch'], list):
-        if str(searchdict['gifsearch']) in valid_gif_api:
-            searchdict['gifsearch'] = [searchdict['gifsearch']]
-        else:
-            searchdict['gifsearch'] = []
-    else:
-        for apis in searchdict['gifsearch']:
-            if apis not in valid_gif_api:
-                searchdict['gifsearch'].remove(apis)
-
-    # Verify search limit
-    if not isinstance(searchdict['searchlimit'], int):
-        searchdict['searchlimit'] = 50
-
-    # Random handling for searchnum
-    if searchdict["searchnum"] == 'random':
-        searchdict["searchnum"] = randint(0, searchdict['searchlimit'])
-
-    # return search dictionary now that it has been processed
-    return searchdict

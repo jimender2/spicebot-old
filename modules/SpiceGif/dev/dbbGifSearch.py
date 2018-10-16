@@ -40,7 +40,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     if botcom.commandused == 'gif':
-        searchapis = valid_gif_api
+        searchapis = valid_gif_api_dict.keys()
     else:
         searchapis = [botcom.commandused]
 
