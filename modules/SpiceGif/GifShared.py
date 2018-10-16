@@ -421,11 +421,6 @@ def getGif(bot, searchdict):
         if key not in searchdict.keys():
             searchdict[key] = query_defaults[key]
 
-    # Make sure there is a valid input of query and search number
-    if not searchdict["query"]:
-        gifdict["error"] = 'No Query to Search'
-        return gifdict
-
     # set api usage
     if not isinstance(searchdict['gifsearch'], list):
         if str(searchdict['gifsearch']) in valid_gif_api:
@@ -455,6 +450,11 @@ def getGif(bot, searchdict):
                     "gifapi": None,
                     "allgifs": []
                     }
+
+    # Make sure there is a valid input of query and search number
+    if not searchdict["query"]:
+        gifdict["error"] = 'No Query to Search'
+        return gifdict
 
     if not str(searchdict["searchnum"]).isdigit():
         gifdict["error"] = 'No Search Number or Random Specified'
