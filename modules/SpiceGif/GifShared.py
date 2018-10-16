@@ -35,7 +35,7 @@ giphyapi = config.get("giphy", "apikey")
 giphylimit = 50
 
 
-def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
+def getGif_giphy(bot, searchdict, query, searchnum, searchlimit=giphylimit):
 
     returngifdict = {
                     "query": query,
@@ -111,7 +111,7 @@ tenorapi = config.get("tenor", "apikey")
 tenorlimit = 50
 
 
-def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
+def getGif_tenor(bot, searchdict, query, searchnum, searchlimit=tenorlimit):
 
     returngifdict = {
                     "query": query,
@@ -190,7 +190,7 @@ gfycatapi_key = config.get("gfycat", "client_secret")
 gfycatlimit = 50
 
 
-def getGif_gfycat(bot, query, searchnum, searchlimit=gfycatlimit):
+def getGif_gfycat(bot, searchdict, query, searchnum, searchlimit=gfycatlimit):
 
     returngifdict = {
                     "query": query,
@@ -270,7 +270,7 @@ gifmeapi_key = 'rX7kbMzkGu7WJwvG'
 gifmelimit = 50
 
 
-def getGif_gifme(bot, query, searchnum, searchlimit=gifmelimit):
+def getGif_gifme(bot, searchdict, query, searchnum, searchlimit=gifmelimit):
 
     returngifdict = {
                     "query": query,
@@ -348,7 +348,7 @@ All
 """
 
 
-def getGif_all(bot, query, searchnum, searchlimit=giphylimit):
+def getGif_all(bot, searchdict, query, searchnum, searchlimit=giphylimit):
 
     gifdict = {
                     "query": query,
@@ -371,7 +371,7 @@ def getGif_all(bot, query, searchnum, searchlimit=giphylimit):
 
     gifapiresults = []
     for currentapi in valid_gif_api:
-        currentgifdict = eval("getGif_" + currentapi + "(bot, query, 'random', searchlimit)")
+        currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict, query, 'random', searchlimit)")
         if currentgifdict["querysuccess"]:
             gifdictall = currentgifdict["allgifs"]
             gifapiresults.extend(gifdictall)

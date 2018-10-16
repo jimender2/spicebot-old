@@ -31,7 +31,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif = getGif_all(bot, "thumbs up", 'random')
+    gif = getGif_all(bot, dict(), "thumbs up", 'random')
     instigator = trigger.nick
     responsemsg = [' a thumbs up.', ' a pat on the back.', ' a sarcastic smile.', ' a high five.']
     if gif["querysuccess"]:

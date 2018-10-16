@@ -33,7 +33,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif = getGif_all(bot, "the more you know", 'random')
+    gif = getGif_all(bot, dict(), "the more you know", 'random')
     if gif["querysuccess"]:
         osd(bot, trigger.sender, 'say', "%s Result (#%s): %s" % (gif['gifapi'].title(), gif['returnnum'], gif['returnurl']))
     else:
