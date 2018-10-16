@@ -433,6 +433,10 @@ def getGif(bot, searchdict):
     gifapiresults = []
     for currentapi in searchdict['gifsearch']:
 
+        # url base
+        url = valid_gif_api_dict[currentapi]['url']
+        bot.say(str(url))
+
 
 
 
