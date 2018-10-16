@@ -65,7 +65,7 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
 
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(searchquery) + '&api_key=' + str(giphyapi) + '&limit=' + str(searchlimit) + '&rating=r'
     page = requests.get(url, headers=None)
-    if page.status_code != 200:
+    if page.status_code == 500:
         returngifdict["error"] = 'No Results for this search'
         return returngifdict
     data = json.loads(urllib2.urlopen(url).read())
@@ -140,7 +140,7 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
 
     url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchlimit)
     page = requests.get(url, headers=None)
-    if page.status_code != 200:
+    if page.status_code == 500:
         returngifdict["error"] = 'No Results for this search'
         return returngifdict
     data = json.loads(urllib2.urlopen(url).read())
@@ -219,7 +219,7 @@ def getGif_gfycat(bot, query, searchnum, searchlimit=gfycatlimit):
     url = 'https://api.gfycat.com/v1/gfycats/search?search_text=' + str(searchquery) + '&count=' + str(searchlimit)
 
     page = requests.get(url, headers=None)
-    if page.status_code != 200:
+    if page.status_code == 500:
         returngifdict["error"] = 'No Results for this search'
         return returngifdict
 
