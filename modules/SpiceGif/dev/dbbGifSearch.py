@@ -38,7 +38,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     bot.say(str(botcom.commandused))
 
     query = spicemanip(bot, triggerargsarray, 0)
-    gifdict = getGif_all(bot, {"query": query})
+    gifdict = getGif(bot, {"query": query})
 
     if not gifdict["querysuccess"]:
         osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
