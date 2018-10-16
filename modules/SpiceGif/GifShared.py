@@ -410,6 +410,16 @@ Query Defaults
 """
 
 
+query_defaults = {
+                "query": None,
+                "searchnum": 'random'
+                }
+
+
 def gif_searchdict_check(bot, searchdict):
-    bot.say("processing " + str(searchdict))
+    bot.say(str(searchdict))
+    for key in query_defaults:
+        if not searchdict[key]:
+            searchdict[key] = query_defaults[key]
+    bot.say(str(searchdict))
     return searchdict
