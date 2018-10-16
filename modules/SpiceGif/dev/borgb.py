@@ -33,7 +33,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif = getGif_gifme(bot, dict("query"="star trek", "searchnum"='random'), "star trek", 'random')
+    gif = getGif_gifme(bot, {"query": "star trek", "searchnum": 'random'}, "star trek", 'random')
     rand = random.randint(1, 5)
     if rand == 1:
         osd(bot, trigger.sender, 'say', "Resistance is futile")
