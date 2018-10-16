@@ -274,6 +274,7 @@ gifme.io
 
 gifmeapi_key = 'rX7kbMzkGu7WJwvG'
 gifmelimit = 50
+gifme_dontusesites = ["http://forgifs.com", "http://a.dilcdn.com", "http://www.bestgifever.com", "http://s3-ec.buzzfed.com", "http://i.minus.com", "http://fap.to", "http://prafulla.net"]
 
 
 def getGif_gifme(bot, searchdict, query, searchnum, searchlimit=gifmelimit):
@@ -321,8 +322,7 @@ def getGif_gifme(bot, searchdict, query, searchnum, searchlimit=gifmelimit):
     resultsarray = []
     for result in results:
         cururl = result['link']
-        dontusesites = ["http://forgifs.com", "http://a.dilcdn.com", "http://www.bestgifever.com", "http://s3-ec.buzzfed.com", "http://i.minus.com", "http://fap.to"]
-        if not str(cururl).startswith(tuple(dontusesites)):
+        if not str(cururl).startswith(tuple(gifme_dontusesites)):
             if str(cururl).endswith(".gif"):
                 resultsarray.append(cururl)
 
