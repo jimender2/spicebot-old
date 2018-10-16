@@ -405,6 +405,55 @@ def getGif_all(bot, searchdict):
     return gifdict
 
 
+def getGif(bot, searchdict):
+
+    searchdict = gif_searchdict_check(bot, searchdict)
+
+    gifdict = {
+                    "query": searchdict["query"],
+                    "searchquery": searchdict["query"],
+                    "querysuccess": False,
+                    "returnnum": searchdict["query"],
+                    "returnurl": None,
+                    "error": None,
+                    "gifapi": None,
+                    "allgifs": []
+                    }
+
+    # Make sure there is a valid input of query and search number
+    if not searchdict["query"]:
+        gifdict["error"] = 'No Query to Search'
+        return gifdict
+    if not str(searchdict["searchnum"]).isdigit() and searchdict["searchnum"] != 'random':
+        gifdict["error"] = 'No Search Number or Random Specified'
+        return gifdict
+
+    gifapiresults = []
+    for currentapi in searchdict['gifsearch']:
+        currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict)")
+        if currentgifdict["querysuccess"]:
+            gifdictall = currentgifdict["allgifs"]
+            gifapiresults.extend(gifdictall)
+
+    if gifapiresults == []:
+        gifdict = {
+                        "query": searchdict["query"],
+                        "searchquery": searchdict["query"],
+                        "querysuccess": False,
+                        "returnnum": None,
+                        "returnurl": None,
+                        "error": None,
+                        "gifapi": None
+                        }
+        gifdict["error"] = 'No Results were found for ' + searchdict["query"] + ' in any api'
+        return gifdict
+
+    random.shuffle(gifapiresults)
+    random.shuffle(gifapiresults)
+    gifdict = spicemanip(bot, gifapiresults, 'random')
+    return gifdict
+
+
 """
 Query Defaults
 """
