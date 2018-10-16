@@ -308,8 +308,9 @@ def getGif_gifme(bot, query, searchnum, searchlimit=gifmelimit):
     results = data['data']
     resultsarray = []
     for result in results:
-        cururl = result['thumb']
-        resultsarray.append(cururl)
+        cururl = result['link']
+        if not str(cururl).startswith("http://forgifs.com"):
+            resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
     if resultsarray == []:
