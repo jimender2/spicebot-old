@@ -64,11 +64,8 @@ def getGif_giphy(bot, query, searchnum, searchlimit=giphylimit):
         searchnum = randint(0, searchlimit)
 
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(searchquery) + '&api_key=' + str(giphyapi) + '&limit=' + str(searchlimit) + '&rating=r'
-    try:
-        data = json.loads(urllib2.urlopen(url).read())
-    except HTTPError:
-        returngifdict["error"] = 'No Results Gathered'
-        return returngifdict
+    data = json.loads(urllib2.urlopen(url).read())
+    bot.say("giphy")
 
     # Verify there are results
     results = data['data']
@@ -139,11 +136,8 @@ def getGif_tenor(bot, query, searchnum, searchlimit=tenorlimit):
         searchnum = randint(0, searchlimit)
 
     url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchlimit)
-    try:
-        data = json.loads(urllib2.urlopen(url).read())
-    except HTTPError:
-        returngifdict["error"] = 'No Results Gathered'
-        return returngifdict
+    data = json.loads(urllib2.urlopen(url).read())
+    bot.say("tenor")
 
     # Verify there are results
     results = data['results']
@@ -217,11 +211,8 @@ def getGif_gfycat(bot, query, searchnum, searchlimit=gfycatlimit):
         searchnum = randint(0, searchlimit)
 
     url = 'https://api.gfycat.com/v1/gfycats/search?search_text=' + str(searchquery) + '&count=' + str(searchlimit)
-    try:
-        data = json.loads(urllib2.urlopen(url).read())
-    except HTTPError:
-        returngifdict["error"] = 'No Results Gathered'
-        return returngifdict
+    data = json.loads(urllib2.urlopen(url).read())
+    bot.say("gfycat")
 
     # Verify there are results
     results = data['gfycats']
