@@ -39,10 +39,13 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
-    bot.say(str(botcom.commandused))
+    if botcom.commandused == 'gif':
+        searchapis = valid_gif_api
+    else:
+        searchapis = [botcom.commandused]
 
     query = spicemanip(bot, triggerargsarray, 0)
-    gifdict = getGif(bot, {"query": query})
+    gifdict = getGif(bot, {"query": query, "gifsearch": searchapis})
 
     if not gifdict["querysuccess"]:
         osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
