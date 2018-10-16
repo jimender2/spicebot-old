@@ -263,7 +263,7 @@ gifme.io
 
 
 gifmeapi_key = 'rX7kbMzkGu7WJwvG'
-gifmelimit = 1
+gifmelimit = 50
 
 
 def getGif_gifme(bot, query, searchnum, searchlimit=gifmelimit):
