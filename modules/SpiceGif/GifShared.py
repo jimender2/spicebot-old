@@ -310,7 +310,7 @@ def getGif_gifme(bot, query, searchnum, searchlimit=gifmelimit):
     results = data['data']
     resultsarray = []
     for result in results:
-        cururl = result['gifUrl']
+        cururl = result['link']
         resultsarray.append(cururl)
 
     resultsamount = len(resultsarray)
