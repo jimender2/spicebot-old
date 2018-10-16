@@ -416,8 +416,8 @@ def gif_searchdict_check(bot, searchdict):
     # list of defaults
     query_defaults = {
                     "query": None,
-                    "searchnum": 'random'
-                    "gifsearch": global valid_gif_api,
+                    "searchnum": 'random',
+                    "gifsearch": valid_gif_api,
                     }
 
     # set defaults if they don't exist
