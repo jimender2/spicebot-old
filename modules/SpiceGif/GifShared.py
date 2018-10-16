@@ -37,6 +37,8 @@ giphylimit = 50
 
 def getGif_giphy(bot, searchdict, query, searchnum, searchlimit=giphylimit):
 
+    searchdict = gif_searchdict_check(bot, searchdict)
+
     returngifdict = {
                     "query": query,
                     "searchquery": query,
@@ -112,6 +114,8 @@ tenorlimit = 50
 
 
 def getGif_tenor(bot, searchdict, query, searchnum, searchlimit=tenorlimit):
+
+    searchdict = gif_searchdict_check(bot, searchdict)
 
     returngifdict = {
                     "query": query,
@@ -191,6 +195,8 @@ gfycatlimit = 50
 
 
 def getGif_gfycat(bot, searchdict, query, searchnum, searchlimit=gfycatlimit):
+
+    searchdict = gif_searchdict_check(bot, searchdict)
 
     returngifdict = {
                     "query": query,
@@ -272,6 +278,8 @@ gifmelimit = 50
 
 def getGif_gifme(bot, searchdict, query, searchnum, searchlimit=gifmelimit):
 
+    searchdict = gif_searchdict_check(bot, searchdict)
+
     returngifdict = {
                     "query": query,
                     "searchquery": query,
@@ -350,6 +358,8 @@ All
 
 def getGif_all(bot, searchdict, query, searchnum, searchlimit=giphylimit):
 
+    searchdict = gif_searchdict_check(bot, searchdict)
+
     gifdict = {
                     "query": query,
                     "searchquery": query,
@@ -393,3 +403,13 @@ def getGif_all(bot, searchdict, query, searchnum, searchlimit=giphylimit):
     random.shuffle(gifapiresults)
     gifdict = spicemanip(bot, gifapiresults, 'random')
     return gifdict
+
+
+"""
+Query Defaults
+"""
+
+
+def gif_searchdict_check(bot, searchdict):
+    bot.say("processing")
+    return searchdict
