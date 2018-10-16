@@ -419,7 +419,7 @@ query_defaults = {
 def gif_searchdict_check(bot, searchdict):
     bot.say(str(searchdict))
     for key in query_defaults:
-        if not searchdict[key]:
+        if key in searchdict.keys():
             searchdict[key] = query_defaults[key]
     bot.say(str(searchdict))
     return searchdict
