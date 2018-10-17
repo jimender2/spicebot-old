@@ -18,18 +18,18 @@ from GifShared import *
 
 # author deathbybandaid
 
-# contributers
+# contributers jimender2
 
 quickgifdict = {
-                "giftest": {
+                "borg": {
                     "query": "Jeri Ryan",
-                    "searchapis": [],
+                    "searchapis": ['giphy', 'tenor'],
                     "searchfail": "Resistance is futile",
                     },
                 }
 
 
-@sopel.module.commands('giftest')
+@sopel.module.commands('borg')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
