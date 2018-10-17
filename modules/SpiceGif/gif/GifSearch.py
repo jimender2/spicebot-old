@@ -18,12 +18,46 @@ from GifShared import *
 
 # author deathbybandaid
 
+onoff_list = ['activate', 'enable', 'on', 'deactivate', 'disable', 'off']
+activate_list = ['activate', 'enable', 'on']
+deactivate_list = ['deactivate', 'disable', 'off']
+
 
 @sopel.module.commands('gifadmin')
 def gifadmin(bot, trigger):
 
     if not trigger.admin and not bot.privileges[trigger.sender.lower()][trigger.nick.lower()] >= module.OP:
         return osd(bot, trigger.sender, 'say',  "Only Admins and OPs may adjust the gif settings.")
+
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+
+    validsubcoms = ['nsfw']
+    subcommand = spicemanip(bot, [x for x in triggerargsarray if x in validsubcoms], 1)
+    if not subcommand:
+        return osd(bot, trigger.sender, 'say',  "What setting would you like to adjust? Valid Option(s): " + str(spicemanip(bot, validsubcoms, 'andlist')))
+
+    # Channel
+    channeltarget = spicemanip(bot, [x for x in triggerargsarray if x in botcom.channel_list], 1)
+    if not channeltarget:
+        if rpg.channel_current.startswith('#'):
+            channeltarget = rpg.channel_current
+        else:
+            return osd(bot, trigger.sender, 'say',  "Please Specify a channel. Valid Option(s) are: " + str(spicemanip(bot, botcom.channel_list, 'andlist')))
+
+    if subcommand == 'nsfw':
+
+        # on/off
+        activation_direction = spicemanip(bot, [x for x in triggerargsarray if x in onoff_list], 1)
+        if not activation_direction:
+            return osd(bot, trigger.sender, 'say',  "Please Specify an Enable Direction.")
+
+        # make the change
+        if activation_direction in activate_list:
+            adjust_database_array(bot, bot.nick, [channeltarget], 'channels_nsfw', 'add')
+            osd(bot, channeltarget, 'say', "RPG " + activation_type + " should be enabled in " + channeltarget + "!")
+        elif activation_direction in deactivate_list:
+            adjust_database_array(bot, bot.nick, [channeltarget], 'channels_nsfw', 'del')
+            osd(bot, channeltarget, 'say', "RPG " + activation_type + " should be disabled in " + channeltarget + "!")
 
 
 @sopel.module.commands('gif', 'tenor', 'giphy', 'gfycat', 'gifme')
@@ -51,7 +85,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     nsfwenabled = get_database_value(bot, bot.nick, 'channels_nsfw') or []
     if botcom.channel_current in nsfwenabled:
+        bot.say("nsfw")
         searchdict['nsfw'] = True
+    else:
+        bot.say("sfw")
 
     query = spicemanip(bot, triggerargsarray, 0)
     gifdict = getGif(bot, searchdict)
