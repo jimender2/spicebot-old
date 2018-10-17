@@ -475,7 +475,7 @@ def getGif(bot, searchdict):
         resultsarray = []
         for result in results:
             cururl = result[valid_gif_api_dict[currentapi]['cururl']]
-            if str(cururl).endswith(".gif") and not str(cururl).startswith(tuple(dontusesites)):
+            if str(cururl).endswith(".gif"):  # and not str(cururl).startswith(tuple(dontusesites)):
                 resultsarray.append(cururl)
 
         # make sure there are results
