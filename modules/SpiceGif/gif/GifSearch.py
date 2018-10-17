@@ -83,7 +83,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         searchapis = [botcom.commandused]
 
-    searchdict = {"query": query, "gifsearch": searchapis}
+    searchdict = {"query": query}
 
     nsfwenabled = get_database_value(bot, bot.nick, 'channels_nsfw') or []
     if botcom.channel_current in nsfwenabled:
