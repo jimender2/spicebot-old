@@ -482,6 +482,7 @@ def getGif(bot, searchdict):
         resultsamount = len(resultsarray)
         if resultsarray == []:
             pass
+        bot.say(str(resultsarray))
 
         # Create Temp dict for every result
         tempresultnum = 0
