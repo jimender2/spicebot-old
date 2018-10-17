@@ -561,7 +561,7 @@ def feeds_configs(bot, feeds):
             exec("feeds." + str(feed) + " = current_feed")
 
             # file name
-            exec("feeds." + str(feed) + ".feed_filename = feed")
+            exec("feeds." + str(feed) + ".feed_filename = str(feed)")
 
             # get file path
             feedfile = os.path.join(feed_type_file_path, str(feed))
