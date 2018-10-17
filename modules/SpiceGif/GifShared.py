@@ -126,18 +126,18 @@ def getGif(bot, searchdict):
     for currentapi in searchdict['gifsearch']:
 
         # url base
-        url = valid_gif_api_dict[currentapi]['url']
+        url = str(valid_gif_api_dict[currentapi]['url'])
         # query
-        url += valid_gif_api_dict[currentapi]['query'] + str(searchdict["searchquery"])
+        url += str(valid_gif_api_dict[currentapi]['query']) + str(searchdict["searchquery"])
         # limit
-        url += valid_gif_api_dict[currentapi]['limit'] + str(searchdict["searchlimit"])
+        url += str(valid_gif_api_dict[currentapi]['limit']) + str(searchdict["searchlimit"])
         # nsfw search?
         if searchdict['nsfw']:
-            url += valid_gif_api_dict[currentapi]['nsfw']
+            url += str(valid_gif_api_dict[currentapi]['nsfw'])
         else:
-            url += valid_gif_api_dict[currentapi]['sfw']
+            url += str(valid_gif_api_dict[currentapi]['sfw'])
         # api key
-        url += valid_gif_api_dict[currentapi]['key'] + valid_gif_api_dict[currentapi]['apikey']
+        url += str(valid_gif_api_dict[currentapi]['key']) + str(valid_gif_api_dict[currentapi]['apikey'])
 
         page = requests.get(url, headers=None)
         if page.status_code == 500:
