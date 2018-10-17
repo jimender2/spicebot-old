@@ -49,7 +49,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if botcom.channel_current in nsfwenabled:
         searchdict['nsfw'] = True
 
-    gifdict = getGif(bot, {"query": query))
+    gifdict = getGif(bot, {"query": query})
     if gifdict["error"]:
 
         return osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
