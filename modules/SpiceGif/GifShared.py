@@ -466,9 +466,9 @@ def getGif(bot, searchdict):
         data = json.loads(urllib2.urlopen(url).read())
 
         results = data[valid_gif_api_dict[currentapi]['results']]
-        osd(bot, 'deathbybandaid', 'say', str(results))
         resultsarray = []
         for result in results:
+            osd(bot, 'deathbybandaid', 'say', str(result))
             if currentapi == 'giphy':
                 # cururl = 'https://media2.giphy.com/media/' + result['id'] + '/giphy.gif'
                 cururl = result['original']
