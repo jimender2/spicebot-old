@@ -41,6 +41,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'say', "I dont see " + target + ". Where did they go?")
     elif targetcheck == "online":
         rand = random.randomint(1,4)
-        osd(bot, trigger.sender, 'say', instigator + " wants to know if " + target + "'s carpets matches the drapes")
+        if rand = 1:
+            osd(bot, trigger.sender, 'say', instigator + " starts chanting over " + target + "'s body.")
+            osd(bot, trigger.sender, 'say', instigator + " starts chanting over " + target + "'s body.")
+        else:
+            osd(bot, trigger.sender, 'say', )
     else:
         osd(bot, trigger.sender, 'say', "You do relize that " + target + " is not a person so quit pretending you have friend's")
