@@ -76,6 +76,8 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
+    query = spicemanip(bot, triggerargsarray, 0)
+
     if botcom.commandused == 'gif':
         searchapis = valid_gif_api_dict.keys()
     else:
@@ -90,7 +92,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         bot.say("sfw")
 
-    query = spicemanip(bot, triggerargsarray, 0)
     gifdict = getGif(bot, searchdict)
 
     if gifdict["error"]:
