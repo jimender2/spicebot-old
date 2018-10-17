@@ -468,7 +468,7 @@ def getGif(bot, searchdict):
         results = data[valid_gif_api_dict[currentapi]['results']]
         resultsarray = []
         for result in results:
-            if currentapi == 'giphyt':
+            if currentapi == 'giphy':
                 # cururl = 'https://media2.giphy.com/media/' + result['id'] + '/giphy.gif'
                 cururl = result['original']
             else:
