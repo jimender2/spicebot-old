@@ -447,7 +447,7 @@ def getGif(bot, searchdict):
         url += valid_gif_api_dict[currentapi]['limit'] + str(searchdict["searchlimit"])
 
         # nsfw search?
-        if searchdict[currentapi]['nsfw']:
+        if searchdict['nsfw']:
             url += valid_gif_api_dict[currentapi]['nsfw']
         else:
             url += valid_gif_api_dict[currentapi]['sfw']
