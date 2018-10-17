@@ -117,6 +117,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             feed = 'actualtechwebby'
         elif feed == 'onion':
             feed = 'theonion'
+        bot.say("here")
         dispmsg = feeds_display(bot, feed, feeds, 1) or []
         if dispmsg == []:
             osd(bot, botcom.channel_current, 'say', str(feed) + " appears to have had an unknown error.")
