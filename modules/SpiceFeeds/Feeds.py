@@ -104,7 +104,6 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    bot.say("herea")
     if trigger.group(1) == 'feeds':
         execute_mainb(bot, trigger, triggerargsarray, botcom, instigator)
     else:
@@ -118,10 +117,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             feed = 'actualtechwebby'
         elif feed == 'onion':
             feed = 'theonion'
-        bot.say("here")
         dispmsg = feeds_display(bot, feed, feeds, 1) or []
         if dispmsg == []:
-            osd(bot, botcom.channel_current, 'say', str(feed) + " appears to have had an unknown error.")
+            osd(bot, botcom.channel_current, 'say', feed + " appears to have had an unknown error.")
         else:
             osd(bot, botcom.channel_current, 'say', dispmsg)
 
@@ -241,8 +239,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
     dispmsg = []
     titleappend = 0
 
-    url = eval("feeds." + str(feed) + ".url")
-    if str(feed) == 'spicebot':
+    url = eval("feeds." + feed + ".url")
+    if feed == 'spicebot':
         if bot.nick.endswith('dev'):
             url = url.replace("master", "dev")
     page = requests.get(url, headers=header)
@@ -253,23 +251,23 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
         now = datetime.datetime.utcnow()
         now = now.replace(tzinfo=pytz.UTC)
 
-        displayname = eval("feeds." + str(feed) + ".displayname")
+        displayname = eval("feeds." + feed + ".displayname")
 
-        feed_type = eval("feeds." + str(feed) + ".type")
+        feed_type = eval("feeds." + feed + ".type")
 
         if feed_type in ['rss', 'youtube', 'github']:
 
-            lastbuildcurrent = get_database_value(bot, bot.nick, str(feed) + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
             xml = page.text
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)
 
-            lastbuildtype = eval("feeds." + str(feed) + ".lastbuildtype")
+            lastbuildtype = eval("feeds." + feed + ".lastbuildtype")
             lastBuildXML = xmldoc.getElementsByTagName(lastbuildtype)
-            lastbuildparent = int(eval("feeds." + str(feed) + ".lastbuildparent"))
-            lastbuildchild = int(eval("feeds." + str(feed) + ".lastbuildchild"))
+            lastbuildparent = int(eval("feeds." + feed + ".lastbuildparent"))
+            lastbuildchild = int(eval("feeds." + feed + ".lastbuildchild"))
             lastBuildXML = lastBuildXML[lastbuildparent].childNodes[lastbuildchild].nodeValue
             lastBuildXML = parser.parse(str(lastBuildXML))
 
@@ -277,10 +275,10 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
                 titleappend = 1
 
-                titletype = eval("feeds." + str(feed) + ".titletype")
+                titletype = eval("feeds." + feed + ".titletype")
                 titles = xmldoc.getElementsByTagName(titletype)
-                titleparent = int(eval("feeds." + str(feed) + ".titleparent"))
-                titlechild = int(eval("feeds." + str(feed) + ".titlechild"))
+                titleparent = int(eval("feeds." + feed + ".titleparent"))
+                titlechild = int(eval("feeds." + feed + ".titlechild"))
                 title = titles[titleparent].childNodes[titlechild].nodeValue
                 if feed_type == 'github':
                     authors = xmldoc.getElementsByTagName('name')
@@ -289,10 +287,10 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 title = unicode_string_cleanup(title)
                 dispmsg.append(title)
 
-                linktype = eval("feeds." + str(feed) + ".linktype")
+                linktype = eval("feeds." + feed + ".linktype")
                 links = xmldoc.getElementsByTagName(linktype)
-                linkparent = int(eval("feeds." + str(feed) + ".linkparent"))
-                linkchild = eval("feeds." + str(feed) + ".linkchild")
+                linkparent = int(eval("feeds." + feed + ".linkparent"))
+                linkchild = eval("feeds." + feed + ".linkchild")
                 if str(linkchild).isdigit():
                     linkchild = int(linkchild)
                     link = links[linkparent].childNodes[linkchild].nodeValue.split("?")[0]
@@ -301,18 +299,18 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 dispmsg.append(link)
 
                 if not displayifnotnew:
-                    set_database_value(bot, bot.nick, str(feed) + '_lastbuildcurrent', str(lastBuildXML))
+                    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
 
         elif feed_type == 'webinar':
 
-            scrapetime = eval("feeds." + str(feed) + ".time")
-            scrapetimezone = eval("feeds." + str(feed) + ".timezone")
+            scrapetime = eval("feeds." + feed + ".time")
+            scrapetimezone = eval("feeds." + feed + ".timezone")
 
             webbytime = str(tree.xpath(scrapetime))
             for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
                 webbytime = webbytime.replace(*r)
 
-            if str(feed) == 'spiceworkswebby':
+            if feed == 'spiceworkswebby':
                 webbytime = str(webbytime.split("+", 1)[0])
 
             webbytz = pytz.timezone(scrapetimezone)
@@ -328,30 +326,30 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 timecompare = get_timeuntil(now, webbytime)
                 dispmsg.append("{" + timecompare + "}")
 
-                scrapetitle = eval("feeds." + str(feed) + ".title")
+                scrapetitle = eval("feeds." + feed + ".title")
                 webbytitle = str(tree.xpath(scrapetitle))
                 for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
                     webbytitle = webbytitle.replace(*r)
                 webbytitle = unicode_string_cleanup(webbytitle)
                 dispmsg.append(webbytitle)
 
-                scrapelink = eval("feeds." + str(feed) + ".link")
+                scrapelink = eval("feeds." + feed + ".link")
                 webbylink = str(tree.xpath(scrapelink))
                 for r in (("['", ""), ("']", "")):
                     webbylink = webbylink.replace(*r)
                 if feed == 'actualtechwebby':
                     webbylink = str(url + webbylink.split("&", 1)[0])
-                webbylinkprecede = eval("feeds." + str(feed) + ".linkprecede")
+                webbylinkprecede = eval("feeds." + feed + ".linkprecede")
                 if webbylinkprecede != 'noprecede':
                     webbylink = str(webbylinkprecede + webbylink)
                 dispmsg.append(webbylink)
 
-                scrapebonus = eval("feeds." + str(feed) + ".bonus")
+                scrapebonus = eval("feeds." + feed + ".bonus")
                 if scrapebonus != 'nobonus':
                     webbybonus = ''
                     try:
                         webbybonus = str(tree.xpath(scrapebonus))
-                        if str(feed) == 'spiceworkswebby':
+                        if feed == 'spiceworkswebby':
                             webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
                         for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", ""), ("[", "")):
                             webbybonus = webbybonus.replace(*r)
@@ -363,9 +361,9 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
         elif feed_type == 'daily':
 
-            timehour = eval("feeds." + str(feed) + ".hour")
-            timeminute = eval("feeds." + str(feed) + ".minute")
-            scrapetimezone = eval("feeds." + str(feed) + ".timezone")
+            timehour = eval("feeds." + feed + ".hour")
+            timeminute = eval("feeds." + feed + ".minute")
+            scrapetimezone = eval("feeds." + feed + ".timezone")
 
             dailytz = pytz.timezone(scrapetimezone)
             nowtime = datetime.datetime.now(dailytz)
@@ -376,7 +374,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             if displayifnotnew or (nowtime.hour == int(timehour) and nowtime.minute == int(timeminute)):
 
-                scrapetitle = eval("feeds." + str(feed) + ".title")
+                scrapetitle = eval("feeds." + feed + ".title")
                 title = str(tree.xpath(scrapetitle))
                 for r in (("\\t", ""), ("\\n", ""), ("['", ""), ("']", ""), ("]", "")):
                     title = title.replace(*r)
@@ -394,47 +392,47 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
         elif feed_type == 'scrape':
 
-            scrapetime = eval("feeds." + str(feed) + ".time")
+            scrapetime = eval("feeds." + feed + ".time")
 
             scrapedtime = str(tree.xpath(scrapetime))
             for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
                 scrapedtime = scrapedtime.replace(*r)
             scrapedtime = parser.parse(str(scrapedtime)).replace(tzinfo=pytz.UTC)
 
-            lastbuildcurrent = get_database_value(bot, bot.nick, str(feed) + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
             if displayifnotnew or scrapedtime > lastbuildcurrent:
 
                 titleappend = 1
 
-                scrapetitle = eval("feeds." + str(feed) + ".title")
+                scrapetitle = eval("feeds." + feed + ".title")
                 scrapedtitle = str(tree.xpath(scrapetitle))
                 for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
                     scrapedtitle = scrapedtitle.replace(*r)
                 scrapedtitle = unicode_string_cleanup(scrapedtitle)
                 dispmsg.append(scrapedtitle)
 
-                scrapelink = eval("feeds." + str(feed) + ".link")
+                scrapelink = eval("feeds." + feed + ".link")
                 if scrapelink == 'url':
-                    scrapedlink = eval("feeds." + str(feed) + ".url")
+                    scrapedlink = eval("feeds." + feed + ".url")
                 else:
                     scrapedlink = str(tree.xpath(scrapelink))
                     for r in (("['", ""), ("']", "")):
                         scrapedlink = scrapedlink.replace(*r)
-                    scrapedlinkprecede = eval("feeds." + str(feed) + ".linkprecede")
+                    scrapedlinkprecede = eval("feeds." + feed + ".linkprecede")
                     if scrapedlinkprecede != 'noprecede':
                         scrapedlink = str(scrapedlinkprecede + scrapedlink)
                 dispmsg.append(scrapedlink)
 
             if not displayifnotnew:
-                set_database_value(bot, bot.nick, str(feed) + '_lastbuildcurrent', str(scrapedtime))
+                set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(scrapedtime))
 
         elif feed_type == 'json':
 
-            prefix = eval("feeds." + str(feed) + ".prefix")
-            searchterm = eval("feeds." + str(feed) + ".searchterm")
-            suffix = eval("feeds." + str(feed) + ".suffix")
+            prefix = eval("feeds." + feed + ".prefix")
+            searchterm = eval("feeds." + feed + ".searchterm")
+            suffix = eval("feeds." + feed + ".suffix")
 
             # if str(searchterm).startswith("http"):
             #    searchtermpage = requests.get(searchterm, headers={'Accept': 'text/plain'})
@@ -461,14 +459,14 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             # content = contentpage.content
             # bot.say(str(jsonload))
 
-            # lastbuildcurrent = get_database_value(bot, bot.nick, str(feed) + '_lastbuildcurrent') or
+            # lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or
 
             # if not displayifnotnew:
-            #    set_database_value(bot, bot.nick, str(feed) + '_lastbuildcurrent', str(lastBuildXML))
+            #    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
         elif feed_type == 'googlecalendar':
             return
 
-            currentcalendar = eval("feeds." + str(feed) + ".calendar")
+            currentcalendar = eval("feeds." + feed + ".calendar")
 
             service = build('calendar', 'v3', http=gcalcreds.authorize(Http()))
 
@@ -485,7 +483,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
         elif feed_type == 'twitter':
 
-            currenttweetat = eval("feeds." + str(feed) + ".tweetat")
+            currenttweetat = eval("feeds." + feed + ".tweetat")
 
             currenttweats = twiterapi.GetUserTimeline(screen_name=currenttweetat, count=1)
             listarray = []
@@ -495,7 +493,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             scrapedtime = parser.parse(str(tweet.created_at)).replace(tzinfo=pytz.UTC)
 
-            lastbuildcurrent = get_database_value(bot, bot.nick, str(feed) + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
             if displayifnotnew or scrapedtime > lastbuildcurrent:
@@ -505,11 +503,11 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 titleappend = 1
 
             if not displayifnotnew:
-                set_database_value(bot, bot.nick, str(feed) + '_lastbuildcurrent', str(scrapedtime))
+                set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(scrapedtime))
 
         elif feed_type == 'subreddit':
 
-            currentsubreddit = eval("feeds." + str(feed) + ".rslash")
+            currentsubreddit = eval("feeds." + feed + ".rslash")
 
             subreal = sub_exists(bot, currentsubreddit)
             if not subreal:
@@ -527,7 +525,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 listarray.append(submission)
             submission = listarray[0]
 
-            lastbuildcurrent = get_database_value(bot, bot.nick, str(feed) + '_lastbuildcurrent')
+            lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
             if displayifnotnew or (str(submission.permalink) != str(lastbuildcurrent)):
 
                 titleappend = 1
@@ -536,7 +534,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                     dispmsg.append("<NSFW>")
 
                 if not displayifnotnew:
-                    set_database_value(bot, bot.nick, str(feed) + '_lastbuildcurrent', str(submission.permalink))
+                    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(submission.permalink))
 
                 dispmsg.append("{" + str(submission.score) + "}")
                 dispmsg.append(submission.title)
@@ -560,21 +558,21 @@ def feeds_configs(bot, feeds):
 
             # Every feed gets a class
             current_feed = class_create(feed)
-            exec("feeds." + str(feed) + " = current_feed")
+            exec("feeds." + feed + " = current_feed")
 
             # file name
-            exec("feeds." + str(feed) + ".feed_filename = str(feed)")
+            exec("feeds." + feed + ".feed_filename = feed")
 
             # get file path
-            feedfile = os.path.join(feed_type_file_path, str(feed))
-            exec("feeds." + str(feed) + ".file_path = feedfile")
+            feedfile = os.path.join(feed_type_file_path, feed)
+            exec("feeds." + feed + ".file_path = feedfile")
 
             # Read configuration
             config = ConfigParser.ConfigParser()
             config.read(feedfile)
             for each_section in config.sections():
                 for (each_key, each_val) in config.items(each_section):
-                    exec("feeds." + str(feed) + "." + each_key + " = each_val")
+                    exec("feeds." + feed + "." + each_key + " = each_val")
 
     return feeds
 
