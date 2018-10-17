@@ -54,10 +54,10 @@ def gifadmin(bot, trigger):
         # make the change
         if activation_direction in activate_list:
             adjust_database_array(bot, bot.nick, [channeltarget], 'channels_nsfw', 'add')
-            osd(bot, channeltarget, 'say', "Gif " + activation_type + " should be enabled in " + channeltarget + "!")
+            osd(bot, channeltarget, 'say', "Gif " + subcommand + " should be enabled in " + channeltarget + "!")
         elif activation_direction in deactivate_list:
             adjust_database_array(bot, bot.nick, [channeltarget], 'channels_nsfw', 'del')
-            osd(bot, channeltarget, 'say', "Gif " + activation_type + " should be disabled in " + channeltarget + "!")
+            osd(bot, channeltarget, 'say', "Gif " + subcommand + " should be disabled in " + channeltarget + "!")
 
 
 @sopel.module.commands('gif', 'tenor', 'giphy', 'gfycat', 'gifme')
