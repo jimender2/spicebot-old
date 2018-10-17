@@ -47,8 +47,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         searchapis = [botcom.commandused]
 
+    searchdict = {"query": query, "gifsearch": searchapis}
+
+    nsfwenabled = get_database_value(bot, bot.nick, 'channels_nsfw') or []
+    if botcom.channel_current in nsfwenabled:
+        searchdict['nsfw'] = True
+
     query = spicemanip(bot, triggerargsarray, 0)
-    gifdict = getGif(bot, {"query": query, "gifsearch": searchapis})
+    gifdict = getGif(bot, searchdict)
 
     if gifdict["error"]:
         osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
