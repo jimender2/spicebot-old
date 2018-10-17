@@ -49,7 +49,7 @@ valid_gif_api_dict = {
                                     "key": None,
                                     "apikey": None,
                                     "nsfw": '&nsfw=3',
-                                    "sfw": None',
+                                    "sfw": None,
                                     },
                         "gifme": {
                                     "url": "http://api.gifme.io/v1/search?",
@@ -58,7 +58,7 @@ valid_gif_api_dict = {
                                     "key": "&key=",
                                     "apikey": 'rX7kbMzkGu7WJwvG',
                                     "nsfw": '&sfw=false',
-                                    "sfw": None',
+                                    "sfw": None,
                                     },
                         }
 
