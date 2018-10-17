@@ -482,11 +482,11 @@ def getGif(bot, searchdict):
         resultsamount = len(resultsarray)
         if resultsarray == []:
             pass
-        bot.say(str(page.status_code))
 
         # Create Temp dict for every result
         tempresultnum = 0
         for tempresult in resultsarray:
+            bot.say(str(tempresult))
             tempdict = dict()
             tempdict["returnnum"] = tempresultnum
             tempdict["returnurl"] = tempresult
