@@ -31,10 +31,6 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         botcom.commandused = trigger.group(1)
-
-        # TODO
-        botcom.commandused = botcom.commandused.replace('dbb', '')
-
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
         if commands_array == []:
