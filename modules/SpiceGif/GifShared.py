@@ -490,7 +490,7 @@ def getGif(bot, searchdict):
             tempdict["returnnum"] = tempresultnum
             tempdict["returnurl"] = tempresult
             tempresultnum += 1
-            gifapiresults.extend(tempdict)
+            gifapiresults.append(tempdict)
 
     if gifapiresults == []:
         gifdict["error"] = "No Results were found for " + searchdict["query"] + " in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"
