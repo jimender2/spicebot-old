@@ -28,6 +28,7 @@ dontusesites = [
                         "http://3.bp.blogspot.com"
                         ]
 
+dontuseextensions = ['.jpg', '.png']
 
 valid_gif_api_dict = {
                         "giphy": {
@@ -149,7 +150,7 @@ def getGif(bot, searchdict):
         resultsarray = []
         for result in results:
             cururl = result[valid_gif_api_dict[currentapi]['cururl']]
-            if not str(cururl).startswith(tuple(dontusesites)):  # str(cururl).endswith(".gif") and
+            if not str(cururl).startswith(tuple(dontusesites)) and not str(cururl).endswith(tuple(dontuseextensions)):
                 resultsarray.append(cururl)
 
         # make sure there are results
