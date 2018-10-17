@@ -149,32 +149,30 @@ def getGif(bot, searchdict):
         url += str(valid_gif_api_dict[currentapi]['key']) + str(valid_gif_api_dict[currentapi]['apikey'])
 
         page = requests.get(url, headers=None)
-        if page.status_code == 500:
-            pass
+        if page.status_code != 500:
 
-        data = json.loads(urllib2.urlopen(url).read())
+            data = json.loads(urllib2.urlopen(url).read())
 
-        results = data[valid_gif_api_dict[currentapi]['results']]
-        resultsarray = []
-        for result in results:
-            cururl = result[valid_gif_api_dict[currentapi]['cururl']]
-            if not str(cururl).startswith(tuple(dontusesites)) and not str(cururl).endswith(tuple(dontuseextensions)):
-                resultsarray.append(cururl)
+            results = data[valid_gif_api_dict[currentapi]['results']]
+            resultsarray = []
+            for result in results:
+                cururl = result[valid_gif_api_dict[currentapi]['cururl']]
+                if not str(cururl).startswith(tuple(dontusesites)) and not str(cururl).endswith(tuple(dontuseextensions)):
+                    resultsarray.append(cururl)
 
-        # make sure there are results
-        resultsamount = len(resultsarray)
-        if resultsarray == []:
-            pass
+            # make sure there are results
+            resultsamount = len(resultsarray)
+            if resultsarray != []:
 
-        # Create Temp dict for every result
-        tempresultnum = 0
-        for tempresult in resultsarray:
-            tempdict = dict()
-            tempdict["returnnum"] = tempresultnum
-            tempdict["returnurl"] = tempresult
-            tempdict["gifapi"] = currentapi
-            tempresultnum += 1
-            gifapiresults.append(tempdict)
+                # Create Temp dict for every result
+                tempresultnum = 0
+                for tempresult in resultsarray:
+                    tempdict = dict()
+                    tempdict["returnnum"] = tempresultnum
+                    tempdict["returnurl"] = tempresult
+                    tempdict["gifapi"] = currentapi
+                    tempresultnum += 1
+                    gifapiresults.append(tempdict)
 
     if gifapiresults == []:
         return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}
