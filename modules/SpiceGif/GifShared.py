@@ -452,6 +452,9 @@ def getGif(bot, searchdict):
         else:
             url += valid_gif_api_dict[currentapi]['sfw']
 
+        # api key
+        url += valid_gif_api_dict[currentapi]['key'] + valid_gif_api_dict[currentapi]['apikey']
+
         bot.say(str(url))
 
 
