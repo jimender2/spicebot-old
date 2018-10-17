@@ -31,6 +31,7 @@ valid_gif_api_dict = {
                                     "key": "&api_key=",
                                     "apikey": config.get("giphy", "apikey"),
                                     "nsfw": None,
+                                    "sfw": 'rating=R',
                                     },
                         "tenor": {
                                     "url": "https://api.tenor.com/v1/search?",
@@ -38,7 +39,8 @@ valid_gif_api_dict = {
                                     "limit": '&limit=',
                                     "key": "&key=",
                                     "apikey": config.get("tenor", "apikey"),
-                                    "nsfw": '&contentfilter=off',
+                                    "nsfw": None,
+                                    "sfw": '&contentfilter=low',
                                     },
                         "gfycat": {
                                     "url": "https://api.gfycat.com/v1/gfycats/search?",
@@ -47,6 +49,7 @@ valid_gif_api_dict = {
                                     "key": None,
                                     "apikey": None,
                                     "nsfw": '&nsfw=3',
+                                    "sfw": None',
                                     },
                         "gifme": {
                                     "url": "http://api.gifme.io/v1/search?",
@@ -55,6 +58,7 @@ valid_gif_api_dict = {
                                     "key": "&key=",
                                     "apikey": 'rX7kbMzkGu7WJwvG',
                                     "nsfw": '&sfw=false',
+                                    "sfw": None',
                                     },
                         }
 
@@ -168,7 +172,7 @@ def getGif_tenor(bot, searchdict):
     if searchdict["searchnum"] == 'random':
         searchdict["searchnum"] = randint(0, searchdict['searchlimit'])
 
-    url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchdict['searchlimit']) + '&contentfilter=off'
+    url = 'https://api.tenor.com/v1/search?q=' + str(searchquery) + '&key=' + str(tenorapi) + '&limit=' + str(searchdict['searchlimit'])  # + '&contentfilter=off'
     page = requests.get(url, headers=None)
     if page.status_code == 500:
         returngifdict["error"] = 'No Results for this search'
@@ -441,6 +445,12 @@ def getGif(bot, searchdict):
 
         # limit
         url += valid_gif_api_dict[currentapi]['limit'] + str(searchdict["searchlimit"])
+
+        # nsfw search?
+        if searchdict[currentapi]['nsfw']:
+            url += valid_gif_api_dict[currentapi]['nsfw']
+        else:
+            url += valid_gif_api_dict[currentapi]['sfw']
 
         bot.say(str(url))
 
