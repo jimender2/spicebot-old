@@ -39,8 +39,8 @@ def gifadmin(bot, trigger):
     # Channel
     channeltarget = spicemanip(bot, [x for x in triggerargsarray if x in botcom.channel_list], 1)
     if not channeltarget:
-        if rpg.channel_current.startswith('#'):
-            channeltarget = rpg.channel_current
+        if botcom.channel_current.startswith('#'):
+            channeltarget = botcom.channel_current
         else:
             return osd(bot, trigger.sender, 'say',  "Please Specify a channel. Valid Option(s) are: " + str(spicemanip(bot, botcom.channel_list, 'andlist')))
 
@@ -54,10 +54,10 @@ def gifadmin(bot, trigger):
         # make the change
         if activation_direction in activate_list:
             adjust_database_array(bot, bot.nick, [channeltarget], 'channels_nsfw', 'add')
-            osd(bot, channeltarget, 'say', "RPG " + activation_type + " should be enabled in " + channeltarget + "!")
+            osd(bot, channeltarget, 'say', "Gif " + activation_type + " should be enabled in " + channeltarget + "!")
         elif activation_direction in deactivate_list:
             adjust_database_array(bot, bot.nick, [channeltarget], 'channels_nsfw', 'del')
-            osd(bot, channeltarget, 'say', "RPG " + activation_type + " should be disabled in " + channeltarget + "!")
+            osd(bot, channeltarget, 'say', "Gif " + activation_type + " should be disabled in " + channeltarget + "!")
 
 
 @sopel.module.commands('gif', 'tenor', 'giphy', 'gfycat', 'gifme')
