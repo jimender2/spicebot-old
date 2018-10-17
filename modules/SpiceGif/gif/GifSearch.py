@@ -19,6 +19,13 @@ from GifShared import *
 # author deathbybandaid
 
 
+@sopel.module.commands('gifadmin')
+def gifadmin(bot, trigger):
+
+    if not trigger.admin and not bot.privileges[trigger.sender.lower()][trigger.nick.lower()] >= module.OP:
+        return osd(bot, trigger.sender, 'say',  "Only Admins and OPs may adjust the gif settings.")
+
+
 @sopel.module.commands('gif', 'tenor', 'giphy', 'gfycat', 'gifme')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
