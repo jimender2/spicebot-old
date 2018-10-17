@@ -149,7 +149,7 @@ def getGif(bot, searchdict):
         resultsarray = []
         for result in results:
             cururl = result[valid_gif_api_dict[currentapi]['cururl']]
-            if str(cururl).endswith(".gif") and not str(cururl).startswith(tuple(dontusesites)):
+            if not str(cururl).startswith(tuple(dontusesites)):  # str(cururl).endswith(".gif") and
                 resultsarray.append(cururl)
 
         # make sure there are results
@@ -168,7 +168,7 @@ def getGif(bot, searchdict):
             gifapiresults.append(tempdict)
 
     if gifapiresults == []:
-        return {"error": "No Results were found for " + searchdict["query"] + " in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}
+        return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
     # shuffle and select random entry
     random.shuffle(gifapiresults)
