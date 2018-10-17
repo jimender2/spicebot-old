@@ -468,6 +468,7 @@ def getGif(bot, searchdict):
         page = requests.get(url, headers=None)
         if page.status_code == 500:
             pass
+        bot.say(str(page.status_code))
 
         data = json.loads(urllib2.urlopen(url).read())
 
@@ -489,6 +490,7 @@ def getGif(bot, searchdict):
             tempdict = dict()
             tempdict["returnnum"] = tempresultnum
             tempdict["returnurl"] = tempresult
+            tempdict["gifapi"] = currentapi
             tempresultnum += 1
             gifapiresults.append(tempdict)
 
