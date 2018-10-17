@@ -39,7 +39,7 @@ valid_gif_api_dict = {
                                     "nsfw": None,
                                     "sfw": 'rating=R',
                                     "results": 'data',
-                                    "cururl": 'url',
+                                    "cururl": 'preview_gif',
                                     },
                         "tenor": {
                                     "url": "https://api.tenor.com/v1/search?",
