@@ -19,10 +19,15 @@ from GifShared import *
 # author deathbybandaid
 
 
-@sopel.module.commands('gif')
+@sopel.module.commands('gif', 'tenor', 'giphy', 'gfycat', 'gifme')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
+        botcom.commandused = trigger.group(1)
+
+        # TODO
+        botcom.commandused = botcom.commandused.replace('dbb', '')
+
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
         if commands_array == []:
@@ -33,8 +38,14 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+
+    if botcom.commandused == 'gif':
+        searchapis = valid_gif_api_dict.keys()
+    else:
+        searchapis = [botcom.commandused]
+
     query = spicemanip(bot, triggerargsarray, 0)
-    gifdict = getGif(bot, {"query": query})
+    gifdict = getGif(bot, {"query": query, "gifsearch": searchapis})
 
     if gifdict["error"]:
         osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
