@@ -51,7 +51,7 @@ quickgifdict = {
                 }
 
 
-@sopel.module.commands('borg', 'boobies', 'bs')
+@sopel.module.commands('borg', 'boobies', 'bs', 'darwin')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
