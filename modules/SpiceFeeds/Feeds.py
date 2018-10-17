@@ -483,6 +483,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
         elif feed_type == 'twitter':
 
+            bot.say("here")
+
             currenttweetat = eval("feeds." + feed + ".tweetat")
 
             currenttweats = twiterapi.GetUserTimeline(screen_name=currenttweetat, count=1)
