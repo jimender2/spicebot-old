@@ -32,6 +32,8 @@ valid_gif_api_dict = {
                                     "apikey": config.get("giphy", "apikey"),
                                     "nsfw": None,
                                     "sfw": 'rating=R',
+                                    "results": 'data',
+                                    "cururl": '',
                                     },
                         "tenor": {
                                     "url": "https://api.tenor.com/v1/search?",
@@ -41,6 +43,8 @@ valid_gif_api_dict = {
                                     "apikey": config.get("tenor", "apikey"),
                                     "nsfw": '&contentfilter=off',
                                     "sfw": '&contentfilter=low',
+                                    "results": 'results',
+                                    "cururl": 'url',
                                     },
                         "gfycat": {
                                     "url": "https://api.gfycat.com/v1/gfycats/search?",
@@ -50,6 +54,8 @@ valid_gif_api_dict = {
                                     "apikey": None,
                                     "nsfw": '&nsfw=3',
                                     "sfw": '&nsfw=1',
+                                    "results": 'gfycats',
+                                    "cururl": 'gifUrl',
                                     },
                         "gifme": {
                                     "url": "http://api.gifme.io/v1/search?",
@@ -59,6 +65,8 @@ valid_gif_api_dict = {
                                     "apikey": 'rX7kbMzkGu7WJwvG',
                                     "nsfw": '&sfw=false',
                                     "sfw": '&sfw=true',
+                                    "results": 'data',
+                                    "cururl": 'link',
                                     },
                         }
 
@@ -439,23 +447,33 @@ def getGif(bot, searchdict):
 
         # url base
         url = valid_gif_api_dict[currentapi]['url']
-
-        # url query
+        # query
         url += valid_gif_api_dict[currentapi]['query'] + str(searchdict["searchquery"])
-
         # limit
         url += valid_gif_api_dict[currentapi]['limit'] + str(searchdict["searchlimit"])
-
         # nsfw search?
         if searchdict['nsfw']:
             url += valid_gif_api_dict[currentapi]['nsfw']
         else:
             url += valid_gif_api_dict[currentapi]['sfw']
-
         # api key
         url += valid_gif_api_dict[currentapi]['key'] + valid_gif_api_dict[currentapi]['apikey']
 
-        bot.say(str(url))
+        page = requests.get(url, headers=None)
+        if page.status_code == 500:
+            pass
+
+        data = json.loads(urllib2.urlopen(url).read())
+
+        results = data[valid_gif_api_dict[currentapi]['results']]
+        resultsarray = []
+        for result in results:
+            if currentapi == 'giphyt':
+                # cururl = 'https://media2.giphy.com/media/' + result['id'] + '/giphy.gif'
+                cururl = result['original']
+            else:
+                cururl = result[valid_gif_api_dict[currentapi]['cururl']]
+
 
 
 
