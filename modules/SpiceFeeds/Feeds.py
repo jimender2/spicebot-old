@@ -29,6 +29,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 # author deathbybandaid
+# TODO use dict instead of class
 
 # creds
 config = ConfigParser.ConfigParser()
