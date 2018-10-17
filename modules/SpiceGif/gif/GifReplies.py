@@ -64,7 +64,7 @@ quickgifdict = {
                     "searchfail": 'the more you know... **magic fingers**',
                     "saytype": 'action',
                     },
-                "themoreyouknow": {"altcom": "tmyk"},
+                "themoreyouknow": {"altcom": "tmyk"}, "myk": {"altcom": "tmyk"}, "myk": {"altcom": "moreyouknow"},
                 }
 
 
