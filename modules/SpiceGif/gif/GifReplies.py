@@ -22,7 +22,7 @@ from GifShared import *
 
 quickgifdict = {
                 "template": {
-                    "query": "test",  # required
+                    "query": "test",  # optional, if not there, query defaults to the key used
                     "searchapis": ['giphy', 'tenor'],  # optional, if you want to specify apis used
                     "searchfail": "test failed",  # optional, if you want a special message due to failure
                     "saytype": 'say',  # optional, if this is an action or say
@@ -48,14 +48,32 @@ quickgifdict = {
                     "searchfail": "is not a contender for the Darwin award, thank fuck.",
                     "saytype": 'action',
                     },
+
+                "facepalm": {
+                    "searchfail": "There is not enough facepalm in the world for this",
+                    },
+
+                "ibb": {
+                    "query": "I'll be back",
+                    "searchfail": "https://tenor.com/view/arnold-schwarzenegger-the-terminator-ill-be-back-gif-4367793",
+                    },
+
+                "tmyk": {
+                    "query": "the more you know",
+                    "searchfail": 'the more you know... **magic fingers**',
+                    "saytype": 'action',
+                    },
+                "themoreyouknow": {"altcom": "tmyk"},
                 }
 
 
-@sopel.module.commands('borg', 'boobies', 'bs', 'darwin')
+@sopel.module.commands('borg', 'boobies', 'bs', 'darwin', 'facepalm', 'ibb', 'tmyk', 'themoreyouknow')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         botcom.commandused = trigger.group(1)
+        if "altcom" in quickgifdict[botcom.commandused].keys():
+            botcom.commandused = quickgifdict[botcom.commandused]["altcom"]
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
         if commands_array == []:
@@ -67,7 +85,10 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
-    query = quickgifdict[botcom.commandused]["query"]
+    if "query" not in quickgifdict[botcom.commandused].keys():
+        query = str(botcom.commandused)
+    else:
+        query = quickgifdict[botcom.commandused]["query"]
 
     searchdict = {"query": query}
 
