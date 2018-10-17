@@ -104,6 +104,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    bot.say("herea")
     if trigger.group(1) == 'feeds':
         execute_mainb(bot, trigger, triggerargsarray, botcom, instigator)
     else:
