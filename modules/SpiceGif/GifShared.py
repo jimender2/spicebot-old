@@ -22,6 +22,12 @@ from BotShared import *
 config = ConfigParser.ConfigParser()
 config.read("/home/spicebot/spicebot.conf")
 
+dontusesites = [
+                        "http://forgifs.com", "http://a.dilcdn.com", "http://www.bestgifever.com",
+                        "http://s3-ec.buzzfed.com", "http://i.minus.com", "http://fap.to", "http://prafulla.net",
+                        "http://3.bp.blogspot.com"
+                        ]
+
 
 valid_gif_api_dict = {
                         "giphy": {
@@ -33,7 +39,7 @@ valid_gif_api_dict = {
                                     "nsfw": None,
                                     "sfw": 'rating=R',
                                     "results": 'data',
-                                    "cururl": '',
+                                    "cururl": 'url',
                                     },
                         "tenor": {
                                     "url": "https://api.tenor.com/v1/search?",
@@ -468,26 +474,23 @@ def getGif(bot, searchdict):
         results = data[valid_gif_api_dict[currentapi]['results']]
         resultsarray = []
         for result in results:
-            # osd(bot, 'deathbybandaid', 'say', str(result))
-            # bot.say("     ")
-            if currentapi == 'giphy':
-                # cururl = 'https://media2.giphy.com/media/' + result['id'] + '/giphy.gif'
-                cururl = result['url']
-            else:
-                cururl = result[valid_gif_api_dict[currentapi]['cururl']]
+            cururl = result[valid_gif_api_dict[currentapi]['cururl']]
+            if str(cururl).endswith(".gif") and not str(cururl).startswith(tuple(dontusesites)):
+                resultsarray.append(cururl)
 
+        # make sure there are results
+        resultsamount = len(resultsarray)
+        if resultsarray == []:
+            pass
 
-
-
-
-
-
-
-
-        currentgifdict = eval("getGif_" + currentapi + "(bot, searchdict)")
-        if not currentgifdict["error"]:
-            gifdictall = currentgifdict["allgifs"]
-            gifapiresults.extend(gifdictall)
+        # Create Temp dict for every result
+        tempresultnum = 0
+        for tempresult in resultsarray:
+            tempdict = dict()
+            tempdict["returnnum"] = tempresultnum
+            tempdict["returnurl"] = tempresult
+            tempresultnum += 1
+            gifapiresults.extend(tempdict)
 
     if gifapiresults == []:
         gifdict["error"] = "No Results were found for " + searchdict["query"] + " in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"
