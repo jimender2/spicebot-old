@@ -21,15 +21,37 @@ from GifShared import *
 # contributers jimender2
 
 quickgifdict = {
+                "template": {
+                    "query": "test",  # required
+                    "searchapis": ['giphy', 'tenor'],  # optional, if you want to specify apis used
+                    "searchfail": "test failed",  # optional, if you want a special message due to failure
+                    "saytype": 'say',  # optional, if this is an action or say
+                    },
+
                 "borg": {
                     "query": "Jeri Ryan",
-                    "searchapis": ['giphy', 'tenor'],
                     "searchfail": "Resistance is futile",
+                    },
+
+                "boobies": {
+                    "query": "boobies",
+                    "searchfail": "https://giphy.com/gifs/26FLf3L9bDpYCVO5G/html5",
+                    },
+
+                "bs": {
+                    "query": "bullshit",
+                    "searchfail": "https://media.giphy.com/media/iqGVHdU2tEBq9JSrtm/giphy.gif",
+                    },
+
+                "darwin": {
+                    "query": "Darwin Award",
+                    "searchfail": "is not a contender for the Darwin award, thank fuck.",
+                    "saytype": 'action',
                     },
                 }
 
 
-@sopel.module.commands('borg')
+@sopel.module.commands('borg', 'boobies', 'bs')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
@@ -60,7 +82,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if gifdict["error"]:
 
         if "searchfail" in quickgifdict[botcom.commandused].keys():
-            return osd(bot, trigger.sender, 'say',  str(quickgifdict[botcom.commandused]["searchfail"]))
+            saytype = 'say'
+            if "saytype" not in quickgifdict[botcom.commandused].keys():
+                saytype = quickgifdict[botcom.commandused]
+            return osd(bot, trigger.sender, saytype,  str(quickgifdict[botcom.commandused]["searchfail"]))
         else:
             return osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
 
