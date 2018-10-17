@@ -24,51 +24,63 @@ quickgifdict = {
                 "template": {
                     "query": "test",  # optional, if not there, query defaults to the key used
                     "searchapis": ['giphy', 'tenor'],  # optional, if you want to specify apis used
-                    "searchfail": "test failed",  # optional, if you want a special message due to failure
+                    "searchfail": ["test failed"],  # optional, if you want a special message due to failure, list form will select randomly
                     "saytype": 'say',  # optional, if this is an action or say
                     },
                 "template_altcom": {"altcom": "alt_template"},  # alternate command functionality
 
                 "borg": {
                     "query": "Jeri Ryan",
-                    "searchfail": "Resistance is futile",
+                    "searchfail": ["Resistance is futile"],
                     },
 
                 "boobies": {
                     "query": "boobies",
-                    "searchfail": "https://giphy.com/gifs/26FLf3L9bDpYCVO5G/html5",
+                    "searchfail": ["https://giphy.com/gifs/26FLf3L9bDpYCVO5G/html5"],
                     },
 
                 "bs": {
                     "query": "bullshit",
-                    "searchfail": "https://media.giphy.com/media/iqGVHdU2tEBq9JSrtm/giphy.gif",
+                    "searchfail": ["https://media.giphy.com/media/iqGVHdU2tEBq9JSrtm/giphy.gif"],
                     },
 
                 "darwin": {
                     "query": "Darwin Award",
-                    "searchfail": "is not a contender for the Darwin award, thank fuck.",
+                    "searchfail": ["is not a contender for the Darwin award, thank fuck."],
                     "saytype": 'action',
                     },
 
                 "facepalm": {
-                    "searchfail": "There is not enough facepalm in the world for this",
+                    "searchfail": ["There is not enough facepalm in the world for this"],
                     },
 
                 "ibb": {
                     "query": "I'll be back",
-                    "searchfail": "https://tenor.com/view/arnold-schwarzenegger-the-terminator-ill-be-back-gif-4367793",
+                    "searchfail": ["https://tenor.com/view/arnold-schwarzenegger-the-terminator-ill-be-back-gif-4367793"],
                     },
+                "illbeback": {"altcom": "ibb"},
 
                 "tmyk": {
                     "query": "the more you know",
-                    "searchfail": 'the more you know... **magic fingers**',
+                    "searchfail": ['the more you know... **magic fingers**'],
                     "saytype": 'action',
                     },
-                "themoreyouknow": {"altcom": "tmyk"}, "myk": {"altcom": "tmyk"}, "myk": {"altcom": "moreyouknow"},
+                "themoreyouknow": {"altcom": "tmyk"}, "myk": {"altcom": "tmyk"}, "moreyouknow": {"altcom": "tmyk"},
+
+                "nike": {
+                    "query": "Just do it",
+                    "searchfail": ['thinks you should stop being a little bitch and just do it.'],
+                    "saytype": 'action',
+                    },
+
+                "smh": {
+                    "searchfail": ['shakes his head...'],
+                    "saytype": 'action',
+                    },
                 }
 
 
-@sopel.module.commands('borg', 'boobies', 'bs', 'darwin', 'facepalm', 'ibb', 'tmyk', 'themoreyouknow')
+@sopel.module.commands('borg', 'boobies', 'bs', 'darwin', 'facepalm', 'ibb', 'illbeback', 'tmyk', 'themoreyouknow', 'myk', 'moreyouknow', 'nike', 'smh')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
@@ -107,7 +119,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             saytype = 'say'
             if "saytype" not in quickgifdict[botcom.commandused].keys():
                 saytype = quickgifdict[botcom.commandused]
-            return osd(bot, trigger.sender, saytype,  str(quickgifdict[botcom.commandused]["searchfail"]))
+            faillist = quickgifdict[botcom.commandused]["searchfail"]
+            if not isinstance(faillist, list):
+                faillist = [str(faillist)]
+            return osd(bot, trigger.sender, saytype, spicemanip(bot, faillist, 'random'))
         else:
             return osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
 
