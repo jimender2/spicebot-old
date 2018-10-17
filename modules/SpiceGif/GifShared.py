@@ -439,6 +439,9 @@ def getGif(bot, searchdict):
         # url query
         url += valid_gif_api_dict[currentapi]['query'] + str(searchdict["searchquery"])
 
+        # limit
+        url += valid_gif_api_dict[currentapi]['limit'] + str(searchdict["searchlimit"])
+
         bot.say(str(url))
 
 
