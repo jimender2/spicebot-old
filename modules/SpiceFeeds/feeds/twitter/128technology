@@ -1,0 +1,5 @@
+[configuration]
+type = twitter
+displayname =	Twitter 128technology
+url = https://twitter.com
+tweetat = 128technology
