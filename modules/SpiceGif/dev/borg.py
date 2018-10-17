@@ -33,12 +33,12 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif = getGif_all(bot, {"query": "Jeri Ryan"})
-    rand = random.randint(1,5)
+    gif = getGif(bot, {"query": "Jeri Ryan"})
+    rand = random.randint(1, 5)
     if rand == 1:
         osd(bot, trigger.sender, 'say', "Resistance is futile")
     else:
-        if gif["querysuccess"]:
+        if not gif["error"]:
             osd(bot, trigger.sender, 'say', "%s Result (#%s): %s" % (gif['gifapi'].title(), gif['returnnum'], gif['returnurl']))
         else:
             osd(bot, trigger.sender, 'action', 'is not a contender for the Darwin award, thank fuck.')
