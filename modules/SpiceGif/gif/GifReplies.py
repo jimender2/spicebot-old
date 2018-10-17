@@ -27,6 +27,7 @@ quickgifdict = {
                     "searchfail": "test failed",  # optional, if you want a special message due to failure
                     "saytype": 'say',  # optional, if this is an action or say
                     },
+                "template_altcom": {"altcom": "alt_template"},  # alternate command functionality
 
                 "borg": {
                     "query": "Jeri Ryan",
