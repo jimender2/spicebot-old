@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+# coding=utf-8
+from __future__ import unicode_literals, absolute_import, print_function, division
+import sopel.module
+import urllib2
+import json
+from BeautifulSoup import BeautifulSoup
+from random import randint
+import sys
+import os
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(shareddir)
+gifshareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(gifshareddir)
+from BotShared import *
+from GifShared import *
+
+# author deathbybandaid
+
+# contributers
+
+quickgifdict = {
+                "giftest": {
+                    "query": "star trek",
+                    },
+                }
+
+
+@sopel.module.commands('giftest')
+def mainfunction(bot, trigger):
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    if not enablestatus:
+        botcom.commandused = trigger.group(1)
+        # IF "&&" is in the full input, it is treated as multiple commands, and is split
+        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+        if commands_array == []:
+            commands_array = [[]]
+        for command_split_partial in commands_array:
+            triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+            execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
+
+
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+
+    query = quickgifdict[botcom.commandused]["query"]
+
+    nsfwenabled = get_database_value(bot, bot.nick, 'channels_nsfw') or []
+    if botcom.channel_current in nsfwenabled:
+        searchdict['nsfw'] = True
+
+    gifdict = getGif(bot, {"query": query))
+    if gifdict["error"]:
+
+        return osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
+
+    osd(bot, trigger.sender, 'say',  gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
