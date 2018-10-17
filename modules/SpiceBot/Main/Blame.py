@@ -41,6 +41,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             whotoblame = spicemanip(bot, blametargetarray, 'random')
             osd(bot, trigger.sender, 'say', "It's " + whotoblame + "'s fault.")
     elif whotoblame.lower() not in [u.lower() for u in bot.users]:
+        forwhat = spicemanip(bot, triggerargsarray, '1+') or ''
         osd(bot, trigger.sender, 'say', "I blame " + whotoblame + " for that.")
     else:
         if not forwhat:
