@@ -22,7 +22,9 @@ from GifShared import *
 
 quickgifdict = {
                 "giftest": {
-                    "query": "star trek",
+                    "query": "Jeri Ryan",
+                    "searchapis": [],
+                    "searchfail": "Resistance is futile",
                     },
                 }
 
@@ -45,13 +47,21 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     query = quickgifdict[botcom.commandused]["query"]
 
+    searchdict = {"query": query}
+
+    if "searchapis" in quickgifdict[botcom.commandused].keys():
+        searchdict['gifsearch'] = quickgifdict[botcom.commandused]["searchapis"]
+
     nsfwenabled = get_database_value(bot, bot.nick, 'channels_nsfw') or []
     if botcom.channel_current in nsfwenabled:
         searchdict['nsfw'] = True
 
-    gifdict = getGif(bot, {"query": query})
+    gifdict = getGif(bot, searchdict)
     if gifdict["error"]:
 
-        return osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
+        if "searchfail" in quickgifdict[botcom.commandused].keys():
+            return osd(bot, trigger.sender, 'say',  str(quickgifdict[botcom.commandused]["searchfail"]))
+        else:
+            return osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
 
     osd(bot, trigger.sender, 'say',  gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
