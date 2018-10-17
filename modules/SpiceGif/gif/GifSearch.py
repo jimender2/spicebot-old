@@ -87,10 +87,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     nsfwenabled = get_database_value(bot, bot.nick, 'channels_nsfw') or []
     if botcom.channel_current in nsfwenabled:
-        bot.say("nsfw")
         searchdict['nsfw'] = True
-    else:
-        bot.say("sfw")
 
     gifdict = getGif(bot, searchdict)
 
