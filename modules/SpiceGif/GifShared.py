@@ -93,6 +93,7 @@ def getGif(bot, searchdict):
                     "query": None,
                     "searchnum": 'random',
                     "gifsearch": valid_gif_api_dict.keys(),
+                    "gifsearchremove": ['gifme'],
                     "searchlimit": 'default',
                     "nsfw": False,
                     }
@@ -101,6 +102,9 @@ def getGif(bot, searchdict):
     for key in query_defaults:
         if key not in searchdict.keys():
             searchdict[key] = query_defaults[key]
+            if key == "gifsearch":
+                for remx in query_defaults["gifsearchremove"]:
+                    searchdict["gifsearch"].remove(remx)
 
     # Replace spaces in search query
     searchdict["searchquery"] = searchdict["query"].replace(' ', '%20')
