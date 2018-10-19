@@ -43,6 +43,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         rand = random.randint(1,6)
         if rand == 1:
             osd(bot, trigger.sender, 'say', instigator + " starts chanting over " + target + "'s body.")
+            osd(bot, trigger.sender, 'say', instigator + " successfully brings " + target + " back to life!! Yay??")
         elif rand == 2:
             osd(bot, trigger.sender, 'say', instigator + " tries to resurrect " + target + "'s body and instead gets really hungry. Yum yum in my tum tum.")
         else:
