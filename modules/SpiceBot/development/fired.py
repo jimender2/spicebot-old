@@ -26,6 +26,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    person = spicemanip(bot, triggerargsarray, '1+') or spicemanip(bot, allUsers, "random") or 'spicebot'
+    allUsers = [u.lower() for u in bot.users]
+    person = spicemanip(bot, triggerargsarray, '1+') or spicemanip(bot, [u.lower() for u in bot.users], "random") or 'spicebot'
 
     osd(bot, trigger.sender, 'say', person + ", You're fired")
