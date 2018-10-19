@@ -40,7 +40,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif targetcheck == "offline":
         osd(bot, trigger.sender, 'say', "I dont see " + target + ". Where did they go?")
     elif targetcheck == "online":
-        rand = random.randomint(1,6)
+        rand = random.randint(1,6)
         if rand == 1:
             osd(bot, trigger.sender, 'say', instigator + " starts chanting over " + target + "'s body.")
         elif rand == 2:
