@@ -26,5 +26,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    sumthing = spicemanip(bot, triggerargsarray, '1+') or "that shit"
+    sumthing = spicemanip(bot, triggerargsarray, '1+') or "for that shit"
     osd(bot, trigger.sender, 'say', "Sorry dude, I'm way too fucking high right now for " + sumthing + "!!")
