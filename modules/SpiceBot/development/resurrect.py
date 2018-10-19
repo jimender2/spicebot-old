@@ -36,15 +36,16 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif targetcheck == "bot":
         osd(bot, trigger.sender, 'say', "I hope you relize that I am immortal (and immoral)")
     elif targetcheck == "false":
-        osd(bot, trigger.sender, 'say', "You do relize that " + target + " is not a person so quit pretending you have friend's")
+        osd(bot, trigger.sender, 'say', "You do realize that " + target + " is not a person so quit pretending you have friend's")
     elif targetcheck == "offline":
         osd(bot, trigger.sender, 'say', "I dont see " + target + ". Where did they go?")
     elif targetcheck == "online":
-        rand = random.randomint(1,4)
-        if rand = 1:
+        rand = random.randomint(1,6)
+        if rand == 1:
             osd(bot, trigger.sender, 'say', instigator + " starts chanting over " + target + "'s body.")
-            osd(bot, trigger.sender, 'say', instigator + " starts chanting over " + target + "'s body.")
+        elif rand == 2:
+            osd(bot, trigger.sender, 'say', instigator + " tries to resurrect " + target + "'s body and instead gets really hungry. Yum yum in my tum tum.")
         else:
-            osd(bot, trigger.sender, 'say', )
+            osd(bot, trigger.sender, 'say', instigator + " tries to resurrect " + target + "'s body and fails.")
     else:
-        osd(bot, trigger.sender, 'say', "You do relize that " + target + " is not a person so quit pretending you have friend's")
+        osd(bot, trigger.sender, 'say', "You do realize that " + target + " is not a person so quit pretending you have friend's")
