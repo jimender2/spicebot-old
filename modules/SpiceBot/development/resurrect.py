@@ -36,7 +36,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif targetcheck == "bot":
         osd(bot, trigger.sender, 'say', "I hope you relize that I am immortal (and immoral)")
     elif targetcheck == "false":
-        osd(bot, trigger.sender, 'say', "You do realize that " + target + " is not a person so quit pretending you have friend's")
+        osd(bot, trigger.sender, 'say', "You do realize that " + target + " is not a person so quit pretending you have friends")
     elif targetcheck == "offline":
         osd(bot, trigger.sender, 'say', "I dont see " + target + ". Where did they go?")
     elif targetcheck == "online":
