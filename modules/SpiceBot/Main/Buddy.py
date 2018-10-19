@@ -29,4 +29,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "What is your buddy good at?"
     else:
         message = "let me call my buddy and get him down here... he's an expert on " + myline
-    osd(bot, trigger.sender, 'action', message)
+    osd(bot, trigger.sender, 'say', message)
