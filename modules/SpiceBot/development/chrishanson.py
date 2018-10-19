@@ -13,9 +13,9 @@ from BotShared import *
 # author jimender2
 
 
-@sopel.module.commands('resurrect')
+@sopel.module.commands('chrishanson','ch')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'chrishanson')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
@@ -27,24 +27,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    instigator = trigger.nick
-    target = spicemanip(bot, triggerargsarray, 1)
-    targetcheck = easytargetcheck(bot, botcom, target, instigator)
-
-    if targetcheck == "instigator":
-        osd(bot, trigger.sender, 'say', "You are not able to resurrect yourself dumbass")
-    elif targetcheck == "bot":
-        osd(bot, trigger.sender, 'say', "I hope you relize that I am immortal (and immoral)")
-    elif targetcheck == "false":
-        osd(bot, trigger.sender, 'say', "You do relize that " + target + " is not a person so quit pretending you have friend's")
-    elif targetcheck == "offline":
-        osd(bot, trigger.sender, 'say', "I dont see " + target + ". Where did they go?")
-    elif targetcheck == "online":
-        rand = random.randomint(1,4)
-        if rand = 1:
-            osd(bot, trigger.sender, 'say', instigator + " starts chanting over " + target + "'s body.")
-            osd(bot, trigger.sender, 'say', instigator + " starts chanting over " + target + "'s body.")
-        else:
-            osd(bot, trigger.sender, 'say', )
-    else:
-        osd(bot, trigger.sender, 'say', "You do relize that " + target + " is not a person so quit pretending you have friend's")
+    osd(bot, trigger.sender, 'say', "To catch a predator, you get it!")
