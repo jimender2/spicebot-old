@@ -9,6 +9,13 @@ from BotShared import *
 
 # author jimender2
 
+defaultoptions = [
+    "Don't be an ass",
+    "Why do you have two asses?",
+    "What's the difference between a rear end kisser and a brown noser? Depth perception",
+    "Doctor I need a new butt. Why?? Mine has a crack in it."
+    ]
+
 
 @sopel.module.commands('dead')
 def mainfunction(bot, trigger):
@@ -24,8 +31,9 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    if not target:
-        message = "But... but .... that's no fun."
-    else:
-        message = "That's no fun " + target
-    osd(bot, trigger.sender, 'say', str(message))
+    """Retrieve a saying for the given database key."""
+    command = spicemanip(bot, triggerargsarray, 1) or 'get'
+    if not sayingscheck(bot, databasekey) and command != "add":
+        sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
+    message = sayingsmodule(bot, databasekey, triggerargsarray, command)
+    osd(bot, trigger.sender, 'say', message)
