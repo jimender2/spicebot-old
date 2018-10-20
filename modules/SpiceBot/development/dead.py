@@ -12,8 +12,8 @@ from BotShared import *
 defaultoptions = [
     "I did not kill chat. (This time)",
     "Is it just me or is chat dead?",
-    "What's the difference between a rear end kisser and a brown noser? Depth perception",
-    "Doctor I need a new butt. Why?? Mine has a crack in it."
+    "Who killed chat?",
+    "Attention: I am trying to revive chat. Please help"
     ]
 
 
