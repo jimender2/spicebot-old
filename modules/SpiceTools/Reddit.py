@@ -67,9 +67,9 @@ def execute_main(bot, trigger, triggerargsarray):
     urlsplit = rclass.urlinput.split("/", 1)
     rclass.urltype = spicemanip(bot, urlsplit, 1)
     rclass.urlsearch = spicemanip(bot, urlsplit, 2)
-    if rclass.urltype == 'r':
+    if rclass.urltype.lower() == 'r':
         rclass.urltypetxt = 'subreddit'
-    elif rclass.urltype == 'u':
+    elif rclass.urltype.lower() == 'u':
         rclass.urltypetxt = 'user'
     else:
         osd(bot, rclass.channel_current, 'say', "An error has occured.")
