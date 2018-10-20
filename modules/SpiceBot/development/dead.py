@@ -10,8 +10,8 @@ from BotShared import *
 # author jimender2
 
 defaultoptions = [
-    "Don't be an ass",
-    "Why do you have two asses?",
+    "I did not kill chat. (This time)",
+    "Is it just me or is chat dead?",
     "What's the difference between a rear end kisser and a brown noser? Depth perception",
     "Doctor I need a new butt. Why?? Mine has a crack in it."
     ]
@@ -31,9 +31,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    """Retrieve a saying for the given database key."""
-    command = spicemanip(bot, triggerargsarray, 1) or 'get'
-    if not sayingscheck(bot, databasekey) and command != "add":
-        sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
-    message = sayingsmodule(bot, databasekey, triggerargsarray, command)
+    message = spicemanip(bot, defaultoptions, "random") or 'I did not kill chat. (This time)'
     osd(bot, trigger.sender, 'say', message)
