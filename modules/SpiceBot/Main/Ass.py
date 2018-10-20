@@ -12,7 +12,8 @@ from BotShared import *
 
 databasekey = 'ass'
 defaultoptions = [
-    "Don't be an ass","Why do you have two asses?","What's the difference between a rear end kisser and a brown noser? Depth perception"]
+    "Don't be an ass","Why do you have two asses?","What's the difference between a rear end kisser and a brown noser? Depth perception"
+    ]
 
 
 @sopel.module.commands('ass')
