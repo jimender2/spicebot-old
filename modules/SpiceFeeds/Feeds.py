@@ -412,6 +412,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                     scrapedtitle = scrapedtitle.replace(*r)
                 scrapedtitle = unicode_string_cleanup(scrapedtitle)
                 dispmsg.append(scrapedtitle)
+                bot.say(str(scrapedtitle))
 
                 scrapelink = eval("feeds." + feed + ".link")
                 if scrapelink == 'url':
