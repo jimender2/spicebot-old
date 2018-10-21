@@ -408,11 +408,10 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
                 scrapetitle = eval("feeds." + feed + ".title")
                 scrapedtitle = str(tree.xpath(scrapetitle))
-                for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+                for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("]", ""), ("\\n", ""), ("\\t", "")):
                     scrapedtitle = scrapedtitle.replace(*r)
                 scrapedtitle = unicode_string_cleanup(scrapedtitle)
                 dispmsg.append(scrapedtitle)
-                bot.say(str(scrapedtitle))
 
                 scrapelink = eval("feeds." + feed + ".link")
                 if scrapelink == 'url':
