@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-# coding=utf-8
-from __future__ import unicode_literals, absolute_import, print_function, division
+# http://dilbert.com/search_results?terms=cats
 import sopel.module
 import os
 import sys
@@ -9,16 +7,19 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+# author jimender2
 
-databasekey = 'ass'
 defaultoptions = [
-    "Don't be an ass","Why do you have two asses?","What's the difference between a rear end kisser and a brown noser? Depth perception"]
+    "I did not kill chat. (This time)",
+    "Is it just me or is chat dead?",
+    "Who killed chat?",
+    "Attention: I am trying to revive chat. Please help"
+    ]
 
 
-@sopel.module.commands('ass')
+@sopel.module.commands('dead')
 def mainfunction(bot, trigger):
-    """Check to see if the module is enabled or not."""
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'ass')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'dead')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
@@ -30,9 +31,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    """Retrieve a saying for the given database key."""
-    command = spicemanip(bot, triggerargsarray, 1) or 'get'
-    if not sayingscheck(bot, databasekey) and command != "add":
-        sayingsmodule(bot, databasekey, defaultoptions, 'initialise')
-    message = sayingsmodule(bot, databasekey, triggerargsarray, command)
+    message = spicemanip(bot, defaultoptions, "random") or 'I did not kill chat. (This time)'
     osd(bot, trigger.sender, 'say', message)

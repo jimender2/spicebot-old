@@ -12,7 +12,10 @@ from BotShared import *
 
 databasekey = 'bull'
 defaultoptions = [
-    "bull","bullcrap","When you mess with the bull, you get the horns"]
+    "bull",
+    "bullcrap",
+    "When you mess with the bull, you get the horns"
+    ]
 
 
 @sopel.module.commands('ass')
