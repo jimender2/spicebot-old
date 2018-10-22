@@ -21,6 +21,7 @@ duels_character_valid_race = ['human','barbarian','fiend','vampire','centaur','g
 # For example, to get mage perception: class_special["mage"]["perception"]
 # Could make it per stat, then you could call the total value as special["strength"][player_class] + special["strength"][player_race],
 # rather than player_strength = class_special[player_class]["strength"] + race_special[player_class]["strength"]
+
 class_special = {
     "mage":{
         "strength":1,
