@@ -26,9 +26,9 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    failureodds = 6
+    failureodds = 9
     if bot.nick.endswith('dev'):
-        failureodds = 3
+        failureodds = 6
     # target = spicemanip(bot, triggerargsarray, 1)
     target = spicemanip(bot, [x for x in triggerargsarray if x in botcom.users_all], 1) or 0
     if target:
@@ -64,7 +64,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         elif failchance == 2:
             osd(bot, trigger.sender, 'say', "Want rainbow shit? https://www.youtube.com/watch?v=YbYWhdLO43Q")
         elif failchance == 3:
-            osd(bot, trigger.sender, 'say', "Reverse sniperclif's airbiscits. Get unicorn gold! https://www.youtube.com/watch?v=LqL4DRZ2EkA")
+            osd(bot, trigger.sender, 'say', "Reverse sniperclif's airbiscuits. Get unicorn gold! https://www.youtube.com/watch?v=LqL4DRZ2EkA")
         else:
             osd(bot, trigger.sender, 'say', trigger.nick + ' poops on ' + target + "'s desk, maintaining eye contact the entire time!")
 
