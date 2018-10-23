@@ -610,7 +610,7 @@ def rpg_bot_start_script(bot):
     trigger.sender = "SpiceRealm"
 
     startup_monologue = []
-    startup_monologue.append("\x0309,01The Spice Realms are vast; full of wonder, loot, monsters, and peril!     Will you, Brave Adventurers, be triumphant over the challenges that await?\x03")
+    startup_monologue.append("\x0309The Spice Realms are vast; full of wonder, loot, monsters, and peril!     Will you, Brave Adventurers, be triumphant over the challenges that await?\x03")
 
     if not rpg.gamedict["tempvals"]['versionnumber']:
         rpg.gamedict["tempvals"]['versionnumber'] = versionnumber(bot, rpg)
@@ -625,7 +625,7 @@ def rpg_bot_start_script(bot):
             spacing = " " * amountofspace
             spacing = str(spacing + "           ")
 
-            osd(bot, channel, 'say', str(spacing) + "\x0309,01Loading Game Version Revision " + str(rpg.gamedict["tempvals"]['versionnumber'] + "\x03"))
+            osd(bot, channel, 'say', str(spacing) + "\x0309Loading Game Version Revision " + str(rpg.gamedict["tempvals"]['versionnumber'] + "\x03"))
 
     # no need to continually check
     rpg_game_dict['tempvals']['monologuecheck'] = rpg_game_dict['tempvals']['monologuecheck'] + 99999999999999999
@@ -776,7 +776,7 @@ def rpg_errors_end(bot, rpg):
                     else:
                         errormessage = str(errormessage.replace("$current_chan", 'privmsg'))
                 if errormessage not in rpg.error_display:
-                    rpg.error_display.append("\x0304,01" + errormessage + "\x03")
+                    rpg.error_display.append("\x0304" + errormessage + "\x03")
     if rpg.error_display != []:
         osd(bot, rpg.instigator, 'notice', rpg.error_display)
 
