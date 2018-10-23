@@ -27,7 +27,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     s.upload()
     s.results.share()
     results_dict = s.results.dict()
-    osd(bot, trigger.sender, 'say', str(results_dict['client']['share']))
+    # osd(bot, trigger.sender, 'say', str(results_dict['client']['share']))
+    for key in results_dict.keys():
+        osd(bot, trigger.sender, 'say', str(key))
 
 
 """
