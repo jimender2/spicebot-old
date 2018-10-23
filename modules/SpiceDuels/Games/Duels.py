@@ -975,8 +975,8 @@ def duels_command_function_assault(bot, triggerargsarray, command_main, trigger,
         if astateval:
             astatname = astat.replace("_", " ")
             astatname = astatname.title()
-            astatstr = str(str(astatname) + " \x02=\x02 " + str(astateval))
-            assaultstatsarray.append(statboard + astatstr + colorend)
+            astatstr = str(statboard + str(astatname) + colorend + " \x02=\x02 " + statboardequals + str(astateval) + colorend)
+            assaultstatsarray.append(astatstr)
             reset_database_value(bot, duels.instigator, "combat_track_" + astat)
     osd(bot, duels.channel_current, 'say', assaultstatsarray)
 
