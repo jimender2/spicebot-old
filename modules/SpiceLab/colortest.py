@@ -8,6 +8,7 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
+
 from sopel.formatting import *
 
 
@@ -16,3 +17,4 @@ def mainfunction(bot, trigger):
     bot.say(color("RED STRING", colors.RED))
     bot.say(bold("BOLD STRING"))
     bot.say(underline("UNDERLINED STRING"))
+    bot.say("\x0309,01This is some text\x03")
