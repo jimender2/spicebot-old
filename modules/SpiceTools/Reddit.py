@@ -156,7 +156,9 @@ def reddit_r(bot, triggerargsarray, rclass):
     for submission in submissions:
         listarray.append(submission)
 
-    if subcommand == 'random':
+    if listarray == []:
+        submission = None
+    elif subcommand == 'random':
         submission = listarray[randint(0, len(listarray) - 1)]
     else:
         submission = listarray[targnum - 1]
@@ -165,9 +167,10 @@ def reddit_r(bot, triggerargsarray, rclass):
     dispmsg.append("[Reddit " + rclass.urltype + "/" + rclass.urlsearch + " " + subcommand + "]")
     if subreddit.over18:
         dispmsg.append("<NSFW>")
-    dispmsg.append("{" + str(submission.score) + "}")
-    dispmsg.append(submission.title)
-    dispmsg.append(submission.url)
+    if submission:
+        dispmsg.append("{" + str(submission.score) + "}")
+        dispmsg.append(submission.title)
+        dispmsg.append(submission.url)
     osd(bot, rclass.channel_current, 'say', dispmsg)
 
 
