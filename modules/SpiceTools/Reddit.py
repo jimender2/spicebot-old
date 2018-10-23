@@ -171,6 +171,8 @@ def reddit_r(bot, triggerargsarray, rclass):
         dispmsg.append("{" + str(submission.score) + "}")
         dispmsg.append(submission.title)
         dispmsg.append(submission.url)
+    else:
+        dispmsg.append("No Content Found.")
     osd(bot, rclass.channel_current, 'say', dispmsg)
 
 
