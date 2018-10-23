@@ -11,7 +11,7 @@ from BotShared import *
 @sopel.module.commands('speedtest')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
-    execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
+    execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
