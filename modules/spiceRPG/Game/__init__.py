@@ -610,8 +610,8 @@ def rpg_bot_start_script(bot):
     trigger.sender = "SpiceRealm"
 
     startup_monologue = []
-    startup_monologue.append("\x0309,01The Spice Realms are vast; full of wonder, loot, monsters, and peril!\x03")
-    startup_monologue.append("\x0309,01Will you, Brave Adventurers, be triumphant over the challenges that await?\x03")
+    startup_monologue.append("\x0309,01The Spice Realms are vast; full of wonder, loot, monsters, and peril!")
+    startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?\x03")
 
     if not rpg.gamedict["tempvals"]['versionnumber']:
         rpg.gamedict["tempvals"]['versionnumber'] = versionnumber(bot, rpg)
