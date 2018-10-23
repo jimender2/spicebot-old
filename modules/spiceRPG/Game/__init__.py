@@ -611,7 +611,7 @@ def rpg_bot_start_script(bot):
 
     startup_monologue = []
     startup_monologue.append("The Spice Realms are vast; full of wonder, loot, monsters, and peril!")
-    startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
+    startup_monologue.append("\x03,01Will you, Brave Adventurers, be triumphant over the challenges that await?\x03")
 
     if not rpg.gamedict["tempvals"]['versionnumber']:
         rpg.gamedict["tempvals"]['versionnumber'] = versionnumber(bot, rpg)
@@ -626,7 +626,7 @@ def rpg_bot_start_script(bot):
             spacing = " " * amountofspace
             spacing = str(spacing + "           ")
 
-            osd(bot, channel, 'say', str(spacing) + "Loading Game Version Revision " + str(rpg.gamedict["tempvals"]['versionnumber']))
+            osd(bot, channel, 'say', str(spacing) + "\x03,01Loading Game Version Revision " + str(rpg.gamedict["tempvals"]['versionnumber'] + "\x03"))
 
     # no need to continually check
     rpg_game_dict['tempvals']['monologuecheck'] = rpg_game_dict['tempvals']['monologuecheck'] + 99999999999999999
