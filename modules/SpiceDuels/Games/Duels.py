@@ -1003,17 +1003,17 @@ def duels_command_function_mayhem(bot, triggerargsarray, command_main, trigger, 
         if duels.instigator in duels.users_canduel_allchan:
             duels.users_canduel_allchan.remove(duels.instigator)
         if len(duels.users_canduel_allchan) == 1:
-            osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event, but only had one opponent.")
+            osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " Initiated a full channel " + command_main + " event, but only had one opponent.")
             duel_combat(bot, duels.instigator, duels.users_canduel_allchan, duels.command_restructure, 'target', duels)
             duels.command_stamina_cost = spicemanip(bot, ['combat', duels_commands_stamina_required, duels_commands_stamina_cost], 'index')
         else:
-            osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event, but had no targets.")
+            osd(bot, duels.channel_current, 'say', errorstart + duels.instigator + " Initiated a full channel " + command_main + " event, but had no targets.")
             duels.command_stamina_cost = 0
         return
 
     # Announce to channel the contestants
     displaymessage = spicemanip(bot, duels.users_canduel_allchan, "list")
-    osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
+    osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
 
     # Temp stats
     for user in duels.users_canduel_allchan:
@@ -1067,7 +1067,7 @@ def duels_command_function_mayhem(bot, triggerargsarray, command_main, trigger, 
             statleadernumber = spicemanip(bot, statvaluearray, 'last')
             astatname = astat.replace("_", " ")
             astatname = astatname.title()
-            assaultstatsarray.append("Most " + astatname + ": "+str(statleadername) + " at " + str(statleadernumber))
+            assaultstatsarray.append(statboard + "Most " + astatname + ": "+str(statleadername) + " at " + str(statleadernumber))
     if len(assaultstatsarray) > 1:
         osd(bot, duels.channel_current, 'say', assaultstatsarray)
 
@@ -1087,7 +1087,7 @@ def duels_command_function_hungergames(bot, triggerargsarray, command_main, trig
     totaltributes = len(duels.users_canduel_allchan)
     totaltributesstart = totaltributes
     if totaltributes == 1:
-        osd(bot, duels.instigator, 'notice', "There is only one tribute.  Try again later.")
+        osd(bot, duels.instigator, 'notice', errorstart + "There is only one tribute.  Try again later.")
         duels.command_stamina_cost = 0
         return
 
@@ -1097,7 +1097,7 @@ def duels_command_function_hungergames(bot, triggerargsarray, command_main, trig
 
     # Announce to channel the contestants
     displaymessage = spicemanip(bot, duels.users_canduel_allchan, "list")
-    osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
+    osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
 
     # Rebuild array
     hungerarray = []
@@ -1140,8 +1140,8 @@ def duels_command_function_hungergames(bot, triggerargsarray, command_main, trig
 
     # Display
     hungerwinner = spicemanip(bot, hungerarray, 1)
-    dispmsgarray.append(hungerwinner + " is the victor!")
-    dispmsgarray.append(firsttodie + " was the first to fall.")
+    dispmsgarray.append(cwinnertext + hungerwinner + " is the victor!")
+    dispmsgarray.append(closertext + firsttodie + " was the first to fall.")
     osd(bot, duels.channel_current, 'say', dispmsgarray)
 
 

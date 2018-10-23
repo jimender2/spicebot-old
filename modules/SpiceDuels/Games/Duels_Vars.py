@@ -16,6 +16,9 @@ nonerrorstart = "\x0309,01"
 statboard = "\x0302"
 statboardequals = "\x0310"
 
+cwinnertext = "\x0303"
+closertext = "\x0304"
+
 """
 Github Information
 """
