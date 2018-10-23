@@ -524,9 +524,9 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
         if typeofduel in duels_commands_events:
             osd(bot, [maindueler, target], 'priv', "  ")
         if typeofduel in duels_commands_events:
-            osd(bot, [maindueler, target], 'priv', playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
+            osd(bot, [maindueler, target], 'priv', playerbio_maindueler.announce + " \x02VERSUS\x02 " + playerbio_target.announce)
         else:
-            osd(bot, duels.channel_current, 'say', playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
+            osd(bot, duels.channel_current, 'say', playerbio_maindueler.announce + " \x02VERSUS\x02 " + playerbio_target.announce)
         if playerbio_maindueler.actual == playerbio_target.actual:
             osd(bot, duels.channel_current, 'say', "Why are you hitting yourself?")
 
