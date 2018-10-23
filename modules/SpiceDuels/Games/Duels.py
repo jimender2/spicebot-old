@@ -1250,7 +1250,7 @@ def duels_command_function_monster(bot, triggerargsarray, command_main, trigger,
 
         # Announce to channel the contestants
         displaymessage = spicemanip(bot, duels.users_canduel_allchan, "list")
-        osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " hunt event. Good luck to " + displaymessage)
+        osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " Initiated a full channel " + command_main + " hunt event. Good luck to " + displaymessage)
 
         lastfoughtstart = get_database_value(bot, duels.instigator, 'lastfought')
         for astat in combat_track_results:
@@ -1277,7 +1277,7 @@ def duels_command_function_monster(bot, triggerargsarray, command_main, trigger,
             if astateval:
                 astatname = astat.replace("_", " ")
                 astatname = astatname.title()
-                astatstr = str(str(astatname) + " = " + str(astateval))
+                astatstr = str(statboard + str(astatname) + colorend + " \x02=\x02 " + statboardequals + str(astateval) + colorend)
                 assaultstatsarray.append(astatstr)
                 reset_database_value(bot, 'duelsmonster', "combat_track_" + astat)
         osd(bot, duels.channel_current, 'say', assaultstatsarray)
@@ -1339,7 +1339,7 @@ def duels_command_function_random(bot, triggerargsarray, command_main, trigger, 
     else:
         targetname = target
         duels_check_nick_condition(bot, target, duels)
-    osd(bot, duels.channel_current, 'say', duels.instigator + " summoned the Flying Fickle Finger of Fate, and it chose " + targetname + " to fight.")
+    osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " summoned the Flying Fickle Finger of Fate, and it chose " + targetname + " to fight.")
     duel_combat(bot, duels.instigator, [target], triggerargsarray, 'random', duels)
 
 
@@ -1374,7 +1374,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         if int(roulettesubcom) >= 1 and int(roulettesubcom) <= 6:
             manualpick = 1
         else:
-            osd(bot, duels.channel_current, 'say', "Invalid Chamber Number!")
+            osd(bot, duels.channel_current, 'say', errorstart + "Invalid Chamber Number!")
             duels.command_stamina_cost = 0
             return
 
@@ -1386,7 +1386,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         elif not duels.inchannel and len(duels.duels_dev_channels) > 0:
             allowpass = 1
         else:
-            osd(bot, duels.instigator, 'notice', "You must wait for the current round to complete, until you may play again.")
+            osd(bot, duels.instigator, 'notice', errorstart + "You must wait for the current round to complete, until you may play again.")
             duels.command_stamina_cost = 0
             return
 
@@ -1398,7 +1398,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         elif not duels.inchannel and len(duels.duels_dev_channels) > 0:
             allowpass = 1
         else:
-            osd(bot, duels.instigator, 'notice', "You must wait 24 hours between roulette deaths.")
+            osd(bot, duels.instigator, 'notice', errorstart + "You must wait 24 hours between roulette deaths.")
             duels.command_stamina_cost = 0
             return
 
@@ -1410,7 +1410,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         elif not duels.inchannel and len(duels.duels_dev_channels) > 0:
             allowpass = 1
         else:
-            osd(bot, duels.instigator, 'notice', "Roulette has a small timeout.")
+            osd(bot, duels.instigator, 'notice', errorstart + "Roulette has a small timeout.")
             duels.command_stamina_cost = 0
             return
     set_database_value(bot, 'duelrecorduser', str('lastfullroom' + command_main), duels.now)
@@ -1428,15 +1428,15 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
     # Display Text
     instigatorcurse = get_database_value(bot, duels.instigator, 'curse') or 0
     if manualpick == 1:
-        osd(bot, duels.channel_current, 'say', duels.instigator + " is blindfolded while the chamber is set to " + str(roulettesubcom) + ".")
+        osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " is blindfolded while the chamber is set to " + str(roulettesubcom) + ".")
     elif instigatorcurse:
-        osd(bot, duels.channel_current, 'say', duels.instigator + " spins the cylinder to the bullet's chamber and pulls the trigger.")
+        osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " spins the cylinder to the bullet's chamber and pulls the trigger.")
     elif roulettelastplayer == duels.instigator and int(roulettecount) > 1:
-        osd(bot, duels.channel_current, 'say', duels.instigator + " spins the revolver and pulls the trigger.")
+        osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " spins the revolver and pulls the trigger.")
     elif int(roulettecount) == 1:
-        osd(bot, duels.channel_current, 'say', duels.instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
+        osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
     else:
-        osd(bot, duels.channel_current, 'say', duels.instigator + " spins the cylinder and pulls the trigger.")
+        osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " spins the cylinder and pulls the trigger.")
 
     # Default 6 possible chambers for bullet.
     # curses
@@ -1477,12 +1477,12 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
     if int(currentspin) != int(roulettechamber):
         osd(bot, duels.channel_current, 'say', "*click*")
         if manualpick == 1:
-            roulettelastplayeractualtext = str(duels.instigator + " manually picked a chamber without the bullet. The Bullet was moved.")
-            osd(bot, duels.channel_current, 'say', duels.instigator + " picked a chamber without the bullet. Bullet will be moved.")
+            roulettelastplayeractualtext = str(cwinnertext + duels.instigator + " manually picked a chamber without the bullet. The Bullet was moved.")
+            osd(bot, duels.channel_current, 'say', cwinnertext + duels.instigator + " picked a chamber without the bullet. Bullet will be moved.")
             roulettechambernew = randint(1, 6)
             set_database_value(bot, 'duelrecorduser', 'roulettechamber', roulettechambernew)
         else:
-            roulettelastplayeractualtext = str(duels.instigator + " pulled the trigger and was safe.")
+            roulettelastplayeractualtext = str(cwinnertext + duels.instigator + " pulled the trigger and was safe.")
         roulettecount = roulettecount + 1
         roulettepayout = spicemanip(bot, ['roulette', duels_ingame_coin_usage, duels_ingame_coin], 'index') * roulettecount
         currentpayout = get_database_value(bot, duels.instigator, 'roulettepayout')
@@ -1498,17 +1498,17 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
 
         if roulettecount == 1:
             if instigatorcurse:
-                dispmsgarray.append("First in the chamber. Looks like " + duels.instigator + " was cursed!")
+                dispmsgarray.append(closertext + "First in the chamber. Looks like " + duels.instigator + " was cursed!")
             else:
-                dispmsgarray.append("First in the chamber. What bad luck.")
+                dispmsgarray.append(closertext + "First in the chamber. What bad luck.")
 
         # Dish out the pain
         damage = randint(50, 120)
         bodypart = 'head'
         revolver = spicemanip(bot, roulette_revolver_list, 'random')
         damage = duels.tierscaling * damage
-        dispmsgarray.append(duels.instigator + " shoots themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
-        roulettelastplayeractualtext = str(duels.instigator + " shot themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
+        dispmsgarray.append(closertext + duels.instigator + " shoots themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
+        roulettelastplayeractualtext = str(closertext + duels.instigator + " shot themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
 
         # dish out the pain
         if damage > 0:
@@ -1534,26 +1534,26 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
                 statvaluearray.append(roulettepayoutx)
             adjust_database_value(bot, x, 'coin', roulettepayoutx)
             if roulettepayoutx > 0:
-                osd(bot, x, 'notice', "Your roulette payouts = " + str(roulettepayoutx) + " coins!")
+                osd(bot, x, 'notice', cwinnertext + "Your roulette payouts = " + str(roulettepayoutx) + " coins!")
             reset_database_value(bot, x, 'roulettepayout')
 
         # unique winner list
         if uniquewinnersarray != []:
             displaymessage = spicemanip(bot, uniquewinnersarray, "list")
             if len(uniquewinnersarray) > 1:
-                dispmsgarray.append("Winners: " + displaymessage + ".")
+                dispmsgarray.append(cwinnertext + "Winners: " + displaymessage + ".")
             else:
-                dispmsgarray.append("Winner: " + displaymessage + ".")
+                dispmsgarray.append(cwinnertext + "Winner: " + displaymessage + ".")
 
         if playerarray != [] and statvaluearray != []:
             statvaluearray, playerarray = array_arrangesort(bot, statvaluearray, playerarray)
             statleadername = spicemanip(bot, playerarray, 'last')
             statleadernumber = spicemanip(bot, statvaluearray, 'last')
-            dispmsgarray.append("Biggest Payout: " + statleadername + " with " + str(statleadernumber) + " coins.")
+            dispmsgarray.append(cwinnertext + "Biggest Payout: " + statleadername + " with " + str(statleadernumber) + " coins.")
 
         roulettecount = get_database_value(bot, 'duelrecorduser', 'roulettecount') or 1
         if roulettecount > 1:
-            dispmsgarray.append("The chamber spun " + str(roulettecount) + " times. ")
+            dispmsgarray.append(cwinnertext + "The chamber spun " + str(roulettecount) + " times. ")
         osd(bot, duels.channel_current, 'say', dispmsgarray)
 
         # instigator must wait until the next round
@@ -1588,7 +1588,7 @@ def duels_command_function_trebuchet(bot, triggerargsarray, command_main, trigge
 
     # make sure there is at least one target
     if duels.users_canduel_allchan == []:
-        osd(bot, duels.instigator, 'notice', "It looks like the full channel " + command_main + " event target finder has failed.")
+        osd(bot, duels.instigator, 'notice', errorstart + "It looks like the full channel " + command_main + " event target finder has failed.")
         duels.command_stamina_cost = 0
         return
 
@@ -1611,7 +1611,7 @@ def duels_command_function_trebuchet(bot, triggerargsarray, command_main, trigge
 
     # Display
     dispmsgarray = []
-    dispmsgarray.append(duels.instigator + " places a " + projectile + " onto the spinning trebuchet and slings the projectile at the general direction of " + target + " with the velocity to deal a blow of " + str(damage) + " damage.")
+    dispmsgarray.append(nonerrorstart + duels.instigator + " places a " + projectile + " onto the spinning trebuchet and slings the projectile at the general direction of " + closertext + target + " with the velocity to deal a blow of " + str(damage) + " damage.")
     if damage > 0:
         damageinflictarray = duels_effect_inflict(bot, duels,  instigatorbio, targetbio, 'random', 'damage', damage, 'trebuchet')
         for k in damageinflictarray:
@@ -1632,14 +1632,14 @@ def duels_command_function_deathblow(bot, triggerargsarray, command_main, trigge
 
     deathblowtargetarray = get_database_value(bot, duels.instigator, 'deathblowtargetarray') or []
     if deathblowtargetarray == []:
-        osd(bot, duels.instigator, 'notice', "You don't have a deathblow target available.")
+        osd(bot, duels.instigator, 'notice', errorstart + "You don't have a deathblow target available.")
         duels.command_stamina_cost = 0
         return
 
     firstdeathblowtarget = spicemanip(bot, deathblowtargetarray, 1)
     target = spicemanip(bot, [x for x in duels.command_restructure if x in duels.users_all_allchan or x == 'all'], 1) or firstdeathblowtarget
     if target not in deathblowtargetarray and target != 'all':
-        osd(bot, duels.instigator, 'notice', target + " is not available for you to finish.")
+        osd(bot, duels.instigator, 'notice', errorstart + target + " is not available for you to finish.")
         duels.command_stamina_cost = 0
         return
 
@@ -1653,11 +1653,11 @@ def duels_command_function_deathblow(bot, triggerargsarray, command_main, trigge
         deathblowtargettime = duels_time_since(bot, deathblowavail, 'deathblowtargettime') or 0
         if deathblowtargettime <= 120:
             targetbio = duel_target_playerbio(bot, duels, target)
-            osd(bot, duels.channel_current, 'say', duels.instigator + " strikes a deathblow upon " + deathblowavail + ".")
+            osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " strikes a deathblow upon " + deathblowavail + ".")
             deathblowkilltext = duels_death_handling(bot, duels, instigatorbio, targetbio)
             osd(bot, duels.channel_current, 'say', deathblowkilltext)
         else:
-            osd(bot, duels.channel_current, 'say', duels.instigator + " had the opportunity to perform a deathblow, but was too late.")
+            osd(bot, duels.channel_current, 'say', errorstart + duels.instigator + " had the opportunity to perform a deathblow, but was too late.")
         adjust_database_array(bot, duels.instigator, [deathblowavail], 'deathblowtargetarray', 'del')
         reset_database_value(bot, deathblowavail, 'deathblow')
         reset_database_value(bot, deathblowavail, 'deathblowtargettime')
@@ -1678,21 +1678,21 @@ def duels_command_function_grenade(bot, triggerargsarray, command_main, trigger,
 
     # Can't be privmsg
     if not duels.inchannel:
-        osd(bot, duels.instigator, 'notice', "Grenades must be used in channel.")
+        osd(bot, duels.instigator, 'notice', errorstart + "Grenades must be used in channel.")
         duels.command_stamina_cost = 0
         return
 
     # verify user has a grenade to use
     instigatorgrenade = get_database_value(bot, duels.instigator, 'grenade') or 0
     if instigatorgrenade <= 0:
-        osd(bot, duels.instigator, 'notice', "You don't have a grenade to use!")
+        osd(bot, duels.instigator, 'notice', errorstart + "You don't have a grenade to use!")
         duels.command_stamina_cost = 0
         return
 
     # The quantity the player is applyint to this transaction
     quantity = spicemanip(bot, [x for x in duels.command_restructure if str(x).isdigit()], 1) or 1
     if quantity > 1:
-        osd(bot, duels.instigator, 'notice', "You can only throw one grenade at a time.")
+        osd(bot, duels.instigator, 'notice', errorstart + "You can only throw one grenade at a time.")
         duels.command_stamina_cost = 0
         return
 
@@ -1704,7 +1704,7 @@ def duels_command_function_grenade(bot, triggerargsarray, command_main, trigger,
 
     # verify there is at least one target
     if duels.users_canduel_allchan == []:
-        osd(bot, duels.instigator, 'notice', "It looks like using a grenade right now won't hurt anybody.")
+        osd(bot, duels.instigator, 'notice', errorstart + "It looks like using a grenade right now won't hurt anybody.")
         duels.command_stamina_cost = 0
         return
     else:
@@ -1721,11 +1721,11 @@ def duels_command_function_grenade(bot, triggerargsarray, command_main, trigger,
     for player in duels.users_canduel_allchan:
         if not firsttarget:
             damage = duels_grenade_damage_full
-            dispmsgarray.append(player + " takes the brunt of the grenade")
+            dispmsgarray.append(closertext + player + " takes the brunt of the grenade")
             firsttarget = 1
         elif damagetotal > 0:
             damage = duels_grenade_damage_half
-            dispmsgarray.append(player + " is close by and attempts to jump away")
+            dispmsgarray.append(attemptext + player + " is close by and attempts to jump away")
         else:
             damage = 0
         damagetotal = damagetotal - damage
@@ -1738,7 +1738,7 @@ def duels_command_function_grenade(bot, triggerargsarray, command_main, trigger,
             duels.users_canduel_allchan.remove(player)
     if duels.users_canduel_allchan != []:
         remainingarray = spicemanip(bot, duels.users_canduel_allchan, "list")
-        dispmsgarray.append(remainingarray + " completely jump out of the way")
+        dispmsgarray.append(cwinnertext + remainingarray + " completely jump out of the way")
     osd(bot, duels.channel_current, 'say', dispmsgarray)
 
     # Track usage for vendor

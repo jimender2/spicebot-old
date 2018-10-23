@@ -18,6 +18,7 @@ statboardequals = "\x0310"
 
 cwinnertext = "\x0303"
 closertext = "\x0304"
+attemptext = "\x0307"
 
 """
 Github Information
