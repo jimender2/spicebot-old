@@ -13,6 +13,7 @@ osd_limit = 420  # Ammount of text allowed to display per line
 errorstart = "\x0304,01"
 colorend = "\x03"
 nonerrorstart = "\x0309,01"
+statboard = "\x0309"
 
 """
 Github Information

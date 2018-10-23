@@ -113,11 +113,11 @@ def dual_clone(bot, trigger):
     triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
     target = spicemanip(bot, triggerargsarray, 1)
     if not target:
-        osd(bot, trigger.sender, 'say', errorstart + "Who do you want to clone?" + colorend)
+        osd(bot, trigger.sender, 'say', errorstart + "Who do you want to clone?")
     elif target.lower() not in [u.lower() for u in bot.users]:
-        osd(bot, trigger.sender, 'say', errorstart + "I'm not sure who that is." + colorend)
+        osd(bot, trigger.sender, 'say', errorstart + "I'm not sure who that is.")
     else:
-        osd(bot, trigger.sender, 'say', nonerrorstart + "I think one " + target + " is enough for this world." + colorend)
+        osd(bot, trigger.sender, 'say', nonerrorstart + "I think one " + target + " is enough for this world.")
 
 
 @module.rule('^(?:dual)\s+?.*')
@@ -132,11 +132,11 @@ def dual_cloneb(bot, trigger):
     triggerargsarray = spicemanip(bot, triggerargsarray, 'create')
     target = spicemanip(bot, triggerargsarray, 1)
     if not target:
-        osd(bot, trigger.sender, 'say', errorstart + "Who do you want to clone?" + colorend)
+        osd(bot, trigger.sender, 'say', errorstart + "Who do you want to clone?")
     elif target.lower() not in [u.lower() for u in bot.users]:
-        osd(bot, trigger.sender, 'say', errorstart + "I'm not sure who that is." + colorend)
+        osd(bot, trigger.sender, 'say', errorstart + "I'm not sure who that is.")
     else:
-        osd(bot, trigger.sender, 'say', nonerrorstart + "I think one " + target + " is enough for this world." + colorend)
+        osd(bot, trigger.sender, 'say', nonerrorstart + "I think one " + target + " is enough for this world.")
 
 
 """
@@ -851,7 +851,7 @@ def duels_command_function_classic(bot, triggerargsarray, command_main, trigger,
     target = spicemanip(bot, [x for x in duels.command_restructure if x in duels.users_all_allchan], 1) or duels.instigator
     if target != duels.instigator and target != bot.nick:
         if target == 'monster':
-            osd(bot, duels.instigator, 'notice', "The monster can't play the classic duels game.")
+            osd(bot, duels.instigator, 'notice', errorstart + "The monster can't play the classic duels game.")
             duels.command_stamina_cost = 0
             return
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
@@ -894,15 +894,15 @@ def duels_command_function_classic(bot, triggerargsarray, command_main, trigger,
             winrateleadername = spicemanip(bot, winrateplayers, 'last')
             winrateleadernumber = spicemanip(bot, winratescores, 'last')
             winrateleadernumber = format(winrateleadernumber, '.3f')
-            classicleaderboardmessage.append("Best win rate is " + winrateleadername + " with " + str(winrateleadernumber))
+            classicleaderboardmessage.append(statboard + "Best win rate is " + winrateleadername + " with " + str(winrateleadernumber))
         if bestwinsplayers != []:
             bestwinleadername = spicemanip(bot, bestwinsplayers, 'last')
             bestwinleadernumber = spicemanip(bot, bestwinscores, 'last')
-            classicleaderboardmessage.append("Worst losing streak is " + bestwinleadername + " with " + str(bestwinleadernumber))
+            classicleaderboardmessage.append(statboard + "Worst losing streak is " + bestwinleadername + " with " + str(bestwinleadernumber))
         if worstlossesplayers != []:
             worstlossessleadername = spicemanip(bot, worstlossesplayers, 'last')
             worstlossesleadernumber = spicemanip(bot, worstlossesscores, 'last')
-            classicleaderboardmessage.append("Best win streak is " + worstlossessleadername + " with " + str(worstlossesleadernumber))
+            classicleaderboardmessage.append(statboard + "Best win streak is " + worstlossessleadername + " with " + str(worstlossesleadernumber))
         osd(bot, duels.channel_current, 'say', classicleaderboardmessage)
         duels.command_stamina_cost = 0
         return
@@ -937,17 +937,17 @@ def duels_command_function_assault(bot, triggerargsarray, command_main, trigger,
     # Run a normal duel if only one opponent
     if len(duels.users_canduel_allchan) <= 1:
         if len(duels.users_canduel_allchan) == 1:
-            osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event, but only had one opponent.")
+            osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " Initiated a full channel " + command_main + " event, but only had one opponent.")
             duel_combat(bot, duels.instigator, duels.users_canduel_allchan, duels.command_restructure, 'target', duels)
             duels.command_stamina_cost = spicemanip(bot, ['combat', duels_commands_stamina_required, duels_commands_stamina_cost], 'index')
         else:
-            osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event, but had no targets.")
+            osd(bot, duels.channel_current, 'say', errorstart + duels.instigator + " Initiated a full channel " + command_main + " event, but had no targets.")
             duels.command_stamina_cost = 0
         return
 
     # Announce to channel the contestants
     displaymessage = spicemanip(bot, duels.users_canduel_allchan, "list")
-    osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
+    osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
 
     # Temp stats
     lastfoughtstart = get_database_value(bot, duels.instigator, 'lastfought')
@@ -967,16 +967,16 @@ def duels_command_function_assault(bot, triggerargsarray, command_main, trigger,
 
     # Display results
     maindueler = duels.instigator
-    osd(bot, maindueler, 'notice', "It looks like the Full Channel Assault has completed.")
+    osd(bot, maindueler, 'notice', nonerrorstart + "It looks like the Full Channel Assault has completed.")
     assaultstatsarray = []
-    assaultstatsarray.append(maindueler + "'s Full Channel Assault results:")
+    assaultstatsarray.append(nonerrorstart + maindueler + "'s Full Channel Assault results:")
     for astat in combat_track_results:
         astateval = get_database_value(bot, duels.instigator, "combat_track_" + astat) or 0
         if astateval:
             astatname = astat.replace("_", " ")
             astatname = astatname.title()
-            astatstr = str(str(astatname) + " = " + str(astateval))
-            assaultstatsarray.append(astatstr)
+            astatstr = str(str(astatname) + " \x02=\x02 " + str(astateval))
+            assaultstatsarray.append(statboard + astatstr)
             reset_database_value(bot, duels.instigator, "combat_track_" + astat)
     osd(bot, duels.channel_current, 'say', assaultstatsarray)
 
