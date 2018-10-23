@@ -113,11 +113,11 @@ def dual_clone(bot, trigger):
     triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
     target = spicemanip(bot, triggerargsarray, 1)
     if not target:
-        osd(bot, trigger.sender, 'say', "\x0304,01Who do you want to clone?\x03")
+        osd(bot, trigger.sender, 'say', errorstart + "Who do you want to clone?" + colorend)
     elif target.lower() not in [u.lower() for u in bot.users]:
-        osd(bot, trigger.sender, 'say', "\x0304,01I'm not sure who that is.\x03")
+        osd(bot, trigger.sender, 'say', errorstart + "I'm not sure who that is." + colorend)
     else:
-        osd(bot, trigger.sender, 'say', "\x0309,01I think one " + target + " is enough for this world.\x03")
+        osd(bot, trigger.sender, 'say', nonerrorstart + "I think one " + target + " is enough for this world." + colorend)
 
 
 @module.rule('^(?:dual)\s+?.*')
@@ -132,11 +132,11 @@ def dual_cloneb(bot, trigger):
     triggerargsarray = spicemanip(bot, triggerargsarray, 'create')
     target = spicemanip(bot, triggerargsarray, 1)
     if not target:
-        osd(bot, trigger.sender, 'say', "\x0304,01Who do you want to clone?\x03")
+        osd(bot, trigger.sender, 'say', errorstart + "Who do you want to clone?" + colorend)
     elif target.lower() not in [u.lower() for u in bot.users]:
-        osd(bot, trigger.sender, 'say', "\x0304,01I'm not sure who that is.\x03")
+        osd(bot, trigger.sender, 'say', errorstart + "I'm not sure who that is." + colorend)
     else:
-        osd(bot, trigger.sender, 'say', "\x0309,01I think one " + target + " is enough for this world.\x03")
+        osd(bot, trigger.sender, 'say', nonerrorstart + "I think one " + target + " is enough for this world." + colorend)
 
 
 """
@@ -186,9 +186,9 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     command_full = spicemanip(bot, triggerargsarray, 0)
     if not command_full:
         if duels.command_type != 'actionduel':
-            osd(bot, duels.instigator, 'notice', "You must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL)
+            osd(bot, duels.instigator, 'notice', "\x0304,01You must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL + "\x03")
         else:
-            osd(bot, duels.instigator, 'notice', "You must specify a target. Online Docs: " + GITWIKIURL)
+            osd(bot, duels.instigator, 'notice', "\x0304,01You must specify a target. Online Docs: " + GITWIKIURL + "\x03")
         return
     if duels.command_type == 'actionduel':
         if "&&" in command_full:
