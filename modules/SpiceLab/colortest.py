@@ -20,4 +20,4 @@ def mainfunction(bot, trigger):
     # bot.say(underline("UNDERLINED STRING"))
     # bot.say("\x0309,01This is some text\x03")
 
-    osd(bot, trigger.sender, 'say', "\x03,01This is \x1Fsome\x1F text\x03")
+    osd(bot, trigger.sender, 'say', "\x0309,01This is \x1Fsome\x1F text\x03")
