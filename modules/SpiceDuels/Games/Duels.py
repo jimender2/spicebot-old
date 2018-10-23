@@ -186,13 +186,13 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     command_full = spicemanip(bot, triggerargsarray, 0)
     if not command_full:
         if duels.command_type != 'actionduel':
-            osd(bot, duels.instigator, 'notice', "\x0304,01You must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL + "\x03")
+            osd(bot, duels.instigator, 'notice', errorstart + "You must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL)
         else:
-            osd(bot, duels.instigator, 'notice', "\x0304,01You must specify a target. Online Docs: " + GITWIKIURL + "\x03")
+            osd(bot, duels.instigator, 'notice', errorstart + "You must specify a target. Online Docs: " + GITWIKIURL)
         return
     if duels.command_type == 'actionduel':
         if "&&" in command_full:
-            osd(bot, duels.instigator, 'notice', "you cannot run multiple commands via action.")
+            osd(bot, duels.instigator, 'notice', errorstart + "you cannot run multiple commands via action.")
             return
     command_main = spicemanip(bot, triggerargsarray, 1)
 
@@ -207,11 +207,11 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     # Verify Game enabled in current channel
     if duels.duels_enabled_channels == []:
         if not trigger.admin:
-            osd(bot, duels.instigator, 'notice', "Duels has not been enabled in any bot channels. Talk to a bot admin.")
+            osd(bot, duels.instigator, 'notice', errorstart + "Duels has not been enabled in any bot channels. Talk to a bot admin.")
             return
     if duels.channel_current not in duels.duels_enabled_channels and duels.inchannel:
         if not trigger.admin:
-            osd(bot, duels.instigator, 'notice', "Duels has not been enabled in " + duels.channel_current + ". Talk to a bot admin.")
+            osd(bot, duels.instigator, 'notice', errorstart + "Duels has not been enabled in " + duels.channel_current + ". Talk to a bot admin.")
             return
 
     # Build User list
@@ -253,7 +253,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
             triggerargsarray_part.remove("-a")
             # Block non-admin usage of the admin switch
             if not trigger.admin:
-                osd(bot, duels.channel_current, 'say', "The Admin Switch is meant for Bot Admin use only.")
+                osd(bot, duels.channel_current, 'say', errorstart + "The Admin Switch is meant for Bot Admin use only.")
                 continue
 
         # Split commands to pass
@@ -264,7 +264,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         if command_main_part.isdigit():
             number_command = get_database_value(bot, duels.instigator, 'hotkey_'+str(command_main_part)) or 0
             if not number_command:
-                osd(bot, duels.instigator, 'notice', "You don't have a command hotlinked to "+str(command_main_part)+".")
+                osd(bot, duels.instigator, 'notice', errorstart + "You don't have a command hotlinked to "+str(command_main_part)+".")
                 continue
             else:
                 number_command_list = get_database_value(bot, duels.instigator, 'hotkey_complete') or []
@@ -287,7 +287,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
             if inflicterdeathblowpeoplearray != []:
                 deathblowlist = spicemanip(bot, inflicterdeathblowpeoplearray, "list")
                 deathblowmsg = str(inflicter + " has a chance of striking a deathblow on " + deathblowlist + "! FINISH THEM!!!!")
-                osd(bot, duels.channel_current, 'say', deathblowmsg)
+                osd(bot, duels.channel_current, 'say', nonerrorstart + deathblowmsg)
                 reset_database_value(bot, inflicter, 'deathblowtargetsnew')
             for inflictee in inflicterdeathblowpeoplearray:
                 deathblownow = time.time()
@@ -307,7 +307,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     # reset the game
     currenttier = get_database_value(bot, 'duelrecorduser', 'tier') or 0
     if currenttier >= 15:
-        osd(bot, duels.duels_enabled_channels, 'say', "Somebody has Triggered the Endgame! Stats will be reset.")
+        osd(bot, duels.duels_enabled_channels, 'say', nonerrorstart + "Somebody has Triggered the Endgame! Stats will be reset.")
         duels_endgame(bot, duels)  # TODO
 
 
@@ -316,27 +316,27 @@ def command_main_process(bot, trigger, triggerargsarray, command_full, command_m
 
     # Cheap error handling for people that like to find issues
     if command_main == 'invalidcommand':
-        osd(bot, duels.instigator, 'notice', "AltCom finder broke.")
+        osd(bot, duels.instigator, 'notice', errorstart + "AltCom finder broke.")
         return
 
     # channel_current Block
     if command_main.lower() in duels_commands_inchannel and not duels.inchannel and not duels.admin:
-        osd(bot, duels.instigator, 'notice', "Duel " + command_main + " must be in channel.")
+        osd(bot, duels.instigator, 'notice', errorstart + "Duel " + command_main + " must be in channel.")
         return
 
     # Instigator versus Bot
     if command_main.lower() == bot.nick.lower() and not duels.admin:
-        osd(bot, duels.channel_current, 'say', "I refuse to fight a biological entity! If I did, you'd be sure to lose!")
+        osd(bot, duels.channel_current, 'say', nonerrorstart + "I refuse to fight a biological entity! If I did, you'd be sure to lose!")
         return
 
     # Instigator versus Instigator
     if command_main.lower() == duels.instigator.lower() and not duels.admin:
-        osd(bot, duels.channel_current, 'say', "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.")
+        osd(bot, duels.channel_current, 'say', errorstart + "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.")
         return
 
     # Admin Command Blocker
     if command_main.lower() in duels_commands_admin and not duels.admin:
-        osd(bot, duels.instigator, 'notice', "This admin function is only available to bot admins.")
+        osd(bot, duels.instigator, 'notice', errorstart + "This admin function is only available to bot admins.")
         return
 
     # Cheat
@@ -350,7 +350,7 @@ def command_main_process(bot, trigger, triggerargsarray, command_full, command_m
         if duels.command_type != 'actionduel' or command_main.lower() in duels_action_subcommands:
             subcommands(bot, trigger, triggerargsarray, command_full, command_main, duels, instigatorbio)
         else:
-            osd(bot, duels.instigator, 'notice', "Action duels should not be able to run commands. Targets Only")
+            osd(bot, duels.instigator, 'notice', errorstart + "Action duels should not be able to run commands. Targets Only")
         return
 
     # Alternative Commands
@@ -401,7 +401,7 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
         else:
             tierpass = 1
         if not tierpass:
-            osd(bot, duels.channel_current, 'say', "Duel " + command_main.lower() + " will be unlocked when somebody reaches " + str(duels.tierpepperrequired) + ". " + str(duels.tiermath) + " tier(s) remaining!")
+            osd(bot, duels.channel_current, 'say', errorstart + "Duel " + command_main.lower() + " will be unlocked when somebody reaches " + str(duels.tierpepperrequired) + ". " + str(duels.tiermath) + " tier(s) remaining!")
             return
 
     # Rebuild again
@@ -410,7 +410,7 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
     # Stamina Check
     staminapass, stamina, duels.command_stamina_cost = duels_stamina_check(bot, duels.instigator, command_main.lower(), duels)
     if not staminapass and command_main.lower() != 'location':
-        osd(bot, duels.instigator, 'notice', "You do not have enough stamina to perform duel " + command_main.lower())
+        osd(bot, duels.instigator, 'notice', errorstart + "You do not have enough stamina to perform duel " + command_main.lower())
         return
 
     # Location Based Commands
@@ -420,9 +420,9 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
         staminarequiredtomove = spicemanip(bot, ['location', duels_commands_stamina_required, duels_commands_stamina_cost], 'index')
         combinedstamina = int(duels.command_stamina_cost) + int(staminarequiredtomove)
         if int(combinedstamina) > int(stamina) and not duels.admin and duels.channel_current not in duels.duels_dev_channels:
-            osd(bot, duels.instigator, 'notice', "You do not have enough stamina to move from the "+instigatorbio.location+" area to the "+command_location+" area AND perform this action.")
+            osd(bot, duels.instigator, 'notice', errorstart + "You do not have enough stamina to move from the "+instigatorbio.location+" area to the "+command_location+" area AND perform this action.")
             return
-        osd(bot, duels.instigator, 'notice', "You have been moved from the " + instigatorbio.location + " area to the " + command_location + " area at an extra cost of "+str(staminarequiredtomove)+" stamina.")
+        osd(bot, duels.instigator, 'notice', errorstart + "You have been moved from the " + instigatorbio.location + " area to the " + command_location + " area at an extra cost of "+str(staminarequiredtomove)+" stamina.")
         duels_stamina_charge(bot, duels.instigator, 'location')
         duels_location_move(bot, duels, duels.instigator, command_location)
         instigatorbio.location = duels_get_location(bot, duels, duels.instigator)
@@ -464,7 +464,7 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
         speceventtotal = get_database_value(bot, 'duelrecorduser', 'specevent') or 0
         if speceventtotal >= 49:
             set_database_value(bot, 'duelrecorduser', 'specevent', 1)
-            osd(bot, duels.channel_current, 'say', duels.instigator + " triggered the special event! Winnings are "+str(spicemanip(bot, ['specialevent', duels_ingame_coin_usage, duels_ingame_coin], 'index'))+" Coins!")
+            osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " triggered the special event! Winnings are "+str(spicemanip(bot, ['specialevent', duels_ingame_coin_usage, duels_ingame_coin], 'index'))+" Coins!")
             adjust_database_value(bot, duels.instigator, 'coin', spicemanip(bot, ['specialevent', duels_ingame_coin_usage, duels_ingame_coin], 'index'))
         else:
             adjust_database_value(bot, 'duelrecorduser', 'specevent', 1)
@@ -819,7 +819,7 @@ def duels_command_function_combat(bot, triggerargsarray, command_main, trigger, 
 
     if subcommand == 'last':
         combatlastplayeractual = get_database_value(bot, target, 'combatlastplayeractualtext') or str("I don't have a record of the last combat for "+target+".")
-        osd(bot, duels.channel_current, 'say', combatlastplayeractual)
+        osd(bot, duels.channel_current, 'say', nonerrorstart + combatlastplayeractual)
         duels.command_stamina_cost = 0
         return
 
@@ -835,10 +835,10 @@ def duels_command_function_combat(bot, triggerargsarray, command_main, trigger, 
 
 def duels_docs_combat(bot):
     dispmsgarray = []
-    dispmsgarray.append("This the main function of gameplay.")
-    dispmsgarray.append("Usage: Target another player.")
-    dispmsgarray.append("Additional Switches: " + 'You may use -w="weapon name" to manually use a weapon.')
-    dispmsgarray.append("Subcommand 'list': See the last combat that a player was in. You may manually select a target.")
+    dispmsgarray.append(nonerrorstart + "This the main function of gameplay.")
+    dispmsgarray.append(nonerrorstart + "Usage: Target another player.")
+    dispmsgarray.append(nonerrorstart + "Additional Switches: " + 'You may use -w="weapon name" to manually use a weapon.')
+    dispmsgarray.append(nonerrorstart + "Subcommand 'list': See the last combat that a player was in. You may manually select a target.")
     return dispmsgarray
 
 
@@ -917,11 +917,11 @@ def duels_command_function_classic(bot, triggerargsarray, command_main, trigger,
 
 def duels_docs_classic(bot):
     dispmsgarray = []
-    dispmsgarray.append("This shows the gameplay that this game is based on. Note: this does not have an effect your actual stats.")
-    dispmsgarray.append("Usage: Target another player.")
+    dispmsgarray.append(nonerrorstart + "This shows the gameplay that this game is based on. Note: this does not have an effect your actual stats.")
+    dispmsgarray.append(nonerrorstart + "Usage: Target another player.")
 
-    dispmsgarray.append("Subcommand 'stats': displays stats.")
-    dispmsgarray.append("Subcommand 'leaderboard': displays stats leaders.")
+    dispmsgarray.append(nonerrorstart + "Subcommand 'stats': displays stats.")
+    dispmsgarray.append(nonerrorstart + "Subcommand 'leaderboard': displays stats leaders.")
     return dispmsgarray
 
 
@@ -989,7 +989,7 @@ def duels_command_function_assault(bot, triggerargsarray, command_main, trigger,
 
 def duels_docs_assault(bot):
     dispmsgarray = []
-    dispmsgarray.append("This a combat event that allows you to attack every other duels player.")
+    dispmsgarray.append(nonerrorstart + "This a combat event that allows you to attack every other duels player.")
     return dispmsgarray
 
 
@@ -1074,7 +1074,7 @@ def duels_command_function_mayhem(bot, triggerargsarray, command_main, trigger, 
 
 def duels_docs_mayhem(bot):
     dispmsgarray = []
-    dispmsgarray.append("This a combat event that finds every combination of combat possible.")
+    dispmsgarray.append(nonerrorstart + "This a combat event that finds every combination of combat possible.")
     return dispmsgarray
 
 
@@ -1147,7 +1147,7 @@ def duels_command_function_hungergames(bot, triggerargsarray, command_main, trig
 
 def duels_docs_hungergames(bot):
     dispmsgarray = []
-    dispmsgarray.append("This pits all duels players against eachother with one victorious.")
+    dispmsgarray.append(nonerrorstart + "This pits all duels players against eachother with one victorious.")
     return dispmsgarray
 
 
@@ -1212,7 +1212,7 @@ def duels_command_function_colosseum(bot, triggerargsarray, command_main,  trigg
 
 def duels_docs_colosseum(bot):
     dispmsgarray = []
-    dispmsgarray.append("This pits all users against eachother with a prize that is based on the amount of players present.")
+    dispmsgarray.append(nonerrorstart + "This pits all users against eachother with a prize that is based on the amount of players present.")
     return dispmsgarray
 
 
@@ -1313,10 +1313,10 @@ def duels_command_function_monster(bot, triggerargsarray, command_main, trigger,
 
 def duels_docs_monster(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to do combat against a random low-level monster.")
-    dispmsgarray.append("Additional Switches: " + 'You may use -w="weapon name" to manually use a weapon.')
-    dispmsgarray.append("Subcommand 'loot': See the loot that the current monster has.")
-    dispmsgarray.append("Subcommand 'health': See the health of the current monster.")
+    dispmsgarray.append(nonerrorstart + "This allows you to do combat against a random low-level monster.")
+    dispmsgarray.append(nonerrorstart + "Additional Switches: " + 'You may use -w="weapon name" to manually use a weapon.')
+    dispmsgarray.append(nonerrorstart + "Subcommand 'loot': See the loot that the current monster has.")
+    dispmsgarray.append(nonerrorstart + "Subcommand 'health': See the health of the current monster.")
     return dispmsgarray
 
 
@@ -1345,8 +1345,8 @@ def duels_command_function_random(bot, triggerargsarray, command_main, trigger, 
 
 def duels_docs_random(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to combat a random player. This has an added bonus if you win. There is a chance that the bot or monster may be selected. The bot always wins.")
-    dispmsgarray.append("Additional Switches: " + 'You may use -w="weapon name" to manually use a weapon.')
+    dispmsgarray.append(nonerrorstart + "This allows you to combat a random player. This has an added bonus if you win. There is a chance that the bot or monster may be selected. The bot always wins.")
+    dispmsgarray.append(nonerrorstart + "Additional Switches: " + 'You may use -w="weapon name" to manually use a weapon.')
     return dispmsgarray
 
 
@@ -1571,9 +1571,9 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
 
 def duels_docs_roulette(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to risk a shot in the head for the chance at big coin winnings.")
-    dispmsgarray.append("Subcommand 'last': Displays the last player to bite the bullet.")
-    dispmsgarray.append("Subcommand 'any digit': Selects the chamber to shoot.")
+    dispmsgarray.append(nonerrorstart + "This allows you to risk a shot in the head for the chance at big coin winnings.")
+    dispmsgarray.append(nonerrorstart + "Subcommand 'last': Displays the last player to bite the bullet.")
+    dispmsgarray.append(nonerrorstart + "Subcommand 'any digit': Selects the chamber to shoot.")
     return dispmsgarray
 
 
@@ -1621,7 +1621,7 @@ def duels_command_function_trebuchet(bot, triggerargsarray, command_main, trigge
 
 def duels_docs_trebuchet(bot):
     dispmsgarray = []
-    dispmsgarray.append("This is a spinning target hitter.")
+    dispmsgarray.append(nonerrorstart + "This is a spinning target hitter.")
     return dispmsgarray
 
 
@@ -1666,8 +1666,8 @@ def duels_command_function_deathblow(bot, triggerargsarray, command_main, trigge
 
 def duels_docs_template(bot):
     dispmsgarray = []
-    dispmsgarray.append("This checks to see if a recent combat provided you with the chance to finish a player.")
-    dispmsgarray.append("Usage: Either run the base command, or specify a target.")
+    dispmsgarray.append(nonerrorstart + "This checks to see if a recent combat provided you with the chance to finish a player.")
+    dispmsgarray.append(nonerrorstart + "Usage: Either run the base command, or specify a target.")
     return dispmsgarray
 
 
@@ -1747,7 +1747,7 @@ def duels_command_function_grenade(bot, triggerargsarray, command_main, trigger,
 
 def duels_docs_grenade(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to throw a grenade into the room. Damage is randomly based on who is able to jump out of the way.")
+    dispmsgarray.append(nonerrorstart + "This allows you to throw a grenade into the room. Damage is randomly based on who is able to jump out of the way.")
     return dispmsgarray
 
 
@@ -1863,7 +1863,7 @@ def duels_command_function_magic(bot, triggerargsarray, command_main, trigger, c
 
 def duels_docs_magic(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to use mana to do various magic functions.")
+    dispmsgarray.append(nonerrorstart + "This allows you to use mana to do various magic functions.")
     return dispmsgarray
 
 
@@ -2055,7 +2055,7 @@ def duels_command_function_character(bot, triggerargsarray, command_main, trigge
 
 def duels_docs_character(bot):
     dispmsgarray = []
-    dispmsgarray.append("This shows your character sheet.")
+    dispmsgarray.append(nonerrorstart + "This shows your character sheet.")
     return dispmsgarray
 
 
@@ -2129,7 +2129,7 @@ def duels_command_function_special(bot, triggerargsarray, command_main, trigger,
 
 def duels_docs_armor(bot):
     dispmsgarray = []
-    dispmsgarray.append("This displays the current durability of any armor that you may possess.")
+    dispmsgarray.append(nonerrorstart + "This displays the current durability of any armor that you may possess.")
     return dispmsgarray
 
 
@@ -2258,7 +2258,7 @@ def duels_command_function_stats(bot, triggerargsarray, command_main, trigger, c
 
 def duels_docs_stats(bot):
     dispmsgarray = []
-    dispmsgarray.append("This provides a brief sysnopsis of your current condition.")
+    dispmsgarray.append(nonerrorstart + "This provides a brief sysnopsis of your current condition.")
     return dispmsgarray
 
 
@@ -2311,7 +2311,7 @@ def duels_command_function_health(bot, triggerargsarray, command_main, trigger, 
 
 def duels_docs_health(bot):
     dispmsgarray = []
-    dispmsgarray.append("This displays a detailed look at each bodyparts current status.")
+    dispmsgarray.append(nonerrorstart + "This displays a detailed look at each bodyparts current status.")
     return dispmsgarray
 
 
@@ -2362,7 +2362,7 @@ def duels_command_function_streaks(bot, triggerargsarray, command_main, trigger,
 
 def duels_docs_streaks(bot):
     dispmsgarray = []
-    dispmsgarray.append("This shows your current winning/losing streak. A streak is more than 2 in a row.")
+    dispmsgarray.append(nonerrorstart + "This shows your current winning/losing streak. A streak is more than 2 in a row.")
     return dispmsgarray
 
 
@@ -2579,7 +2579,7 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
 
 def duels_docs_loot(bot):
     dispmsgarray = []
-    dispmsgarray.append("This shows the items you currently possess and can use. You may also buy, sell, these items with the ingame store.")
+    dispmsgarray.append(nonerrorstart + "This shows the items you currently possess and can use. You may also buy, sell, these items with the ingame store.")
     return dispmsgarray
 
 
@@ -2630,7 +2630,7 @@ def duels_command_function_armor(bot, triggerargsarray, command_main, trigger, c
 
 def duels_docs_armor(bot):
     dispmsgarray = []
-    dispmsgarray.append("This displays the current durability of any armor that you may possess.")
+    dispmsgarray.append(nonerrorstart + "This displays the current durability of any armor that you may possess.")
     return dispmsgarray
 
 
@@ -2780,8 +2780,8 @@ def duels_command_function_opt(bot, triggerargsarray, command_main, trigger, com
 
 def duels_docs_opt(bot):
     dispmsgarray = []
-    dispmsgarray.append("This opts you in/out.")
-    dispmsgarray.append("Your opt status will announce to the channel. You can also use this command to have the bot primsg a nick to tell somebody join the fun.")
+    dispmsgarray.append(nonerrorstart + "This opts you in/out.")
+    dispmsgarray.append(nonerrorstart + "Your opt status will announce to the channel. You can also use this command to have the bot primsg a nick to tell somebody join the fun.")
     return dispmsgarray
 
 
@@ -2851,7 +2851,7 @@ def duels_command_function_location(bot, triggerargsarray, command_main, trigger
 
 def duels_docs_location(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to travel between game locations.")
+    dispmsgarray.append(nonerrorstart + "This allows you to travel between game locations.")
     return dispmsgarray
 
 
@@ -2891,8 +2891,8 @@ def duels_command_function_harakiri(bot, triggerargsarray, command_main, trigger
 
 def duels_docs_template(bot):
     dispmsgarray = []
-    dispmsgarray.append("This is a suicide command. You will lose all your items and respawn.")
-    dispmsgarray.append("Usage: You must Confirm this command.")
+    dispmsgarray.append(nonerrorstart + "This is a suicide command. You will lose all your items and respawn.")
+    dispmsgarray.append(nonerrorstart + "Usage: You must Confirm this command.")
     return dispmsgarray
 
 
@@ -2961,7 +2961,7 @@ def duels_command_function_title(bot, triggerargsarray, command_main, trigger, c
 
 def duels_docs_title(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to set a vanity title in front of your nick during combat.")
+    dispmsgarray.append(nonerrorstart + "This allows you to set a vanity title in front of your nick during combat.")
     return dispmsgarray
 
 
@@ -3062,7 +3062,7 @@ def duels_command_function_weaponslocker(bot, triggerargsarray, command_main, tr
 
 def duels_docs_weaponslocker(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to add, remove, and view items in your weapons locker. These weapon names are included in combat, and provide a boost for having.")
+    dispmsgarray.append(nonerrorstart + "This allows you to add, remove, and view items in your weapons locker. These weapon names are included in combat, and provide a boost for having.")
     return dispmsgarray
 
 
@@ -3245,7 +3245,7 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
 
 def duels_docs_forge(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to purchase armor.")
+    dispmsgarray.append(nonerrorstart + "This allows you to purchase armor.")
     return dispmsgarray
 
 
@@ -3395,7 +3395,7 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
 
 def duels_docs_merchant(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to purchase loot items.")
+    dispmsgarray.append(nonerrorstart + "This allows you to purchase loot items.")
     return dispmsgarray
 
 
@@ -3545,7 +3545,7 @@ def duels_command_function_locker(bot, triggerargsarray, command_main, trigger, 
 
 def duels_docs_locker(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to store loot items long term.")
+    dispmsgarray.append(nonerrorstart + "This allows you to store loot items long term.")
     return dispmsgarray
 
 
@@ -3624,7 +3624,7 @@ def duels_command_function_craft(bot, triggerargsarray, command_main, trigger, c
 
 def duels_docs_craft(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to craft loot items.")
+    dispmsgarray.append(nonerrorstart + "This allows you to craft loot items.")
     return dispmsgarray
 
 
@@ -3717,7 +3717,7 @@ def duels_command_function_tavern(bot, triggerargsarray, command_main, trigger, 
 
 def duels_docs_tavern(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to relax your character with a pint.")
+    dispmsgarray.append(nonerrorstart + "This allows you to relax your character with a pint.")
     return dispmsgarray
 
 
@@ -3860,7 +3860,7 @@ def duels_command_function_tier(bot, triggerargsarray, command_main, trigger, co
 
 def duels_docs_tier(bot):
     dispmsgarray = []
-    dispmsgarray.append("This will display information about the channels progress in the game.")
+    dispmsgarray.append(nonerrorstart + "This will display information about the channels progress in the game.")
     return dispmsgarray
 
 
@@ -3926,7 +3926,7 @@ def duels_command_function_warroom(bot, triggerargsarray, command_main, trigger,
 
 def duels_docs_warroom(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to see what channel users are opted into the game and can be challenged.")
+    dispmsgarray.append(nonerrorstart + "This allows you to see what channel users are opted into the game and can be challenged.")
     return dispmsgarray
 
 
@@ -4116,7 +4116,7 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
 
 def duels_docs_leaderboard(bot):
     dispmsgarray = []
-    dispmsgarray.append("This shows the top scores/stats of the game.")
+    dispmsgarray.append(nonerrorstart + "This shows the top scores/stats of the game.")
     return dispmsgarray
 
 
@@ -4174,7 +4174,7 @@ def duels_command_function_bounty(bot, triggerargsarray, command_main, trigger, 
 
 def duels_docs_bounty(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows you to place a bounty on another player. This bounty can be won by the player that kills them. This should be incentive for players to gang up on another.")
+    dispmsgarray.append(nonerrorstart + "This allows you to place a bounty on another player. This bounty can be won by the player that kills them. This should be incentive for players to gang up on another.")
     return dispmsgarray
 
 
@@ -4237,7 +4237,7 @@ def duels_command_function_game(bot, triggerargsarray, command_main, trigger, co
 
 def duels_docs_game(bot):
     dispmsgarray = []
-    dispmsgarray.append("This is used by bot admins to enable/disable the game for a specific channel.")
+    dispmsgarray.append(nonerrorstart + "This is used by bot admins to enable/disable the game for a specific channel.")
     return dispmsgarray
 
 
@@ -4295,7 +4295,7 @@ def duels_command_function_devmode(bot, triggerargsarray, command_main, trigger,
 
 def duels_docs_devmode(bot):
     dispmsgarray = []
-    dispmsgarray.append("This is used by bot admins to cause the game to bypass game-limiting features for a specific channel.")
+    dispmsgarray.append(nonerrorstart + "This is used by bot admins to cause the game to bypass game-limiting features for a specific channel.")
     return dispmsgarray
 
 
@@ -4385,7 +4385,7 @@ def duels_command_function_admin(bot, triggerargsarray, command_main, trigger, c
 
 def duels_docs_admin(bot):
     dispmsgarray = []
-    dispmsgarray.append("This allows bot admins to make changes to the game.")
+    dispmsgarray.append(nonerrorstart + "This allows bot admins to make changes to the game.")
     return dispmsgarray
 
 
@@ -4403,7 +4403,7 @@ def duels_command_function_author(bot, triggerargsarray, command_main, trigger, 
 
 def duels_docs_author(bot):
     dispmsgarray = []
-    dispmsgarray.append("This will display the author of Duels.")
+    dispmsgarray.append(nonerrorstart + "This will display the author of Duels.")
     return dispmsgarray
 
 
@@ -4499,7 +4499,7 @@ def duels_command_function_hotkey(bot, triggerargsarray, command_main, trigger, 
 
 def duels_docs_hotkey(bot):
     dispmsgarray = []
-    dispmsgarray.append("This will allow you to set quick shortcuts for your common commands.")
+    dispmsgarray.append(nonerrorstart + "This will allow you to set quick shortcuts for your common commands.")
     return dispmsgarray
 
 
@@ -4507,19 +4507,19 @@ def duels_docs_hotkey(bot):
 
 
 def duels_command_function_konami(bot, duels):
-    konami_note_to_players = "DO NOT tell others about this command. This is meant to be found by players that read the code. Effort has been made to conceal it."
-    konami_note_to_players_b = "DO NOT run in channel,,, run in a private message to the bot. DON'T be THAT person that spoils the secret."
+    konami_note_to_players = nonerrorstart + "DO NOT tell others about this command. This is meant to be found by players that read the code. Effort has been made to conceal it."
+    konami_note_to_players_b = nonerrorstart + "DO NOT run in channel,,, run in a private message to the bot. DON'T be THAT person that spoils the secret."
     konami = get_database_value(bot, duels.instigator, 'konami')
     if not konami:
         konamiset = 600
-        osd(bot, duels.instigator, 'notice', "you have found the cheatcode easter egg!!! For this, you gain " + str(konamiset) + " health restoration!!! DO NOT tell others about this command.")
+        osd(bot, duels.instigator, 'notice', nonerrorstart + "you have found the cheatcode easter egg!!! For this, you gain " + str(konamiset) + " health restoration!!! DO NOT tell others about this command.")
         adjust_database_value(bot, duels.instigator, 'health', konamiset)
         splitdamage = int(konamiset) / len(duels_bodyparts)
         for part in duels_bodyparts:
             adjust_database_value(bot, duels.instigator, part, splitdamage)
         set_database_value(bot, duels.instigator, 'konami', 1)
     else:
-        osd(bot, duels.instigator, 'notice', "you can only cheat once.")
+        osd(bot, duels.instigator, 'notice', errorstart + "you can only cheat once.")
 
 
 """ Intent """
@@ -4539,7 +4539,7 @@ def duels_command_function_intent(bot, triggerargsarray, command_main, trigger, 
 
 def duels_docs_intent(bot):
     dispmsgarray = []
-    dispmsgarray.append("A joke regarding EA games.")
+    dispmsgarray.append(nonerrorstart + "A joke regarding EA games.")
     return dispmsgarray
 
 
@@ -4552,7 +4552,7 @@ def duels_command_function_about(bot, triggerargsarray, command_main, trigger, c
 
 def duels_docs_about(bot):
     dispmsgarray = []
-    dispmsgarray.append("Basic Description of the games purpose.")
+    dispmsgarray.append(nonerrorstart + "Basic Description of the games purpose.")
     return dispmsgarray
 
 
@@ -4566,7 +4566,7 @@ def duels_command_function_version(bot, triggerargsarray, command_main, trigger,
 
 def duels_docs_template(bot):
     dispmsgarray = []
-    dispmsgarray.append("This checks the last modified date of the Master branch of the game.")
+    dispmsgarray.append(nonerrorstart + "This checks the last modified date of the Master branch of the game.")
     return dispmsgarray
 
 
@@ -4608,7 +4608,7 @@ def duels_command_function_docs(bot, triggerargsarray, command_main, trigger, co
 
 def duels_docs_docs(bot):
     dispmsgarray = []
-    dispmsgarray.append("Helps display Dynamic help for ingame usage.")
+    dispmsgarray.append(nonerrorstart + "Helps display Dynamic help for ingame usage.")
     return dispmsgarray
 
 
@@ -4647,7 +4647,7 @@ def duels_command_function_usage(bot, triggerargsarray, command_main, trigger, c
 
 def duels_docs_usage(bot):
     dispmsgarray = []
-    dispmsgarray.append("This is used to track your usage of the game. You can also specify a subcommand.")
+    dispmsgarray.append(nonerrorstart + "This is used to track your usage of the game. You can also specify a subcommand.")
     return dispmsgarray
     duels
 
