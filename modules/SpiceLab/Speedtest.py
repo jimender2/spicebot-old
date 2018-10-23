@@ -17,10 +17,9 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    bot.say("here")
+    osd(bot, trigger.sender, 'say', "Starting Speedtest...")
 
     st = pyspeedtest.SpeedTest()
-    osd(bot, trigger.sender, 'say', str(st))
-    # st.ping()
-    # st.download()
-    # st.upload()
+    osd(bot, trigger.sender, 'say', str(st.ping()))
+    osd(bot, trigger.sender, 'say', str(st.download()))
+    osd(bot, trigger.sender, 'say', str(st.upload()))
