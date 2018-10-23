@@ -14,7 +14,8 @@ from sopel.formatting import *
 
 @sopel.module.commands('colortest')
 def mainfunction(bot, trigger):
-    bot.say(color("RED STRING", colors.RED))
-    bot.say(bold("BOLD STRING"))
-    bot.say(underline("UNDERLINED STRING"))
-    bot.say("\x0309,01This is some text\x03")
+    osd(bot, trigger.sender, 'say', "\x0309,01This is some text\x03")
+    # bot.say(color("RED STRING", colors.RED))
+    # bot.say(bold("BOLD STRING"))
+    # bot.say(underline("UNDERLINED STRING"))
+    # bot.say("\x0309,01This is some text\x03")
