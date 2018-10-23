@@ -28,3 +28,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     s.results.share()
     results_dict = s.results.dict()
     osd(bot, trigger.sender, 'say', str(results_dict))
+    osd(bot, trigger.sender, 'say', "speedtest done")
