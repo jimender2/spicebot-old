@@ -777,7 +777,7 @@ def rpg_errors_end(bot, rpg):
                     else:
                         errormessage = str(errormessage.replace("$current_chan", 'privmsg'))
                 if errormessage not in rpg.error_display:
-                    rpg.error_display.append(errormessage)
+                    rpg.error_display.append("\x0304,00" + errormessage + "\x03")
     if rpg.error_display != []:
         osd(bot, rpg.instigator, 'notice', rpg.error_display)
 
