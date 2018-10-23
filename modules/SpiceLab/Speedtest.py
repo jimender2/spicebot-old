@@ -6,6 +6,8 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
+import pyspeedtest
+
 
 @sopel.module.require_admin
 @sopel.module.commands('speedtest')
@@ -16,3 +18,9 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     bot.say("here")
+
+    st = pyspeedtest.SpeedTest()
+    osd(bot, trigger.sender, 'say', str(st))
+    # st.ping()
+    # st.download()
+    # st.upload()
