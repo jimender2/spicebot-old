@@ -1761,14 +1761,14 @@ def duels_command_function_magic(bot, triggerargsarray, command_main, trigger, c
     instigatorclass = get_database_value(bot, duels.instigator, 'class')
     instigatormana = get_database_value(bot, duels.instigator, 'mana')
     if not instigatormana:
-        osd(bot, duels.instigator, 'notice', "You don't have any mana.")
+        osd(bot, duels.instigator, 'notice', errorstart + "You don't have any mana.")
         duels.command_stamina_cost = 0
         return
 
     magicusage = spicemanip(bot, [x for x in duels.command_restructure if x in duels_magic_types], 1)
     if not magicusage:
         magicoptions = spicemanip(bot, duels_magic_types, 'list')
-        osd(bot, duels.channel_current, 'say', "Magic uses include: " + magicoptions + ".")
+        osd(bot, duels.channel_current, 'say', errorstart + "Magic uses include: " + magicoptions + ".")
         duels.command_stamina_cost = 0
         return
 
@@ -1785,17 +1785,17 @@ def duels_command_function_magic(bot, triggerargsarray, command_main, trigger, c
         targetbio = instigatorbio
 
     if targetbio.actual == bot.nick:
-        osd(bot, duels.instigator, 'notice', "I am immune to magic " + magicusage + ".")
+        osd(bot, duels.instigator, 'notice', nonerrorstart + "I am immune to magic " + magicusage + ".")
         duels.command_stamina_cost = 0
         return
 
     if magicusage == 'curse' and targetbio.curse:  # TODO
-        osd(bot, duels.instigator, 'notice', "It looks like " + targetbio.nametext + " is already cursed.")
+        osd(bot, duels.instigator, 'notice', errorstart + "It looks like " + targetbio.nametext + " is already cursed.")
         duels.command_stamina_cost = 0
         return
 
     if magicusage == 'shield' and targetbio.shield:  # TODO
-        osd(bot, duels.instigator, 'notice', "It looks like " + targetbio.nametext + " is already magic shielded.")
+        osd(bot, duels.instigator, 'notice', errorstart + "It looks like " + targetbio.nametext + " is already magic shielded.")
         duels.command_stamina_cost = 0
         return
 
@@ -1808,7 +1808,7 @@ def duels_command_function_magic(bot, triggerargsarray, command_main, trigger, c
 
     if int(manarequired) > int(instigatormana):
         manamath = int(int(manarequired) - int(instigatormana))
-        osd(bot, duels.instigator, 'notice', "You need " + str(manamath) + " more mana to use magic " + magicusage + ".")
+        osd(bot, duels.instigator, 'notice', errorstart + "You need " + str(manamath) + " more mana to use magic " + magicusage + ".")
         duels.command_stamina_cost = 0
         return
 
