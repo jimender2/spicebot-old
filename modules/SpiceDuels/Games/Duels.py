@@ -1161,11 +1161,11 @@ def duels_command_function_colosseum(bot, triggerargsarray, command_main,  trigg
         if duels.instigator in duels.users_canduel_allchan:
             duels.users_canduel_allchan.remove(duels.instigator)
         if len(duels.users_canduel_allchan) == 1:
-            osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event, but only had one opponent.")
+            osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " Initiated a full channel " + command_main + " event, but only had one opponent.")
             duel_combat(bot, duels.instigator, duels.users_canduel_allchan, duels.command_restructure, 'target', duels)
             duels.command_stamina_cost = spicemanip(bot, ['combat', duels_commands_stamina_required, duels_commands_stamina_cost], 'index')
         else:
-            osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event, but had no targets.")
+            osd(bot, duels.channel_current, 'say', errorstart + duels.instigator + " Initiated a full channel " + command_main + " event, but had no targets.")
             duels.command_stamina_cost = 0
         return
 
@@ -1175,7 +1175,7 @@ def duels_command_function_colosseum(bot, triggerargsarray, command_main,  trigg
     displaymessage = spicemanip(bot, duels.users_canduel_allchan, "list")
 
     # Announce
-    osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
+    osd(bot, duels.channel_current, 'say', nonerrorstart + duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
     totalplayers = len(duels.users_canduel_allchan)
     riskcoins = int(totalplayers) * 30
     set_database_value(bot, 'duelrecorduser', 'colosseum_damage', int(riskcoins))
@@ -1207,7 +1207,7 @@ def duels_command_function_colosseum(bot, triggerargsarray, command_main,  trigg
     # Announce winner and pay out
     colosseumwinner = spicemanip(bot, duels.users_canduel_allchan, 1)
     adjust_database_value(bot, colosseumwinner, 'coin', riskcoins)
-    osd(bot, duels.channel_current, 'say', "The Winner is: " + colosseumwinner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
+    osd(bot, duels.channel_current, 'say', cwinnertext + "The Winner is: " + colosseumwinner + "! Total winnings: " + str(riskcoins) + " coin!" + closertext + " Losers took " + str(riskcoins) + " damage.")
 
 
 def duels_docs_colosseum(bot):
