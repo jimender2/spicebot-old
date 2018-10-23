@@ -113,11 +113,11 @@ def dual_clone(bot, trigger):
     triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
     target = spicemanip(bot, triggerargsarray, 1)
     if not target:
-        osd(bot, trigger.sender, 'say', "Who do you want to clone?")
+        osd(bot, trigger.sender, 'say', "\x0304,01Who do you want to clone?\x03")
     elif target.lower() not in [u.lower() for u in bot.users]:
-        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
+        osd(bot, trigger.sender, 'say', "\x0304,01I'm not sure who that is.\x03")
     else:
-        osd(bot, trigger.sender, 'say', "I think one " + target + " is enough for this world.")
+        osd(bot, trigger.sender, 'say', "\x0309,01I think one " + target + " is enough for this world.\x03")
 
 
 @module.rule('^(?:dual)\s+?.*')
@@ -131,10 +131,12 @@ def dual_cloneb(bot, trigger):
     triggerargsarray = spicemanip(bot, triggerargsarray, '2+')
     triggerargsarray = spicemanip(bot, triggerargsarray, 'create')
     target = spicemanip(bot, triggerargsarray, 1)
-    if target.lower() not in [u.lower() for u in bot.users]:
-        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
+    if not target:
+        osd(bot, trigger.sender, 'say', "\x0304,01Who do you want to clone?\x03")
+    elif target.lower() not in [u.lower() for u in bot.users]:
+        osd(bot, trigger.sender, 'say', "\x0304,01I'm not sure who that is.\x03")
     else:
-        osd(bot, trigger.sender, 'say', "I think one " + target + " is enough for this world.")
+        osd(bot, trigger.sender, 'say', "\x0309,01I think one " + target + " is enough for this world.\x03")
 
 
 """
