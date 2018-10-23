@@ -967,9 +967,9 @@ def duels_command_function_assault(bot, triggerargsarray, command_main, trigger,
 
     # Display results
     maindueler = duels.instigator
-    osd(bot, maindueler, 'notice', nonerrorstart + "It looks like the Full Channel Assault has completed." + colorend)
+    osd(bot, maindueler, 'notice', nonerrorstart + "It looks like the Full Channel Assault has completed.")
     assaultstatsarray = []
-    assaultstatsarray.append(nonerrorstart + maindueler + "'s Full Channel Assault results:")
+    assaultstatsarray.append(nonerrorstart + maindueler + "'s Full Channel Assault results:" + colorend)
     for astat in combat_track_results:
         astateval = get_database_value(bot, duels.instigator, "combat_track_" + astat) or 0
         if astateval:
