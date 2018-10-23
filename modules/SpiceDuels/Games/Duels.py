@@ -967,7 +967,7 @@ def duels_command_function_assault(bot, triggerargsarray, command_main, trigger,
 
     # Display results
     maindueler = duels.instigator
-    osd(bot, maindueler, 'notice', nonerrorstart + "It looks like the Full Channel Assault has completed.")
+    osd(bot, maindueler, 'notice', nonerrorstart + "It looks like the Full Channel Assault has completed." + colorend)
     assaultstatsarray = []
     assaultstatsarray.append(nonerrorstart + maindueler + "'s Full Channel Assault results:")
     for astat in combat_track_results:
@@ -976,7 +976,7 @@ def duels_command_function_assault(bot, triggerargsarray, command_main, trigger,
             astatname = astat.replace("_", " ")
             astatname = astatname.title()
             astatstr = str(str(astatname) + " \x02=\x02 " + str(astateval))
-            assaultstatsarray.append(statboard + astatstr)
+            assaultstatsarray.append(statboard + astatstr + colorend)
             reset_database_value(bot, duels.instigator, "combat_track_" + astat)
     osd(bot, duels.channel_current, 'say', assaultstatsarray)
 
