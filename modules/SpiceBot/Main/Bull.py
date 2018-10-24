@@ -18,7 +18,7 @@ defaultoptions = [
     ]
 
 
-@sopel.module.commands('ass')
+@sopel.module.commands('bull')
 def mainfunction(bot, trigger):
     """Check to see if the module is enabled or not."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'bull')
