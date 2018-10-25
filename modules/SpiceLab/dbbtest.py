@@ -30,7 +30,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    a = os.popen("sudo service SpiceBot status").read()
+    a = os.popen("sudo service SpiceLab status").read()
     lines = a.split('\n')
     for line in lines:
         bot.say(str(line))
