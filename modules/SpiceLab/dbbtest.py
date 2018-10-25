@@ -35,6 +35,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     debuglines = []
     searchphrasefound = 0
     ignorearray = ['session closed for user root', 'COMMAND=/bin/journalctl', 'COMMAND=/bin/rm', 'pam_unix(sudo:session): session opened for user root', "COMMAND=/usr/sbin/service"]
+    ignorearray = ["COMMAND=/usr/sbin/service"]
     for line in os.popen("sudo service SpiceLab status").read().split('\n'):
         if not searchphrasefound and "Welcome to Sopel. Loading modules..." in str(line):
             searchphrasefound = 1
