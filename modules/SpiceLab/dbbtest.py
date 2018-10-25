@@ -35,15 +35,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     debuglines = []
     searchphrasefound = 0
     ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)"]
-    for line in os.popen("sudo service SpiceLab status").read().split('\n'):
-        if not searchphrasefound and "Welcome to Sopel. Loading modules..." in str(line):
-            searchphrasefound = 1
-        if searchphrasefound:
-            if not any(x in str(line) for x in ignorearray):
-                debuglines.append(str(line))
+    for line in os.popen("sudo pip install dbbtest").read().split('\n'):
+        debuglines.append(str(line))
 
     if debuglines == []:
-        return osd(bot, botcom.channel_current, 'action', "has no service log for some reason.")
+        return osd(bot, botcom.channel_current, 'action', "has no install log for some reason.")
 
     for line in debuglines:
         osd(bot, trigger.sender, 'say', line)
