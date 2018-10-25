@@ -10,10 +10,6 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-log_path = "data/templogauto.txt"
-log_file_path = os.path.join(moduledir, log_path)
-
-
 @sopel.module.interval(1)
 def timed_logcheck(bot):
     if "timed_logcheck" not in bot.memory:
