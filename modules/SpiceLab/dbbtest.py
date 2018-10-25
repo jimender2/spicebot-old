@@ -30,6 +30,11 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
+    a = os.popen("sudo service SpiceBot status").read()
+    lines = a.split('\n')
+    for line in lines:
+        bot.say(str(line))
+
     return
 
     key_value = subprocess.check_output(["systemctl", "show", bot.nick], universal_newlines=True).split('\n')
