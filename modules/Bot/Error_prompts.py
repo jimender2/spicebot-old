@@ -19,7 +19,7 @@ def timed_logcheck(bot):
         debuglines = []
         searchphrasefound = 0
         errorarray = ['Error loading']
-        for line in os.popen("sudo service SpiceLab status").read().split('\n'):
+        for line in os.popen("sudo service " + bot.nick + " status").read().split('\n'):
             if not searchphrasefound and "modules failed to load" in str(line):
                 searchphrasefound = str(line).split("]:", -1)[1]
 
