@@ -26,7 +26,7 @@ def mainfunction(bot, trigger):
         triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
         execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
-
+fart = toot
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 

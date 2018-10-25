@@ -19,34 +19,13 @@ def timed_logcheck(bot):
     if "timed_logcheck" not in bot.memory:
         bot.memory["timed_logcheck"] = 1
 
-        # Save systemd Log to file
-        os.system("sudo journalctl -u " + bot.nick + " >> " + log_file_path)
+        debuglines = []
+        searchphrasefound = 0
         errorarray = ['Error loading']
+        for line in os.popen("sudo service SpiceLab status").read().split('\n'):
+            if not searchphrasefound and "modules failed to load" in str(line):
+                searchphrasefound = str(line)
 
-        # Search for most recent start
-        recent_log_start = 0
-        search_phrase = "Welcome to Sopel. Loading modules..."
-        with open(log_file_path) as f:
-            line_num = 0
-            for line in f:
-                line = line.decode('utf-8', 'ignore')
-                line_num += 1
-                if search_phrase in line:
-                    recent_log_start = line_num
-
-        # Make an array of Errors
-        total_loading_errors = 0
-        line_num = 0
-        with open(log_file_path) as fb:
-            for line in fb:
-                line_num += 1
-                currentline = line_num
-                if int(currentline) >= int(recent_log_start) and any(x in line for x in errorarray):
-                    total_loading_errors += 1
-        os.system("sudo rm " + log_file_path)
-        if total_loading_errors >= 1:
+        if searchphrasefound:
             for channel in bot.channels:
-                if total_loading_errors == 1:
-                    osd(bot, channel, 'say', "Notice to Bot Admins: There was a module error upon Bot start. Run the debug command for more information.")
-                else:
-                    osd(bot, channel, 'say', "Notice to Bot Admins: There were " + str(total_loading_errors) + " module errors upon Bot start. Run the debug command for more information.")
+                osd(bot, channel, 'say', "Notice to Bot Admins: " + str(searchphrasefound) + ". Run the debug command for more information.")
