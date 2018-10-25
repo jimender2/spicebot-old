@@ -46,7 +46,7 @@ reddit = praw.Reddit(client_id=CLIENTID,
           """)
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
-    triggerargsarray = spicemanip(bot, trigger.group(0), 'create')
+    triggerargsarray = spicemanip(bot, trigger.group(0), 'lower', 'list')
     execute_main(bot, trigger, triggerargsarray)
 
 
