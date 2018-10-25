@@ -565,32 +565,50 @@ def bot_command_function_restart(bot, trigger, botcom, instigator):
 
     botcom = bot_config_directory(bot, botcom)
 
-    targetbot = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
-
-    if targetbot == bot.nick:
-        if botcom.instigator not in botcom.botadmins:
-            osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function.")
-            return
+    targetbots = []
+    if botcom.triggerargsarray == []:
+        targetbots.append(bot.nick)
+    elif 'all' in botcom.triggerargsarray:
+        for targetbot in botcom.config_listing:
+            targetbots.append(targetbot)
     else:
+        for targetbot in botcom.triggerargsarray:
+            if targetbot in botcom.config_listing:
+                targetbots.append(targetbot)
+
+    for targetbot in targetbots:
+        joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
+        if not os.path.isdir(joindpath):
+            targetbots.remove(targetbot)
+
+    for targetbot in targetbots:
         targetbotadmins = bot_target_admins(bot, targetbot)
         if botcom.instigator not in targetbotadmins:
-            osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function.")
-            return
+            targetbots.remove(targetbot)
 
-    joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
-    if not os.path.isdir(joindpath):
-        osd(bot, botcom.instigator, 'notice', "That doesn't appear to be a valid bot directory.")
+    if targetbots == []:
+        osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function for the selected bots OR the bots directory is missing.")
         return
 
-    if targetbot != bot.nick:
-        osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to restart " + targetbot + ". Be Back Soon!")
-    else:
-        dungeonmasterarray = ['spiceRPG', 'spiceRPGdev']
-        if targetbot in dungeonmasterarray:
-            osd(bot, botcom.channel_list, 'say', "My Dungeon Master, " + botcom.instigator + ", commandeth me to restart. I shall return post haste!")
-        else:
+    # current bot should be last
+    if bot.nick in targetbots:
+        targetbots.remove(bot.nick)
+        targetbots.append(bot.nick)
+
+    if len(targetbots) == 1:
+        if targetbot != bot.nick:
             osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to restart. Be Back Soon!")
-    restart(bot, botcom, trigger, targetbot)
+        else:
+            dungeonmasterarray = ['spiceRPG', 'spiceRPGdev']
+            if targetbot in dungeonmasterarray:
+                osd(bot, botcom.channel_list, 'say', "My Dungeon Master, " + botcom.instigator + ", commandeth me to restart. I shall return post haste!")
+            else:
+                osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to restart. Be Back Soon!")
+    else:
+        targetbotlist = spicemanip(bot, targetbots, 'list')
+        osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to restart " + targetbotlist)
+    for targetbot in targetbots:
+        restart(bot, botcom, trigger, targetbot)
 
 
 def bot_command_function_permfix(bot, trigger, botcom, instigator):
