@@ -33,7 +33,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, botcom.channel_current, 'action', "Is Examining Log")
 
     installines = []
-    for line in os.popen("sudo pip install dbbtest").read().split('\n'):
+    for line in os.popen("sudo pip install sopel").read().split('\n'):
         installines.append(str(line))
 
     if installines == []:
