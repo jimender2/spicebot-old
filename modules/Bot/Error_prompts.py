@@ -23,4 +23,4 @@ def timed_logcheck(bot):
 
         if searchphrasefound:
             for channel in bot.channels:
-               bot.say("Notice to Bot Admins: " + str(searchphrasefound) + ". Run the debug command for more information.")
+                osd(bot, channel, 'say', "Notice to Bot Admins: " + str(searchphrasefound) + ". Run the debug command for more information.")
