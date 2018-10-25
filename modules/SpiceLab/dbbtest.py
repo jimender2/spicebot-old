@@ -38,8 +38,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     for line in os.popen("sudo service SpiceLab status").read().split('\n'):
         if not searchphrasefound and "Welcome to Sopel. Loading modules..." not in str(line):
             searchphrasefound = 1
-        if searchphrasefound and not any(x in str(line) for x in ignorearray):
-            debuglines.append(str(line))
+        if searchphrasefound:
+            if not any(x in str(line) for x in ignorearray):
+                debuglines.append(str(line))
 
     if debuglines == []:
         return osd(bot, botcom.channel_current, 'action', "has no service log for some reason.")
