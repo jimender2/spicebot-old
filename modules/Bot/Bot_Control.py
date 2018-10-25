@@ -633,7 +633,7 @@ def bot_command_function_pip(bot, trigger, botcom, instigator):
 
     if previouslysatisfied != []:
         previouslysatisfiedall = spicemanip(bot, previouslysatisfied, 'andlist')
-        installines.insert(0, previouslysatisfiedall)
+        installines.insert(0, "The following required packages have already been satisfied" + previouslysatisfiedall)
 
     if installines == []:
         return osd(bot, botcom.channel_current, 'action', "has no install log for some reason.")
