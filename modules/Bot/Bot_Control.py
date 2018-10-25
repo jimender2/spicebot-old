@@ -17,8 +17,6 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
-log_path = "data/templog.txt"
-log_file_path = os.path.join(moduledir, log_path)
 
 GITWIKIURL = "https://github.com/SpiceBot/SpiceBot/wiki"
 
