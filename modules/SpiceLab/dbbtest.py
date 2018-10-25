@@ -32,14 +32,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     osd(bot, botcom.channel_current, 'action', "Is Examining Log")
 
-    debuglines = []
-    searchphrasefound = 0
-    ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)"]
+    installines = []
     for line in os.popen("sudo pip install dbbtest").read().split('\n'):
-        debuglines.append(str(line))
+        installines.append(str(line))
 
-    if debuglines == []:
+    if installines == []:
         return osd(bot, botcom.channel_current, 'action', "has no install log for some reason.")
 
-    for line in debuglines:
+    for line in installines:
         osd(bot, trigger.sender, 'say', line)
