@@ -640,7 +640,7 @@ def bot_command_function_pip(bot, trigger, botcom, instigator):
 
     for line in installines:
         osd(bot, trigger.sender, 'say', line)
-    osd(bot, botcom.channel_current, 'say', "Possibly done " + str(pippackage))
+    osd(bot, botcom.channel_current, 'say', "Possibly done.")
 
 
 def bot_command_function_debug(bot, trigger, botcom, instigator):
@@ -687,12 +687,12 @@ def bot_command_function_debug(bot, trigger, botcom, instigator):
 """
 
 
-def restart(bot, botcom, trigger, service):
-    osd(bot, botcom.channel_current, 'action', "Is Restarting the " + service + " Service...")
-    os.system("sudo service " + str(service) + " restart")
-    if bot.nick == service:
+def restart(bot, botcom, trigger, targetbot):
+    osd(bot, botcom.channel_current, 'action', "Is Restarting the " + targetbot + " Service...")
+    os.system("sudo service " + str(targetbot) + " restart")
+    if bot.nick == targetbot:
         osd(bot, botcom.channel_current, 'say', "If you see this, the service is hanging. Making another attempt.")
-        os.system("sudo service " + str(service) + " restart")
+        os.system("sudo service " + str(targetbot) + " restart")
 
 
 def update(bot, botcom, trigger, targetbot):
