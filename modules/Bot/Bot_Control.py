@@ -626,7 +626,7 @@ def bot_command_function_pip(bot, trigger, botcom, instigator):
     for line in os.popen("sudo pip " + str(subcom) + " " + str(pippackage)).read().split('\n'):
         if "Requirement already satisfied:" in str(line):
             packagegood = str(line).split("Requirement already satisfied:", 1)[1]
-            packagegood = str(line).split("in", 1)[0]
+            packagegood = str(packagegood).split("in", 1)[0]
             previouslysatisfied.append(packagegood)
         else:
             installines.append(str(line))
