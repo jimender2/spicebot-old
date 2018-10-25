@@ -617,7 +617,7 @@ def bot_command_function_pip(bot, trigger, botcom, instigator):
     if subcom in botcom.triggerargsarray:
         botcom.triggerargsarray.remove(subcom)
 
-    pippackage = spicemanip(bot, botcom.triggerargsarray, '2+')
+    pippackage = spicemanip(bot, botcom.triggerargsarray, 0)
     if not pippackage:
         return osd(bot, botcom.channel_current, 'say', "You must specify a pip package.")
 
