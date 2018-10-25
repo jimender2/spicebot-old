@@ -18,7 +18,7 @@ def timed_logcheck(bot):
 
         searchphrasefound = 0
         for line in os.popen("sudo service " + bot.nick + " status").read().split('\n'):
-            if not searchphrasefound and "modules failed to load" in str(line):
+            if not searchphrasefound and "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
                 searchphrasefound = str(line).split("]:", -1)[1]
 
         if searchphrasefound:
