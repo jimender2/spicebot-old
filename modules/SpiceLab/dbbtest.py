@@ -30,36 +30,47 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    a = os.popen("sudo service SpiceLab status").read()
-    lines = a.split('\n')
-    for line in lines:
+    # a = os.popen("sudo service SpiceLab status").read()
+    # lines = a.split('\n')
+    for line in os.popen("sudo service SpiceLab status").read().split('\n'):
         bot.say(str(line))
 
-    return
 
-    key_value = subprocess.check_output(["systemctl", "show", bot.nick], universal_newlines=True).split('\n')
-    json_dict = {}
-    for entry in key_value:
-        kv = entry.split("=", 1)
-        if len(kv) == 2:
-            json_dict[kv[0]] = kv[1]
-    json.dump(json_dict, sys.stdout)
+"""
+@sopel.module.interval(1)
+def timed_logcheck(bot):
+    if "timed_logcheck" not in bot.memory:
+        bot.memory["timed_logcheck"] = 1
 
-    for element in json_dict.keys():
-        bot.say(str(element))
-        # bot.say(str(element) "     " + str(json_dict[element]))
+        # Save systemd Log to file
+        os.system("sudo journalctl -u " + bot.nick + " >> " + log_file_path)
+        errorarray = ['Error loading']
 
-    return
+        # Search for most recent start
+        recent_log_start = 0
+        search_phrase = "Welcome to Sopel. Loading modules..."
+        with open(log_file_path) as f:
+            line_num = 0
+            for line in f:
+                line = line.decode('utf-8', 'ignore')
+                line_num += 1
+                if search_phrase in line:
+                    recent_log_start = line_num
 
-    osdtest = []
-
-    cmd = '/bin/systemctl status %s.service' % bot.nick
-    proc = subprocess.Popen(cmd, shell=True)
-
-    # proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
-    stdout_list = proc.communicate()[0].split('\n')
-    for line in stdout_list:
-        osdtest.append(str(line))
-
-    for line in osdtest:
-        osd(bot, trigger.sender, 'say', line)
+        # Make an array of Errors
+        total_loading_errors = 0
+        line_num = 0
+        with open(log_file_path) as fb:
+            for line in fb:
+                line_num += 1
+                currentline = line_num
+                if int(currentline) >= int(recent_log_start) and any(x in line for x in errorarray):
+                    total_loading_errors += 1
+        os.system("sudo rm " + log_file_path)
+        if total_loading_errors >= 1:
+            for channel in bot.channels:
+                if total_loading_errors == 1:
+                    osd(bot, channel, 'say', "Notice to Bot Admins: There was a module error upon Bot start. Run the debug command for more information.")
+                else:
+                    osd(bot, channel, 'say', "Notice to Bot Admins: There were " + str(total_loading_errors) + " module errors upon Bot start. Run the debug command for more information.")
+"""
