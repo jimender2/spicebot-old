@@ -29,15 +29,3 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
-
-    osd(bot, botcom.channel_current, 'action', "Is Examining Log")
-
-    installines = []
-    for line in os.popen("sudo pip install sopel").read().split('\n'):
-        installines.append(str(line))
-
-    if installines == []:
-        return osd(bot, botcom.channel_current, 'action', "has no install log for some reason.")
-
-    for line in installines:
-        osd(bot, trigger.sender, 'say', line)

@@ -609,13 +609,37 @@ def bot_command_function_pip(bot, trigger, botcom, instigator):
         osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function.")
         return
 
+    pipcoms = ['install', 'remove']
+    subcom = spicemanip(bot, [x for x in botcom.triggerargsarray if x in pipcoms], 1) or None
+    if not subcom:
+        return osd(bot, trigger.sender, 'say', "pip requires a subcommand. Valid options: " + spicemanip(bot, pipcoms, 'andlist'))
+
+    if subcom in botcom.triggerargsarray:
+        botcom.triggerargsarray.remove(subcom)
+
     pippackage = spicemanip(bot, botcom.triggerargsarray, '2+')
     if not pippackage:
-        osd(bot, botcom.channel_current, 'say', "You must specify a pip package.")
-    else:
-        osd(bot, botcom.channel_current, 'say', "Attempting to install " + str(pippackage))
-        os.system("sudo pip install " + pippackage)
-        osd(bot, botcom.channel_current, 'say', "Possibly done installing " + str(pippackage))
+        return osd(bot, botcom.channel_current, 'say', "You must specify a pip package.")
+
+    installines = []
+    previouslysatisfied = []
+    for line in os.popen("sudo pip " + str(subcom) + " " + str(pippackage)).read().split('\n'):
+        if "Requirement already satisfied:" in str(line):
+            packagegood = str(line).split("Requirement already satisfied:", 1)[1]
+            packagegood = str(line).split("in", 1)[0]
+            previouslysatisfied.append(packagegood)
+        else:
+            installines.append(str(line))
+
+    if previouslysatisfied != []:
+        previouslysatisfiedall = spicemanip(bot, previouslysatisfied, 'andlist')
+        installines.insert(0, previouslysatisfiedall)
+
+    if installines == []:
+        return osd(bot, botcom.channel_current, 'action', "has no install log for some reason.")
+
+    for line in installines:
+        osd(bot, trigger.sender, 'say', line)
 
 
 def bot_command_function_debug(bot, trigger, botcom, instigator):
