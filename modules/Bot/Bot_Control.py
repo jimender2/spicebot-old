@@ -640,29 +640,23 @@ def bot_command_function_debug(bot, trigger, botcom, instigator):
         osd(bot, botcom.instigator, 'notice', "That doesn't appear to be a valid bot directory.")
         return
 
-    debugloglinenumberarray = []
-    osd(bot, botcom.channel_current, 'action', "Is Copying Log")
-    os.system("sudo journalctl -u " + targetbot + " >> " + log_file_path)
-    osd(bot, botcom.channel_current, 'action', "Is Filtering Log")
-    search_phrase = "Welcome to Sopel. Loading modules..."
-    ignorearray = ['session closed for user root', 'COMMAND=/bin/journalctl', 'COMMAND=/bin/rm', 'pam_unix(sudo:session): session opened for user root']
-    mostrecentstartbot = 0
-    with open(log_file_path) as f:
-        line_num = 0
-        for line in f:
-            line = line.decode('utf-8', 'ignore')
-            line_num += 1
-            if search_phrase in line:
-                mostrecentstartbot = line_num
-        line_num = 0
-    with open(log_file_path) as fb:
-        for line in fb:
-            line_num += 1
-            currentline = line_num
-            if int(currentline) >= int(mostrecentstartbot) and not any(x in line for x in ignorearray):
-                osd(bot, botcom.channel_current, 'say', str(line))
-    osd(bot, botcom.channel_current, 'action', "Is Removing Log")
-    os.system("sudo rm " + log_file_path)
+    osd(bot, botcom.channel_current, 'action', "Is Examining Log")
+
+    debuglines = []
+    searchphrasefound = 0
+    ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)"]
+    for line in os.popen("sudo service " + targetbot + " status").read().split('\n'):
+        if not searchphrasefound and "Welcome to Sopel. Loading modules..." in str(line):
+            searchphrasefound = 1
+        if searchphrasefound:
+            if not any(x in str(line) for x in ignorearray):
+                debuglines.append(str(line))
+
+    if debuglines == []:
+        return osd(bot, botcom.channel_current, 'action', "has no service log for some reason.")
+
+    for line in debuglines:
+        osd(bot, trigger.sender, 'say', line)
 
 
 """
