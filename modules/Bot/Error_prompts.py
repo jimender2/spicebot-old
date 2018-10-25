@@ -16,13 +16,11 @@ def timed_logcheck(bot):
     if "timed_logcheck" not in bot.memory:
         bot.memory["timed_logcheck"] = 1
 
-        debuglines = []
         searchphrasefound = 0
-        errorarray = ['Error loading']
         for line in os.popen("sudo service " + bot.nick + " status").read().split('\n'):
             if not searchphrasefound and "modules failed to load" in str(line):
                 searchphrasefound = str(line).split("]:", -1)[1]
 
         if searchphrasefound:
             for channel in bot.channels:
-                osd(bot, channel, 'say', "Notice to Bot Admins: " + str(searchphrasefound) + ". Run the debug command for more information.")
+               bot.say("Notice to Bot Admins: " + str(searchphrasefound) + ". Run the debug command for more information.")
