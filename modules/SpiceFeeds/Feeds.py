@@ -313,6 +313,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             if feed == 'spiceworkswebby':
                 webbytime = str(webbytime.split("+", 1)[0])
 
+            bot.say(str(webbytime))
+
             webbytz = pytz.timezone(scrapetimezone)
             webbytime = parser.parse(webbytime)
             webbytime = webbytz.localize(webbytime)
