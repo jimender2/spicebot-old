@@ -1,0 +1,13 @@
+[configuration]
+type = rss
+displayname = Truth in IT
+url = https://www.truthinit.com/rss.php?type=events
+lastbuildtype = lastBuildDate
+lastbuildparent = 0
+lastbuildchild = 0
+titletype = title
+titleparent = 1
+titlechild = 0
+linktype = link
+linkparent = 1
+linkchild = 0
