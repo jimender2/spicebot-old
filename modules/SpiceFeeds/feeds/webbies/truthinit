@@ -1,10 +1,10 @@
 [configuration]
 type = webinar
 displayname = Truth in IT Webinar
-url = https://www.truthinit.com/index.php/events/
-time = //*[@id="primary"]/html/body/div[3]/section/div[1]/div/div/div[1]/section/div/div/div[2]/div[3]/div/ul/li/div[4]/div[1]/div[2]/text()
-title = //*[@id="primary"]/html/body/div[3]/section/div[1]/div/div/div[1]/section/div/div/div[2]/div[3]/div/ul/li/div[4]/h4/a/text()
-link = //*[@id="primary"]/html/body/div[3]/section/div[1]/div/div/div[1]/section/div/div/div[2]/div[3]/div/ul/li/div[4]/h4/a[1]/@href
+url = https://www.truthinit.com/index.php/events
+time = /html/body/div[3]/section/div[1]/div/div/div[2]/aside/div/div[2]/div[2]/div/ul/li/div[3]/div[2]/div/text()
+title = /html/body/div[3]/section/div[1]/div/div/div[2]/aside/div/div[2]/div[2]/div/ul/li/div[3]/h4/a/text()
+link = /html/body/div[3]/section/div[1]/div/div/div[2]/aside/div/div[2]/div[2]/div/ul/li/div[3]/h4/a[1]/@href
 linkprecede = noprecede
 bonus = nobonus
 timezone = US/Eastern
