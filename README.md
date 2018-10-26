@@ -2,7 +2,7 @@
 
 These are custom modules for Spicebot, an IRC bot built on the Sopel framework.
 
-[![Feature Requests](http://feathub.com/SpiceBot/SpiceBot?format=svg)](http://feathub.com/SpiceBot/SpiceBot)
+[Feature Requests](http://feathub.com/SpiceBot/SpiceBot?format=svg)](http://feathub.com/SpiceBot/SpiceBot)
 
 #### Modules
 Custom modules Modules are located in the modules folder
