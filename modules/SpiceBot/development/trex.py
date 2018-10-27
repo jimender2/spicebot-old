@@ -26,4 +26,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "trex has short arms")
+    osd(bot, trigger.sender, 'say', "T-Rex has short arms")
