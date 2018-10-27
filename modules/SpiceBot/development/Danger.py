@@ -27,4 +27,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     command = spicemanip(bot, triggerargsarray, 1) or "Will Robinson"
-    osd(bot, trigger.sender, 'action',  "Danger Danger " + command)
+    osd(bot, trigger.sender, 'say',  "Danger Danger " + command)
