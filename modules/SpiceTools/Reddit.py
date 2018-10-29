@@ -104,7 +104,7 @@ def reddit_u(bot, triggerargsarray, rclass):
 
 def reddit_r(bot, triggerargsarray, rclass):
 
-    subcommand_valid = ['check', 'hot', 'new', 'top', 'random', 'controversial', 'gilded', 'rising']
+    subcommand_valid = ['check', 'hot', 'new', 'top', 'random', 'controversial', 'gilded', 'rising', 'best']
     subcommand = spicemanip(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
     rclass.fullrurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
