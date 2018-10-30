@@ -135,8 +135,10 @@ def watcher(bot, trigger):
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
 
-    # command issued
+    # command issued, check if valid
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
+    if botcom.dotcommand not in botcom.botcomdict['tempvals']['commands'].keys():
+        return
 
     # remainder, if any is the new arg list
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')
@@ -187,8 +189,12 @@ def command_configs(bot, botcom):
                 elif not isinstance(dict_from_file['validcoms'], list):
                     dict_from_file["validcoms"] = [dict_from_file["validcoms"]]
 
+                # iterate over all valid commands
+                for vcom in dict_from_file["validcoms"]:
+                    if vcom not in botcom.botcomdict['tempvals']['commands'].keys():
+                        botcom.botcomdict['tempvals']['commands'][vcom] = dict_from_file
+
                 bot.say(str(dict_from_file))
-            # botcom.botcomdict['tempvals']['commands'].keys()
 
 
 def open_botcomdict(bot, botcom):
