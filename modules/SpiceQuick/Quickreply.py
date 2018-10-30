@@ -148,19 +148,13 @@ def botfunction_simple(bot, trigger, botcom):
 # Quick replies with a target person TODO use the targetfinder logic
 def botfunction_target(bot, trigger, botcom):
 
-    target = spicemanip(bot, botcom.triggerargsarray, 1)
-
-    if "backuptarget" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
-        backuptarget = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["backuptarget"]
-        if backuptarget == 'instigator':
-            backuptarget = botcom.instigator
-    else:
-        backuptarget = None
-    bot.say(str(botcom.botcomdict["users"]['users_all']))
-    target = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.botcomdict["users"]['users_all']], 1) or backuptarget
+    target = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.botcomdict["users"]['users_all']], 1)
     if not target:
         if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
             reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
+        elif "backuptarget" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
+            backuptarget = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["backuptarget"]
+            reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", backuptarget)
         else:
             reply = "No target provided"
     else:
