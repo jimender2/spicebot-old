@@ -1,4 +1,5 @@
 import sopel.module
+from sopel.module import commands, nickname_commands, rule, priority, example, OP, HALFOP, ADMIN, VOICE, event, rule
 import sys
 import os
 moduledir = os.path.dirname(__file__)
