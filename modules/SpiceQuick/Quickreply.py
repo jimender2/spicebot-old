@@ -7,9 +7,14 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
+import pandas as pd
+
 # author deathbybandaid
 
 valid_command_prefix = ['.', '!', ',']
+
+quick_coms_dir = "Quicks/"
+quick_coms_path = os.path.join(moduledir, quick_coms_dir)
 
 
 # TODO a way to import stuff like this directly from other files?
@@ -39,6 +44,15 @@ botcom_dict = {
 
                             # Indicate if we need to pull the dict from the database
                             "coms_loaded": False,
+
+                            # Loaded configs
+                            "commands_loaded": [],
+
+                            # Commands list
+                            "commands": {},
+
+                            # Alternate Commands, duplicate of above
+                            "alt_commands": {},
 
                             # list of channels the bot is in
                             "channels_list": [],
@@ -74,14 +88,7 @@ botcom_dict = {
                             },
 
                 # Static content
-                "static": {
-                            # Commands list
-                            "commands": {},
-
-                            # Alternate Commands, duplicate of above
-                            "alt_commands": {}
-
-                            },
+                "static": {},
 
                 # Users lists
                 "users": {
@@ -127,7 +134,11 @@ def watcher(bot, trigger):
     # command issued
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
 
-    bot.say(str(botcom.dotcommand))
+    # Fetch commands listing
+    command_configs(bot, botcom)
+
+    # remainder, if any is the new arg list
+    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')
 
     # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
     if not botcom.dotcommand:
@@ -135,6 +146,18 @@ def watcher(bot, trigger):
 
     # Save open global dictionary at the end of each usage
     save_botcomdict(bot, botcom)
+
+
+# Command configs
+def command_configs(bot, botcom):
+    for quick_coms_type in os.listdir(quick_coms_path):
+
+        coms_type_file_path = os.path.join(quick_coms_path, quick_coms_type)
+        for comconf in os.listdir(coms_type_file_path):
+            if comconf not in botcom.botcomdict['tempvals']['commands_loaded']:
+                botcom.botcomdict['tempvals']['commands_loaded'].append(comconf)
+                bot.say(str(comconf))
+            # botcom.botcomdict['tempvals']['commands'].keys()
 
 
 def open_botcomdict(bot, botcom):
@@ -304,7 +327,7 @@ def botcom_player_return(bot, trigger):
     botcom = botcom_command_users(bot, botcom)
 
     if instigator not in botcom.botcomdict["tempvals"]['current_users']:
-        if instigator not in botcom.botcomdict['static']['commands'].keys() and instigator not in botcom.botcomdict['static']['alt_commands'].keys() and instigator not in botcom.botcomdict['tempvals']['bots_list']:
+        if instigator not in botcom.botcomdict['tempvals']['commands'].keys() and instigator not in botcom.botcomdict['tempvals']['alt_commands'].keys() and instigator not in botcom.botcomdict['tempvals']['bots_list']:
             botcom.botcomdict["tempvals"]['current_users'].append(instigator)
 
     if instigator not in botcom.botcomdict["users"]['users_all']:
@@ -359,7 +382,7 @@ def botcom_command_users(bot, botcom):
 
     # users that cannot be part of the game
     if botcom.botcomdict["tempvals"]['cantplayarray'] == []:
-        cantplayarrays = ["botcom.botcomdict['static']['commands'].keys()", "botcom.botcomdict['static']['alt_commands'].keys()", "botcom.botcomdict['tempvals']['bots_list']"]
+        cantplayarrays = ["botcom.botcomdict['tempvals']['commands'].keys()", "botcom.botcomdict['tempvals']['alt_commands'].keys()", "botcom.botcomdict['tempvals']['bots_list']"]
         for nicklist in cantplayarrays:
             currentnicklist = eval(nicklist)
             for x in currentnicklist:
