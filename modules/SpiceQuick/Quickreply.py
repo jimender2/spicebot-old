@@ -158,7 +158,10 @@ def command_configs(bot, botcom):
             if comconf not in botcom.botcomdict['tempvals']['commands_loaded']:
                 botcom.botcomdict['tempvals']['commands_loaded'].append(comconf)
                 inf = open(os.path.join(coms_type_file_path, comconf), 'r')
-                dict_from_file = eval(inf.read())
+                try:
+                    dict_from_file = eval(inf.read())
+                except SyntaxError:
+                    dict_from_file = dict()
                 inf.close()
             # botcom.botcomdict['tempvals']['commands'].keys()
 
