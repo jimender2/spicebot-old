@@ -140,6 +140,7 @@ def watcher(bot, trigger):
     for command_split_partial in commands_array:
         botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
 
+        specified = None
         if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
             specified = spicemanip(bot, botcom.triggerargsarray, 1)
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
