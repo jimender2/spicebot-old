@@ -110,7 +110,6 @@ botcom_dict = {
 def watcher(bot, trigger):
     if not str(trigger).startswith(tuple(valid_command_prefix)):
         return
-    # bot.say(str(trigger))
 
     # botcom dynamic Class
     botcom = class_create('botcom')
@@ -148,8 +147,39 @@ def watcher(bot, trigger):
     if not botcom.dotcommand:
         return
 
+    # execute function based on command type
+    botcom.commandtype = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["type"]
+    command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
+    try:
+        eval(command_function_run)
+    except NameError:
+        osd(bot, trigger.sender, 'say', "This command is not setup with a proper 'type'.")
+
     # Save open global dictionary at the end of each usage
     save_botcomdict(bot, botcom)
+
+
+# Simple quick replies
+def botfunction_simple(bot, trigger, botcom):
+    reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]
+    osd(bot, trigger.sender, 'say', reply)
+
+
+# Quick replies with a target person TODO use the targetfinder logic
+def botfunction_target(bot, trigger, botcom):
+
+    target = spicemanip(bot, botcom.triggerargsarray, 1)
+    if not target:
+        osd(bot, trigger.sender, 'say', "No target provided")
+        return
+
+    reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", target)
+    osd(bot, trigger.sender, 'say', reply)
+
+
+"""
+Command Config Files
+"""
 
 
 # Command configs
@@ -195,7 +225,10 @@ def command_configs(bot, botcom):
                     if vcom not in botcom.botcomdict['tempvals']['commands'].keys():
                         botcom.botcomdict['tempvals']['commands'][vcom] = dict_from_file
 
-                # bot.say(str(dict_from_file))
+
+"""
+Botcomdict
+"""
 
 
 def open_botcomdict(bot, botcom):
@@ -243,70 +276,6 @@ def merge_botcomdict(a, b, path=None):
         else:
             a[key] = b[key]
     return a
-
-
-def watchallthethings(bot, trigger):
-
-    # botcom dynamic Class
-    botcom = class_create('botcom')
-    botcom.default = 'botcom'
-
-    # open global dict as part of botcom class
-    global commandsdict
-    botcom.commandsdict = commandsdict
-
-    # does not apply to bots
-    if trigger.nick.lower() in bot_config_names(bot):
-        return
-
-    # make sure first word starts with "."
-    if not str(spicemanip(bot, trigger, 1)).startswith("."):
-        return
-
-    # create arg list
-    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
-
-    # command issued
-    botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower().replace(".", "")
-
-    # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
-    if not botcom.dotcommand:
-        return
-
-    # remainder, if any is the new arg list
-    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')
-
-    # if there is nt a nested dictionary for the command requested, then privmsg and exit
-    if botcom.dotcommand not in botcom.commandsdict.keys():
-        return  # temp TODO
-        osd(bot, trigger.sender, 'say', "I don't seem to have a command for " + botcom.dotcommand)
-        return
-
-    # execute function based on command type
-    botcom.commandtype = botcom.commandsdict[botcom.dotcommand]["type"]
-    command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
-    try:
-        eval(command_function_run)
-    except NameError:
-        osd(bot, trigger.sender, 'say', "This command is not setup with a proper 'type'.")
-
-
-# Simple quick replies
-def botfunction_simple(bot, trigger, botcom):
-    reply = botcom.commandsdict[botcom.dotcommand]["reply"]
-    osd(bot, trigger.sender, 'say', reply)
-
-
-# Quick replies with a target person TODO use the targetfinder logic
-def botfunction_target(bot, trigger, botcom):
-
-    target = spicemanip(bot, botcom.triggerargsarray, 1)
-    if not target:
-        osd(bot, trigger.sender, 'say', "No target provided")
-        return
-
-    reply = botcom.commandsdict[botcom.dotcommand]["reply"].replace("$target", target)
-    osd(bot, trigger.sender, 'say', reply)
 
 
 """
