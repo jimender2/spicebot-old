@@ -93,6 +93,9 @@ def watcher(bot, trigger):
     botcom = class_create('botcom')
     botcom.default = 'botcom'
 
+    # instigator
+    botcom.instigator = trigger.nick
+
     # Load global dict
     open_botcomdict(bot, botcom)
 
