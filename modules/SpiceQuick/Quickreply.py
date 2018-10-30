@@ -165,6 +165,7 @@ def botfunction_simple(bot, trigger, botcom, specified):
 
 # Quick replies with a target person TODO use the targetfinder logic
 def botfunction_target(bot, trigger, botcom, specified):
+    bot.say(str(specified))
 
     # target is the first arg given
     target = spicemanip(bot, botcom.triggerargsarray, 1)
@@ -219,7 +220,6 @@ def botfunction_target(bot, trigger, botcom, specified):
     if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], list):
         reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]
     elif specified:
-        bot.say(str(specified))
         reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], specified)
     else:
         reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], 'random')
