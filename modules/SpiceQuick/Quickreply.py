@@ -110,7 +110,7 @@ botcom_dict = {
 def watcher(bot, trigger):
     if not str(trigger).startswith(tuple(valid_command_prefix)):
         return
-    bot.say(str(trigger))
+    # bot.say(str(trigger))
 
     # botcom dynamic Class
     botcom = class_create('botcom')
@@ -118,6 +118,9 @@ def watcher(bot, trigger):
 
     # Load global dict
     open_botcomdict(bot, botcom)
+
+    # Fetch commands listing
+    command_configs(bot, botcom)
 
     # Channel Listing
     botcom = botcom_command_channels(bot, botcom, trigger)
@@ -134,9 +137,6 @@ def watcher(bot, trigger):
 
     # command issued
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-
-    # Fetch commands listing
-    command_configs(bot, botcom)
 
     # remainder, if any is the new arg list
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')
