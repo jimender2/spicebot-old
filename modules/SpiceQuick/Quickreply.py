@@ -185,6 +185,10 @@ def botfunction_target(bot, trigger, botcom):
         reply = "It looks like " + nick_actual(bot, target) + " is offline right now!"
         return osd(bot, trigger.nick, 'notice', reply)
 
+    if botcom.channel_priv and target != trigger.nick:
+        reply = "Leave " + nick_actual(bot, target) + " out of this private conversation!"
+        return osd(bot, trigger.nick, 'notice', reply)
+
     if target in botcom.botcomdict["tempvals"]['current_users'] and target not in bot.privileges[trigger.sender].keys():
         reply = "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel."
         return osd(bot, trigger.nick, 'notice', reply)
