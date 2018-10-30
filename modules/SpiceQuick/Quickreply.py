@@ -181,9 +181,9 @@ def command_configs(bot, botcom):
 
                 # default command to filename
                 if "validcoms" not in dict_from_file.keys():
-                    bot.say(str(yes))
+                    bot.say(str("yes"))
                 else:
-                    bot.say(str(no))
+                    bot.say(str("no"))
 
                 bot.say(str(dict_from_file))
             # botcom.botcomdict['tempvals']['commands'].keys()
