@@ -1,4 +1,4 @@
 {
 "reply": "$target has short arms.",
-"backuptarget": "T-Rex",
+"noinputreply": "T-Rex has short arms.",
 }
