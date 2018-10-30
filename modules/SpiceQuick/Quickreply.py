@@ -8,6 +8,8 @@ from BotShared import *
 
 # author deathbybandaid
 
+valid_command_prefix = ['.', '!', ',']
+
 
 # TODO a way to import stuff like this directly from other files?
 # TODO redirect dict, this == that
@@ -34,7 +36,8 @@ commandsdict = {
 @rule('(.*)')
 @sopel.module.thread(True)
 def watcher(bot, trigger):
-    bot.say(str(trigger.group))
+    bot.say(str(trigger))
+    # if not str(cururl).startswith(tuple(dontusesites)) and not str(cururl).endswith(tuple(dontuseextensions)):
 
 
 def watchallthethings(bot, trigger):
