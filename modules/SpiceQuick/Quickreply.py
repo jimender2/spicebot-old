@@ -72,6 +72,9 @@ botcom_dict = {
                             # End of Temp Vals
                             },
 
+                # Static content
+                "static": {}
+
                 # Users lists
                 "users": {
                             "users_all": [],
