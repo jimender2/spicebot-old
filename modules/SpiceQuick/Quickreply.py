@@ -129,6 +129,7 @@ def watcher(bot, trigger):
 
     # execute function based on command type
     botcom.commandtype = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["type"].lower()
+    bot.say(str(botcom.commandtype))
     command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
     try:
         eval(command_function_run)
