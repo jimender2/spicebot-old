@@ -129,7 +129,6 @@ def watcher(bot, trigger):
 
     # execute function based on command type
     botcom.commandtype = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["type"].lower()
-    bot.say(str(botcom.commandtype))
     command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
     try:
         eval(command_function_run)
@@ -157,7 +156,7 @@ def botfunction_target(bot, trigger, botcom):
             backuptarget = botcom.instigator
     else:
         backuptarget = None
-
+    bot.say(str(botcom.botcomdict["users"]['users_all']))
     target = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.botcomdict["users"]['users_all']], 1) or backuptarget
     if not target:
         if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
