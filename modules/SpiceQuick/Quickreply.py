@@ -140,7 +140,7 @@ def watcher(bot, trigger):
     for command_split_partial in commands_array:
         botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
 
-        command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom, specified)')
+        command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
         eval(command_function_run)
 
     # Save open global dictionary at the end of each usage
