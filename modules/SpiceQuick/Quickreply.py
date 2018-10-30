@@ -13,6 +13,7 @@ import json
 # author deathbybandaid
 
 valid_command_prefix = ['.', '!', ',']
+valid_com_types = ['simple', 'target', 'fillintheblank']
 
 quick_coms_dir = "Quicks/"
 quick_coms_path = os.path.join(moduledir, quick_coms_dir)
@@ -144,10 +145,7 @@ def watcher(bot, trigger):
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
         command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom, specified)')
-        try:
-            eval(command_function_run)
-        except NameError:
-            osd(bot, trigger.sender, 'say', "This command is not setup with a proper 'type'.")
+        eval(command_function_run)
 
     # Save open global dictionary at the end of each usage
     save_botcomdict(bot, botcom)
@@ -291,6 +289,9 @@ def command_configs(bot, botcom):
                 # check that type is set
                 if "type" not in dict_from_file.keys():
                     dict_from_file["type"] = quick_coms_type.lower()
+                if not in valid_com_types:
+                    dict_from_file["type"] = 'simple'
+                    dict_from_file["reply"] = "This command is not setup with a proper 'type'."
 
                 # check that reply is set
                 if "reply" not in dict_from_file.keys():
