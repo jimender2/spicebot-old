@@ -170,19 +170,19 @@ def botfunction_target(bot, trigger, botcom):
             reply = "This command requires a target"
             return osd(bot, trigger.sender, 'say', reply)
 
+    # cannot target bots
+    if target in botcom.botcomdict["tempvals"]['bots_list']:
+        reply = nick_actual(bot, target) + " is a bot and cannot be targeted."
+        return osd(bot, trigger.sender, 'say', reply)
+
     # Not a valid user
     if target not in botcom.botcomdict["users"]['users_all']:
         reply = "I don't know who that is."
         return osd(bot, trigger.sender, 'say', reply)
 
     # User offline
-    if target in botcom.botcomdict["users"]['users_all'] and target not in botcom.botcomdict["users"]['users_current']:
+    if target in botcom.botcomdict["users"]['users_all'] and target not in botcom.botcomdict["users"]['current_users']:
         reply = "It looks like " + nick_actual(bot, target) + " is offline right now!"
-        return osd(bot, trigger.sender, 'say', reply)
-
-    # cannot target bots
-    if target in botcom.botcomdict["tempvals"]['bots_list']:
-        reply = nick_actual(bot, target) + " is a bot and cannot be targeted."
         return osd(bot, trigger.sender, 'say', reply)
 
     # Target Reply
