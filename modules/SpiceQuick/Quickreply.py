@@ -180,7 +180,7 @@ def command_configs(bot, botcom):
                 inf.close()
 
                 # default command to filename
-                if "validcoms" not in dict_from_file.keys():
+                if "validcoms" in dict_from_file.keys():
                     validcoms = dict_from_file["validcoms"]
                 else:
                     validcoms = []
