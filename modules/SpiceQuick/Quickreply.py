@@ -173,6 +173,11 @@ def botfunction_target(bot, trigger, botcom):
     # handling for no target
     if not target:
 
+        specified = None
+        if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
+            specified = spicemanip(bot, botcom.triggerargsarray, 1)
+            botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
         # Seperate reply for no input
         if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
             if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"], list):
