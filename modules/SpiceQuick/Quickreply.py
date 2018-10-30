@@ -140,11 +140,6 @@ def watcher(bot, trigger):
     for command_split_partial in commands_array:
         botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
 
-        specified = None
-        if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
-            specified = spicemanip(bot, botcom.triggerargsarray, 1)
-            botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-
         command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom, specified)')
         eval(command_function_run)
 
@@ -153,7 +148,13 @@ def watcher(bot, trigger):
 
 
 # Simple quick replies
-def botfunction_simple(bot, trigger, botcom, specified):
+def botfunction_simple(bot, trigger, botcom):
+
+    specified = None
+    if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
+        specified = spicemanip(bot, botcom.triggerargsarray, 1)
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
     if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], list):
         reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]
     elif specified:
@@ -164,8 +165,7 @@ def botfunction_simple(bot, trigger, botcom, specified):
 
 
 # Quick replies with a target person TODO use the targetfinder logic
-def botfunction_target(bot, trigger, botcom, specified):
-    bot.say(str(specified))
+def botfunction_target(bot, trigger, botcom):
 
     # target is the first arg given
     target = spicemanip(bot, botcom.triggerargsarray, 1)
@@ -193,6 +193,15 @@ def botfunction_target(bot, trigger, botcom, specified):
         if not target:
             reply = "This command requires a target"
             return osd(bot, trigger.nick, 'notice', reply)
+
+    # remove target
+    if target in botcom.triggerargsarray:
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+    specified = None
+    if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
+        specified = spicemanip(bot, botcom.triggerargsarray, 1)
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
     # cannot target bots
     if target in botcom.botcomdict["tempvals"]['bots_list']:
@@ -228,7 +237,12 @@ def botfunction_target(bot, trigger, botcom, specified):
 
 
 # Quick replies with a target person TODO use the targetfinder logic
-def botfunction_fillintheblank(bot, trigger, botcom, specified):
+def botfunction_fillintheblank(bot, trigger, botcom):
+
+    specified = None
+    if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
+        specified = spicemanip(bot, botcom.triggerargsarray, 1)
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
     fillblank = spicemanip(bot, botcom.triggerargsarray, 0)
     if not fillblank:
