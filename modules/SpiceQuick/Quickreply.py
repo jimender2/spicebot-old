@@ -130,6 +130,8 @@ def watcher(bot, trigger):
     # execute function based on command type
     botcom.commandtype = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["type"].lower()
 
+    # TODO allow specification for list responses
+
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
     if commands_array == []:
@@ -137,7 +139,11 @@ def watcher(bot, trigger):
     for command_split_partial in commands_array:
         botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
 
-        command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
+        if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
+            specified = spicemanip(bot, botcom.triggerargsarray, 1)
+            botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+        command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom, specified)')
         try:
             eval(command_function_run)
         except NameError:
@@ -148,7 +154,7 @@ def watcher(bot, trigger):
 
 
 # Simple quick replies
-def botfunction_simple(bot, trigger, botcom):
+def botfunction_simple(bot, trigger, botcom, specified):
     if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], list):
         reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]
     else:
@@ -157,7 +163,7 @@ def botfunction_simple(bot, trigger, botcom):
 
 
 # Quick replies with a target person TODO use the targetfinder logic
-def botfunction_target(bot, trigger, botcom):
+def botfunction_target(bot, trigger, botcom, specified):
 
     # target is the first arg given
     target = spicemanip(bot, botcom.triggerargsarray, 1)
@@ -167,7 +173,10 @@ def botfunction_target(bot, trigger, botcom):
 
         # Seperate reply for no input
         if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
-            reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
+            if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"], list):
+                reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
+            else:
+                reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"], 'random')
             return osd(bot, trigger.sender, 'say', reply)
 
         # backup target, usually trigger.nick
@@ -213,7 +222,7 @@ def botfunction_target(bot, trigger, botcom):
 
 
 # Quick replies with a target person TODO use the targetfinder logic
-def botfunction_fillintheblank(bot, trigger, botcom):
+def botfunction_fillintheblank(bot, trigger, botcom, specified):
 
     fillblank = spicemanip(bot, botcom.triggerargsarray, 0)
     if not fillblank:
