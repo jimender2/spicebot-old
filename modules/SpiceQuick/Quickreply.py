@@ -125,7 +125,7 @@ def watcher(bot, trigger):
         return
 
     # execute function based on command type
-    botcom.commandtype = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["type"]
+    botcom.commandtype = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["type"].lower()
     command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
     try:
         eval(command_function_run)
@@ -146,9 +146,18 @@ def botfunction_simple(bot, trigger, botcom):
 def botfunction_target(bot, trigger, botcom):
 
     target = spicemanip(bot, botcom.triggerargsarray, 1)
+
+    if "backuptarget" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
+        backuptarget = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["backuptarget"]
+        if backuptarget == 'instigator':
+            backuptarget = botcom.instigator
+    else:
+        backuptarget = None
+
+    target = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.gamedict["users"]['users_all']], 1) or backuptarget
     if not target:
-        if "notargetreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
-            reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["notargetreply"]
+        if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
+            reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
         else:
             reply = "No target provided"
     else:
@@ -159,12 +168,16 @@ def botfunction_target(bot, trigger, botcom):
 
 
 # Quick replies with a target person TODO use the targetfinder logic
-def botfunction_fillblank(bot, trigger, botcom):
+def botfunction_fillintheblank(bot, trigger, botcom):
 
-    fillblank = spicemanip(bot, botcom.triggerargsarray, 1)
+    fillblank = spicemanip(bot, botcom.triggerargsarray, 0)
     if not fillblank:
-        osd(bot, trigger.sender, 'say', "No fillblank provided")
-        return
+        if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
+            reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
+        else:
+            reply = "No input provided"
+    else:
+        reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", target)
 
     reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$fillblank", fillblank)
     osd(bot, trigger.sender, 'say', reply)
