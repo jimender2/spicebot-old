@@ -220,8 +220,13 @@ def command_configs(bot, botcom):
                 elif not isinstance(dict_from_file['validcoms'], list):
                     dict_from_file["validcoms"] = [dict_from_file["validcoms"]]
 
+                # check that type is set
                 if "type" not in dict_from_file.keys():
                     dict_from_file["type"] = "simple"
+
+                # check that reply is set
+                if "reply" not in dict_from_file.keys():
+                    dict_from_file["reply"] = "Reply missing"
 
                 # iterate over all valid commands
                 for vcom in dict_from_file["validcoms"]:
