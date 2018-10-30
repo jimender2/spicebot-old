@@ -131,7 +131,7 @@ def watcher(bot, trigger):
     botcom.commandtype = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["type"].lower()
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
-    commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+    commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
     if commands_array == []:
         commands_array = [[]]
     for command_split_partial in commands_array:
