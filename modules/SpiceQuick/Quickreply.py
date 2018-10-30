@@ -154,6 +154,8 @@ def botfunction_target(bot, trigger, botcom):
             reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
         elif "backuptarget" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
             backuptarget = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["backuptarget"]
+            if backuptarget == 'instigator':
+                backuptarget = botcom.instigator
             reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", backuptarget)
         else:
             reply = "No target provided"
