@@ -129,11 +129,19 @@ def watcher(bot, trigger):
 
     # execute function based on command type
     botcom.commandtype = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["type"].lower()
-    command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
-    try:
-        eval(command_function_run)
-    except NameError:
-        osd(bot, trigger.sender, 'say', "This command is not setup with a proper 'type'.")
+
+    # IF "&&" is in the full input, it is treated as multiple commands, and is split
+    commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+    if commands_array == []:
+        commands_array = [[]]
+    for command_split_partial in commands_array:
+        botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+
+        command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
+        try:
+            eval(command_function_run)
+        except NameError:
+            osd(bot, trigger.sender, 'say', "This command is not setup with a proper 'type'.")
 
     # Save open global dictionary at the end of each usage
     save_botcomdict(bot, botcom)
