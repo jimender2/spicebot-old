@@ -153,7 +153,7 @@ def getGif(bot, searchdict):
         url += str(valid_gif_api_dict[currentapi]['key']) + str(valid_gif_api_dict[currentapi]['apikey'])
 
         page = requests.get(url, headers=None)
-        if page.status_code != 500:
+        if page.status_code != 500 and page.status_code != 503:
 
             data = json.loads(urllib2.urlopen(url).read())
 
