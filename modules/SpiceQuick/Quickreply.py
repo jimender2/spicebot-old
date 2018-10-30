@@ -180,12 +180,10 @@ def command_configs(bot, botcom):
                 inf.close()
 
                 # default command to filename
-                if "validcoms" in dict_from_file.keys():
-                    validcoms = dict_from_file["validcoms"]
-                else:
-                    validcoms = []
+                if "validcoms" not in dict_from_file.keys():
+                    dict_from_file["validcoms"] = [comconf]
 
-                bot.say(str(validcoms))
+                bot.say(str(dict_from_file["validcoms"]))
             # botcom.botcomdict['tempvals']['commands'].keys()
 
 
