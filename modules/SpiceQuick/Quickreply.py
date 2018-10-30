@@ -75,11 +75,12 @@ botcom_dict = {
                 # Static content
                 "static": {
                             # Commands list
-                            "commands": {}
-                            },
+                            "commands": {},
 
                             # Alternate Commands, duplicate of above
-                            "alt_commands":{}
+                            "alt_commands": {}
+
+                            },
 
                 # Users lists
                 "users": {
