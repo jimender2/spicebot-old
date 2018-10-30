@@ -34,7 +34,7 @@ commandsdict = {
 @rule('(.*)')
 @sopel.module.thread(True)
 def watcher(bot, trigger):
-    bot.say("test")
+    bot.say(str(trigger.group))
 
 
 def watchallthethings(bot, trigger):
