@@ -157,6 +157,8 @@ def watcher(bot, trigger):
 def botfunction_simple(bot, trigger, botcom, specified):
     if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], list):
         reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]
+    elif specified:
+        reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], specified)
     else:
         reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], 'random')
     osd(bot, trigger.sender, 'say', reply)
@@ -175,6 +177,8 @@ def botfunction_target(bot, trigger, botcom, specified):
         if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
             if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"], list):
                 reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
+            elif specified:
+                reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"], specified)
             else:
                 reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"], 'random')
             return osd(bot, trigger.sender, 'say', reply)
@@ -215,6 +219,8 @@ def botfunction_target(bot, trigger, botcom, specified):
 
     if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], list):
         reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]
+    elif specified:
+        reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], specified)
     else:
         reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], 'random')
     reply = reply.replace("$target", target)
@@ -228,6 +234,8 @@ def botfunction_fillintheblank(bot, trigger, botcom, specified):
     if not fillblank:
         if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
             reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
+        elif specified:
+            reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], specified)
         else:
             reply = "No input provided"
     else:
