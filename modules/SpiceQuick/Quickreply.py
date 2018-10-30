@@ -148,23 +148,45 @@ def botfunction_simple(bot, trigger, botcom):
 # Quick replies with a target person TODO use the targetfinder logic
 def botfunction_target(bot, trigger, botcom):
 
+    # target is the first arg given
     target = spicemanip(bot, botcom.triggerargsarray, 1)
+
+    # handling for no target
     if not target:
+
+        # Seperate reply for no input
         if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
             reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
-        elif "backuptarget" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
-            backuptarget = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["backuptarget"]
-            if backuptarget == 'instigator':
-                backuptarget = botcom.instigator
-            reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", backuptarget)
-        else:
-            reply = "No target provided"
-    elif target not in botcom.botcomdict["users"]['users_all']:
-        reply = "I don't know who that is."
-    else:
-        reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", target)
+            return osd(bot, trigger.sender, 'say', reply)
 
-    # TODO add target check
+        # backup target, usually trigger.nick
+        if "backuptarget" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
+            target = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["backuptarget"]
+            if target == 'instigator':
+                target = botcom.instigator
+
+        # still no target
+        if not target:
+            reply = "This command requires a target"
+            return osd(bot, trigger.sender, 'say', reply)
+
+    # Not a valid user
+    if target not in botcom.botcomdict["users"]['users_all']:
+        reply = "I don't know who that is."
+        return osd(bot, trigger.sender, 'say', reply)
+
+    # User offline
+    if target in botcom.botcomdict["users"]['users_all'] and target not in botcom.botcomdict["users"]['users_current']:
+        reply = "It looks like " + nick_actual(bot, target) + " is offline right now!"
+        return osd(bot, trigger.sender, 'say', reply)
+
+    # cannot target bots
+    if target in botcom.botcomdict["tempvals"]['bots_list']:
+        reply = nick_actual(bot, target) + " is a bot and cannot be targeted."
+        return osd(bot, trigger.sender, 'say', reply)
+
+    # Target Reply
+    reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", target)
     osd(bot, trigger.sender, 'say', reply)
 
 
