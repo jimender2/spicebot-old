@@ -147,12 +147,14 @@ def botfunction_target(bot, trigger, botcom):
 
     target = spicemanip(bot, botcom.triggerargsarray, 1)
     if not target:
-        osd(bot, trigger.sender, 'say', "No target provided")
-        return
+        if "notargetreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
+            reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["notargetreply"]
+        else:
+            reply = "No target provided"
+    else:
+        reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", target)
 
     # TODO add target check
-
-    reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", target)
     osd(bot, trigger.sender, 'say', reply)
 
 

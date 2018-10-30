@@ -1,5 +1,0 @@
-{
-"validcoms": ["testb"],
-"type": "target",
-"reply": "This is a target test directed at $target.",
-}
