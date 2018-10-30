@@ -213,7 +213,7 @@ def command_configs(bot, botcom):
 
                 # check that type is set
                 if "type" not in dict_from_file.keys():
-                    dict_from_file["type"] = "simple"
+                    dict_from_file["type"] = quick_coms_type.lower()
 
                 # check that reply is set
                 if "reply" not in dict_from_file.keys():
