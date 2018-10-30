@@ -136,6 +136,7 @@ def watcher(bot, trigger):
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
 
     # command issued, check if valid
+    bot.say(str(botcom.botcomdict['tempvals']['commands'].keys()))
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
     if botcom.dotcommand not in botcom.botcomdict['tempvals']['commands'].keys():
         return
