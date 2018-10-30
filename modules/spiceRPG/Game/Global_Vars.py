@@ -513,7 +513,7 @@ rpg_game_dict = {
 
                 # channels list
                 "channels": {
-                                "game_enabled": [],
+                                "bot_enabled": [],
                                 "devmode_enabled": []
 
                                 },

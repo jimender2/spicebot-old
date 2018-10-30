@@ -71,6 +71,18 @@ botcom_dict = {
 
                             # End of Temp Vals
                             },
+
+                # Users lists
+                "users": {
+                            "users_all": [],
+                            },
+
+                # channels list
+                "channels": {
+                                "game_enabled": [],
+                                "devmode_enabled": []
+
+                                },
                 }
 
 
