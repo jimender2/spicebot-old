@@ -151,18 +151,40 @@ def watcher(bot, trigger):
 
 # Command configs
 def command_configs(bot, botcom):
+
+    # Don't load commands if already loaded
+    if botcom.botcomdict['tempvals']['commands_loaded'] != []:
+        return
+
+    # iterate over organizational folders
     for quick_coms_type in os.listdir(quick_coms_path):
 
+        # iterate over files within
         coms_type_file_path = os.path.join(quick_coms_path, quick_coms_type)
         for comconf in os.listdir(coms_type_file_path):
+
+            # check if command file is already in the list
             if comconf not in botcom.botcomdict['tempvals']['commands_loaded']:
+
+                # add file to already processed
                 botcom.botcomdict['tempvals']['commands_loaded'].append(comconf)
+
+                # Read dictionary from file, if not, enable an empty dict
                 inf = open(os.path.join(coms_type_file_path, comconf), 'r')
                 try:
                     dict_from_file = eval(inf.read())
                 except SyntaxError:
                     dict_from_file = dict()
+
+                # Close File
                 inf.close()
+
+                # default command to filename
+                if "validcoms" not in dict_from_file.keys():
+                    bot.say(str(yes))
+                else:
+                    bot.say(str(no))
+
                 bot.say(str(dict_from_file))
             # botcom.botcomdict['tempvals']['commands'].keys()
 
