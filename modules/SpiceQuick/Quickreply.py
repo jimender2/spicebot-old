@@ -17,28 +17,6 @@ valid_command_prefix = ['.', '!', ',']
 quick_coms_dir = "Quicks/"
 quick_coms_path = os.path.join(moduledir, quick_coms_dir)
 
-
-# TODO a way to import stuff like this directly from other files?
-# TODO redirect dict, this == that
-commandsdict = {
-                "testa": {
-                            "type": "simple",
-                            "reply": "This is a test of a quick reply to a command.",
-                            },
-                "testb": {
-                            "type": "target",
-                            "reply": "This is a target test directed at $target.",
-                            },
-                "testc": {
-                            "type": "target",
-                            "reply": "This is a target test directed at $target. Hopefully $target enjoys that kid of thing",
-                            },
-                "testd": {
-                            "type": "test",
-                            "reply": "grrrr",
-                            },
-                }
-
 botcom_dict = {
                 # Some values don't get saved to the database, but stay in memory
                 "tempvals": {
@@ -138,7 +116,6 @@ def watcher(bot, trigger):
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
     if botcom.dotcommand not in botcom.botcomdict['tempvals']['commands'].keys():
         return
-    bot.say("test passed")
 
     # remainder, if any is the new arg list
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')
@@ -173,7 +150,21 @@ def botfunction_target(bot, trigger, botcom):
         osd(bot, trigger.sender, 'say', "No target provided")
         return
 
+    # TODO add target check
+
     reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", target)
+    osd(bot, trigger.sender, 'say', reply)
+
+
+# Quick replies with a target person TODO use the targetfinder logic
+def botfunction_fillblank(bot, trigger, botcom):
+
+    fillblank = spicemanip(bot, botcom.triggerargsarray, 1)
+    if not fillblank:
+        osd(bot, trigger.sender, 'say', "No fillblank provided")
+        return
+
+    reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$fillblank", fillblank)
     osd(bot, trigger.sender, 'say', reply)
 
 
