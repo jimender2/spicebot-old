@@ -33,6 +33,10 @@ commandsdict = {
 
 @rule('(.*)')
 @sopel.module.thread(True)
+def watcher(bot, trigger):
+    bot.say("test")
+
+
 def watchallthethings(bot, trigger):
 
     # modcom dynamic Class
