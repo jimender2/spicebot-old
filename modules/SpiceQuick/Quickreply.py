@@ -163,6 +163,7 @@ def command_configs(bot, botcom):
                 except SyntaxError:
                     dict_from_file = dict()
                 inf.close()
+                bot.say(str(dict_from_file))
             # botcom.botcomdict['tempvals']['commands'].keys()
 
 
