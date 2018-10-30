@@ -131,10 +131,11 @@ def watcher(bot, trigger):
     botcom.commandtype = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["type"].lower()
     bot.say(str(botcom.commandtype))
     command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
-    try:
-        eval(command_function_run)
-    except NameError:
-        osd(bot, trigger.sender, 'say', "This command is not setup with a proper 'type'.")
+    eval(command_function_run)
+    #try:
+    #    eval(command_function_run)
+    #except NameError:
+    #    osd(bot, trigger.sender, 'say', "This command is not setup with a proper 'type'.")
 
     # Save open global dictionary at the end of each usage
     save_botcomdict(bot, botcom)
