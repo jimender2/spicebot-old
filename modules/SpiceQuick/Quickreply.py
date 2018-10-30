@@ -36,8 +36,9 @@ commandsdict = {
 @rule('(.*)')
 @sopel.module.thread(True)
 def watcher(bot, trigger):
+    if not str(trigger).startswith(tuple(valid_command_prefix)):
+        return
     bot.say(str(trigger))
-    # if not str(cururl).startswith(tuple(dontusesites)) and not str(cururl).endswith(tuple(dontuseextensions)):
 
 
 def watchallthethings(bot, trigger):
