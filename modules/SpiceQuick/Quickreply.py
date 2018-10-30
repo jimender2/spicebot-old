@@ -8,6 +8,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 import pandas as pd
+import json
 
 # author deathbybandaid
 
@@ -156,7 +157,8 @@ def command_configs(bot, botcom):
         for comconf in os.listdir(coms_type_file_path):
             if comconf not in botcom.botcomdict['tempvals']['commands_loaded']:
                 botcom.botcomdict['tempvals']['commands_loaded'].append(comconf)
-                bot.say(str(comconf))
+                json_text = json.load(comconf)
+                bot.say(str(json_text))
             # botcom.botcomdict['tempvals']['commands'].keys()
 
 
