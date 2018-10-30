@@ -141,7 +141,10 @@ def watcher(bot, trigger):
 
 # Simple quick replies
 def botfunction_simple(bot, trigger, botcom):
-    reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]
+    if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], list):
+        reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]
+    else:
+        reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], 'random')
     osd(bot, trigger.sender, 'say', reply)
 
 
@@ -193,8 +196,11 @@ def botfunction_target(bot, trigger, botcom):
         reply = "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel."
         return osd(bot, trigger.nick, 'notice', reply)
 
-    # Target Reply
-    reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", target)
+    if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], list):
+        reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]
+    else:
+        reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], 'random')
+    reply = reply.replace("$target", target)
     osd(bot, trigger.sender, 'say', reply)
 
 
