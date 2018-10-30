@@ -342,7 +342,7 @@ def botcom_command_users(bot, botcom):
 
     # users that cannot be part of the game
     if botcom.botcomdict["tempvals"]['cantplayarray'] == []:
-        cantplayarrays = ["botcom.botcomdict['static']['commands'].keys()", "botcom.botcomdict['static']['alt_commands'].keys()", "botcom.botcomdict['tempvals']['bots_list']", "botcom.botcomdict['static']['maps'].keys()"]
+        cantplayarrays = ["botcom.botcomdict['static']['commands'].keys()", "botcom.botcomdict['static']['alt_commands'].keys()", "botcom.botcomdict['tempvals']['bots_list']"]
         for nicklist in cantplayarrays:
             currentnicklist = eval(nicklist)
             for x in currentnicklist:
