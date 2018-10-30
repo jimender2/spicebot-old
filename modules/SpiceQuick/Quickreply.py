@@ -131,11 +131,10 @@ def watcher(bot, trigger):
     botcom.commandtype = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["type"].lower()
     bot.say(str(botcom.commandtype))
     command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
-    eval(command_function_run)
-    #try:
-    #    eval(command_function_run)
-    #except NameError:
-    #    osd(bot, trigger.sender, 'say', "This command is not setup with a proper 'type'.")
+    try:
+        eval(command_function_run)
+    except NameError:
+        osd(bot, trigger.sender, 'say', "This command is not setup with a proper 'type'.")
 
     # Save open global dictionary at the end of each usage
     save_botcomdict(bot, botcom)
@@ -159,7 +158,7 @@ def botfunction_target(bot, trigger, botcom):
     else:
         backuptarget = None
 
-    target = spicemanip(bot, [x for x in rpg.triggerargsarray if x in rpg.gamedict["users"]['users_all']], 1) or backuptarget
+    target = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.gamedict["users"]['users_all']], 1) or backuptarget
     if not target:
         if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
             reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
