@@ -187,7 +187,7 @@ def command_configs(bot, botcom):
                 elif not isinstance(dict_from_file['validcoms'], list):
                     dict_from_file["validcoms"] = [dict_from_file["validcoms"]]
 
-                bot.say(str(dict_from_file["validcoms"]))
+                bot.say(str(dict_from_file))
             # botcom.botcomdict['tempvals']['commands'].keys()
 
 
