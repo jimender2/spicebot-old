@@ -73,7 +73,7 @@ botcom_dict = {
                             },
 
                 # Static content
-                "static": {}
+                "static": {},
 
                 # Users lists
                 "users": {
