@@ -114,8 +114,24 @@ def watcher(bot, trigger):
     # Channel Listing
     botcom = botcom_command_channels(bot, botcom, trigger)
 
-    # Bacic User List
+    # Basic User List
     botcom = botcom_command_users(bot, botcom)
+
+    # Bots can't run commands
+    if trigger.nick.lower() in botcom.botcomdict['tempvals']['bots_list']:
+        return
+
+    # create arg list
+    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+
+    # command issued
+    botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
+
+    bot.say(str(botcom.dotcommand))
+
+    # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
+    if not botcom.dotcommand:
+        return
 
     # Save open global dictionary at the end of each usage
     save_botcomdict(bot, botcom)
@@ -170,13 +186,13 @@ def merge_botcomdict(a, b, path=None):
 
 def watchallthethings(bot, trigger):
 
-    # modcom dynamic Class
-    modcom = class_create('modcom')
-    modcom.default = 'modcom'
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
 
-    # open global dict as part of modcom class
+    # open global dict as part of botcom class
     global commandsdict
-    modcom.commandsdict = commandsdict
+    botcom.commandsdict = commandsdict
 
     # does not apply to bots
     if trigger.nick.lower() in bot_config_names(bot):
@@ -187,27 +203,27 @@ def watchallthethings(bot, trigger):
         return
 
     # create arg list
-    modcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
 
     # command issued
-    modcom.dotcommand = spicemanip(bot, modcom.triggerargsarray, 1).lower().replace(".", "")
+    botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower().replace(".", "")
 
     # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
-    if not modcom.dotcommand:
+    if not botcom.dotcommand:
         return
 
     # remainder, if any is the new arg list
-    modcom.triggerargsarray = spicemanip(bot, modcom.triggerargsarray, '2+')
+    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')
 
     # if there is nt a nested dictionary for the command requested, then privmsg and exit
-    if modcom.dotcommand not in modcom.commandsdict.keys():
+    if botcom.dotcommand not in botcom.commandsdict.keys():
         return  # temp TODO
-        osd(bot, trigger.sender, 'say', "I don't seem to have a command for " + modcom.dotcommand)
+        osd(bot, trigger.sender, 'say', "I don't seem to have a command for " + botcom.dotcommand)
         return
 
     # execute function based on command type
-    modcom.commandtype = modcom.commandsdict[modcom.dotcommand]["type"]
-    command_function_run = str('botfunction_' + modcom.commandtype + '(bot, trigger, modcom)')
+    botcom.commandtype = botcom.commandsdict[botcom.dotcommand]["type"]
+    command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
     try:
         eval(command_function_run)
     except NameError:
@@ -215,20 +231,20 @@ def watchallthethings(bot, trigger):
 
 
 # Simple quick replies
-def botfunction_simple(bot, trigger, modcom):
-    reply = modcom.commandsdict[modcom.dotcommand]["reply"]
+def botfunction_simple(bot, trigger, botcom):
+    reply = botcom.commandsdict[botcom.dotcommand]["reply"]
     osd(bot, trigger.sender, 'say', reply)
 
 
 # Quick replies with a target person TODO use the targetfinder logic
-def botfunction_target(bot, trigger, modcom):
+def botfunction_target(bot, trigger, botcom):
 
-    target = spicemanip(bot, modcom.triggerargsarray, 1)
+    target = spicemanip(bot, botcom.triggerargsarray, 1)
     if not target:
         osd(bot, trigger.sender, 'say', "No target provided")
         return
 
-    reply = modcom.commandsdict[modcom.dotcommand]["reply"].replace("$target", target)
+    reply = botcom.commandsdict[botcom.dotcommand]["reply"].replace("$target", target)
     osd(bot, trigger.sender, 'say', reply)
 
 
