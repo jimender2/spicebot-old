@@ -181,7 +181,7 @@ def botfunction_target(bot, trigger, botcom):
         return osd(bot, trigger.sender, 'say', reply)
 
     # User offline
-    if target in botcom.botcomdict["users"]['users_all'] and target not in botcom.botcomdict["users"]['current_users']:
+    if target in botcom.botcomdict["users"]['users_all'] and target not in botcom.botcomdict["tempvals"]['current_users']:
         reply = "It looks like " + nick_actual(bot, target) + " is offline right now!"
         return osd(bot, trigger.sender, 'say', reply)
 
