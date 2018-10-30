@@ -78,6 +78,9 @@ botcom_dict = {
                             "commands": {}
                             },
 
+                            # Alternate Commands, duplicate of above
+                            "alt_commands":{}
+
                 # Users lists
                 "users": {
                             "users_all": [],
