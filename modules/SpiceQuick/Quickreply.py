@@ -158,7 +158,7 @@ def botfunction_target(bot, trigger, botcom):
     else:
         backuptarget = None
 
-    target = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.gamedict["users"]['users_all']], 1) or backuptarget
+    target = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.botcomdict["users"]['users_all']], 1) or backuptarget
     if not target:
         if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
             reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
