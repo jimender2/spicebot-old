@@ -148,7 +148,7 @@ def botfunction_simple(bot, trigger, botcom):
 # Quick replies with a target person TODO use the targetfinder logic
 def botfunction_target(bot, trigger, botcom):
 
-    target = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.botcomdict["users"]['users_all']], 1)
+    target = spicemanip(bot, botcom.triggerargsarray, 1)
     if not target:
         if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
             reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
@@ -159,6 +159,8 @@ def botfunction_target(bot, trigger, botcom):
             reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", backuptarget)
         else:
             reply = "No target provided"
+    elif target not in botcom.botcomdict["users"]['users_all']:
+        reply = "I don't know who that is."
     else:
         reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", target)
 
