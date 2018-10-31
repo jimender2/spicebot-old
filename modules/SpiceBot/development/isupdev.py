@@ -27,6 +27,7 @@ def execute_main(bot, trigger):
     else:
         url = str(baseurl + checksite)
         page = requests.get(url, headers=None)
+        osd(bot, trigger.sender, 'say' page)
         if page.status_code == 200:
             dispmsg = []
             upornot = isupparse(bot, url)
