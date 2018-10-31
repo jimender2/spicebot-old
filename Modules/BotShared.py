@@ -111,6 +111,8 @@ def botsetup(bot):
     bot_dict.update(opendict)
     bot.memory["botdict"] = bot_dict
 
+    bot.msg('deathbybandaid', str(bot.memory["botdict"]))
+
     # Channel Listing
     botdict_setup_channels(bot)
 
