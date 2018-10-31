@@ -151,7 +151,6 @@ def botdict_setup_channels(bot):
     if bot.memory["botdict"]["tempvals"]['channels_list'] == []:
         for channel in bot.channels:
             bot.memory["botdict"]["tempvals"]['channels_list'].append(channel)
-            bot.say(str(channel))
 
 
 """
