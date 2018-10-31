@@ -115,8 +115,8 @@ def botdict_setup_open(bot):
 
     # don't pull from database if already open
     if not botdict["tempvals"]["coms_loaded"]:
-        opendict = botcom_dict.copy()
-        botdict = get_database_value(bot, bot.nick, 'botcom_dict') or dict()
+        opendict = botdict.copy()
+        botdict = get_database_value(bot, bot.nick, 'bot_dict') or dict()
         opendict = merge_botdict(opendict, dbbotdict)
         botdict.update(opendict)
         botdict["tempvals"]['coms_loaded'] = True
