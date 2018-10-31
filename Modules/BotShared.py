@@ -6,8 +6,8 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 
 # imports for system and OS access, directories
-import sys
 import os
+import sys
 
 # imports based on THIS file
 moduledir = os.path.dirname(__file__)
