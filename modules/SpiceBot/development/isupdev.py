@@ -4,14 +4,19 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import requests
 from lxml import html
+import datetime
+from time import strptime
+from dateutil import parser
+import calendar
 import arrow
+import sys
 import os
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-baseurl = 'https://isitup.org/'
+baseurl = 'https://isitup.org'
 
 
 @sopel.module.commands('isupdev')
