@@ -742,7 +742,6 @@ def bot_list_directory(bot, botcom):
 def bot_config_directory(bot, botcom):
     botcom.config_listing = []
     networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
-    bot.say(str(networkname))
     validconfigsdir = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/" + networkname)
     for filename in os.listdir(validconfigsdir):
         filenameminuscfg = str(filename).replace(".cfg", "")
@@ -754,6 +753,7 @@ def bot_target_admins(bot, targetbot):
     targetbotadmins = []
     networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
     configfile = str("/home/spicebot/.sopel/" + targetbot + "/System-Files/Configs/" + networkname + targetbot + ".cfg")
+    bot.say(str(configfile))
     config = ConfigParser.ConfigParser()
     config.read(configfile)
     owner = config.get("core", "owner")
