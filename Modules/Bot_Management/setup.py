@@ -23,9 +23,9 @@ message = "test "
 scriptinter = 1
 
 
-@sopel.module.interval(global scriptinter)
+@sopel.module.interval(1)
 def initialsetup(bot):
-    global message
-    bot.msg('deathbybandaid', str(message))
+    if "botstartup" in bot.memory:
+        return
+    bot.memory["botdict"] = True
     botsetup(bot)
-    message += message
