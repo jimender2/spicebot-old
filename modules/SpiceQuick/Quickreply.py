@@ -158,6 +158,8 @@ def botfunction_simple(bot, trigger, botcom):
     if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], list):
         reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]
     elif specified:
+        if int(specified) > len(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]):
+            specified = len(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"])
         reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], specified)
     else:
         reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], 'random')
@@ -183,6 +185,9 @@ def botfunction_target(bot, trigger, botcom):
             if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"], list):
                 reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
             elif specified:
+                elif specified:
+                    if int(specified) > len(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]):
+                        specified = len(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"])
                 reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"], specified)
             else:
                 reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"], 'random')
@@ -195,7 +200,7 @@ def botfunction_target(bot, trigger, botcom):
                 target = botcom.instigator
 
         # still no target
-        if not target:
+        if not target and "backuptarget" not in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
             reply = "This command requires a target"
             return osd(bot, trigger.nick, 'notice', reply)
 
@@ -234,6 +239,8 @@ def botfunction_target(bot, trigger, botcom):
     if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], list):
         reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]
     elif specified:
+        if int(specified) > len(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]):
+            specified = len(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"])
         reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], specified)
     else:
         reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], 'random')
@@ -241,7 +248,7 @@ def botfunction_target(bot, trigger, botcom):
     osd(bot, trigger.sender, 'say', reply)
 
 
-# Quick replies with a target person TODO use the targetfinder logic
+# Quick replies with a fillblank person TODO use the targetfinder logic
 def botfunction_fillintheblank(bot, trigger, botcom):
 
     specified = None
@@ -254,11 +261,13 @@ def botfunction_fillintheblank(bot, trigger, botcom):
         if "noinputreply" in botcom.botcomdict['tempvals']['commands'][botcom.dotcommand].keys():
             reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
         elif specified:
+            if int(specified) > len(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"]):
+                specified = len(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"])
             reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"], specified)
         else:
             reply = "No input provided"
     else:
-        reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$target", target)
+        reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$fillblank", target)
 
     reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["reply"].replace("$fillblank", fillblank)
     osd(bot, trigger.sender, 'say', reply)

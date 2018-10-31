@@ -1,0 +1,7 @@
+{
+"validcoms": [],  # (Optional) this can be a list of valid commands, or a single command in "", defaults to filename for command if not specified
+"type": "",  # (Optional) single "", see subfolders for options, if not specified, defaults to subfoldername
+"reply": ["$target does this."],  # (Required) this can either be a "" or a list of simple replies. Specifying $target for the target type will replace that part of the string
+"noinputreply": ["Backup reply if not target"],  # (Optional) if reply cannot run normally, this will output, Handy for target replies
+"backuptarget": "",  # (Optional) this can be set to "instigator", if you want to target trigger.nick if no target is specified
+}
