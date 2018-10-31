@@ -751,18 +751,19 @@ def bot_config_directory(bot, botcom):
 
 def bot_target_admins(bot, targetbot):
     targetbotadmins = []
-    networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
-    configfile = str("/home/spicebot/.sopel/" + targetbot + "/System-Files/Configs/" + networkname + targetbot + ".cfg")
-    bot.say(str(configfile))
-    config = ConfigParser.ConfigParser()
-    config.read(configfile)
-    owner = config.get("core", "owner")
-    targetbotadmins.append(owner)
-    admins = config.get("core", "admins")
-    admins = admins.split(",")
-    for admin in admins:
-        if admin not in targetbotadmins:
-            targetbotadmins.append(admin)
+    checkdirectory = os.path.join("/home/spicebot/.sopel/", targetbot)
+    if os.path.isdir(checkdirectory):
+        networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
+        configfile = str("/home/spicebot/.sopel/" + targetbot + "/System-Files/Configs/" + networkname + targetbot + ".cfg")
+        config = ConfigParser.ConfigParser()
+        config.read(configfile)
+        owner = config.get("core", "owner")
+        targetbotadmins.append(owner)
+        admins = config.get("core", "admins")
+        admins = admins.split(",")
+        for admin in admins:
+            if admin not in targetbotadmins:
+                targetbotadmins.append(admin)
     return targetbotadmins
 
 
