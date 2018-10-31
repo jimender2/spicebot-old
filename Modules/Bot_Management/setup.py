@@ -23,4 +23,4 @@ sys.setdefaultencoding('utf-8')
 
 def setup(bot):
 
-    botcom = botsetup(bot)
+    botsetup(bot)

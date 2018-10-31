@@ -97,32 +97,28 @@ botcom_dict = {
 
 
 def botsetup(bot):
-    # botcom dynamic Class
-    botcom = class_create('botcom')
-    botcom.default = 'botcom'
 
-    # Load global dict
-    open_botcomdict(bot, botcom)
+    if "botcomdict" not in bot.memory:
+        bot.memory["botcomdict"] = open_botcomdict(bot)
 
     # Channel Listing
-    botcom_command_channels_setup(bot, botcom)
-
-    return botcom
+    botcom_command_channels_setup(bot)
 
 
-def open_botcomdict(bot, botcom):
+def open_botcomdict_setup(bot):
 
-    # open global dict as part of botcom class
+    # open global dict
     global botcom_dict
-    botcom.botcomdict = botcom_dict
+    botcomdict = botcom_dict
 
     # don't pull from database if already open
-    if not botcom.botcomdict["tempvals"]["coms_loaded"]:
+    if not botcomdict["tempvals"]["coms_loaded"]:
         opendict = botcom_dict.copy()
-        dbbotcomdict = get_database_value(bot, 'botcom_records', 'botcom_dict') or dict()
+        dbbotcomdict = get_database_value(bot, bot.nick, 'botcom_dict') or dict()
         opendict = merge_botcomdict(opendict, dbbotcomdict)
-        botcom.botcomdict.update(opendict)
-        botcom.botcomdict["tempvals"]['coms_loaded'] = True
+        botcomdict.update(opendict)
+        botcomdict["tempvals"]['coms_loaded'] = True
+    return botcomdict
 
 
 def merge_botcomdict(a, b, path=None):
@@ -147,12 +143,12 @@ Bot Channels
 """
 
 
-def botcom_command_channels_setup(bot, botcom):
+def botcom_command_channels_setup(bot):
 
     # All channels the bot is in
-    if botcom.botcomdict["tempvals"]['channels_list'] == []:
+    if bot.memory["botcomdict"]["tempvals"]['channels_list'] == []:
         for channel in bot.channels:
-            botcom.botcomdict["tempvals"]['channels_list'].append(channel)
+            bot.memory["botcomdict"]["tempvals"]['channels_list'].append(channel)
 
 
 """
