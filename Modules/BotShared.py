@@ -30,7 +30,7 @@ osd_limit = 420  # Ammount of text allowed to display per line
 Botcom Dictionary
 """
 
-botdict = {
+bot_dict = {
                 # Some values don't get saved to the database, but stay in memory
                 "tempvals": {
 
@@ -98,8 +98,10 @@ botdict = {
 
 def botsetup(bot):
 
-    if "botdict" not in bot.memory:
-        bot.memory["botdict"] = botdict_setup_open(bot)
+    if "botdict" in bot.memory:
+        return
+
+    bot.memory["botdict"] = botdict_setup_open(bot)
 
     # Channel Listing
     botdict_setup_channels(bot)
@@ -108,8 +110,8 @@ def botsetup(bot):
 def botdict_setup_open(bot):
 
     # open global dict
-    global botdict
-    botdict = botdict
+    global bot_dict
+    botdict = bot_dict
 
     # don't pull from database if already open
     if not botdict["tempvals"]["coms_loaded"]:
