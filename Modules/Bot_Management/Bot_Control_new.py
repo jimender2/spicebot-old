@@ -73,7 +73,6 @@ https://sopel.chat
 
 
 def setup(bot):
-    bot.msg('deathbybandaid', "deathbybandaid")
     if "uptime" not in bot.memory:
         bot.memory["uptime"] = datetime.datetime.utcnow()
 
