@@ -19,8 +19,9 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+schedint = 1
 
-@sopel.module.interval(schedint=1)
+@sopel.module.interval(schedint)
 def initialsetup(bot):
     bot.msg('deathbybandaid', str(schedint))
     botsetup(bot)
