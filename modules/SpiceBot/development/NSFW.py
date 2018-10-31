@@ -9,12 +9,15 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-# author yournamehere
+# author jimender2
+
+array = ["WARNING: The following is not suitable for work (or jimender2)",
+         "Click at your own caution"]
 
 
-@sopel.module.commands('rhyme')
+@sopel.module.commands('NSFW')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'NSFW')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
@@ -26,5 +29,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "do the thing")
-# https://api.datamuse.com/words?rel_rhy=forgetful
+    osd(bot, trigger.sender, 'say', spicemanip(bot, array, 'random'))
