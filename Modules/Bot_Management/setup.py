@@ -20,9 +20,10 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 message = "test "
+scriptinter = 1
 
 
-@sopel.module.interval(1)
+@sopel.module.interval(global scriptinter)
 def initialsetup(bot):
     global message
     bot.msg('deathbybandaid', str(message))
