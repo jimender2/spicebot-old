@@ -29,7 +29,7 @@ def execute_main(bot, trigger):
         ua = UserAgent()
         header = {'User-Agent': str(ua.chrome)}
         url = str(baseurl + checksite)
-        page = requests.get(url, header=header)
+        page = requests.get(url, headers=header)
         osd(bot, trigger.sender, 'say', str(page))
         if page.status_code == 200:
             dispmsg = []
