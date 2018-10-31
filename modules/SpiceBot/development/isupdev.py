@@ -25,8 +25,10 @@ def execute_main(bot, trigger):
     if not checksite:
         osd(bot, trigger.sender, 'say', "please enter a site")
     else:
+        ua = UserAgent()
+        header = {'User-Agent': str(ua.chrome)}
         url = str(baseurl + checksite)
-        page = requests.get(url, headers=None)
+        page = requests.get(url, header=header)
         osd(bot, trigger.sender, 'say', str(page))
         if page.status_code == 200:
             dispmsg = []
