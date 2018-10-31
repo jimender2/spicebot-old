@@ -29,7 +29,7 @@ sys.setdefaultencoding('utf-8')
 @nickname_commands('test')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
-    botsetup(bot)
+    # botsetup(bot)
     bot.say(str(bot.memory["botdict"]))
 
     return
