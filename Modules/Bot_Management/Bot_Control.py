@@ -36,6 +36,7 @@ def bot_command_hub(bot, trigger):
     triggerargsarray = spicemanip(bot, triggerargsarray, '2+')
     triggerargsarray = spicemanip(bot, triggerargsarray, 'create')
     bot_command_process(bot, trigger, triggerargsarray)
+    bot.say("done")
 
 
 def bot_command_process(bot, trigger, triggerargsarray):
