@@ -27,5 +27,5 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
-    message = "Spicebot carefully licks the outer edge of " + instigator + "'s balloon knot, bringing him to completion"
+    message = "carefully licks the outer edge of " + instigator + "'s balloon knot, bringing him to completion"
     osd(bot, trigger.sender, 'action', message)
