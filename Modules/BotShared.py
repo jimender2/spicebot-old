@@ -30,7 +30,7 @@ osd_limit = 420  # Ammount of text allowed to display per line
 Botcom Dictionary
 """
 
-botcom_dict = {
+botdict = {
                 # Some values don't get saved to the database, but stay in memory
                 "tempvals": {
 
@@ -98,37 +98,37 @@ botcom_dict = {
 
 def botsetup(bot):
 
-    if "botcomdict" not in bot.memory:
-        bot.memory["botcomdict"] = open_botcomdict(bot)
+    if "botdict" not in bot.memory:
+        bot.memory["botdict"] = botdict_setup_open(bot)
 
     # Channel Listing
-    botcom_command_channels_setup(bot)
+    botdict_setup_channels(bot)
 
 
-def open_botcomdict_setup(bot):
+def botdict_setup_open(bot):
 
     # open global dict
-    global botcom_dict
-    botcomdict = botcom_dict
+    global botdict
+    botdict = botdict
 
     # don't pull from database if already open
-    if not botcomdict["tempvals"]["coms_loaded"]:
+    if not botdict["tempvals"]["coms_loaded"]:
         opendict = botcom_dict.copy()
-        dbbotcomdict = get_database_value(bot, bot.nick, 'botcom_dict') or dict()
-        opendict = merge_botcomdict(opendict, dbbotcomdict)
-        botcomdict.update(opendict)
-        botcomdict["tempvals"]['coms_loaded'] = True
-    return botcomdict
+        botdict = get_database_value(bot, bot.nick, 'botcom_dict') or dict()
+        opendict = merge_botdict(opendict, dbbotdict)
+        botdict.update(opendict)
+        botdict["tempvals"]['coms_loaded'] = True
+    return botdict
 
 
-def merge_botcomdict(a, b, path=None):
+def merge_botdict(a, b, path=None):
     "merges b into a"
     if path is None:
         path = []
     for key in b:
         if key in a:
             if isinstance(a[key], dict) and isinstance(b[key], dict):
-                merge_botcomdict(a[key], b[key], path + [str(key)])
+                merge_botdict(a[key], b[key], path + [str(key)])
             elif a[key] == b[key]:
                 pass  # same leaf value
             else:
@@ -143,12 +143,12 @@ Bot Channels
 """
 
 
-def botcom_command_channels_setup(bot):
+def botdict_setup_channels(bot):
 
     # All channels the bot is in
-    if bot.memory["botcomdict"]["tempvals"]['channels_list'] == []:
+    if bot.memory["botdict"]["tempvals"]['channels_list'] == []:
         for channel in bot.channels:
-            bot.memory["botcomdict"]["tempvals"]['channels_list'].append(channel)
+            bot.memory["botdict"]["tempvals"]['channels_list'].append(channel)
 
 
 """
