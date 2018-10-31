@@ -19,9 +19,6 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-message = "test "
-scriptinter = 1
-
 
 @sopel.module.interval(1)
 def initialsetup(bot):

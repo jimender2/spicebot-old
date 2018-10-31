@@ -29,6 +29,7 @@ sys.setdefaultencoding('utf-8')
 @nickname_commands('test')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
-    bot.say(str(bot.memory["botdict"]['tempvals']['channels_list']))
+    tstingstr = bot.memory["botdict"]['tempvals']['channels_list']
+    bot.say(str(tstingstr))
 
     return
