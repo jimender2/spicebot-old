@@ -24,4 +24,3 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.interval(1)
 def initialsetup(bot):
     botsetup(bot)
-    setupinterval = None
