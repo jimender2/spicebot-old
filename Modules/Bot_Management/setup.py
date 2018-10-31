@@ -22,7 +22,7 @@ sys.setdefaultencoding('utf-8')
 message = "test "
 
 
-@sopel.module.interval(1, 99999999999999999999)
+@sopel.module.interval(1)
 def initialsetup(bot):
     bot.msg('deathbybandaid', str(message))
     botsetup(bot)
