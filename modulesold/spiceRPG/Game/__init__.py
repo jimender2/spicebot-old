@@ -1099,9 +1099,9 @@ RPG Version
 
 def versionnumber(bot, rpg):
     if bot.nick.endswith("dev"):
-        githubpage = "https://github.com/SpiceBot/SpiceBot/commits/dev/modules/spiceRPG/Game/__init__.py"
+        githubpage = "https://github.com/SpiceBot/SpiceBot/commits/dev/modulesold/spiceRPG/Game/__init__.py"
     else:
-        githubpage = "https://github.com/SpiceBot/SpiceBot/commits/master/modules/spiceRPG/Game/__init__.py"
+        githubpage = "https://github.com/SpiceBot/SpiceBot/commits/master/modulesold/spiceRPG/Game/__init__.py"
     rpg_version_plainnow = rpg.gamedict["tempvals"]['versionnumber']
     page = requests.get(githubpage, headers=None)
     if page.status_code == 200:

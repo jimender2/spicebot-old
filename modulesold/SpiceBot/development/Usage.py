@@ -31,7 +31,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     commandused = trigger.group(1)
     target = spicemanip(bot, triggerargsarray, 1)
     instigator = trigger.nick
-    GITWIKIURL = 'https://github.com/SpiceBot/sopel-modules/wiki/Usage'
+    GITWIKIURL = 'https://github.com/SpiceBot/sopel-modulesold/wiki/Usage'
     # # Variable ARGS
     moduletocheck = spicemanip(bot, triggerargsarray, 1) or instigator
     checktarget = spicemanip(bot, triggerargsarray, 2)
