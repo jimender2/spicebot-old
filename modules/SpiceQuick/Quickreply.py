@@ -185,9 +185,8 @@ def botfunction_target(bot, trigger, botcom):
             if not isinstance(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"], list):
                 reply = botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]
             elif specified:
-                elif specified:
-                    if int(specified) > len(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]):
-                        specified = len(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"])
+                if int(specified) > len(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"]):
+                    specified = len(botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"])
                 reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"], specified)
             else:
                 reply = spicemanip(bot, botcom.botcomdict['tempvals']['commands'][botcom.dotcommand]["noinputreply"], 'random')
