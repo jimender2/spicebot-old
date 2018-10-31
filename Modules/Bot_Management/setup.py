@@ -27,4 +27,4 @@ setupinterval = 1
 @sopel.module.interval(setupinterval)
 def initialsetup(bot):
     botsetup(bot)
-    setupinterval += None
+    setupinterval = None
