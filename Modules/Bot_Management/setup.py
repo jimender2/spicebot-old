@@ -21,13 +21,14 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-"""
-# bot.nick do this
-"""
+def setup(bot):
 
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
 
-@nickname_commands('test')
-@sopel.module.thread(True)
-def bot_command_hub(bot, trigger):
-    bot.say(str(botcom.botcomdict['tempvals']['channels_list']))
-    return
+    # Load global dict
+    open_botcomdict(bot, botcom)
+
+    # Channel Listing
+    botcom_command_channels_setup(bot, botcom)

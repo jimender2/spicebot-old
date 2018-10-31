@@ -18,8 +18,127 @@ import time
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+"""
+Variables
+"""
+
 
 osd_limit = 420  # Ammount of text allowed to display per line
+
+
+"""
+Botcom Dictionary
+"""
+
+botcom_dict = {
+                # Some values don't get saved to the database, but stay in memory
+                "tempvals": {
+
+                            # Indicate if we need to pull the dict from the database
+                            "coms_loaded": False,
+
+                            # Loaded configs
+                            "commands_loaded": [],
+
+                            # Commands list
+                            "commands": {},
+
+                            # Alternate Commands, duplicate of above
+                            "alt_commands": {},
+
+                            # list of channels the bot is in
+                            "channels_list": [],
+
+                            # Other bots
+                            "bots_list": [],
+
+                            # current users
+                            "current_users": [],
+
+                            # offline users
+                            "offline_users": [],
+
+                            # bot owner users
+                            "bot_owner": [],
+
+                            # bot admin users
+                            "bot_admins": [],
+
+                            # chan OP
+                            "chanops": [],
+
+                            # chan HALFOP
+                            "chanhalfops": [],
+
+                            # chan VOICE
+                            "chanvoices": [],
+
+                            # players that can't play
+                            "cantplayarray": [],
+
+                            # End of Temp Vals
+                            },
+
+                # Static content
+                "static": {},
+
+                # Users lists
+                "users": {
+                            "users_all": [],
+                            },
+
+                # channels list
+                "channels": {
+                                "game_enabled": [],
+                                "devmode_enabled": []
+
+                                },
+                }
+
+
+def open_botcomdict(bot, botcom):
+
+    # open global dict as part of botcom class
+    global botcom_dict
+    botcom.botcomdict = botcom_dict
+
+    # don't pull from database if already open
+    if not botcom.botcomdict["tempvals"]["coms_loaded"]:
+        opendict = botcom_dict.copy()
+        dbbotcomdict = get_database_value(bot, 'botcom_records', 'botcom_dict') or dict()
+        opendict = merge_botcomdict(opendict, dbbotcomdict)
+        botcom.botcomdict.update(opendict)
+        botcom.botcomdict["tempvals"]['coms_loaded'] = True
+
+
+def merge_botcomdict(a, b, path=None):
+    "merges b into a"
+    if path is None:
+        path = []
+    for key in b:
+        if key in a:
+            if isinstance(a[key], dict) and isinstance(b[key], dict):
+                merge_botcomdict(a[key], b[key], path + [str(key)])
+            elif a[key] == b[key]:
+                pass  # same leaf value
+            else:
+                a[key] = b[key]
+        else:
+            a[key] = b[key]
+    return a
+
+
+"""
+Bot Channels
+"""
+
+
+def botcom_command_channels_setup(bot, botcom):
+
+    # All channels the bot is in
+    if botcom.botcomdict["tempvals"]['channels_list'] == []:
+        for channel in bot.channels:
+            botcom.botcomdict["tempvals"]['channels_list'].append(channel)
 
 
 """
