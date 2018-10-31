@@ -22,7 +22,7 @@ sys.setdefaultencoding('utf-8')
 
 @sopel.module.interval(schedint=1)
 def initialsetup(bot):
-    bot.say(str(schedint))
+    bot.msg('deathbybandaid', str(schedint))
     botsetup(bot)
     # schedint += 99999999999999999999999
     schedint += 4
