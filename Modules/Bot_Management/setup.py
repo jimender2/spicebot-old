@@ -22,5 +22,5 @@ sys.setdefaultencoding('utf-8')
 
 
 def setup(bot):
-    # botsetup(bot)
+    botsetup(bot)
     shit = 1
