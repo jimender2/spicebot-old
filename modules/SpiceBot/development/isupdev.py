@@ -4,14 +4,20 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import requests
 from lxml import html
+import datetime
+from time import strptime
+from dateutil import parser
+import calendar
 import arrow
+from fake_useragent import UserAgent
+import sys
 import os
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-baseurl = 'https://isitup.org/'
+baseurl = 'https://isitup.org'
 
 
 @sopel.module.commands('isupdev')
@@ -20,8 +26,11 @@ def execute_main(bot, trigger):
     if not checksite:
         osd(bot, trigger.sender, 'say', "please enter a site")
     else:
+        ua = UserAgent()
+        header = {'User-Agent': str(ua.chrome)}
         url = str(baseurl + checksite)
-        page = requests.get(url, headers=None)
+        page = requests.get(url, headers=header)
+        osd(bot, trigger.sender, 'say', str(page))
         if page.status_code == 200:
             dispmsg = []
             upornot = isupparse(bot, url)
@@ -45,4 +54,5 @@ def isupparse(bot, url):
 def gettree(bot, url):
     page = requests.get(url, headers=None)
     tree = html.fromstring(page.content)
+    osd(bot, trigger.sender, 'say', tree)
     return tree
