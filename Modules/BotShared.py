@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
+from sopel.module import commands, nickname_commands
 
 # imports for system and OS access, directories
 import os
