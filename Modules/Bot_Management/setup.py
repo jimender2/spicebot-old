@@ -21,6 +21,6 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-def setup(bot):
+@sopel.module.interval(1)
+def initialsetup(bot):
     botsetup(bot)
-    shit = 1
