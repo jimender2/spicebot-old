@@ -23,12 +23,4 @@ sys.setdefaultencoding('utf-8')
 
 def setup(bot):
 
-    # botcom dynamic Class
-    botcom = class_create('botcom')
-    botcom.default = 'botcom'
-
-    # Load global dict
-    open_botcomdict(bot, botcom)
-
-    # Channel Listing
-    botcom_command_channels_setup(bot, botcom)
+    botcom = botsetup(bot)

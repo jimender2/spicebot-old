@@ -96,6 +96,20 @@ botcom_dict = {
                 }
 
 
+def botsetup(bot):
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # Load global dict
+    open_botcomdict(bot, botcom)
+
+    # Channel Listing
+    botcom_command_channels_setup(bot, botcom)
+
+    return botcom
+
+
 def open_botcomdict(bot, botcom):
 
     # open global dict as part of botcom class
