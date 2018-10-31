@@ -9,6 +9,7 @@ from time import strptime
 from dateutil import parser
 import calendar
 import arrow
+from fake_useragent import UserAgent
 import sys
 import os
 moduledir = os.path.dirname(__file__)
