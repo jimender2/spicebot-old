@@ -24,6 +24,7 @@ message = "test "
 
 @sopel.module.interval(1)
 def initialsetup(bot):
+    global message
     bot.msg('deathbybandaid', str(message))
     botsetup(bot)
     message += message
