@@ -27,3 +27,4 @@ def botcom_player_return(bot, trigger):
 
     for channel in bot.channels:
         osd(bot, channel, 'say', "MODE " + str(trigger.args))
+        osd(bot, channel, 'say', "MODE " + str(trigger))

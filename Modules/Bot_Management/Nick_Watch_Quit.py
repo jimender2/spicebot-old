@@ -27,6 +27,7 @@ def botcom_player_leave(bot, trigger):
 
     for channel in bot.channels:
         osd(bot, channel, 'say', "QUIT " + str(trigger.args))
+        osd(bot, channel, 'say', "QUIT " + str(trigger))
 
     return
 
