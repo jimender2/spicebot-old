@@ -57,7 +57,7 @@ def bot_command_hub(bot, trigger):
         botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
 
         # Command Used
-        botcom.command_main = spicemanip(bot, triggerargsarray, 1)
+        botcom.command_main = spicemanip(bot, botcom.triggerargsarray, 1)
         if botcom.command_main.lower() not in valid_botnick_commands:
             invalidcomslist.append(botcom.command_main)
         else:
