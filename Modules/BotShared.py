@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-from sopel.module import commands, nickname_commands, event, rule, OP, ADMIN, VOICE
+from sopel.module import commands, nickname_commands, event, rule, OP, ADMIN, VOICE, HALFOP, thread
 
 # imports for system and OS access, directories
 import os
@@ -14,6 +14,7 @@ import sys
 import datetime
 import time
 import re
+import random
 
 # Opening and reading config files
 import ConfigParser
