@@ -154,6 +154,82 @@ def botdict_setup_channels(bot):
 
 
 """
+Users
+"""
+
+
+def botcom_command_users(bot, botcom):
+
+    # Userlists that typically don't change when bot is running
+    if botcom.botcomdict["tempvals"]['bots_list'] == []:
+        botcom.botcomdict["tempvals"]['bots_list'] = bot_config_names(bot)
+
+    if botcom.botcomdict["tempvals"]['bot_owner'] == []:
+        for user in bot.config.core.owner:
+            if user not in botcom.botcomdict["tempvals"]['bot_owner']:
+                botcom.botcomdict["tempvals"]['bot_owner'].append(user)
+
+    if botcom.botcomdict["tempvals"]['bot_admins'] == []:
+        for user in bot.config.core.admins:
+            if user not in botcom.botcomdict["tempvals"]['bot_admins']:
+                botcom.botcomdict["tempvals"]['bot_admins'].append(user)
+
+    # users that cannot be part of the game
+    if botcom.botcomdict["tempvals"]['cantplayarray'] == []:
+        cantplayarrays = ["botcom.botcomdict['tempvals']['commands'].keys()", "botcom.botcomdict['tempvals']['alt_commands'].keys()", "botcom.botcomdict['tempvals']['bots_list']"]
+        for nicklist in cantplayarrays:
+            currentnicklist = eval(nicklist)
+            for x in currentnicklist:
+                if x not in botcom.botcomdict["tempvals"]['cantplayarray']:
+                    botcom.botcomdict["tempvals"]['cantplayarray'].append(x)
+
+    for channelcheck in botcom.botcomdict["tempvals"]['channels_list']:
+        for user in bot.privileges[channelcheck].keys():
+            if user not in botcom.botcomdict["tempvals"]['cantplayarray']:
+
+                # Start with Channel permissions
+                if bot.privileges[channelcheck][user] == OP:
+                    if user not in botcom.botcomdict["tempvals"]['chanops']:
+                        botcom.botcomdict["tempvals"]['chanops'].append(user)
+
+                elif bot.privileges[channelcheck][user] == HALFOP:
+                    if user not in botcom.botcomdict["tempvals"]['chanhalfops']:
+                        botcom.botcomdict["tempvals"]['chanhalfops'].append(user)
+
+                elif bot.privileges[channelcheck][user] == VOICE:
+                    if user not in botcom.botcomdict["tempvals"]['chanvoices']:
+                        botcom.botcomdict["tempvals"]['chanvoices'].append(user)
+
+                # user lists
+                if user not in botcom.botcomdict["tempvals"]['current_users']:
+                    botcom.botcomdict["tempvals"]['current_users'].append(user)
+
+    for user in botcom.botcomdict["tempvals"]['current_users']:
+        if user not in botcom.botcomdict["tempvals"]['cantplayarray']:
+            if user not in botcom.botcomdict["users"]['users_all']:
+                botcom.botcomdict["users"]['users_all'].append(user)
+
+    for user in botcom.botcomdict["users"]['users_all']:
+        if user not in botcom.botcomdict["tempvals"]['cantplayarray']:
+            if user not in botcom.botcomdict["tempvals"]['current_users']:
+                if user not in botcom.botcomdict["tempvals"]['offline_users']:
+                    botcom.botcomdict["tempvals"]['offline_users'].append(user)
+
+    return botcom
+
+
+# Bot Nicks
+def bot_config_names(bot):
+    config_listing = []
+    networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
+    validconfigsdir = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/" + networkname)
+    for filename in os.listdir(validconfigsdir):
+        filenameminuscfg = str(filename).replace(".cfg", "")
+        config_listing.append(filenameminuscfg)
+    return config_listing
+
+
+"""
 Database
 """
 
