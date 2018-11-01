@@ -140,9 +140,17 @@ Bot Servers
 def botdict_setup_server(bot):
 
     # The server the bot is connected to. Sopel limit is one
+    # this detects the use of an IRC bouncer like ZNC
+    # This is a custom function for this bot's connection
     if not bot.memory["botdict"]["tempvals"]['server']:
         if ipv4detect(bot, bot.config.core.host):
-            server = 'irc.spicebot.net'
+            networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
+            if networkname == 'SpiceBot':
+                server = 'irc.spicebot.net'
+            elif networkname == 'Freenode':
+                server = 'irc.freenode.net'
+            else:
+                server = bot.config.core.host
         else:
             server = bot.config.core.host
         bot.memory["botdict"]["tempvals"]['server'] = server
