@@ -24,6 +24,6 @@ sys.setdefaultencoding('utf-8')
 def initialsetup(bot):
     if "botstartup" in bot.memory:
         return
-    bot.memory["botdict"] = True
+    bot.memory["botstartup"] = True
     botsetup(bot)
-    bot.msg('deathbybandaid', str(bot.memory["botdict"]))
+    # bot.msg('deathbybandaid', str(bot.memory["botdict"]))
