@@ -19,13 +19,13 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-valid_events = ['KICK']
+valid_events = ['KICK', 'MODE']
 
 
-@event('MODE')
+@event('TOPIC')
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
 
     for channel in bot.channels:
-        osd(bot, channel, 'say', "MODE " + str(trigger))
+        osd(bot, channel, 'say', "TOPIC " + str(trigger))
