@@ -34,8 +34,11 @@ mode_dict_alias = {
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
 
+    channeloruser = len(trigger.args)
+
     for channel in bot.channels:
         osd(bot, channel, 'say', str(trigger.args))
+        osd(bot, channel, 'say', str(channeloruser))
     return
 
     # user that triggered this event
