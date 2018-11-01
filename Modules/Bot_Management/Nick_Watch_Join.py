@@ -26,8 +26,7 @@ sys.setdefaultencoding('utf-8')
 def botcom_player_return(bot, trigger):
 
     for channel in bot.channels:
-        osd(bot, channel, 'say', "JOIN " + str(trigger.args))
-        osd(bot, channel, 'say', "JOIN " + str(trigger))
+        osd(bot, channel, 'say', str(trigger.nick) + " joined " + str(trigger.args[0]))
 
     return
 
