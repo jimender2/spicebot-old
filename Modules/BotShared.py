@@ -220,6 +220,7 @@ def botcom_command_users(bot, botcom):
 
 # Bot Nicks
 def bot_config_names(bot):
+    # TODO pull config info into dict, include info such as directory for use later
     config_listing = []
     networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
     validconfigsdir = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/" + networkname)
