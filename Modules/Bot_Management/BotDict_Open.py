@@ -25,4 +25,4 @@ def initialsetup(bot):
     if "botstartup" in bot.memory:
         return
     bot.memory["botstartup"] = True
-    botsetup(bot)
+    botdict_open(bot)

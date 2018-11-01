@@ -96,7 +96,7 @@ bot_dict = {
                 }
 
 
-def botsetup(bot):
+def botdict_open(bot):
 
     if "botdict" in bot.memory:
         return
@@ -141,7 +141,7 @@ def merge_botdict(a, b, path=None):
 
 
 def botdict_save(bot):
-    botsetup(bot)
+    botdict_open(bot)
 
     # copy dict to not overwrite
     savedict = bot.memory["botdict"].copy()
