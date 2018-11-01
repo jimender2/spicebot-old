@@ -3,11 +3,15 @@
 from __future__ import unicode_literals, absolute_import, print_function, division
 
 # sopel imports
+from sopel import module, tools
 import sopel.module
-from sopel.module import commands, nickname_commands, event, rule, OP, ADMIN, VOICE, HALFOP, thread
+from sopel.module import commands, nickname_commands, event, rule, OP, ADMIN, VOICE, HALFOP, thread, priority, example
+from sopel.tools import Identifier
+from sopel.tools.time import get_timezone, format_time
 
 # imports for system and OS access, directories
 import os
+from os.path import exists
 import sys
 
 # Additional imports
@@ -15,9 +19,15 @@ import datetime
 import time
 import re
 import random
+import arrow
+import fnmatch
+import random
+import urllib
+import git
 
 # Opening and reading config files
 import ConfigParser
+
 
 # Ensure Encoding
 reload(sys)
