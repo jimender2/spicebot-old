@@ -62,7 +62,7 @@ def bot_command_hub(bot, trigger):
             invalidcomslist.append(botcom.command_main)
         else:
 
-            bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom,instigator)')
+            bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom)')
             eval(bot_command_function_run)
 
     # Display Invalids coms used
@@ -70,6 +70,6 @@ def bot_command_hub(bot, trigger):
         osd(bot, trigger.sender, 'say', "I was unable to process the following commands: " + spicemanip(bot, invalidcomslist, 'andlist'))
 
 
-def bot_command_function_uptime(bot, trigger, botcom, instigator):
+def bot_command_function_uptime(bot, trigger, botcom):
     delta = datetime.timedelta(seconds=round((datetime.datetime.utcnow() - bot.memory["botdict"]["tempvals"]["uptime"]).total_seconds()))
     osd(bot, trigger.sender, 'say', "I've been sitting here for {} and I keep going!".format(delta))
