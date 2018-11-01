@@ -13,6 +13,7 @@ import sys
 # Additional imports
 import datetime
 import time
+import re
 
 # Ensure Encoding
 reload(sys)

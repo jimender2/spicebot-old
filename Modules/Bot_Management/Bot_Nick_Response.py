@@ -34,6 +34,17 @@ def bot_command_hub(bot, trigger):
 
     # bot.say(str(bot.memory["botdict"]['tempvals']['channels_list']))
 
-    bot.say(str(bot.server))
+    # bot.say(str(bot.server))
+
+    ipv4detect(bot, "192.168.5.10")
 
     return
+
+
+def ipv4detect(bot, hostIP):
+    pat = re.compile("\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}")
+    test = pat.match(hostIP)
+    if test:
+        bot.say("Acceptable ip address")
+    else:
+        bot.say("Unacceptable ip address")
