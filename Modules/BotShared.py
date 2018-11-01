@@ -144,7 +144,7 @@ def botdict_setup_server(bot):
     # This is a custom function for this bot's connection
     if not bot.memory["botdict"]["tempvals"]['server']:
         if ipv4detect(bot, bot.config.core.host):
-            networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
+            networkname = str(bot.config.core.user.split("/", 1)[1])
             if networkname == 'SpiceBot':
                 server = 'irc.spicebot.net'
             elif networkname == 'Freenode':
