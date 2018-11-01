@@ -20,18 +20,56 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+# valid commands that the bot will reply to by name
+valid_botnick_commands = ['uptime']
+
 
 """
 bot.nick do this
 """
 
+# TODO make sure restart and update save database
+
 
 @nickname_commands('(.*)')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
-    if "botdict" not in bot.memory:
-        botdict_open(bot)
+    if "botdict_loaded" not in bot.memory:
+        osd(bot, trigger.sender, 'say', "Please wait while I load my dictionary configuration.")
+        return
 
-    bot.say(str(bot.memory["botdict"]['tempvals']['server']))
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
 
-    return
+    # instigator
+    botcom.instigator = trigger.nick
+
+    # create arg list
+    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+
+    # IF "&&" is in the full input, it is treated as multiple commands, and is split
+    commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+    if commands_array == []:
+        commands_array = [[]]
+    invalidcomslist = []
+    for command_split_partial in commands_array:
+        botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+
+        # Command Used
+        botcom.command_main = spicemanip(bot, triggerargsarray, 1)
+        if botcom.command_main.lower() not in valid_botnick_commands:
+            invalidcomslist.append(botcom.command_main)
+        else:
+
+            bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom,instigator)')
+            eval(bot_command_function_run)
+
+    # Display Invalids coms used
+    if invalidcomslist != []:
+        osd(bot, trigger.sender, 'say', "I was unable to process the following commands: " + spicemanip(bot, invalidcomslist, 'andlist'))
+
+
+def bot_command_function_uptime(bot, trigger, botcom, instigator):
+    delta = datetime.timedelta(seconds=round((datetime.datetime.utcnow() - bot.memory["botdict"]["tempvals"]["uptime"]).total_seconds()))
+    osd(bot, trigger.sender, 'say', "I've been sitting here for {} and I keep going!".format(delta))

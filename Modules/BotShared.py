@@ -38,6 +38,9 @@ bot_dict = {
                             # Indicate if we need to pull the dict from the database
                             "dict_loaded": False,
 
+                            # Time The Bot started last
+                            "uptime": None,
+
                             # Loaded configs
                             "commands_loaded": [],
 
@@ -69,9 +72,13 @@ bot_dict = {
 
 def botdict_open(bot):
 
+
     if "botdict_loaded" in bot.memory:
         return
     bot.memory["botdict"] = botdict_setup_open(bot)
+
+    if not bot.memory["botdict"]["tempvals"]["uptime"]:
+        bot.memory["botdict"]["tempvals"]["uptime"] = datetime.datetime.utcnow()
 
     # Server connected to, default assumes ZNC bouncer configuration
     # this can be tweaked below
