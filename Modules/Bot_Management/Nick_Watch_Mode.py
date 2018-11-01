@@ -34,15 +34,20 @@ mode_dict_alias = {
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
 
-    channeloruser = len(trigger.args)
-
-    for channel in bot.channels:
-        osd(bot, channel, 'say', str(trigger.args))
-        osd(bot, channel, 'say', str(channeloruser))
-    return
+    if len(trigger.args) == 2:
+        modetarget = "channel"
+    elif len(trigger.args) == 3:
+        modetarget = "user"
+    else:
+        for channel in bot.channels:
+            osd(bot, channel, 'say', str(trigger.args))
+        return
 
     # user that triggered this event
     instigator = trigger.nick
+
+    # Channel mode was set
+    channel = trigger.args[0]
 
     # Ger Mode Used
     global mode_dict_alias
@@ -52,9 +57,12 @@ def botcom_player_return(bot, trigger):
         modeused = trigger.args[1]
 
     # target user
-    target = trigger.args[-1]
-
-    # Channel mode was set
-    channel = trigger.args[0]
-
-    osd(bot, channel, 'say', str(instigator) + " set mode " + str(modeused) + " on " + str(target) + " in " + str(channel))
+    if modetarget == "user":
+        target = trigger.args[-1]
+        osd(bot, channel, 'say', str(instigator) + " set " + str(modetarget) + " mode " + str(modeused) + " on " + str(target) + " in " + str(channel))
+    elif modetarget == "channel":
+        osd(bot, channel, 'say', str(instigator) + " set " + str(modetarget) + " mode " + str(modeused) + " on " + str(channel))
+    else:
+        for channel in bot.channels:
+            osd(bot, channel, 'say', str(trigger.args))
+        return
