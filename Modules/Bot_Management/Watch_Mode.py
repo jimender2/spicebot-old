@@ -33,6 +33,7 @@ mode_dict_alias = {
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
+    return
 
     if len(trigger.args) == 2:
         modetarget = "channel"
