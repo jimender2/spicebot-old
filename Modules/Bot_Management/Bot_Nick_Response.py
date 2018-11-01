@@ -93,7 +93,7 @@ def bot_command_function_admins(bot, trigger, botcom):
     dispmsg = []
     for targetbot in targetbots:
         currentbotsadmins = bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['configuration']['core']['admins']
-        dispmsg.append(targetbot + " is administrated by " + currentbotsadmins)
+        dispmsg.append(targetbot + " is administered by " + currentbotsadmins)
     osd(bot, trigger.sender, 'say', spicemanip(bot, dispmsg, 'andlist'))
 
 
