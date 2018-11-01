@@ -31,10 +31,11 @@ mode_dict_alias = {
 def botcom_player_return(bot, trigger):
     global mode_dict_alias
 
-    try:
-        modeused = mode_dict_alias[trigger.args[1]]
-    except KEYERROR:
-        modeused = trigger.args[1]
+    #try:
+    #    modeused = mode_dict_alias[trigger.args[1]]
+    #except KEYERROR:
+    #    modeused = trigger.args[1]
+    modeused = mode_dict_alias[trigger.args[1]]
 
     for channel in bot.channels:
         osd(bot, channel, 'say', str(trigger.nick) + " set mode " + str(modeused) + " on " + str(trigger.args[-1]) + " in " + str(trigger.args[0]))
