@@ -101,20 +101,26 @@ def botsetup(bot):
     if "botdict" in bot.memory:
         return
 
-    # open global dict
-    global bot_dict
-
-    # add dict to bot.memory
-    opendict = bot_dict.copy()
-    dbbotdict = get_database_value(bot, bot.nick, 'bot_dict') or dict()
-    opendict = merge_botdict(opendict, dbbotdict)
-    bot_dict.update(opendict)
-    bot.memory["botdict"] = bot_dict
-
-    bot.msg('deathbybandaid', str(bot.memory["botdict"]))
+    bot.memory["botdict"] = botdict_setup_open(bot)
 
     # Channel Listing
     botdict_setup_channels(bot)
+
+
+def botdict_setup_open(bot):
+
+    # open global dict
+    global bot_dict
+    botdict = bot_dict
+
+    # don't pull from database if already open
+    if not botdict["tempvals"]["coms_loaded"]:
+        opendict = botdict.copy()
+        dbbotdict = get_database_value(bot, bot.nick, 'bot_dict') or dict()
+        opendict = merge_botdict(opendict, dbbotdict)
+        botdict.update(opendict)
+        botdict["tempvals"]['coms_loaded'] = True
+    return botdict
 
 
 def merge_botdict(a, b, path=None):
