@@ -73,7 +73,8 @@ def botdict_open(bot):
         return
     bot.memory["botdict"] = botdict_setup_open(bot)
 
-    # Server connected to
+    # Server connected to, default assumes ZNC bouncer configuration
+    # this can be tweaked below
     botdict_setup_server(bot)
 
     # Channel Listing
