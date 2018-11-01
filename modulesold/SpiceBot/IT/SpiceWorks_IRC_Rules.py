@@ -23,6 +23,8 @@ def execute_main(bot, trigger):
         rulenumber.lstrip("-")
         if (rulenumber == '0' or rulenumber.lower() == 'zero'):
             myline = 'Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
+        elif rulenumber == '34a':
+            myline = 'If it exists, there is porn of it. And drone footage of that'
         else:
             if not rulenumber.isdigit():
                 try:
