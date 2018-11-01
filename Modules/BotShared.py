@@ -298,15 +298,9 @@ def botdict_setup_users(bot):
 
 def nick_actual(bot, nick):
     nick_actual = nick
-    sim_nick, sim_num = [], []
-    for validnick in bot.memory["botdict"]["users"]['users_all'].keys():
-        similarlevel = similar(nick, validnick)
-        if similarlevel >= .75:
-            sim_nick.append(validnick)
-            sim_num.append(similarlevel)
-    if sim_nick != [] and sim_num != []:
-        sim_num, sim_com = array_arrangesort(bot, sim_num, sim_nick)
-        nick_actual = spicemanip(bot, sim_nick, 'last')
+    for u in bot.memory["botdict"]["users"]['users_all'].keys():
+        if u.lower() == str(nick).lower():
+            nick_actual = u
     return nick_actual
 
 
