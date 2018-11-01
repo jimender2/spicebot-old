@@ -25,5 +25,14 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
 
+    # user that triggered this event
+    instigator = trigger.nick
+
+    # Channel
+    channel = trigger.args[0]
+
+    # target
+    target = trigger.args[1]
+
     for channel in bot.channels:
-        osd(bot, channel, 'say', str(trigger.args[1]) + " was kicked from " + str(trigger.args[0]) + " by " + str(trigger.args[-1]))
+        osd(bot, channel, 'say', str(target) + " was kicked from " + str(channel) + " by " + str(instigator))
