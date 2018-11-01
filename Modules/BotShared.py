@@ -83,6 +83,7 @@ def botdict_open(bot):
     if "botdict_loaded" in bot.memory:
         return
     bot.memory["botdict"] = botdict_setup_open(bot)
+    bot.memory["botdict_loading"] = 1
 
     if not bot.memory["botdict"]["tempvals"]["uptime"]:
         bot.memory["botdict"]["tempvals"]["uptime"] = datetime.datetime.utcnow()
@@ -90,17 +91,22 @@ def botdict_open(bot):
     # Server connected to, default assumes ZNC bouncer configuration
     # this can be tweaked below
     botdict_setup_server(bot)
+    bot.memory["botdict_loading"] = 20
 
     # Channel Listing
     botdict_setup_channels(bot)
+    bot.memory["botdict_loading"] = 40
 
     # Bot configs
     botdict_setup_bots(bot)
+    bot.memory["botdict_loading"] = 50
 
     # users
     botdict_setup_users(bot)
+    bot.memory["botdict_loading"] = 80
 
     # use this to prevent bot usage if the above isn't done loading
+    bot.memory["botdict_loading"] = 100
     bot.memory["botdict_loaded"] = True
 
 
