@@ -19,11 +19,17 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+mode_dict_alias = {
+                    "+o": "OP",
+                    "-o": "deOP",
+                    }
+
 
 @event('MODE')
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
+    global mode_dict_alias
 
     for channel in bot.channels:
-        osd(bot, channel, 'say', str(trigger.nick) + " set mode " + str(trigger.args[1]) + " on " + str(trigger.args[-1]) + " in " + str(trigger.args[0]))
+        osd(bot, channel, 'say', str(trigger.nick) + " set mode " + str(mode_dict_alias[trigger.args[1]]) + " on " + str(trigger.args[-1]) + " in " + str(trigger.args[0]))
