@@ -22,10 +22,10 @@ sys.setdefaultencoding('utf-8')
 valid_events = ['KICK', 'MODE', 'TOPIC']
 
 
-@event('BAN')
+@event('AWAY')
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
 
     for channel in bot.channels:
-        osd(bot, channel, 'say', "BAN " + str(trigger))
+        osd(bot, channel, 'say', "AWAY " + str(trigger))
