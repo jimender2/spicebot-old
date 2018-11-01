@@ -114,12 +114,12 @@ def botdict_setup_open(bot):
     botdict = bot_dict
 
     # don't pull from database if already open
-    if not botdict["tempvals"]["coms_loaded"]:
+    if not botdict["tempvals"]["dict_loaded"]:
         opendict = botdict.copy()
         dbbotdict = get_database_value(bot, bot.nick, 'bot_dict') or dict()
         opendict = merge_botdict(opendict, dbbotdict)
         botdict.update(opendict)
-        botdict["tempvals"]['coms_loaded'] = True
+        botdict["tempvals"]['dict_loaded'] = True
     return botdict
 
 
@@ -138,6 +138,22 @@ def merge_botdict(a, b, path=None):
         else:
             a[key] = b[key]
     return a
+
+
+def botdict_save(bot):
+    botsetup(bot)
+
+    # copy dict to not overwrite
+    savedict = bot.memory["botdict"].copy()
+
+    # Values to not save to database
+    savedict_del = ['tempvals', 'static']
+    for dontsave in savedict_del:
+        if dontsave in savedict.keys():
+            del savedict[dontsave]
+
+    # save to database
+    set_database_value(bot, bot.nick, 'bot_dict', savedict)
 
 
 """
