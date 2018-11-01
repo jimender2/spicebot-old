@@ -110,32 +110,44 @@ def bot_command_function_channel(bot, trigger, botcom):
     # OP list
     if subcommand.lower() == 'op':
         for channeltarget in targetchannels:
-            oplist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanops'], 'andlist')
-            dispmsg.append("Channel Operators for " + str(channeltarget) + "  are: " + oplist)
+            if bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanops'] == []:
+                dispmsg.append("There are no Channel Operators for " + str(channeltarget))
+            else:
+                oplist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanops'], 'andlist')
+                dispmsg.append("Channel Operators for " + str(channeltarget) + "  are: " + oplist)
         osd(bot, trigger.nick, 'notice', spicemanip(bot, dispmsg, 'andlist'))
         return
 
     # HOP list
     if subcommand.lower() == 'hop':
         for channeltarget in targetchannels:
-            hoplist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanhalfops'], 'andlist')
-            dispmsg.append("Channel Operators for " + str(channeltarget) + "  are: " + hoplist)
+            if bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanhalfops'] == []:
+                dispmsg.append("There are no Channel Operators for " + str(channeltarget))
+            else:
+                hoplist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanhalfops'], 'andlist')
+                dispmsg.append("Channel Half Operators for " + str(channeltarget) + "  are: " + hoplist)
         osd(bot, trigger.nick, 'notice', spicemanip(bot, dispmsg, 'andlist'))
         return
 
     # Voice List
     if subcommand.lower() == 'voice':
         for channeltarget in targetchannels:
-            voicelist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanvoices'], 'andlist')
-            dispmsg.append("Channel VOICE for " + str(channeltarget) + " are: " + voicelist)
+            if bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanvoices'] == []:
+                dispmsg.append("There are no Channel VOICE for " + str(channeltarget))
+            else:
+                voicelist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanvoices'], 'andlist')
+                dispmsg.append("Channel VOICE for " + str(channeltarget) + " are: " + voicelist)
         osd(bot, trigger.nick, 'notice', spicemanip(bot, dispmsg, 'andlist'))
         return
 
     # Users List
     if subcommand.lower() == 'users':
         for channeltarget in targetchannels:
-            userslist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['current_users'], 'andlist')
-            dispmsg.append("Channel users for " + str(channeltarget) + " are: " + userslist)
+            if bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['current_users'] == []:
+                dispmsg.append("There are no Channel users for " + str(channeltarget))
+            else:
+                userslist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['current_users'], 'andlist')
+                dispmsg.append("Channel users for " + str(channeltarget) + " are: " + userslist)
         osd(bot, trigger.nick, 'notice', spicemanip(bot, dispmsg, 'andlist'))
         return
 
