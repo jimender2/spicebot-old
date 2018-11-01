@@ -58,6 +58,8 @@ def bot_command_hub(bot, trigger):
 
         # Command Used
         botcom.command_main = spicemanip(bot, botcom.triggerargsarray, 1)
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
         if botcom.command_main.lower() not in valid_botnick_commands:
             invalidcomslist.append(botcom.command_main)
         else:
@@ -78,7 +80,6 @@ Owner
 def bot_command_function_owner(bot, trigger, botcom):
 
     targetbots = []
-    bot.say(str(botcom.triggerargsarray))
     if botcom.triggerargsarray == []:
         targetbots.append(bot.nick)
     elif 'all' in botcom.triggerargsarray:
