@@ -225,7 +225,14 @@ def botdict_setup_bots(bot):
 
     for botconf in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         if bot.memory["botdict"]["tempvals"]['bots_list'][botconf] == dict():
-            bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['name'] = botconf
+            if 'name' not in bot.memory["botdict"]["tempvals"]['bots_list'][botconf].keys():
+                bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['name'] = botconf
+            if 'directory' not in bot.memory["botdict"]["tempvals"]['bots_list'][botconf].keys():
+                joindpath = os.path.join("/home/spicebot/.sopel/", botconf)
+                if os.path.isdir(joindpath):
+                    bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['directory'] = joindpath
+                else:
+                    bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['directory'] = None
 
 
 def nick_actual(bot, nick):
