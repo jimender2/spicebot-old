@@ -24,6 +24,7 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
+    return
 
     # user that triggered this event
     instigator = trigger.nick
