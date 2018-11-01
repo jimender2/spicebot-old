@@ -37,7 +37,7 @@ def botcom_player_leave(bot, trigger):
     else:
         partmessage = 'nothing'
 
-    osd(bot, channel, 'say', str(instigator) + " parted " + str(channel) + " saying "  + str(partmessage))
+    osd(bot, channel, 'say', str(instigator) + " parted " + str(channel) + " saying " + str(partmessage))
 
     return
 
