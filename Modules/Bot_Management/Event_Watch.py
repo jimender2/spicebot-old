@@ -25,4 +25,5 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
 
-    bot.msg('deathbybybandaid', "KICK " + str(trigger))
+    for channel in bot.channels:
+        osd(bot, channel, 'say', "kick")
