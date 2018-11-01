@@ -304,15 +304,12 @@ def botdict_setup_users(bot):
 
 def nick_actual(bot, nick):
     nick_actual = nick
+    if "botdict_loaded" not in bot.memory:
+        for u in bot.users:
+            if u.lower() == str(nick).lower():
+                nick_actual = u
+        return nick_actual
     for u in bot.memory["botdict"]["users"].keys():
-        if u.lower() == str(nick).lower():
-            nick_actual = u
-    return nick_actual
-
-
-def nick_actual_backup(bot, nick):
-    nick_actual = str(nick)
-    for u in bot.users:
         if u.lower() == str(nick).lower():
             nick_actual = u
     return nick_actual
