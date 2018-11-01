@@ -21,7 +21,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # valid commands that the bot will reply to by name
-valid_botnick_commands = ['uptime']
+valid_botnick_commands = ['uptime', 'dict']
 
 
 """
@@ -67,9 +67,23 @@ def bot_command_hub(bot, trigger):
 
     # Display Invalids coms used
     if invalidcomslist != []:
-        osd(bot, trigger.sender, 'say', "I was unable to process the following commands: " + spicemanip(bot, invalidcomslist, 'andlist'))
+        osd(bot, trigger.nick, 'notice', "I was unable to process the following Bot Nick commands: " + spicemanip(bot, invalidcomslist, 'andlist'))
+
+
+"""
+Uptime
+"""
 
 
 def bot_command_function_uptime(bot, trigger, botcom):
     delta = datetime.timedelta(seconds=round((datetime.datetime.utcnow() - bot.memory["botdict"]["tempvals"]["uptime"]).total_seconds()))
     osd(bot, trigger.sender, 'say', "I've been sitting here for {} and I keep going!".format(delta))
+
+
+"""
+Testing
+"""
+
+
+def bot_command_function_dict(bot, trigger, botcom):
+    osd(bot, trigger.sender, 'say', str(bot.memory["botdict"]))
