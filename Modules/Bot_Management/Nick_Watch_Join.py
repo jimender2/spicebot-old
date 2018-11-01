@@ -25,8 +25,13 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
 
-    for channel in bot.channels:
-        osd(bot, channel, 'say', str(trigger.args))
+    # user that triggered this event
+    instigator = trigger.nick
+
+    # Channel
+    channel = trigger.args[0]
+
+    osd(bot, channel, 'say', str(instigator) + " joined " + str(channel))
 
     return
 
