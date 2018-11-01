@@ -46,8 +46,7 @@ def bot_command_hub(bot, trigger):
     botcom.instigator = trigger.nick
 
     # create arg list
-    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
-    bot.say(str(botcom.triggerargsarray))
+    botcom.triggerargsarray = spicemanip(bot, trigger, '2+', 'list')
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
