@@ -124,7 +124,7 @@ def bot_command_function_channel(bot, trigger, botcom):
     if subcommand.lower() == 'hop':
         for channeltarget in targetchannels:
             if bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanhalfops'] == []:
-                dispmsg.append("There are no Channel Operators for " + str(channeltarget))
+                dispmsg.append("There are no Channel Half Operators for " + str(channeltarget))
             else:
                 hoplist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanhalfops'], 'andlist')
                 dispmsg.append("Channel Half Operators for " + str(channeltarget) + "  are: " + hoplist)
