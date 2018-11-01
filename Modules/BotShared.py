@@ -49,6 +49,7 @@ bot_dict = {
 
                             # server the bot is connected to
                             "server": False,
+                            "servername": False,
 
                             # Channels
                             "channels_list": {},
@@ -164,16 +165,25 @@ def botdict_setup_server(bot):
     # This is a custom function for this bot's connection
     if not bot.memory["botdict"]["tempvals"]['server']:
         if ipv4detect(bot, bot.config.core.host):
-            networkname = str(bot.config.core.user.split("/", 1)[1])
-            if networkname == 'SpiceBot':
+            servername = str(bot.config.core.user.split("/", 1)[1])
+            if servername == 'SpiceBot':
                 server = 'irc.spicebot.net'
-            elif networkname == 'Freenode':
+            elif servername == 'Freenode':
                 server = 'irc.freenode.net'
             else:
                 server = bot.config.core.host
         else:
             server = bot.config.core.host
         bot.memory["botdict"]["tempvals"]['server'] = server
+
+    if not bot.memory["botdict"]["tempvals"]['servername']:
+        if ipv4detect(bot, bot.config.core.host):
+            servername = str(bot.config.core.user.split("/", 1)[1])
+            if servername not in tuple(["SpiceBot", "Freenode"]):
+                servername = bot.config.core.host
+        else:
+            servername = bot.config.core.host
+        bot.memory["botdict"]["tempvals"]['servername'] = servername
 
 
 def ipv4detect(bot, hostIP):
@@ -204,7 +214,7 @@ Users
 def botdict_setup_bots(bot):
 
     if not bot.memory["botdict"]["tempvals"]['config_dir']:
-        bot.memory["botdict"]["tempvals"]['config_dir'] = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['server'] + "/")
+        bot.memory["botdict"]["tempvals"]['config_dir'] = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
 
     # all bot configs present
     if bot.memory["botdict"]["tempvals"]['bots_list'].keys() == []:
