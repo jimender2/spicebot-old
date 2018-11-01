@@ -27,6 +27,7 @@ def botcom_player_return(bot, trigger):
 
     for channel in bot.channels:
         osd(bot, channel, 'say', str(trigger.args[1]) + " was kicked from " + str(trigger.args[0]) + " by " + str(trigger.args[-1]))
+        osd(bot, channel, 'say', "KICK " + str(trigger.nick))
         # osd(bot, channel, 'say', "KICK " + str(trigger.args))
         # osd(bot, channel, 'say', "KICK " + str(trigger))
         # KICK [u'#spicebottest', u'thelounge', u'deathbybandaid']
