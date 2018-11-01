@@ -26,4 +26,5 @@ sys.setdefaultencoding('utf-8')
 def botcom_player_return(bot, trigger):
 
     for channel in bot.channels:
-        osd(bot, channel, 'say', "TOPIC " + str(trigger.args))
+        # osd(bot, channel, 'say', "TOPIC " + str(trigger.args))
+        osd(bot, channel, 'say', "TOPIC " + str(bot.channels[channel].topic))
