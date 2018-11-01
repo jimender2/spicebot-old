@@ -22,7 +22,7 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-# bot.nick do this
+bot.nick do this
 """
 
 

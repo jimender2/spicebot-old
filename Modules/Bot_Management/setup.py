@@ -26,4 +26,3 @@ def initialsetup(bot):
         return
     bot.memory["botstartup"] = True
     botsetup(bot)
-    # bot.msg('deathbybandaid', str(bot.memory["botdict"]))
