@@ -29,7 +29,7 @@ GITWIKIURL = "https://github.com/SpiceBot/SpiceBot/wiki"
 """
 
 
-@nickname_commands('modules', 'msg', 'action', 'block', 'github', 'on', 'off', 'devmode', 'update', 'restart', 'permfix', 'debug', 'pip', 'channel', 'help', 'docs', 'cd', 'dir', 'gitpull')
+@nickname_commands('modules', 'msg', 'action', 'block', 'github', 'on', 'off', 'devmode', 'update', 'restart', 'permfix', 'debug', 'pip', 'help', 'docs', 'cd', 'dir', 'gitpull')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     triggerargsarray = spicemanip(bot, trigger.group(0), 'create')
@@ -132,39 +132,6 @@ def bot_command_function_cd(bot, trigger, botcom, instigator):
 
 def bot_command_function_docs(bot, trigger, botcom, instigator):
     osd(bot, botcom.channel_current, 'say', "Online Docs: " + GITWIKIURL)
-
-
-def bot_command_function_admin(bot, trigger, botcom, instigator):
-    adminlist = spicemanip(bot, botcom.botadmins, 'list')
-    osd(bot, botcom.instigator, 'notice', "Bot Admin are: " + adminlist)
-
-
-def bot_command_function_channel(bot, trigger, botcom, instigator):
-
-    # SubCommand used
-    valid_subcommands = ['list', 'op', 'voice']
-    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'list'
-
-    # list channels
-    if subcommand == 'list':
-        channelarray = []
-        for c in bot.channels:
-            channelarray.append(c)
-        chanlist = spicemanip(bot, channelarray, 'list')
-        osd(bot, botcom.channel_current, 'say', "You can find me in " + chanlist)
-        return
-
-    # OP list
-    if subcommand.lower() == 'op':
-        oplist = spicemanip(bot, botcom.chanops, 'list')
-        osd(bot, botcom.instigator, 'notice', "Channel Operators are: " + oplist)
-        return
-
-    # Voice List
-    if subcommand.lower() == 'voice':
-        voicelist = spicemanip(bot, botcom.chanvoice, 'list')
-        osd(bot, botcom.instigator, 'notice', "Channel VOICE are: " + voicelist)
-        return
 
 
 def bot_command_function_on(bot, trigger, botcom, instigator):

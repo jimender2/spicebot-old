@@ -73,6 +73,74 @@ def bot_command_hub(bot, trigger):
 
 
 """
+Channel
+"""
+
+
+def bot_command_function_channel(bot, trigger, botcom, instigator):
+
+    # SubCommand used
+    valid_subcommands = ['list', 'op', 'hop', 'voice', 'users']
+    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'list'
+
+    # list channels
+    if subcommand == 'list':
+        chanlist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'].keys(), 'andlist')
+        osd(bot, trigger.sender, 'say', "You can find me in " + chanlist)
+        return
+
+    # Channel
+    targetchannels = []
+    if botcom.triggerargsarray == []:
+        if trigger.sender.startswith('#'):
+            targetchannels.append(trigger.sender)
+        else:
+            osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
+            return
+    elif 'all' in botcom.triggerargsarray:
+        for targetchan in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+            targetchannels.append(targetchan)
+    else:
+        for targetchan in botcom.triggerargsarray:
+            if targetchan in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+                targetchannels.append(targetchan)
+
+    dispmsg = []
+
+    # OP list
+    if subcommand.lower() == 'op':
+        for channeltarget in targetchannels:
+            oplist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanops'], 'andlist')
+            dispmsg.append("Channel Operators for " + str(channeltarget) + "  are: " + oplist)
+        osd(bot, trigger.nick, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        return
+
+    # HOP list
+    if subcommand.lower() == 'hop':
+        for channeltarget in targetchannels:
+            hoplist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanhalfops'], 'andlist')
+            dispmsg.append("Channel Operators for " + str(channeltarget) + "  are: " + hoplist)
+        osd(bot, trigger.nick, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        return
+
+    # Voice List
+    if subcommand.lower() == 'voice':
+        for channeltarget in targetchannels:
+            voicelist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanvoices'], 'andlist')
+            dispmsg.append("Channel VOICE for " + str(channeltarget) + " are: " + voicelist)
+        osd(bot, trigger.nick, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        return
+
+    # Users List
+    if subcommand.lower() == 'users':
+        for channeltarget in targetchannels:
+            userslist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['current_users'], 'andlist')
+            dispmsg.append("Channel users for " + str(channeltarget) + " are: " + userslist)
+        osd(bot, trigger.nick, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        return
+
+
+"""
 Admins
 """
 
