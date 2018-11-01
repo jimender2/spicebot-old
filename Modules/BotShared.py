@@ -139,6 +139,10 @@ Bot Servers
 
 def botdict_setup_server(bot):
 
+    # if host is set in the config without a bouncer, uncomment the next two lines:
+    # bot.memory["botdict"]["tempvals"]['server'] = bot.config.core.host
+    # return
+
     # The server the bot is connected to. Sopel limit is one
     # this detects the use of an IRC bouncer like ZNC
     # This is a custom function for this bot's connection
