@@ -25,9 +25,19 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def botcom_player_leave(bot, trigger):
 
-    for channel in bot.channels:
-        osd(bot, channel, 'say', "QUIT " + str(trigger.args))
-        osd(bot, channel, 'say', "QUIT " + str(trigger))
+    # user that triggered this event
+    instigator = trigger.nick
+
+    # Channel
+    # channel = trigger.args[0]
+
+    # Part message
+    if len(trigger.args) == 1:
+        quitmessage = trigger.args[0]
+    else:
+        quitmessage = 'nothing'
+
+    osd(bot, channel, 'say', str(instigator) + " quit " + str("The server") + " saying " + str(partmessage))
 
     return
 

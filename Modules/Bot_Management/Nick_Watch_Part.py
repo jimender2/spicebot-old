@@ -24,6 +24,7 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_leave(bot, trigger):
+    return
 
     # user that triggered this event
     instigator = trigger.nick
@@ -38,12 +39,6 @@ def botcom_player_leave(bot, trigger):
         partmessage = 'nothing'
 
     osd(bot, channel, 'say', str(instigator) + " parted " + str(channel) + " saying " + str(partmessage))
-
-    return
-
-    for channel in bot.channels:
-        osd(bot, channel, 'say', "PART " + str(trigger.args))
-        osd(bot, channel, 'say', "PART " + str(trigger))
 
     return
 
