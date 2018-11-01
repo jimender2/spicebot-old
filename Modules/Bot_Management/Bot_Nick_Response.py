@@ -21,7 +21,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # valid commands that the bot will reply to by name
-valid_botnick_commands = ['uptime', 'canyouseeme', 'gender', 'owner', 'admins', 'dict']
+valid_botnick_commands = ['uptime', 'canyouseeme', 'gender', 'owner', 'admins', 'channel', 'dict']
 
 
 """
