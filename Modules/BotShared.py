@@ -688,10 +688,7 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
     if outputtask == 'string':
         returnvalue = inputs
     else:
-        try:
-            returnvalue = eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
-        except NameError:
-            returnvalue = ''
+        returnvalue = eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
 
     # default return if not specified
     if output_type == 'default':
