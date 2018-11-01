@@ -78,6 +78,7 @@ Owner
 def bot_command_function_owner(bot, trigger, botcom):
 
     targetbots = []
+    bot.say(str(botcom.triggerargsarray))
     if botcom.triggerargsarray == []:
         targetbots.append(bot.nick)
     elif 'all' in botcom.triggerargsarray:
