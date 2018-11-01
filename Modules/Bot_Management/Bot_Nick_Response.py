@@ -82,6 +82,8 @@ def bot_command_function_channel(bot, trigger, botcom):
     # SubCommand used
     valid_subcommands = ['list', 'op', 'hop', 'voice', 'users']
     subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'list'
+    if subcommand in botcom.triggerargsarray:
+        botcom.triggerargsarray.remove(subcommand)
 
     # list channels
     if subcommand == 'list':
