@@ -37,7 +37,8 @@ def botcom_player_leave(bot, trigger):
     else:
         quitmessage = 'nothing'
 
-    osd(bot, channel, 'say', str(instigator) + " quit " + str("The server") + " saying " + str(partmessage))
+    for channel in bot.channels:
+        osd(bot, channel, 'say', str(instigator) + " quit " + str("The server") + " saying " + str(partmessage))
 
     return
 
