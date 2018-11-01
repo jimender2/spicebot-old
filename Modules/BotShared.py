@@ -92,6 +92,9 @@ def botdict_open(bot):
     # Channel Listing
     botdict_setup_channels(bot)
 
+    # Bot configs
+    botdict_setup_bots(bot)
+
     # use this to prevent bot usage if the above isn't done loading
     bot.memory["botdict_loaded"] = True
 
