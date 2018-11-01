@@ -41,41 +41,11 @@ bot_dict = {
                             # Loaded configs
                             "commands_loaded": [],
 
-                            # Commands list
-                            "commands": {},
-
-                            # Alternate Commands, duplicate of above
-                            "alt_commands": {},
+                            # server the bot is connected to
+                            "server": False,
 
                             # list of channels the bot is in
                             "channels_list": [],
-
-                            # Other bots
-                            "bots_list": [],
-
-                            # current users
-                            "current_users": [],
-
-                            # offline users
-                            "offline_users": [],
-
-                            # bot owner users
-                            "bot_owner": [],
-
-                            # bot admin users
-                            "bot_admins": [],
-
-                            # chan OP
-                            "chanops": [],
-
-                            # chan HALFOP
-                            "chanhalfops": [],
-
-                            # chan VOICE
-                            "chanvoices": [],
-
-                            # players that can't play
-                            "cantplayarray": [],
 
                             # End of Temp Vals
                             },
@@ -102,6 +72,9 @@ def botdict_open(bot):
     if "botdict" in bot.memory:
         return
     bot.memory["botdict"] = botdict_setup_open(bot)
+
+    # Server connected to
+    botdict_setup_server(bot)
 
     # Channel Listing
     botdict_setup_channels(bot)
@@ -154,6 +127,28 @@ def botdict_save(bot):
 
     # save to database
     set_database_value(bot, bot.nick, 'bot_dict', savedict)
+
+
+"""
+Bot Servers
+"""
+
+
+def botdict_setup_server(bot):
+
+    # The server the bot is connected to. Sopel limit is one
+    if not bot.memory["botdict"]["tempvals"]['server']:
+        if ipv4detect(bot, bot.config.core.host):
+            server = 'irc.spicebot.net'
+        else:
+            server = bot.config.core.host
+        bot.memory["botdict"]["tempvals"]['server'] = server
+
+
+def ipv4detect(bot, hostIP):
+    pat = re.compile("\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}")
+    test = pat.match(hostIP)
+    return test
 
 
 """
