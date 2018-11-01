@@ -31,7 +31,7 @@ def botcom_player_leave(bot, trigger):
     # Channel
     # channel = trigger.args[0]
 
-    # Part message
+    # Quit message
     if len(trigger.args) == 1:
         quitmessage = trigger.args[0]
     else:
