@@ -35,7 +35,7 @@ bot_dict = {
                 "tempvals": {
 
                             # Indicate if we need to pull the dict from the database
-                            "coms_loaded": False,
+                            "dict_loaded": False,
 
                             # Loaded configs
                             "commands_loaded": [],
