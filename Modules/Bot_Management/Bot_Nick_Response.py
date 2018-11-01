@@ -21,7 +21,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # valid commands that the bot will reply to by name
-valid_botnick_commands = ['uptime', 'canyouseeme', 'gender', 'owner', 'dict']
+valid_botnick_commands = ['uptime', 'canyouseeme', 'gender', 'owner', 'admins', 'dict']
 
 
 """
@@ -70,6 +70,31 @@ def bot_command_hub(bot, trigger):
     # Display Invalids coms used
     if invalidcomslist != []:
         osd(bot, trigger.nick, 'notice', "I was unable to process the following Bot Nick commands: " + spicemanip(bot, invalidcomslist, 'andlist'))
+
+
+"""
+Admins
+"""
+
+
+def bot_command_function_admins(bot, trigger, botcom):
+
+    targetbots = []
+    if botcom.triggerargsarray == []:
+        targetbots.append(bot.nick)
+    elif 'all' in botcom.triggerargsarray:
+        for targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+            targetbots.append(targetbot)
+    else:
+        for targetbot in botcom.triggerargsarray:
+            if targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+                targetbots.append(targetbot)
+
+    dispmsg = []
+    for targetbot in targetbots:
+        currentbotsadmins = bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['configuration']['core']['admins']
+        dispmsg.append(targetbot + " is administrated by " + currentbotsadmins)
+    osd(bot, trigger.sender, 'say', spicemanip(bot, dispmsg, 'andlist'))
 
 
 """
