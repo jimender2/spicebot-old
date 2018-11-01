@@ -22,5 +22,5 @@ sys.setdefaultencoding('utf-8')
 
 @sopel.module.interval(1800)
 def initialsetup(bot):
-    # botdict_save(bot)
-    farting = True
+    return
+    botdict_save(bot)

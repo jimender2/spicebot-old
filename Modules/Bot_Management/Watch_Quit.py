@@ -28,6 +28,9 @@ def botcom_player_leave(bot, trigger):
     # user that triggered this event
     instigator = trigger.nick
 
+    # Server
+    server = bot.memory["botdict"]['tempvals']['server']
+
     # Channel
     # channel = trigger.args[0]
 
@@ -37,8 +40,8 @@ def botcom_player_leave(bot, trigger):
     else:
         quitmessage = 'nothing'
 
-    for channel in bot.channels:
-        osd(bot, channel, 'say', str(instigator) + " quit " + str("The server") + " saying " + str(quitmessage))
+    for channel in bot.channels:  # TODO channel needs to just be ones the user was active in
+        osd(bot, channel, 'say', str(instigator) + " quit " + str(server) + " saying " + str(quitmessage))
 
     return
 
