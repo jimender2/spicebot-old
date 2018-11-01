@@ -36,7 +36,7 @@ def bot_command_hub(bot, trigger):
 
     # bot.say(str(bot.server))
 
-    ipv4detect(bot, "192.168.5.10")
+    ipv4detect(bot, bot.config.core.host)
 
     return
 
