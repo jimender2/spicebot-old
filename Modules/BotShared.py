@@ -99,6 +99,9 @@ def botdict_open(bot):
     # Bot configs
     botdict_setup_bots(bot)
 
+    # users
+    botdict_setup_users(bot)
+
     # use this to prevent bot usage if the above isn't done loading
     bot.memory["botdict_loaded"] = True
 
@@ -210,7 +213,7 @@ def botdict_setup_channels(bot):
 
 
 """
-Users
+Bots
 """
 
 
@@ -249,6 +252,11 @@ def botdict_setup_bots(bot):
                         for (each_key, each_val) in config.items(each_section):
                             if each_key not in bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['configuration'][each_section].keys():
                                 bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['configuration'][each_section][each_key] = each_val
+
+
+"""
+Users
+"""
 
 
 def botdict_setup_users(bot):

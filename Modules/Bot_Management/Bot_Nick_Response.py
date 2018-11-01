@@ -86,4 +86,4 @@ Testing
 
 
 def bot_command_function_dict(bot, trigger, botcom):
-    osd(bot, trigger.sender, 'say', str(bot.memory["botdict"]))
+    osd(bot, trigger.sender, 'say', str(bot.memory["botdict"]["users"]['users_all']))
