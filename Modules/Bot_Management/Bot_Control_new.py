@@ -26,7 +26,7 @@ bot.nick do this
 """
 
 
-@nickname_commands('test')
+@nickname_commands('(.*)')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     tstingstr = bot.memory["botdict"]['tempvals']['channels_list']
