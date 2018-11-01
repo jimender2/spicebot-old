@@ -32,6 +32,8 @@ def bot_command_hub(bot, trigger):
     if "botdict" not in bot.memory:
         botdict_open(bot)
 
-    bot.say(str(bot.memory["botdict"]['tempvals']['channels_list']))
+    # bot.say(str(bot.memory["botdict"]['tempvals']['channels_list']))
+
+    bot.say(str(bot.server))
 
     return
