@@ -83,6 +83,7 @@ def botdict_open(bot):
 
     if "botdict_loaded" in bot.memory:
         return
+    bot.memory["botdict_loading"] = 0
     bot.memory["botdict"] = botdict_setup_open(bot)
     bot.memory["botdict_loading"] = 1
 
