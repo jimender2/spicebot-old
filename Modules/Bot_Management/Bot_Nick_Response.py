@@ -106,7 +106,7 @@ def bot_command_function_owner(bot, trigger, botcom):
 
     targetbots = []
     if botcom.triggerargsarray == []:
-        targetbots.append(bot.nick)
+        targetbots.append(str(bot.nick))
     elif 'all' in botcom.triggerargsarray:
         for targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
             targetbots.append(targetbot)
