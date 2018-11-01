@@ -35,7 +35,9 @@ bot.nick do this
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     if "botdict_loaded" not in bot.memory:
-        osd(bot, trigger.nick, 'notice', "Please wait while I load my dictionary configuration." + str(spicemanip(bot, trigger, 'random')))
+        if "botdict_loading" not in bot.memory:
+            bot.memory["botdict_loading"] = 0
+        osd(bot, trigger.nick, 'notice', "Please wait while I load my dictionary configuration. " + str(bot.memory["botdict_loading"]) + " completed.")
         return
 
     # botcom dynamic Class
