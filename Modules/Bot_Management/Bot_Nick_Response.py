@@ -77,7 +77,7 @@ Channel
 """
 
 
-def bot_command_function_channel(bot, trigger, botcom, instigator):
+def bot_command_function_channel(bot, trigger, botcom):
 
     # SubCommand used
     valid_subcommands = ['list', 'op', 'hop', 'voice', 'users']
