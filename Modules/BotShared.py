@@ -73,9 +73,7 @@ bot_dict = {
                 "static": {},
 
                 # Users lists
-                "users": {
-                            "users_all": {},
-                            },
+                "users": {},
 
                 }
 
@@ -293,12 +291,12 @@ def botdict_setup_users(bot):
                 bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(user)
 
         for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
-            if user not in bot.memory["botdict"]["users"]['users_all'].keys():
-                bot.memory["botdict"]["users"]['users_all'][user] = dict()
+            if user not in bot.memory["botdict"]["users"].keys():
+                bot.memory["botdict"]["users"][user] = dict()
             if user not in bot.memory["botdict"]["tempvals"]['all_current_users']:
                 bot.memory["botdict"]["tempvals"]['all_current_users'].append(user)
 
-    for user in bot.memory["botdict"]["users"]['users_all'].keys():
+    for user in bot.memory["botdict"]["users"].keys():
         if user not in bot.memory["botdict"]["tempvals"]['all_current_users']:
             if user not in bot.memory["botdict"]["tempvals"]['offline_users']:
                 bot.memory["botdict"]["tempvals"]['offline_users'].append(user)
@@ -306,7 +304,15 @@ def botdict_setup_users(bot):
 
 def nick_actual(bot, nick):
     nick_actual = nick
-    for u in bot.memory["botdict"]["users"]['users_all'].keys():
+    for u in bot.memory["botdict"]["users"].keys():
+        if u.lower() == str(nick).lower():
+            nick_actual = u
+    return nick_actual
+
+
+def nick_actual_backup(bot, nick):
+    nick_actual = str(nick)
+    for u in bot.users:
         if u.lower() == str(nick).lower():
             nick_actual = u
     return nick_actual
