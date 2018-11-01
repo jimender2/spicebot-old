@@ -25,6 +25,11 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
 
+    for channel in bot.channels:
+        osd(bot, channel, 'say', "JOIN " + str(trigger.args))
+
+    return
+
     if "botdict" not in bot.memory:
         botdict_open(bot)
 
