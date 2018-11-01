@@ -21,7 +21,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # valid commands that the bot will reply to by name
-valid_botnick_commands = ['uptime', 'dict']
+valid_botnick_commands = ['uptime', 'canyouseeme', 'gender', 'owner', 'dict']
 
 
 """
@@ -71,6 +71,31 @@ def bot_command_hub(bot, trigger):
 
 
 """
+Owner
+"""
+
+
+def bot_command_function_owner(bot, trigger, botcom):
+
+    targetbots = []
+    if botcom.triggerargsarray == []:
+        targetbots.append(bot.nick)
+    elif 'all' in botcom.triggerargsarray:
+        for targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+            targetbots.append(targetbot)
+    else:
+        for targetbot in botcom.triggerargsarray:
+            if targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+                targetbots.append(targetbot)
+
+    dispmsg = []
+    for targetbot in targetbots:
+        currentbotsowner = bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['configuration']['core']['owner']
+        dispmsg.append(targetbot + " is owned by " + currentbotsowner)
+    osd(bot, trigger.sender, 'say', spicemanip(bot, dispmsg, 'andlist'))
+
+
+"""
 Uptime
 """
 
@@ -78,6 +103,24 @@ Uptime
 def bot_command_function_uptime(bot, trigger, botcom):
     delta = datetime.timedelta(seconds=round((datetime.datetime.utcnow() - bot.memory["botdict"]["tempvals"]["uptime"]).total_seconds()))
     osd(bot, trigger.sender, 'say', "I've been sitting here for {} and I keep going!".format(delta))
+
+
+"""
+Gender
+"""
+
+
+def bot_command_function_gender(bot, trigger, botcom):
+    osd(bot, trigger.sender, 'say', "My gender is Female")
+
+
+"""
+Can You see me
+"""
+
+
+def bot_command_function_canyouseeme(bot, trigger, botcom):
+    osd(bot, trigger.sender, 'say', botcom.instigator + ", I can see you.")
 
 
 """

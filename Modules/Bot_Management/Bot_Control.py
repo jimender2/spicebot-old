@@ -29,14 +29,13 @@ GITWIKIURL = "https://github.com/SpiceBot/SpiceBot/wiki"
 """
 
 
-@nickname_commands('modules', 'msg', 'action', 'block', 'github', 'on', 'off', 'devmode', 'update', 'restart', 'permfix', 'debug', 'pip', 'channel', 'gender', 'owner', 'admin', 'canyouseeme', 'help', 'docs', 'cd', 'dir', 'gitpull')
+@nickname_commands('modules', 'msg', 'action', 'block', 'github', 'on', 'off', 'devmode', 'update', 'restart', 'permfix', 'debug', 'pip', 'channel', 'admin', 'help', 'docs', 'cd', 'dir', 'gitpull')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     triggerargsarray = spicemanip(bot, trigger.group(0), 'create')
     triggerargsarray = spicemanip(bot, triggerargsarray, '2+')
     triggerargsarray = spicemanip(bot, triggerargsarray, 'create')
     bot_command_process(bot, trigger, triggerargsarray)
-    bot.say("done")
 
 
 def bot_command_process(bot, trigger, triggerargsarray):
@@ -135,22 +134,9 @@ def bot_command_function_docs(bot, trigger, botcom, instigator):
     osd(bot, botcom.channel_current, 'say', "Online Docs: " + GITWIKIURL)
 
 
-def bot_command_function_canyouseeme(bot, trigger, botcom, instigator):
-    osd(bot, botcom.channel_current, 'say', botcom.instigator + ", I can see you.")
-
-
-def bot_command_function_owner(bot, trigger, botcom, instigator):
-    ownerlist = spicemanip(bot, botcom.owner, 'list')
-    osd(bot, botcom.instigator, 'notice', "Bot Owners are: " + ownerlist)
-
-
 def bot_command_function_admin(bot, trigger, botcom, instigator):
     adminlist = spicemanip(bot, botcom.botadmins, 'list')
     osd(bot, botcom.instigator, 'notice', "Bot Admin are: " + adminlist)
-
-
-def bot_command_function_gender(bot, trigger, botcom, instigator):
-    osd(bot, botcom.channel_current, 'say', "My gender is Female")
 
 
 def bot_command_function_channel(bot, trigger, botcom, instigator):
