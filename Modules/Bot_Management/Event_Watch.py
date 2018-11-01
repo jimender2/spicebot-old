@@ -20,9 +20,9 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@event('(.*)')
+@event('MODE')
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
 
-    bot.msg('deathbybybandaid', str(trigger))
+    bot.msg('deathbybybandaid', "MODE " + str(trigger))
