@@ -22,6 +22,10 @@ sys.setdefaultencoding('utf-8')
 mode_dict_alias = {
                     "+o": "OP",
                     "-o": "deOP",
+                    "+v": "VOICE",
+                    "-v": "deVOICE",
+                    "+h": "HOP",
+                    "-h": "deHOP",
                     }
 
 
