@@ -35,7 +35,7 @@ bot.nick do this
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     if "botdict_loaded" not in bot.memory:
-        osd(bot, trigger.sender, 'say', "Please wait while I load my dictionary configuration.")
+        osd(bot, trigger.nick, 'notice', "Please wait while I load my dictionary configuration.")
         return
 
     # botcom dynamic Class
