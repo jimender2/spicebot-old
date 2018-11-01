@@ -69,7 +69,7 @@ bot_dict = {
 
 def botdict_open(bot):
 
-    if "botdict" in bot.memory:
+    if "botdict_loaded" in bot.memory:
         return
     bot.memory["botdict"] = botdict_setup_open(bot)
 
@@ -78,6 +78,9 @@ def botdict_open(bot):
 
     # Channel Listing
     botdict_setup_channels(bot)
+
+    # use this to prevent bot usage if the above isn't done loading
+    bot.memory["botdict_loaded"] = True
 
 
 def botdict_setup_open(bot):
