@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-from sopel.module import commands, nickname_commands, event, rule
+from sopel.module import commands, nickname_commands, event, rule, OP, ADMIN, VOICE
 
 # imports for system and OS access, directories
 import os
@@ -31,7 +31,7 @@ osd_limit = 420  # Ammount of text allowed to display per line
 
 
 """
-Botcom Dictionary
+Bot Dictionary
 """
 
 bot_dict = {
@@ -57,6 +57,12 @@ bot_dict = {
                             # Channels
                             "channels_list": {},
 
+                            # Current Users
+                            "all_current_users": [],
+
+                            # offline users
+                            "offline_users": [],
+
                             # Bots
                             "bots_list": {},
 
@@ -68,15 +74,9 @@ bot_dict = {
 
                 # Users lists
                 "users": {
-                            "users_all": [],
+                            "users_all": {},
                             },
 
-                # channels list
-                "channels": {
-                                "game_enabled": [],
-                                "devmode_enabled": []
-
-                                },
                 }
 
 
@@ -251,90 +251,72 @@ def botdict_setup_bots(bot):
                                 bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['configuration'][each_section][each_key] = each_val
 
 
-def bot_target_admins(bot, targetbot):
-    targetbotadmins = []
-    checkdirectory = os.path.join("/home/spicebot/.sopel/", targetbot)
-    if os.path.isdir(checkdirectory):
-        networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
-        configfile = str("/home/spicebot/.sopel/" + targetbot + "/System-Files/Configs/" + networkname + targetbot + ".cfg")
-        config = ConfigParser.ConfigParser()
-        config.read(configfile)
-        owner = config.get("core", "owner")
-        targetbotadmins.append(owner)
-        admins = config.get("core", "admins")
-        admins = admins.split(",")
-        for admin in admins:
-            if admin not in targetbotadmins:
-                targetbotadmins.append(admin)
-    return targetbotadmins
-
-
 def botdict_setup_users(bot):
-    dd = 1
 
+    for channelcheck in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
 
-def botcom_command_users(bot, botcom):
+        if 'chanops' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
+            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'] = []
 
-    if botcom.botcomdict["tempvals"]['bot_owner'] == []:
-        for user in bot.config.core.owner:
-            if user not in botcom.botcomdict["tempvals"]['bot_owner']:
-                botcom.botcomdict["tempvals"]['bot_owner'].append(user)
+        if 'chanhalfops' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
+            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops'] = []
 
-    if botcom.botcomdict["tempvals"]['bot_admins'] == []:
-        for user in bot.config.core.admins:
-            if user not in botcom.botcomdict["tempvals"]['bot_admins']:
-                botcom.botcomdict["tempvals"]['bot_admins'].append(user)
+        if 'chanvoices' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
+            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices'] = []
 
-    # users that cannot be part of the game
-    if botcom.botcomdict["tempvals"]['cantplayarray'] == []:
-        cantplayarrays = ["botcom.botcomdict['tempvals']['commands'].keys()", "botcom.botcomdict['tempvals']['alt_commands'].keys()", "botcom.botcomdict['tempvals']['bots_list']"]
-        for nicklist in cantplayarrays:
-            currentnicklist = eval(nicklist)
-            for x in currentnicklist:
-                if x not in botcom.botcomdict["tempvals"]['cantplayarray']:
-                    botcom.botcomdict["tempvals"]['cantplayarray'].append(x)
+        if 'current_users' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
+            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] = []
 
-    for channelcheck in botcom.botcomdict["tempvals"]['channels_list']:
         for user in bot.privileges[channelcheck].keys():
-            if user not in botcom.botcomdict["tempvals"]['cantplayarray']:
 
-                # Start with Channel permissions
-                if bot.privileges[channelcheck][user] == OP:
-                    if user not in botcom.botcomdict["tempvals"]['chanops']:
-                        botcom.botcomdict["tempvals"]['chanops'].append(user)
+            if bot.privileges[channelcheck][user] == OP:
+                if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops']:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'].append(user)
 
-                elif bot.privileges[channelcheck][user] == HALFOP:
-                    if user not in botcom.botcomdict["tempvals"]['chanhalfops']:
-                        botcom.botcomdict["tempvals"]['chanhalfops'].append(user)
+            elif bot.privileges[channelcheck][user] == HALFOP:
+                if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops']:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops'].append(user)
 
-                elif bot.privileges[channelcheck][user] == VOICE:
-                    if user not in botcom.botcomdict["tempvals"]['chanvoices']:
-                        botcom.botcomdict["tempvals"]['chanvoices'].append(user)
+            elif bot.privileges[channelcheck][user] == VOICE:
+                if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices']:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices'].append(user)
 
-                # user lists
-                if user not in botcom.botcomdict["tempvals"]['current_users']:
-                    botcom.botcomdict["tempvals"]['current_users'].append(user)
+            if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
+                bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(user)
 
-    for user in botcom.botcomdict["tempvals"]['current_users']:
-        if user not in botcom.botcomdict["tempvals"]['cantplayarray']:
-            if user not in botcom.botcomdict["users"]['users_all']:
-                botcom.botcomdict["users"]['users_all'].append(user)
+        for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
+            if user not in bot.memory["botdict"]["users"]['users_all'].keys():
+                bot.memory["botdict"]["users"]['users_all'][user] = dict()
+            if user not in bot.memory["botdict"]["tempvals"]['all_current_users']:
+                bot.memory["botdict"]["tempvals"]['all_current_users'].append(user)
 
-    for user in botcom.botcomdict["users"]['users_all']:
-        if user not in botcom.botcomdict["tempvals"]['cantplayarray']:
-            if user not in botcom.botcomdict["tempvals"]['current_users']:
-                if user not in botcom.botcomdict["tempvals"]['offline_users']:
-                    botcom.botcomdict["tempvals"]['offline_users'].append(user)
-
-    return botcom
+    for user in bot.memory["botdict"]["users"]['users_all'].keys():
+        if user not in bot.memory["botdict"]["tempvals"]['all_current_users']:
+            if user not in bot.memory["botdict"]["tempvals"]['offline_users']:
+                bot.memory["botdict"]["tempvals"]['offline_users'].append(user)
 
 
 def nick_actual(bot, nick):
-    nick_actual = str(nick)
-    for u in bot.users:
-        if u.lower() == str(nick).lower():
-            nick_actual = u
+    nick_actual = nick
+    sim_nick, sim_num = [], []
+    for validnick in bot.memory["botdict"]["users"]['users_all'].keys():
+        similarlevel = similar(nick, validnick)
+        if similarlevel >= .75:
+            sim_nick.append(validnick)
+            sim_num.append(similarlevel)
+    if sim_nick != [] and sim_num != []:
+        sim_num, sim_com = array_arrangesort(bot, sim_num, sim_nick)
+        nick_actual = spicemanip(bot, sim_nick, 'last')
     return nick_actual
+
+
+"""
+Small Functions
+"""
+
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
 
 
 """
