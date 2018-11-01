@@ -264,6 +264,14 @@ def bot_config_names(bot):
     return config_listing
 
 
+def nick_actual(bot, nick):
+    nick_actual = str(nick)
+    for u in bot.users:
+        if u.lower() == str(nick).lower():
+            nick_actual = u
+    return nick_actual
+
+
 """
 Database
 """
