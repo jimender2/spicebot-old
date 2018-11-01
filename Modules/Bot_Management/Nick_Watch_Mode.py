@@ -29,13 +29,21 @@ mode_dict_alias = {
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
+
+    # user that triggered this event
+    instigator = trigger.nick
+
+    # Ger Mode Used
     global mode_dict_alias
+    try:
+        modeused = mode_dict_alias[trigger.args[1]]
+    except KeyError:
+        modeused = trigger.args[1]
 
-    #try:
-    #    modeused = mode_dict_alias[trigger.args[1]]
-    #except KEYERROR:
-    #    modeused = trigger.args[1]
-    modeused = mode_dict_alias[trigger.args[1]]
+    # target user
+    target = trigger.args[-1]
 
-    for channel in bot.channels:
-        osd(bot, channel, 'say', str(trigger.nick) + " set mode " + str(modeused) + " on " + str(trigger.args[-1]) + " in " + str(trigger.args[0]))
+    # Channel mode was set
+    channel = trigger.args[0]
+
+    osd(bot, channel, 'say', str(instigator) + " set mode " + str(modeused) + " on " + str(target) + " in " + str(channel))
