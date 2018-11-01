@@ -20,7 +20,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@event('MODE')
+@event('TOPIC')
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
