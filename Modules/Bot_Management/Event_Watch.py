@@ -20,10 +20,10 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@event('KICK')
+@event('(.*)')
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
 
     for channel in bot.channels:
-        osd(bot, channel, 'say', "kick " + str(trigger))
+        osd(bot, channel, 'say', "EVENT " + str(trigger))
