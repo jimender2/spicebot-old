@@ -22,7 +22,6 @@ sys.setdefaultencoding('utf-8')
 
 @sopel.module.interval(1)
 def initialsetup(bot):
-    if "botstartup" in bot.memory:
+    if "botdict" in bot.memory:
         return
-    bot.memory["botstartup"] = True
     botdict_open(bot)

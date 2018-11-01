@@ -20,6 +20,9 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@sopel.module.interval(1800)
-def initialsetup(bot):
-    botdict_save(bot)
+@event('(.*)')
+@rule('.*')
+@sopel.module.thread(True)
+def botcom_player_return(bot, trigger):
+
+    bot.msg('deathbybybandaid', str(trigger))

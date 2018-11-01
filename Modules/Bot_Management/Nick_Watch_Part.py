@@ -5,7 +5,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel.module
 
-
 # imports for system and OS access, directories
 import os
 import sys
@@ -21,17 +20,18 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-"""
-bot.nick do this
-"""
-
-
-@nickname_commands('(.*)')
+@event('PART')
+@rule('.*')
 @sopel.module.thread(True)
-def bot_command_hub(bot, trigger):
+def botcom_player_leave(bot, trigger):
+
     if "botdict" not in bot.memory:
         botdict_open(bot)
 
-    bot.say(str(bot.memory["botdict"]['tempvals']['channels_list']))
+    instigator = trigger.nick
 
-    return
+    if instigator in bot.memory["botdict"]["tempvals"]['current_users']:
+        bot.memory["botdict"]["tempvals"]['current_users'].remove(instigator)
+
+    if instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
+        bot.memory["botdict"]["tempvals"]['offline_users'].append(instigator)

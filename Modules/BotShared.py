@@ -100,7 +100,6 @@ def botdict_open(bot):
 
     if "botdict" in bot.memory:
         return
-
     bot.memory["botdict"] = botdict_setup_open(bot)
 
     # Channel Listing

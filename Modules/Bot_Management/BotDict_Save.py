@@ -5,7 +5,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel.module
 
-
 # imports for system and OS access, directories
 import os
 import sys
@@ -21,17 +20,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-"""
-bot.nick do this
-"""
-
-
-@nickname_commands('(.*)')
-@sopel.module.thread(True)
-def bot_command_hub(bot, trigger):
-    if "botdict" not in bot.memory:
-        botdict_open(bot)
-
-    bot.say(str(bot.memory["botdict"]['tempvals']['channels_list']))
-
-    return
+@sopel.module.interval(1800)
+def initialsetup(bot):
+    # botdict_save(bot)
+    farting = True
