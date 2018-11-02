@@ -351,6 +351,35 @@ def nick_actual(bot, nick):
     return nick_actual
 
 
+def bot_target_check(bot, botcom, target):
+    targetgood = {"targetgood": True, "error": "None"}
+
+    targetgoodconsensus = []
+
+    # cannot target bots
+    if target in bot.memory["botdict"]["tempvals"]['bots_list']:
+        targetgoodconsensus.append(nick_actual(bot, target) + " is a bot and cannot be targeted.")
+
+    # Not a valid user
+    if target not in bot.memory["botdict"]["users"].keys():
+        targetgoodconsensus.append("I don't know who that is.")
+
+    # User offline
+    if target not in bot.memory["botdict"]["tempvals"]['all_current_users']:
+        targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is offline right now!")
+
+    if not botcom.channel_current.startswith('#') and target != botcom.instigator:
+        targetgoodconsensus.append("Leave " + nick_actual(bot, target) + " out of this private conversation!")
+
+    if target in bot.memory["botdict"]["tempvals"]['all_current_users'] and target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
+        targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
+
+    if targetgoodconsensus != []:
+        targetgood = {"targetgood": False, "error": targetgoodconsensus}
+
+    return targetgood
+
+
 """
 Dictionary Command Config Files
 """
