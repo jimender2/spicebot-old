@@ -171,7 +171,7 @@ def bot_command_function_update(bot, trigger, botcom):
 
     targetbots = {}
     if botcom.triggerargsarray == []:
-        targetbots[bot.nick] = dict()
+        targetbots[str(bot.nick)] = dict()
     elif 'all' in botcom.triggerargsarray:
         for targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
             targetbots[targetbot] = dict()
@@ -202,7 +202,7 @@ def bot_command_function_restart(bot, trigger, botcom):
 
     targetbots = {}
     if botcom.triggerargsarray == []:
-        targetbots[bot.nick] = dict()
+        targetbots[str(bot.nick)] = dict()
     elif 'all' in botcom.triggerargsarray:
         for targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
             targetbots[targetbot] = dict()
@@ -230,7 +230,7 @@ def bot_command_function_debug(bot, trigger, botcom):
 
     targetbots = {}
     if botcom.triggerargsarray == []:
-        targetbots[bot.nick] = dict()
+        targetbots[str(bot.nick)] = dict()
     elif 'all' in botcom.triggerargsarray:
         for targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
             targetbots[targetbot] = dict()
