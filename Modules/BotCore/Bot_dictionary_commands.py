@@ -108,3 +108,84 @@ def botfunction_simple(bot, trigger, botcom):
     else:
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
     osd(bot, trigger.sender, 'say', reply)
+
+
+# Quick replies with a target person TODO use the targetfinder logic
+def botfunction_target(bot, trigger, botcom):
+
+    # target is the first arg given
+    target = spicemanip(bot, botcom.triggerargsarray, 1)
+
+    # handling for no target
+    if not target:
+
+        specified = None
+        if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
+            specified = spicemanip(bot, botcom.triggerargsarray, 1)
+            botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+        # Seperate reply for no input
+        if "noinputreply" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
+            if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], list):
+                reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"]
+            elif specified:
+                if int(specified) > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"]):
+                    specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"])
+                reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], specified)
+            else:
+                reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], 'random')
+            return osd(bot, trigger.sender, 'say', reply)
+
+        # backup target, usually trigger.nick
+        if "backuptarget" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
+            target = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["backuptarget"]
+            if target == 'instigator':
+                target = botcom.instigator
+
+        # still no target
+        if not target and "backuptarget" not in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
+            reply = "This command requires a target"
+            return osd(bot, trigger.nick, 'notice', reply)
+
+    # remove target
+    if target in botcom.triggerargsarray:
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+    specified = None
+    if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
+        specified = spicemanip(bot, botcom.triggerargsarray, 1)
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+    # cannot target bots
+    if target in bot.memory["botdict"]["tempvals"]['bots_list']:
+        reply = nick_actual(bot, target) + " is a bot and cannot be targeted."
+        return osd(bot, trigger.nick, 'notice', reply)
+
+    # Not a valid user
+    if target not in bot.memory["botdict"]["users"]['users_all']:
+        reply = "I don't know who that is."
+        return osd(bot, trigger.nick, 'notice', reply)
+
+    # User offline
+    if target in bot.memory["botdict"]["users"]['users_all'] and target not in bot.memory["botdict"]["tempvals"]['current_users']:
+        reply = "It looks like " + nick_actual(bot, target) + " is offline right now!"
+        return osd(bot, trigger.nick, 'notice', reply)
+
+    if botcom.channel_priv and target != trigger.nick:
+        reply = "Leave " + nick_actual(bot, target) + " out of this private conversation!"
+        return osd(bot, trigger.nick, 'notice', reply)
+
+    if target in bot.memory["botdict"]["tempvals"]['current_users'] and target not in bot.privileges[trigger.sender].keys():
+        reply = "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel."
+        return osd(bot, trigger.nick, 'notice', reply)
+
+    if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
+        reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
+    elif specified:
+        if int(specified) > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]):
+            specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"])
+        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], specified)
+    else:
+        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
+    reply = reply.replace("$target", target)
+    osd(bot, trigger.sender, 'say', reply)
