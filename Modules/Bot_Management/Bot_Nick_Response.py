@@ -173,19 +173,24 @@ Basic Running Operations
 
 def bot_command_function_update(bot, botcom):
 
-    targetbots = {}
+    targetbots = []
     if botcom.triggerargsarray == []:
-        targetbots[str(bot.nick)] = dict()
+        targetbots.append(bot.nick)
     elif 'all' in botcom.triggerargsarray:
         for targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-            targetbots[targetbot] = dict()
+            targetbots.append(targetbot)
     else:
         for targetbot in botcom.triggerargsarray:
             if targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-                targetbots[targetbot] = dict()
+                targetbots.append(targetbot)
+
+    # current bot should be last
+    if bot.nick in targetbots:
+        targetbots.remove(bot.nick)
+        targetbots.append(bot.nick)
 
     cannotproceed = []
-    for targetbot in targetbots.keys():
+    for targetbot in targetbots:
 
         if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
 
@@ -204,19 +209,24 @@ def bot_command_function_update(bot, botcom):
 
 def bot_command_function_restart(bot, botcom):
 
-    targetbots = {}
+    targetbots = []
     if botcom.triggerargsarray == []:
-        targetbots[str(bot.nick)] = dict()
+        targetbots.append(bot.nick)
     elif 'all' in botcom.triggerargsarray:
         for targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-            targetbots[targetbot] = dict()
+            targetbots.append(targetbot)
     else:
         for targetbot in botcom.triggerargsarray:
             if targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-                targetbots[targetbot] = dict()
+                targetbots.append(targetbot)
+
+    # current bot should be last
+    if bot.nick in targetbots:
+        targetbots.remove(bot.nick)
+        targetbots.append(bot.nick)
 
     cannotproceed = []
-    for targetbot in targetbots.keys():
+    for targetbot in targetbots:
 
         if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
 
