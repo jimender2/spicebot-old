@@ -93,13 +93,13 @@ def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
     if 'privs' in valid_botnick_commands[botcom.command_main.lower()].keys():
         commandrunconsensus = []
 
-        if 'admin' in valid_botnick_commands[botcom.command_main.lower()][privs']:
+        if 'admin' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
             if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bot_admins']:
                 commandrunconsensus.append('False')
             else:
                 commandrunconsensus.append('True')
 
-        if 'OP' in valid_botnick_commands[botcom.command_main.lower()][privs']:
+        if 'OP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
             if trigger.sender.startswith('#'):
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][trigger.sender]['chanops']:
                     commandrunconsensus.append('False')
@@ -108,7 +108,7 @@ def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
             else:
                 commandrunconsensus.append('False')
 
-        if 'HOP' in valid_botnick_commands[botcom.command_main.lower()][privs']:
+        if 'HOP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
             if trigger.sender.startswith('#'):
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][trigger.sender]['chanhalfops']:
                     commandrunconsensus.append('False')
@@ -117,7 +117,7 @@ def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
             else:
                 commandrunconsensus.append('False')
 
-        if 'VOICE' in valid_botnick_commands[botcom.command_main.lower()][privs']:
+        if 'VOICE' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
             if trigger.sender.startswith('#'):
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][trigger.sender]['chanvoices']:
                     commandrunconsensus.append('False')
