@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     channel = trigger.sender
     command = "." + commandtotest
     randombot = "SpiceBotdevold"
-    randomnumber = randint(1, 10)
+    randomnumber = random.randint(1, 10)
     randomnumberword = w2n(randomnumber)
     randomadmin = ""
     blank = ""
