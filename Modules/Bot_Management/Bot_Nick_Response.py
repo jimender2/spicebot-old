@@ -70,7 +70,7 @@ Messaging channels
 """
 
 
-def bot_command_function_msg(bot, trigger, botcom, instigator):
+def bot_command_function_msg(bot, trigger, botcom):
 
     # Channel
     targetchannels = []
