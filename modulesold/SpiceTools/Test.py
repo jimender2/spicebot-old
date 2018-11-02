@@ -31,10 +31,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     command = "." + commandtotest
     randombot = "SpiceBotdevold"
     randomnumber = random.randint(1, 10)
+    randomnumberstring = string(randomnumber)
     randomnumberword = Number2Words(randomnumber).convert()
     randomadmin = ""
     blank = ""
-    args = [instigator, channel, randombot, randomnumber, blank]
+    args = [instigator, channel, randombot, randomnumberstring, randnumberword, blank]
     if not commandtotest:
         osd(bot, trigger.sender, 'say', "What command did you want me to test, " + instigator + "?")
     else:
