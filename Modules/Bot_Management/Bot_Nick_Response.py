@@ -98,8 +98,7 @@ def bot_command_function_msg(bot, trigger, botcom):
         osd(bot, botcom.instigator, 'notice', "You must specify a message.")
         return
 
-    for channeltarget in targetchannels:
-        osd(bot, channeltarget, 'say', botmessage)
+    osd(bot, targetchannels, 'say', botmessage)
 
 
 def bot_command_function_action(bot, trigger, botcom):
@@ -130,8 +129,7 @@ def bot_command_function_action(bot, trigger, botcom):
         osd(bot, botcom.instigator, 'notice', "You must specify a message.")
         return
 
-    for channeltarget in targetchannels:
-        osd(bot, channeltarget, 'action', botmessage)
+    osd(bot, targetchannels, 'action', botmessage)
 
 
 def bot_command_function_notice(bot, trigger, botcom):
@@ -162,8 +160,7 @@ def bot_command_function_notice(bot, trigger, botcom):
         osd(bot, botcom.instigator, 'notice', "You must specify a message.")
         return
 
-    for target in targets:
-        osd(bot, target, 'notice', botmessage)
+    osd(bot, targets, 'notice', botmessage)
 
 
 """
