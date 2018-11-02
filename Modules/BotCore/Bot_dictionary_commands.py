@@ -174,7 +174,7 @@ def botfunction_target(bot, trigger, botcom):
     if not botcom.channel_current.startswith('#') and target != botcom.instigator:
         reply = "Leave " + nick_actual(bot, target) + " out of this private conversation!"
         return osd(bot, botcom.instigator, 'notice', reply)
-
+    bot.say(str(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]))
     if target in bot.memory["botdict"]["tempvals"]['all_current_users'] and target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]:
         reply = "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel."
         return osd(bot, botcom.instigator, 'notice', reply)
