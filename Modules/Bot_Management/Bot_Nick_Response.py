@@ -22,6 +22,15 @@ sys.setdefaultencoding('utf-8')
 
 # valid commands that the bot will reply to by name
 valid_botnick_commands = {
+                            "hithub": {
+                                        'privs': [],
+                                        },
+                            "docs": {
+                                        'privs': [],
+                                        },
+                            "help": {
+                                        'privs': [],
+                                        },
                             "uptime": {
                                         'privs': [],
                                         },
@@ -322,7 +331,7 @@ def bot_command_function_debug(bot, botcom):
         osd(bot, botcom.channel_current, 'say', spicemanip(bot, nobotlogs, 'andlist') + " had no log(s) for some reason")
 
 
-def bot_command_function_permfix(bot, trigger, botcom, instigator):
+def bot_command_function_permfix(bot, botcom):
     os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
     osd(bot, botcom.channel_current, 'say', "Permissions should now be fixed")
 
@@ -361,6 +370,23 @@ def bot_command_function_pip(bot, botcom):
     for line in installines:
         osd(bot, trigger.sender, 'say', line)
     osd(bot, botcom.channel_current, 'say', "Possibly done.")
+
+
+"""
+Github
+"""
+
+
+def bot_command_function_github(bot, botcom):
+    osd(bot, botcom.channel_current, 'say', 'IRC Modules Repository     https://github.com/SpiceBot/SpiceBot')
+
+
+def bot_command_function_docs(bot, botcom):
+    osd(bot, botcom.channel_current, 'say', "Online Docs: " + GITWIKIURL)
+
+
+def bot_command_function_help(bot, botcom):
+    osd(bot, botcom.channel_current, 'say', "Online Docs: " + GITWIKIURL)
 
 
 """
