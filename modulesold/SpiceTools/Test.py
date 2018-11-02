@@ -39,5 +39,5 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'say', "What command did you want me to test, " + instigator + "?")
     else:
         for arg in args:
-            message = command + " " + string(arg)
+            message = command + " " + arg
             osd(bot, trigger.sender, 'say', message)
