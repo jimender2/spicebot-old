@@ -179,7 +179,7 @@ def bot_command_function_debug(bot, trigger, botcom):
     for targetbot in targetbots.keys():
 
         debuglines = []
-        ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)"]
+        ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)", "COMMAND=/bin/chown", "Docs: http://sopel.chat/", "Main PID:"]
         for line in os.popen("sudo service " + targetbot + " status").read().split('\n'):
             if not any(x in str(line) for x in ignorearray):
                 debuglines.append(str(line))
@@ -190,7 +190,6 @@ def bot_command_function_debug(bot, trigger, botcom):
     nobotlogs = []
     for targetbot in targetbots.keys():
         if targetbots[targetbot]['debuglines'] != []:
-            osd(bot, trigger.sender, 'say', "systemd logs for " + targetbot + " are as follows:")
             for line in targetbots[targetbot]['debuglines']:
                 osd(bot, trigger.sender, 'say', line)
             botcount -= 1
