@@ -4,15 +4,19 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
+import random
+from bot import *
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+# author jimender2
 
-@sopel.module.commands('totes', 'millennial')
+
+@sopel.module.commands('coin', 'die')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'coin')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
@@ -24,20 +28,18 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    command = spicemanip(bot, triggerargsarray, 1)
-    if not command:
-        rand = random.randint(1, 4)
-        if rand == 1:
-            message = "I will have a non-fat double chocolate expresso mocho soy cappachino express latte (aka crap (whatever happened to a plain cup of joe?))"
-        elif rand == 2:
-            message = "I want a participation medel"
-        elif rand == 3:
-            message = "Lifes not fair!"
-        elif rand == 4:
-            message = "My mommy says Im a special snowflake"
-        else:
-            message = "I fucked the code up real well"
+    sides = int(spicemanip(bot, triggerargsarray, 1))
+    rand = random.randint(1, sides)
+    msg = "you suck"
+    test(bot, trigger.sender, 'say', msg)
+    if sides > 2:
+        msg = trigger.nick + " you rolled a " + rand + " on a " + str(sides) + " sided die."
     else:
-        instigator = trigger.nick
-        message = instigator + " thinks that " + command + " is totes obvi."
-    osd(bot, trigger.sender, 'say', message)
+        if rand == 1:
+            side = "heads"
+        elif rand == 2:
+            side = "tails"
+        else:
+            side = "something fucked up"
+        msg = trigger.nick + " flipped a coin and got " + str(side) + "."
+    osd(bot, trigger.sender, 'say', msg)
