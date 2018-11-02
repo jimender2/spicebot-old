@@ -171,7 +171,7 @@ def botfunction_target(bot, trigger, botcom):
         reply = "It looks like " + nick_actual(bot, target) + " is offline right now!"
         return osd(bot, botcom.instigator, 'notice', reply)
 
-    if botcom.channel_current.startswith('#') and target != botcom.instigator:
+    if not botcom.channel_current.startswith('#') and target != botcom.instigator:
         reply = "Leave " + nick_actual(bot, target) + " out of this private conversation!"
         return osd(bot, botcom.instigator, 'notice', reply)
 
