@@ -364,7 +364,7 @@ def dict_command_configs(bot):
     quick_coms_path = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/"
 
     # iterate over organizational folders
-    for quick_coms_type in os.listdir():
+    for quick_coms_type in os.listdir(quick_coms_path):
 
         # iterate over files within
         coms_type_file_path = os.path.join(quick_coms_path, quick_coms_type)
