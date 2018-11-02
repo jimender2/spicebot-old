@@ -37,6 +37,10 @@ def bot_command_hub(bot, trigger):
     if not str(trigger).startswith(tuple(valid_command_prefix)):
         return
 
+    if "botdict_loaded" not in bot.memory:
+        osd(bot, trigger.nick, 'notice', "Please wait while I load my dictionary configuration.")
+        return
+
     # botcom dynamic Class
     botcom = class_create('botcom')
     botcom.default = 'botcom'
@@ -46,10 +50,6 @@ def bot_command_hub(bot, trigger):
 
     # channel
     botcom.channel_current = trigger.sender
-
-    if "botdict_loaded" not in bot.memory:
-        osd(bot, trigger.nick, 'notice', "Please wait while I load my dictionary configuration.")
-        return
 
     # Bots can't run commands
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
@@ -136,7 +136,7 @@ def botfunction_target(bot, trigger, botcom):
                 reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], 'random')
             return osd(bot, trigger.sender, 'say', reply)
 
-        # backup target, usually trigger.nick
+        # backup target, usually instigator
         if "backuptarget" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
             target = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["backuptarget"]
             if target == 'instigator':
@@ -145,7 +145,7 @@ def botfunction_target(bot, trigger, botcom):
         # still no target
         if not target and "backuptarget" not in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
             reply = "This command requires a target"
-            return osd(bot, trigger.nick, 'notice', reply)
+            return osd(bot, botcom.instigator, 'notice', reply)
 
     # remove target
     if target in botcom.triggerargsarray:
@@ -159,25 +159,25 @@ def botfunction_target(bot, trigger, botcom):
     # cannot target bots
     if target in bot.memory["botdict"]["tempvals"]['bots_list']:
         reply = nick_actual(bot, target) + " is a bot and cannot be targeted."
-        return osd(bot, trigger.nick, 'notice', reply)
+        return osd(bot, botcom.instigator, 'notice', reply)
 
     # Not a valid user
-    if target not in bot.memory["botdict"]["users"]['users_all']:
+    if target not in bot.memory["botdict"]["users"].keys():
         reply = "I don't know who that is."
-        return osd(bot, trigger.nick, 'notice', reply)
+        return osd(bot, botcom.instigator, 'notice', reply)
 
     # User offline
-    if target in bot.memory["botdict"]["users"]['users_all'] and target not in bot.memory["botdict"]["tempvals"]['current_users']:
+    if target not in bot.memory["botdict"]["tempvals"]['all_current_users']:
         reply = "It looks like " + nick_actual(bot, target) + " is offline right now!"
-        return osd(bot, trigger.nick, 'notice', reply)
+        return osd(bot, botcom.instigator, 'notice', reply)
 
-    if botcom.channel_priv and target != trigger.nick:
+    if botcom.channel_current.startswith('#') and target != botcom.instigator:
         reply = "Leave " + nick_actual(bot, target) + " out of this private conversation!"
-        return osd(bot, trigger.nick, 'notice', reply)
+        return osd(bot, botcom.instigator, 'notice', reply)
 
-    if target in bot.memory["botdict"]["tempvals"]['current_users'] and target not in bot.privileges[trigger.sender].keys():
+    if target in bot.memory["botdict"]["tempvals"]['all_current_users'] and target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]:
         reply = "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel."
-        return osd(bot, trigger.nick, 'notice', reply)
+        return osd(bot, botcom.instigator, 'notice', reply)
 
     if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
         reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
