@@ -22,7 +22,6 @@ sys.setdefaultencoding('utf-8')
 
 # valid commands settings
 valid_command_prefix = ['.', '!']
-valid_com_types = ['simple']  # , 'target', 'fillintheblank'
 
 """
 bot.nick do this
