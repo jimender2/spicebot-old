@@ -28,5 +28,5 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     person = spicemanip(bot, triggerargsarray, 1) or 'spicebot'
     reason = spicemanip(bot, triggerargsarray, '2+') or 'until moral improves.'
-    msg = trigger.sender + " beats " + person + " " + reason
+    msg = trigger.nick + " beats " + person + " " + reason
     osd(bot, trigger.sender, 'say', msg)
