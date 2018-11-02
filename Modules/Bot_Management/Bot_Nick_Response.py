@@ -185,9 +185,9 @@ def bot_command_function_update(bot, botcom):
                 targetbots.append(targetbot)
 
     # current bot should be last
-    if bot.nick in targetbots:
-        targetbots.remove(bot.nick)
-        targetbots.append(bot.nick)
+    if str(bot.nick) in targetbots:
+        targetbots.remove(str(bot.nick))
+        targetbots.append(str(bot.nick))
 
     cannotproceed = []
     for targetbot in targetbots:
@@ -221,9 +221,9 @@ def bot_command_function_restart(bot, botcom):
                 targetbots.append(targetbot)
 
     # current bot should be last
-    if bot.nick in targetbots:
-        targetbots.remove(bot.nick)
-        targetbots.append(bot.nick)
+    if str(bot.nick) in targetbots:
+        targetbots.remove(str(bot.nick))
+        targetbots.append(str(bot.nick))
 
     cannotproceed = []
     for targetbot in targetbots:
