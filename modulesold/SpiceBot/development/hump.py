@@ -27,4 +27,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', trigger.sender + " dry humps " + (spicemanip(bot, [u.lower() for u in bot.users], "random") or 'spicebot') + ".")
+    osd(bot, trigger.sender, 'say', trigger.nick + " dry humps " + (spicemanip(bot, [u.lower() for u in bot.users], "random") or 'spicebot') + ".")
