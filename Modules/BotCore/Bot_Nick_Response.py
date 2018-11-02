@@ -103,14 +103,18 @@ def bot_command_hub(bot, trigger):
     botcom = class_create('botcom')
     botcom.default = 'botcom'
 
-    # valid commands
-    global valid_botnick_commands
-
     # instigator
     botcom.instigator = trigger.nick
 
     # channel
     botcom.channel_current = trigger.sender
+
+    # Bots can't run commands
+    if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        return
+
+    # valid commands
+    global valid_botnick_commands
 
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, '2+', 'list')

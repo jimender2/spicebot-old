@@ -59,7 +59,8 @@ bot_dict = {
                             "config_dir": None,
 
                             # Loaded configs
-                            "commands_loaded": [],
+                            "dict_commands": {},
+                            "dict_commands_loaded": [],
 
                             # server the bot is connected to
                             "server": False,
@@ -126,6 +127,9 @@ def botdict_open(bot):
 
     # users
     botdict_setup_users(bot)
+
+    # dictionary commands
+    dict_command_configs(bot)
 
     # use this to prevent bot usage if the above isn't done loading
     bot.memory["botdict_loaded"] = True
@@ -343,6 +347,74 @@ def nick_actual(bot, nick):
         if u.lower() == str(nick).lower():
             nick_actual = u
     return nick_actual
+
+
+"""
+Dictionary Command Config Files
+"""
+
+
+# Command configs
+def dict_command_configs(bot):
+
+    # Don't load commands if already loaded
+    if bot.memory["botdict"]["tempvals"]['dict_commands'] != dict():
+        return
+
+    quick_coms_path = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/"
+
+    # iterate over organizational folders
+    for quick_coms_type in os.listdir():
+
+        # iterate over files within
+        coms_type_file_path = os.path.join(quick_coms_path, quick_coms_type)
+        for comconf in os.listdir(coms_type_file_path):
+
+            # check if command file is already in the list
+            if comconf not in bot.memory["botdict"]["tempvals"]['dict_commands_loaded'].keys():
+                bot.memory["botdict"]["tempvals"]['dict_commands_loaded'].append(comconf)
+
+                # Read dictionary from file, if not, enable an empty dict
+                inf = open(os.path.join(coms_type_file_path, comconf), 'r')
+                try:
+                    dict_from_file = eval(inf.read())
+                except SyntaxError:
+                    dict_from_file = dict()
+
+                # Close File
+                inf.close()
+
+                # default command to filename
+                if "validcoms" not in dict_from_file.keys():
+                    dict_from_file["validcoms"] = [comconf]
+                elif dict_from_file["validcoms"] == []:
+                    dict_from_file["validcoms"] = [comconf]
+                elif not isinstance(dict_from_file['validcoms'], list):
+                    dict_from_file["validcoms"] = [dict_from_file["validcoms"]]
+
+                maincom = dict_from_file["validcoms"][0]
+                if len(dict_from_file["validcoms"]) > 1:
+                    comaliases = spicemanip(bot, dict_from_file["validcoms"], '2+', 'list')
+                else:
+                    comaliases = []
+
+                if maincom not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+
+                    # check that type is set
+                    if "type" not in dict_from_file.keys():
+                        dict_from_file["type"] = quick_coms_type.lower()
+                    if dict_from_file["type"] not in valid_com_types:
+                        dict_from_file["type"] = 'simple'
+                        dict_from_file["reply"] = "This command is not setup with a proper 'type'."
+
+                    # check that reply is set
+                    if "reply" not in dict_from_file.keys():
+                        dict_from_file["reply"] = "Reply missing"
+
+                    bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
+                    for comalias in comaliases:
+                        if comalias not in bot.memory["botdict"]["tempvals"]['commands'].keys():
+                            bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
 
 
 """
