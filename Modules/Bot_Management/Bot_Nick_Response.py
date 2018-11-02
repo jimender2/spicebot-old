@@ -84,7 +84,7 @@ def bot_command_hub(bot, trigger):
 def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
     commandrun = True
 
-    if bot.privileges[trigger.sender][user] >= VOICE:
+    if bot.privileges[trigger.sender][trigger.nick] >= VOICE:
         bot.say("test")
 
     return commandrun
