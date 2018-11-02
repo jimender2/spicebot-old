@@ -190,6 +190,7 @@ def bot_command_function_update(bot, botcom):
         targetbots.append(str(bot.nick))
 
     cannotproceed = []
+    botcount = len(targetbots)
     for targetbot in targetbots:
 
         if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
@@ -199,6 +200,10 @@ def bot_command_function_update(bot, botcom):
 
             osd(bot, botcom.channel_current, 'action', "Is Restarting the " + targetbot + " Service...")
             bot_restart(bot, targetbot)
+
+            botcount -= 1
+            if botcount > 0:
+                osd(bot, botcom.channel_current, 'say', "     ")
 
         else:
             cannotproceed.append(targetbot)
@@ -226,12 +231,17 @@ def bot_command_function_restart(bot, botcom):
         targetbots.append(str(bot.nick))
 
     cannotproceed = []
+    botcount = len(targetbots)
     for targetbot in targetbots:
 
         if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
 
             osd(bot, botcom.channel_current, 'action', "Is Restarting the " + targetbot + " Service...")
             bot_restart(bot, targetbot)
+
+            botcount -= 1
+            if botcount > 0:
+                osd(bot, botcom.channel_current, 'say', "     ")
 
         else:
             cannotproceed.append(targetbot)
