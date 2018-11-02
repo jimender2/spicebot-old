@@ -153,7 +153,7 @@ def botfunction_target(bot, trigger, botcom, specified=None):
         specified = spicemanip(bot, botcom.triggerargsarray, 1)
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
-    targetchecking = bot_target_check(bot, botcom, target)["targetgood"]
+    targetchecking = bot_target_check(bot, botcom, target)
     if not targetchecking["targetgood"]:
         osd(bot, botcom.instigator, 'notice', targetchecking["error"])
     else:
