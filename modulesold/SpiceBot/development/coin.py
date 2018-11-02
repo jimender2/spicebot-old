@@ -5,7 +5,6 @@ import sopel.module
 import sys
 import os
 import random
-from word2number import w2n
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
@@ -29,11 +28,6 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     sides = int( spicemanip(bot, triggerargsarray, 1) )
-    if not sides.isdigit():
-        try:
-            sides = int( w2n.word_to_num(str(sides)))
-        except ValueError:
-            sides = 2
     rand = random.randint(1, sides)
     if sides > 2:
         msg = trigger.nick + " you rolled a " + rand + " on a " + str(sides) + " sided die."
