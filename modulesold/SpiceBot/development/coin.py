@@ -36,7 +36,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             sides = 2
     rand = random.randint(1, sides)
     if sides > 2:
-        msg = trigger.nick + " you rolled a " + rand + " on a " + sides + " sided die."
+        msg = trigger.nick + " you rolled a " + rand + " on a " + str(sides) + " sided die."
     else:
         if rand == 1:
             side = "heads"
@@ -44,5 +44,5 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             side = "tails"
         else:
             side = "something fucked up"
-        msg = trigger.nick + " flipped a coin and got " + side + "."
+        msg = trigger.nick + " flipped a coin and got " + str(side) + "."
     osd(bot, trigger.sender, 'say', msg)
