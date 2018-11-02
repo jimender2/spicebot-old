@@ -293,7 +293,7 @@ def bot_command_function_debug(bot, botcom):
     for targetbot in targetbots.keys():
 
         debuglines = []
-        ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)", "COMMAND=/bin/chown", "Docs: http://sopel.chat/", "Main PID:"]
+        ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)", "COMMAND=/bin/chown", "Docs: http://sopel.chat/", "Main PID:", "systemctl status", "sudo service"]
         for line in os.popen("sudo service " + targetbot + " status").read().split('\n'):
             if not any(x in str(line) for x in ignorearray):
                 debuglines.append(str(line))
