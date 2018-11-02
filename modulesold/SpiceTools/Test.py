@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
+"""Define imports."""
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
 import sys
@@ -17,7 +18,7 @@ from BotShared import *
 
 @sopel.module.commands('test')
 def mainfunction(bot, trigger):
-    """Check to see if module is enabled. """
+    """Check to see if module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'test')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
