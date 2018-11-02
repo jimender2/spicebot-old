@@ -29,7 +29,7 @@ GITWIKIURL = "https://github.com/SpiceBot/SpiceBot/wiki"
 """
 
 
-@nickname_commands('modules', 'action', 'block', 'github', 'on', 'off', 'devmode', 'update', 'restart', 'permfix', 'debug', 'pip', 'help', 'docs', 'cd', 'dir', 'gitpull')
+@nickname_commands('modules', 'block', 'github', 'on', 'off', 'devmode', 'update', 'restart', 'permfix', 'debug', 'pip', 'help', 'docs', 'cd', 'dir', 'gitpull')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     triggerargsarray = spicemanip(bot, trigger.group(0), 'create')
@@ -241,30 +241,6 @@ def bot_command_function_modules(bot, trigger, botcom, instigator):
         else:
             adjust_database_array(bot, channeltarget, modulesadjustarray, 'modules_enabled', 'del')
         osd(bot, botcom.channel_current, 'say', module_adjust + " command(s) should now be "+str(subcommand)+"d for " + channeltarget + ".")
-
-
-def bot_command_function_action(bot, trigger, botcom, instigator):
-
-    if botcom.instigator not in botcom.opadmin:
-        osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function.")
-        return
-
-    # Channel
-    channeltarget = spicemanip(bot, [x for x in botcom.triggerargsarray if x.startswith('#')], 1)
-    if not channeltarget:
-        if botcom.channel_current.startswith('#'):
-            channeltarget = botcom.channel_current
-        else:
-            osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
-            return
-    if channeltarget in botcom.triggerargsarray:
-        botcom.triggerargsarray.remove(channeltarget)
-
-    botmessage = spicemanip(bot, botcom.triggerargsarray, 0)
-    if not botmessage:
-        osd(bot, botcom.instigator, 'notice', "You must specify a message.")
-        return
-    osd(bot, channeltarget, 'action', botmessage)
 
 
 def bot_command_function_block(bot, trigger, botcom, instigator):

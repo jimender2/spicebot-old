@@ -21,7 +21,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # valid commands that the bot will reply to by name
-valid_botnick_commands = ['uptime', 'canyouseeme', 'gender', 'owner', 'admins', 'channel', 'dict', 'msg']
+valid_botnick_commands = ['uptime', 'canyouseeme', 'gender', 'owner', 'admins', 'channel', 'msg', 'action', 'notice']
 
 
 """
@@ -100,6 +100,70 @@ def bot_command_function_msg(bot, trigger, botcom):
 
     for channeltarget in targetchannels:
         osd(bot, channeltarget, 'say', botmessage)
+
+
+def bot_command_function_action(bot, trigger, botcom):
+
+    # Channel
+    targetchannels = []
+    if botcom.triggerargsarray[0] not in bot.memory["botdict"]["tempvals"]['channels_list'].keys() and botcom.triggerargsarray[0] != 'all':
+        if trigger.sender.startswith('#'):
+            targetchannels.append(trigger.sender)
+        else:
+            osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
+            return
+    elif botcom.triggerargsarray[0] == 'all':
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+        for targetchan in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+            targetchannels.append(targetchan)
+    else:
+        for targetchan in botcom.triggerargsarray:
+            if targetchan in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+                targetchannels.append(targetchan)
+
+    for channeltarget in targetchannels:
+        if channeltarget in botcom.triggerargsarray:
+            botcom.triggerargsarray.remove(channeltarget)
+
+    botmessage = spicemanip(bot, botcom.triggerargsarray, 0)
+    if not botmessage:
+        osd(bot, botcom.instigator, 'notice', "You must specify a message.")
+        return
+
+    for channeltarget in targetchannels:
+        osd(bot, channeltarget, 'action', botmessage)
+
+
+def bot_command_function_notice(bot, trigger, botcom):
+
+    # Target
+    targets = []
+    if botcom.triggerargsarray[0] not in bot.memory["botdict"]["tempvals"]['all_current_users'].keys() and botcom.triggerargsarray[0] != 'all':
+        if trigger.sender.startswith('#'):
+            targets.append(trigger.sender)
+        else:
+            osd(bot, botcom.instigator, 'notice', "You must specify a valid target.")
+            return
+    elif botcom.triggerargsarray[0] == 'all':
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+        for target in bot.memory["botdict"]["tempvals"]['all_current_users'].keys():
+            targets.append(target)
+    else:
+        for target in botcom.triggerargsarray:
+            if targetin bot.memory["botdict"]["tempvals"]['all_current_users'].keys():
+                targets.append(target)
+
+    for target in targets:
+        if target in botcom.triggerargsarray:
+            botcom.triggerargsarray.remove(target)
+
+    botmessage = spicemanip(bot, botcom.triggerargsarray, 0)
+    if not botmessage:
+        osd(bot, botcom.instigator, 'notice', "You must specify a message.")
+        return
+
+    for target in targets:
+        osd(bot, target, 'notice', botmessage)
 
 
 """
