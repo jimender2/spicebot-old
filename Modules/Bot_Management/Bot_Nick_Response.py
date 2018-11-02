@@ -80,7 +80,8 @@ def bot_command_function_msg(bot, trigger, botcom):
         else:
             osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
             return
-    elif 'all' in botcom.triggerargsarray:
+    elif botcom.triggerargsarray[0] == 'all':
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
         for targetchan in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
             targetchannels.append(targetchan)
     else:
