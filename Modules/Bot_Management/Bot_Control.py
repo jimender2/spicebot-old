@@ -29,7 +29,7 @@ GITWIKIURL = "https://github.com/SpiceBot/SpiceBot/wiki"
 """
 
 
-@nickname_commands('modules', 'block', 'github', 'on', 'off', 'devmode', 'permfix', 'pip', 'help', 'docs', 'cd', 'dir', 'gitpull')
+@nickname_commands('modules', 'block', 'github', 'on', 'off', 'devmode', 'help', 'docs', 'cd', 'dir', 'gitpull')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     triggerargsarray = spicemanip(bot, trigger.group(0), 'create')
@@ -414,56 +414,6 @@ def bot_command_function_devmode(bot, trigger, botcom, instigator):
     else:
         adjust_database_array(bot, bot.nick, [channeltarget], 'channels_dev', 'del')
     osd(bot, botcom.channel_current, 'say', "devmode should now be " + subcommand + " for " + channeltarget + ".")
-
-
-def bot_command_function_permfix(bot, trigger, botcom, instigator):
-
-    if botcom.instigator not in botcom.botadmins:
-        osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function.")
-        return
-
-    os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
-    osd(bot, botcom.channel_current, 'say', "Permissions should now be fixed")
-
-
-def bot_command_function_pip(bot, trigger, botcom, instigator):
-
-    if botcom.instigator not in botcom.botadmins:
-        osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function.")
-        return
-
-    pipcoms = ['install', 'remove']
-    subcom = spicemanip(bot, [x for x in botcom.triggerargsarray if x in pipcoms], 1) or None
-    if not subcom:
-        return osd(bot, trigger.sender, 'say', "pip requires a subcommand. Valid options: " + spicemanip(bot, pipcoms, 'andlist'))
-
-    if subcom in botcom.triggerargsarray:
-        botcom.triggerargsarray.remove(subcom)
-
-    pippackage = spicemanip(bot, botcom.triggerargsarray, 0)
-    if not pippackage:
-        return osd(bot, botcom.channel_current, 'say', "You must specify a pip package.")
-
-    installines = []
-    previouslysatisfied = []
-    for line in os.popen("sudo pip " + str(subcom) + " " + str(pippackage)).read().split('\n'):
-        if "Requirement already satisfied:" in str(line):
-            packagegood = str(line).split("Requirement already satisfied:", 1)[1]
-            packagegood = str(packagegood).split("in", 1)[0]
-            previouslysatisfied.append(packagegood)
-        else:
-            installines.append(str(line))
-
-    if previouslysatisfied != []:
-        previouslysatisfiedall = spicemanip(bot, previouslysatisfied, 'andlist')
-        installines.insert(0, "The following required packages have already been satisfied: " + previouslysatisfiedall)
-
-    if installines == []:
-        return osd(bot, botcom.channel_current, 'action', "has no install log for some reason.")
-
-    for line in installines:
-        osd(bot, trigger.sender, 'say', line)
-    osd(bot, botcom.channel_current, 'say', "Possibly done.")
 
 
 """
