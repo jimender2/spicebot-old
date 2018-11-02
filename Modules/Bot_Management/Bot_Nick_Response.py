@@ -74,7 +74,7 @@ def bot_command_function_msg(bot, trigger, botcom):
 
     # Channel
     targetchannels = []
-    if botcom.triggerargsarray == []:
+    if botcom.triggerargsarray[0] not in bot.memory["botdict"]["tempvals"]['channels_list'].keys() and botcom.triggerargsarray[0] != 'all':
         if trigger.sender.startswith('#'):
             targetchannels.append(trigger.sender)
         else:
@@ -87,6 +87,10 @@ def bot_command_function_msg(bot, trigger, botcom):
         for targetchan in botcom.triggerargsarray:
             if targetchan in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
                 targetchannels.append(targetchan)
+
+    for channeltarget in targetchannels:
+        if channeltarget in botcom.triggerargsarray:
+            botcom.triggerargsarray.remove(channeltarget)
 
     botmessage = spicemanip(bot, botcom.triggerargsarray, 0)
     if not botmessage:
