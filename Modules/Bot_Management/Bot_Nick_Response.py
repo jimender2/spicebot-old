@@ -185,10 +185,10 @@ def bot_command_function_update(bot, trigger, botcom):
 
         if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
 
-            osd(bot, botcom.channel_current, 'action', "Is Pulling " + str(bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']) + " From Github...")
+            osd(bot, trigger.sender, 'action', "Is Pulling " + str(bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']) + " From Github...")
             bot_update(bot, targetbot)
 
-            osd(bot, botcom.channel_current, 'action', "Is Restarting the " + targetbot + " Service...")
+            osd(bot, trigger.sender, 'action', "Is Restarting the " + targetbot + " Service...")
             bot_restart(bot, targetbot)
 
         else:
@@ -216,7 +216,7 @@ def bot_command_function_restart(bot, trigger, botcom):
 
         if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
 
-            osd(bot, botcom.channel_current, 'action', "Is Restarting the " + targetbot + " Service...")
+            osd(bot, trigger.sender, 'action', "Is Restarting the " + targetbot + " Service...")
             bot_restart(bot, targetbot)
 
         else:
