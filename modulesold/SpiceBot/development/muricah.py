@@ -26,5 +26,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    msg = trigger.sender + " shoots a toaster or something."
+    msg = trigger.nick + " shoots a toaster or something."
     osd(bot, trigger.sender, 'say', msg)
