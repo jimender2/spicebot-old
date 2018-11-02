@@ -49,6 +49,9 @@ valid_botnick_commands = {
                             "notice": {
                                         'privs': ['admin', 'OP'],
                                         },
+                            "debug": {
+                                        'privs': ['admin', 'OP'],
+                                        },
                             }
 
 
@@ -151,6 +154,51 @@ def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
             commandrun = False
 
     return commandrun
+
+
+"""
+Basic Running Operations
+"""
+
+
+def bot_command_function_debug(bot, trigger, botcom):
+
+    targetbots = {}
+    if botcom.triggerargsarray == []:
+        targetbots[bot.nick] = dict()
+    elif 'all' in botcom.triggerargsarray:
+        for targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+            targetbots[targetbot] = dict()
+    else:
+        for targetbot in botcom.triggerargsarray:
+            if targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+                targetbots[targetbot] = dict()
+
+    for targetbot in targetbots.keys():
+
+        osd(bot, botcom.channel_current, 'action', "Is Examining Log for " + targetbot)
+
+        debuglines = []
+        searchphrasefound = 0
+        ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)"]
+        for line in os.popen("sudo service " + targetbot + " status").read().split('\n'):
+            if not searchphrasefound and "Welcome to Sopel. Loading modules..." in str(line):
+                searchphrasefound = 1
+            if searchphrasefound:
+                if not any(x in str(line) for x in ignorearray):
+                    debuglines.append(str(line))
+
+        if debuglines == []:
+            debuglines = [targetbot + " has no service log for some reason."]
+        targetbots[targetbot]['debuglines']
+
+    botcount = len(targetbots.keys())
+    for targetbot in targetbots.keys():
+        for line in targetbots[targetbot]['debuglines']:
+            osd(bot, trigger.sender, 'say', line)
+        botcount -= 1
+        if botcount > 0:
+            osd(bot, trigger.sender, 'say', "     ")
 
 
 """
