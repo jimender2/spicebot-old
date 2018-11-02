@@ -5,6 +5,7 @@ import sopel.module
 import sys
 import os
 import random
+from word2number import w2n
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
