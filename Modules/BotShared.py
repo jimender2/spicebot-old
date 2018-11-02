@@ -371,7 +371,7 @@ def dict_command_configs(bot):
         for comconf in os.listdir(coms_type_file_path):
 
             # check if command file is already in the list
-            if comconf not in bot.memory["botdict"]["tempvals"]['dict_commands_loaded'].keys():
+            if comconf not in bot.memory["botdict"]["tempvals"]['dict_commands_loaded']:
                 bot.memory["botdict"]["tempvals"]['dict_commands_loaded'].append(comconf)
 
                 # Read dictionary from file, if not, enable an empty dict
