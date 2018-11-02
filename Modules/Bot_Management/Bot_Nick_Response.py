@@ -147,6 +147,7 @@ def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
         if valid_botnick_commands[botcom.command_main.lower()]['privs'] == []:
             commandrunconsensus.append('True')
 
+        bot.say(str(commandrunconsensus))
         if 'True' not in commandrunconsensus:
             commandrun = False
 
