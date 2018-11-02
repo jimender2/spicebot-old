@@ -155,9 +155,7 @@ def botfunction_target(bot, trigger, botcom, specified=None):
 
     targetchecking = bot_target_check(bot, botcom, target)
     if not targetchecking["targetgood"]:
-        osd(bot, botcom.instigator, 'notice', targetchecking["error"])
-    else:
-        bot.say("target good")
+        return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
 
     if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
         reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
