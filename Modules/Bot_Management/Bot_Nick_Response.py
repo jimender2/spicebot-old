@@ -179,14 +179,10 @@ def bot_command_function_debug(bot, trigger, botcom):
     for targetbot in targetbots.keys():
 
         debuglines = []
-        searchphrasefound = 0
         ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)"]
         for line in os.popen("sudo service " + targetbot + " status").read().split('\n'):
-            if not searchphrasefound and "Welcome to Sopel. Loading modules..." in str(line):
-                searchphrasefound = 1
-            if searchphrasefound:
-                if not any(x in str(line) for x in ignorearray):
-                    debuglines.append(str(line))
+            if not any(x in str(line) for x in ignorearray):
+                debuglines.append(str(line))
 
         targetbots[targetbot]['debuglines'] = debuglines
 
