@@ -6,6 +6,7 @@ import sys
 import os
 import random
 from word2number import w2n
+from number2word import n2w
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
@@ -30,7 +31,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     command = "." + commandtotest
     randombot = "SpiceBotdevold"
     randomnumber = random.randint(1, 10)
-    randomnumberword = w2n(randomnumber)
+    randomnumberword = n2w(randomnumber)
     randomadmin = ""
     blank = ""
     args = [instigator, channel, randombot, randomnumber, blank]
