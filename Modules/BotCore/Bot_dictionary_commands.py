@@ -55,6 +55,9 @@ def bot_command_hub(bot, trigger):
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         return
 
+    # create arg list
+    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+
     # command issued, check if valid
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
     if botcom.dotcommand not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
