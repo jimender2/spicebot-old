@@ -29,7 +29,7 @@ GITWIKIURL = "https://github.com/SpiceBot/SpiceBot/wiki"
 """
 
 
-@nickname_commands('modules', 'cd', 'dir', 'gitpull')
+@nickname_commands('modules')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     triggerargsarray = spicemanip(bot, trigger.group(0), 'create')
@@ -68,66 +68,6 @@ def bot_command_process(bot, trigger, triggerargsarray):
 """
 Commands
 """
-
-
-def bot_command_function_gitpull(bot, trigger, botcom, instigator):
-
-    botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    osd(bot, botcom.channel_current, 'say', "attempting to git pull " + botcom.directory)
-    g = git.cmd.Git(botcom.directory)
-    g.pull()
-
-
-def bot_command_function_dir(bot, trigger, botcom, instigator):
-
-    if botcom.instigator not in botcom.opadmin:
-        osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function.")
-        return
-
-    botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    botcom = bot_list_directory(bot, botcom)
-    if botcom.directory == []:
-        osd(bot, botcom.channel_current, 'say', "It appears this directory is empty.")
-        return
-    displaymsgarray = []
-    displaymsgarray.append("Current files located in " + str(botcom.directory) + " :")
-    for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
-        displaymsgarray.append(str("["+filefoldertype.title()+"] ")+str(filename))
-    osd(bot, botcom.channel_current, 'say', displaymsgarray)
-
-
-def bot_command_function_cd(bot, trigger, botcom, instigator):
-
-    if botcom.instigator not in botcom.opadmin:
-        osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function.")
-        return
-
-    validfolderoptions = ['..', 'reset']
-    botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    botcom = bot_list_directory(bot, botcom)
-
-    for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
-        if filefoldertype == 'folder':
-            validfolderoptions.append(filename)
-
-    movepath = spicemanip(bot, botcom.triggerargsarray, 0)
-    if movepath not in validfolderoptions:
-        if movepath in botcom.directory_listing and movepath not in validfolderoptions:
-            osd(bot, botcom.channel_current, 'say', "You can't Change Directory into a File!")
-        else:
-            osd(bot, botcom.channel_current, 'say', "Invalid Folder Path")
-        return
-
-    if movepath == "..":
-        movepath = os.path.dirname(botcom.directory)
-    elif movepath == 'reset':
-        movepath = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    else:
-        movepath = os.path.join(botcom.directory, str(movepath+"/"))
-
-    set_database_value(bot, bot.nick, 'current_admin_dir', str(movepath))
-
-    osd(bot, botcom.channel_current, 'say', "Directory Changed to : " + str(movepath))
 
 
 def bot_command_function_modules(bot, trigger, botcom, instigator):
@@ -198,21 +138,3 @@ def bot_command_function_modules(bot, trigger, botcom, instigator):
         else:
             adjust_database_array(bot, channeltarget, modulesadjustarray, 'modules_enabled', 'del')
         osd(bot, botcom.channel_current, 'say', module_adjust + " command(s) should now be "+str(subcommand)+"d for " + channeltarget + ".")
-
-
-"""
-dir listing
-"""
-
-
-def bot_list_directory(bot, botcom):
-    botcom.directory_listing = []
-    botcom.filefoldertype = []
-    for filename in os.listdir(botcom.directory):
-        botcom.directory_listing.append(filename)
-        joindpath = os.path.join(botcom.directory, filename)
-        if os.path.isfile(joindpath):
-            botcom.filefoldertype.append("file")
-        else:
-            botcom.filefoldertype.append("folder")
-    return botcom

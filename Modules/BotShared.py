@@ -78,6 +78,9 @@ bot_dict = {
                             "bots_list": {},
                             "bot_admins": [],
 
+                            # temp user values
+                            "uservals": {},
+
                             # End of Temp Vals
                             },
 
@@ -359,12 +362,91 @@ def bot_update(bot, targetbot):
 
 
 """
+dir listing
+"""
+
+
+def bot_list_directory(bot, botcom):
+    botcom.directory_listing = []
+    botcom.filefoldertype = []
+    for filename in os.listdir(botcom.directory):
+        botcom.directory_listing.append(filename)
+        joindpath = os.path.join(botcom.directory, filename)
+        if os.path.isfile(joindpath):
+            botcom.filefoldertype.append("file")
+        else:
+            botcom.filefoldertype.append("folder")
+    return botcom
+
+
+"""
 Small Functions
 """
 
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
+
+
+"""
+Botdict Nick values
+"""
+
+
+def get_nick_value(bot, nick, secondarykey, longevity='long', mainkey='unsorted'):
+
+    # verify nick dict exists
+    if longevity == 'long':
+        if nick not in bot.memory["botdict"]["users"].keys():
+            bot.memory["botdict"]["users"][nick] = dict()
+    elif longevity == 'temp':
+        if nick not in bot.memory["botdict"]["tempvals"]["uservals"].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick] = dict()
+
+    # Verify mainkey exists
+    if longevity == 'long':
+        if mainkey not in bot.memory["botdict"]["users"][nick].keys():
+            bot.memory["botdict"]["users"][nick][mainkey] = dict()
+    elif longevity == 'temp':
+        if mainkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey] = dict()
+
+    # Verify secondarykey exists
+    if longevity == 'long':
+        if secondarykey not in bot.memory["botdict"]["users"][nick][mainkey].keys():
+            return None
+        else:
+            return bot.memory["botdict"]["users"][nick][mainkey][secondarykey]
+    elif longevity == 'temp':
+        if secondarykey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey].keys():
+            return None
+        else:
+            return bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]
+
+
+def set_nick_value(bot, nick, secondarykey, value, longevity='long', mainkey='unsorted'):
+
+    # verify nick dict exists
+    if longevity == 'long':
+        if nick not in bot.memory["botdict"]["users"].keys():
+            bot.memory["botdict"]["users"][nick] = dict()
+    elif longevity == 'temp':
+        if nick not in bot.memory["botdict"]["tempvals"]["uservals"].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick] = dict()
+
+    # Verify mainkey exists
+    if longevity == 'long':
+        if mainkey not in bot.memory["botdict"]["users"][nick].keys():
+            bot.memory["botdict"]["users"][nick][mainkey] = dict()
+    elif longevity == 'temp':
+        if mainkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey] = dict()
+
+    # set
+    if longevity == 'long':
+        bot.memory["botdict"]["users"][nick][mainkey][secondarykey] = value
+    elif longevity == 'temp':
+        bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey] = value
 
 
 """

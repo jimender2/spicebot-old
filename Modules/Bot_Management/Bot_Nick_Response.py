@@ -73,6 +73,15 @@ valid_botnick_commands = {
                             "pip": {
                                         'privs': ['admin', 'OP'],
                                         },
+                            "cd": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "dir": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "gitpull": {
+                                        'privs': ['admin', 'OP'],
+                                        },
                             }
 
 
@@ -370,6 +379,63 @@ def bot_command_function_pip(bot, botcom):
     for line in installines:
         osd(bot, trigger.sender, 'say', line)
     osd(bot, botcom.channel_current, 'say', "Possibly done.")
+
+
+"""
+Directory Browsing
+"""
+
+
+def bot_command_function_gitpull(bot, botcom):
+
+    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', longevity='temp') or bot.memory["botdict"]["tempvals"]['bots_list'][bot.nick]['directory']
+    osd(bot, botcom.channel_current, 'say', "attempting to git pull " + botcom.directory)
+    g = git.cmd.Git(botcom.directory)
+    g.pull()
+
+
+def bot_command_function_dir(bot, botcom):
+
+    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', longevity='temp') or bot.memory["botdict"]["tempvals"]['bots_list'][bot.nick]['directory']
+    botcom = bot_list_directory(bot, botcom)
+    if botcom.directory == []:
+        osd(bot, botcom.channel_current, 'say', "It appears this directory is empty.")
+        return
+    displaymsgarray = []
+    displaymsgarray.append("Current files located in " + str(botcom.directory) + " :")
+    for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
+        displaymsgarray.append(str("["+filefoldertype.title()+"] ")+str(filename))
+    osd(bot, botcom.channel_current, 'say', displaymsgarray)
+
+
+def bot_command_function_cd(bot, botcom):
+
+    validfolderoptions = ['..', 'reset']
+    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', longevity='temp') or bot.memory["botdict"]["tempvals"]['bots_list'][bot.nick]['directory']
+    botcom = bot_list_directory(bot, botcom)
+
+    for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
+        if filefoldertype == 'folder':
+            validfolderoptions.append(filename)
+
+    movepath = spicemanip(bot, botcom.triggerargsarray, 0)
+    if movepath not in validfolderoptions:
+        if movepath in botcom.directory_listing and movepath not in validfolderoptions:
+            osd(bot, botcom.channel_current, 'say', "You can't Change Directory into a File!")
+        else:
+            osd(bot, botcom.channel_current, 'say', "Invalid Folder Path")
+        return
+
+    if movepath == "..":
+        movepath = os.path.dirname(botcom.directory)
+    elif movepath == 'reset':
+        movepath = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    else:
+        movepath = os.path.join(botcom.directory, str(movepath+"/"))
+
+    set_nick_value(bot, botcom.instigator, 'current_admin_dir', value, longevity='temp')
+
+    osd(bot, botcom.channel_current, 'say', "Directory Changed to : " + str(movepath))
 
 
 """
