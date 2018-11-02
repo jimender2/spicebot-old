@@ -75,13 +75,13 @@ def bot_command_hub(bot, trigger):
 
         if botcom.command_main.lower() in valid_botnick_commands.keys():
 
-            if bot_command_run_check(bot, botcom, valid_botnick_commands):
+            if bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
 
                 bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom)')
                 eval(bot_command_function_run)
 
 
-def bot_command_run_check(bot, botcom, valid_botnick_commands):
+def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
     commandrun = True
 
     if bot.privileges[channelcheck][user] >= VOICE:
