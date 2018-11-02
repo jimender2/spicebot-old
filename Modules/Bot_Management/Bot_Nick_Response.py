@@ -204,7 +204,7 @@ def bot_command_function_debug(bot, trigger, botcom):
             nobotlogs.append(targetbot)
 
     if nobotlogs != []:
-        osd(bot, trigger.sender, 'action', spicemanip(bot, nobotlogs, 'andlist') + " had no log(s) for some reason")
+        osd(bot, trigger.sender, 'say', spicemanip(bot, nobotlogs, 'andlist') + " had no log(s) for some reason")
 
 
 """
