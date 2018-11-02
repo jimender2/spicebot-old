@@ -29,7 +29,7 @@ GITWIKIURL = "https://github.com/SpiceBot/SpiceBot/wiki"
 """
 
 
-@nickname_commands('modules', 'block', 'github', 'on', 'off', 'devmode', 'update', 'restart', 'permfix', 'debug', 'pip', 'help', 'docs', 'cd', 'dir', 'gitpull')
+@nickname_commands('modules', 'block', 'github', 'on', 'off', 'devmode', 'update', 'restart', 'permfix', 'pip', 'help', 'docs', 'cd', 'dir', 'gitpull')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     triggerargsarray = spicemanip(bot, trigger.group(0), 'create')
@@ -565,45 +565,6 @@ def bot_command_function_pip(bot, trigger, botcom, instigator):
     for line in installines:
         osd(bot, trigger.sender, 'say', line)
     osd(bot, botcom.channel_current, 'say', "Possibly done.")
-
-
-def bot_command_function_debug(bot, trigger, botcom, instigator):
-
-    botcom = bot_config_directory(bot, botcom)
-    targetbot = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
-
-    if targetbot == bot.nick:
-        if botcom.instigator not in botcom.botadmins:
-            osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function.")
-            return
-    else:
-        targetbotadmins = bot_target_admins(bot, targetbot)
-        if botcom.instigator not in targetbotadmins:
-            osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function.")
-            return
-
-    joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
-    if not os.path.isdir(joindpath):
-        osd(bot, botcom.instigator, 'notice', "That doesn't appear to be a valid bot directory.")
-        return
-
-    osd(bot, botcom.channel_current, 'action', "Is Examining Log")
-
-    debuglines = []
-    searchphrasefound = 0
-    ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)"]
-    for line in os.popen("sudo service " + targetbot + " status").read().split('\n'):
-        if not searchphrasefound and "Welcome to Sopel. Loading modules..." in str(line):
-            searchphrasefound = 1
-        if searchphrasefound:
-            if not any(x in str(line) for x in ignorearray):
-                debuglines.append(str(line))
-
-    if debuglines == []:
-        return osd(bot, botcom.channel_current, 'action', "has no service log for some reason.")
-
-    for line in debuglines:
-        osd(bot, trigger.sender, 'say', line)
 
 
 """
