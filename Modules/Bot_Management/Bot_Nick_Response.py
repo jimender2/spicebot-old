@@ -388,7 +388,7 @@ Directory Browsing
 
 def bot_command_function_gitpull(bot, botcom):
 
-    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', longevity='temp') or bot.memory["botdict"]["tempvals"]['bots_list'][bot.nick]['directory']
+    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', longevity='temp') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
     osd(bot, botcom.channel_current, 'say', "attempting to git pull " + botcom.directory)
     g = git.cmd.Git(botcom.directory)
     g.pull()
@@ -396,7 +396,7 @@ def bot_command_function_gitpull(bot, botcom):
 
 def bot_command_function_dir(bot, botcom):
 
-    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', longevity='temp') or bot.memory["botdict"]["tempvals"]['bots_list'][bot.nick]['directory']
+    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', longevity='temp') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
     botcom = bot_list_directory(bot, botcom)
     if botcom.directory == []:
         osd(bot, botcom.channel_current, 'say', "It appears this directory is empty.")
@@ -411,7 +411,7 @@ def bot_command_function_dir(bot, botcom):
 def bot_command_function_cd(bot, botcom):
 
     validfolderoptions = ['..', 'reset']
-    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', longevity='temp') or bot.memory["botdict"]["tempvals"]['bots_list'][bot.nick]['directory']
+    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', longevity='temp') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
     botcom = bot_list_directory(bot, botcom)
 
     for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
