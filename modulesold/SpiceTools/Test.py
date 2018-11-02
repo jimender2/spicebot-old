@@ -35,7 +35,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     randomnumberword = Number2Words(randomnumber).convert()
     randomadmin = ""
     blank = ""
-    args = [instigator, channel, randombot, randomnumberstring, randnumberword, blank]
+    args = [instigator, channel, randombot, randomnumberstring, randomnumberword, blank]
     if not commandtotest:
         osd(bot, trigger.sender, 'say', "What command did you want me to test, " + instigator + "?")
     else:
