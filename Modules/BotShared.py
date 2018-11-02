@@ -332,6 +332,22 @@ def nick_actual(bot, nick):
 
 
 """
+# Bot Restart/Update
+"""
+
+
+def bot_restart(bot, targetbot):
+    if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
+        os.system("sudo service " + str(targetbot) + " restart")
+
+
+def bot_update(bot, targetbot):
+    if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
+        g = git.cmd.Git(bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory'])
+        g.pull()
+
+
+"""
 Small Functions
 """
 

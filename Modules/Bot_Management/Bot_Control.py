@@ -29,7 +29,7 @@ GITWIKIURL = "https://github.com/SpiceBot/SpiceBot/wiki"
 """
 
 
-@nickname_commands('modules', 'block', 'github', 'on', 'off', 'devmode', 'update', 'restart', 'permfix', 'pip', 'help', 'docs', 'cd', 'dir', 'gitpull')
+@nickname_commands('modules', 'block', 'github', 'on', 'off', 'devmode', 'permfix', 'pip', 'help', 'docs', 'cd', 'dir', 'gitpull')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     triggerargsarray = spicemanip(bot, trigger.group(0), 'create')
@@ -416,107 +416,6 @@ def bot_command_function_devmode(bot, trigger, botcom, instigator):
     osd(bot, botcom.channel_current, 'say', "devmode should now be " + subcommand + " for " + channeltarget + ".")
 
 
-def bot_command_function_update(bot, trigger, botcom, instigator):
-
-    botcom = bot_config_directory(bot, botcom)
-
-    targetbots = []
-    if botcom.triggerargsarray == []:
-        targetbots.append(bot.nick)
-    elif 'all' in botcom.triggerargsarray:
-        for targetbot in botcom.config_listing:
-            targetbots.append(targetbot)
-    else:
-        for targetbot in botcom.triggerargsarray:
-            if targetbot in botcom.config_listing:
-                targetbots.append(targetbot)
-
-    for targetbot in targetbots:
-        joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
-        if not os.path.isdir(joindpath):
-            targetbots.remove(targetbot)
-
-    for targetbot in targetbots:
-        targetbotadmins = bot_target_admins(bot, targetbot)
-        if botcom.instigator not in targetbotadmins:
-            targetbots.remove(targetbot)
-
-    if targetbots == []:
-        osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function for the selected bots OR the bots directory is missing.")
-        return
-
-    # current bot should be last
-    if bot.nick in targetbots:
-        targetbots.remove(bot.nick)
-        targetbots.append(bot.nick)
-
-    if len(targetbots) == 1:
-        if targetbot != bot.nick:
-            osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
-        else:
-            dungeonmasterarray = ['spiceRPG', 'spiceRPGdev']
-            if targetbot in dungeonmasterarray:
-                osd(bot, botcom.channel_list, 'say', "My Dungeon Master, " + trigger.nick + ", hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!")
-            else:
-                osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
-    else:
-        targetbotlist = spicemanip(bot, targetbots, 'list')
-        osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbotlist + " from Github and restart.")
-    for targetbot in targetbots:
-        update(bot, botcom, trigger, targetbot)
-        restart(bot, botcom, trigger, targetbot)
-
-
-def bot_command_function_restart(bot, trigger, botcom, instigator):
-
-    botcom = bot_config_directory(bot, botcom)
-
-    targetbots = []
-    if botcom.triggerargsarray == []:
-        targetbots.append(bot.nick)
-    elif 'all' in botcom.triggerargsarray:
-        for targetbot in botcom.config_listing:
-            targetbots.append(targetbot)
-    else:
-        for targetbot in botcom.triggerargsarray:
-            if targetbot in botcom.config_listing:
-                targetbots.append(targetbot)
-
-    for targetbot in targetbots:
-        joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
-        if not os.path.isdir(joindpath):
-            targetbots.remove(targetbot)
-
-    for targetbot in targetbots:
-        targetbotadmins = bot_target_admins(bot, targetbot)
-        if botcom.instigator not in targetbotadmins:
-            targetbots.remove(targetbot)
-
-    if targetbots == []:
-        osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function for the selected bots OR the bots directory is missing.")
-        return
-
-    # current bot should be last
-    if bot.nick in targetbots:
-        targetbots.remove(bot.nick)
-        targetbots.append(bot.nick)
-
-    if len(targetbots) == 1:
-        if targetbot != bot.nick:
-            osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to restart. Be Back Soon!")
-        else:
-            dungeonmasterarray = ['spiceRPG', 'spiceRPGdev']
-            if targetbot in dungeonmasterarray:
-                osd(bot, botcom.channel_list, 'say', "My Dungeon Master, " + botcom.instigator + ", commandeth me to restart. I shall return post haste!")
-            else:
-                osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to restart. Be Back Soon!")
-    else:
-        targetbotlist = spicemanip(bot, targetbots, 'list')
-        osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to restart " + targetbotlist)
-    for targetbot in targetbots:
-        restart(bot, botcom, trigger, targetbot)
-
-
 def bot_command_function_permfix(bot, trigger, botcom, instigator):
 
     if botcom.instigator not in botcom.botadmins:
@@ -565,27 +464,6 @@ def bot_command_function_pip(bot, trigger, botcom, instigator):
     for line in installines:
         osd(bot, trigger.sender, 'say', line)
     osd(bot, botcom.channel_current, 'say', "Possibly done.")
-
-
-"""
-# Bot Restart/Update
-"""
-
-
-def restart(bot, botcom, trigger, targetbot):
-    osd(bot, botcom.channel_current, 'action', "Is Restarting the " + targetbot + " Service...")
-    os.system("sudo service " + str(targetbot) + " restart")
-    if bot.nick == targetbot:
-        osd(bot, botcom.channel_current, 'say', "If you see this, the service is hanging. Making another attempt.")
-        os.system("sudo service " + str(targetbot) + " restart")
-
-
-def update(bot, botcom, trigger, targetbot):
-    os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
-    joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
-    osd(bot, botcom.channel_current, 'action', "Is Pulling " + str(joindpath) + " From Github...")
-    g = git.cmd.Git(joindpath)
-    g.pull()
 
 
 """

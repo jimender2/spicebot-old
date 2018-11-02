@@ -52,6 +52,12 @@ valid_botnick_commands = {
                             "debug": {
                                         'privs': ['admin', 'OP'],
                                         },
+                            "update": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "restart": {
+                                        'privs': ['admin', 'OP'],
+                                        },
                             }
 
 
@@ -159,6 +165,65 @@ def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
 """
 Basic Running Operations
 """
+
+
+def bot_command_function_update(bot, trigger, botcom):
+
+    targetbots = {}
+    if botcom.triggerargsarray == []:
+        targetbots[bot.nick] = dict()
+    elif 'all' in botcom.triggerargsarray:
+        for targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+            targetbots[targetbot] = dict()
+    else:
+        for targetbot in botcom.triggerargsarray:
+            if targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+                targetbots[targetbot] = dict()
+
+    cannotproceed = []
+    for targetbot in targetbots.keys():
+
+        if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
+
+            osd(bot, botcom.channel_current, 'action', "Is Pulling " + str(bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']) + " From Github...")
+            bot_update(bot, targetbot)
+
+            osd(bot, botcom.channel_current, 'action', "Is Restarting the " + targetbot + " Service...")
+            bot_restart(bot, targetbot)
+
+        else:
+            cannotproceed.append(targetbot)
+
+    if cannotproceed != []:
+        osd(bot, trigger.sender, 'say', spicemanip(bot, cannotproceed, 'andlist') + " could not be updated.")
+
+
+def bot_command_function_restart(bot, trigger, botcom):
+
+    targetbots = {}
+    if botcom.triggerargsarray == []:
+        targetbots[bot.nick] = dict()
+    elif 'all' in botcom.triggerargsarray:
+        for targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+            targetbots[targetbot] = dict()
+    else:
+        for targetbot in botcom.triggerargsarray:
+            if targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+                targetbots[targetbot] = dict()
+
+    cannotproceed = []
+    for targetbot in targetbots.keys():
+
+        if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
+
+            osd(bot, botcom.channel_current, 'action', "Is Restarting the " + targetbot + " Service...")
+            bot_restart(bot, targetbot)
+
+        else:
+            cannotproceed.append(targetbot)
+
+    if cannotproceed != []:
+        osd(bot, trigger.sender, 'say', spicemanip(bot, cannotproceed, 'andlist') + " could not be restarted.")
 
 
 def bot_command_function_debug(bot, trigger, botcom):
