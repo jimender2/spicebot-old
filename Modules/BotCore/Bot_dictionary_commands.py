@@ -92,9 +92,8 @@ def bot_command_hub(bot, trigger):
 
 
 # Simple quick replies
-def botfunction_simple(bot, trigger, botcom):
+def botfunction_simple(bot, trigger, botcom, specified=None):
 
-    specified = None
     if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
         specified = spicemanip(bot, botcom.triggerargsarray, 1)
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
@@ -111,7 +110,7 @@ def botfunction_simple(bot, trigger, botcom):
 
 
 # Quick replies with a target person TODO use the targetfinder logic
-def botfunction_target(bot, trigger, botcom):
+def botfunction_target(bot, trigger, botcom, specified=None):
 
     # target is the first arg given
     target = spicemanip(bot, botcom.triggerargsarray, 1)
@@ -119,7 +118,6 @@ def botfunction_target(bot, trigger, botcom):
     # handling for no target
     if not target:
 
-        specified = None
         if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
             specified = spicemanip(bot, botcom.triggerargsarray, 1)
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
@@ -151,10 +149,14 @@ def botfunction_target(bot, trigger, botcom):
     if target in botcom.triggerargsarray:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
-    specified = None
     if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
         specified = spicemanip(bot, botcom.triggerargsarray, 1)
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+    if not bot_target_check(bot, target)["targetgood"]:
+        bot.say("false")
+    else:
+        bot.say("true")
 
     # cannot target bots
     if target in bot.memory["botdict"]["tempvals"]['bots_list']:
@@ -189,3 +191,14 @@ def botfunction_target(bot, trigger, botcom):
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
     reply = reply.replace("$target", target)
     osd(bot, trigger.sender, 'say', reply)
+
+
+def bot_target_check(bot, target):
+    targetgood = {"targetgood": True, "error": False}
+
+    targetgoodconsensus = []
+
+    if 'False' in targetgoodconsensus:
+        targetgood = {"targetgood": False, "error": "test"}
+
+    return targetgood
