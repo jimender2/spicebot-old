@@ -30,7 +30,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     channel = trigger.sender
     command = "." + commandtotest
     randombot = "SpiceBotdevold"
-    randomnumber = random.randint(1, 10)
+    randomnumber = random.randint(1, 27)
     randomnumberstring = str(randomnumber)
     randomnumberword = Number2Words(randomnumber).convert()
     randomadmin = ""
