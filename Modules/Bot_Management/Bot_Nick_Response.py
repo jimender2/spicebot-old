@@ -85,6 +85,9 @@ def bot_command_hub(bot, trigger):
     # instigator
     botcom.instigator = trigger.nick
 
+    # channel
+    botcom.channel_current = trigger.sender
+
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, '2+', 'list')
 
@@ -102,19 +105,20 @@ def bot_command_hub(bot, trigger):
 
         if botcom.command_main.lower() in valid_botnick_commands.keys():
 
-            if bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
+            if bot_command_run_check(bot, botcom):
 
-                bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom)')
+                bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot, botcom)')
                 eval(bot_command_function_run)
             else:
                 invalidcomslist.append(botcom.command_main)
 
     # Display Invalids coms used
     if invalidcomslist != []:
-        osd(bot, trigger.nick, 'notice', "I was unable to process the following Bot Nick commands due to privilege issues: " + spicemanip(bot, invalidcomslist, 'andlist'))
+        osd(bot, botcom.instigator, 'notice', "I was unable to process the following Bot Nick commands due to privilege issues: " + spicemanip(bot, invalidcomslist, 'andlist'))
 
 
-def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
+def bot_command_run_check(bot, botcom):
+    global valid_botnick_commands
     commandrun = True
 
     if 'privs' in valid_botnick_commands[botcom.command_main.lower()].keys():
@@ -127,8 +131,8 @@ def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
                 commandrunconsensus.append('True')
 
         if 'OP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
-            if trigger.sender.startswith('#'):
-                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][trigger.sender]['chanops']:
+            if botcom.channel_current.startswith('#'):
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanops']:
                     commandrunconsensus.append('False')
                 else:
                     commandrunconsensus.append('True')
@@ -136,8 +140,8 @@ def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
                 commandrunconsensus.append('False')
 
         if 'HOP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
-            if trigger.sender.startswith('#'):
-                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][trigger.sender]['chanhalfops']:
+            if botcom.channel_current.startswith('#'):
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanhalfops']:
                     commandrunconsensus.append('False')
                 else:
                     commandrunconsensus.append('True')
@@ -145,8 +149,8 @@ def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
                 commandrunconsensus.append('False')
 
         if 'VOICE' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
-            if trigger.sender.startswith('#'):
-                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][trigger.sender]['chanvoices']:
+            if botcom.channel_current.startswith('#'):
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanvoices']:
                     commandrunconsensus.append('False')
                 else:
                     commandrunconsensus.append('True')
@@ -167,7 +171,7 @@ Basic Running Operations
 """
 
 
-def bot_command_function_update(bot, trigger, botcom):
+def bot_command_function_update(bot, botcom):
 
     targetbots = {}
     if botcom.triggerargsarray == []:
@@ -185,20 +189,20 @@ def bot_command_function_update(bot, trigger, botcom):
 
         if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
 
-            osd(bot, trigger.sender, 'action', "Is Pulling " + str(bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']) + " From Github...")
+            osd(bot, botcom.channel_current, 'action', "Is Pulling " + str(bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']) + " From Github...")
             bot_update(bot, targetbot)
 
-            osd(bot, trigger.sender, 'action', "Is Restarting the " + targetbot + " Service...")
+            osd(bot, botcom.channel_current, 'action', "Is Restarting the " + targetbot + " Service...")
             bot_restart(bot, targetbot)
 
         else:
             cannotproceed.append(targetbot)
 
     if cannotproceed != []:
-        osd(bot, trigger.sender, 'say', spicemanip(bot, cannotproceed, 'andlist') + " could not be updated.")
+        osd(bot, botcom.channel_current, 'say', spicemanip(bot, cannotproceed, 'andlist') + " could not be updated.")
 
 
-def bot_command_function_restart(bot, trigger, botcom):
+def bot_command_function_restart(bot, botcom):
 
     targetbots = {}
     if botcom.triggerargsarray == []:
@@ -216,17 +220,17 @@ def bot_command_function_restart(bot, trigger, botcom):
 
         if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
 
-            osd(bot, trigger.sender, 'action', "Is Restarting the " + targetbot + " Service...")
+            osd(bot, botcom.channel_current, 'action', "Is Restarting the " + targetbot + " Service...")
             bot_restart(bot, targetbot)
 
         else:
             cannotproceed.append(targetbot)
 
     if cannotproceed != []:
-        osd(bot, trigger.sender, 'say', spicemanip(bot, cannotproceed, 'andlist') + " could not be restarted.")
+        osd(bot, botcom.channel_current, 'say', spicemanip(bot, cannotproceed, 'andlist') + " could not be restarted.")
 
 
-def bot_command_function_debug(bot, trigger, botcom):
+def bot_command_function_debug(bot, botcom):
 
     targetbots = {}
     if botcom.triggerargsarray == []:
@@ -239,7 +243,7 @@ def bot_command_function_debug(bot, trigger, botcom):
             if targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
                 targetbots[targetbot] = dict()
 
-    osd(bot, trigger.sender, 'action', "Is Examining Log(s) for " + spicemanip(bot, targetbots.keys(), 'andlist'))
+    osd(bot, botcom.channel_current, 'action', "Is Examining Log(s) for " + spicemanip(bot, targetbots.keys(), 'andlist'))
 
     for targetbot in targetbots.keys():
 
@@ -256,15 +260,15 @@ def bot_command_function_debug(bot, trigger, botcom):
     for targetbot in targetbots.keys():
         if targetbots[targetbot]['debuglines'] != []:
             for line in targetbots[targetbot]['debuglines']:
-                osd(bot, trigger.sender, 'say', line)
+                osd(bot, botcom.channel_current, 'say', line)
             botcount -= 1
             if botcount > 0:
-                osd(bot, trigger.sender, 'say', "     ")
+                osd(bot, botcom.channel_current, 'say', "     ")
         else:
             nobotlogs.append(targetbot)
 
     if nobotlogs != []:
-        osd(bot, trigger.sender, 'say', spicemanip(bot, nobotlogs, 'andlist') + " had no log(s) for some reason")
+        osd(bot, botcom.channel_current, 'say', spicemanip(bot, nobotlogs, 'andlist') + " had no log(s) for some reason")
 
 
 """
@@ -272,14 +276,14 @@ Messaging channels
 """
 
 
-def bot_command_function_msg(bot, trigger, botcom):
+def bot_command_function_msg(bot, botcom):
 
     # Channel
     targetchannels = []
     targetword = spicemanip(bot, botcom.triggerargsarray, 1)
     if targetword not in bot.memory["botdict"]["tempvals"]['channels_list'].keys() and targetword != 'all':
-        if trigger.sender.startswith('#'):
-            targetchannels.append(trigger.sender)
+        if botcom.channel_current.startswith('#'):
+            targetchannels.append(botcom.channel_current)
         else:
             osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
             return
@@ -304,14 +308,14 @@ def bot_command_function_msg(bot, trigger, botcom):
     osd(bot, targetchannels, 'say', botmessage)
 
 
-def bot_command_function_action(bot, trigger, botcom):
+def bot_command_function_action(bot, botcom):
 
     # Channel
     targetchannels = []
     targetword = spicemanip(bot, botcom.triggerargsarray, 1)
     if targetword not in bot.memory["botdict"]["tempvals"]['channels_list'].keys() and targetword != 'all':
-        if trigger.sender.startswith('#'):
-            targetchannels.append(trigger.sender)
+        if botcom.channel_current.startswith('#'):
+            targetchannels.append(botcom.channel_current)
         else:
             osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
             return
@@ -336,14 +340,14 @@ def bot_command_function_action(bot, trigger, botcom):
     osd(bot, targetchannels, 'action', botmessage)
 
 
-def bot_command_function_notice(bot, trigger, botcom):
+def bot_command_function_notice(bot, botcom):
 
     # Target
     targets = []
     targetword = spicemanip(bot, botcom.triggerargsarray, 1)
     if targetword not in bot.memory["botdict"]["tempvals"]['all_current_users'] and targetword != 'all':
-        if trigger.sender.startswith('#'):
-            targets.append(trigger.sender)
+        if botcom.channel_current.startswith('#'):
+            targets.append(botcom.channel_current)
         else:
             osd(bot, botcom.instigator, 'notice', "You must specify a valid target.")
             return
@@ -373,7 +377,7 @@ Channel
 """
 
 
-def bot_command_function_channel(bot, trigger, botcom):
+def bot_command_function_channel(bot, botcom):
 
     # SubCommand used
     valid_subcommands = ['list', 'op', 'hop', 'voice', 'users']
@@ -384,14 +388,14 @@ def bot_command_function_channel(bot, trigger, botcom):
     # list channels
     if subcommand == 'list':
         chanlist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'].keys(), 'andlist')
-        osd(bot, trigger.sender, 'say', "You can find me in " + chanlist)
+        osd(bot, botcom.channel_current, 'say', "You can find me in " + chanlist)
         return
 
     # Channel
     targetchannels = []
     if botcom.triggerargsarray == []:
-        if trigger.sender.startswith('#'):
-            targetchannels.append(trigger.sender)
+        if botcom.channel_current.startswith('#'):
+            targetchannels.append(botcom.channel_current)
         else:
             osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
             return
@@ -413,7 +417,7 @@ def bot_command_function_channel(bot, trigger, botcom):
             else:
                 oplist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanops'], 'andlist')
                 dispmsg.append("Channel Operators for " + str(channeltarget) + "  are: " + oplist)
-        osd(bot, trigger.nick, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
         return
 
     # HOP list
@@ -424,7 +428,7 @@ def bot_command_function_channel(bot, trigger, botcom):
             else:
                 hoplist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanhalfops'], 'andlist')
                 dispmsg.append("Channel Half Operators for " + str(channeltarget) + "  are: " + hoplist)
-        osd(bot, trigger.nick, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
         return
 
     # Voice List
@@ -435,7 +439,7 @@ def bot_command_function_channel(bot, trigger, botcom):
             else:
                 voicelist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanvoices'], 'andlist')
                 dispmsg.append("Channel VOICE for " + str(channeltarget) + " are: " + voicelist)
-        osd(bot, trigger.nick, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
         return
 
     # Users List
@@ -446,7 +450,7 @@ def bot_command_function_channel(bot, trigger, botcom):
             else:
                 userslist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['current_users'], 'andlist')
                 dispmsg.append("Channel users for " + str(channeltarget) + " are: " + userslist)
-        osd(bot, trigger.nick, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
         return
 
 
@@ -455,7 +459,7 @@ Admins
 """
 
 
-def bot_command_function_admins(bot, trigger, botcom):
+def bot_command_function_admins(bot, botcom):
 
     targetbots = []
     if botcom.triggerargsarray == []:
@@ -472,7 +476,7 @@ def bot_command_function_admins(bot, trigger, botcom):
     for targetbot in targetbots:
         currentbotsadmins = bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['configuration']['core']['admins']
         dispmsg.append(targetbot + " is administered by " + currentbotsadmins)
-    osd(bot, trigger.sender, 'say', spicemanip(bot, dispmsg, 'andlist'))
+    osd(bot, botcom.channel_current, 'say', spicemanip(bot, dispmsg, 'andlist'))
 
 
 """
@@ -480,7 +484,7 @@ Owner
 """
 
 
-def bot_command_function_owner(bot, trigger, botcom):
+def bot_command_function_owner(bot, botcom):
 
     targetbots = []
     if botcom.triggerargsarray == []:
@@ -497,7 +501,7 @@ def bot_command_function_owner(bot, trigger, botcom):
     for targetbot in targetbots:
         currentbotsowner = bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['configuration']['core']['owner']
         dispmsg.append(targetbot + " is owned by " + currentbotsowner)
-    osd(bot, trigger.sender, 'say', spicemanip(bot, dispmsg, 'andlist'))
+    osd(bot, botcom.channel_current, 'say', spicemanip(bot, dispmsg, 'andlist'))
 
 
 """
@@ -505,9 +509,9 @@ Uptime
 """
 
 
-def bot_command_function_uptime(bot, trigger, botcom):
+def bot_command_function_uptime(bot, botcom):
     delta = datetime.timedelta(seconds=round((datetime.datetime.utcnow() - bot.memory["botdict"]["tempvals"]["uptime"]).total_seconds()))
-    osd(bot, trigger.sender, 'say', "I've been sitting here for {} and I keep going!".format(delta))
+    osd(bot, botcom.channel_current, 'say', "I've been sitting here for {} and I keep going!".format(delta))
 
 
 """
@@ -515,8 +519,8 @@ Gender
 """
 
 
-def bot_command_function_gender(bot, trigger, botcom):
-    osd(bot, trigger.sender, 'say', "My gender is Female")
+def bot_command_function_gender(bot, botcom):
+    osd(bot, botcom.channel_current, 'say', "My gender is Female")
 
 
 """
@@ -524,8 +528,8 @@ Can You see me
 """
 
 
-def bot_command_function_canyouseeme(bot, trigger, botcom):
-    osd(bot, trigger.sender, 'say', botcom.instigator + ", I can see you.")
+def bot_command_function_canyouseeme(bot, botcom):
+    osd(bot, botcom.channel_current, 'say', botcom.instigator + ", I can see you.")
 
 
 """
@@ -533,5 +537,5 @@ Testing
 """
 
 
-def bot_command_function_dict(bot, trigger, botcom):
-    osd(bot, trigger.sender, 'say', str(bot.memory["botdict"]["users"]))
+def bot_command_function_dict(bot, botcom):
+    osd(bot, botcom.channel_current, 'say', str(bot.memory["botdict"]["users"]))
