@@ -21,7 +21,17 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # valid commands that the bot will reply to by name
-valid_botnick_commands = ['uptime', 'canyouseeme', 'gender', 'owner', 'admins', 'channel', 'msg', 'action', 'notice']
+valid_botnick_commands = {
+                            "uptime": {},
+                            "canyouseeme": {},
+                            "gender": {},
+                            "owner": {},
+                            "admins": {},
+                            "channel": {},
+                            "msg": {},
+                            "action": {},
+                            "notice": {},
+                            }
 
 
 """
@@ -42,6 +52,9 @@ def bot_command_hub(bot, trigger):
     botcom = class_create('botcom')
     botcom.default = 'botcom'
 
+    # valid commands
+    global valid_botnick_commands
+
     # instigator
     botcom.instigator = trigger.nick
 
@@ -60,10 +73,21 @@ def bot_command_hub(bot, trigger):
         botcom.command_main = spicemanip(bot, botcom.triggerargsarray, 1)
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
-        if botcom.command_main.lower() in valid_botnick_commands:
-            bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom)')
-            eval(bot_command_function_run)
+        if botcom.command_main.lower() in valid_botnick_commands.keys():
 
+            if bot_command_run_check(bot, botcom, valid_botnick_commands):
+
+                bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom)')
+                eval(bot_command_function_run)
+
+
+def bot_command_run_check(bot, botcom, valid_botnick_commands):
+    commandrun = True
+
+    if bot.privileges[channelcheck][user] >= VOICE:
+        bot.say("test")
+
+    return commandrun
 
 """
 Messaging channels
