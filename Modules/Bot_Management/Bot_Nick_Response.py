@@ -150,7 +150,7 @@ def bot_command_function_notice(bot, trigger, botcom):
             targets.append(target)
     else:
         for target in botcom.triggerargsarray:
-            if targetin bot.memory["botdict"]["tempvals"]['all_current_users'].keys():
+            if target in bot.memory["botdict"]["tempvals"]['all_current_users'].keys():
                 targets.append(target)
 
     for target in targets:
