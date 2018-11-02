@@ -155,7 +155,7 @@ def botfunction_target(bot, trigger, botcom, specified=None):
 
     targetchecking = bot_target_check(bot, botcom, target)["targetgood"]
     if not targetchecking["targetgood"]:
-        osd(bot, botcom.instigator, 'notice', str(targetchecking["error"]))
+        osd(bot, botcom.instigator, 'notice', targetchecking["error"])
     else:
         bot.say("target good")
 
@@ -172,7 +172,7 @@ def botfunction_target(bot, trigger, botcom, specified=None):
 
 
 def bot_target_check(bot, botcom, target):
-    targetgood = {"targetgood": True, "error": False}
+    targetgood = {"targetgood": True, "error": "None"}
 
     targetgoodconsensus = []
 
