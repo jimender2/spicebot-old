@@ -28,7 +28,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    sides = int( spicemanip(bot, triggerargsarray, 1) )
+    sides = int(spicemanip(bot, triggerargsarray, 1))
     rand = random.randint(1, sides)
     msg = "you suck"
     test(bot, trigger.sender, 'say', msg)
