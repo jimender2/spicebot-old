@@ -79,13 +79,55 @@ def bot_command_hub(bot, trigger):
 
                 bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom)')
                 eval(bot_command_function_run)
+            else:
+                invalidcomslist.append(botcom.command_main)
+
+    # Display Invalids coms used
+    if invalidcomslist != []:
+        osd(bot, trigger.nick, 'notice', "I was unable to process the following Bot Nick commands due to privilege issues: " + spicemanip(bot, invalidcomslist, 'andlist'))
 
 
 def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
     commandrun = True
 
-    if bot.privileges[trigger.sender][trigger.nick] >= VOICE:
-        bot.say("test")
+    if 'privs' in valid_botnick_commands[botcom.command_main.lower()].keys():
+        commandrunconsensus = []
+
+        if 'admin' in valid_botnick_commands[botcom.command_main.lower()][privs']:
+            if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bot_admins']:
+                commandrunconsensus.append('False')
+            else:
+                commandrunconsensus.append('True')
+
+        if 'OP' in valid_botnick_commands[botcom.command_main.lower()][privs']:
+            if trigger.sender.startswith('#'):
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][trigger.sender]['chanops']:
+                    commandrunconsensus.append('False')
+                else:
+                    commandrunconsensus.append('True')
+            else:
+                commandrunconsensus.append('False')
+
+        if 'HOP' in valid_botnick_commands[botcom.command_main.lower()][privs']:
+            if trigger.sender.startswith('#'):
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][trigger.sender]['chanhalfops']:
+                    commandrunconsensus.append('False')
+                else:
+                    commandrunconsensus.append('True')
+            else:
+                commandrunconsensus.append('False')
+
+        if 'VOICE' in valid_botnick_commands[botcom.command_main.lower()][privs']:
+            if trigger.sender.startswith('#'):
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][trigger.sender]['chanvoices']:
+                    commandrunconsensus.append('False')
+                else:
+                    commandrunconsensus.append('True')
+            else:
+                commandrunconsensus.append('False')
+
+        if 'True' not in commandrunconsensus:
+            commandrun = False
 
     return commandrun
 

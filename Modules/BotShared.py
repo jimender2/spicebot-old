@@ -76,6 +76,7 @@ bot_dict = {
 
                             # Bots
                             "bots_list": {},
+                            "bot_admins": [],
 
                             # End of Temp Vals
                             },
@@ -228,6 +229,9 @@ Bots
 
 
 def botdict_setup_bots(bot):
+
+    if bot.memory["botdict"]["tempvals"]['bot_admins'] == []:
+        bot.memory["botdict"]["tempvals"]['bot_admins'] = bot.config.core.admins
 
     if not bot.memory["botdict"]["tempvals"]['config_dir']:
         bot.memory["botdict"]["tempvals"]['config_dir'] = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
