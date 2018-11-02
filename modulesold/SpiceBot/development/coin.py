@@ -28,10 +28,10 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    sides = spicemanip(bot, triggerargsarray, 1)
+    sides = int( spicemanip(bot, triggerargsarray, 1) )
     if not sides.isdigit():
         try:
-            sides = w2n.word_to_num(str(sides))
+            sides = int( w2n.word_to_num(str(sides)))
         except ValueError:
             sides = 2
     rand = random.randint(1, sides)
