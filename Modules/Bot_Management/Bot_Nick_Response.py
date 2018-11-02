@@ -138,7 +138,7 @@ def bot_command_function_notice(bot, trigger, botcom):
 
     # Target
     targets = []
-    if botcom.triggerargsarray[0] not in bot.memory["botdict"]["tempvals"]['all_current_users'].keys() and botcom.triggerargsarray[0] != 'all':
+    if botcom.triggerargsarray[0] not in bot.memory["botdict"]["tempvals"]['all_current_users'] and botcom.triggerargsarray[0] != 'all':
         if trigger.sender.startswith('#'):
             targets.append(trigger.sender)
         else:
@@ -146,11 +146,11 @@ def bot_command_function_notice(bot, trigger, botcom):
             return
     elif botcom.triggerargsarray[0] == 'all':
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-        for target in bot.memory["botdict"]["tempvals"]['all_current_users'].keys():
+        for target in bot.memory["botdict"]["tempvals"]['all_current_users']:
             targets.append(target)
     else:
         for target in botcom.triggerargsarray:
-            if target in bot.memory["botdict"]["tempvals"]['all_current_users'].keys():
+            if target in bot.memory["botdict"]["tempvals"]['all_current_users']:
                 targets.append(target)
 
     for target in targets:
