@@ -198,9 +198,9 @@ def bot_command_function_update(bot, botcom):
 
     if botcount == 1 and targetbots[0] == str(bot.nick):
         if targetbots[0] in bot.memory["botdict"]["static"]['bots']["update_text"].keys():
-            osd(bot, botcom.channel_list, 'say', bot.memory["botdict"]["static"]['bots']["update_text"][targetbots[0]].replace("$instigator", botcom.instigator))
+            osd(bot, botcom.channel_current, 'say', bot.memory["botdict"]["static"]['bots']["update_text"][targetbots[0]].replace("$instigator", botcom.instigator))
         else:
-            osd(bot, botcom.channel_list, 'say', botcom.instigator + " commanded me to update from Github and restart. Be Back Soon!")
+            osd(bot, botcom.channel_current, 'say', botcom.instigator + " commanded me to update from Github and restart. Be Back Soon!")
     else:
         osd(bot, [botcom.channel_current], 'say', botcom.instigator + " commanded me to update " + spicemanip(bot, targetbots, 'andlist') + " from Github and restart.")
 
@@ -251,9 +251,9 @@ def bot_command_function_restart(bot, botcom):
     botcount = len(targetbots)
     if botcount == 1 and targetbots[0] == str(bot.nick):
         if targetbots[0] in bot.memory["botdict"]["static"]['bots']["restart_text"].keys():
-            osd(bot, botcom.channel_list, 'say', bot.memory["botdict"]["static"]['bots']["restart_text"][targetbots[0]].replace("$instigator", botcom.instigator))
+            osd(bot, botcom.channel_current, 'say', bot.memory["botdict"]["static"]['bots']["restart_text"][targetbots[0]].replace("$instigator", botcom.instigator))
         else:
-            osd(bot, botcom.channel_list, 'say', botcom.instigator + " commanded me to restart. Be Back Soon!")
+            osd(bot, botcom.channel_current, 'say', botcom.instigator + " commanded me to restart. Be Back Soon!")
     else:
         osd(bot, [botcom.channel_current], 'say', botcom.instigator + " commanded me to restart " + spicemanip(bot, targetbots, 'andlist'))
 
