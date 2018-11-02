@@ -174,9 +174,9 @@ def bot_command_function_debug(bot, trigger, botcom):
             if targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
                 targetbots[targetbot] = dict()
 
-    for targetbot in targetbots.keys():
+    osd(bot, trigger.sender, 'action', "Is Examining Log(s) for " + spicemanip(bot, targetbots.keys(), 'andlist'))
 
-        osd(bot, botcom.channel_current, 'action', "Is Examining Log for " + targetbot)
+    for targetbot in targetbots.keys():
 
         debuglines = []
         searchphrasefound = 0
@@ -188,17 +188,23 @@ def bot_command_function_debug(bot, trigger, botcom):
                 if not any(x in str(line) for x in ignorearray):
                     debuglines.append(str(line))
 
-        if debuglines == []:
-            debuglines = [targetbot + " has no service log for some reason."]
-        targetbots[targetbot]['debuglines']
+        targetbots[targetbot]['debuglines'] = debuglines
 
     botcount = len(targetbots.keys())
+    nobotlogs = []
     for targetbot in targetbots.keys():
-        for line in targetbots[targetbot]['debuglines']:
-            osd(bot, trigger.sender, 'say', line)
-        botcount -= 1
-        if botcount > 0:
-            osd(bot, trigger.sender, 'say', "     ")
+        if targetbots[targetbot]['debuglines'] != []:
+            osd(bot, trigger.sender, 'say', "systemd logs for " + targetbot + " are as follows:")
+            for line in targetbots[targetbot]['debuglines']:
+                osd(bot, trigger.sender, 'say', line)
+            botcount -= 1
+            if botcount > 0:
+                osd(bot, trigger.sender, 'say', "     ")
+        else:
+            nobotlogs.append(targetbot)
+
+    if nobotlogs != []:
+        osd(bot, trigger.sender, 'action', spicemanip(bot, nobotlogs, 'andlist') + " had no log(s) for some reason")
 
 
 """
