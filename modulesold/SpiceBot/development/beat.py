@@ -12,7 +12,7 @@ from BotShared import *
 # author jimender2
 
 
-@sopel.module.commands('fourtytwo', '42')
+@sopel.module.commands('beat')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'fourtytwo')
     if not enablestatus:
@@ -26,4 +26,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "The answer to life, the world, and everything.")
+    person = spicemanip(bot, triggerargsarray, 1) or 'spicebot'
+    reason = spicemanip(bot, triggerargsarray, '2+') or 'until moral improves.'
+    msg = trigger.sender + " beats " + person + " " + reason
+    osd(bot, trigger.sender, 'say', msg)
