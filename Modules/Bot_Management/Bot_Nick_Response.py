@@ -21,7 +21,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # valid commands that the bot will reply to by name
-valid_botnick_commands = ['uptime', 'canyouseeme', 'gender', 'owner', 'admins', 'channel', 'dict']
+valid_botnick_commands = ['uptime', 'canyouseeme', 'gender', 'owner', 'admins', 'channel', 'dict', 'msg']
 
 
 """
@@ -60,16 +60,41 @@ def bot_command_hub(bot, trigger):
         botcom.command_main = spicemanip(bot, botcom.triggerargsarray, 1)
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
-        if botcom.command_main.lower() not in valid_botnick_commands:
-            invalidcomslist.append(botcom.command_main)
-        else:
-
+        if botcom.command_main.lower() in valid_botnick_commands:
             bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom)')
             eval(bot_command_function_run)
 
-    # Display Invalids coms used
-    if invalidcomslist != []:
-        osd(bot, trigger.nick, 'notice', "I was unable to process the following Bot Nick commands: " + spicemanip(bot, invalidcomslist, 'andlist'))
+
+"""
+Messaging channels
+"""
+
+
+def bot_command_function_msg(bot, trigger, botcom, instigator):
+
+    # Channel
+    targetchannels = []
+    if botcom.triggerargsarray == []:
+        if trigger.sender.startswith('#'):
+            targetchannels.append(trigger.sender)
+        else:
+            osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
+            return
+    elif 'all' in botcom.triggerargsarray:
+        for targetchan in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+            targetchannels.append(targetchan)
+    else:
+        for targetchan in botcom.triggerargsarray:
+            if targetchan in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+                targetchannels.append(targetchan)
+
+    botmessage = spicemanip(bot, botcom.triggerargsarray, 0)
+    if not botmessage:
+        osd(bot, botcom.instigator, 'notice', "You must specify a message.")
+        return
+
+    for channeltarget in targetchannels:
+        osd(bot, channeltarget, 'say', botmessage)
 
 
 """
