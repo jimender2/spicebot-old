@@ -21,7 +21,10 @@ sys.setdefaultencoding('utf-8')
 
 
 @sopel.module.interval(1)
+@sopel.module.thread(True)
 def initialsetup(bot):
-    if "botdict" in bot.memory:
+    # prevent multiple runs every second
+    if "botdict_setup" in bot.memory:
         return
+    bot.memory["botdict_setup"] = True
     botdict_open(bot)

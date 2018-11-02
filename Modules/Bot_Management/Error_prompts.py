@@ -22,6 +22,7 @@ sys.setdefaultencoding('utf-8')
 
 
 @sopel.module.interval(1)
+@sopel.module.thread(True)
 def timed_logcheck(bot):
     if "timed_logcheck" not in bot.memory:
         bot.memory["timed_logcheck"] = 1
