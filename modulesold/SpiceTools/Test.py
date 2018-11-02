@@ -5,7 +5,7 @@ import sopel.module
 import sys
 import os
 import random
-from word2number import w2n
+import time
 from number2words import Number2Words
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
@@ -42,3 +42,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         for arg in args:
             message = command + " " + arg
             osd(bot, trigger.sender, 'say', message)
+            time.sleep(0.100)  # Wait for 100 milliseconds
