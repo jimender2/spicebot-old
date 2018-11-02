@@ -22,15 +22,33 @@ sys.setdefaultencoding('utf-8')
 
 # valid commands that the bot will reply to by name
 valid_botnick_commands = {
-                            "uptime": {},
-                            "canyouseeme": {},
-                            "gender": {},
-                            "owner": {},
-                            "admins": {},
-                            "channel": {},
-                            "msg": {},
-                            "action": {},
-                            "notice": {},
+                            "uptime": {
+                                        'privs': [],
+                                        },
+                            "canyouseeme": {
+                                        'privs': [],
+                                        },
+                            "gender": {
+                                        'privs': [],
+                                        },
+                            "owner": {
+                                        'privs': [],
+                                        },
+                            "admins": {
+                                        'privs': [],
+                                        },
+                            "channel": {
+                                        'privs': [],
+                                        },
+                            "msg": {
+                                    'privs': ['admin', 'OP'],
+                                    },
+                            "action": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "notice": {
+                                        'privs': ['admin', 'OP'],
+                                        },
                             }
 
 
@@ -125,6 +143,9 @@ def bot_command_run_check(bot, trigger, botcom, valid_botnick_commands):
                     commandrunconsensus.append('True')
             else:
                 commandrunconsensus.append('False')
+
+        if valid_botnick_commands[botcom.command_main.lower()]['privs'] == []:
+            commandrunconsensus.append('True')
 
         if 'True' not in commandrunconsensus:
             commandrun = False
