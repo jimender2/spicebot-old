@@ -433,7 +433,7 @@ def bot_command_function_cd(bot, botcom):
     else:
         movepath = os.path.join(botcom.directory, str(movepath+"/"))
 
-    set_nick_value(bot, botcom.instigator, 'current_admin_dir', value, longevity='temp')
+    set_nick_value(bot, botcom.instigator, 'current_admin_dir', str(movepath), longevity='temp')
 
     osd(bot, botcom.channel_current, 'say', "Directory Changed to : " + str(movepath))
 
