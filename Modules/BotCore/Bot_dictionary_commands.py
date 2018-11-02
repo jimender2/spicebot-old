@@ -154,32 +154,9 @@ def botfunction_target(bot, trigger, botcom, specified=None):
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
     if not bot_target_check(bot, target)["targetgood"]:
-        bot.say("false")
+        osd(bot, botcom.instigator, 'notice', str(bot_target_check(bot, target)["error"]))
     else:
-        bot.say("true")
-
-    # cannot target bots
-    if target in bot.memory["botdict"]["tempvals"]['bots_list']:
-        reply = nick_actual(bot, target) + " is a bot and cannot be targeted."
-        return osd(bot, botcom.instigator, 'notice', reply)
-
-    # Not a valid user
-    if target not in bot.memory["botdict"]["users"].keys():
-        reply = "I don't know who that is."
-        return osd(bot, botcom.instigator, 'notice', reply)
-
-    # User offline
-    if target not in bot.memory["botdict"]["tempvals"]['all_current_users']:
-        reply = "It looks like " + nick_actual(bot, target) + " is offline right now!"
-        return osd(bot, botcom.instigator, 'notice', reply)
-
-    if not botcom.channel_current.startswith('#') and target != botcom.instigator:
-        reply = "Leave " + nick_actual(bot, target) + " out of this private conversation!"
-        return osd(bot, botcom.instigator, 'notice', reply)
-
-    if target in bot.memory["botdict"]["tempvals"]['all_current_users'] and target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
-        reply = "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel."
-        return osd(bot, botcom.instigator, 'notice', reply)
+        bot.say("target good")
 
     if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
         reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
@@ -198,7 +175,25 @@ def bot_target_check(bot, target):
 
     targetgoodconsensus = []
 
-    if 'False' in targetgoodconsensus:
-        targetgood = {"targetgood": False, "error": "test"}
+    # cannot target bots
+    if target in bot.memory["botdict"]["tempvals"]['bots_list']:
+        targetgoodconsensus.append(nick_actual(bot, target) + " is a bot and cannot be targeted.")
+
+    # Not a valid user
+    if target not in bot.memory["botdict"]["users"].keys():
+        targetgoodconsensus.append("I don't know who that is.")
+
+    # User offline
+    if target not in bot.memory["botdict"]["tempvals"]['all_current_users']:
+        targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is offline right now!")
+
+    if not botcom.channel_current.startswith('#') and target != botcom.instigator:
+        targetgoodconsensus.append("Leave " + nick_actual(bot, target) + " out of this private conversation!")
+
+    if target in bot.memory["botdict"]["tempvals"]['all_current_users'] and target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
+        targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
+
+    if targetgoodconsensus != []:
+        targetgood = {"targetgood": False, "error": targetgoodconsensus}
 
     return targetgood
