@@ -189,8 +189,21 @@ def bot_command_function_update(bot, botcom):
         targetbots.remove(str(bot.nick))
         targetbots.append(str(bot.nick))
 
+    if targetbots == []:
+        osd(bot, botcom.instigator, 'notice', "You have selected no bots to update.")
+        return
+
     cannotproceed = []
     botcount = len(targetbots)
+
+    if botcount == 1 and targetbots[0] == str(bot.nick):
+        if targetbots[0] in bot.memory["botdict"]["static"]['bots']["update_text"].keys():
+            osd(bot, botcom.channel_list, 'say', bot.memory["botdict"]["static"]['bots']["update_text"][targetbots[0]].replace("$instigator", botcom.instigator))
+        else:
+            osd(bot, botcom.channel_list, 'say', botcom.instigator + " commanded me to update from Github and restart. Be Back Soon!")
+    else:
+        osd(bot, [botcom.channel_current], 'say', botcom.instigator + " commanded me to update " + spicemanip(bot, targetbots, 'andlist') + " from Github and restart.")
+
     for targetbot in targetbots:
 
         if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:
@@ -230,8 +243,20 @@ def bot_command_function_restart(bot, botcom):
         targetbots.remove(str(bot.nick))
         targetbots.append(str(bot.nick))
 
+    if targetbots == []:
+        osd(bot, botcom.instigator, 'notice', "You have selected no bots to restart.")
+        return
+
     cannotproceed = []
     botcount = len(targetbots)
+    if botcount == 1 and targetbots[0] == str(bot.nick):
+        if targetbots[0] in bot.memory["botdict"]["static"]['bots']["restart_text"].keys():
+            osd(bot, botcom.channel_list, 'say', bot.memory["botdict"]["static"]['bots']["restart_text"][targetbots[0]].replace("$instigator", botcom.instigator))
+        else:
+            osd(bot, botcom.channel_list, 'say', botcom.instigator + " commanded me to restart. Be Back Soon!")
+    else:
+        osd(bot, [botcom.channel_current], 'say', botcom.instigator + " commanded me to restart " + spicemanip(bot, targetbots, 'andlist'))
+
     for targetbot in targetbots:
 
         if bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['directory']:

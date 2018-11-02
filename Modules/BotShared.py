@@ -82,7 +82,18 @@ bot_dict = {
                             },
 
                 # Static content
-                "static": {},
+                "static": {
+                            "bots": {
+                                    "update_text": {
+                                                    "spiceRPG": "My Dungeon Master, $instigator, hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!",
+                                                    "spiceRPGdev": "My Dungeon Master, $instigator, hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!",
+                                                    },
+                                    "restart_text": {
+                                                    "spiceRPG": "My Dungeon Master, $instigator, hath commandeth me to restart. I shall return post haste!",
+                                                    "spiceRPGdev": "My Dungeon Master, $instigator, hath commandeth me to restart. I shall return post haste!",
+                                                    },
+                                    },
+                            },
 
                 # Users lists
                 "users": {},
