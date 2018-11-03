@@ -24,6 +24,7 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_leave(bot, trigger):
+    bot.say(str(trigger.sender))
     return
 
     # user that triggered this event

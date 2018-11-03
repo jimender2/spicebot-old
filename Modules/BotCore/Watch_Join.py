@@ -23,30 +23,11 @@ sys.setdefaultencoding('utf-8')
 @event('JOIN')
 @rule('.*')
 @sopel.module.thread(True)
-def botcom_player_return(bot, trigger):
+def bot_join_hub(bot, trigger):
     return
 
-    # user that triggered this event
-    instigator = trigger.nick
+    if "botdict_loaded" not in bot.memory:
+        bot_saved_jobs_process(bot, trigger, 'bot_join')
+        return
 
-    # Channel
-    channel = trigger.args[0]
-
-    osd(bot, channel, 'say', str(instigator) + " joined " + str(channel))
-
-    return
-
-    if "botdict" not in bot.memory:
-        botdict_open(bot)
-
-    instigator = trigger.nick
-
-    if instigator not in bot.memory["botdict"]["tempvals"]['current_users']:
-        if instigator not in bot.memory["botdict"]['tempvals']['commands'].keys() and instigator not in bot.memory["botdict"]['tempvals']['alt_commands'].keys() and instigator not in bot.memory["botdict"]['tempvals']['bots_list']:
-            bot.memory["botdict"]["tempvals"]['current_users'].append(instigator)
-
-    if instigator not in bot.memory["botdict"]["users"]['users_all']:
-        bot.memory["botdict"]["users"]['users_all'].append(instigator)
-
-    if instigator in bot.memory["botdict"]["tempvals"]['offline_users']:
-        bot.memory["botdict"]["tempvals"]['offline_users'].remove(instigator)
+    bot_join_run(bot, trigger)
