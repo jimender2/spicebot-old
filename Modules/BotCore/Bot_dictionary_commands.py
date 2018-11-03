@@ -40,3 +40,4 @@ def bot_dictcom_hub(bot, trigger):
         return
 
     bot_dictcom_run(bot, trigger)
+    botdict_save(bot)

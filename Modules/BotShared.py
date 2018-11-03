@@ -133,6 +133,9 @@ def botdict_open(bot):
     # dictionary commands
     dict_command_configs(bot)
 
+    # save dictionary now
+    botdict_save(bot)
+
     # use this to prevent bot usage if the above isn't done loading
     bot.memory["botdict_loaded"] = True
 
@@ -217,6 +220,7 @@ def bot_saved_jobs_run(bot):
 
     # Clear them out
     bot.memory["bot_jobs"] = []
+    botdict_save(bot)
 
 
 """

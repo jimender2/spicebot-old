@@ -22,5 +22,4 @@ sys.setdefaultencoding('utf-8')
 
 @sopel.module.interval(1800)
 def savingitall(bot):
-    return
     botdict_save(bot)

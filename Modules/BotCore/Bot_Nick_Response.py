@@ -102,3 +102,4 @@ def bot_command_hub(bot, trigger):
         return
 
     bot_nickcom_run(bot, trigger)
+    botdict_save(bot)
