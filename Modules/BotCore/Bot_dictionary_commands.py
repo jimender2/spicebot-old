@@ -20,8 +20,6 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-# valid commands settings
-valid_command_prefix = ['.']
 
 """
 bot.nick do this
@@ -33,7 +31,7 @@ bot.nick do this
 @rule('(.*)')
 @sopel.module.thread(True)
 def bot_dictcom_hub(bot, trigger):
-    if not str(trigger).startswith(tuple(valid_command_prefix)):
+    if not str(trigger).startswith(tuple(['.'])):
         return
 
     if "botdict_loaded" not in bot.memory:

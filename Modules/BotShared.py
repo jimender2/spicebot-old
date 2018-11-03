@@ -289,7 +289,7 @@ def dict_command_configs(bot):
 
 def bot_dictcom_run(bot, trigger):
 
-    if not str(trigger).startswith(tuple(valid_command_prefix)):
+    if not str(trigger).startswith(tuple(['.'])):
         return
 
     # botcom dynamic Class
