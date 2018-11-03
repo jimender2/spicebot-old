@@ -24,6 +24,7 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
+    return
 
     for channel in bot.channels:
         osd(bot, channel, 'say', "TOPIC " + str(trigger.args))
