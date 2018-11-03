@@ -39,4 +39,4 @@ def bot_dictcom_hub(bot, trigger):
         osd(bot, trigger.nick, 'notice', "If your command is valid it will run after I finish loading my dictionary configuration.")
         return
 
-    bot_dictcom_hub(bot, trigger)
+    bot_dictcom_run(bot, trigger)
