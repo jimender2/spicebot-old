@@ -1527,6 +1527,7 @@ def bot_watch_mode_run(bot, trigger):
 
     if modeused[1:] in mode_dict_alias.keys():
 
+        userprivdict = {}
         userprivdict[target] = eval(mode_dict_alias[modeused[1:]])
 
         for privtype in ['OP', 'HALFOP', 'VOICE']:
