@@ -28,3 +28,4 @@ def initialsetup(bot):
         return
     bot.memory["botdict_setup"] = True
     botdict_open(bot)
+    bot_saved_jobs_run(bot)

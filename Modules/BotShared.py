@@ -1300,11 +1300,14 @@ def botdict_setup_users(bot):
         for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
             if user in userprivdict.keys():
 
-                for privtype in ['OP', 'HALFOP', 'VOICE']:
+                for privtype in ['VOICE', 'HALFOP', 'OP']:
                     privstring = str("chan" + privtype.lower() + "s")
                     if userprivdict[user] == eval(privtype):
                         if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
                             bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(user)
+                    else:
+                        if user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
+                            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].remove(user)
 
         for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
             if user not in bot.memory["botdict"]["users"].keys():
@@ -1530,11 +1533,14 @@ def bot_watch_mode_run(bot, trigger):
         userprivdict = {}
         userprivdict[target] = eval(mode_dict_alias[modeused[1:]])
 
-        for privtype in ['OP', 'HALFOP', 'VOICE']:
+        for privtype in ['VOICE', 'HALFOP', 'OP']:
             privstring = str("chan" + privtype.lower() + "s")
             if userprivdict[target] == eval(privtype):
-                if target not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(target)
+                if target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].append(target)
+            else:
+                if target in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(target)
 
 
 """
