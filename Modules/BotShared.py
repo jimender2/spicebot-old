@@ -1361,6 +1361,103 @@ def bot_target_check(bot, botcom, target):
     return targetgood
 
 
+def bot_part_run(bot, trigger):
+
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # instigator
+    botcom.instigator = trigger.nick
+
+    # channel
+    botcom.channel_current = trigger.sender
+
+    # database entry for user
+    if botcom.instigator not in bot.memory["botdict"]["users"].keys():
+        bot.memory["botdict"]["users"][botcom.instigator] = dict()
+
+    # channel list
+    if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
+        bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].remove(botcom.instigator)
+
+    online = False
+    onlineconsensus = []
+    for channel in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+        if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users']:
+            onlineconsensus.append("True")
+        else:
+            onlineconsensus.append("False")
+
+    if 'True' not in onlineconsensus:
+        online = False
+
+    if not online:
+
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
+            bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
+
+        if botcom.instigator in bot.memory["botdict"]["tempvals"]['all_current_users']:
+            bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
+
+
+def bot_kick_run(bot, trigger):
+
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # instigator
+    botcom.instigator = trigger.nick
+
+    # channel
+    botcom.channel_current = trigger.sender
+
+    # target user
+    botcom.target = trigger.args[1]
+
+    # database entry for user
+    if botcom.target not in bot.memory["botdict"]["users"].keys():
+        bot.memory["botdict"]["users"][botcom.target] = dict()
+
+    # channel list
+    if botcom.target in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
+        bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].remove(botcom.target)
+
+    online = False
+    onlineconsensus = []
+    for channel in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+        if botcom.target in bot.memory["botdict"]["tempvals"]['channels_list'][channel
+
+
+def bot_quit_run(bot, trigger):
+
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # instigator
+    botcom.instigator = trigger.nick
+
+    # channel
+    botcom.channel_current = trigger.sender
+
+    # database entry for user
+    if botcom.instigator not in bot.memory["botdict"]["users"].keys():
+        bot.memory["botdict"]["users"][botcom.instigator] = dict()
+
+    # channel list
+    for channel in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+        if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users']:
+            bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].remove(botcom.instigator)
+
+    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
+        bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
+
+    if botcom.instigator in bot.memory["botdict"]["tempvals"]['all_current_users']:
+        bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
+
+
 def bot_join_run(bot, trigger):
 
     # botcom dynamic Class
@@ -1377,34 +1474,9 @@ def bot_join_run(bot, trigger):
     if botcom.instigator not in bot.memory["botdict"]["users"].keys():
         bot.memory["botdict"]["users"][botcom.instigator] = dict()
 
-    # all current users and offline users
-    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['all_current_users']:
-        bot.memory["botdict"]["tempvals"]['all_current_users'].append(botcom.instigator)
-
-    # remove from offline
-    if botcom.instigator in bot.memory["botdict"]["tempvals"]['offline_users']:
-        bot.memory["botdict"]["tempvals"]['offline_users'].remove(botcom.instigator)
-
     # channel list
     if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
         bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].append(botcom.instigator)
-
-
-def bot_join_part(bot, trigger):
-
-    # botcom dynamic Class
-    botcom = class_create('botcom')
-    botcom.default = 'botcom'
-
-    # instigator
-    botcom.instigator = trigger.nick
-
-    # channel
-    botcom.channel_current = trigger.sender
-
-    # database entry for user
-    if botcom.instigator not in bot.memory["botdict"]["users"].keys():
-        bot.memory["botdict"]["users"][botcom.instigator] = dict()
 
     # all current users and offline users
     if botcom.instigator not in bot.memory["botdict"]["tempvals"]['all_current_users']:
@@ -1413,10 +1485,6 @@ def bot_join_part(bot, trigger):
     # remove from offline
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['offline_users']:
         bot.memory["botdict"]["tempvals"]['offline_users'].remove(botcom.instigator)
-
-    # channel list
-    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
-        bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].append(botcom.instigator)
 
 
 """

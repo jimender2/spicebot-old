@@ -24,32 +24,9 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_leave(bot, trigger):
-    bot.say(str(trigger.sender))
-    return
 
-    # user that triggered this event
-    instigator = trigger.nick
+    if "botdict_loaded" not in bot.memory:
+        bot_saved_jobs_process(bot, trigger, 'bot_part')
+        return
 
-    # Channel
-    channel = trigger.args[0]
-
-    # Part message
-    if len(trigger.args) == 2:
-        partmessage = trigger.args[1]
-    else:
-        partmessage = 'nothing'
-
-    osd(bot, channel, 'say', str(instigator) + " parted " + str(channel) + " saying " + str(partmessage))
-
-    return
-
-    if "botdict" not in bot.memory:
-        botdict_open(bot)
-
-    instigator = trigger.nick
-
-    if instigator in bot.memory["botdict"]["tempvals"]['current_users']:
-        bot.memory["botdict"]["tempvals"]['current_users'].remove(instigator)
-
-    if instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
-        bot.memory["botdict"]["tempvals"]['offline_users'].append(instigator)
+    bot_part_run(bot, trigger)

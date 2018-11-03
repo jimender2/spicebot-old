@@ -24,7 +24,6 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 @sopel.module.thread(True)
 def bot_join_hub(bot, trigger):
-    return
 
     if "botdict_loaded" not in bot.memory:
         bot_saved_jobs_process(bot, trigger, 'bot_join')

@@ -24,16 +24,9 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
-    return
 
-    # user that triggered this event
-    instigator = trigger.nick
+    if "botdict_loaded" not in bot.memory:
+        bot_saved_jobs_process(bot, trigger, 'bot_kick')
+        return
 
-    # Channel
-    channel = trigger.args[0]
-
-    # target
-    target = trigger.args[1]
-
-    for channel in bot.channels:
-        osd(bot, channel, 'say', str(target) + " was kicked from " + str(channel) + " by " + str(instigator))
+    bot_kick_run(bot, trigger)
