@@ -95,7 +95,7 @@ def bot_command_hub(bot, trigger):
             if possiblespecified.startswith("!"):
                 if str(possiblespecified[1:]).isdigit():
                     botcom.specified = int(possiblespecified[1:])
-                    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '!last', 'list')
+                    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'last!', 'list')
 
         command_function_run = str('botfunction_' + botcom.commandtype + '(bot, botcom)')
         eval(command_function_run)
