@@ -187,6 +187,245 @@ def botdict_save(bot):
 
 
 """
+Dictionary commands
+"""
+
+
+# Command configs
+def dict_command_configs(bot):
+
+    # Don't load commands if already loaded
+    if bot.memory["botdict"]["tempvals"]['dict_commands'] != dict():
+        return
+
+    quick_coms_path = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/"
+
+    # iterate over organizational folders
+    for quick_coms_type in os.listdir(quick_coms_path):
+
+        # iterate over files within
+        coms_type_file_path = os.path.join(quick_coms_path, quick_coms_type)
+        for comconf in os.listdir(coms_type_file_path):
+
+            # check if command file is already in the list
+            if comconf not in bot.memory["botdict"]["tempvals"]['dict_commands_loaded']:
+                bot.memory["botdict"]["tempvals"]['dict_commands_loaded'].append(comconf)
+
+                # Read dictionary from file, if not, enable an empty dict
+                inf = open(os.path.join(coms_type_file_path, comconf), 'r')
+                try:
+                    dict_from_file = eval(inf.read())
+                except SyntaxError:
+                    dict_from_file = dict()
+
+                # Close File
+                inf.close()
+
+                # default command to filename
+                if "validcoms" not in dict_from_file.keys():
+                    dict_from_file["validcoms"] = [comconf]
+                elif dict_from_file["validcoms"] == []:
+                    dict_from_file["validcoms"] = [comconf]
+                elif not isinstance(dict_from_file['validcoms'], list):
+                    dict_from_file["validcoms"] = [dict_from_file["validcoms"]]
+
+                maincom = dict_from_file["validcoms"][0]
+                if len(dict_from_file["validcoms"]) > 1:
+                    comaliases = spicemanip(bot, dict_from_file["validcoms"], '2+', 'list')
+                else:
+                    comaliases = []
+
+                if maincom not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+
+                    # check that type is set
+                    if "type" not in dict_from_file.keys():
+                        dict_from_file["type"] = quick_coms_type.lower()
+                    if dict_from_file["type"] not in valid_com_types:
+                        dict_from_file["type"] = 'simple'
+                        dict_from_file["reply"] = "This command is not setup with a proper 'type'."
+
+                    # check that reply is set
+                    if "reply" not in dict_from_file.keys():
+                        dict_from_file["reply"] = "Reply missing"
+
+                    bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
+                    for comalias in comaliases:
+                        if comalias not in bot.memory["botdict"]["tempvals"]['commands'].keys():
+                            bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
+
+
+def bot_dictcom_run(bot, trigger):
+
+    if not str(trigger).startswith(tuple(valid_command_prefix)):
+        return
+
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # instigator
+    botcom.instigator = trigger.nick
+
+    # channel
+    botcom.channel_current = trigger.sender
+
+    # Bots can't run commands
+    if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        return
+
+    # create arg list
+    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+
+    # command issued, check if valid
+    botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
+    if botcom.dotcommand not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+        return
+
+    # command aliases
+    if "aliasfor" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]:
+        botcom.dotcommand = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["aliasfor"]
+
+    # remainder, if any is the new arg list
+    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')
+
+    # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
+    if not botcom.dotcommand:
+        return
+
+    # execute function based on command type
+    botcom.commandtype = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["type"].lower()
+
+    # IF "&&" is in the full input, it is treated as multiple commands, and is split
+    commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+    if commands_array == []:
+        commands_array = [[]]
+    for command_split_partial in commands_array:
+        botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+
+        botcom.specified = None
+        possiblespecified = spicemanip(bot, botcom.triggerargsarray, 1)
+        if possiblespecified.startswith("!"):
+            if str(possiblespecified[1:]).isdigit():
+                botcom.specified = int(possiblespecified[1:])
+                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+        if not botcom.specified:
+            possiblespecified = spicemanip(bot, botcom.triggerargsarray, 'last')
+            if possiblespecified.startswith("!"):
+                if str(possiblespecified[1:]).isdigit():
+                    botcom.specified = int(possiblespecified[1:])
+                    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'last!', 'list')
+
+        command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
+        eval(command_function_run)
+
+    # Save open global dictionary at the end of each usage
+    # botdict_save(bot)
+
+
+# Simple quick replies
+def bot_dictcom_simple(bot, botcom):
+
+    if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
+        reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
+    elif botcom.specified:
+        if botcom.specified > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]):
+            botcom.specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"])
+        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], botcom.specified)
+    else:
+        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
+    osd(bot, botcom.channel_current, 'say', reply)
+
+
+# Quick replies with a target person TODO use the targetfinder logic
+def bot_dictcom_target(bot, botcom):
+
+    # target is the first arg given
+    target = spicemanip(bot, botcom.triggerargsarray, 1)
+
+    # handling for no target
+    if not target:
+
+        # Seperate reply for no input
+        if "noinputreply" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
+            if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], list):
+                reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"]
+            elif botcom.specified:
+                if botcom.specified > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"]):
+                    botcom.specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"])
+                reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], botcom.specified)
+            else:
+                reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], 'random')
+            return osd(bot, botcom.channel_current, 'say', reply)
+
+        # backup target, usually instigator
+        if "backuptarget" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
+            target = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["backuptarget"]
+            if target == 'instigator':
+                target = botcom.instigator
+
+        # still no target
+        if not target and "backuptarget" not in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
+            reply = "This command requires a target"
+            return osd(bot, botcom.instigator, 'notice', reply)
+
+    # remove target
+    if target in botcom.triggerargsarray:
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+    targetchecking = bot_target_check(bot, botcom, target)
+    if not targetchecking["targetgood"]:
+        return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
+
+    if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
+        reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
+    elif botcom.specified:
+        if botcom.specified > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]):
+            botcom.specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"])
+        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], botcom.specified)
+    else:
+        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
+    reply = reply.replace("$target", target)
+    osd(bot, botcom.channel_current, 'say', reply)
+
+
+# Quick replies with a target person TODO use the targetfinder logic
+def bot_dictcom_fillintheblank(bot, botcom):
+
+    # target is the first arg given
+    fillin = spicemanip(bot, botcom.triggerargsarray, 0)
+
+    # handling for no fillin
+    if not fillin:
+
+        # Seperate reply for no input
+        if "noinputreply" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
+            if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], list):
+                reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"]
+            elif botcom.specified:
+                if botcom.specified > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"]):
+                    botcom.specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"])
+                reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], botcom.specified)
+            else:
+                reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], 'random')
+            return osd(bot, botcom.channel_current, 'say', reply)
+
+    # remove target
+    if target in botcom.triggerargsarray:
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+    if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
+        reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
+    elif botcom.specified:
+        if botcom.specified > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]):
+            botcom.specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"])
+        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], botcom.specified)
+    else:
+        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
+    reply = reply.replace("$target", target)
+    osd(bot, botcom.channel_current, 'say', reply)
+
+
+"""
 Bot Servers
 """
 
@@ -378,74 +617,6 @@ def bot_target_check(bot, botcom, target):
         targetgood = {"targetgood": False, "error": targetgoodconsensus[0]}
 
     return targetgood
-
-
-"""
-Dictionary Command Config Files
-"""
-
-
-# Command configs
-def dict_command_configs(bot):
-
-    # Don't load commands if already loaded
-    if bot.memory["botdict"]["tempvals"]['dict_commands'] != dict():
-        return
-
-    quick_coms_path = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/"
-
-    # iterate over organizational folders
-    for quick_coms_type in os.listdir(quick_coms_path):
-
-        # iterate over files within
-        coms_type_file_path = os.path.join(quick_coms_path, quick_coms_type)
-        for comconf in os.listdir(coms_type_file_path):
-
-            # check if command file is already in the list
-            if comconf not in bot.memory["botdict"]["tempvals"]['dict_commands_loaded']:
-                bot.memory["botdict"]["tempvals"]['dict_commands_loaded'].append(comconf)
-
-                # Read dictionary from file, if not, enable an empty dict
-                inf = open(os.path.join(coms_type_file_path, comconf), 'r')
-                try:
-                    dict_from_file = eval(inf.read())
-                except SyntaxError:
-                    dict_from_file = dict()
-
-                # Close File
-                inf.close()
-
-                # default command to filename
-                if "validcoms" not in dict_from_file.keys():
-                    dict_from_file["validcoms"] = [comconf]
-                elif dict_from_file["validcoms"] == []:
-                    dict_from_file["validcoms"] = [comconf]
-                elif not isinstance(dict_from_file['validcoms'], list):
-                    dict_from_file["validcoms"] = [dict_from_file["validcoms"]]
-
-                maincom = dict_from_file["validcoms"][0]
-                if len(dict_from_file["validcoms"]) > 1:
-                    comaliases = spicemanip(bot, dict_from_file["validcoms"], '2+', 'list')
-                else:
-                    comaliases = []
-
-                if maincom not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-
-                    # check that type is set
-                    if "type" not in dict_from_file.keys():
-                        dict_from_file["type"] = quick_coms_type.lower()
-                    if dict_from_file["type"] not in valid_com_types:
-                        dict_from_file["type"] = 'simple'
-                        dict_from_file["reply"] = "This command is not setup with a proper 'type'."
-
-                    # check that reply is set
-                    if "reply" not in dict_from_file.keys():
-                        dict_from_file["reply"] = "Reply missing"
-
-                    bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
-                    for comalias in comaliases:
-                        if comalias not in bot.memory["botdict"]["tempvals"]['commands'].keys():
-                            bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
 
 
 """
