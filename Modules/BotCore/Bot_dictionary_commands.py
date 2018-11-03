@@ -86,7 +86,7 @@ def bot_command_hub(bot, trigger):
 
         botcom.specified = None
         possiblespecified = spicemanip(bot, botcom.triggerargsarray, 1)
-        if possiblespecified.startswith("#"):
+        if possiblespecified.startswith("!"):
             if str(possiblespecified[1:]).isdigit():
                 botcom.specified = int(possiblespecified[1:])
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
