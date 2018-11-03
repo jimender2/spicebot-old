@@ -211,7 +211,7 @@ def bot_saved_jobs_run(bot):
         bot.memory["bot_jobs"] = []
 
     for botjob_dict in bot.memory["bot_jobs"]:
-        trigger = botjob_dict[trigger]
+        trigger = botjob_dict["trigger"]
         jobeval = str(botjob_dict["jobtype"] + '_run(bot, trigger)')
         eval(jobeval)
 
