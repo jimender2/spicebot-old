@@ -26,7 +26,7 @@ sys.setdefaultencoding('utf-8')
 def botcom_player_leave(bot, trigger):
 
     if "botdict_loaded" not in bot.memory:
-        bot_saved_jobs_process(bot, trigger, 'bot_quit')
+        bot_saved_jobs_process(bot, trigger, 'bot_watch_quit')
         return
 
-    bot_quit_run(bot, trigger)
+    bot_watch_quit_run(bot, trigger)

@@ -1361,7 +1361,7 @@ def bot_target_check(bot, botcom, target):
     return targetgood
 
 
-def bot_part_run(bot, trigger):
+def bot_watch_part_run(bot, trigger):
 
     # botcom dynamic Class
     botcom = class_create('botcom')
@@ -1401,7 +1401,7 @@ def bot_part_run(bot, trigger):
             bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
 
 
-def bot_kick_run(bot, trigger):
+def bot_watch_kick_run(bot, trigger):
 
     # botcom dynamic Class
     botcom = class_create('botcom')
@@ -1427,10 +1427,24 @@ def bot_kick_run(bot, trigger):
     online = False
     onlineconsensus = []
     for channel in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
-        if botcom.target in bot.memory["botdict"]["tempvals"]['channels_list'][channel
+        if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users']:
+            onlineconsensus.append("True")
+        else:
+            onlineconsensus.append("False")
+
+    if 'True' not in onlineconsensus:
+        online = False
+
+    if not online:
+
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
+            bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
+
+        if botcom.instigator in bot.memory["botdict"]["tempvals"]['all_current_users']:
+            bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
 
 
-def bot_quit_run(bot, trigger):
+def bot_watch_quit_run(bot, trigger):
 
     # botcom dynamic Class
     botcom = class_create('botcom')
@@ -1458,7 +1472,7 @@ def bot_quit_run(bot, trigger):
         bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
 
 
-def bot_join_run(bot, trigger):
+def bot_watch_join_run(bot, trigger):
 
     # botcom dynamic Class
     botcom = class_create('botcom')

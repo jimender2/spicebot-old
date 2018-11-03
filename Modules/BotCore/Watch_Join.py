@@ -26,7 +26,7 @@ sys.setdefaultencoding('utf-8')
 def bot_join_hub(bot, trigger):
 
     if "botdict_loaded" not in bot.memory:
-        bot_saved_jobs_process(bot, trigger, 'bot_join')
+        bot_saved_jobs_process(bot, trigger, 'bot_watch_join')
         return
 
-    bot_join_run(bot, trigger)
+    bot_watch_join_run(bot, trigger)
