@@ -1524,9 +1524,9 @@ def bot_watch_mode_run(bot, trigger):
     modeused = trigger.args[1]
 
     if str(modeused).startswith("-"):
-        modetype = 'add'
-    elif str(modeused).startswith("+"):
         modetype = 'del'
+    elif str(modeused).startswith("+"):
+        modetype = 'add'
 
     if modeused[1:] in mode_dict_alias.keys():
 
@@ -1542,7 +1542,7 @@ def bot_watch_mode_run(bot, trigger):
                 else:
                     if target in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
                         bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(target)
-            if modetype == 'del':
+            elif modetype == 'del':
                 if userprivdict[target] == eval(privtype):
                     if target in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
                         bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(target)
