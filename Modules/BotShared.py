@@ -1295,17 +1295,11 @@ def botdict_setup_users(bot):
         for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
             if user in userprivdict.keys():
 
-                if userprivdict[user] == OP:
-                    if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops']:
-                        bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'].append(user)
-
-                elif userprivdict[user] == HALFOP:
-                    if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops']:
-                        bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops'].append(user)
-
-                elif userprivdict[user] == VOICE:
-                    if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices']:
-                        bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices'].append(user)
+                for privtype in ['OP', 'HALFOP', 'VOICE']:
+                    privstring = str("chan" + privtype.lower() + "s")
+                    if userprivdict[user] == eval(privtype):
+                        if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
+                            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(user)
 
         for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
             if user not in bot.memory["botdict"]["users"].keys():
@@ -1472,6 +1466,8 @@ def bot_watch_quit_run(bot, trigger):
         bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
 
 
+
+
 def bot_watch_join_run(bot, trigger):
 
     # botcom dynamic Class
@@ -1499,6 +1495,22 @@ def bot_watch_join_run(bot, trigger):
     # remove from offline
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['offline_users']:
         bot.memory["botdict"]["tempvals"]['offline_users'].remove(botcom.instigator)
+
+
+def bot_watch_mode_run(bot, trigger):
+
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # instigator
+    botcom.instigator = trigger.nick
+
+    # channel
+    botcom.channel_current = trigger.sender
+
+    # Mode set
+    modeused = trigger.args[1]
 
 
 """

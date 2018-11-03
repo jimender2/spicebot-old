@@ -35,6 +35,11 @@ mode_dict_alias = {
 @rule('.*')
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
+
+    # all we care about right now is user modes
+    if len(trigger.args) < 3:
+        return
+
     return
 
     if len(trigger.args) == 2:
@@ -50,22 +55,10 @@ def botcom_player_return(bot, trigger):
     instigator = trigger.nick
 
     # Channel mode was set
-    channel = trigger.args[0]
+    channel = trigger.sender
 
-    # Ger Mode Used
-    global mode_dict_alias
-    try:
-        modeused = mode_dict_alias[trigger.args[1]]
-    except KeyError:
-        modeused = trigger.args[1]
+    modeused = trigger.args[1]
 
     # target user
-    if modetarget == "user":
-        target = trigger.args[-1]
-        osd(bot, channel, 'say', str(instigator) + " set " + str(modetarget) + " mode " + str(modeused) + " on " + str(target) + " in " + str(channel))
-    elif modetarget == "channel":
-        osd(bot, channel, 'say', str(instigator) + " set " + str(modetarget) + " mode " + str(modeused) + " on " + str(channel))
-    else:
-        for channel in bot.channels:
-            osd(bot, channel, 'say', str(trigger.args))
-        return
+    target = trigger.args[-1]
+    osd(bot, channel, 'say', str(instigator) + " set user mode " + str(modeused) + " on " + str(target) + " in " + str(channel))
