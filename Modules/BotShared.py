@@ -1292,7 +1292,7 @@ def botdict_setup_users(bot):
                 bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(user)
             userprivdict[user] = bot.privileges[channelcheck][user] or 0
 
-        for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].keys():
+        for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
             if user in userprivdict.keys():
 
                 if userprivdict[user] == OP:
