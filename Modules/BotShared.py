@@ -1288,31 +1288,31 @@ def botdict_setup_users(bot):
 
         for user in bot.privileges[channelcheck].keys():
 
-            if bot.privileges[channelcheck][user] == OP:
-                if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops']:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'].append(user)
+            if bot.privileges[channelcheck][str(user)] == OP:
+                if str(user) not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops']:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'].append(str(user))
 
-            elif bot.privileges[channelcheck][user] == HALFOP:
-                if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops']:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops'].append(user)
+            elif bot.privileges[channelcheck][str(user)] == HALFOP:
+                if str(user) not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops']:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops'].append(str(user))
 
-            elif bot.privileges[channelcheck][user] == VOICE:
-                if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices']:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices'].append(user)
+            elif bot.privileges[channelcheck][str(user)] == VOICE:
+                if str(user) not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices']:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices'].append(str(user))
 
-            if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
-                bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(user)
+            if str(user) not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
+                bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(str(user))
 
         for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
-            if user not in bot.memory["botdict"]["users"].keys():
-                bot.memory["botdict"]["users"][user] = dict()
-            if user not in bot.memory["botdict"]["tempvals"]['all_current_users']:
-                bot.memory["botdict"]["tempvals"]['all_current_users'].append(user)
+            if str(user) not in bot.memory["botdict"]["users"].keys():
+                bot.memory["botdict"]["users"][str(user)] = dict()
+            if str(user) not in bot.memory["botdict"]["tempvals"]['all_current_users']:
+                bot.memory["botdict"]["tempvals"]['all_current_users'].append(str(user))
 
     for user in bot.memory["botdict"]["users"].keys():
-        if user not in bot.memory["botdict"]["tempvals"]['all_current_users']:
-            if user not in bot.memory["botdict"]["tempvals"]['offline_users']:
-                bot.memory["botdict"]["tempvals"]['offline_users'].append(user)
+        if str(user) not in bot.memory["botdict"]["tempvals"]['all_current_users']:
+            if str(user) not in bot.memory["botdict"]["tempvals"]['offline_users']:
+                bot.memory["botdict"]["tempvals"]['offline_users'].append(str(user))
 
 
 def nick_actual(bot, nick):

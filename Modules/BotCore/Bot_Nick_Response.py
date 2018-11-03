@@ -30,7 +30,7 @@ bot.nick do this
 
 @nickname_commands('(.*)')
 @sopel.module.thread(True)
-def bot_command_hub(bot, trigger):
+def bot_nickcom_hub(bot, trigger):
 
     if "botdict_loaded" not in bot.memory:
         bot_saved_jobs_process(bot, trigger, 'bot_nickcom')

@@ -20,7 +20,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@sopel.module.interval(60)  # 5 mins is 300
+@sopel.module.interval(60)
 def run_saved_jobs(bot):
 
     # don't run jobs if not ready
