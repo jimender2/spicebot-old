@@ -1076,6 +1076,7 @@ def bot_dictcom_simple(bot, botcom):
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], botcom.specified)
     else:
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
+    reply = reply.replace("$instigator", botcom.instigator)
     osd(bot, botcom.channel_current, 'say', reply)
 
 
@@ -1098,6 +1099,7 @@ def bot_dictcom_target(bot, botcom):
                 reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], botcom.specified)
             else:
                 reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], 'random')
+            reply = reply.replace("$instigator", botcom.instigator)
             return osd(bot, botcom.channel_current, 'say', reply)
 
         # backup target, usually instigator
@@ -1108,8 +1110,7 @@ def bot_dictcom_target(bot, botcom):
 
         # still no target
         if not target and "backuptarget" not in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
-            reply = "This command requires a target"
-            return osd(bot, botcom.instigator, 'notice', reply)
+            return osd(bot, botcom.instigator, 'notice', "This command requires a target")
 
     # remove target
     if target in botcom.triggerargsarray:
@@ -1128,6 +1129,7 @@ def bot_dictcom_target(bot, botcom):
     else:
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
     reply = reply.replace("$target", target)
+    reply = reply.replace("$instigator", botcom.instigator)
     osd(bot, botcom.channel_current, 'say', reply)
 
 
