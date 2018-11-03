@@ -44,7 +44,7 @@ valid_com_types = ['simple', 'target']  # , 'fillintheblank'
 
 
 """
-Bot Dictionary
+Bot Dictionaries
 """
 
 bot_dict = {
@@ -105,6 +105,70 @@ bot_dict = {
                 "users": {},
 
                 }
+
+# valid commands that the bot will reply to by name
+valid_botnick_commands = {
+                            "hithub": {
+                                        'privs': [],
+                                        },
+                            "docs": {
+                                        'privs': [],
+                                        },
+                            "help": {
+                                        'privs': [],
+                                        },
+                            "uptime": {
+                                        'privs': [],
+                                        },
+                            "canyouseeme": {
+                                        'privs': [],
+                                        },
+                            "gender": {
+                                        'privs': [],
+                                        },
+                            "owner": {
+                                        'privs': [],
+                                        },
+                            "admins": {
+                                        'privs': [],
+                                        },
+                            "channel": {
+                                        'privs': [],
+                                        },
+                            "msg": {
+                                    'privs': ['admin', 'OP'],
+                                    },
+                            "action": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "notice": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "debug": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "update": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "restart": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "permfix": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "pip": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "cd": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "dir": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "gitpull": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            }
 
 
 def botdict_open(bot):
