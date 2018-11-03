@@ -24,14 +24,15 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.interval(1)
 @sopel.module.thread(True)
 def timed_logcheck(bot):
-    if "timed_logcheck" not in bot.memory:
-        bot.memory["timed_logcheck"] = 1
+    if "timed_logcheck" in bot.memory:
+        return
+    bot.memory["timed_logcheck"] = 1
 
-        searchphrasefound = 0
-        for line in os.popen("sudo service " + bot.nick + " status").read().split('\n'):
-            if not searchphrasefound and "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
-                searchphrasefound = str(line).split("]:", -1)[1]
+    searchphrasefound = 0
+    for line in os.popen("sudo service " + bot.nick + " status").read().split('\n'):
+        if not searchphrasefound and "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
+            searchphrasefound = str(line).split("]:", -1)[1]
 
-        if searchphrasefound:
-            for channel in bot.channels:
-                osd(bot, channel, 'say', "Notice to Bot Admins: " + str(searchphrasefound) + ". Run the debug command for more information.")
+    if searchphrasefound:
+        for channel in bot.channels:
+            osd(bot, channel, 'say', "Notice to Bot Admins: " + str(searchphrasefound) + ". Run the debug command for more information.")
