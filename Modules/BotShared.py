@@ -1273,7 +1273,6 @@ Users
 def botdict_setup_users(bot):
 
     for channelcheck in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
-        channelcheck = str(channelcheck)
 
         if 'chanops' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
             bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'] = []
@@ -1288,7 +1287,6 @@ def botdict_setup_users(bot):
             bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] = []
 
         for user in bot.privileges[channelcheck].keys():
-            user = str(user)
 
             if bot.privileges[channelcheck][user] == OP:
                 if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops']:
@@ -1312,7 +1310,6 @@ def botdict_setup_users(bot):
                 bot.memory["botdict"]["tempvals"]['all_current_users'].append(user)
 
     for user in bot.memory["botdict"]["users"].keys():
-        user = str(user)
         if user not in bot.memory["botdict"]["tempvals"]['all_current_users']:
             if user not in bot.memory["botdict"]["tempvals"]['offline_users']:
                 bot.memory["botdict"]["tempvals"]['offline_users'].append(user)
