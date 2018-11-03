@@ -40,7 +40,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'target']  # , 'fillintheblank'
+valid_com_types = ['simple', 'target', 'fillintheblank']
 
 
 """
@@ -1144,7 +1144,7 @@ def bot_dictcom_target(bot, botcom):
 # Quick replies with a target person TODO use the targetfinder logic
 def bot_dictcom_fillintheblank(bot, botcom):
 
-    # target is the first arg given
+    # all text given is valid for use
     fillin = spicemanip(bot, botcom.triggerargsarray, 0)
 
     # handling for no fillin
@@ -1160,11 +1160,12 @@ def bot_dictcom_fillintheblank(bot, botcom):
                 reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], botcom.specified)
             else:
                 reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], 'random')
+            reply = reply.replace("$instigator", botcom.instigator)
             return osd(bot, botcom.channel_current, 'say', reply)
 
-    # remove target
-    if target in botcom.triggerargsarray:
-        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+        # still no target
+        if not fillin:
+            return osd(bot, botcom.instigator, 'notice', "This command requires input.")
 
     if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
         reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
@@ -1174,7 +1175,8 @@ def bot_dictcom_fillintheblank(bot, botcom):
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], botcom.specified)
     else:
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
-    reply = reply.replace("$target", target)
+    reply = reply.replace("$instigator", botcom.instigator)
+    reply = reply.replace("$blank", fillin)
     osd(bot, botcom.channel_current, 'say', reply)
 
 
