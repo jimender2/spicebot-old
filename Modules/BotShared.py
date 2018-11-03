@@ -447,6 +447,10 @@ def bot_command_function_update(bot, botcom):
             osd(bot, botcom.channel_current, 'action', "Is Restarting the " + targetbot + " Service...")
             bot_restart(bot, targetbot)
 
+            if bot.nick == targetbot:
+                osd(bot, botcom.channel_current, 'say', "If you see this, the service is hanging. Making another attempt.")
+                bot_restart(bot, targetbot)
+
             botcount -= 1
             if botcount > 0:
                 osd(bot, botcom.channel_current, 'say', "     ")
@@ -496,6 +500,10 @@ def bot_command_function_restart(bot, botcom):
 
             osd(bot, botcom.channel_current, 'action', "Is Restarting the " + targetbot + " Service...")
             bot_restart(bot, targetbot)
+
+            if bot.nick == targetbot:
+                osd(bot, botcom.channel_current, 'say', "If you see this, the service is hanging. Making another attempt.")
+                bot_restart(bot, targetbot)
 
             botcount -= 1
             if botcount > 0:
