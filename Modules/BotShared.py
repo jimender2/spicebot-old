@@ -211,7 +211,8 @@ def bot_saved_jobs_run(bot):
         bot.memory["bot_jobs"] = []
 
     for botjob_dict in bot.memory["bot_jobs"]:
-        bot.msg("#spicebottest", str(botjob_dict))
+        jobeval = str(botjob_dict["jobtype"] + '_run(botjob_dict[bot], botjob_dict[trigger])')
+        eval(jobeval)
 
     # Clear them out
     bot.memory["bot_jobs"] = []
