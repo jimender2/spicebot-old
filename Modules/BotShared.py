@@ -32,6 +32,7 @@ import ConfigParser
 # Ensure Encoding
 reload(sys)
 sys.setdefaultencoding('utf-8')
+sys.setrecursionlimit(4096)
 
 """
 Variables # TODO add to botdict
