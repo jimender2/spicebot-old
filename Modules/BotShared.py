@@ -170,6 +170,16 @@ valid_botnick_commands = {
                                         },
                             }
 
+mode_dict_alias = {
+                    "o": "OP",
+                    "v": "VOICE",
+                    "h": "HOP",
+                    }
+
+"""
+Dict functions
+"""
+
 
 def botdict_open(bot):
 
@@ -838,7 +848,7 @@ def bot_command_function_channel(bot, botcom):
 
 
 """
-Admins
+Permissions
 """
 
 
@@ -860,11 +870,6 @@ def bot_command_function_admins(bot, botcom):
         currentbotsadmins = bot.memory["botdict"]["tempvals"]['bots_list'][targetbot]['configuration']['core']['admins']
         dispmsg.append(targetbot + " is administered by " + currentbotsadmins)
     osd(bot, botcom.channel_current, 'say', spicemanip(bot, dispmsg, 'andlist'))
-
-
-"""
-Owner
-"""
 
 
 def bot_command_function_owner(bot, botcom):
@@ -1507,8 +1512,26 @@ def bot_watch_mode_run(bot, trigger):
     # channel
     botcom.channel_current = trigger.sender
 
+    # target
+    target = trigger.args[-1]
+
     # Mode set
     modeused = trigger.args[1]
+
+    if str(modeused).startswith("-"):
+        modetype = 'add'
+    elif str(modeused).startswith("+"):
+        modetype = 'del'
+
+    modeset = mode_dict_alias[modeused[1:]]
+
+    userprivdict[target] = eval(modeset)
+
+    for privtype in ['OP', 'HALFOP', 'VOICE']:
+        privstring = str("chan" + privtype.lower() + "s")
+        if userprivdict[target] == eval(privtype):
+            if target not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
+                bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(target)
 
 
 """

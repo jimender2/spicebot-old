@@ -36,29 +36,8 @@ mode_dict_alias = {
 @sopel.module.thread(True)
 def botcom_player_return(bot, trigger):
 
-    # all we care about right now is user modes
-    if len(trigger.args) < 3:
+    if "botdict_loaded" not in bot.memory:
+        bot_saved_jobs_process(bot, trigger, 'bot_watch_mode')
         return
 
-    return
-
-    if len(trigger.args) == 2:
-        modetarget = "channel"
-    elif len(trigger.args) == 3:
-        modetarget = "user"
-    else:
-        for channel in bot.channels:
-            osd(bot, channel, 'say', str(trigger.args))
-        return
-
-    # user that triggered this event
-    instigator = trigger.nick
-
-    # Channel mode was set
-    channel = trigger.sender
-
-    modeused = trigger.args[1]
-
-    # target user
-    target = trigger.args[-1]
-    osd(bot, channel, 'say', str(instigator) + " set user mode " + str(modeused) + " on " + str(target) + " in " + str(channel))
+    bot_watch_mode_run(bot, trigger)
