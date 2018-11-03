@@ -1535,12 +1535,20 @@ def bot_watch_mode_run(bot, trigger):
 
         for privtype in ['VOICE', 'HALFOP', 'OP']:
             privstring = str("chan" + privtype.lower() + "s")
-            if userprivdict[target] == eval(privtype):
-                if target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].append(target)
-            else:
-                if target in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(target)
+            if modetype == 'add':
+                if userprivdict[target] == eval(privtype):
+                    if target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].append(target)
+                else:
+                    if target in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(target)
+            if modetype == 'del':
+                if userprivdict[target] == eval(privtype):
+                    if target in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(target)
+                else:
+                    if target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].append(target)
 
 
 """
