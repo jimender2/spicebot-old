@@ -173,7 +173,7 @@ valid_botnick_commands = {
 mode_dict_alias = {
                     "o": "OP",
                     "v": "VOICE",
-                    "h": "HOP",
+                    "h": "HALFOP",
                     }
 
 """
