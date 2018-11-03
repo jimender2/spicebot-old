@@ -192,7 +192,7 @@ Saved Jobs Handling
 
 
 def bot_saved_jobs_process(bot, trigger, jobtype):
-    dictsave = {"jobtype": jobtype, "bot": bot, "trigger": trigger}
+    dictsave = {"jobtype": jobtype, "trigger": trigger}
 
     bot_saved_jobs_save(bot, dictsave)
 
@@ -211,7 +211,8 @@ def bot_saved_jobs_run(bot):
         bot.memory["bot_jobs"] = []
 
     for botjob_dict in bot.memory["bot_jobs"]:
-        jobeval = str(botjob_dict["jobtype"] + '_run(botjob_dict[bot], botjob_dict[trigger])')
+        trigger = botjob_dict[trigger]
+        jobeval = str(botjob_dict["jobtype"] + '_run(bot, trigger)')
         eval(jobeval)
 
     # Clear them out
