@@ -1502,6 +1502,8 @@ def bot_watch_join_run(bot, trigger):
 
 def bot_watch_mode_run(bot, trigger):
 
+    global mode_dict_alias
+
     # botcom dynamic Class
     botcom = class_create('botcom')
     botcom.default = 'botcom'
@@ -1523,15 +1525,15 @@ def bot_watch_mode_run(bot, trigger):
     elif str(modeused).startswith("+"):
         modetype = 'del'
 
-    modeset = mode_dict_alias[modeused[1:]]
+    if modeused[1:] in mode_dict_alias.keys():
 
-    userprivdict[target] = eval(modeset)
+        userprivdict[target] = eval(modeused[1:])
 
-    for privtype in ['OP', 'HALFOP', 'VOICE']:
-        privstring = str("chan" + privtype.lower() + "s")
-        if userprivdict[target] == eval(privtype):
-            if target not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
-                bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(target)
+        for privtype in ['OP', 'HALFOP', 'VOICE']:
+            privstring = str("chan" + privtype.lower() + "s")
+            if userprivdict[target] == eval(privtype):
+                if target not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(target)
 
 
 """
