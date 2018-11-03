@@ -19,7 +19,6 @@ from BotShared import *
 # Ensure Encoding
 reload(sys)
 sys.setdefaultencoding('utf-8')
-sys.setrecursionlimit(4096)
 
 # valid commands that the bot will reply to by name
 valid_botnick_commands = {
