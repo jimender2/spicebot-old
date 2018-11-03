@@ -187,6 +187,37 @@ def botdict_save(bot):
 
 
 """
+Saved Jobs Handling
+"""
+
+
+def bot_saved_jobs_process(bot, trigger, jobtype):
+    dictsave = {"jobtype": jobtype, "bot": bot, "trigger": trigger}
+
+    bot_saved_jobs_save(bot, dictsave)
+
+
+def bot_saved_jobs_save(bot, dictsave):
+
+    if "bot_jobs" not in bot.memory:
+        bot.memory["bot_jobs"] = []
+
+    bot.memory["bot_jobs"].append(dictsave)
+
+
+def bot_saved_jobs_run(bot):
+
+    if "bot_jobs" not in bot.memory:
+        bot.memory["bot_jobs"] = []
+
+    for botjob_dict in bot.memory["bot_jobs"]:
+        bot.msg("#spicebottest", str(botjob_dict))
+
+    # Clear them out
+    bot.memory["bot_jobs"] = []
+
+
+"""
 Dictionary commands
 """
 
