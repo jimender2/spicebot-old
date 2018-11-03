@@ -993,7 +993,7 @@ def dict_command_configs(bot):
 
                     bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
                     for comalias in comaliases:
-                        if comalias not in bot.memory["botdict"]["tempvals"]['commands'].keys():
+                        if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
                             bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
 
 
