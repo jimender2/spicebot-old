@@ -18,6 +18,7 @@ from BotShared import *
 # Ensure Encoding
 reload(sys)
 sys.setdefaultencoding('utf-8')
+sys.setrecursionlimit(4096)
 
 
 @sopel.module.interval(60)  # 5 mins is 300
