@@ -1286,22 +1286,26 @@ def botdict_setup_users(bot):
         if 'current_users' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
             bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] = []
 
+        userprivdict = {}
         for user in bot.privileges[channelcheck].keys():
-
-            if bot.privileges[channelcheck][user] == OP:
-                if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops']:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'].append(user)
-
-            elif bot.privileges[channelcheck][user] == HALFOP:
-                if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops']:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops'].append(user)
-
-            elif bot.privileges[channelcheck][user] == VOICE:
-                if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices']:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices'].append(user)
-
             if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
                 bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(user)
+            userprivdict[user] = bot.privileges[channelcheck][user] or 0
+
+        for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].keys():
+            if user in userprivdict.keys():
+
+                if userprivdict[user] == OP:
+                    if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops']:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'].append(user)
+
+                elif userprivdict[user] == HALFOP:
+                    if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops']:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops'].append(user)
+
+                elif userprivdict[user] == VOICE:
+                    if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices']:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices'].append(user)
 
         for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
             if user not in bot.memory["botdict"]["users"].keys():
