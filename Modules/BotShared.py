@@ -910,6 +910,8 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
             outputtask = 'excrange_minus'
         for r in (("!", ""), ("+", ""), ("-", ""), ("<", ""), (">", "")):
             mainoutputtask = mainoutputtask.replace(*r)
+    if mainoutputtask == 'last':
+        mainoutputtask = len(inputs)
 
     if outputtask == 'string':
         returnvalue = inputs
