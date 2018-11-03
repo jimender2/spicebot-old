@@ -1466,8 +1466,6 @@ def bot_watch_quit_run(bot, trigger):
         bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
 
 
-
-
 def bot_watch_join_run(bot, trigger):
 
     # botcom dynamic Class
