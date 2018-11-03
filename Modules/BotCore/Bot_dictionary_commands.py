@@ -84,7 +84,14 @@ def bot_command_hub(bot, trigger):
     for command_split_partial in commands_array:
         botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
 
-        command_function_run = str('botfunction_' + botcom.commandtype + '(bot, trigger, botcom)')
+        botcom.specified = None
+        possiblespecified = spicemanip(bot, botcom.triggerargsarray, 1)
+        if possiblespecified.startswith("#"):
+            if str(possiblespecified[1:]).isdigit():
+                botcom.specified = int(possiblespecified[1:])
+                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+        command_function_run = str('botfunction_' + botcom.commandtype + '(bot, botcom)')
         eval(command_function_run)
 
     # Save open global dictionary at the end of each usage
@@ -92,25 +99,21 @@ def bot_command_hub(bot, trigger):
 
 
 # Simple quick replies
-def botfunction_simple(bot, trigger, botcom, specified=None):
-
-    if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
-        specified = spicemanip(bot, botcom.triggerargsarray, 1)
-        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+def botfunction_simple(bot, botcom):
 
     if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
         reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
-    elif specified:
-        if int(specified) > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]):
-            specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"])
-        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], specified)
+    elif botcom.specified:
+        if botcom.specified > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]):
+            botcom.specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"])
+        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], botcom.specified)
     else:
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
-    osd(bot, trigger.sender, 'say', reply)
+    osd(bot, botcom.channel_current, 'say', reply)
 
 
 # Quick replies with a target person TODO use the targetfinder logic
-def botfunction_target(bot, trigger, botcom, specified=None):
+def botfunction_target(bot, botcom):
 
     # target is the first arg given
     target = spicemanip(bot, botcom.triggerargsarray, 1)
@@ -118,21 +121,17 @@ def botfunction_target(bot, trigger, botcom, specified=None):
     # handling for no target
     if not target:
 
-        if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
-            specified = spicemanip(bot, botcom.triggerargsarray, 1)
-            botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-
         # Seperate reply for no input
         if "noinputreply" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
             if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], list):
                 reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"]
-            elif specified:
-                if int(specified) > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"]):
-                    specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"])
-                reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], specified)
+            elif botcom.specified:
+                if botcom.specified > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"]):
+                    botcom.specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"])
+                reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], botcom.specified)
             else:
                 reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], 'random')
-            return osd(bot, trigger.sender, 'say', reply)
+            return osd(bot, botcom.channel_current, 'say', reply)
 
         # backup target, usually instigator
         if "backuptarget" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
@@ -149,21 +148,54 @@ def botfunction_target(bot, trigger, botcom, specified=None):
     if target in botcom.triggerargsarray:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
-    if str(spicemanip(bot, botcom.triggerargsarray, 1)).isdigit():
-        specified = spicemanip(bot, botcom.triggerargsarray, 1)
-        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-
     targetchecking = bot_target_check(bot, botcom, target)
     if not targetchecking["targetgood"]:
         return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
 
     if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
         reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
-    elif specified:
-        if int(specified) > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]):
-            specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"])
-        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], specified)
+    elif botcom.specified:
+        if botcom.specified > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]):
+            botcom.specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"])
+        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], botcom.specified)
     else:
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
     reply = reply.replace("$target", target)
-    osd(bot, trigger.sender, 'say', reply)
+    osd(bot, botcom.channel_current, 'say', reply)
+
+
+# Quick replies with a target person TODO use the targetfinder logic
+def botfunction_fillintheblank(bot, botcom):
+
+    # target is the first arg given
+    fillin = spicemanip(bot, botcom.triggerargsarray, 0)
+
+    # handling for no fillin
+    if not fillin:
+
+        # Seperate reply for no input
+        if "noinputreply" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
+            if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], list):
+                reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"]
+            elif botcom.specified:
+                if botcom.specified > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"]):
+                    botcom.specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"])
+                reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], botcom.specified)
+            else:
+                reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], 'random')
+            return osd(bot, botcom.channel_current, 'say', reply)
+
+    # remove target
+    if target in botcom.triggerargsarray:
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+    if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
+        reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
+    elif botcom.specified:
+        if botcom.specified > len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]):
+            botcom.specified = len(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"])
+        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], botcom.specified)
+    else:
+        reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
+    reply = reply.replace("$target", target)
+    osd(bot, botcom.channel_current, 'say', reply)
