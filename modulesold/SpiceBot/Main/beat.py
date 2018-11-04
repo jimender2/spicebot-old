@@ -14,7 +14,7 @@ from BotShared import *
 
 @sopel.module.commands('beat')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'fourtytwo')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'beat')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, triggerargsarray, "split_&&")
