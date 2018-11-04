@@ -1075,6 +1075,12 @@ def bot_dictcom_run(bot, trigger):
 
 def bot_dictcom_simple(bot, botcom):
 
+    bot.say(str(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]))
+
+    bot.say(str(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]))
+
+    return
+
     if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
         reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
     elif botcom.specified:
