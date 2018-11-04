@@ -1079,14 +1079,17 @@ def bot_dictcom_run(bot, trigger):
 
 def bot_dictcom_simple(bot, botcom):
 
-    # Convert Reply to list form if it isn't
-    if not isinstance(botcom.dotcommand_dict["reply"], list):
-        bot.msg('deathbybandaid', "not list")
+    if botcom.specified:
+        if botcom.specified > len(botcom.dotcommand_dict["reply"]):
+            botcom.specified = len(botcom.dotcommand_dict["reply"])
+        reply = botcom.dotcommand_dict["reply"]
     else:
-        bot.msg('deathbybandaid', "is list")
+        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified)
 
-    for entry in botcom.dotcommand_dict["reply"]:
-        bot.msg('deathbybandaid', str(entry))
+    if not isinstance(reply, list):
+        bot.msg('deathbybandaid', "not a list")
+    else:
+        bot.msg('deathbybandaid', "is a list")
 
     return
 
