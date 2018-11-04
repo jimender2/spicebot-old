@@ -1094,6 +1094,8 @@ def bot_dictcom_target(bot, botcom):
     backuptarget = False
 
     # handling for no target
+    if target not in bot.memory["botdict"]["users"].keys():
+        target = None
     if not target:
 
         # Seperate reply for no input
@@ -1112,14 +1114,14 @@ def bot_dictcom_target(bot, botcom):
         # backup target, usually instigator
         if "backuptarget" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
             target = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["backuptarget"]
-            if target == 'instigator':
-                target = botcom.instigator
-            elif target == 'random':
-                if not botcom.channel_current.startswith('#'):
-                    target = botcom.instigator
-                else:
-                    target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
             backuptarget = True
+    if target == 'instigator':
+        target = botcom.instigator
+    elif target == 'random':
+        if not botcom.channel_current.startswith('#'):
+            target = botcom.instigator
+        else:
+            target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
 
         # still no target
         if not target and "backuptarget" not in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
@@ -1207,14 +1209,14 @@ def bot_dictcom_targetplusblank(bot, botcom):
         # backup target, usually instigator
         if "backuptarget" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
             target = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["backuptarget"]
-            if target == 'instigator':
-                target = botcom.instigator
-            elif target == 'random':
-                if not botcom.channel_current.startswith('#'):
-                    target = botcom.instigator
-                else:
-                    target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
             backuptarget = True
+    if target == 'instigator':
+        target = botcom.instigator
+    elif target == 'random':
+        if not botcom.channel_current.startswith('#'):
+            target = botcom.instigator
+        else:
+            target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
 
         # still no target
         if not target and "backuptarget" not in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
