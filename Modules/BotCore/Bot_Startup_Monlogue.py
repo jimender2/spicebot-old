@@ -28,7 +28,7 @@ def bot_start_monologue(bot):
         return
 
     for channel in bot.channels:
-        osd(bot, channel, 'notice', [bot.nick + " is now starting.", "Please wait while I finish loading my dictionary configuration."])
+        osd(bot, channel, 'notice', bot.nick + " is now starting. Please wait while I finish loading my dictionary configuration.")
 
     # add feature for other bots unique monologue
 
