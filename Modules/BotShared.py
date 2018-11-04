@@ -1094,7 +1094,7 @@ def bot_dictcom_target(bot, botcom):
     backuptarget = False
 
     # handling for no target
-    if target not in bot.memory["botdict"]["users"].keys():
+    if target not in bot.memory["botdict"]["users"].keys() and target not in ['random', 'instigator']:
         target = None
     if not target:
 
@@ -1204,6 +1204,8 @@ def bot_dictcom_targetplusblank(bot, botcom):
     backupblank = False
 
     # handling for no target
+    if target not in bot.memory["botdict"]["users"].keys() and target not in ['random', 'instigator']:
+        target = None
     if not target:
 
         # backup target, usually instigator
