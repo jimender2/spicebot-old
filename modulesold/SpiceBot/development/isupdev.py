@@ -17,8 +17,6 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-baseurl = 'https://isitup.org/'
-
 
 @sopel.module.commands('isupdev')
 def execute_main(bot, trigger):
@@ -28,7 +26,7 @@ def execute_main(bot, trigger):
     else:
         ua = UserAgent()
         header = {'User-Agent': str(ua.chrome)}
-        url = str(baseurl + checksite)
+        url = str('https://isitup.org/' + checksite)
         page = requests.get(url, headers=header)
         if page.status_code == 200:
             dispmsg = []
@@ -40,6 +38,8 @@ def execute_main(bot, trigger):
 
 
 def isupparse(bot, url):
+    newtest = str(tree.xpath('//*[@id="container"]/text()'))
+    bot.say(str(newtest))
     upornot = 0
     tree = gettree(bot, url)
     isuptext = str(tree.xpath('//*[@id="content"]/div/div/center[2]/p/strong/text()'))
