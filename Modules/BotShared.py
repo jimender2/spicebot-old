@@ -1086,7 +1086,10 @@ def bot_dictcom_simple(bot, botcom):
     reply = reply.replace("$instigator", botcom.instigator)
     if not isinstance(reply, list):
         reply = [reply]
+        bot.say("not list")
+    bot.say(str(reply))
     for realreply in reply:
+        bot.say(str(realreply))
         realreply = realreply.replace("$instigator", botcom.instigator)
         realreply = realreply.replace("$channel", botcom.channel_current)
         osd(bot, botcom.channel_current, 'say', realreply)
