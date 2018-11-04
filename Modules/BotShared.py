@@ -1082,7 +1082,7 @@ def bot_dictcom_simple(bot, botcom):
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["reply"]):
             botcom.specified = len(botcom.dotcommand_dict["reply"])
-        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified)
+        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified, 'return')
     else:
         reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random', 'return')
 
