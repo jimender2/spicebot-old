@@ -1493,7 +1493,7 @@ def bot_watch_part_run(bot, trigger):
 
     if not online:
 
-        if user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
             if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
                 bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
 
@@ -1537,7 +1537,7 @@ def bot_watch_kick_run(bot, trigger):
 
     if not online:
 
-        if user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
             if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
                 bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
 
@@ -1566,7 +1566,7 @@ def bot_watch_quit_run(bot, trigger):
         if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users']:
             bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].remove(botcom.instigator)
 
-    if user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
             bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
 
@@ -1590,7 +1590,7 @@ def bot_watch_join_run(bot, trigger):
     if botcom.instigator not in bot.memory["botdict"]["users"].keys():
         bot.memory["botdict"]["users"][botcom.instigator] = dict()
 
-    if user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
 
         # channel list
         if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
