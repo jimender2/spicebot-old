@@ -1183,11 +1183,11 @@ def bot_dictcom_fillintheblank(bot, botcom):
                 reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], botcom.specified)
             else:
                 reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], 'random')
-            reply = reply.replace("$instigator", botcom.instigator)
             if not isinstance(reply, list):
                 reply = [reply]
             for realreply in reply:
                 realreply = realreply.replace("$instigator", botcom.instigator)
+                realreply = realreply.replace("$channel", botcom.channel_current)
                 osd(bot, botcom.channel_current, 'say', realreply)
             return
 
