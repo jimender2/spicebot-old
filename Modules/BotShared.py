@@ -1084,12 +1084,8 @@ def bot_dictcom_simple(bot, botcom):
     else:
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
     reply = reply.replace("$instigator", botcom.instigator)
-    if not isinstance(reply, list):
-        reply = [reply]
-    for realreply in reply:
-        realreply = realreply.replace("$instigator", botcom.instigator)
-        realreply = realreply.replace("$channel", botcom.channel_current)
-        osd(bot, botcom.channel_current, 'say', realreply)
+    reply = reply.replace("$channel", botcom.channel_current)
+    osd(bot, botcom.channel_current, 'say', reply)
 
 
 def bot_dictcom_target(bot, botcom):
@@ -1114,13 +1110,8 @@ def bot_dictcom_target(bot, botcom):
             else:
                 reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], 'random')
             reply = reply.replace("$instigator", botcom.instigator)
-            if not isinstance(reply, list):
-                reply = [reply]
-            for realreply in reply:
-                realreply = realreply.replace("$instigator", botcom.instigator)
-                realreply = realreply.replace("$channel", botcom.channel_current)
-                osd(bot, botcom.channel_current, 'say', realreply)
-            return
+            reply = reply.replace("$channel", botcom.channel_current)
+            return osd(bot, botcom.channel_current, 'say', reply)
 
         # backup target, usually instigator
         if "backuptarget" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
@@ -1155,13 +1146,10 @@ def bot_dictcom_target(bot, botcom):
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], botcom.specified)
     else:
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
-    if not isinstance(reply, list):
-        reply = [reply]
-    for realreply in reply:
-        realreply = realreply.replace("$instigator", botcom.instigator)
-        realreply = realreply.replace("$target", target)
-        realreply = realreply.replace("$channel", botcom.channel_current)
-        osd(bot, botcom.channel_current, 'say', realreply)
+    reply = reply.replace("$target", target)
+    reply = reply.replace("$instigator", botcom.instigator)
+    reply = reply.replace("$channel", botcom.channel_current)
+    osd(bot, botcom.channel_current, 'say', reply)
 
 
 def bot_dictcom_fillintheblank(bot, botcom):
@@ -1183,14 +1171,9 @@ def bot_dictcom_fillintheblank(bot, botcom):
                 reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], botcom.specified)
             else:
                 reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["noinputreply"], 'random')
-            if not isinstance(reply, list):
-                reply = [reply]
-                bot.say(str(reply))
-            for realreply in reply:
-                realreply = realreply.replace("$instigator", botcom.instigator)
-                realreply = realreply.replace("$channel", botcom.channel_current)
-                osd(bot, botcom.channel_current, 'say', realreply)
-            return
+            reply = reply.replace("$instigator", botcom.instigator)
+            reply = reply.replace("$channel", botcom.channel_current)
+            return osd(bot, botcom.channel_current, 'say', reply)
 
         # backup target, usually instigator
         if "backupblank" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
@@ -1212,13 +1195,10 @@ def bot_dictcom_fillintheblank(bot, botcom):
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], botcom.specified)
     else:
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
-    if not isinstance(reply, list):
-        reply = [reply]
-    for realreply in reply:
-        realreply = realreply.replace("$instigator", botcom.instigator)
-        realreply = realreply.replace("$blank", fillin)
-        realreply = realreply.replace("$channel", botcom.channel_current)
-        osd(bot, botcom.channel_current, 'say', realreply)
+    reply = reply.replace("$instigator", botcom.instigator)
+    reply = reply.replace("$channel", botcom.channel_current)
+    reply = reply.replace("$blank", fillin)
+    osd(bot, botcom.channel_current, 'say', reply)
 
 
 def bot_dictcom_targetplusblank(bot, botcom):
@@ -1284,14 +1264,11 @@ def bot_dictcom_targetplusblank(bot, botcom):
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], botcom.specified)
     else:
         reply = spicemanip(bot, bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], 'random')
-    if not isinstance(reply, list):
-        reply = [reply]
-    for realreply in reply:
-        realreply = realreply.replace("$instigator", botcom.instigator)
-        realreply = realreply.replace("$blank", fillin)
-        realreply = realreply.replace("$target", target)
-        realreply = realreply.replace("$channel", botcom.channel_current)
-        osd(bot, botcom.channel_current, 'say', realreply)
+    reply = reply.replace("$target", target)
+    reply = reply.replace("$blank", fillin)
+    reply = reply.replace("$instigator", botcom.instigator)
+    reply = reply.replace("$channel", botcom.channel_current)
+    osd(bot, botcom.channel_current, 'say', reply)
 
 
 """
