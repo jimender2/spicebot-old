@@ -1114,6 +1114,11 @@ def bot_dictcom_target(bot, botcom):
             target = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["backuptarget"]
             if target == 'instigator':
                 target = botcom.instigator
+            elif target == 'random':
+                if not botcom.channel_current.startswith('#'):
+                    target = botcom.instigator
+                else:
+                    target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
             backuptarget = True
 
         # still no target
@@ -1204,6 +1209,11 @@ def bot_dictcom_targetplusblank(bot, botcom):
             target = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["backuptarget"]
             if target == 'instigator':
                 target = botcom.instigator
+            elif target == 'random':
+                if not botcom.channel_current.startswith('#'):
+                    target = botcom.instigator
+                else:
+                    target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
             backuptarget = True
 
         # still no target
