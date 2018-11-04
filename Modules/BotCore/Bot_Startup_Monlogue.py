@@ -21,21 +21,6 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@rule('(.*)')
-@sopel.module.thread(True)
-def bot_dictcom_hub(bot, trigger):
-    if not str(trigger).startswith(tuple(['.'])):
-        return
-
-    if "botdict_loaded" not in bot.memory:
-        bot_saved_jobs_process(bot, trigger, 'bot_dictcom')
-        osd(bot, trigger.nick, 'notice', "If your command is valid it will run after I finish loading my dictionary configuration.")
-        return
-
-    bot_dictcom_run(bot, trigger)
-    botdict_save(bot)
-
-
 @sopel.module.interval(1)  # TODO make this progress with the game
 def bot_start_monologue(bot):
 
