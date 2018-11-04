@@ -268,16 +268,20 @@ Saved Jobs Handling
 """
 
 
-def bot_saved_jobs_process(bot, trigger, jobtype):
+def bot_saved_jobs_process(bot, trigger, jobtype, timeset='asap'):
+
+    # ID #
     dictsave = {"jobtype": jobtype, "trigger": trigger}
-
-    bot_saved_jobs_save(bot, dictsave)
-
-
-def bot_saved_jobs_save(bot, dictsave):
 
     if "bot_jobs" not in bot.memory:
         bot.memory["bot_jobs"] = []
+
+    id_numbs = [0]
+    for botjob_dict in bot.memory["bot_jobs"]:
+        if "ID" in botjob_dict.keys():
+            id_numbs.append(int(botjob_dict["ID"]))
+    highest_id = max(id_numbs)
+    dictsave["ID"] = int(highest_id + 1)
 
     bot.memory["bot_jobs"].append(dictsave)
 
@@ -287,13 +291,23 @@ def bot_saved_jobs_run(bot):
     if "bot_jobs" not in bot.memory:
         bot.memory["bot_jobs"] = []
 
+    ids_run = []
     for botjob_dict in bot.memory["bot_jobs"]:
         trigger = botjob_dict["trigger"]
         jobeval = str(botjob_dict["jobtype"] + '_run(bot, trigger)')
         eval(jobeval)
+        if "ID" in botjob_dict.keys():
+            ids_run.append(int(botjob_dict["ID"]))
+
+    for botjob_dict in bot.memory["bot_jobs"]:
+        if "ID" in botjob_dict.keys():
+            if int(botjob_dict["ID"]) in ids_run:
+                ids_run.remove(int(botjob_dict["ID"]))
+                bot.memory["bot_jobs"].remove(int(botjob_dict["ID"]))
+                bot.msg('deathbybandaid', "deleting " + str(int(botjob_dict["ID"])))
 
     # Clear them out
-    bot.memory["bot_jobs"] = []
+    # bot.memory["bot_jobs"] = []
     botdict_save(bot)
 
 
