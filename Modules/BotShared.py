@@ -1146,6 +1146,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
 
     # all text given is valid for use
     fillin = spicemanip(bot, botcom.triggerargsarray, 0)
+    backupblank = False
 
     # handling for no fillin
     if not fillin:
@@ -1163,9 +1164,17 @@ def bot_dictcom_fillintheblank(bot, botcom):
             reply = reply.replace("$instigator", botcom.instigator)
             return osd(bot, botcom.channel_current, 'say', reply)
 
+        # backup target, usually instigator
+        if "backupblank" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
+            fillin = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["backupblank"]
+            backupblank = True
+
         # still no fillin
         if not fillin:
             return osd(bot, botcom.instigator, 'notice', "This command requires input.")
+    if "forhandle" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
+        if spicemanip(bot, fillin, 1).lower() != "for" and not backupblank:
+            fillin = "for " + fillin
 
     if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
         reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
