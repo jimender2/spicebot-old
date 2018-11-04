@@ -24,8 +24,14 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.interval(1)
 @sopel.module.thread(True)
 def timed_logcheck(bot):
+
     if "timed_logcheck" in bot.memory:
         return
+
+    # don't run until opening monologue has been made
+    if "bot_monologue" not in bot.memory:
+        return
+
     bot.memory["timed_logcheck"] = 1
 
     searchphrasefound = 0

@@ -34,7 +34,6 @@ def bot_nickcom_hub(bot, trigger):
 
     if "botdict_loaded" not in bot.memory:
         bot_saved_jobs_process(bot, trigger, 'bot_nickcom')
-        osd(bot, trigger.nick, 'notice', "If your command is valid it will run after I finish loading my dictionary configuration.")
         return
 
     bot_nickcom_run(bot, trigger)

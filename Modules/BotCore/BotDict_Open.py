@@ -28,4 +28,13 @@ def initialsetup(bot):
         return
     bot.memory["botdict_setup"] = True
     botdict_open(bot)
+
+    startupcomplete = [bot.nick + " startup complete"]
+
+    availablecomsnum = 0
+    availablecomsnum += len(bot.memory["botdict"]["tempvals"]['dict_commands'].keys())
+    startupcomplete.append("There are " + str(availablecomsnum) + " commands available.")
+
+    for channel in bot.channels:
+        osd(bot, channel, 'notice', startupcomplete)
     bot_saved_jobs_run(bot)

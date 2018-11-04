@@ -22,4 +22,7 @@ sys.setdefaultencoding('utf-8')
 
 @sopel.module.interval(1800)
 def savingitall(bot):
+    # don't run jobs if not ready
+    if "botdict_loaded" not in bot.memory:
+        return
     botdict_save(bot)
