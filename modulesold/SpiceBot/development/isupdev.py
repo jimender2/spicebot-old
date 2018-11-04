@@ -38,10 +38,10 @@ def execute_main(bot, trigger):
 
 
 def isupparse(bot, url):
-    newtest = str(tree.xpath('//*[@id="container"]/text()'))
-    bot.say(str(newtest))
     upornot = 0
     tree = gettree(bot, url)
+    newtest = str(tree.xpath('//*[@id="container"]/text()'))
+    bot.say(str(newtest))
     isuptext = str(tree.xpath('//*[@id="content"]/div/div/center[2]/p/strong/text()'))
     isuptext = isuptext.replace('"]', "")
     isuptext = isuptext.replace('["', "")
