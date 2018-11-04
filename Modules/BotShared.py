@@ -1091,6 +1091,7 @@ def bot_dictcom_simple(bot, botcom):
 
     if not isinstance(reply, list):
         reply = [reply]
+    bot.msg('deathbybandaid', str(reply))
     for rply in reply:
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
