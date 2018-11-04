@@ -1185,6 +1185,7 @@ def bot_dictcom_targetplusblank(bot, botcom):
     # target is the first arg given
     target = spicemanip(bot, botcom.triggerargsarray, 1)
     backuptarget = False
+    backupblank = False
 
     # handling for no target
     if not target:
@@ -1218,12 +1219,13 @@ def bot_dictcom_targetplusblank(bot, botcom):
         # backup target, usually instigator
         if "backupblank" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
             fillin = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["backupblank"]
+            backupblank = True
 
         # still no fillin
         if not fillin:
             return osd(bot, botcom.instigator, 'notice', "This command requires input.")
     if "forhandle" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
-        if spicemanip(bot, fillin, 1).lower() != "for":
+        if spicemanip(bot, fillin, 1).lower() != "for" and not backupblank:
             fillin = " for " + fillin
 
     if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
