@@ -1086,11 +1086,12 @@ def bot_dictcom_simple(bot, botcom):
     else:
         reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random', 'return')
 
-    bot.msg('deathbybandaid', str(reply))
     if not isinstance(reply, list):
-        bot.msg('deathbybandaid', "not a list")
-    else:
-        bot.msg('deathbybandaid', "is a list")
+        reply = [reply]
+    for rply in reply:
+        rply = rply.replace("$instigator", botcom.instigator)
+        rply = rply.replace("$channel", botcom.channel_current)
+        osd(bot, botcom.channel_current, 'say', rply)
 
     return
 
