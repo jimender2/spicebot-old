@@ -29,28 +29,16 @@ def execute_main(bot, trigger):
         url = str('https://isitup.org/' + checksite)
         page = requests.get(url, headers=header)
         if page.status_code == 200:
-            dispmsg = []
+            upornot = 0
+            tree = html.fromstring(page.content)
+            isuptext = str(tree.xpath('//*[@id="content"]/div/div/center[2]/p/strong/text()'))
+            isuptext = isuptext.replace('"]', "")
+            isuptext = isuptext.replace('["', "")
+            bot.say(str(isuptext))
+            if str(isuptext) == "It's you!":
+                upornot = 1
             upornot = isupparse(bot, url)
             if upornot:
                 osd(bot, trigger.sender, 'say', "Looks like " + checksite + " appears to be online.")
             else:
                 osd(bot, trigger.sender, 'say', "Looks like " + checksite + " appears to be offline.")
-
-
-def isupparse(bot, url):
-    upornot = 0
-    tree = gettree(bot, url)
-    newtest = str(tree.xpath('//*[@id="container"]/text()'))
-    bot.say(str(newtest))
-    isuptext = str(tree.xpath('//*[@id="content"]/div/div/center[2]/p/strong/text()'))
-    isuptext = isuptext.replace('"]', "")
-    isuptext = isuptext.replace('["', "")
-    if str(isuptext) == "It's you!":
-        upornot = 1
-    return upornot
-
-
-def gettree(bot, url):
-    page = requests.get(url, headers=None)
-    tree = html.fromstring(page.content)
-    return tree
