@@ -284,7 +284,7 @@ def bot_saved_jobs_process(bot, trigger, jobtype, timeset='asap'):
         id_numbs.append(int(botjob_dict["ID"]))
     highest_id = max(id_numbs)
     dictsave["ID"] = int(highest_id + 1)
-    bot.msg("#spicebottest", "creating " + str(int(dictsave["ID"])))
+    bot.msg("#spicebottest", "creating " + str(int(dictsave["ID"])) + str(dictsave))
 
     bot.memory["bot_jobs"].append(dictsave)
 
