@@ -17,7 +17,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-baseurl = 'https://isitup.org'
+baseurl = 'https://isitup.org/'
 
 
 @sopel.module.commands('isupdev')
