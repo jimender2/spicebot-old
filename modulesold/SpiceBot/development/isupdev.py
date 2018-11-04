@@ -54,5 +54,5 @@ def isupparse(bot, url):
 def gettree(bot, url):
     page = requests.get(url, headers=None)
     tree = html.fromstring(page.content)
-    obot.say(str(tree))
+    bot.say(str(tree))
     return tree
