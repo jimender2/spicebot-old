@@ -1,4 +1,14 @@
 {
 "reply": ["let me call my buddy and get him down here... he's an expert on $blank"],
-"noinputreply": ["What is your buddy good at?"],
-}
+"noinputreply": [
+                "What is your buddy good at?",
+                  [
+                  "I'm not your friend, buddy",
+                  "I'm not your buddy, pal",
+                  "I'm not your pal, guy",
+                  "I'm not your guy, friend",
+                  "I'm not your friend, pal",
+                  "I'm not your pal, buddy"
+                  ],
+                ]
+                }
