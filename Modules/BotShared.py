@@ -1081,12 +1081,12 @@ def bot_dictcom_simple(bot, botcom):
 
     # Convert Reply to list form if it isn't
     if not isinstance(botcom.dotcommand_dict["reply"], list):
-        bot.say("not list")
+        bot.msg('deathbybandaid', "not list")
     else:
-        bot.say("is list")
+        bot.msg('deathbybandaid', "is list")
 
     for entry in botcom.dotcommand_dict["reply"]:
-        bot.say(str(entry))
+        bot.msg('deathbybandaid', str(entry))
 
     return
 
