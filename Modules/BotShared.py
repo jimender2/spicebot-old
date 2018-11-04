@@ -1225,8 +1225,8 @@ def bot_dictcom_targetplusblank(bot, botcom):
         if not fillin:
             return osd(bot, botcom.instigator, 'notice', "This command requires input.")
     if "forhandle" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
-        if spicemanip(bot, fillin, 1).lower() == "for":
-            fillin = spicemanip(bot, fillin, "2+")
+        if spicemanip(bot, fillin, 1).lower() != "for" and not backupblank:
+            fillin = "for " + fillin
 
     if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
         reply = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]
