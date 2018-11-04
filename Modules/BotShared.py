@@ -1082,9 +1082,9 @@ def bot_dictcom_simple(bot, botcom):
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["reply"]):
             botcom.specified = len(botcom.dotcommand_dict["reply"])
-        reply = botcom.dotcommand_dict["reply"]
-    else:
         reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified)
+    else:
+        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random')
 
     if not isinstance(reply, list):
         bot.msg('deathbybandaid', "not a list")
