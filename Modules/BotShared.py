@@ -304,7 +304,7 @@ def bot_saved_jobs_run(bot):
         if "ID" in botjob_dict.keys():
             if int(botjob_dict["ID"]) in ids_run:
                 ids_run.remove(int(botjob_dict["ID"]))
-                bot.memory["bot_jobs"].remove(int(botjob_dict["ID"]))
+                bot.memory["bot_jobs"].remove(botjob_dict)
                 bot.msg('deathbybandaid', "deleting " + str(int(botjob_dict["ID"])))
 
     # Clear them out
