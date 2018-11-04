@@ -1084,7 +1084,7 @@ def bot_dictcom_simple(bot, botcom):
             botcom.specified = len(botcom.dotcommand_dict["reply"])
         reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified)
     else:
-        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random', 'list')
+        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random', 'return')
 
     bot.msg('deathbybandaid', str(reply))
     if not isinstance(reply, list):
@@ -2154,6 +2154,8 @@ def spicemanip(bot, inputs, outputtask, output_type='default'):
             output_type = 'dict'
 
     # verify output is correct
+    if output_type == 'return':
+        return returnvalue
     if output_type == 'string':
         if isinstance(returnvalue, list):
             returnvalue = ' '.join(returnvalue)
