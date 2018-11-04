@@ -270,16 +270,18 @@ Saved Jobs Handling
 
 def bot_saved_jobs_process(bot, trigger, jobtype, timeset='asap'):
 
+    if timeset == 'asap':
+        timeset = time.time()
+
     # ID #
-    dictsave = {"jobtype": jobtype, "trigger": trigger}
+    dictsave = {"jobtype": jobtype, "trigger": trigger, "timeset": timeset}
 
     if "bot_jobs" not in bot.memory:
         bot.memory["bot_jobs"] = []
 
     id_numbs = [0]
     for botjob_dict in bot.memory["bot_jobs"]:
-        if "ID" in botjob_dict.keys():
-            id_numbs.append(int(botjob_dict["ID"]))
+        id_numbs.append(int(botjob_dict["ID"]))
     highest_id = max(id_numbs)
     dictsave["ID"] = int(highest_id + 1)
     bot.msg("#spicebottest", "creating " + str(int(dictsave["ID"])))
@@ -289,23 +291,24 @@ def bot_saved_jobs_process(bot, trigger, jobtype, timeset='asap'):
 
 def bot_saved_jobs_run(bot):
 
+    now = now = time.time()
+
     if "bot_jobs" not in bot.memory:
         bot.memory["bot_jobs"] = []
 
     ids_run = []
     for botjob_dict in bot.memory["bot_jobs"]:
-        trigger = botjob_dict["trigger"]
-        jobeval = str(botjob_dict["jobtype"] + '_run(bot, trigger)')
-        eval(jobeval)
-        if "ID" in botjob_dict.keys():
+        if now >= botjob_dict["timeset"]:
+            trigger = botjob_dict["trigger"]
+            jobeval = str(botjob_dict["jobtype"] + '_run(bot, trigger)')
+            eval(jobeval)
             ids_run.append(int(botjob_dict["ID"]))
 
     for botjob_dict in bot.memory["bot_jobs"]:
-        if "ID" in botjob_dict.keys():
-            if int(botjob_dict["ID"]) in ids_run:
-                ids_run.remove(int(botjob_dict["ID"]))
-                bot.memory["bot_jobs"].remove(botjob_dict)
-                bot.msg("#spicebottest", "deleting " + str(int(botjob_dict["ID"])))
+        if int(botjob_dict["ID"]) in ids_run:
+            ids_run.remove(int(botjob_dict["ID"]))
+            bot.memory["bot_jobs"].remove(botjob_dict)
+            bot.msg("#spicebottest", "deleting " + str(int(botjob_dict["ID"])))
 
     # Clear them out
     # bot.memory["bot_jobs"] = []
