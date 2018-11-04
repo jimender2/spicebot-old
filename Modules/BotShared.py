@@ -1079,6 +1079,11 @@ def bot_dictcom_simple(bot, botcom):
 
     bot.say(str(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]))
 
+    if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
+        bot.say("not a list")
+    else:
+        bot.say("is a list")
+
     return
 
     if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
