@@ -999,6 +999,10 @@ def dict_command_configs(bot):
                     if "reply" not in dict_from_file.keys():
                         dict_from_file["reply"] = "Reply missing"
 
+                    # make replies in list form if not
+                    if not isinstance(dict_from_file["reply"], list):
+                        dict_from_file["reply"] = [dict_from_file["reply"]]
+
                     bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
                     for comalias in comaliases:
                         if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
@@ -1036,6 +1040,9 @@ def bot_dictcom_run(bot, trigger):
     if "aliasfor" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]:
         botcom.dotcommand = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["aliasfor"]
 
+    # simplify usage of the bot command going forward
+    botcom.dotcommand_dict = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]
+
     # remainder, if any is the new arg list
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')
 
@@ -1044,7 +1051,7 @@ def bot_dictcom_run(bot, trigger):
         return
 
     # execute function based on command type
-    botcom.commandtype = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["type"].lower()
+    botcom.commandtype = botcom.dotcommand_dict["type"].lower()
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
@@ -1053,38 +1060,32 @@ def bot_dictcom_run(bot, trigger):
     for command_split_partial in commands_array:
         botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
 
+        # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
         botcom.specified = None
-        possiblespecified = spicemanip(bot, botcom.triggerargsarray, 1)
-        if possiblespecified.startswith("!"):
-            if str(possiblespecified[1:]).isdigit():
-                botcom.specified = int(possiblespecified[1:])
+        argone, argtwo = spicemanip(bot, botcom.triggerargsarray, 1), spicemanip(bot, botcom.triggerargsarray, 'last')
+        if str(argone).startswith("!") and len(str(argone)) > 1:
+            if str(argone[1:]).isdigit():
+                botcom.specified = int(argone[1:])
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-        if not botcom.specified:
-            possiblespecified = spicemanip(bot, botcom.triggerargsarray, 'last')
-            if possiblespecified.startswith("!"):
-                if str(possiblespecified[1:]).isdigit():
-                    botcom.specified = int(possiblespecified[1:])
-                    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'last!', 'list')
+        elif str(argtwo).startswith("!") and len(str(argtwo)) > 1:
+            if str(argtwo[1:]).isdigit():
+                botcom.specified = int(argtwo[1:])
+                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'last!', 'list')
 
+        # Run the command with the given info
         command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
         eval(command_function_run)
-
-    # Save open global dictionary at the end of each usage
-    # botdict_save(bot)
 
 
 def bot_dictcom_simple(bot, botcom):
 
-    bot.say(str(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]))
-
-    bot.say(str(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]))
-
-    if not isinstance(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"], list):
-        bot.say("not a list")
-        bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"] = [bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]]
+    # Convert Reply to list form if it isn't
+    if not isinstance(botcom.dotcommand_dict["reply"], list):
+        bot.say("not list")
     else:
-        bot.say("is a list")
-    for entry in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["reply"]:
+        bot.say("is list")
+
+    for entry in botcom.dotcommand_dict["reply"]:
         bot.say(str(entry))
 
     return
