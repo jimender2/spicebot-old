@@ -27,8 +27,13 @@ def bot_start_monologue(bot):
     if "bot_monologue" in bot.memory:
         return
 
+    if "bot_monologue_chans" not in bot.memory:
+        bot.memory["bot_monologue_chans"] = []
+
     for channel in bot.channels:
-        osd(bot, channel, 'notice', bot.nick + " is now starting. Please wait while I finish loading my dictionary configuration.")
+        if channel not in bot.memory["bot_monologue_chans"]:
+            osd(bot, channel, 'notice', bot.nick + " is now starting. Please wait while I finish loading my dictionary configuration.")
+            bot.memory["bot_monologue_chans"].append(channel)
 
     # add feature for other bots unique monologue
 
