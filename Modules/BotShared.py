@@ -1101,15 +1101,16 @@ def bot_dictcom_target(bot, botcom):
 
     # target is the first arg given
     target = spicemanip(bot, botcom.triggerargsarray, 1)
-    backuptarget = False
+    ignoretarget = False
 
     # handling for no target
     if target not in bot.memory["botdict"]["users"].keys() and "noinputreply" in botcom.dotcommand_dict.keys():
         target = ''
+        ignoretarget = True
         botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["noinputreply"]
     elif target not in bot.memory["botdict"]["users"].keys() and "backuptarget" in botcom.dotcommand_dict.keys():
         target = botcom.dotcommand_dict["backuptarget"]
-        backuptarget = True
+        ignoretarget = True
         if target == 'instigator':
             target = botcom.instigator
         elif target == 'random':
@@ -1124,7 +1125,7 @@ def bot_dictcom_target(bot, botcom):
     if target in botcom.triggerargsarray:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
-    if not backuptarget:
+    if not ignoretarget:
         targetchecking = bot_target_check(bot, botcom, target)
         if not targetchecking["targetgood"]:
             return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
