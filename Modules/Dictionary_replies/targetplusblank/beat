@@ -1,6 +1,5 @@
 {
 "reply": ["$instigator beats $target for $blank"],
-"backuptarget": "instigator",
 "backupblank": 'until moral improves.',
 "forhandle": True,
 }
