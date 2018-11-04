@@ -1387,10 +1387,9 @@ def botdict_setup_users(bot):
 
         userprivdict = {}
         for user in bot.privileges[channelcheck].keys():
-            if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
-                if user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(user)
             if user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+                if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(user)
                 userprivdict[user] = bot.privileges[channelcheck][user] or 0
 
         for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
@@ -1493,8 +1492,9 @@ def bot_watch_part_run(bot, trigger):
 
     if not online:
 
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
-            bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
+        if user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+            if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
+                bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
 
         if botcom.instigator in bot.memory["botdict"]["tempvals"]['all_current_users']:
             bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
@@ -1536,8 +1536,9 @@ def bot_watch_kick_run(bot, trigger):
 
     if not online:
 
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
-            bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
+        if user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+            if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
+                bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
 
         if botcom.instigator in bot.memory["botdict"]["tempvals"]['all_current_users']:
             bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
@@ -1564,8 +1565,9 @@ def bot_watch_quit_run(bot, trigger):
         if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users']:
             bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].remove(botcom.instigator)
 
-    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
-        bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
+    if user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
+            bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
 
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['all_current_users']:
         bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
@@ -1587,13 +1589,15 @@ def bot_watch_join_run(bot, trigger):
     if botcom.instigator not in bot.memory["botdict"]["users"].keys():
         bot.memory["botdict"]["users"][botcom.instigator] = dict()
 
-    # channel list
-    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
-        bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].append(botcom.instigator)
+    if user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
 
-    # all current users and offline users
-    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['all_current_users']:
-        bot.memory["botdict"]["tempvals"]['all_current_users'].append(botcom.instigator)
+        # channel list
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
+            bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].append(botcom.instigator)
+
+        # all current users and offline users
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['all_current_users']:
+            bot.memory["botdict"]["tempvals"]['all_current_users'].append(botcom.instigator)
 
     # remove from offline
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['offline_users']:
