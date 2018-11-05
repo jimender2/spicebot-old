@@ -50,11 +50,16 @@ def bot_automod_flood_run(bot, trigger):
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         return
 
+    if bot.memory["botdict"]["tempvals"]['automod']["antiflood"] == []:
+        bot.memory["botdict"]["tempvals"]['automod']["antiflood"].append({"nick": trigger.nick, "message": str(trigger)})
+        return
+
     # only track the last 10 items
     if len(bot.memory["botdict"]["tempvals"]['automod']["antiflood"]) >= 10:
         bot.memory["botdict"]["tempvals"]['automod']["antiflood"] = spicemanip(bot, bot.memory["botdict"]["tempvals"]['automod']["antiflood"], '2+', 'return')
 
-    if spicemanip(bot, bot.memory["botdict"]["tempvals"]['automod']["antiflood"], 'last', 'return')["nick"] != botcom.instigator:
+    lastnick = spicemanip(bot, bot.memory["botdict"]["tempvals"]['automod']["antiflood"], 'last', 'return')["nick"]
+    if lastnick != botcom.instigator:
         bot.memory["botdict"]["tempvals"]['automod']["antiflood"].append({"nick": trigger.nick, "message": str(trigger)})
         return
 
