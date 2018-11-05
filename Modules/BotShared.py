@@ -1013,7 +1013,7 @@ def dict_command_configs(bot):
                     if "reply" not in dict_from_file.keys():
                         dict_from_file["reply"] = "Reply missing"
                     if dict_from_file["type"] == 'sayings' and dict_from_file["reply"] != "Reply missing":
-                        adjust_nick_array(bot, bot.nick, maincom, dict_from_file["reply"], 'startup', 'long', 'sayings')
+                        adjust_nick_array(bot, str(bot.nick), maincom, dict_from_file["reply"], 'startup', 'long', 'sayings')
 
                     # make replies in list form if not
                     if not isinstance(dict_from_file["reply"], list):
@@ -1135,15 +1135,15 @@ def bot_dictcom_sayings(bot, botcom):
     aftercom = spicemanip(bot, botcom.triggerargsarray, 0)
 
     if command == 'add':
-        adjust_nick_array(bot, bot.nick, botcom.dotcommand_dict["validcoms"][0], aftercom, command, 'long', 'sayings')
+        adjust_nick_array(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], aftercom, command, 'long', 'sayings')
         return osd(bot, botcom.instigator, 'notice', "The following was added to the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database: '" + str(aftercom) + "'")
     elif command == 'del':
-        adjust_nick_array(bot, bot.nick, botcom.dotcommand_dict["validcoms"][0], aftercom, command, 'long', 'sayings')
+        adjust_nick_array(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], aftercom, command, 'long', 'sayings')
         return osd(bot, botcom.instigator, 'notice', "The following was removed from the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database: '" + str(aftercom) + "'")
     elif command == 'count':
-        return osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database has " + str(len(get_nick_value(bot, bot.nick, botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or [])) + " entries.")
+        return osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database has " + str(len(get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or [])) + " entries.")
     elif command == 'get':
-        botcom.dotcommand_dict["reply"] = get_nick_value(bot, bot.nick, botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or []
+        botcom.dotcommand_dict["reply"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or []
 
         if botcom.dotcommand_dict["reply"]:
             return osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database appears to be empty!")
