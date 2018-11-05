@@ -51,7 +51,7 @@ def bot_automod_flood_run(bot, trigger):
         return
 
     if bot.memory["botdict"]["tempvals"]['automod']["antiflood"] == []:
-        bot.memory["botdict"]["tempvals"]['automod']["antiflood"].append({"nick": trigger.nick, "message": str(trigger)})
+        bot.memory["botdict"]["tempvals"]['automod']["antiflood"].append({"nick": str(trigger.nick), "message": str(trigger)})
         return
 
     # only track the last 10 items
