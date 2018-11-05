@@ -1135,6 +1135,12 @@ def bot_dictcom_target(bot, botcom):
                 target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
     elif target not in bot.memory["botdict"]["users"].keys():
         return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
+    elif botcom.specified:
+        if botcom.specified > len(botcom.dotcommand_dict["reply"]):
+            botcom.specified = len(botcom.dotcommand_dict["reply"])
+        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified, 'return')
+    else:
+        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random', 'return')
 
     # remove target
     if target in botcom.triggerargsarray:
