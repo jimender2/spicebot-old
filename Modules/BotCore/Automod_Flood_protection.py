@@ -72,7 +72,7 @@ def bot_automod_flood_run(bot, trigger):
     identicalcheck = totalrecords - 3
     messages = []
     for i in range(identicalcheck, totalrecords + 1):
-        currentdict = spicemanip(bot, bot.memory["botdict"]["tempvals"]['automod']["antiflood"], i, 'return')
+        currentdict = spicemanip(bot, bot.memory["botdict"]["tempvals"]['automod']["antiflood"], int(i), 'return')
         messages.append(currentdict["message"])
 
     identicalnumber = countX(messages, bot.memory["botdict"]["tempvals"]['automod']["antiflood"])
