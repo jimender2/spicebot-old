@@ -992,6 +992,7 @@ def bot_read_txt_files(bot):
             text_file.close()
 
             bot.memory["botdict"]["tempvals"]['txt_files'][txtfile] = text_file_list
+            bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['txt_files'][txtfile]))
 
 
 # Command configs
