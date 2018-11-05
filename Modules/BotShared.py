@@ -1082,12 +1082,12 @@ def dict_command_configs(bot):
                         bot.msg("deathbybandaid", str(dict_from_file))
                         dict_from_file["type"] = 'simple'
                         bot.msg("deathbybandaid", str(dict_from_file))
-                        if "url" in dict_from_file.keys():
+                        if "readurl" in dict_from_file.keys():
                             bot.msg("deathbybandaid", "here")
-                            page = requests.get(url, headers=header)
+                            page = requests.get(dict_from_file["readurl"], headers=header)
                             tree = html.fromstring(page.content)
                             if page.status_code == 200:
-                                htmlfile = urllib.urlopen(dict_from_file["url"])
+                                htmlfile = urllib.urlopen(dict_from_file["readurl"])
                                 lines = htmlfile.read().splitlines()
                                 dict_from_file["reply"] = lines
 
