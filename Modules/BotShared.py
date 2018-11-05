@@ -42,6 +42,10 @@ from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 
+# user agent and header
+ua = UserAgent()
+header = {'User-Agent': str(ua.chrome)}
+
 
 # Opening and reading config files
 import ConfigParser
@@ -1079,11 +1083,8 @@ def dict_command_configs(bot):
                                 dict_from_file["reply"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["filename"]]
 
                     if dict_from_file["type"] == 'readfromurl':
-                        bot.msg("deathbybandaid", str(dict_from_file))
                         dict_from_file["type"] = 'simple'
-                        bot.msg("deathbybandaid", str(dict_from_file))
                         if "readurl" in dict_from_file.keys():
-                            bot.msg("deathbybandaid", "here")
                             page = requests.get(dict_from_file["readurl"], headers=header)
                             tree = html.fromstring(page.content)
                             if page.status_code == 200:
