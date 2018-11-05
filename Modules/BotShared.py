@@ -1183,15 +1183,6 @@ def bot_dictcom_fillintheblank(bot, botcom):
         if spicemanip(bot, fillin, 1).lower() != botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
             fillin = botcom.dotcommand_dict["reasonhandle"] + " " + fillin
 
-    if not isinstance(botcom.dotcommand_dict["reply"], list):
-        reply = botcom.dotcommand_dict["reply"]
-    elif botcom.specified:
-        if botcom.specified > len(botcom.dotcommand_dict["reply"]):
-            botcom.specified = len(botcom.dotcommand_dict["reply"])
-        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified)
-    else:
-        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random')
-
     if not isinstance(reply, list):
         reply = [reply]
 
