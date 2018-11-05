@@ -1187,7 +1187,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
         reply = [reply]
 
     for rply in reply:
-        reply = reply.replace("$blank", fillin)
+        rply = rply.replace("$blank", fillin)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
         osd(bot, botcom.channel_current, 'say', rply)
