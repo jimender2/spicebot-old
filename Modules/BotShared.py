@@ -1666,33 +1666,33 @@ def nick_actual(bot, nick):
 def bot_target_check(bot, botcom, target):
     targetgood = {"targetgood": True, "error": "None", "reason": None}
 
-    targetgoodconsensus = []
+    targetgoodconsensus, reasons = [], []
 
     # cannot target bots
     if target in bot.memory["botdict"]["tempvals"]['bots_list']:
-        targetgood["reason"] = "bot"
+        reasons.append("bot")
         targetgoodconsensus.append(nick_actual(bot, target) + " is a bot and cannot be targeted.")
 
     # Not a valid user
     if target not in bot.memory["botdict"]["users"].keys():
-        targetgood["reason"] = "unknown"
+        reasons.append("unknown")
         targetgoodconsensus.append("I don't know who that is.")
 
     # User offline
     if target not in bot.memory["botdict"]["tempvals"]['all_current_users']:
-        targetgood["reason"] = "offline"
+        reasons.append("offline")
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is offline right now!")
 
     if not botcom.channel_current.startswith('#') and target != botcom.instigator:
-        targetgood["reason"] = "privmsg"
+        reasons.append("privmsg")
         targetgoodconsensus.append("Leave " + nick_actual(bot, target) + " out of this private conversation!")
 
     if target in bot.memory["botdict"]["tempvals"]['all_current_users'] and target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
-        targetgood["reason"] = "diffchannel"
+        reasons.append("diffchannel")
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
 
     if targetgoodconsensus != []:
-        targetgood = {"targetgood": False, "error": targetgoodconsensus[0], "reason": targetgood["reason"]}
+        targetgood = {"targetgood": False, "error": targetgoodconsensus[0], "reason": reasons[0]}
 
     return targetgood
 
