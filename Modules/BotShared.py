@@ -1080,10 +1080,10 @@ def dict_command_configs(bot):
 
                     if dict_from_file["type"] == 'readfromurl':
                         dict_from_file["type"] = 'simple'
+                        bot.msg("deathbybandaid", "here")
                         if "url" in dict_from_file.keys():
                             page = requests.get(url, headers=header)
                             tree = html.fromstring(page.content)
-                            bot.msg("deathbybandaid", "here")
                             if page.status_code == 200:
                                 htmlfile = urllib.urlopen(dict_from_file["url"])
                                 lines = htmlfile.read().splitlines()
