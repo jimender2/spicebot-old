@@ -24,6 +24,24 @@ import fnmatch
 import random
 import urllib
 import git
+import requests
+from lxml import html
+from time import strptime
+from dateutil import parser
+import calendar
+import arrow
+import pytz
+from dateutil import tz
+from xml.dom import minidom
+import json
+from fake_useragent import UserAgent
+import praw
+from prawcore import NotFound
+import twitter
+from googleapiclient.discovery import build
+from httplib2 import Http
+from oauth2client import file, client, tools
+
 
 # Opening and reading config files
 import ConfigParser
@@ -1050,14 +1068,25 @@ def dict_command_configs(bot):
                     # check that reply is set
                     if "reply" not in dict_from_file.keys():
                         dict_from_file["reply"] = "Reply missing"
+
                     if dict_from_file["type"] == 'sayings' and dict_from_file["reply"] != "Reply missing":
                         adjust_nick_array(bot, str(bot.nick), maincom, dict_from_file["reply"], 'startup', 'long', 'sayings')
+
                     if dict_from_file["type"] == 'readfromfile':
                         dict_from_file["type"] = 'simple'
                         if "filename" in dict_from_file.keys():
-                            # bot.msg("#spicebottest", str(dict_from_file["filename"]))
                             if dict_from_file["filename"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
                                 dict_from_file["reply"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["filename"]]
+
+                    if dict_from_file["type"] == 'readfromurl':
+                        dict_from_file["type"] = 'simple'
+                        if "url" in dict_from_file.keys():
+                            page = requests.get(url, headers=header)
+                            tree = html.fromstring(page.content)
+                            if page.status_code == 200:
+                                htmlfile = urllib.urlopen(dict_from_file["url"])
+                                lines = htmlfile.read().splitlines()
+                                dict_from_file["reply"] = lines
 
                     # make replies in list form if not
                     if not isinstance(dict_from_file["reply"], list):

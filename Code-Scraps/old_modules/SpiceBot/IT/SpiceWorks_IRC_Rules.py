@@ -14,7 +14,7 @@ from BotShared import *
 rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 
 
-@sopel.module.commands('rules', 'rule')
+@sopel.module.commands('chanrules', 'chanrule')
 def execute_main(bot, trigger):
     rulenumber = trigger.group(2)
     if not rulenumber:
