@@ -213,11 +213,11 @@ def botdict_open(bot):
     # users
     botdict_setup_users(bot)
 
-    # dictionary commands
-    dict_command_configs(bot)
-
     # Text Files
     bot_read_txt_files(bot)
+
+    # dictionary commands
+    dict_command_configs(bot)
 
     # use this to prevent bot usage if the above isn't done loading
     bot.memory["botdict_loaded"] = True
