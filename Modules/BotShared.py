@@ -992,7 +992,7 @@ def bot_read_txt_files(bot):
             text_file.close()
 
             bot.memory["botdict"]["tempvals"]['txt_files'][txtfile] = text_file_list
-            bot.msg("#spicebottest", str(len(bot.memory["botdict"]["tempvals"]['txt_files'][txtfile])))
+            bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['txt_files'][txtfile]))
 
 
 # Command configs
@@ -1054,10 +1054,12 @@ def dict_command_configs(bot):
                     if dict_from_file["type"] == 'sayings' and dict_from_file["reply"] != "Reply missing":
                         adjust_nick_array(bot, str(bot.nick), maincom, dict_from_file["reply"], 'startup', 'long', 'sayings')
                     if dict_from_file["type"] == 'readfromfile':
-                        dict_from_file["type"] = 'simple'
+                        bot.msg("#spicebottest", str(dict_from_file["type"]))
+                        bot.msg("#spicebottest", str(dict_from_file["type"]))
                         if "filename" in dict_from_file.keys():
                             if dict_from_file["filename"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
                                 dict_from_file["reply"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["filename"]]
+                                bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['txt_files'][txtfile]))
 
                     # make replies in list form if not
                     if not isinstance(dict_from_file["reply"], list):
