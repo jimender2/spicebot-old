@@ -1058,7 +1058,6 @@ def dict_command_configs(bot):
                             # bot.msg("#spicebottest", str(dict_from_file["filename"]))
                             if dict_from_file["filename"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
                                 dict_from_file["reply"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["filename"]]
-                                bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['txt_files'][txtfile]))
 
                     # make replies in list form if not
                     if not isinstance(dict_from_file["reply"], list):
