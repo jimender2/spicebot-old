@@ -1055,7 +1055,7 @@ def dict_command_configs(bot):
                     if dict_from_file["type"] == 'readfromfile':
                         dict_from_file["type"] = 'simple'
                         if "filename" in dict_from_file.keys():
-                            bot.msg("#spicebottest", str(dict_from_file["filename"]))
+                            # bot.msg("#spicebottest", str(dict_from_file["filename"]))
                             if dict_from_file["filename"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
                                 dict_from_file["reply"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["filename"]]
                                 bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['txt_files'][txtfile]))
