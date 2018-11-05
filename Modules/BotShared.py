@@ -1012,6 +1012,8 @@ def dict_command_configs(bot):
                     # check that reply is set
                     if "reply" not in dict_from_file.keys():
                         dict_from_file["reply"] = "Reply missing"
+                    if dict_from_file["type"] == 'sayings' and dict_from_file["reply"] != "Reply missing":
+                        adjust_nick_array(bot, bot.nick, maincom, dict_from_file["reply"], 'startup', 'long', 'sayings')
 
                     # make replies in list form if not
                     if not isinstance(dict_from_file["reply"], list):
@@ -1085,12 +1087,16 @@ def bot_dictcom_run(bot, trigger):
         botcom.specified = None
         argone, argtwo = spicemanip(bot, botcom.triggerargsarray, 1), spicemanip(bot, botcom.triggerargsarray, 'last')
         if str(argone).startswith("!") and len(str(argone)) > 1:
-            if str(argone[1:]).isdigit():
-                botcom.specified = int(argone[1:])
+            if str(argone[1:]).isdigit() or str(argone[1:]) in ['last', 'random']:
+                botcom.specified = argone[1:]
+                if str(botcom.specified).isdigit():
+                    botcom.specified = int(botcom.specified)
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
         elif str(argtwo).startswith("!") and len(str(argtwo)) > 1:
-            if str(argtwo[1:]).isdigit():
-                botcom.specified = int(argtwo[1:])
+            if str(argtwo[1:]).isdigit() or str(argtwo[1:]) in ['last', 'random']:
+                botcom.specified = argtwo[1:]
+                if str(botcom.specified).isdigit():
+                    botcom.specified = int(botcom.specified)
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'last!', 'list')
 
         # Run the command with the given info
@@ -1118,6 +1124,48 @@ def bot_dictcom_simple(bot, botcom):
             osd(bot, botcom.channel_current, 'action', rply)
         else:
             osd(bot, botcom.channel_current, 'say', rply)
+
+
+def bot_dictcom_sayings(bot, botcom):
+
+    command = spicemanip(bot, botcom.triggerargsarray, 1) or 'get'
+    # remove command
+    if command in botcom.triggerargsarray:
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+    aftercom = spicemanip(bot, botcom.triggerargsarray, 0)
+
+    if command == 'add':
+        adjust_nick_array(bot, bot.nick, botcom.dotcommand_dict["validcoms"][0], aftercom, command, 'long', 'sayings')
+        return osd(bot, botcom.instigator, 'notice', "The following was added to the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database: '" + str(aftercom) + "'")
+    elif command == 'del':
+        adjust_nick_array(bot, bot.nick, botcom.dotcommand_dict["validcoms"][0], aftercom, command, 'long', 'sayings')
+        return osd(bot, botcom.instigator, 'notice', "The following was removed from the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database: '" + str(aftercom) + "'")
+    elif command == 'count':
+        return osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database has " + str(len(get_nick_value(bot, bot.nick, botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or [])) + " entries.")
+    elif command == 'get':
+        botcom.dotcommand_dict["reply"] = get_nick_value(bot, bot.nick, botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or []
+
+        if botcom.dotcommand_dict["reply"]:
+            return osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database appears to be empty!")
+
+        if botcom.specified:
+            if botcom.specified > len(botcom.dotcommand_dict["reply"]):
+                botcom.specified = len(botcom.dotcommand_dict["reply"])
+            reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified, 'return')
+        else:
+            reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random', 'return')
+
+        if not isinstance(reply, list):
+            reply = [reply]
+
+        for rply in reply:
+            rply = rply.replace("$instigator", botcom.instigator)
+            rply = rply.replace("$channel", botcom.channel_current)
+            if rply.startswith("*a "):
+                rply = rply.replace("*a ", "")
+                osd(bot, botcom.channel_current, 'action', rply)
+            else:
+                osd(bot, botcom.channel_current, 'say', rply)
 
 
 def bot_dictcom_target(bot, botcom):
@@ -1784,6 +1832,72 @@ def set_nick_value(bot, nick, secondarykey, value, longevity='long', mainkey='un
         bot.memory["botdict"]["users"][nick][mainkey][secondarykey] = value
     elif longevity == 'temp':
         bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey] = value
+
+
+def adjust_nick_array(bot, nick, secondarykey, values, direction, longevity='long', mainkey='unsorted'):
+
+    if not isinstance(values, list):
+        values = [values]
+
+    # verify nick dict exists
+    if longevity == 'long':
+        if nick not in bot.memory["botdict"]["users"].keys():
+            bot.memory["botdict"]["users"][nick] = dict()
+    elif longevity == 'temp':
+        if nick not in bot.memory["botdict"]["tempvals"]["uservals"].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick] = dict()
+
+    # Verify mainkey exists
+    if longevity == 'long':
+        if mainkey not in bot.memory["botdict"]["users"][nick].keys():
+            bot.memory["botdict"]["users"][nick][mainkey] = dict()
+    elif longevity == 'temp':
+        if mainkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey] = dict()
+
+    # verify array exists
+    if longevity == 'long':
+        if secondarykey not in bot.memory["botdict"]["users"][nick][mainkey]:
+            bot.memory["botdict"]["users"][nick][mainkey][secondarykey] = []
+    elif longevity == 'temp':
+        if secondarykey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey]:
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey] = []
+
+    # startup entries
+    if direction == 'startup':
+        if longevity == 'long':
+            if bot.memory["botdict"]["users"][nick][mainkey][secondarykey] == []:
+                direction == 'add'
+            else:
+                return
+        elif longevity == 'temp':
+            if bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey] == []:
+                direction == 'add'
+            else:
+                return
+
+    # adjust
+    for value in values:
+        if longevity == 'long':
+            if direction == 'add':
+                if value not in bot.memory["botdict"]["users"][nick][mainkey][secondarykey]:
+                    bot.memory["botdict"]["users"][nick][mainkey][secondarykey].append(value)
+            elif direction == 'startup':
+                if value not in bot.memory["botdict"]["users"][nick][mainkey][secondarykey]:
+                    bot.memory["botdict"]["users"][nick][mainkey][secondarykey].append(value)
+            elif direction == 'del':
+                if value in bot.memory["botdict"]["users"][nick][mainkey][secondarykey]:
+                    bot.memory["botdict"]["users"][nick][mainkey][secondarykey].remove(value)
+        elif longevity == 'temp':
+            if direction == 'add':
+                if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]:
+                    bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey].append(value)
+            elif direction == 'startup':
+                if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]:
+                    bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey].append(value)
+            elif direction == 'del':
+                if value in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]:
+                    bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey].remove(value)
 
 
 """
