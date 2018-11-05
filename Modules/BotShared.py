@@ -1257,6 +1257,7 @@ def bot_dictcom_targetplusblank(bot, botcom):
         reply = [reply]
 
     for rply in reply:
+        rply = rply.replace("$blank", fillin)
         rply = rply.replace("$target", target)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
