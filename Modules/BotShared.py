@@ -1298,7 +1298,7 @@ def bot_dictcom_target(bot, botcom):
             target = ''
 
     # handling for no target
-    if target not in bot.memory["botdict"]["users"].keys() and "noinputreply" in botcom.dotcommand_dict.keys():
+    if target not in bot.memory["botdict"]["users"].keys() and "noinputreply" in botcom.dotcommand_dict.keys() and not ignoretarget:
         target = ''
         ignoretarget = True
         botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["noinputreply"]
