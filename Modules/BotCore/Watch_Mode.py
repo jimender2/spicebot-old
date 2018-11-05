@@ -37,7 +37,8 @@ mode_dict_alias = {
 def botcom_player_return(bot, trigger):
 
     if "botdict_loaded" not in bot.memory:
-        bot_saved_jobs_process(bot, trigger, 'bot_watch_mode')
+        if trigger.nick != bot.nick:
+            bot_saved_jobs_process(bot, trigger, 'bot_watch_mode')
         return
 
     bot_watch_mode_run(bot, trigger)
