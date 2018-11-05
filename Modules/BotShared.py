@@ -1142,12 +1142,16 @@ def bot_dictcom_sayings(bot, botcom):
     botcom.dotcommand_dict["reply"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or []
 
     if command == 'add':
+        if not aftercom:
+            return osd(bot, botcom.channel_current, 'say', "What would you like to add to the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database?")
         if aftercom in botcom.dotcommand_dict["reply"]:
             return osd(bot, botcom.channel_current, 'say', "The following was already in the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database: '" + str(aftercom) + "'")
         adjust_nick_array(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], aftercom, command, 'long', 'sayings')
         return osd(bot, botcom.channel_current, 'say', "The following was added to the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database: '" + str(aftercom) + "'")
 
     elif command in ['del', 'remove']:
+        if not aftercom:
+            return osd(bot, botcom.channel_current, 'say', "What would you like to remove from the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database?")
         if aftercom not in botcom.dotcommand_dict["reply"]:
             return osd(bot, botcom.channel_current, 'say', "The following was already not in the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database: '" + str(aftercom) + "'")
         adjust_nick_array(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], aftercom, command, 'long', 'sayings')
