@@ -76,7 +76,7 @@ def bot_automod_flood_run(bot, trigger):
         messages.append(currentdict["message"])
 
     identicalnumber = countX(messages, bot.memory["botdict"]["tempvals"]['automod']["antiflood"])
-    if currentnumber == 3:
+    if identicalnumber == 3:
         osd(bot, botcom.instigator, 'notice', "possible flooding")
 
     osd(bot, botcom.instigator, 'notice', str(len(messages)))
