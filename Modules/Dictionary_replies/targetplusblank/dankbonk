@@ -1,0 +1,6 @@
+{
+"reply": ["$instigator whacks  $target with a 42 pound sack of primo cheeba $blank"],
+"backupblank": '',
+"reasonhandle": ["because", "for"],
+"botreact": ["*a teaches $instigator a lesson by sitting on $instigator"],
+}
