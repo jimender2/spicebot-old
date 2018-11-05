@@ -40,7 +40,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'target', 'fillintheblank', 'targetplusblank', 'sayings']
+valid_com_types = ['simple', 'target', 'fillintheblank', 'targetplusblank', 'sayings', "readfromfile"]
 
 
 """
@@ -1019,6 +1019,9 @@ def dict_command_configs(bot):
                         dict_from_file["reply"] = "Reply missing"
                     if dict_from_file["type"] == 'sayings' and dict_from_file["reply"] != "Reply missing":
                         adjust_nick_array(bot, str(bot.nick), maincom, dict_from_file["reply"], 'startup', 'long', 'sayings')
+                    if dict_from_file["type"] == 'readfromfile':
+                        if "filename" in dict_from_file.keys():
+                            dict_from_file["type"] = 'simple'
 
                     # make replies in list form if not
                     if not isinstance(dict_from_file["reply"], list):
