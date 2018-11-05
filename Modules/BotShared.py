@@ -1202,7 +1202,11 @@ def bot_dictcom_simple(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list appears to be empty!")
         else:
             osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list contains:")
-            osd(bot, botcom.instigator, 'say', botcom.dotcommand_dict["reply"])
+            listnumb, relist = 1, []
+            for item in botcom.dotcommand_dict["reply"]:
+                relist.append(str("[#" + listnumb + "] " + item))
+                listnumb += 1
+            osd(bot, botcom.instigator, 'say', relist)
             return
     elif posscom == 'count':
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
@@ -1270,7 +1274,11 @@ def bot_dictcom_sayings(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database appears to be empty!")
         else:
             osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database contains:")
-            osd(bot, botcom.instigator, 'say', botcom.dotcommand_dict["reply"])
+            listnumb, relist = 1, []
+            for item in botcom.dotcommand_dict["reply"]:
+                relist.append(str("[#" + listnumb + "] " + item))
+                listnumb += 1
+            osd(bot, botcom.instigator, 'say', relist)
             return
 
     elif command == 'get':
@@ -1318,7 +1326,11 @@ def bot_dictcom_target(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list appears to be empty!")
         else:
             osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list contains:")
-            osd(bot, botcom.instigator, 'say', botcom.dotcommand_dict["reply"])
+            listnumb, relist = 1, []
+            for item in botcom.dotcommand_dict["reply"]:
+                relist.append(str("[#" + listnumb + "] " + item))
+                listnumb += 1
+            osd(bot, botcom.instigator, 'say', relist)
             return
     elif target == 'count':
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
@@ -1395,7 +1407,11 @@ def bot_dictcom_fillintheblank(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list appears to be empty!")
         else:
             osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list contains:")
-            osd(bot, botcom.instigator, 'say', botcom.dotcommand_dict["reply"])
+            listnumb, relist = 1, []
+            for item in botcom.dotcommand_dict["reply"]:
+                relist.append(str("[#" + listnumb + "] " + item))
+                listnumb += 1
+            osd(bot, botcom.instigator, 'say', relist)
             return
     elif posscom == 'count':
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
@@ -1463,7 +1479,11 @@ def bot_dictcom_targetplusblank(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list appears to be empty!")
         else:
             osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list contains:")
-            osd(bot, botcom.instigator, 'say', botcom.dotcommand_dict["reply"])
+            listnumb, relist = 1, []
+            for item in botcom.dotcommand_dict["reply"]:
+                relist.append(str("[#" + listnumb + "] " + item))
+                listnumb += 1
+            osd(bot, botcom.instigator, 'say', relist)
             return
     elif target == 'count':
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
