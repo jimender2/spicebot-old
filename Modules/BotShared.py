@@ -1212,7 +1212,7 @@ def bot_dictcom_simple(bot, botcom):
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
-        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0))
+        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
         if rply.startswith("time.sleep"):
             eval(rply)
         elif rply.startswith("*a "):
@@ -1283,7 +1283,7 @@ def bot_dictcom_sayings(bot, botcom):
             rply = rply.replace("$instigator", botcom.instigator)
             rply = rply.replace("$channel", botcom.channel_current)
             rply = rply.replace("$botnick", bot.nick)
-            rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0))
+            rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
             if rply.startswith("time.sleep"):
                 eval(rply)
             elif rply.startswith("*a "):
@@ -1352,7 +1352,7 @@ def bot_dictcom_target(bot, botcom):
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
-        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0))
+        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
         if rply.startswith("time.sleep"):
             eval(rply)
         elif rply.startswith("*a "):
@@ -1408,7 +1408,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
-        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0))
+        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
         if rply.startswith("time.sleep"):
             eval(rply)
         elif rply.startswith("*a "):
@@ -1490,7 +1490,7 @@ def bot_dictcom_targetplusblank(bot, botcom):
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
-        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0))
+        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
         if rply.startswith("time.sleep"):
             eval(rply)
         elif rply.startswith("*a "):
