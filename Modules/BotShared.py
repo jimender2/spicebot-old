@@ -1273,7 +1273,11 @@ def bot_dictcom_targetplusblank(bot, botcom):
         rply = rply.replace("$target", target)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
-        osd(bot, botcom.channel_current, 'say', rply)
+        if rply.startswith("*a "):
+            rply = rply.replace("*a ", "")
+            osd(bot, botcom.channel_current, 'action', rply)
+        else:
+            osd(bot, botcom.channel_current, 'say', rply)
 
 
 """
