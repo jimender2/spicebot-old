@@ -1250,8 +1250,8 @@ def bot_dictcom_targetplusblank(bot, botcom):
         reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random', 'return')
 
     if "reasonhandle" in botcom.dotcommand_dict.keys():
-        if spicemanip(bot, fillin, 1).lower() != botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
-            fillin = botcom.dotcommand_dict["reasonhandle"] + " " + fillin
+        if spicemanip(bot, fillin, 1).lower() not in botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
+            fillin = botcom.dotcommand_dict["reasonhandle"][1] + " " + fillin
 
     if not isinstance(reply, list):
         reply = [reply]
