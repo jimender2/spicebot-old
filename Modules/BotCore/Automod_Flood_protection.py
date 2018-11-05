@@ -71,20 +71,22 @@ def bot_automod_flood_run(bot, trigger):
         return
 
     identicalcheck = totalrecords - 2
-    messages = []
-    osd(bot, botcom.instigator, 'notice', str(identicalcheck) + " " + str(int(totalrecords) + 1))
+    identicalconsensus = []
+    currentmessage = None
     for i in range(identicalcheck, totalrecords + 1):
         currentdict = spicemanip(bot, bot.memory["botdict"]["tempvals"]['automod']["antiflood"], int(i), 'return')
-        messages.append(str(currentdict["message"]))
+        if currentmessage:
+            if currentdict["message"] == currentmessage:
+                identicalconsensus.append("True")
+            else:
+                identicalconsensus.append("False")
+        currentmessage = currentdict["message"]
 
-    identicalnumber = countX(messages, bot.memory["botdict"]["tempvals"]['automod']["antiflood"])
-    if identicalnumber == 3:
-        osd(bot, botcom.instigator, 'notice', "possible flooding")
+    if "False" in identicalconsensus:
+        return
 
-    osd(bot, botcom.instigator, 'notice', str(len(messages)))
-    osd(bot, botcom.instigator, 'notice', str(messages))
+    osd(bot, botcom.instigator, 'notice', "flooding detected with identical lines")
 
-    # if totalrecords >= 5:
     return
 
     # vars
