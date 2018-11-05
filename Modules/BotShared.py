@@ -1055,6 +1055,7 @@ def dict_command_configs(bot):
                         adjust_nick_array(bot, str(bot.nick), maincom, dict_from_file["reply"], 'startup', 'long', 'sayings')
                     if dict_from_file["type"] == 'readfromfile':
                         bot.msg("#spicebottest", str(dict_from_file["type"]))
+                        dict_from_file["type"] = 'simple'
                         bot.msg("#spicebottest", str(dict_from_file["type"]))
                         if "filename" in dict_from_file.keys():
                             if dict_from_file["filename"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
