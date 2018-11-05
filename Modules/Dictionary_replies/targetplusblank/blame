@@ -2,5 +2,5 @@
 "reply": ["I blame $target $blank"],
 "backuptarget": 'random',
 "backupblank": 'for that.',
-"forhandle": "for",
+"reasonhandle": "for",
 }
