@@ -84,6 +84,11 @@ bot_dict = {
                             # temp user values
                             "uservals": {},
 
+                            # Automod
+                            "automod": {
+                                        "antiflood": [],
+                                        },
+
                             # End of Temp Vals
                             },
 
@@ -1787,6 +1792,14 @@ Small Functions
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
+
+
+def countX(lst, x):
+    count = 0
+    for ele in lst:
+        if (ele == x):
+            count = count + 1
+    return count
 
 
 """
