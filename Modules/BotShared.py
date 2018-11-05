@@ -1020,6 +1020,10 @@ def dict_command_configs(bot):
                         if not isinstance(dict_from_file["noinputreply"], list):
                             dict_from_file["noinputreply"] = [dict_from_file["noinputreply"]]
 
+                    if "reasonhandle" in dict_from_file.keys():
+                        if not isinstance(dict_from_file["reasonhandle"], list):
+                            dict_from_file["reasonhandle"] = [dict_from_file["reasonhandle"]]
+
                     bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
                     for comalias in comaliases:
                         if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
