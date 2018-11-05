@@ -1080,8 +1080,8 @@ def dict_command_configs(bot):
 
                     if dict_from_file["type"] == 'readfromurl':
                         dict_from_file["type"] = 'simple'
-                        bot.msg("deathbybandaid", "here")
                         if "url" in dict_from_file.keys():
+                            bot.msg("deathbybandaid", "here")
                             page = requests.get(url, headers=header)
                             tree = html.fromstring(page.content)
                             if page.status_code == 200:
