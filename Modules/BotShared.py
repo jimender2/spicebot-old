@@ -1113,7 +1113,11 @@ def bot_dictcom_simple(bot, botcom):
     for rply in reply:
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
-        osd(bot, botcom.channel_current, 'say', rply)
+        if rply.startswith("*a "):
+            rply = rply.replace("*a ", "")
+            osd(bot, botcom.channel_current, 'action', rply)
+        else:
+            osd(bot, botcom.channel_current, 'say', rply)
 
 
 def bot_dictcom_target(bot, botcom):
@@ -1165,7 +1169,11 @@ def bot_dictcom_target(bot, botcom):
         rply = rply.replace("$target", target)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
-        osd(bot, botcom.channel_current, 'say', rply)
+        if rply.startswith("*a "):
+            rply = rply.replace("*a ", "")
+            osd(bot, botcom.channel_current, 'action', rply)
+        else:
+            osd(bot, botcom.channel_current, 'say', rply)
 
 
 def bot_dictcom_fillintheblank(bot, botcom):
@@ -1208,7 +1216,11 @@ def bot_dictcom_fillintheblank(bot, botcom):
         rply = rply.replace("$blank", fillin)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
-        osd(bot, botcom.channel_current, 'say', rply)
+        if rply.startswith("*a "):
+            rply = rply.replace("*a ", "")
+            osd(bot, botcom.channel_current, 'action', rply)
+        else:
+            osd(bot, botcom.channel_current, 'say', rply)
 
 
 def bot_dictcom_targetplusblank(bot, botcom):
@@ -1273,7 +1285,7 @@ def bot_dictcom_targetplusblank(bot, botcom):
         rply = rply.replace("$target", target)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
-        if spicemanip(bot, rply, 1) == ("*a"):
+        if rply.startswith("*a "):
             rply = rply.replace("*a ", "")
             osd(bot, botcom.channel_current, 'action', rply)
         else:
