@@ -1123,7 +1123,8 @@ def bot_dictcom_target(bot, botcom):
         target = ''
         ignoretarget = True
         botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["noinputreply"]
-    elif target not in bot.memory["botdict"]["users"].keys() and "backuptarget" in botcom.dotcommand_dict.keys():
+
+    if target not in bot.memory["botdict"]["users"].keys() and "backuptarget" in botcom.dotcommand_dict.keys() and not ignoretarget:
         target = botcom.dotcommand_dict["backuptarget"]
         ignoretarget = True
         if target == 'instigator':
@@ -1133,7 +1134,7 @@ def bot_dictcom_target(bot, botcom):
                 target = botcom.instigator
             else:
                 target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
-    elif target not in bot.memory["botdict"]["users"].keys():
+    elif target not in bot.memory["botdict"]["users"].keys() and not ignoretarget:
         return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
     elif botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["reply"]):
