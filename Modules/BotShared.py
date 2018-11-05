@@ -1444,7 +1444,10 @@ def bot_dictcom_targetplusblank(bot, botcom):
     if not ignoretarget:
         targetchecking = bot_target_check(bot, botcom, target)
         if not targetchecking["targetgood"]:
-            return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
+            if targetchecking["bot"] and "botreact" in botcom.dotcommand_dict.keys():
+                botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["botreact"]
+            else:
+                return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
 
     # remove target
     if target in botcom.triggerargsarray:
