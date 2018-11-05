@@ -1194,8 +1194,12 @@ def bot_dictcom_fillintheblank(bot, botcom):
         reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random', 'return')
 
     if "reasonhandle" in botcom.dotcommand_dict.keys():
-        if spicemanip(bot, fillin, 1).lower() != botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
-            fillin = botcom.dotcommand_dict["reasonhandle"] + " " + fillin
+        if spicemanip(bot, fillin, 1).lower() not in botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
+            fillin = botcom.dotcommand_dict["reasonhandle"][0] + " " + fillin
+        elif spicemanip(bot, fillin, 1).lower() in botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
+            if spicemanip(bot, fillin, 1).lower() != botcom.dotcommand_dict["reasonhandle"][0]:
+                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+                fillin = botcom.dotcommand_dict["reasonhandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
 
     if not isinstance(reply, list):
         reply = [reply]
@@ -1256,6 +1260,10 @@ def bot_dictcom_targetplusblank(bot, botcom):
     if "reasonhandle" in botcom.dotcommand_dict.keys():
         if spicemanip(bot, fillin, 1).lower() not in botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
             fillin = botcom.dotcommand_dict["reasonhandle"][0] + " " + fillin
+        elif spicemanip(bot, fillin, 1).lower() in botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
+            if spicemanip(bot, fillin, 1).lower() != botcom.dotcommand_dict["reasonhandle"][0]:
+                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+                fillin = botcom.dotcommand_dict["reasonhandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
 
     if not isinstance(reply, list):
         reply = [reply]
