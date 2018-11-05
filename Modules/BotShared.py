@@ -1053,8 +1053,8 @@ def dict_command_configs(bot):
                     if dict_from_file["type"] == 'sayings' and dict_from_file["reply"] != "Reply missing":
                         adjust_nick_array(bot, str(bot.nick), maincom, dict_from_file["reply"], 'startup', 'long', 'sayings')
                     if dict_from_file["type"] == 'readfromfile':
+                        dict_from_file["type"] = 'simple'
                         if "filename" in dict_from_file.keys():
-                            dict_from_file["type"] = 'simple'
                             if dict_from_file["filename"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
                                 dict_from_file["reply"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["filename"]]
 
