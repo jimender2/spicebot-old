@@ -1148,8 +1148,8 @@ def bot_dictcom_sayings(bot, botcom):
         if botcom.dotcommand_dict["reply"] == []:
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database appears to be empty!")
         else:
-            osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + "contains:")
-            osd(bot, botcom.channel_current, 'say', botcom.dotcommand_dict["reply"])
+            osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + "contains:")
+            osd(bot, botcom.instigator, 'say', botcom.dotcommand_dict["reply"])
             return
     elif command == 'get':
         botcom.dotcommand_dict["reply"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or []
