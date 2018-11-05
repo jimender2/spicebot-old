@@ -59,7 +59,7 @@ def bot_automod_flood_run(bot, trigger):
         bot.memory["botdict"]["tempvals"]['automod']["antiflood"] = spicemanip(bot, bot.memory["botdict"]["tempvals"]['automod']["antiflood"], '2+', 'return')
 
     lastnick = spicemanip(bot, bot.memory["botdict"]["tempvals"]['automod']["antiflood"], 'last', 'return')
-    osd(bot, botcom.instigator, 'notice', str(lastnick["nick"]))
+    osd(bot, botcom.instigator, 'notice', str(lastnick))
     if str(lastnick["nick"]) != botcom.instigator:
         bot.memory["botdict"]["tempvals"]['automod']["antiflood"].append({"nick": trigger.nick, "message": str(trigger)})
         return
