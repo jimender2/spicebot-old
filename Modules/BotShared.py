@@ -1217,9 +1217,9 @@ def bot_dictcom_target(bot, botcom):
 
     if target not in bot.memory["botdict"]["users"].keys() and "specialcase" in botcom.dotcommand_dict.keys() and not ignoretarget:
         if target.lower() in botcom.dotcommand_dict["specialcase"].keys():
-            target = ''
             ignoretarget = True
             botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][target.lower()]
+            target = ''
 
     # handling for no target
     if target not in bot.memory["botdict"]["users"].keys() and "noinputreply" in botcom.dotcommand_dict.keys():
@@ -1333,9 +1333,9 @@ def bot_dictcom_targetplusblank(bot, botcom):
 
     if target not in bot.memory["botdict"]["users"].keys() and "specialcase" in botcom.dotcommand_dict.keys() and not ignoretarget:
         if target.lower() in botcom.dotcommand_dict["specialcase"].keys():
-            target = ''
             ignoretarget = True
             botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][target.lower()]
+            target = ''
 
     if target not in bot.memory["botdict"]["users"].keys() and "backuptarget" in botcom.dotcommand_dict.keys() and not ignoretarget:
         target = botcom.dotcommand_dict["backuptarget"]
