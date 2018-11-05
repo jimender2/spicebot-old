@@ -1078,6 +1078,9 @@ def dict_command_configs(bot):
                             if dict_from_file["filename"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
                                 dict_from_file["reply"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["filename"]]
 
+                    if maincom == "chanrules":
+                        bot.msg("deathbybandaid", str(dict_from_file["type"]))
+
                     if dict_from_file["type"] == 'readfromurl':
                         dict_from_file["type"] = 'simple'
                         bot.msg("deathbybandaid", "here")
