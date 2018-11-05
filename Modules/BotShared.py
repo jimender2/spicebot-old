@@ -1120,7 +1120,7 @@ def bot_dictcom_simple(bot, botcom):
     posscom = spicemanip(bot, botcom.triggerargsarray, 1)
     if "specialcase" in botcom.dotcommand_dict.keys():
         if posscom.lower() in botcom.dotcommand_dict["specialcase"].keys():
-            botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"]
+            botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]
 
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["reply"]):
@@ -1151,6 +1151,11 @@ def bot_dictcom_sayings(bot, botcom):
     aftercom = spicemanip(bot, botcom.triggerargsarray, 0)
 
     botcom.dotcommand_dict["reply"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or []
+
+    if "specialcase" in botcom.dotcommand_dict.keys():
+        if command.lower() in botcom.dotcommand_dict["specialcase"].keys():
+            botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][command.lower()]
+            command = 'get'
 
     if command == 'add':
         if not aftercom:
@@ -1214,7 +1219,7 @@ def bot_dictcom_target(bot, botcom):
         if target.lower() in botcom.dotcommand_dict["specialcase"].keys():
             target = ''
             ignoretarget = True
-            botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"]
+            botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][target.lower()]
 
     # handling for no target
     if target not in bot.memory["botdict"]["users"].keys() and "noinputreply" in botcom.dotcommand_dict.keys():
@@ -1275,7 +1280,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
     posscom = spicemanip(bot, botcom.triggerargsarray, 1)
     if "specialcase" in botcom.dotcommand_dict.keys():
         if posscom.lower() in botcom.dotcommand_dict["specialcase"].keys():
-            botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"]
+            botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]
 
     # handling for no fillin
     if not fillin and "noinputreply" in botcom.dotcommand_dict.keys() and not ignorefillin:
@@ -1330,7 +1335,7 @@ def bot_dictcom_targetplusblank(bot, botcom):
         if target.lower() in botcom.dotcommand_dict["specialcase"].keys():
             target = ''
             ignoretarget = True
-            botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"]
+            botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][target.lower()]
 
     if target not in bot.memory["botdict"]["users"].keys() and "backuptarget" in botcom.dotcommand_dict.keys() and not ignoretarget:
         target = botcom.dotcommand_dict["backuptarget"]
