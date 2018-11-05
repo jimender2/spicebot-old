@@ -7,7 +7,7 @@
           ],
 "noinputreply": ["Who are you pissed at now?"],
 "specialcase": {
-                "cert": "Here is the link to DD link for the noobs who have never seen it before. https://ibb.co/ibxD2n",
-                "certification": "Here is the link to DD link for the noobs who have never seen it before. https://ibb.co/ibxD2n",
+                "cert": ["Here is the link to DD link for the noobs who have never seen it before. https://ibb.co/ibxD2n"],
+                "certification": ["Here is the link to DD link for the noobs who have never seen it before. https://ibb.co/ibxD2n"],
                 },
 }

@@ -1291,7 +1291,7 @@ def bot_dictcom_target(bot, botcom):
     target = spicemanip(bot, botcom.triggerargsarray, 1)
     ignoretarget = False
 
-    if target not in bot.memory["botdict"]["users"].keys() and "specialcase" in botcom.dotcommand_dict.keys() and not ignoretarget:
+    if "specialcase" in botcom.dotcommand_dict.keys() and not ignoretarget:
         if target.lower() in botcom.dotcommand_dict["specialcase"].keys():
             ignoretarget = True
             botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][target.lower()]
@@ -1411,7 +1411,7 @@ def bot_dictcom_targetplusblank(bot, botcom):
     # target is the first arg given
     target = spicemanip(bot, botcom.triggerargsarray, 1)
 
-    if target not in bot.memory["botdict"]["users"].keys() and "specialcase" in botcom.dotcommand_dict.keys() and not ignoretarget:
+    if "specialcase" in botcom.dotcommand_dict.keys() and not ignoretarget:
         if target.lower() in botcom.dotcommand_dict["specialcase"].keys():
             ignoretarget = True
             botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][target.lower()]
