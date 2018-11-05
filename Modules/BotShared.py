@@ -310,8 +310,6 @@ def bot_saved_jobs_run(bot):
             bot.memory["bot_jobs"].remove(botjob_dict)
             bot.msg("#spicebottest", "deleting " + str(int(botjob_dict["ID"])))
 
-    # Clear them out
-    # bot.memory["bot_jobs"] = []
     botdict_save(bot)
 
 
