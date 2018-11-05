@@ -61,10 +61,10 @@ def bot_automod_flood_run(bot, trigger):
     lastnick = spicemanip(bot, bot.memory["botdict"]["tempvals"]['automod']["antiflood"], 'last', 'return')
     osd(bot, botcom.instigator, 'notice', str(lastnick))
     if str(lastnick["nick"]) != botcom.instigator:
-        bot.memory["botdict"]["tempvals"]['automod']["antiflood"].append({"nick": trigger.nick, "message": str(trigger)})
+        bot.memory["botdict"]["tempvals"]['automod']["antiflood"].append({"nick": str(trigger.nick), "message": str(trigger)})
         return
 
-    bot.memory["botdict"]["tempvals"]['automod']["antiflood"].append({"nick": trigger.nick, "message": str(trigger)})
+    bot.memory["botdict"]["tempvals"]['automod']["antiflood"].append({"nick": str(trigger.nick), "message": str(trigger)})
 
     # Flooding is 5 lines in a row by the same person or 3 identical lines
     totalrecords = len(bot.memory["botdict"]["tempvals"]['automod']["antiflood"])
