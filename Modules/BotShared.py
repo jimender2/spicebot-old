@@ -1079,7 +1079,9 @@ def dict_command_configs(bot):
                                 dict_from_file["reply"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["filename"]]
 
                     if dict_from_file["type"] == 'readfromurl':
+                        bot.msg("deathbybandaid", str(dict_from_file))
                         dict_from_file["type"] = 'simple'
+                        bot.msg("deathbybandaid", str(dict_from_file))
                         if "url" in dict_from_file.keys():
                             bot.msg("deathbybandaid", "here")
                             page = requests.get(url, headers=header)
