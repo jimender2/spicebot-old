@@ -1918,7 +1918,7 @@ def adjust_nick_array(bot, nick, secondarykey, values, direction, longevity='lon
             elif direction == 'startup':
                 if value not in bot.memory["botdict"]["users"][nick][mainkey][secondarykey]:
                     bot.memory["botdict"]["users"][nick][mainkey][secondarykey].append(value)
-            elif direction == 'del':
+            elif direction in ['del', 'remove']:
                 if value in bot.memory["botdict"]["users"][nick][mainkey][secondarykey]:
                     bot.memory["botdict"]["users"][nick][mainkey][secondarykey].remove(value)
         elif longevity == 'temp':
@@ -1928,7 +1928,7 @@ def adjust_nick_array(bot, nick, secondarykey, values, direction, longevity='lon
             elif direction == 'startup':
                 if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]:
                     bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey].append(value)
-            elif direction == 'del':
+            elif direction in ['del', 'remove']:
                 if value in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]:
                     bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey].remove(value)
 
