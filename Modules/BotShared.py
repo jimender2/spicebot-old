@@ -1692,7 +1692,7 @@ def bot_target_check(bot, botcom, target):
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
 
     if targetgoodconsensus != []:
-        targetgood = {"targetgood": False, "error": targetgoodconsensus[0]}
+        targetgood = {"targetgood": False, "error": targetgoodconsensus[0], "reason": targetgood["reason"]}
 
     return targetgood
 
