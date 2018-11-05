@@ -1134,7 +1134,8 @@ def bot_dictcom_target(bot, botcom):
                 target = botcom.instigator
             else:
                 target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
-    elif target not in bot.memory["botdict"]["users"].keys() and not ignoretarget:
+
+    if target not in bot.memory["botdict"]["users"].keys() and not ignoretarget:
         return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
     elif botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["reply"]):
@@ -1176,8 +1177,15 @@ def bot_dictcom_fillintheblank(bot, botcom):
     if not fillin and "backupblank" in botcom.dotcommand_dict.keys():
         fillin = botcom.dotcommand_dict["backupblank"]
         ignorefillin = True
-    elif not fillin and not ignorefillin:
+
+    if not fillin and not ignorefillin:
         return osd(bot, botcom.instigator, 'notice', "This command requires input.")
+    elif botcom.specified:
+        if botcom.specified > len(botcom.dotcommand_dict["reply"]):
+            botcom.specified = len(botcom.dotcommand_dict["reply"])
+        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified, 'return')
+    else:
+        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random', 'return')
 
     if "reasonhandle" in botcom.dotcommand_dict.keys():
         if spicemanip(bot, fillin, 1).lower() != botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
