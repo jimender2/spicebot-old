@@ -40,4 +40,3 @@ def bot_dictcom_hub(bot, trigger):
 
     bot_dictcom_run(bot, trigger)
     botdict_save(bot)
-    bot_saved_jobs_process(bot, trigger, 'bot_dictcom')
