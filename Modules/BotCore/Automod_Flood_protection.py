@@ -71,6 +71,7 @@ def bot_automod_flood_run(bot, trigger):
         return
     identicalcheck = totalrecords - 3
     messages = []
+    osd(bot, botcom.instigator, 'notice', str(identicalcheck) + " " + str(int(totalrecords) + 1))
     for i in range(identicalcheck, totalrecords + 1):
         currentdict = spicemanip(bot, bot.memory["botdict"]["tempvals"]['automod']["antiflood"], int(i), 'return')
         messages.append(str(currentdict["message"]))
