@@ -1053,10 +1053,9 @@ def dict_command_configs(bot):
                     if dict_from_file["type"] == 'sayings' and dict_from_file["reply"] != "Reply missing":
                         adjust_nick_array(bot, str(bot.nick), maincom, dict_from_file["reply"], 'startup', 'long', 'sayings')
                     if dict_from_file["type"] == 'readfromfile':
-                        bot.msg("#spicebottest", str(dict_from_file["type"]))
                         dict_from_file["type"] = 'simple'
-                        bot.msg("#spicebottest", str(dict_from_file["type"]))
                         if "filename" in dict_from_file.keys():
+                            bot.msg("#spicebottest", str(dict_from_file["filename"]))
                             if dict_from_file["filename"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
                                 dict_from_file["reply"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["filename"]]
                                 bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['txt_files'][txtfile]))
