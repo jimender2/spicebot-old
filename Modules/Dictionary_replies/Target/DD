@@ -1,0 +1,13 @@
+{
+"validcoms": ['dd', 'doubled'],
+"reply": [
+          "*a punches $target who is clearly a motherfucker, in the mouth.",
+          "*a punches $target who is clearly a prick, in the mouth.",
+          "*a punches $target who is clearly a wanker, in the mouth.",
+          ],
+"noinputreply": ["Who are you pissed at now?"],
+"specialcase": {
+                "cert": "Here is the link to DD link for the noobs who have never seen it before. https://ibb.co/ibxD2n",
+                "certification": "Here is the link to DD link for the noobs who have never seen it before. https://ibb.co/ibxD2n",
+                },
+}
