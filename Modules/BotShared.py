@@ -1103,6 +1103,10 @@ def dict_command_configs(bot):
                         if not isinstance(dict_from_file["reasonhandle"], list):
                             dict_from_file["reasonhandle"] = [dict_from_file["reasonhandle"]]
 
+                    if "botreact" in dict_from_file.keys():
+                        if not isinstance(dict_from_file["botreact"], list):
+                            dict_from_file["botreact"] = [dict_from_file["botreact"]]
+
                     if "specialcase" not in dict_from_file.keys():
                         dict_from_file["specialcase"] = {}
                     for speckey in dict_from_file["specialcase"].keys():
@@ -1319,13 +1323,6 @@ def bot_dictcom_target(bot, botcom):
     if target not in bot.memory["botdict"]["users"].keys() and not ignoretarget:
         return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
 
-    if botcom.specified:
-        if botcom.specified > len(botcom.dotcommand_dict["reply"]):
-            botcom.specified = len(botcom.dotcommand_dict["reply"])
-        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified, 'return')
-    else:
-        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random', 'return')
-
     # remove target
     if target in botcom.triggerargsarray:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
@@ -1333,7 +1330,17 @@ def bot_dictcom_target(bot, botcom):
     if not ignoretarget:
         targetchecking = bot_target_check(bot, botcom, target)
         if not targetchecking["targetgood"]:
-            return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
+            if targetchecking["bot"] and "botreact" in botcom.dotcommand_dict.keys():
+                botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["botreact"]
+            else:
+                return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
+
+    if botcom.specified:
+        if botcom.specified > len(botcom.dotcommand_dict["reply"]):
+            botcom.specified = len(botcom.dotcommand_dict["reply"])
+        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified, 'return')
+    else:
+        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random', 'return')
 
     if not isinstance(reply, list):
         reply = [reply]
@@ -1654,26 +1661,31 @@ def nick_actual(bot, nick):
 
 
 def bot_target_check(bot, botcom, target):
-    targetgood = {"targetgood": True, "error": "None"}
+    targetgood = {"targetgood": True, "error": "None", "reason": None}
 
     targetgoodconsensus = []
 
     # cannot target bots
     if target in bot.memory["botdict"]["tempvals"]['bots_list']:
+        targetgood["reason"] = "bot"
         targetgoodconsensus.append(nick_actual(bot, target) + " is a bot and cannot be targeted.")
 
     # Not a valid user
     if target not in bot.memory["botdict"]["users"].keys():
+        targetgood["reason"] = "unknown"
         targetgoodconsensus.append("I don't know who that is.")
 
     # User offline
     if target not in bot.memory["botdict"]["tempvals"]['all_current_users']:
+        targetgood["reason"] = "offline"
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is offline right now!")
 
     if not botcom.channel_current.startswith('#') and target != botcom.instigator:
+        targetgood["reason"] = "privmsg"
         targetgoodconsensus.append("Leave " + nick_actual(bot, target) + " out of this private conversation!")
 
     if target in bot.memory["botdict"]["tempvals"]['all_current_users'] and target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
+        targetgood["reason"] = "diffchannel"
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
 
     if targetgoodconsensus != []:
