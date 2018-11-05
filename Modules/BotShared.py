@@ -64,6 +64,10 @@ bot_dict = {
                             "dict_commands": {},
                             "dict_commands_loaded": [],
 
+                            # text files
+                            "txt_files": {},
+                            "txt_files_loaded": [],
+
                             # server the bot is connected to
                             "server": False,
                             "servername": False,
@@ -211,6 +215,9 @@ def botdict_open(bot):
 
     # dictionary commands
     dict_command_configs(bot)
+
+    # Text Files
+    bot_read_txt_files(bot)
 
     # use this to prevent bot usage if the above isn't done loading
     bot.memory["botdict_loaded"] = True
@@ -961,6 +968,32 @@ Dictionary commands
 """
 
 
+def bot_read_txt_files(bot):
+    # Don't load commands if already loaded
+    if bot.memory["botdict"]["tempvals"]['txt_files'] != dict():
+        return
+
+    txt_file_path = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Text-Files/"
+
+    # iterate over files within
+    for txtfile in os.listdir(txt_file_path):
+
+        if txtfile != "ReadMe.MD":
+
+            # check if text file is already in the list
+            if txtfile not in bot.memory["botdict"]["tempvals"]['txt_files_loaded']:
+                bot.memory["botdict"]["tempvals"]['txt_files_loaded'].append(comconf)
+
+            text_file_list = []
+            text_file = open(os.path.join(txt_file_path, txtfile), 'r')
+            lines = text_file.readlines()
+            for line in lines:
+                text_file_list.append(line)
+            text_file.close()
+
+            bot.memory["botdict"]["tempvals"]['txt_files'][txtfile] = text_file_list
+
+
 # Command configs
 def dict_command_configs(bot):
 
@@ -1022,6 +1055,8 @@ def dict_command_configs(bot):
                     if dict_from_file["type"] == 'readfromfile':
                         if "filename" in dict_from_file.keys():
                             dict_from_file["type"] = 'simple'
+                            if dict_from_file["filename"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
+                                dict_from_file["reply"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["filename"]]
 
                     # make replies in list form if not
                     if not isinstance(dict_from_file["reply"], list):
