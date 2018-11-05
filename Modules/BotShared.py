@@ -1145,18 +1145,14 @@ def bot_dictcom_target(bot, botcom):
         if not targetchecking["targetgood"]:
             return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
 
-    if not isinstance(botcom.dotcommand_dict["reply"], list):
-        reply = botcom.dotcommand_dict["reply"]
-    elif botcom.specified:
-        if botcom.specified > len(botcom.dotcommand_dict["reply"]):
-            botcom.specified = len(botcom.dotcommand_dict["reply"])
-        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified)
-    else:
-        reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random')
-    reply = reply.replace("$target", target)
-    reply = reply.replace("$instigator", botcom.instigator)
-    reply = reply.replace("$channel", botcom.channel_current)
-    osd(bot, botcom.channel_current, 'say', reply)
+    if not isinstance(reply, list):
+        reply = [reply]
+
+    for rply in reply:
+        rply = rply.replace("$target", target)
+        rply = rply.replace("$instigator", botcom.instigator)
+        rply = rply.replace("$channel", botcom.channel_current)
+        osd(bot, botcom.channel_current, 'say', rply)
 
 
 def bot_dictcom_fillintheblank(bot, botcom):
