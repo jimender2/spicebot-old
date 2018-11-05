@@ -284,7 +284,6 @@ def bot_saved_jobs_process(bot, trigger, jobtype, timeset='asap'):
         id_numbs.append(int(botjob_dict["ID"]))
     highest_id = max(id_numbs)
     dictsave["ID"] = int(highest_id + 1)
-    bot.msg("#spicebottest", "creating " + str(int(dictsave["ID"])) + " " + str(dictsave))
 
     bot.memory["bot_jobs"].append(dictsave)
 
@@ -308,7 +307,6 @@ def bot_saved_jobs_run(bot):
         if int(botjob_dict["ID"]) in ids_run:
             ids_run.remove(int(botjob_dict["ID"]))
             bot.memory["bot_jobs"].remove(botjob_dict)
-            bot.msg("#spicebottest", "deleting " + str(int(botjob_dict["ID"])))
 
     botdict_save(bot)
 
