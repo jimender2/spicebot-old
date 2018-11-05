@@ -26,6 +26,7 @@ def bot_start_monologue(bot):
 
     if "bot_monologue" in bot.memory:
         return
+    bot.memory["bot_monologue"] = True
 
     if "bot_monologue_chans" not in bot.memory:
         bot.memory["bot_monologue_chans"] = []
@@ -36,5 +37,3 @@ def bot_start_monologue(bot):
             bot.memory["bot_monologue_chans"].append(channel)
 
     # add feature for other bots unique monologue
-
-    bot.memory["bot_monologue"] = True
