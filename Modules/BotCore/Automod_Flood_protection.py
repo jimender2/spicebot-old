@@ -23,6 +23,7 @@ sys.setdefaultencoding('utf-8')
 @rule('(.*)')
 @sopel.module.thread(True)
 def antiflood(bot, trigger):
+    return
 
     if "botdict_loaded" not in bot.memory:
         bot_saved_jobs_process(bot, trigger, 'bot_automod_flood')
