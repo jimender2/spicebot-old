@@ -1330,7 +1330,7 @@ def bot_dictcom_target(bot, botcom):
     if not ignoretarget:
         targetchecking = bot_target_check(bot, botcom, target)
         if not targetchecking["targetgood"]:
-            if targetchecking["bot"] and "botreact" in botcom.dotcommand_dict.keys():
+            if targetchecking["reason"] == "bot" and "botreact" in botcom.dotcommand_dict.keys():
                 botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["botreact"]
             else:
                 return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
@@ -1444,7 +1444,7 @@ def bot_dictcom_targetplusblank(bot, botcom):
     if not ignoretarget:
         targetchecking = bot_target_check(bot, botcom, target)
         if not targetchecking["targetgood"]:
-            if targetchecking["bot"] and "botreact" in botcom.dotcommand_dict.keys():
+            if targetchecking["reason"] == "bot" and "botreact" in botcom.dotcommand_dict.keys():
                 botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["botreact"]
             else:
                 return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
