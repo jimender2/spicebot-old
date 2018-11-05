@@ -1134,25 +1134,32 @@ def bot_dictcom_sayings(bot, botcom):
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
     aftercom = spicemanip(bot, botcom.triggerargsarray, 0)
 
+    botcom.dotcommand_dict["reply"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or []
+
     if command == 'add':
+        if aftercom in botcom.dotcommand_dict["reply"]:
+            return osd(bot, botcom.channel_current, 'say', "The following was already in the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database: '" + str(aftercom) + "'")
         adjust_nick_array(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], aftercom, command, 'long', 'sayings')
         return osd(bot, botcom.channel_current, 'say', "The following was added to the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database: '" + str(aftercom) + "'")
+
     elif command in ['del', 'remove']:
+        if aftercom not in botcom.dotcommand_dict["reply"]:
+            return osd(bot, botcom.channel_current, 'say', "The following was already not in the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database: '" + str(aftercom) + "'")
         adjust_nick_array(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], aftercom, command, 'long', 'sayings')
         return osd(bot, botcom.channel_current, 'say', "The following was removed from the " + str(botcom.dotcommand_dict["validcoms"][0]) + " database: '" + str(aftercom) + "'")
-    elif command == 'count':
-        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database has " + str(len(get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or [])) + " entries.")
-    elif command == 'view':
-        botcom.dotcommand_dict["reply"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or []
 
+    elif command == 'count':
+        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
+
+    elif command == 'view':
         if botcom.dotcommand_dict["reply"] == []:
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database appears to be empty!")
         else:
             osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + "contains:")
             osd(bot, botcom.instigator, 'say', botcom.dotcommand_dict["reply"])
             return
+
     elif command == 'get':
-        botcom.dotcommand_dict["reply"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], 'long', 'sayings') or []
 
         if botcom.dotcommand_dict["reply"] == []:
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database appears to be empty!")
