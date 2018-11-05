@@ -1166,36 +1166,22 @@ def bot_dictcom_fillintheblank(bot, botcom):
 
     # all text given is valid for use
     fillin = spicemanip(bot, botcom.triggerargsarray, 0)
-    backupblank = False
+    ignorefillin = False
 
     # handling for no fillin
-    if not fillin:
+    if not fillin and "noinputreply" in botcom.dotcommand_dict.keys() and not ignorefillin:
+        botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["noinputreply"]
+        ignorefillin = True
 
-        # Seperate reply for no input
-        if "noinputreply" in botcom.dotcommand_dict.keys():
-            if not isinstance(botcom.dotcommand_dict["noinputreply"], list):
-                reply = botcom.dotcommand_dict["noinputreply"]
-            elif botcom.specified:
-                if botcom.specified > len(botcom.dotcommand_dict["noinputreply"]):
-                    botcom.specified = len(botcom.dotcommand_dict["noinputreply"])
-                reply = spicemanip(bot, botcom.dotcommand_dict["noinputreply"], botcom.specified)
-            else:
-                reply = spicemanip(bot, botcom.dotcommand_dict["noinputreply"], 'random')
-            reply = reply.replace("$instigator", botcom.instigator)
-            reply = reply.replace("$channel", botcom.channel_current)
-            return osd(bot, botcom.channel_current, 'say', reply)
+    if not fillin and "backupblank" in botcom.dotcommand_dict.keys():
+        fillin = botcom.dotcommand_dict["backupblank"]
+        ignorefillin = True
+    elif not fillin and not ignorefillin:
+        return osd(bot, botcom.instigator, 'notice', "This command requires input.")
 
-        # backup target, usually instigator
-        if "backupblank" in botcom.dotcommand_dict.keys():
-            fillin = botcom.dotcommand_dict["backupblank"]
-            backupblank = True
-
-        # still no fillin
-        if not fillin:
-            return osd(bot, botcom.instigator, 'notice', "This command requires input.")
-    if "forhandle" in botcom.dotcommand_dict.keys():
-        if spicemanip(bot, fillin, 1).lower() != "for" and not backupblank:
-            fillin = "for " + fillin
+    if "reasonhandle" in botcom.dotcommand_dict.keys():
+        if spicemanip(bot, fillin, 1).lower() != botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
+            fillin = botcom.dotcommand_dict["reasonhandle"] + " " + fillin
 
     if not isinstance(botcom.dotcommand_dict["reply"], list):
         reply = botcom.dotcommand_dict["reply"]
@@ -1205,10 +1191,15 @@ def bot_dictcom_fillintheblank(bot, botcom):
         reply = spicemanip(bot, botcom.dotcommand_dict["reply"], botcom.specified)
     else:
         reply = spicemanip(bot, botcom.dotcommand_dict["reply"], 'random')
-    reply = reply.replace("$instigator", botcom.instigator)
-    reply = reply.replace("$channel", botcom.channel_current)
-    reply = reply.replace("$blank", fillin)
-    osd(bot, botcom.channel_current, 'say', reply)
+
+    if not isinstance(reply, list):
+        reply = [reply]
+
+    for rply in reply:
+        reply = reply.replace("$blank", fillin)
+        rply = rply.replace("$instigator", botcom.instigator)
+        rply = rply.replace("$channel", botcom.channel_current)
+        osd(bot, botcom.channel_current, 'say', rply)
 
 
 def bot_dictcom_targetplusblank(bot, botcom):
@@ -1262,7 +1253,7 @@ def bot_dictcom_targetplusblank(bot, botcom):
         # still no fillin
         if not fillin:
             return osd(bot, botcom.instigator, 'notice', "This command requires input.")
-    if "forhandle" in botcom.dotcommand_dict.keys():
+    if "reasonhandle" in botcom.dotcommand_dict.keys():
         if spicemanip(bot, fillin, 1).lower() != "for" and not backupblank:
             fillin = "for " + fillin
 

@@ -2,5 +2,5 @@
 "reply": ["$instigator kicks $target with a big old boot $blank"],
 "backupblank": '',
 "backuptarget": 'random',
-"forhandle": True,
+"forhandle": "for",
 }
