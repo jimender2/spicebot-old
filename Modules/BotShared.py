@@ -1204,6 +1204,8 @@ def bot_dictcom_simple(bot, botcom):
             osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list contains:")
             osd(bot, botcom.instigator, 'say', botcom.dotcommand_dict["reply"])
             return
+    elif posscom == 'count':
+        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
 
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["reply"]):
@@ -1318,6 +1320,8 @@ def bot_dictcom_target(bot, botcom):
             osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list contains:")
             osd(bot, botcom.instigator, 'say', botcom.dotcommand_dict["reply"])
             return
+    elif target == 'count':
+        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
 
     # handling for no target
     if target not in bot.memory["botdict"]["users"].keys() and "noinputreply" in botcom.dotcommand_dict.keys() and not ignoretarget:
@@ -1393,6 +1397,8 @@ def bot_dictcom_fillintheblank(bot, botcom):
             osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list contains:")
             osd(bot, botcom.instigator, 'say', botcom.dotcommand_dict["reply"])
             return
+    elif posscom == 'count':
+        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
 
     # handling for no fillin
     if not fillin and "noinputreply" in botcom.dotcommand_dict.keys() and not ignorefillin:
@@ -1459,6 +1465,8 @@ def bot_dictcom_targetplusblank(bot, botcom):
             osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list contains:")
             osd(bot, botcom.instigator, 'say', botcom.dotcommand_dict["reply"])
             return
+    elif target == 'count':
+        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
 
     if target not in bot.memory["botdict"]["users"].keys() and "backuptarget" in botcom.dotcommand_dict.keys() and not ignoretarget:
         target = botcom.dotcommand_dict["backuptarget"]
