@@ -982,7 +982,7 @@ def bot_read_txt_files(bot):
 
             # check if text file is already in the list
             if txtfile not in bot.memory["botdict"]["tempvals"]['txt_files_loaded']:
-                bot.memory["botdict"]["tempvals"]['txt_files_loaded'].append(comconf)
+                bot.memory["botdict"]["tempvals"]['txt_files_loaded'].append(txtfile)
 
             text_file_list = []
             text_file = open(os.path.join(txt_file_path, txtfile), 'r')
