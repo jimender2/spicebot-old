@@ -1198,6 +1198,7 @@ def bot_dictcom_run(bot, trigger):
                 if str(botcom.specified).isdigit():
                     botcom.specified = int(botcom.specified)
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'last!', 'list')
+        bot.msg("#spicebottest", str(botcom.specified))
 
         # Run the command with the given info
         command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
