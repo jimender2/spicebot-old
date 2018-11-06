@@ -1197,19 +1197,6 @@ def bot_dictcom_simple(bot, botcom):
     if "specialcase" in botcom.dotcommand_dict.keys():
         if posscom.lower() in botcom.dotcommand_dict["specialcase"].keys():
             botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]
-    elif posscom.lower() == 'view':
-        if botcom.dotcommand_dict["reply"] == []:
-            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list appears to be empty!")
-        else:
-            osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list contains:")
-            listnumb, relist = 1, []
-            for item in botcom.dotcommand_dict["reply"]:
-                relist.append(str("[#" + listnumb + "] " + item))
-                listnumb += 1
-            osd(bot, botcom.instigator, 'say', relist)
-            return
-    elif posscom == 'count':
-        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
 
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["reply"]):
@@ -1321,19 +1308,6 @@ def bot_dictcom_target(bot, botcom):
             ignoretarget = True
             botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][target.lower()]
             target = ''
-    elif target.lower() == 'view':
-        if botcom.dotcommand_dict["reply"] == []:
-            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list appears to be empty!")
-        else:
-            osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list contains:")
-            listnumb, relist = 1, []
-            for item in botcom.dotcommand_dict["reply"]:
-                relist.append(str("[#" + listnumb + "] " + item))
-                listnumb += 1
-            osd(bot, botcom.instigator, 'say', relist)
-            return
-    elif target == 'count':
-        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
 
     # handling for no target
     if target not in bot.memory["botdict"]["users"].keys() and "noinputreply" in botcom.dotcommand_dict.keys() and not ignoretarget:
@@ -1402,19 +1376,6 @@ def bot_dictcom_fillintheblank(bot, botcom):
     if "specialcase" in botcom.dotcommand_dict.keys():
         if posscom.lower() in botcom.dotcommand_dict["specialcase"].keys():
             botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]
-    elif posscom.lower() == 'view':
-        if botcom.dotcommand_dict["reply"] == []:
-            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list appears to be empty!")
-        else:
-            osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list contains:")
-            listnumb, relist = 1, []
-            for item in botcom.dotcommand_dict["reply"]:
-                relist.append(str("[#" + listnumb + "] " + item))
-                listnumb += 1
-            osd(bot, botcom.instigator, 'say', relist)
-            return
-    elif posscom == 'count':
-        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
 
     # handling for no fillin
     if not fillin and "noinputreply" in botcom.dotcommand_dict.keys() and not ignorefillin:
@@ -1474,19 +1435,6 @@ def bot_dictcom_targetplusblank(bot, botcom):
             ignoretarget = True
             botcom.dotcommand_dict["reply"] = botcom.dotcommand_dict["specialcase"][target.lower()]
             target = ''
-    elif target.lower() == 'view':
-        if botcom.dotcommand_dict["reply"] == []:
-            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list appears to be empty!")
-        else:
-            osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list contains:")
-            listnumb, relist = 1, []
-            for item in botcom.dotcommand_dict["reply"]:
-                relist.append(str("[#" + listnumb + "] " + item))
-                listnumb += 1
-            osd(bot, botcom.instigator, 'say', relist)
-            return
-    elif target == 'count':
-        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " list has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
 
     if target not in bot.memory["botdict"]["users"].keys() and "backuptarget" in botcom.dotcommand_dict.keys() and not ignoretarget:
         target = botcom.dotcommand_dict["backuptarget"]
