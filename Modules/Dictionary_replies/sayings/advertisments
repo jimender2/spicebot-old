@@ -1,6 +1,6 @@
 {
 "validcoms": ['ads', 'advertisements', 'ad', 'advertisement', 'spam'],
-"replies": [
+"defaultreplies": [
           "DoubleD recommends these new drapes https://goo.gl/BMTMde",
           "Spiceduck for spicerex mascot 2k18", "Deathbybandaid is looking for developers for spicebot and spicethings",
           "Upgrade to premium to remove ads",

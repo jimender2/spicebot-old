@@ -1,6 +1,6 @@
 {
 "validcoms": ['techsupport', 'itsupport'],
-"replies": [
+"defaultreplies": [
             "Have you tried turning it off and on again?",
             "Four! I mean five! I mean FIRE!",
             "Have you tried clicking on it repeatedly?",

@@ -1072,30 +1072,29 @@ def dict_command_configs(bot):
 
                     # check that reply is set
                     if "replies" not in dict_from_file.keys():
-                        dict_from_file["replies"] = "Reply missing"
-
-                    if dict_from_file["type"] == 'sayings' and dict_from_file["replies"] != "Reply missing":
-                        adjust_nick_array(bot, str(bot.nick), maincom, dict_from_file["replies"], 'startup', 'long', 'sayings')
-
-                    if dict_from_file["type"] == 'readfromfile':
-                        dict_from_file["type"] = 'simple'
                         if "filename" in dict_from_file.keys():
                             if dict_from_file["filename"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
                                 dict_from_file["replies"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["filename"]]
-
-                    if dict_from_file["type"] == 'readfromurl':
-                        dict_from_file["type"] = 'simple'
-                        if "readurl" in dict_from_file.keys():
+                        elif "readurl" in dict_from_file.keys():
                             page = requests.get(dict_from_file["readurl"], headers=header)
                             tree = html.fromstring(page.content)
                             if page.status_code == 200:
                                 htmlfile = urllib.urlopen(dict_from_file["readurl"])
                                 lines = htmlfile.read().splitlines()
                                 dict_from_file["replies"] = lines
+                        elif "defaultreplies" in dict_from_file.keys():
+                                dict_from_file["replies"] = dict_from_file["defaultreplies"]
+                        else:
+                            dict_from_file["replies"] = "Reply missing"
+
+                    if "updates_enabled" in dict_from_file.keys():
+                        if dict_from_file["updates_enabled"]:
+                            adjust_nick_array(bot, str(bot.nick), maincom, dict_from_file["replies"], 'startup', 'long', 'sayings')
 
                     # make replies in list form if not
                     if not isinstance(dict_from_file["replies"], list):
                         dict_from_file["replies"] = [dict_from_file["replies"]]
+
                     if "noinputreply" in dict_from_file.keys():
                         if not isinstance(dict_from_file["noinputreply"], list):
                             dict_from_file["noinputreply"] = [dict_from_file["noinputreply"]]

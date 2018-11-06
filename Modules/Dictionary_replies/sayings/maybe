@@ -1,6 +1,6 @@
 {
 "validcoms": ['maybe', 'possible'],
-"replies": [
+"defaultreplies": [
             "Possibly (In wife talk: hell no)",
             "Lets come back to this",
             "Lets think about it",
