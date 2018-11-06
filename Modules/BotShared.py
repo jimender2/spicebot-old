@@ -1380,7 +1380,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
         replies = [replies]
 
     for rply in replies:
-        rply = rply.replace("$blank", fillin)
+        rply = rply.replace("$blank", botcom.completestring)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
