@@ -1177,12 +1177,24 @@ def bot_dictcom_run(bot, trigger):
         if str(argone).startswith("!") and len(str(argone)) > 1:
             if str(argone[1:]).isdigit() or str(argone[1:]) in ['last', 'random']:
                 botcom.specified = argone[1:]
+            else:
+                try:
+                    botcom.specified = w2n.word_to_num(str(argone[1:]))
+                except ValueError:
+                    botcom.specified = None
+            if botcom.specified:
                 if str(botcom.specified).isdigit():
                     botcom.specified = int(botcom.specified)
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
         elif str(argtwo).startswith("!") and len(str(argtwo)) > 1:
             if str(argtwo[1:]).isdigit() or str(argtwo[1:]) in ['last', 'random']:
                 botcom.specified = argtwo[1:]
+            else:
+                try:
+                    botcom.specified = w2n.word_to_num(str(argtwo[1:]))
+                except ValueError:
+                    botcom.specified = None
+            if botcom.specified:
                 if str(botcom.specified).isdigit():
                     botcom.specified = int(botcom.specified)
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'last!', 'list')
