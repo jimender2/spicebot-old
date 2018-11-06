@@ -1093,8 +1093,9 @@ def dict_command_configs(bot):
 
                     # make replies in list form if not
                     for mustbe in ["replies", "noinputreply", "reasonhandle", "botreact"]:
-                        if not isinstance(dict_from_file[mustbe], list):
-                            dict_from_file[mustbe] = [dict_from_file[mustbe]]
+                        if mustbe in dict_from_file.keys():
+                            if not isinstance(dict_from_file[mustbe], list):
+                                dict_from_file[mustbe] = [dict_from_file[mustbe]]
 
                     # Special case replies
                     if "specialcase" not in dict_from_file.keys():
