@@ -1223,7 +1223,7 @@ def bot_dictcom_run(bot, trigger):
                 return osd(bot, botcom.channel_current, 'say', "What would you like to add to the " + str(botcom.dotcommand_dict["validcoms"][0]) + " entry list?")
             if fulltext in botcom.dotcommand_dict["replies"]:
                 return osd(bot, botcom.channel_current, 'say', "The following was already in the " + str(botcom.dotcommand_dict["validcoms"][0]) + " entry list: '" + str(fulltext) + "'")
-            adjust_nick_array(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], fulltext, command, 'long', 'sayings')
+            adjust_nick_array(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], fulltext, botcom.specified, 'long', 'sayings')
             return osd(bot, botcom.channel_current, 'say', "The following was added to the " + str(botcom.dotcommand_dict["validcoms"][0]) + " entry list: '" + str(fulltext) + "'")
 
         elif botcom.specified in ['del', 'remove']:
@@ -1238,7 +1238,7 @@ def bot_dictcom_run(bot, trigger):
                 return osd(bot, botcom.channel_current, 'say', "What would you like to remove from the " + str(botcom.dotcommand_dict["validcoms"][0]) + " entry list?")
             if fulltext not in botcom.dotcommand_dict["replies"]:
                 return osd(bot, botcom.channel_current, 'say', "The following was already not in the " + str(botcom.dotcommand_dict["validcoms"][0]) + " entry list: '" + str(fulltext) + "'")
-            adjust_nick_array(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], fulltext, command, 'long', 'sayings')
+            adjust_nick_array(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0], fulltext, botcom.specified, 'long', 'sayings')
             return osd(bot, botcom.channel_current, 'say', "The following was removed from the " + str(botcom.dotcommand_dict["validcoms"][0]) + " entry list: '" + str(fulltext) + "'")
 
         # handling for special cases
