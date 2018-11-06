@@ -1,3 +1,5 @@
 {
-"reply": [[" $input", " $input", " $input"]],
+"replies": [
+            [" $input", " $input", " $input"]
+            ],
 }

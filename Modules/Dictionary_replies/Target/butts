@@ -1,5 +1,5 @@
 {
 "validcoms": ['butts', 'butt'],
-"reply": ["*a rains butts down on $target"],
+"replies": ["*a rains butts down on $target"],
 "noinputreply": ["*a rains butts down on everyone."],
 }

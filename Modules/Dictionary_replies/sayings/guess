@@ -1,3 +1,8 @@
 {
-"reply": ["I dunno", "I don't wanna", "*shrug*"],
+"replies": [
+          "I dunno",
+          "I don't wanna",
+          "*shrug*"
+          ],
+"updates_enabled": True,
 }

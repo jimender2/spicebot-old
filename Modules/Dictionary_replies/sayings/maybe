@@ -1,4 +1,9 @@
 {
 "validcoms": ['maybe', 'possible'],
-"reply": ["Possibly (In wife talk: hell no)", "Lets come back to this", "Lets think about it"],
+"replies": [
+            "Possibly (In wife talk: hell no)",
+            "Lets come back to this",
+            "Lets think about it",
+            ],
+"updates_enabled": True,
 }

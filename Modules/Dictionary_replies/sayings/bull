@@ -1,5 +1,7 @@
 {
-"reply": ["bull",
+"replies": ["bull",
           "bullcrap",
-          "When you mess with the bull, you get the horns"],
+          "When you mess with the bull, you get the horns",
+          ],
+"updates_enabled": True,
 }

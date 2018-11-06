@@ -1,5 +1,5 @@
 {
-"reply": ["$instigator rolls their eyes at $target $blank"],
+"replies": ["$instigator rolls their eyes at $target $blank"],
 "backupblank": '',
 "reasonhandle": ["because", "for"],
 }

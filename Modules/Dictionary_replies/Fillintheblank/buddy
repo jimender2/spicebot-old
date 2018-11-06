@@ -1,5 +1,5 @@
 {
-"reply": ["let me call my buddy and get him down here... he's an expert on $blank"],
+"replies": ["let me call my buddy and get him down here... he's an expert on $blank"],
 "noinputreply": [
                 "What is your buddy good at?",
                 "I'm not your friend, buddy",

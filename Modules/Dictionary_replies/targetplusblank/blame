@@ -1,5 +1,5 @@
 {
-"reply": ["I blame $target $blank"],
+"replies": ["I blame $target $blank"],
 "backuptarget": 'random',
 "backupblank": 'for that.',
 "reasonhandle": ["for", "because"],

@@ -1,4 +1,5 @@
 {
 "validcoms": ['lifehack', 'lh', 'lifehacks'],
-"reply": [],
+"replies": [],
+"updates_enabled": True,
 }

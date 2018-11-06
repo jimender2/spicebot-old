@@ -1,8 +1,11 @@
 {
-"reply": ["Have you tried turning it off and on again?",
-  "Is it a layer 8 issue?",
-  "DNS",
-  "Is the power on?",
-  "Do a network reset.",
-  "Tune the flux capaciter"],
+"replies": [
+            "Have you tried turning it off and on again?",
+            "Is it a layer 8 issue?",
+            "DNS",
+            "Is the power on?",
+            "Do a network reset.",
+            "Tune the flux capaciter",
+            ],
+"updates_enabled": True,
 }
