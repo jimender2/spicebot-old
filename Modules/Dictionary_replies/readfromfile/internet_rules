@@ -1,4 +1,5 @@
 {
+"type": "sayings",
 "validcoms": ['rules', 'rule'],
 "filename": "internet_rules",
 }

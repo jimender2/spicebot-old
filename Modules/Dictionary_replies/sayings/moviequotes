@@ -1,4 +1,5 @@
 {
+"type": "simple",
 "validcoms": ['moviequotes', 'mq', 'gmq', 'goodmoviequotes'],
 "defaultreplies": [
             "Yippee Ki Yay Motherfucker",
