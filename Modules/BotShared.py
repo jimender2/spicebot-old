@@ -1280,32 +1280,15 @@ def bot_dictcom_simple(bot, botcom):
 
 
 def bot_dictcom_sayings(bot, botcom):
+    return bot_dictcom_simple(bot, botcom)
 
-    if botcom.dotcommand_dict["replies"] == []:
-        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " command appears to have no entries!")
 
-    if botcom.specified:
-        if botcom.specified > len(botcom.dotcommand_dict["replies"]):
-            botcom.specified = len(botcom.dotcommand_dict["replies"])
-        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
-    else:
-        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
+def bot_dictcom_readfromurl(bot, botcom):
+    return bot_dictcom_simple(bot, botcom)
 
-    if not isinstance(reply, list):
-        reply = [reply]
 
-    for rply in reply:
-        rply = rply.replace("$instigator", botcom.instigator)
-        rply = rply.replace("$channel", botcom.channel_current)
-        rply = rply.replace("$botnick", bot.nick)
-        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
-        if rply.startswith("time.sleep"):
-            eval(rply)
-        elif rply.startswith("*a "):
-            rply = rply.replace("*a ", "")
-            osd(bot, botcom.channel_current, 'action', rply)
-        else:
-            osd(bot, botcom.channel_current, 'say', rply)
+def bot_dictcom_readfromfile(bot, botcom):
+    return bot_dictcom_simple(bot, botcom)
 
 
 def bot_dictcom_target(bot, botcom):
