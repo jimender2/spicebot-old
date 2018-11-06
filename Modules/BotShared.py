@@ -1248,9 +1248,9 @@ def bot_dictcom_run(bot, trigger):
             if posscom.lower() in botcom.dotcommand_dict["specialcase"].keys():
                 botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-
-        # Remaining string
-        botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
+                botcom.completestring = ''
+        else:
+            botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
 
         # Run the command with the given info
         command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
