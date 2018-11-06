@@ -1174,14 +1174,8 @@ def bot_dictcom_run(bot, trigger):
         # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
         botcom.specified = None
         argone, argtwo = spicemanip(bot, botcom.triggerargsarray, 1), spicemanip(bot, botcom.triggerargsarray, 'last')
-
-        possargs = [spicemanip(bot, botcom.triggerargsarray, 1), spicemanip(bot, botcom.triggerargsarray, 'last')]
-        for possarg in possargs:
-            whicharg = possargs.index(possarg)
-            bot.msg("#spicebottest", str(whicharg))
-
         if str(argone).startswith("!") and len(str(argone)) > 1:
-            if str(argone[1:]).isdigit() or str(argone[1:]) in ['last', 'random']:
+            if str(argone[1:]).isdigit() or str(argone[1:]) in ['last', 'random', 'count']:
                 botcom.specified = argone[1:]
             else:
                 try:
@@ -1191,7 +1185,7 @@ def bot_dictcom_run(bot, trigger):
             if botcom.specified:
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
         elif str(argtwo).startswith("!") and len(str(argtwo)) > 1:
-            if str(argtwo[1:]).isdigit() or str(argtwo[1:]) in ['last', 'random']:
+            if str(argtwo[1:]).isdigit() or str(argtwo[1:]) in ['last', 'random', 'count']:
                 botcom.specified = argtwo[1:]
             else:
                 try:
@@ -1205,8 +1199,7 @@ def bot_dictcom_run(bot, trigger):
                 botcom.specified = int(botcom.specified)
 
         # Hardcoded commands
-        botcom.posscommand = spicemanip(bot, botcom.triggerargsarray, 1)
-        if botcom.posscommand == 'count':
+        if botcom.specified == 'count':
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " command has " + str(len(botcom.dotcommand_dict["reply"])) + " entrie(s).")
 
         # Run the command with the given info
