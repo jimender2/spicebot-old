@@ -1092,22 +1092,14 @@ def dict_command_configs(bot):
                             adjust_nick_array(bot, str(bot.nick), maincom, dict_from_file["replies"], 'startup', 'long', 'sayings')
 
                     # make replies in list form if not
-                    if not isinstance(dict_from_file["replies"], list):
-                        dict_from_file["replies"] = [dict_from_file["replies"]]
+                    for mustbe in ["replies", "noinputreply", "reasonhandle", "botreact"]:
+                        if not isinstance(dict_from_file[mustbe], list):
+                            dict_from_file[mustbe] = [dict_from_file[mustbe]]
 
-                    if "noinputreply" in dict_from_file.keys():
-                        if not isinstance(dict_from_file["noinputreply"], list):
-                            dict_from_file["noinputreply"] = [dict_from_file["noinputreply"]]
-
-                    if "reasonhandle" in dict_from_file.keys():
-                        if not isinstance(dict_from_file["reasonhandle"], list):
-                            dict_from_file["reasonhandle"] = [dict_from_file["reasonhandle"]]
-
-                    if "botreact" in dict_from_file.keys():
-                        if not isinstance(dict_from_file["botreact"], list):
-                            dict_from_file["botreact"] = [dict_from_file["botreact"]]
-
+                    # Special case replies
                     if "specialcase" not in dict_from_file.keys():
+                        dict_from_file["specialcase"] = {}
+                    if not isinstance(dict_from_file["specialcase"], dict):
                         dict_from_file["specialcase"] = {}
                     for speckey in dict_from_file["specialcase"].keys():
                         if not isinstance(dict_from_file["specialcase"][speckey], list):
@@ -1249,6 +1241,7 @@ def bot_dictcom_run(bot, trigger):
         if "specialcase" in botcom.dotcommand_dict.keys():
             if posscom.lower() in botcom.dotcommand_dict["specialcase"].keys():
                 botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]
+                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
         # Run the command with the given info
         command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')

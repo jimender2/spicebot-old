@@ -1,4 +1,5 @@
 {
+"type": "simple",
 "validcoms": ['ads', 'advertisements', 'ad', 'advertisement', 'spam'],
 "defaultreplies": [
           "DoubleD recommends these new drapes https://goo.gl/BMTMde",
