@@ -63,7 +63,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'target', 'fillintheblank', 'targetplusblank', 'sayings', "readfromfile", "readfromurl"]
+valid_com_types = ['simple', 'target', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl"]
 
 
 """
@@ -1252,37 +1252,8 @@ def bot_dictcom_run(bot, trigger):
         botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
 
         # Run the command with the given info
-        if botcom.commandtype != 'simple':
-            command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
-            eval(command_function_run)
-        else:
-            bot_dictcom_new(bot, botcom)
-
-
-def bot_dictcom_new(bot, botcom):
-
-    if botcom.specified:
-        if botcom.specified > len(botcom.dotcommand_dict["replies"]):
-            botcom.specified = len(botcom.dotcommand_dict["replies"])
-        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
-    else:
-        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
-
-    if not isinstance(reply, list):
-        reply = [reply]
-
-    for rply in reply:
-        rply = rply.replace("$instigator", botcom.instigator)
-        rply = rply.replace("$channel", botcom.channel_current)
-        rply = rply.replace("$botnick", bot.nick)
-        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
-        if rply.startswith("time.sleep"):
-            eval(rply)
-        elif rply.startswith("*a "):
-            rply = rply.replace("*a ", "")
-            osd(bot, botcom.channel_current, 'action', rply)
-        else:
-            osd(bot, botcom.channel_current, 'say', rply)
+        command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
+        eval(command_function_run)
 
 
 def bot_dictcom_simple(bot, botcom):
@@ -1290,14 +1261,15 @@ def bot_dictcom_simple(bot, botcom):
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["replies"]):
             botcom.specified = len(botcom.dotcommand_dict["replies"])
-        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
+        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
     else:
-        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
+        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
 
-    if not isinstance(reply, list):
-        reply = [reply]
+    if not isinstance(replies, list):
+        replies = [replies]
 
-    for rply in reply:
+    # handling for embedded lists
+    for rply in replies:
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
@@ -1358,14 +1330,14 @@ def bot_dictcom_target(bot, botcom):
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["replies"]):
             botcom.specified = len(botcom.dotcommand_dict["replies"])
-        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
+        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
     else:
-        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
+        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
 
-    if not isinstance(reply, list):
-        reply = [reply]
+    if not isinstance(replies, list):
+        replies = [replies]
 
-    for rply in reply:
+    for rply in replies:
         rply = rply.replace("$target", target)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
@@ -1399,22 +1371,15 @@ def bot_dictcom_fillintheblank(bot, botcom):
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["replies"]):
             botcom.specified = len(botcom.dotcommand_dict["replies"])
-        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
+        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
     else:
-        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
+        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
 
-    if "reasonhandle" in botcom.dotcommand_dict.keys():
-        if spicemanip(bot, fillin, 1).lower() not in botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
-            fillin = botcom.dotcommand_dict["reasonhandle"][0] + " " + fillin
-        elif spicemanip(bot, fillin, 1).lower() in botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
-            if spicemanip(bot, fillin, 1).lower() != botcom.dotcommand_dict["reasonhandle"][0]:
-                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-                fillin = botcom.dotcommand_dict["reasonhandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
+    # handling for embedded lists
+    if not isinstance(replies, list):
+        replies = [replies]
 
-    if not isinstance(reply, list):
-        reply = [reply]
-
-    for rply in reply:
+    for rply in replies:
         rply = rply.replace("$blank", fillin)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
@@ -1429,7 +1394,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
             osd(bot, botcom.channel_current, 'say', rply)
 
 
-def bot_dictcom_targetplusblank(bot, botcom):
+def bot_dictcom_targetplusreason(bot, botcom):
 
     ignorefillin = False
     ignoretarget = False
@@ -1480,9 +1445,9 @@ def bot_dictcom_targetplusblank(bot, botcom):
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["replies"]):
             botcom.specified = len(botcom.dotcommand_dict["replies"])
-        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
+        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
     else:
-        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
+        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
 
     if "reasonhandle" in botcom.dotcommand_dict.keys():
         if spicemanip(bot, fillin, 1).lower() not in botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
@@ -1492,10 +1457,10 @@ def bot_dictcom_targetplusblank(bot, botcom):
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
                 fillin = botcom.dotcommand_dict["reasonhandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
 
-    if not isinstance(reply, list):
-        reply = [reply]
+    if not isinstance(replies, list):
+        replies = [replies]
 
-    for rply in reply:
+    for rply in replies:
         rply = rply.replace("$blank", fillin)
         rply = rply.replace("$target", target)
         rply = rply.replace("$instigator", botcom.instigator)
