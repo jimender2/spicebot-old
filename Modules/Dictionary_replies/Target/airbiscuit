@@ -1,5 +1,5 @@
 {
 "validcoms": ['airbiscuit', 'float'],
 "replies": ["$instigator floats an air biscuit in the general direction of $target."],
-"noinputreply": ["$instigator floats an air biscuit."],
+"noinputreplies": ["$instigator floats an air biscuit."],
 }

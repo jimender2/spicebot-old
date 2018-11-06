@@ -1092,7 +1092,7 @@ def dict_command_configs(bot):
                             adjust_nick_array(bot, str(bot.nick), maincom, dict_from_file["replies"], 'startup', 'long', 'sayings')
 
                     # make replies in list form if not
-                    for mustbe in ["replies", "noinputreply", "reasonhandle", "botreact"]:
+                    for mustbe in ["replies", "noinputreplies", "reasonhandle", "botreact"]:
                         if mustbe in dict_from_file.keys():
                             if not isinstance(dict_from_file[mustbe], list):
                                 dict_from_file[mustbe] = [dict_from_file[mustbe]]
@@ -1248,9 +1248,41 @@ def bot_dictcom_run(bot, trigger):
                 botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
+        # Remaining string
+        botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
+
         # Run the command with the given info
-        command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
-        eval(command_function_run)
+        if botcom.commandtype != 'simple':
+            command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
+            eval(command_function_run)
+        else:
+            bot_dictcom_new(bot, botcom)
+
+
+def bot_dictcom_new(bot, botcom):
+
+    if botcom.specified:
+        if botcom.specified > len(botcom.dotcommand_dict["replies"]):
+            botcom.specified = len(botcom.dotcommand_dict["replies"])
+        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
+    else:
+        reply = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
+
+    if not isinstance(reply, list):
+        reply = [reply]
+
+    for rply in reply:
+        rply = rply.replace("$instigator", botcom.instigator)
+        rply = rply.replace("$channel", botcom.channel_current)
+        rply = rply.replace("$botnick", bot.nick)
+        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
+        if rply.startswith("time.sleep"):
+            eval(rply)
+        elif rply.startswith("*a "):
+            rply = rply.replace("*a ", "")
+            osd(bot, botcom.channel_current, 'action', rply)
+        else:
+            osd(bot, botcom.channel_current, 'say', rply)
 
 
 def bot_dictcom_simple(bot, botcom):
@@ -1279,18 +1311,6 @@ def bot_dictcom_simple(bot, botcom):
             osd(bot, botcom.channel_current, 'say', rply)
 
 
-def bot_dictcom_sayings(bot, botcom):
-    return bot_dictcom_simple(bot, botcom)
-
-
-def bot_dictcom_readfromurl(bot, botcom):
-    return bot_dictcom_simple(bot, botcom)
-
-
-def bot_dictcom_readfromfile(bot, botcom):
-    return bot_dictcom_simple(bot, botcom)
-
-
 def bot_dictcom_target(bot, botcom):
 
     # target is the first arg given
@@ -1304,10 +1324,10 @@ def bot_dictcom_target(bot, botcom):
             target = ''
 
     # handling for no target
-    if target not in bot.memory["botdict"]["users"].keys() and "noinputreply" in botcom.dotcommand_dict.keys() and not ignoretarget:
+    if target not in bot.memory["botdict"]["users"].keys() and "noinputreplies" in botcom.dotcommand_dict.keys() and not ignoretarget:
         target = ''
         ignoretarget = True
-        botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreply"]
+        botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
 
     if target not in bot.memory["botdict"]["users"].keys() and "backuptarget" in botcom.dotcommand_dict.keys() and not ignoretarget:
         target = botcom.dotcommand_dict["backuptarget"]
@@ -1362,25 +1382,18 @@ def bot_dictcom_target(bot, botcom):
 
 def bot_dictcom_fillintheblank(bot, botcom):
 
-    # all text given is valid for use
-    fillin = spicemanip(bot, botcom.triggerargsarray, 0)
-    ignorefillin = False
+    # some commands cannot run without input
+    inputrequired = 1
 
-    posscom = spicemanip(bot, botcom.triggerargsarray, 1)
-    if "specialcase" in botcom.dotcommand_dict.keys():
-        if posscom.lower() in botcom.dotcommand_dict["specialcase"].keys():
-            botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]
+    if "backupblank" in botcom.dotcommand_dict.keys() and not botcom.completestring:
+        inputrequired = 0
+        botcom.completestring = botcom.dotcommand_dict["backupblank"]
 
-    # handling for no fillin
-    if not fillin and "noinputreply" in botcom.dotcommand_dict.keys() and not ignorefillin:
-        botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreply"]
-        ignorefillin = True
+    if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.completestring:
+        inputrequired = 0
+        botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
 
-    if not fillin and "backupblank" in botcom.dotcommand_dict.keys():
-        fillin = botcom.dotcommand_dict["backupblank"]
-        ignorefillin = True
-
-    if not fillin and not ignorefillin:
+    if inputrequired:
         return osd(bot, botcom.instigator, 'notice', "This command requires input.")
 
     if botcom.specified:
@@ -1496,6 +1509,18 @@ def bot_dictcom_targetplusblank(bot, botcom):
             osd(bot, botcom.channel_current, 'action', rply)
         else:
             osd(bot, botcom.channel_current, 'say', rply)
+
+
+def bot_dictcom_sayings(bot, botcom):
+    return bot_dictcom_simple(bot, botcom)
+
+
+def bot_dictcom_readfromurl(bot, botcom):
+    return bot_dictcom_simple(bot, botcom)
+
+
+def bot_dictcom_readfromfile(bot, botcom):
+    return bot_dictcom_simple(bot, botcom)
 
 
 """
