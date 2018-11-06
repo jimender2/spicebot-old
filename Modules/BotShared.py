@@ -1198,7 +1198,11 @@ def bot_dictcom_run(bot, trigger):
                 if str(botcom.specified).isdigit():
                     botcom.specified = int(botcom.specified)
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'last!', 'list')
-        bot.msg("#spicebottest", str(botcom.specified))
+
+        # Hardcoded commands
+        botcom.posscommand = spicemanip(bot, botcom.triggerargsarray, 1)
+        if botcom.posscommand == 'count':
+            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " command has " + str(len(botcom.dotcommand_dict["reply"])) + " entries.")
 
         # Run the command with the given info
         command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
