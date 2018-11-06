@@ -1175,7 +1175,7 @@ def bot_dictcom_run(bot, trigger):
         botcom.specified = None
         argone, argtwo = spicemanip(bot, botcom.triggerargsarray, 1), spicemanip(bot, botcom.triggerargsarray, 'last')
         if str(argone).startswith("!") and len(str(argone)) > 1:
-            if str(argone[1:]).isdigit() or str(argone[1:]) in ['last', 'random', 'count']:
+            if str(argone[1:]).isdigit() or str(argone[1:]) in ['last', 'random', 'count', 'view']:
                 botcom.specified = argone[1:]
             else:
                 try:
@@ -1185,7 +1185,7 @@ def bot_dictcom_run(bot, trigger):
             if botcom.specified:
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
         elif str(argtwo).startswith("!") and len(str(argtwo)) > 1:
-            if str(argtwo[1:]).isdigit() or str(argtwo[1:]) in ['last', 'random', 'count']:
+            if str(argtwo[1:]).isdigit() or str(argtwo[1:]) in ['last', 'random', 'count', 'view']:
                 botcom.specified = argtwo[1:]
             else:
                 try:
@@ -1201,6 +1201,16 @@ def bot_dictcom_run(bot, trigger):
         # Hardcoded commands
         if botcom.specified == 'count':
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " command has " + str(len(botcom.dotcommand_dict["reply"])) + " entrie(s).")
+        elif botcom.specified == 'view':
+            if botcom.dotcommand_dict["reply"] == []:
+                return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " command appears to have no entries!")
+            else:
+                osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " command contains:")
+                listnumb, relist = 1, []
+                for item in botcom.dotcommand_dict["reply"]:
+                    relist.append(str("[#" + str(listnumb) + "] " + str(item)))
+                    listnumb += 1
+                return osd(bot, botcom.instigator, 'say', relist)
 
         # Run the command with the given info
         command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
