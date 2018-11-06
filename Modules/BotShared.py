@@ -1204,9 +1204,13 @@ def bot_dictcom_run(bot, trigger):
                 osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " command contains:")
                 listnumb, relist = 1, []
                 for item in botcom.dotcommand_dict["replies"]:
-                    relist.append(str("[#" + str(listnumb) + "] " + str(item)))
+                    if listnumb <= 20:
+                        relist.append(str("[#" + str(listnumb) + "] " + str(item)))
                     listnumb += 1
-                return osd(bot, botcom.instigator, 'say', relist)
+                osd(bot, botcom.instigator, 'say', relist)
+                if listnumb > 20:
+                    osd(bot, botcom.instigator, 'say', "List cut off after the 20th entry to prevent bot lag.")
+                return
         elif botcom.specified == 'add':
 
             if "updates_enabled" not in botcom.dotcommand_dict.keys():
