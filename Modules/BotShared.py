@@ -1363,8 +1363,9 @@ def bot_dictcom_fillintheblank(bot, botcom):
     inputrequired = 1
 
     if botcom.specialcase:
-        if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["inputrequired"] and not botcom.completestring:
-            inputrequired = 0
+        if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["inputrequired"]:
+            if botcom.completestring:
+                inputrequired = 0
     else:
 
         if "backupblank" in botcom.dotcommand_dict.keys() and not botcom.completestring and not inputrequired:
