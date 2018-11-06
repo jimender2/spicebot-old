@@ -1103,14 +1103,8 @@ def dict_command_configs(bot):
                     if not isinstance(dict_from_file["specialcase"], dict):
                         dict_from_file["specialcase"] = {}
                     for speckey in dict_from_file["specialcase"].keys():
-                        if not isinstance(dict_from_file["specialcase"][speckey], dict):
-                            dict_from_file["specialcase"][speckey] = {}
-                        if "replies" not in dict_from_file["specialcase"][speckey].keys():
-                            dict_from_file["specialcase"][speckey]["replies"] = []
-                        if not isinstance(dict_from_file["specialcase"][speckey]["replies"], list):
-                            dict_from_file["specialcase"][speckey]["replies"] = [dict_from_file["specialcase"][speckey]["replies"]]
-                        if "inputrequired" not in dict_from_file["specialcase"][speckey].keys():
-                            dict_from_file["specialcase"][speckey]["inputrequired"] = True
+                        if not isinstance(dict_from_file["specialcase"][speckey], list):
+                            dict_from_file["specialcase"][speckey] = [dict_from_file["specialcase"][speckey]]
 
                     bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
                     for comalias in comaliases:
@@ -1249,12 +1243,10 @@ def bot_dictcom_run(bot, trigger):
 
         # handling for special cases
         posscom = spicemanip(bot, botcom.triggerargsarray, 1)
-        botcom.specialcase = False
         if "specialcase" in botcom.dotcommand_dict.keys():
             if posscom.lower() in botcom.dotcommand_dict["specialcase"].keys():
-                botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]["replies"]
+                botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-                botcom.specialcase = posscom.lower()
 
         # Remaining string
         botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
@@ -1362,16 +1354,10 @@ def bot_dictcom_fillintheblank(bot, botcom):
     # some commands cannot run without input
     inputrequired = 1
 
-    if botcom.specialcase:
-        if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["inputrequired"]:
-            if botcom.completestring:
-                inputrequired = 0
-
-    if "backupblank" in botcom.dotcommand_dict.keys() and not botcom.completestring and not inputrequired:
-        inputrequired = 0
+    if "backupblank" in botcom.dotcommand_dict.keys() and not botcom.completestring:
         botcom.completestring = botcom.dotcommand_dict["backupblank"]
 
-    if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.completestring and not inputrequired:
+    if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.completestring:
         inputrequired = 0
         botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
 
