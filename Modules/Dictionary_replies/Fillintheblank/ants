@@ -2,4 +2,5 @@
 "validcoms": ['ants', 'ant'],
 "replies": ["Do you want $blank cause that's how you get $blank!"],
 "backupblank": 'ants',
+"specialcase": {"canada": "Blame Canada!!!   https://www.youtube.com/watch?v=bOR38552MJA",},
 }
