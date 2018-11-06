@@ -1263,7 +1263,7 @@ def bot_dictcom_sayings(bot, botcom):
             osd(bot, botcom.instigator, 'notice', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " database contains:")
             listnumb, relist = 1, []
             for item in botcom.dotcommand_dict["reply"]:
-                relist.append(str("[#" + listnumb + "] " + item))
+                relist.append(str("[#" + str(listnumb) + "] " + str(item)))
                 listnumb += 1
             osd(bot, botcom.instigator, 'say', relist)
             return
