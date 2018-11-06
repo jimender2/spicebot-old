@@ -1358,12 +1358,14 @@ def bot_dictcom_fillintheblank(bot, botcom):
     inputrequired = 1
 
     if "backupblank" in botcom.dotcommand_dict.keys() and not botcom.completestring:
-        inputrequired = 0
         botcom.completestring = botcom.dotcommand_dict["backupblank"]
 
     if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.completestring:
         inputrequired = 0
         botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
+
+    if botcom.completestring:
+        inputrequired = 0
 
     if inputrequired:
         return osd(bot, botcom.instigator, 'notice', "This command requires input.")
