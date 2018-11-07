@@ -1109,11 +1109,11 @@ def dict_command_configs(bot):
 
                     # Prefix text
                     if "prefixtext" not in dict_from_file.keys():
-                        dict_from_file["prefixtext"] = ""
+                        dict_from_file["prefixtext"] = False
 
                     # suffix text
                     if "suffixtext" not in dict_from_file.keys():
-                        dict_from_file["suffixtext"] = ""
+                        dict_from_file["suffixtext"] = False
 
                     # Special case replies
                     if "specialcase" not in dict_from_file.keys():
@@ -1140,9 +1140,9 @@ def dict_command_configs(bot):
                         if "inputrequired" not in dict_from_file["specialcase"][speckey].keys():
                             dict_from_file["specialcase"][speckey]["inputrequired"] = True
                         if "prefixtext" not in dict_from_file["specialcase"][speckey].keys():
-                            dict_from_file["specialcase"][speckey]["prefixtext"] = ""
+                            dict_from_file["specialcase"][speckey]["prefixtext"] = False
                         if "suffixtext" not in dict_from_file["specialcase"][speckey].keys():
-                            dict_from_file["specialcase"][speckey]["suffixtext"] = ""
+                            dict_from_file["specialcase"][speckey]["suffixtext"] = False
                         if "updates_enabled" not in dict_from_file["specialcase"][speckey].keys():
                             dict_from_file["specialcase"][speckey]["updates_enabled"] = False
                         if dict_from_file["specialcase"][speckey]["updates_enabled"]:
@@ -1246,12 +1246,12 @@ def bot_dictcom_run(bot, trigger):
             if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["updates_enabled"]:
                 botcom.dotcommand_dict["replies"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.specialcase or 'normal'), 'long', 'sayings') or []
 
-            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["prefixtext"] != "":
+            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["prefixtext"]:
                 botcom.prefixtext = botcom.dotcommand_dict["specialcase"][botcom.specialcase]["prefixtext"]
             else:
                 botcom.prefixtext = ""
 
-            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"] != "":
+            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"]:
                 botcom.suffixtext = botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"]
             else:
                 botcom.suffixtext = ""
@@ -1261,12 +1261,12 @@ def bot_dictcom_run(bot, trigger):
                 if botcom.dotcommand_dict["updates_enabled"]:
                     botcom.dotcommand_dict["replies"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.specialcase or 'normal'), 'long', 'sayings') or []
 
-            if botcom.dotcommand_dict["prefixtext"] != "":
+            if botcom.dotcommand_dict["prefixtext"]:
                 botcom.prefixtext = botcom.dotcommand_dict["prefixtext"]
             else:
                 botcom.prefixtext = ""
 
-            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"] != "":
+            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"]:
                 botcom.suffixtext = botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"]
             else:
                 botcom.suffixtext = ""
