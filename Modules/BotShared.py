@@ -1455,10 +1455,11 @@ def bot_dictcom_targetplusreason(bot, botcom):
     botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
 
     # some commands cannot run without input
-    inputrequired = 1
+    inputrequired, ignorefillin = 1, 0
 
     if "backupblank" in botcom.dotcommand_dict.keys() and not botcom.completestring:
         botcom.completestring = botcom.dotcommand_dict["backupblank"]
+        ignorefillin = 1
 
     if botcom.completestring:
         inputrequired = 0
@@ -1499,88 +1500,6 @@ def bot_dictcom_targetplusreason(bot, botcom):
     for rply in replies:
         rply = rply.replace("$blank", botcom.completestring)
         rply = rply.replace("$target", botcom.target)
-        rply = rply.replace("$instigator", botcom.instigator)
-        rply = rply.replace("$channel", botcom.channel_current)
-        rply = rply.replace("$botnick", bot.nick)
-        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
-        if rply.startswith("time.sleep"):
-            eval(rply)
-        elif rply.startswith("*a "):
-            rply = rply.replace("*a ", "")
-            osd(bot, botcom.channel_current, 'action', rply)
-        else:
-            osd(bot, botcom.channel_current, 'say', rply)
-
-
-def bot_dictcom_targetplusreasona(bot, botcom):
-
-    ignorefillin = False
-    ignoretarget = False
-
-    # target is the first arg given
-    target = spicemanip(bot, botcom.triggerargsarray, 1)
-
-    if "specialcase" in botcom.dotcommand_dict.keys() and not ignoretarget:
-        if target.lower() in botcom.dotcommand_dict["specialcase"].keys():
-            ignoretarget = True
-            botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["specialcase"][target.lower()]
-            target = ''
-
-    if target not in bot.memory["botdict"]["users"].keys() and "backuptarget" in botcom.dotcommand_dict.keys() and not ignoretarget:
-        target = botcom.dotcommand_dict["backuptarget"]
-        ignoretarget = True
-        if target == 'instigator':
-            target = botcom.instigator
-        elif target == 'random':
-            if not botcom.channel_current.startswith('#'):
-                target = botcom.instigator
-            else:
-                target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
-    if target not in bot.memory["botdict"]["users"].keys() and not ignoretarget:
-        return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
-
-    if not ignoretarget:
-        targetchecking = bot_target_check(bot, botcom, target)
-        if not targetchecking["targetgood"]:
-            if targetchecking["reason"] == "bot" and "botreact" in botcom.dotcommand_dict.keys():
-                botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["botreact"]
-            else:
-                return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
-
-    # remove target
-    if target in botcom.triggerargsarray:
-        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-
-    # all text given is valid for use
-    fillin = spicemanip(bot, botcom.triggerargsarray, 0)
-
-    if not fillin and "backupblank" in botcom.dotcommand_dict.keys():
-        fillin = botcom.dotcommand_dict["backupblank"]
-        ignorefillin = True
-    if not fillin and not ignorefillin:
-        return osd(bot, botcom.instigator, 'notice', "This command requires input.")
-
-    if botcom.specified:
-        if botcom.specified > len(botcom.dotcommand_dict["replies"]):
-            botcom.specified = len(botcom.dotcommand_dict["replies"])
-        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
-    else:
-        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
-
-    if "reasonhandle" in botcom.dotcommand_dict.keys():
-        if spicemanip(bot, fillin, 1).lower() not in botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
-            fillin = botcom.dotcommand_dict["reasonhandle"][0] + " " + fillin
-        elif spicemanip(bot, fillin, 1).lower() in botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
-            if spicemanip(bot, fillin, 1).lower() != botcom.dotcommand_dict["reasonhandle"][0]:
-                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-                fillin = botcom.dotcommand_dict["reasonhandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
-
-    if not isinstance(replies, list):
-        replies = [replies]
-
-    for rply in replies:
-        rply = rply.replace("$blank", fillin)
-        rply = rply.replace("$target", target)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
