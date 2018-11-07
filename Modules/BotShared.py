@@ -1095,7 +1095,17 @@ def dict_command_configs(bot):
                     for mustbe in ["replies", "noinputreplies", "reasonhandle", "botreact"]:
                         if mustbe in dict_from_file.keys():
                             if not isinstance(dict_from_file[mustbe], list):
-                                dict_from_file[mustbe] = [dict_from_file[mustbe]]
+                                if dict_from_file[mustbe] in in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
+                                    dict_from_file[mustbe] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file[mustbe]]
+                                elif str(dict_from_file[mustbe]).startswith(tuple(["https://", "http://"])):
+                                    page = requests.get(dict_from_file[mustbe], headers=header)
+                                    tree = html.fromstring(page.content)
+                                    if page.status_code == 200:
+                                        htmlfile = urllib.urlopen(dict_from_file[mustbe])
+                                        lines = htmlfile.read().splitlines()
+                                        dict_from_file[mustbe] = lines
+                                else:
+                                    dict_from_file[mustbe] = [dict_from_file[mustbe]]
 
                     # Special case replies
                     if "specialcase" not in dict_from_file.keys():
