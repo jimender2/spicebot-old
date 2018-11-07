@@ -1372,6 +1372,12 @@ def bot_dictcom_fillintheblank(bot, botcom):
     if botcom.completestring:
         inputrequired = 0
 
+    if botcom.specialcase:
+        if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["inputrequired"] and not botcom.completestring:
+            inputrequired = 1
+        else:
+            inputrequired = 0
+
     if inputrequired:
         return osd(bot, botcom.instigator, 'notice', "This command requires input.")
 
