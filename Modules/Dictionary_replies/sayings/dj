@@ -1,7 +1,7 @@
 {
 "type": "simple",
 "defaultreplies":"jukebox_party",
-"updates_enabled": True,
+"updates_enabled": False,
 "specialcase": {
                 "party": {
                           "replies": "jukebox_party",
