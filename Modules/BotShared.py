@@ -1461,7 +1461,7 @@ def bot_dictcom_targetplusreason(bot, botcom):
     if "backupblank" in botcom.dotcommand_dict.keys() and not botcom.completestring:
         botcom.completestring = botcom.dotcommand_dict["backupblank"]
 
-    if not fillin and not ignorefillin:
+    if not botcom.completestring and not ignorefillin:
         return osd(bot, botcom.instigator, 'notice', "This command requires input.")
 
     if botcom.specified:
