@@ -1452,6 +1452,19 @@ def bot_dictcom_targetplusreason(bot, botcom):
     # remove target
     if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+    botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
+
+    # some commands cannot run without input
+    inputrequired = 1
+
+    if "backupblank" in botcom.dotcommand_dict.keys() and not botcom.completestring:
+        botcom.completestring = botcom.dotcommand_dict["backupblank"]
+
+    if botcom.completestring:
+        inputrequired = 0
+
+    if inputrequired:
+        return osd(bot, botcom.instigator, 'notice', "This command requires input.")
 
     if not ignoretarget and botcom.target:
         targetchecking = bot_target_check(bot, botcom, botcom.target)
@@ -1476,6 +1489,7 @@ def bot_dictcom_targetplusreason(bot, botcom):
         botcom.target = ''
 
     for rply in replies:
+        rply = rply.replace("$blank", botcom.completestring)
         rply = rply.replace("$target", botcom.target)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
