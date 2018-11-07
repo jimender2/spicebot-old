@@ -1300,7 +1300,6 @@ def bot_dictcom_target(bot, botcom):
 
     # some commands cannot run without input
     targetrequired, ignoretarget = 1, 0
-    bot.msg("deathbybandaid", " here")
 
     if botcom.specialcase:
         if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["inputrequired"]:
@@ -1318,6 +1317,8 @@ def bot_dictcom_target(bot, botcom):
                 botcom.target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
         else:
             ignoretarget = 1
+
+    bot.msg("deathbybandaid", " here")
 
     if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.completestring and targetrequired:
         targetrequired = 0
