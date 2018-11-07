@@ -1257,6 +1257,11 @@ def bot_dictcom_run(bot, trigger):
                 botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
                 botcom.specialcase = posscom.lower()
 
+        posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
+        botcom.target = False
+        if posstarget in bot.memory["botdict"]["users"].keys():
+            botcom.target = posstarget
+
         botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
 
         # Run the command with the given info
@@ -1294,34 +1299,37 @@ def bot_dictcom_simple(bot, botcom):
 def bot_dictcom_target(bot, botcom):
 
     # some commands cannot run without input
-    targetrequired = 1
+    targetrequired, ignoretarget = 1, 0
 
-    # target is the first arg given
-    target = spicemanip(bot, botcom.triggerargsarray, 1)
-    ignoretarget = False
+    if botcom.specialcase:
+        if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["inputrequired"]:
+            targetrequired = 0
 
-    # handling for no target
-    if target not in bot.memory["botdict"]["users"].keys() and "noinputreplies" in botcom.dotcommand_dict.keys() and not ignoretarget:
-        target = ''
-        ignoretarget = True
+    if "backuptarget" in botcom.dotcommand_dict.keys() and not botcom.completestring:
+        targetrequired = 0
+        botcom.target = botcom.dotcommand_dict["backuptarget"]
+        if botcom.target == 'instigator':
+            botcom.target = botcom.instigator
+        elif botcom.target == 'random':
+            if not botcom.channel_current.startswith('#'):
+                botcom.target = botcom.instigator
+            else:
+                botcom.target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
+        else:
+            ignoretarget = 1
+
+    if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.completestring and targetrequired:
+        targetrequired = 0
         botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
 
-    if target not in bot.memory["botdict"]["users"].keys() and "backuptarget" in botcom.dotcommand_dict.keys() and not ignoretarget:
-        target = botcom.dotcommand_dict["backuptarget"]
-        ignoretarget = True
-        if target == 'instigator':
-            target = botcom.instigator
-        elif target == 'random':
-            if not botcom.channel_current.startswith('#'):
-                target = botcom.instigator
-            else:
-                target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
+    if botcom.completestring:
+        targetrequired = 0
 
-    if target not in bot.memory["botdict"]["users"].keys() and not ignoretarget:
+    if targetrequired:
         return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
 
     # remove target
-    if target in botcom.triggerargsarray:
+    if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
     if not ignoretarget:
