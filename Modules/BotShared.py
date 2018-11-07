@@ -1095,7 +1095,7 @@ def dict_command_configs(bot):
                     for mustbe in ["replies", "noinputreplies", "reasonhandle", "botreact"]:
                         if mustbe in dict_from_file.keys():
                             if not isinstance(dict_from_file[mustbe], list):
-                                if dict_from_file[mustbe] in in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
+                                if dict_from_file[mustbe] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
                                     dict_from_file[mustbe] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file[mustbe]]
                                 elif str(dict_from_file[mustbe]).startswith(tuple(["https://", "http://"])):
                                     page = requests.get(dict_from_file[mustbe], headers=header)
