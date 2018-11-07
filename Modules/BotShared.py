@@ -1362,20 +1362,19 @@ def bot_dictcom_fillintheblank(bot, botcom):
     # some commands cannot run without input
     inputrequired = 1
 
+    if botcom.specialcase:
+        if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["inputrequired"]:
+            inputrequired = 0
+
     if "backupblank" in botcom.dotcommand_dict.keys() and not botcom.completestring:
         botcom.completestring = botcom.dotcommand_dict["backupblank"]
 
-    if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.completestring:
+    if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.completestring and inputrequired:
         inputrequired = 0
         botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
 
     if botcom.completestring:
         inputrequired = 0
-
-    if inputrequired:
-        if botcom.specialcase:
-            if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["inputrequired"]:
-                inputrequired = 0
 
     if inputrequired:
         return osd(bot, botcom.instigator, 'notice', "This command requires input.")
