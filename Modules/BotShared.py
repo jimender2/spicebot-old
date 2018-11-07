@@ -1417,7 +1417,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
             osd(bot, botcom.channel_current, 'say', rply)
 
 
-def bot_dictcom_targetplusreasona(bot, botcom):
+def bot_dictcom_targetplusreason(bot, botcom):
 
     # some commands cannot run without input
     targetrequired, ignoretarget = 1, 0
