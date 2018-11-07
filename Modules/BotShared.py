@@ -1333,7 +1333,7 @@ def bot_dictcom_target(bot, botcom):
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
     if not ignoretarget:
-        targetchecking = bot_target_check(bot, botcom, target)
+        targetchecking = bot_target_check(bot, botcom, botcom.target)
         if not targetchecking["targetgood"]:
             if targetchecking["reason"] == "bot" and "botreact" in botcom.dotcommand_dict.keys():
                 botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["botreact"]
@@ -1351,7 +1351,7 @@ def bot_dictcom_target(bot, botcom):
         replies = [replies]
 
     for rply in replies:
-        rply = rply.replace("$target", target)
+        rply = rply.replace("$target", botcom.target)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
