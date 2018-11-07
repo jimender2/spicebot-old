@@ -1329,6 +1329,7 @@ def bot_dictcom_target(bot, botcom):
         return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
 
     if not botcom.target:
+        ignoretarget = 1
         botcom.target = ''
 
     # remove target
