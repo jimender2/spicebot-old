@@ -1305,7 +1305,7 @@ def bot_dictcom_target(bot, botcom):
         if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["inputrequired"]:
             targetrequired = 0
 
-    if "backuptarget" in botcom.dotcommand_dict.keys() and not botcom.completestring:
+    if "backuptarget" in botcom.dotcommand_dict.keys() and not botcom.target:
         targetrequired = 0
         botcom.target = botcom.dotcommand_dict["backuptarget"]
         if botcom.target == 'instigator':
@@ -1318,11 +1318,11 @@ def bot_dictcom_target(bot, botcom):
         else:
             ignoretarget = 1
 
-    if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.completestring and targetrequired:
+    if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.target and targetrequired:
         targetrequired = 0
         botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
 
-    if botcom.completestring:
+    if botcom.target:
         targetrequired = 0
 
     if targetrequired:
