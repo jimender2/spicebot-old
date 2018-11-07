@@ -1328,15 +1328,11 @@ def bot_dictcom_target(bot, botcom):
     if targetrequired:
         return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
 
-    if not botcom.target:
-        ignoretarget = 1
-        botcom.target = ''
-
     # remove target
     if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
-    if not ignoretarget:
+    if not ignoretarget and botcom.target:
         targetchecking = bot_target_check(bot, botcom, botcom.target)
         if not targetchecking["targetgood"]:
             if targetchecking["reason"] == "bot" and "botreact" in botcom.dotcommand_dict.keys():
