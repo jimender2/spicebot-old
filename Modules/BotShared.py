@@ -1118,7 +1118,17 @@ def dict_command_configs(bot):
                         if "replies" not in dict_from_file["specialcase"][speckey].keys():
                             dict_from_file["specialcase"][speckey]["replies"] = []
                         if not isinstance(dict_from_file["specialcase"][speckey]["replies"], list):
-                            dict_from_file["specialcase"][speckey]["replies"] = [dict_from_file["specialcase"][speckey]["replies"]]
+                            if dict_from_file["specialcase"][speckey]["replies"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
+                                dict_from_file["specialcase"][speckey]["replies"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["specialcase"][speckey]["replies"]]
+                            elif str(dict_from_file["specialcase"][speckey]["replies"]).startswith(tuple(["https://", "http://"])):
+                                page = requests.get(dict_from_file["specialcase"][speckey]["replies"], headers=header)
+                                tree = html.fromstring(page.content)
+                                if page.status_code == 200:
+                                    htmlfile = urllib.urlopen(dict_from_file["specialcase"][speckey]["replies"])
+                                    lines = htmlfile.read().splitlines()
+                                    dict_from_file["specialcase"][speckey]["replies"] = lines
+                            else:
+                                dict_from_file["specialcase"][speckey]["replies"] = [dict_from_file["specialcase"][speckey]["replies"]]
                         if "inputrequired" not in dict_from_file["specialcase"][speckey].keys():
                             dict_from_file["specialcase"][speckey]["inputrequired"] = True
 
