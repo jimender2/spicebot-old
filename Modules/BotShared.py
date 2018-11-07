@@ -1327,7 +1327,6 @@ def bot_dictcom_target(bot, botcom):
 
     if targetrequired:
         return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
-    bot.msg("deathbybandaid", " here")
 
     # remove target
     if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
@@ -1340,6 +1339,7 @@ def bot_dictcom_target(bot, botcom):
                 botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["botreact"]
             else:
                 return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
+    bot.msg("deathbybandaid", " here")
 
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["replies"]):
