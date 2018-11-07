@@ -1318,8 +1318,6 @@ def bot_dictcom_target(bot, botcom):
         else:
             ignoretarget = 1
 
-    bot.msg("deathbybandaid", " here")
-
     if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.completestring and targetrequired:
         targetrequired = 0
         botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
@@ -1329,6 +1327,7 @@ def bot_dictcom_target(bot, botcom):
 
     if targetrequired:
         return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
+    bot.msg("deathbybandaid", " here")
 
     # remove target
     if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
