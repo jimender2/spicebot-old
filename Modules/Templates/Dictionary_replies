@@ -25,6 +25,8 @@
 
 # $botnick will be replaced with bot.nick
 
+# reply types set to a filename or url should* do that
+
 
 ############
 ## simple ##
