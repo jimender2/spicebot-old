@@ -1,0 +1,16 @@
+{
+"type": "simple",
+"defaultreplies":"jukebox_party",
+"updates_enabled": True,
+"specialcase": {
+              "party": {
+                        "replies": "jukebox_party",
+                        "inputrequired": False,
+                        "updates_enabled": True,
+                        },
+              "friday": {
+                        "replies": "jukebox_friday",
+                        "inputrequired": False,
+                        "updates_enabled": True,
+                        },
+}
