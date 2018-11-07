@@ -1266,8 +1266,8 @@ def bot_dictcom_run(bot, trigger):
             else:
                 botcom.prefixtext = ""
 
-            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"]:
-                botcom.suffixtext = botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"]
+            if botcom.dotcommand_dict["suffixtext"]:
+                botcom.suffixtext = botcom.dotcommand_dict["suffixtext"]
             else:
                 botcom.suffixtext = ""
 
