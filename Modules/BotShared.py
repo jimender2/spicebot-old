@@ -1107,6 +1107,14 @@ def dict_command_configs(bot):
                                 else:
                                     dict_from_file[mustbe] = [dict_from_file[mustbe]]
 
+                    # Prefix text
+                    if "prefixtext" not in dict_from_file.keys():
+                        dict_from_file["prefixtext"] = ""
+
+                    # suffix text
+                    if "suffixtext" not in dict_from_file.keys():
+                        dict_from_file["suffixtext"] = ""
+
                     # Special case replies
                     if "specialcase" not in dict_from_file.keys():
                         dict_from_file["specialcase"] = {}
@@ -1131,6 +1139,10 @@ def dict_command_configs(bot):
                                 dict_from_file["specialcase"][speckey]["replies"] = [dict_from_file["specialcase"][speckey]["replies"]]
                         if "inputrequired" not in dict_from_file["specialcase"][speckey].keys():
                             dict_from_file["specialcase"][speckey]["inputrequired"] = True
+                        if "prefixtext" not in dict_from_file["specialcase"][speckey].keys():
+                            dict_from_file["specialcase"][speckey]["prefixtext"] = ""
+                        if "suffixtext" not in dict_from_file["specialcase"][speckey].keys():
+                            dict_from_file["specialcase"][speckey]["suffixtext"] = ""
                         if "updates_enabled" not in dict_from_file["specialcase"][speckey].keys():
                             dict_from_file["specialcase"][speckey]["updates_enabled"] = False
                         if dict_from_file["specialcase"][speckey]["updates_enabled"]:
@@ -1230,12 +1242,34 @@ def bot_dictcom_run(bot, trigger):
                 botcom.specialcase = posscom.lower()
 
         if botcom.specialcase:
+
             if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["updates_enabled"]:
                 botcom.dotcommand_dict["replies"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.specialcase or 'normal'), 'long', 'sayings') or []
+
+            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["prefixtext"] != "":
+                botcom.prefixtext = botcom.dotcommand_dict["specialcase"][botcom.specialcase]["prefixtext"]
+            else:
+                botcom.prefixtext = ""
+
+            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"] != "":
+                botcom.suffixtext = botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"]
+            else:
+                botcom.suffixtext = ""
         else:
+
             if "updates_enabled" in botcom.dotcommand_dict.keys():
                 if botcom.dotcommand_dict["updates_enabled"]:
                     botcom.dotcommand_dict["replies"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.specialcase or 'normal'), 'long', 'sayings') or []
+
+            if botcom.dotcommand_dict["prefixtext"] != "":
+                botcom.prefixtext = botcom.dotcommand_dict["prefixtext"]
+            else:
+                botcom.prefixtext = ""
+
+            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"] != "":
+                botcom.suffixtext = botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"]
+            else:
+                botcom.suffixtext = ""
 
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
         botcom.target = False
@@ -1321,6 +1355,10 @@ def bot_dictcom_simple(bot, botcom):
 
     # handling for embedded lists
     for rply in replies:
+        if botcom.prefixtext != "":
+            rply = botcom.prefixtext + rply
+        if botcom.suffixtext != "":
+            rply = rply + botcom.suffixtext
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
@@ -1393,6 +1431,10 @@ def bot_dictcom_target(bot, botcom):
         botcom.target = ''
 
     for rply in replies:
+        if botcom.prefixtext != "":
+            rply = botcom.prefixtext + rply
+        if botcom.suffixtext != "":
+            rply = rply + botcom.suffixtext
         rply = rply.replace("$target", botcom.target)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
@@ -1441,6 +1483,10 @@ def bot_dictcom_fillintheblank(bot, botcom):
         replies = [replies]
 
     for rply in replies:
+        if botcom.prefixtext != "":
+            rply = botcom.prefixtext + rply
+        if botcom.suffixtext != "":
+            rply = rply + botcom.suffixtext
         rply = rply.replace("$blank", botcom.completestring)
         rply = rply.replace("$instigator", botcom.instigator)
         rply = rply.replace("$channel", botcom.channel_current)
@@ -1537,6 +1583,10 @@ def bot_dictcom_targetplusreason(bot, botcom):
         botcom.target = ''
 
     for rply in replies:
+        if botcom.prefixtext != "":
+            rply = botcom.prefixtext + rply
+        if botcom.suffixtext != "":
+            rply = rply + botcom.suffixtext
         rply = rply.replace("$blank", botcom.completestring)
         rply = rply.replace("$target", botcom.target)
         rply = rply.replace("$instigator", botcom.instigator)

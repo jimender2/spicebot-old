@@ -27,6 +27,12 @@
 
 # reply types set to a filename or url should* do that
 
+# prefix,,, text to precede randomly chosen
+# "prefixtext": "$instigator puts a nickel in the jukebox and it starts to play ",
+
+# suffix,,, text to follow randomly chosen
+# "suffixtext": "$instigator puts a nickel in the jukebox and it starts to play ",
+
 
 ############
 ## simple ##
