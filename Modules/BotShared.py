@@ -1300,6 +1300,7 @@ def bot_dictcom_target(bot, botcom):
 
     # some commands cannot run without input
     targetrequired, ignoretarget = 1, 0
+    bot.msg("deathbybandaid", " here")
 
     if botcom.specialcase:
         if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["inputrequired"]:
