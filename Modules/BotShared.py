@@ -1481,6 +1481,14 @@ def bot_dictcom_targetplusreason(bot, botcom):
     else:
         replies = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
 
+    if "reasonhandle" in botcom.dotcommand_dict.keys():
+        if spicemanip(bot, botcom.completestring, 1).lower() not in botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
+            botcom.completestring = botcom.dotcommand_dict["reasonhandle"][0] + " " + botcom.completestring
+        elif spicemanip(bot, botcom.completestring, 1).lower() in botcom.dotcommand_dict["reasonhandle"] and not ignorefillin:
+            if spicemanip(bot, botcom.completestring, 1).lower() != botcom.dotcommand_dict["reasonhandle"][0]:
+                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+                botcom.completestring = botcom.dotcommand_dict["reasonhandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
+
     if not isinstance(replies, list):
         replies = [replies]
 
