@@ -1,9 +1,135 @@
-{
-"validcoms": [],  # (Optional) this can be a list of valid commands, or a single command in "", defaults to filename for command if not specified
-"type": "",  # (Optional) single "", see subfolders for options, if not specified, defaults to subfoldername
-"replies": ["$target does this."],  # (Required) this can either be a "" or a list of simple replies. Specifying $target for the target type will replace that part of the string
-"noinputreplies": ["Backup reply if not target"],  # (Optional) if reply cannot run normally, this will output, Handy for target replies
-"backuptarget": "",  # (Optional) this can be set to "instigator", if you want to target trigger.nick if no target is specified
-}
+###########
+## Notes ##
+###########
+
 
 # replies in double [[]] will be preserved as a list of things to say
+
+# $input will be replaced by the complete string input if any
+
+# "time.sleep(5)" will be evaluated to make a command wait X seconds
+
+# $instigator will be replaced with person who started command
+
+# *a at the beggining will make the bot do an action
+
+# "specialcase": {
+#                "canada": {
+#                          "replies": ["Blame Canada!!!   https://www.youtube.com/watch?v=bOR38552MJA"],
+#                          "inputrequired": False,
+#                          },
+#                },
+# use this to allow a special reply if user input starts with the key, inputrequired = False if you are bypassing $blank and $target
+
+# $channel will be replaced with the current channel
+
+# $botnick will be replaced with bot.nick
+
+
+############
+## simple ##
+############
+
+
+# This type of module is designed to read from a reply list, and give a response
+
+
+{
+"replies": ["This is a reply."],
+"type": "",  # (Optional) single "", see subfolders for options, if not specified, defaults to subfoldername
+"validcoms": [],  # (Optional) this can be a list of valid commands, or a single command in "", defaults to filename for command if not specified
+}
+
+
+####################
+## fillintheblank ##
+####################
+
+
+# This type of module expands on the functionality of 'simple' by allowing user input to fill in where $blank is present
+
+
+{
+"replies": ["This is a reply test for $blank."],  # specify $blank
+"type": "",  # (Optional) single "", see subfolders for options, if not specified, defaults to subfoldername
+"validcoms": [],  # (Optional) this can be a list of valid commands, or a single command in "", defaults to filename for command if not specified
+"backupblank": '',  # (Optional) this will fill in the blank if not one
+"noinputreplies": [],  # (Optional) this will change list of text used if user doesn't input
+}
+
+
+##################
+## readfromfile ##
+##################
+
+
+# This variation on simple allows the contents of a file in the 'Text-Files' directory to be converted into a list and used
+
+
+{
+"type": "",  # (Optional) single "", see subfolders for options, if not specified, defaults to subfoldername
+"validcoms": [],  # (Optional) this can be a list of valid commands, or a single command in "", defaults to filename for command if not specified
+"filename": "compliments",   # (Optional) use this instead of "replies" to open a file in the 'Text-Files' directory
+}
+
+
+#################
+## readfromurl ##
+#################
+
+
+# This variation on simple allows the contents raw pastebin url to be converted into a list and used
+
+
+{
+"type": "",  # (Optional) single "", see subfolders for options, if not specified, defaults to subfoldername
+"validcoms": [],  # (Optional) this can be a list of valid commands, or a single command in "", defaults to filename for command if not specified
+"readurl": "https://pastebin.com/raw/Vrq9bHBD",   # (Optional) use this instead of "replies" to pull from a url's text
+}
+
+
+#############
+## sayings ##
+#############
+
+
+# This variation on simple allows users to !add and !del entries from the list
+
+
+{
+"type": "",  # (Optional) single "", see subfolders for options, if not specified, defaults to subfoldername
+"validcoms": [],  # (Optional) this can be a list of valid commands, or a single command in "", defaults to filename for command if not specified
+"defaultreplies": [] # use this instead of "replies" to allow these to be used to initialize the database with some entries
+"updates_enabled": True,  # REQUIRED if you want users to be able to update the listing
+}
+
+
+############
+## target ##
+############
+
+
+# This type of module expands on the functionality of 'simple' by allowing user input to fill in where $target is present, targets must meet criteria to be valid
+
+
+{
+"replies": ["This is a reply test for $target."],  # specify $blank
+"type": "",  # (Optional) single "", see subfolders for options, if not specified, defaults to subfoldername
+"validcoms": [],  # (Optional) this can be a list of valid commands, or a single command in "", defaults to filename for command if not specified
+"backuptarget": "instigator",  # This can be set to instigator, or random
+"botreact": ["*a teaches $instigator a lesson by sitting on $instigator"],  # This is to specify a special reaction from the bot
+}
+
+
+######################
+## targetplusreason ##
+######################
+
+# This type of module expands on the functionality of 'target' and 'fillintheblank' by allowing user input to fill in where $target and $blank are present, targets must meet criteria to be valid
+
+{
+"replies": ["This is a reply test for $target $blank"],  # specify $blank and $target
+"type": "",  # (Optional) single "", see subfolders for options, if not specified, defaults to subfoldername
+"validcoms": [],  # (Optional) this can be a list of valid commands, or a single command in "", defaults to filename for command if not specified
+"reasonhandle": ["because", "for"],  # this will make sure the reason starts with the first in this list
+}
