@@ -1350,6 +1350,10 @@ def bot_dictcom_target(bot, botcom):
     if not isinstance(replies, list):
         replies = [replies]
 
+    if not botcom.target:
+        ignoretarget = 1
+        botcom.target = ''
+
     for rply in replies:
         rply = rply.replace("$target", botcom.target)
         rply = rply.replace("$instigator", botcom.instigator)
