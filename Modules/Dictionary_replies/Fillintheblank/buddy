@@ -9,5 +9,9 @@
                 "I'm not your guy, friend ",
                 ]
                 ],
-"specialcase": {"canada": "Blame Canada!!!   https://www.youtube.com/watch?v=bOR38552MJA",},
+"specialcase": {
+                "canada": {
+                          "replies": ["Blame Canada!!!   https://www.youtube.com/watch?v=bOR38552MJA"]
+                          },
+                },
 }
