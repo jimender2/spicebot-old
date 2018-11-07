@@ -1205,6 +1205,15 @@ def bot_dictcom_run(bot, trigger):
     for command_split_partial in commands_array:
         botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
 
+        # handling for special cases
+        posscom = spicemanip(bot, botcom.triggerargsarray, 1)
+        botcom.specialcase = False
+        if "specialcase" in botcom.dotcommand_dict.keys():
+            if posscom.lower() in botcom.dotcommand_dict["specialcase"].keys():
+                botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]["replies"]
+                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+                botcom.specialcase = posscom.lower()
+
         # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
         botcom.specified = None
         argone, argtwo = spicemanip(bot, botcom.triggerargsarray, 1), spicemanip(bot, botcom.triggerargsarray, 'last')
@@ -1231,15 +1240,6 @@ def bot_dictcom_run(bot, trigger):
         if botcom.specified:
             if str(botcom.specified).isdigit():
                 botcom.specified = int(botcom.specified)
-
-        # handling for special cases
-        posscom = spicemanip(bot, botcom.triggerargsarray, 1)
-        botcom.specialcase = False
-        if "specialcase" in botcom.dotcommand_dict.keys():
-            if posscom.lower() in botcom.dotcommand_dict["specialcase"].keys():
-                botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]["replies"]
-                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-                botcom.specialcase = posscom.lower()
 
         if botcom.specialcase:
 
