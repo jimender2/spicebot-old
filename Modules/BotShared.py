@@ -1602,6 +1602,10 @@ def bot_dictcom_targetplusreason(bot, botcom):
             osd(bot, botcom.channel_current, 'say', rply)
 
 
+def bot_dictcom_ascii_art(bot, botcom):
+    return bot_dictcom_simple(bot, botcom)
+
+
 def bot_dictcom_sayings(bot, botcom):
     return bot_dictcom_simple(bot, botcom)
 
