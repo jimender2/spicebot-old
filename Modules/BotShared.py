@@ -1135,7 +1135,7 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             if "type" in dict_from_file.keys():
                 dict_from_file[mustbe]["type"] = dict_from_file["type"]
             else:
-                dict_from_file[mustbe]["type"] = "simpleold"
+                dict_from_file[mustbe]["type"] = "simple"
 
         # each usecase needs a response
         if "responses" not in dict_from_file[mustbe].keys():
@@ -1152,6 +1152,7 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
                     dict_from_file[mustbe]["responses"].extend(dict_from_file["responses"])
                 else:
                     dict_from_file[mustbe]["responses"].append(dict_from_file["responses"])
+                del dict_from_file["responses"]
 
         # Verify responses list is not empty
         if dict_from_file[mustbe]["responses"] == []:
