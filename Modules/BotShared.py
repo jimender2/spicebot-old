@@ -1959,7 +1959,7 @@ def bot_dictcom_simple(bot, botcom):
     if botcom.specified == 'options':
         return osd(bot, botcom.channel_current, 'say', "The options for " + str(botcom.dotcommand_dict["validcoms"][0]) + " " + str(botcom.responsekey or '') + " command include: " + str(spicemanip(bot, botcom.dotcommand_dict.keys(), "andlist")) + ".")
     elif botcom.specified == 'count':
-        return osd(bot, botcom.channel_current, 'say', "The options for " + str(botcom.dotcommand_dict["validcoms"][0]) + " " + str(botcom.responsekey or '') + " command has " + str(len(botcom.dotcommand_dict[botcom.responsekey]["responses"])) + " entries.")
+        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.dotcommand_dict["validcoms"][0]) + " " + str(botcom.responsekey or '') + " command has " + str(len(botcom.dotcommand_dict[botcom.responsekey]["responses"])) + " entries.")
 
     botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
 
