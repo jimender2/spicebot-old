@@ -1036,7 +1036,7 @@ def dict_command_configs(bot):
                     dict_from_file = dict()
 
                 if comconf == 'shrug':
-                    bot.msg("deathbybandaid", str(dict_from_file))
+                    bot.msg("deathbybandaid", dict_from_file["replies"][0])
 
                 # Close File
                 inf.close()
