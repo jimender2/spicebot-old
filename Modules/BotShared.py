@@ -1824,7 +1824,7 @@ def bot_dictcom_readfromfile(bot, botcom):
 
 
 def bot_dictcom_newtest(bot, botcom):
-    bot.msg("deathbybandaid", "Test Complete")
+    bot.msg("#spicebottest", str(botcom.dotcommand_dict))
 
 
 """
