@@ -1853,7 +1853,16 @@ def bot_dictcom_readfromfile(bot, botcom):
 
 
 def bot_dictcom_newtest(bot, botcom):
-    bot.msg("#spicebottest", str(botcom.dotcommand_dict))
+
+    responsekey = "?default"
+
+    replies = spicemanip(bot, botcom.dotcommand_dict[responsekey]["responses"], 'random', 'return')
+
+    for rply in replies:
+        if rply.startswith("*a "):
+            osd(bot, botcom.channel_current, 'action', rply.replace("*a ", ""))
+        else:
+            osd(bot, botcom.channel_current, 'say', rply)
 
 
 """
