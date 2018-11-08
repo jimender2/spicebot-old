@@ -1220,6 +1220,9 @@ def dict_command_configs(bot):
                     if dict_from_file["type"] == "newtest":
                         keysprocessed = []
 
+                        # Don't process these
+                        keysprocessed.extend(["validcoms"])
+
                         # the command must have an author
                         if "author" not in dict_from_file.keys():
                             dict_from_file["author"] = "deathbybandaid"
