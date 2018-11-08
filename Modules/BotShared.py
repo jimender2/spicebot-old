@@ -1030,14 +1030,12 @@ def dict_command_configs(bot):
                 bot.memory["botdict"]["tempvals"]['dict_commands_loaded'].append(comconf)
 
                 # Read dictionary from file, if not, enable an empty dict
-                # make sure encoding is right
                 inf = codecs.open(os.path.join(coms_type_file_path, comconf), "r", encoding='utf-8')
                 infread = inf.read()
                 try:
                     dict_from_file = eval(infread)
                 except SyntaxError:
                     dict_from_file = dict()
-
                 # Close File
                 inf.close()
 
