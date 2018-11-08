@@ -42,6 +42,7 @@ from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 from word2number import w2n
+import codecs
 
 # user agent and header
 ua = UserAgent()
@@ -1029,11 +1030,18 @@ def dict_command_configs(bot):
                 bot.memory["botdict"]["tempvals"]['dict_commands_loaded'].append(comconf)
 
                 # Read dictionary from file, if not, enable an empty dict
-                inf = open(os.path.join(coms_type_file_path, comconf), 'r')
+                inf = codecs.open("myfile.txt", "r", encoding='utf-8')
+                infread = inf.read()
                 try:
-                    dict_from_file = eval(inf.read())
+                    dict_from_file = eval(infread)
                 except SyntaxError:
                     dict_from_file = dict()
+
+                # inf = open(os.path.join(coms_type_file_path, comconf), 'r')
+                # try:
+                #    dict_from_file = eval(inf.read())
+                # except SyntaxError:
+                #    dict_from_file = dict()
 
                 if comconf == 'shrug':
                     bot.msg("deathbybandaid", dict_from_file["replies"][0])
