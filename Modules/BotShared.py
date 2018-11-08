@@ -1873,11 +1873,11 @@ def getGif(bot, searchdict):
                 # Create Temp dict for every result
                 tempresultnum = 0
                 for tempresult in resultsarray:
+                    tempresultnum += 1
                     tempdict = dict()
                     tempdict["returnnum"] = tempresultnum
                     tempdict["returnurl"] = tempresult
                     tempdict["gifapi"] = currentapi
-                    tempresultnum += 1
                     gifapiresults.append(tempdict)
 
     if gifapiresults == []:
