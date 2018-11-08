@@ -1961,7 +1961,7 @@ def bot_dictcom_simple(bot, botcom):
     if botcom.specified == 'special':
         nonstockoptions = []
         for command in botcom.dotcommand_dict.keys():
-            if command not in ["?default"]:
+            if command not in ["?default", "validcoms", "contributors", "author", "type"]:
                 nonstockoptions.append(command)
         nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
         return osd(bot, botcom.channel_current, 'say', "The special options for " + str(botcom.maincom) + " command include: " + str(nonstockoptions) + ".")
