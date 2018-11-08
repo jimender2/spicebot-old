@@ -1717,6 +1717,9 @@ def bot_dictcom_gif(bot, botcom):
     else:
         searchapis = bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys()
 
+    if botcom.specified:
+
+
     searchdict = {"query": query, "gifsearch": searchapis}
 
     # nsfwenabled = get_database_value(bot, bot.nick, 'channels_nsfw') or []
@@ -1726,7 +1729,36 @@ def bot_dictcom_gif(bot, botcom):
     gifdict = getGif(bot, searchdict)
 
     if gifdict["error"]:
-        osd(bot, botcom.channel_current, 'say',  str(gifdict["error"]))
+        if "noinputreplies" in botcom.dotcommand_dict.keys():
+            botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
+            if botcom.specified:
+                if botcom.specified > len(botcom.dotcommand_dict["replies"]):
+                    botcom.specified = len(botcom.dotcommand_dict["replies"])
+                replies = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
+            else:
+                replies = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
+
+            if not isinstance(replies, list):
+                replies = [replies]
+            # handling for embedded lists
+            for rply in replies:
+                if botcom.prefixtext != "":
+                    rply = botcom.prefixtext + rply
+                if botcom.suffixtext != "":
+                    rply = rply + botcom.suffixtext
+                rply = rply.replace("$instigator", botcom.instigator)
+                rply = rply.replace("$channel", botcom.channel_current)
+                rply = rply.replace("$botnick", bot.nick)
+                rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
+                if rply.startswith("time.sleep"):
+                    eval(rply)
+                elif rply.startswith("*a "):
+                    rply = rply.replace("*a ", "")
+                    osd(bot, botcom.channel_current, 'action', rply)
+                else:
+                    osd(bot, botcom.channel_current, 'say', rply)
+        else:
+            osd(bot, botcom.channel_current, 'say',  str(gifdict["error"]))
         return
 
     osd(bot, botcom.channel_current, 'say',  gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
@@ -1763,6 +1795,7 @@ def getGif(bot, searchdict):
                     "gifsearchremove": ['gifme'],
                     "searchlimit": 'default',
                     "nsfw": False,
+                    "pickingselection": "random",
                     }
 
     # set defaults if they don't exist
@@ -1848,10 +1881,9 @@ def getGif(bot, searchdict):
     if gifapiresults == []:
         return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
-    # shuffle and select random entry
     random.shuffle(gifapiresults)
     random.shuffle(gifapiresults)
-    gifdict = spicemanip(bot, gifapiresults, 'random')
+    gifdict = spicemanip(bot, gifapiresults, searchdict["pickingselection"])
 
     # return dict
     gifdict['error'] = None
