@@ -1717,9 +1717,10 @@ def bot_dictcom_gif(bot, botcom):
     else:
         searchapis = bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys()
 
-    # if botcom.specified:
-
     searchdict = {"query": query, "gifsearch": searchapis}
+
+    if botcom.specified:
+        searchdict["pickingselection"] = botcom.specified
 
     # nsfwenabled = get_database_value(bot, bot.nick, 'channels_nsfw') or []
     # if botcom.channel_current in nsfwenabled:
@@ -1882,6 +1883,9 @@ def getGif(bot, searchdict):
 
     random.shuffle(gifapiresults)
     random.shuffle(gifapiresults)
+    if searchdict["pickingselection"] not in ["random", "last"]:
+        if searchdict["pickingselection"] > len(gifapiresults):
+            searchdict["pickingselection"] = len(gifapiresults)
     gifdict = spicemanip(bot, gifapiresults, searchdict["pickingselection"])
 
     # return dict
