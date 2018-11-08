@@ -1,0 +1,5 @@
+{
+"validcoms": ['thanks', 'thanksspicebot'],
+"query": "your welcome",
+"searchfail": ["You're welcome!"],
+}

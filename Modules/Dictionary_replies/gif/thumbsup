@@ -1,0 +1,5 @@
+{
+"query": "thumbs up",
+"replyvariation":[' a thumbs up.', ' a pat on the back.', ' a sarcastic smile.', ' a high five.'],
+"searchfail": ["gives $instigator $replyvariation"],
+}

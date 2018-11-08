@@ -1216,6 +1216,10 @@ def dict_command_configs(bot):
                     if "suffixtext" not in dict_from_file.keys():
                         dict_from_file["suffixtext"] = False
 
+                    # suffix text
+                    if "replyvariation" not in dict_from_file.keys():
+                        dict_from_file["replyvariation"] = []
+
                     # Special case replies
                     if "specialcase" not in dict_from_file.keys():
                         dict_from_file["specialcase"] = {}
@@ -1244,6 +1248,8 @@ def dict_command_configs(bot):
                             dict_from_file["specialcase"][speckey]["prefixtext"] = False
                         if "suffixtext" not in dict_from_file["specialcase"][speckey].keys():
                             dict_from_file["specialcase"][speckey]["suffixtext"] = False
+                        if "replyvariation" not in dict_from_file["specialcase"][speckey].keys():
+                            dict_from_file["specialcase"][speckey]["replyvariation"] = []
                         if "updates_enabled" not in dict_from_file["specialcase"][speckey].keys():
                             dict_from_file["specialcase"][speckey]["updates_enabled"] = False
                         if dict_from_file["specialcase"][speckey]["updates_enabled"]:
@@ -1464,6 +1470,12 @@ def bot_dictcom_simple(bot, botcom):
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
         rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
+        if "$replyvariation" in rply:
+            if botcom.dotcommand_dict["replyvariation"] != [] and isinstance(botcom.dotcommand_dict["replyvariation"], list):
+                variation = spicemanip(bot, botcom.dotcommand_dict["replyvariation"], 'random')
+                rply = rply.replace("$replyvariation", variation)
+            else:
+                rply = rply.replace("$replyvariation", '')
         if rply.startswith("time.sleep"):
             eval(rply)
         elif rply.startswith("*a "):
@@ -1541,6 +1553,12 @@ def bot_dictcom_target(bot, botcom):
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
         rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
+        if "$replyvariation" in rply:
+            if botcom.dotcommand_dict["replyvariation"] != [] and isinstance(botcom.dotcommand_dict["replyvariation"], list):
+                variation = spicemanip(bot, botcom.dotcommand_dict["replyvariation"], 'random')
+                rply = rply.replace("$replyvariation", variation)
+            else:
+                rply = rply.replace("$replyvariation", '')
         if rply.startswith("time.sleep"):
             eval(rply)
         elif rply.startswith("*a "):
@@ -1593,6 +1611,12 @@ def bot_dictcom_fillintheblank(bot, botcom):
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
         rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
+        if "$replyvariation" in rply:
+            if botcom.dotcommand_dict["replyvariation"] != [] and isinstance(botcom.dotcommand_dict["replyvariation"], list):
+                variation = spicemanip(bot, botcom.dotcommand_dict["replyvariation"], 'random')
+                rply = rply.replace("$replyvariation", variation)
+            else:
+                rply = rply.replace("$replyvariation", '')
         if rply.startswith("time.sleep"):
             eval(rply)
         elif rply.startswith("*a "):
@@ -1694,6 +1718,12 @@ def bot_dictcom_targetplusreason(bot, botcom):
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
         rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
+        if "$replyvariation" in rply:
+            if botcom.dotcommand_dict["replyvariation"] != [] and isinstance(botcom.dotcommand_dict["replyvariation"], list):
+                variation = spicemanip(bot, botcom.dotcommand_dict["replyvariation"], 'random')
+                rply = rply.replace("$replyvariation", variation)
+            else:
+                rply = rply.replace("$replyvariation", '')
         if rply.startswith("time.sleep"):
             eval(rply)
         elif rply.startswith("*a "):
@@ -1750,6 +1780,12 @@ def bot_dictcom_gif(bot, botcom):
         rply = rply.replace("$channel", botcom.channel_current)
         rply = rply.replace("$botnick", bot.nick)
         rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
+        if "$replyvariation" in rply:
+            if botcom.dotcommand_dict["replyvariation"] != [] and isinstance(botcom.dotcommand_dict["replyvariation"], list):
+                variation = spicemanip(bot, botcom.dotcommand_dict["replyvariation"], 'random')
+                rply = rply.replace("$replyvariation", variation)
+            else:
+                rply = rply.replace("$replyvariation", '')
         if rply.startswith("time.sleep"):
             eval(rply)
         elif rply.startswith("*a "):
