@@ -1710,6 +1710,9 @@ def bot_dictcom_gif(bot, botcom):
     else:
         query = botcom.completestring
 
+    bot.msg("#spicebottest", str(botcom.dotcommand))
+    bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict']))
+
     if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
         searchapis = [botcom.dotcommand]
     elif "queryapi" in botcom.dotcommand_dict.keys():
