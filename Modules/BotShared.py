@@ -1140,10 +1140,23 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         # each usecase needs a response
         if "responses" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["responses"] = []
-
         # verify responses are in list form
         if not isinstance(dict_from_file[mustbe]["responses"], list):
             dict_from_file[mustbe]["responses"] = [dict_from_file[mustbe]["responses"]]
+
+        # each usecase needs a prefixtext
+        if "prefixtext" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["prefixtext"] = False
+
+        # each usecase needs a suffixtext
+        if "suffixtext" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["suffixtext"] = False
+
+        # make sure we have the smaller variation list
+        if "replyvariation" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["replyvariation"] = []
+        if not isinstance(dict_from_file[mustbe]["replyvariation"], list):
+            dict_from_file[mustbe]["replyvariation"] = [dict_from_file[mustbe]["replyvariation"]]
 
         # This is to provide functionality for flat dictionaries responses
         if dict_from_file[mustbe]["responses"] == [] and mustbe == "?default":
@@ -1153,6 +1166,10 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
                 else:
                     dict_from_file[mustbe]["responses"].append(dict_from_file["responses"])
                 del dict_from_file["responses"]
+
+        # This is to give no input an alternate message
+        if dict_from_file[mustbe]["responses"] == [] and mustbe == "?noinput":
+            dict_from_file[mustbe]["responses"].append("No input given for " + str(maincom) + ".")
 
         # Verify responses list is not empty
         if dict_from_file[mustbe]["responses"] == []:
@@ -1245,7 +1262,7 @@ def dict_command_configs(bot):
                         keysprocessed.append("contributors")
 
                         # handle basic required dict handling
-                        dict_required = ["?default"]
+                        dict_required = ["?default", "?noinput"]
                         dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, dict_required)
                         keysprocessed.extend(dict_required)
 
@@ -1403,19 +1420,6 @@ def bot_dictcom_run(bot, trigger):
     # execute function based on command type
     botcom.commandtype = botcom.dotcommand_dict["type"].lower()
 
-    if not botcom.commandtype.endswith("old"):
-
-        # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
-        if commands_array == []:
-            commands_array = [[]]
-        for command_split_partial in commands_array:
-            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
-
-            bot_dictcom_simple(bot, botcom)  # TODO rename
-
-        return
-
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
     if commands_array == []:
@@ -1423,177 +1427,22 @@ def bot_dictcom_run(bot, trigger):
     for command_split_partial in commands_array:
         botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
 
-        # handling for special cases
-        posscom = spicemanip(bot, botcom.triggerargsarray, 1)
-        botcom.specialcase = False
-        if "specialcase" in botcom.dotcommand_dict.keys():
-            if posscom.lower() in botcom.dotcommand_dict["specialcase"].keys():
-                botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["specialcase"][posscom.lower()]["replies"]
-                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-                botcom.specialcase = posscom.lower()
-
-        # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-        botcom.specified = None
-        argone, argtwo = spicemanip(bot, botcom.triggerargsarray, 1), spicemanip(bot, botcom.triggerargsarray, 'last')
-        if str(argone).startswith("!") and len(str(argone)) > 1:
-            if str(argone[1:]).isdigit() or str(argone[1:]) in ['last', 'random', 'count', 'view', 'add', 'del', 'remove']:
-                botcom.specified = argone[1:]
-            else:
-                try:
-                    botcom.specified = w2n.word_to_num(str(argone[1:]))
-                except ValueError:
-                    botcom.specified = None
-            if botcom.specified:
-                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-        elif str(argtwo).startswith("!") and len(str(argtwo)) > 1:
-            if str(argtwo[1:]).isdigit() or str(argtwo[1:]) in ['last', 'random', 'count', 'view', 'add', 'del', 'remove']:
-                botcom.specified = argtwo[1:]
-            else:
-                try:
-                    botcom.specified = w2n.word_to_num(str(argtwo[1:]))
-                except ValueError:
-                    botcom.specified = None
-            if botcom.specified:
-                botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'last!', 'list')
-        if botcom.specified:
-            if str(botcom.specified).isdigit():
-                botcom.specified = int(botcom.specified)
-
-        if botcom.specialcase:
-
-            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["updates_enabled"]:
-                botcom.dotcommand_dict["replies"] = get_nick_value(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.specialcase or 'normal'), 'long', 'sayings') or []
-
-            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["prefixtext"]:
-                botcom.prefixtext = botcom.dotcommand_dict["specialcase"][botcom.specialcase]["prefixtext"]
-            else:
-                botcom.prefixtext = ""
-
-            if botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"]:
-                botcom.suffixtext = botcom.dotcommand_dict["specialcase"][botcom.specialcase]["suffixtext"]
-            else:
-                botcom.suffixtext = ""
-        else:
-
-            if "updates_enabled" in botcom.dotcommand_dict.keys():
-                if botcom.dotcommand_dict["updates_enabled"]:
-                    botcom.dotcommand_dict["replies"] = get_nick_value(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.specialcase or 'normal'), 'long', 'sayings') or []
-
-            if botcom.dotcommand_dict["prefixtext"]:
-                botcom.prefixtext = botcom.dotcommand_dict["prefixtext"]
-            else:
-                botcom.prefixtext = ""
-
-            if botcom.dotcommand_dict["suffixtext"]:
-                botcom.suffixtext = botcom.dotcommand_dict["suffixtext"]
-            else:
-                botcom.suffixtext = ""
-
-        posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
-        botcom.target = False
-        if posstarget in bot.memory["botdict"]["users"].keys():
-            botcom.target = posstarget
-
-        # Hardcoded commands
-        if botcom.specified == 'count':
-            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " command has " + str(len(botcom.dotcommand_dict["replies"])) + " entries.")
-        elif botcom.specified == 'view':
-            if botcom.dotcommand_dict["replies"] == []:
-                return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " command appears to have no entries!")
-            else:
-                osd(bot, botcom.instigator, 'notice', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " command contains:")
-                listnumb, relist = 1, []
-                for item in botcom.dotcommand_dict["replies"]:
-                    if listnumb <= 20:
-                        relist.append(str("[#" + str(listnumb) + "] " + str(item)))
-                    listnumb += 1
-                osd(bot, botcom.instigator, 'say', relist)
-                if listnumb > 20:
-                    osd(bot, botcom.instigator, 'say', "List cut off after the 20th entry to prevent bot lag.")
-                return
-
-        elif botcom.specified == 'add':
-
-            if botcom.specialcase:
-                if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["updates_enabled"]:
-                    return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list cannot be updated.")
-            else:
-
-                if "updates_enabled" not in botcom.dotcommand_dict.keys():
-                    return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list cannot be updated.")
-                if not botcom.dotcommand_dict["updates_enabled"]:
-                    return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list cannot be updated.")
-
-            fulltext = spicemanip(bot, botcom.triggerargsarray, 0)
-            if not fulltext:
-                return osd(bot, botcom.channel_current, 'say', "What would you like to add to the " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list?")
-            if fulltext in botcom.dotcommand_dict["replies"]:
-                return osd(bot, botcom.channel_current, 'say', "The following was already in the " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list: '" + str(fulltext) + "'")
-            adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.specialcase or 'normal'), fulltext, botcom.specified, 'long', 'sayings')
-            return osd(bot, botcom.channel_current, 'say', "The following was added to the " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list: '" + str(fulltext) + "'")
-
-        elif botcom.specified in ['del', 'remove']:
-
-            if botcom.specialcase:
-                if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["updates_enabled"]:
-                    return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list cannot be updated.")
-            else:
-
-                if "updates_enabled" not in botcom.dotcommand_dict.keys():
-                    return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list cannot be updated.")
-                if not botcom.dotcommand_dict["updates_enabled"]:
-                    return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list cannot be updated.")
-
-            fulltext = spicemanip(bot, botcom.triggerargsarray, 0)
-            if not fulltext:
-                return osd(bot, botcom.channel_current, 'say', "What would you like to remove from the " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list?")
-            if fulltext not in botcom.dotcommand_dict["replies"]:
-                return osd(bot, botcom.channel_current, 'say', "The following was already not in the " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list: '" + str(fulltext) + "'")
-            adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.specialcase or 'normal'), fulltext, botcom.specified, 'long', 'sayings')
-            return osd(bot, botcom.channel_current, 'say', "The following was removed from the " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list: '" + str(fulltext) + "'")
-
+        # bot_dictcom_simple(bot, botcom)  # TODO rename
         botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
 
-        # Run the command with the given info
-        command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
-        eval(command_function_run)
+        bot_dictcom_process(bot, botcom)
 
 
-def bot_dictcom_simpleold(bot, botcom):
+def bot_dictcom_simple(bot, botcom):
 
     if botcom.specified:
-        if botcom.specified > len(botcom.dotcommand_dict["replies"]):
-            botcom.specified = len(botcom.dotcommand_dict["replies"])
-        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
+        if botcom.specified > len(botcom.dotcommand_dict[botcom.responsekey]["responses"]):
+            botcom.specified = len(botcom.dotcommand_dict[botcom.responsekey]["responses"])
+        replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], botcom.specified, 'return')
     else:
-        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
+        replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
 
-    if not isinstance(replies, list):
-        replies = [replies]
-
-    # handling for embedded lists
-    for rply in replies:
-        if botcom.prefixtext != "":
-            rply = botcom.prefixtext + rply
-        if botcom.suffixtext != "":
-            rply = rply + botcom.suffixtext
-        rply = rply.replace("$instigator", botcom.instigator)
-        rply = rply.replace("$channel", botcom.channel_current)
-        rply = rply.replace("$botnick", bot.nick)
-        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.maincom)
-        if "$replyvariation" in rply:
-            if botcom.dotcommand_dict["replyvariation"] != [] and isinstance(botcom.dotcommand_dict["replyvariation"], list):
-                variation = spicemanip(bot, botcom.dotcommand_dict["replyvariation"], 'random')
-                rply = rply.replace("$replyvariation", variation)
-            else:
-                rply = rply.replace("$replyvariation", '')
-        if rply.startswith("time.sleep"):
-            eval(rply)
-        elif rply.startswith("*a "):
-            rply = rply.replace("*a ", "")
-            osd(bot, botcom.channel_current, 'action', rply)
-        else:
-            osd(bot, botcom.channel_current, 'say', rply)
+    bot_dictcom_reply_shared(bot, botcom)
 
 
 def bot_dictcom_targetold(bot, botcom):
@@ -1922,7 +1771,7 @@ def bot_dictcom_readfromfileold(bot, botcom):
     return bot_dictcom_simpleold(bot, botcom)
 
 
-def bot_dictcom_simple(bot, botcom):
+def bot_dictcom_process(bot, botcom):
 
     # use the default key, unless otherwise specified
     botcom.responsekey = "?default"
@@ -1965,7 +1814,7 @@ def bot_dictcom_simple(bot, botcom):
     if botcom.specified == 'special':
         nonstockoptions = []
         for command in botcom.dotcommand_dict.keys():
-            if command not in ["?default", "validcoms", "contributors", "author", "type"]:
+            if command not in ["?default", "validcoms", "contributors", "author", "type", "?noinput"]:
                 nonstockoptions.append(command)
         nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
         return osd(bot, botcom.channel_current, 'say', "The special options for " + str(botcom.maincom) + " command include: " + str(nonstockoptions) + ".")
@@ -2026,9 +1875,15 @@ def bot_dictcom_simple(bot, botcom):
 
         return osd(bot, botcom.channel_current, 'say', "The following was removed from the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
-    botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
+    posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
+    botcom.target = False
+    if posstarget in bot.memory["botdict"]["users"].keys():
+        botcom.target = posstarget
 
-    bot_dictcom_reply_shared(bot, botcom)
+    command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
+    eval(command_function_run)
+
+    # bot_dictcom_reply_shared(bot, botcom)
 
     # osd(bot, botcom.channel_current, 'say', str(botcom.dotcommand_dict))
 
@@ -2040,10 +1895,45 @@ def bot_dictcom_reply_shared(bot, botcom):
         botcom.replies = [botcom.replies]
 
     for rply in botcom.replies:
-        if rply.startswith("*a "):
-            osd(bot, botcom.channel_current, 'action', rply.replace("*a ", ""))
+
+        # replies that can be evaluated as code
+        if rply.startswith("time.sleep"):
+            eval(rply)
         else:
-            osd(bot, botcom.channel_current, 'say', rply)
+
+            # text to precede the output
+            if botcom.dotcommand_dict[botcom.responsekey]["prefixtext"]:
+                rply = botcom.dotcommand_dict[botcom.responsekey]["prefixtext"] + rply
+
+            # text to follow the output
+            if botcom.dotcommand_dict[botcom.responsekey]["suffixtext"]:
+                rply = rply + botcom.dotcommand_dict[botcom.responsekey]["suffixtext"]
+
+            # trigger.nick
+            rply = rply.replace("$instigator", botcom.instigator)
+
+            # current channel
+            rply = rply.replace("$channel", botcom.channel_current)
+
+            # bot.nick
+            rply = rply.replace("$botnick", bot.nick)
+
+            # the remaining input
+            rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.maincom)
+
+            # smaller variations for the text
+            if "$replyvariation" in rply:
+                if botcom.dotcommand_dict[botcom.responsekey]["replyvariation"] != []:
+                    variation = spicemanip(bot, botcom.dotcommand_dict["replyvariation"], 'random')
+                    rply = rply.replace("$replyvariation", variation)
+                else:
+                    rply = rply.replace("$replyvariation", '')
+
+            # saying, or action?
+            if rply.startswith("*a "):
+                osd(bot, botcom.channel_current, 'action', rply.replace("*a ", ""))
+            else:
+                osd(bot, botcom.channel_current, 'say', rply)
 
 
 """
