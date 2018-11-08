@@ -1965,7 +1965,7 @@ def bot_dictcom_simple(bot, botcom):
 
     bot_dictcom_reply_shared(bot, botcom)
 
-    osd(bot, botcom.channel_current, 'say', str(botcom.dotcommand_dict))
+    # osd(bot, botcom.channel_current, 'say', str(botcom.dotcommand_dict))
 
 
 def copypasta(bot):
