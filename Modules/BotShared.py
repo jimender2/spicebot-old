@@ -1266,139 +1266,46 @@ def dict_command_configs(bot):
                         dict_from_file["type"] = 'simple'
                         dict_from_file["replies"] = "This command is not setup with a proper 'type'."
 
-                    if not dict_from_file["type"].endswith("old"):
-                        keysprocessed = []
+                    # Don't process these.
+                    keysprocessed = []
+                    keysprocessed.extend(["validcoms"])
 
-                        # Don't process these
-                        keysprocessed.extend(["validcoms"])
+                    # the command must have an author
+                    if "author" not in dict_from_file.keys():
+                        dict_from_file["author"] = "deathbybandaid"
+                    keysprocessed.append("author")
 
-                        # the command must have an author
-                        if "author" not in dict_from_file.keys():
-                            dict_from_file["author"] = "deathbybandaid"
-                        keysprocessed.append("author")
+                    # the command must have a contributors list
+                    if "contributors" not in dict_from_file.keys():
+                        dict_from_file["contributors"] = []
+                    if not isinstance(dict_from_file["contributors"], list):
+                        dict_from_file["contributors"] = [dict_from_file["contributors"]]
+                    if "deathbybandaid" not in dict_from_file["contributors"]:
+                        dict_from_file["contributors"].append("deathbybandaid")
+                    if dict_from_file["author"] not in dict_from_file["contributors"]:
+                        dict_from_file["contributors"].append(dict_from_file["author"])
+                    keysprocessed.append("contributors")
 
-                        # the command must have a contributors list
-                        if "contributors" not in dict_from_file.keys():
-                            dict_from_file["contributors"] = []
-                        if not isinstance(dict_from_file["contributors"], list):
-                            dict_from_file["contributors"] = [dict_from_file["contributors"]]
-                        if "deathbybandaid" not in dict_from_file["contributors"]:
-                            dict_from_file["contributors"].append("deathbybandaid")
-                        if dict_from_file["author"] not in dict_from_file["contributors"]:
-                            dict_from_file["contributors"].append(dict_from_file["author"])
-                        keysprocessed.append("contributors")
+                    # handle basic required dict handling
+                    dict_required = ["?default", "?noinput"]
+                    dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, dict_required)
+                    keysprocessed.extend(dict_required)
 
-                        # handle basic required dict handling
-                        dict_required = ["?default", "?noinput"]
-                        dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, dict_required)
-                        keysprocessed.extend(dict_required)
+                    # remove later
+                    keysprocessed.append("type")
 
-                        # remove later
-                        keysprocessed.append("type")
+                    # all other keys not processed above are considered potential use cases
+                    otherkeys = []
+                    for otherkey in dict_from_file.keys():
+                        if otherkey not in keysprocessed:
+                            otherkeys.append(otherkey)
+                    dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, otherkeys)
+                    keysprocessed.extend(otherkeys)
 
-                        # all other keys not processed above are considered potential use cases
-                        otherkeys = []
-                        for otherkey in dict_from_file.keys():
-                            if otherkey not in keysprocessed:
-                                otherkeys.append(otherkey)
-                        dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, otherkeys)
-                        keysprocessed.extend(otherkeys)
-
-                        bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
-                        for comalias in comaliases:
-                            if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-                                bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
-
-                    else:
-
-                        # check that reply is set
-                        if "replies" not in dict_from_file.keys():
-                            if "filename" in dict_from_file.keys():
-                                if dict_from_file["filename"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
-                                    dict_from_file["replies"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["filename"]]
-                            elif "readurl" in dict_from_file.keys():
-                                page = requests.get(dict_from_file["readurl"], headers=header)
-                                tree = html.fromstring(page.content)
-                                if page.status_code == 200:
-                                    htmlfile = urllib.urlopen(dict_from_file["readurl"])
-                                    lines = htmlfile.read().splitlines()
-                                    dict_from_file["replies"] = lines
-                            elif "defaultreplies" in dict_from_file.keys():
-                                    dict_from_file["replies"] = dict_from_file["defaultreplies"]
-                            else:
-                                dict_from_file["replies"] = "Reply missing"
-
-                        if "updates_enabled" in dict_from_file.keys():
-                            if dict_from_file["updates_enabled"]:
-                                adjust_nick_array(bot, str(bot.nick), maincom + "_normal", dict_from_file["replies"], 'startup', 'long', 'sayings')
-
-                        # make replies in list form if not
-                        for mustbe in ["replies", "noinputreplies", "reasonhandle", "botreact"]:
-                            if mustbe in dict_from_file.keys():
-                                if not isinstance(dict_from_file[mustbe], list):
-                                    if dict_from_file[mustbe] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
-                                        dict_from_file[mustbe] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file[mustbe]]
-                                    elif str(dict_from_file[mustbe]).startswith(tuple(["https://", "http://"])):
-                                        page = requests.get(dict_from_file[mustbe], headers=header)
-                                        tree = html.fromstring(page.content)
-                                        if page.status_code == 200:
-                                            htmlfile = urllib.urlopen(dict_from_file[mustbe])
-                                            lines = htmlfile.read().splitlines()
-                                            dict_from_file[mustbe] = lines
-                                    else:
-                                        dict_from_file[mustbe] = [dict_from_file[mustbe]]
-
-                        # Prefix text
-                        if "prefixtext" not in dict_from_file.keys():
-                            dict_from_file["prefixtext"] = False
-
-                        # suffix text
-                        if "suffixtext" not in dict_from_file.keys():
-                            dict_from_file["suffixtext"] = False
-
-                        # suffix text
-                        if "replyvariation" not in dict_from_file.keys():
-                            dict_from_file["replyvariation"] = []
-
-                        # Special case replies
-                        if "specialcase" not in dict_from_file.keys():
-                            dict_from_file["specialcase"] = {}
-                        if not isinstance(dict_from_file["specialcase"], dict):
-                            dict_from_file["specialcase"] = {}
-                        for speckey in dict_from_file["specialcase"].keys():
-                            if not isinstance(dict_from_file["specialcase"][speckey], dict):
-                                dict_from_file["specialcase"][speckey] = {}
-                            if "replies" not in dict_from_file["specialcase"][speckey].keys():
-                                dict_from_file["specialcase"][speckey]["replies"] = []
-                            if not isinstance(dict_from_file["specialcase"][speckey]["replies"], list):
-                                if dict_from_file["specialcase"][speckey]["replies"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
-                                    dict_from_file["specialcase"][speckey]["replies"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file["specialcase"][speckey]["replies"]]
-                                elif str(dict_from_file["specialcase"][speckey]["replies"]).startswith(tuple(["https://", "http://"])):
-                                    page = requests.get(dict_from_file["specialcase"][speckey]["replies"], headers=header)
-                                    tree = html.fromstring(page.content)
-                                    if page.status_code == 200:
-                                        htmlfile = urllib.urlopen(dict_from_file["specialcase"][speckey]["replies"])
-                                        lines = htmlfile.read().splitlines()
-                                        dict_from_file["specialcase"][speckey]["replies"] = lines
-                                else:
-                                    dict_from_file["specialcase"][speckey]["replies"] = [dict_from_file["specialcase"][speckey]["replies"]]
-                            if "inputrequired" not in dict_from_file["specialcase"][speckey].keys():
-                                dict_from_file["specialcase"][speckey]["inputrequired"] = True
-                            if "prefixtext" not in dict_from_file["specialcase"][speckey].keys():
-                                dict_from_file["specialcase"][speckey]["prefixtext"] = False
-                            if "suffixtext" not in dict_from_file["specialcase"][speckey].keys():
-                                dict_from_file["specialcase"][speckey]["suffixtext"] = False
-                            if "replyvariation" not in dict_from_file["specialcase"][speckey].keys():
-                                dict_from_file["specialcase"][speckey]["replyvariation"] = []
-                            if "updates_enabled" not in dict_from_file["specialcase"][speckey].keys():
-                                dict_from_file["specialcase"][speckey]["updates_enabled"] = False
-                            if dict_from_file["specialcase"][speckey]["updates_enabled"]:
-                                adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(speckey), dict_from_file["specialcase"][speckey]["replies"], 'startup', 'long', 'sayings')
-
-                        bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
-                        for comalias in comaliases:
-                            if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-                                bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
+                    bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
+                    for comalias in comaliases:
+                        if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+                            bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
 
 
 def bot_dictcom_run(bot, trigger):
