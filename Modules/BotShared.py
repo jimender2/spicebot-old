@@ -1241,6 +1241,9 @@ def dict_command_configs(bot):
                         dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, dict_required)
                         keysprocessed.extend(dict_required)
 
+                        # remove later
+                        keysprocessed.append("type")
+
                         # all other keys not processed above are considered potential use cases
                         otherkeys = []
                         for otherkey in dict_from_file.keys():
