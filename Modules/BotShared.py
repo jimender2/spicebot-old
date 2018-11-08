@@ -1717,8 +1717,7 @@ def bot_dictcom_gif(bot, botcom):
     else:
         searchapis = bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys()
 
-    if botcom.specified:
-
+    # if botcom.specified:
 
     searchdict = {"query": query, "gifsearch": searchapis}
 
