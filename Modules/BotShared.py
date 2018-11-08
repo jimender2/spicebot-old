@@ -68,7 +68,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'simpleold', 'target', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", 'newtest']
+valid_com_types = ['simple', 'simpleold', 'target', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif"]
 
 
 """
@@ -1217,7 +1217,7 @@ def dict_command_configs(bot):
                         dict_from_file["type"] = 'simple'
                         dict_from_file["replies"] = "This command is not setup with a proper 'type'."
 
-                    if dict_from_file["type"] == "newtest":
+                    if dict_from_file["type"] == "simple":
                         keysprocessed = []
 
                         # Don't process these
@@ -1405,7 +1405,7 @@ def bot_dictcom_run(bot, trigger):
         for command_split_partial in commands_array:
             botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
 
-        bot_dictcom_newtest(bot, botcom)  # TODO rename
+        bot_dictcom_simple(bot, botcom)  # TODO rename
 
         return
 
