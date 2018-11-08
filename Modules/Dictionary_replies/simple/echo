@@ -1,5 +1,8 @@
 {
-"responses": [
-            [" $input", " $input", " $input"]
-            ],
+
+"?default": {
+              "type": "simple",
+              "responses": [[" $input", " $input", " $input"]],
+              },
+
 }

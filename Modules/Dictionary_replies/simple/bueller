@@ -1,5 +1,8 @@
 {
-"responses": [
-            ["Bueller", "time.sleep(5)", "Bueller", "time.sleep(5)", "Bueller", "time.sleep(5)", "Bueller", "time.sleep(5)", "Bueller"],
-            ],
+
+"?default": {
+              "type": "simple",
+              "responses": [["Bueller", "time.sleep(5)", "Bueller", "time.sleep(5)", "Bueller", "time.sleep(5)", "Bueller", "time.sleep(5)", "Bueller"],],
+              },
+
 }

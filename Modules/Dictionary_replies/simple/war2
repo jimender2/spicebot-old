@@ -1,3 +1,8 @@
 {
-"responses": ["YOUR SOUND CARD WORKS PERFECTLY"],
+
+"?default": {
+              "type": "simple",
+              "responses": ["YOUR SOUND CARD WORKS PERFECTLY"],
+              },
+
 }

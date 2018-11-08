@@ -1,3 +1,8 @@
 {
-"responses": ["Lana. LANA. LANAAAAAAAAAAAAAAAAA!!!!!"],
+
+"?default": {
+              "type": "simple",
+              "responses": ["Lana. LANA. LANAAAAAAAAAAAAAAAAA!!!!!"],
+              },
+
 }

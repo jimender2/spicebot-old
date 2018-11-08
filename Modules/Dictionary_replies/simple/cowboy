@@ -1,3 +1,8 @@
 {
-"responses": ["yeeeee-HAW!"],
+
+"?default": {
+              "type": "simple",
+              "responses": ["yeeeee-HAW!"],
+              },
+
 }

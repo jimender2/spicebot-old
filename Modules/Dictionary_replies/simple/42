@@ -1,4 +1,8 @@
 {
 "validcoms": ['42', 'fourtytwo'],
-"responses": ["The answer to life, the world, and everything."],
+"?default": {
+              "type": "simple",
+              "responses": ["The answer to life, the world, and everything."],
+              },
+
 }
