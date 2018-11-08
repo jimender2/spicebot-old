@@ -1720,7 +1720,7 @@ def bot_dictcom_gif(bot, botcom):
     else:
         searchapis = bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys()
 
-    searchdict = {"query": query}
+    searchdict = {"query": query, "gifsearch": searchapis}
 
     # nsfwenabled = get_database_value(bot, bot.nick, 'channels_nsfw') or []
     # if botcom.channel_current in nsfwenabled:
