@@ -1037,16 +1037,6 @@ def dict_command_configs(bot):
                 except SyntaxError:
                     dict_from_file = dict()
 
-                # inf = open(os.path.join(coms_type_file_path, comconf), 'r')
-                # try:
-                #    dict_from_file = eval(inf.read())
-                # except SyntaxError:
-                #    dict_from_file = dict()
-
-                if comconf == 'shrug':
-                    bot.msg("deathbybandaid", dict_from_file["replies"][0])
-                    bot.msg("deathbybandaid", " ¯\_(ツ)_/¯ ")
-
                 # Close File
                 inf.close()
 
