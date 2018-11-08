@@ -1148,6 +1148,10 @@ def dict_command_configs(bot):
                 # Close File
                 inf.close()
 
+                # verify dict format
+                if not isinstance(dict_from_file, dict):
+                    dict_from_file = dict()
+
                 # default command to filename
                 if "validcoms" not in dict_from_file.keys():
                     dict_from_file["validcoms"] = [comconf]
