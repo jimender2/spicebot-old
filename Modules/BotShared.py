@@ -1883,12 +1883,12 @@ def getGif(bot, searchdict):
     if gifapiresults == []:
         return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
-    random.shuffle(gifapiresults)
-    random.shuffle(gifapiresults)
+    if searchdict["pickingselection"] == "random":
+        random.shuffle(gifapiresults)
+        random.shuffle(gifapiresults)
     if searchdict["pickingselection"] not in ["random", "last"]:
         if searchdict["pickingselection"] > len(gifapiresults):
             searchdict["pickingselection"] = len(gifapiresults)
-    bot.msg("#spicebottest", str(searchdict["pickingselection"]))
     gifdict = spicemanip(bot, gifapiresults, searchdict["pickingselection"])
 
     # return dict
