@@ -64,7 +64,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'target', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art"]
+valid_com_types = ['simple', 'target', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif"]
 
 
 """
@@ -83,6 +83,9 @@ bot_dict = {
 
                             # Configs directory
                             "config_dir": None,
+
+                            # External Config
+                            "ext_conf": {},
 
                             # Loaded configs
                             "dict_commands": {},
@@ -223,6 +226,9 @@ def botdict_open(bot):
 
     if not bot.memory["botdict"]["tempvals"]["uptime"]:
         bot.memory["botdict"]["tempvals"]["uptime"] = datetime.datetime.utcnow()
+
+    # load external config file
+    bot_external_config(bot)
 
     # Server connected to, default assumes ZNC bouncer configuration
     # this can be tweaked below
@@ -983,6 +989,26 @@ Dictionary commands
 """
 
 
+def bot_external_config(bot):
+
+    # Don't load commands if already loaded
+    if bot.memory["botdict"]["tempvals"]['ext_conf'] != dict():
+        return
+
+    # Loop through external config file
+    config = ConfigParser.ConfigParser()
+    config.read("/home/spicebot/spicebot.conf")
+    for each_section in config.sections():
+
+        if each_section not in bot.memory["botdict"]["tempvals"]['ext_conf'].keys():
+            bot.memory["botdict"]["tempvals"]['ext_conf'][each_section] = dict()
+
+        for (each_key, each_val) in config.items(each_section):
+
+            if each_key not in bot.memory["botdict"]["tempvals"]['ext_conf'][each_section].keys():
+                bot.memory["botdict"]["tempvals"]['ext_conf'][each_section][each_key] = each_val
+
+
 def bot_read_txt_files(bot):
     # Don't load commands if already loaded
     if bot.memory["botdict"]["tempvals"]['txt_files'] != dict():
@@ -1608,6 +1634,15 @@ def bot_dictcom_readfromurl(bot, botcom):
 
 def bot_dictcom_readfromfile(bot, botcom):
     return bot_dictcom_simple(bot, botcom)
+
+
+"""
+Gif Searching
+"""
+
+
+def gifdummy(bot):
+    dd = 5
 
 
 """
