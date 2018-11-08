@@ -1858,6 +1858,10 @@ def bot_dictcom_newtest(bot, botcom):
 
     replies = spicemanip(bot, botcom.dotcommand_dict[responsekey]["responses"], 'random', 'return')
 
+    # This handles responses in list form
+    if not isinstance(replies, list):
+        replies = [replies]
+
     for rply in replies:
         if rply.startswith("*a "):
             osd(bot, botcom.channel_current, 'action', rply.replace("*a ", ""))
