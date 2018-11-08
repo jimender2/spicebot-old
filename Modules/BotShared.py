@@ -1118,6 +1118,48 @@ def bot_read_txt_files(bot):
             bot.memory["botdict"]["tempvals"]['txt_files'][txtfile] = text_file_list
 
 
+def bot_dict_use_cases(bot, process_list):
+
+    for mustbe in process_list:
+
+        # All of the above need to be in the dict if not
+        if mustbe not in dict_from_file.keys():
+            dict_from_file[mustbe] = dict()
+
+        # verify if already there, that the key is a dict
+        if not isinstance(dict_from_file[mustbe], dict):
+            dict_from_file[mustbe] = dict()
+
+        # Each usecase for the command must have a type, flat files inherit this type
+        if "type" not in dict_from_file[mustbe].keys():
+            if "type" in dict_from_file.keys():
+                dict_from_file[mustbe]["type"] = dict_from_file["type"]
+            else:
+                dict_from_file[mustbe]["type"] = "simple"
+
+        # each usecase needs a response
+        if "responses" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["responses"] = []
+
+        # verify responses are in list form
+        if not isinstance(dict_from_file[mustbe]["responses"], list):
+            dict_from_file[mustbe]["responses"] = [dict_from_file[mustbe]["responses"]]
+
+        # This is to provide functionality for flat dictionaries responses
+        if dict_from_file[mustbe]["responses"] == [] and mustbe == "?default":
+            if "responses" in dict_from_file.keys():
+                if isinstance(dict_from_file["responses"], list):
+                    dict_from_file[mustbe]["responses"].extend(dict_from_file["responses"])
+                else:
+                    dict_from_file[mustbe]["responses"].append(dict_from_file["responses"])
+
+        # Verify responses list is not empty
+        if dict_from_file[mustbe]["responses"] == []:
+            dict_from_file[mustbe]["responses"].append("No " + str(mustbe) + " responses set for " + str(maincom) + ".")
+
+    return dict_from_file
+
+
 # Command configs
 def dict_command_configs(bot):
 
@@ -1176,32 +1218,41 @@ def dict_command_configs(bot):
                         dict_from_file["replies"] = "This command is not setup with a proper 'type'."
 
                     if dict_from_file["type"] == "newtest":
+                        keysprocessed = []
 
-                        for mustbe in ["?default"]:
+                        # the command must have an author
+                        if "author" not in dict_from_file.keys():
+                            dict_from_file["author"] = "deathbybandaid"
+                        keysprocessed.append("author")
 
-                            # All of the above need to be in the dict if not
-                            if mustbe not in dict_from_file.keys():
-                                dict_from_file[mustbe] = dict()
+                        # the command must have a contributors list
+                        if "contributors" not in dict_from_file.keys():
+                            dict_from_file["contributors"] = []
+                        if not isinstance(dict_from_file["contributors"], list):
+                            dict_from_file["contributors"] = [dict_from_file["contributors"]]
+                        if "deathbybandaid" not in dict_from_file["contributors"]:
+                            dict_from_file["contributors"].append("deathbybandaid")
+                        if dict_from_file["author"] not in dict_from_file["contributors"]:
+                            dict_from_file["contributors"].append(dict_from_file["author"])
+                        keysprocessed.append("contributors")
 
-                            # verify if already there, that the key is a dict
-                            if not isinstance(dict_from_file[mustbe], dict):
-                                dict_from_file[mustbe] = dict()
+                        # handle basic required dict handling
+                        dict_required = ["?default"]
+                        dict_from_file = bot_dict_use_cases(bot, dict_required)
+                        keysprocessed.extend(dict_required)
 
-                            # Each usecase for the command must have a type
-                            if "type" not in dict_from_file[mustbe].keys():
-                                dict_from_file[mustbe]["type"] = "simple"
+                        # all other keys not processed above are considered potential use cases
+                        otherkeys = []
+                        for otherkey in dict_from_file.keys():
+                            if otherkey not in keysprocessed:
+                                otherkeys.append(otherkey)
+                        dict_from_file = bot_dict_use_cases(bot, otherkeys)
+                        keysprocessed.extend(otherkeys)
 
-                            # each usecase needs a response
-                            if "responses" not in dict_from_file[mustbe].keys():
-                                dict_from_file[mustbe]["responses"] = ["No " + str(mustbe) + " responses set for " + str(maincom) + "."]
-
-                            # verify responses are in list form
-                            if not isinstance(dict_from_file[mustbe]["responses"], list):
-                                dict_from_file[mustbe]["responses"] = [dict_from_file[mustbe]["responses"]]
-
-                            # Verify responses list is not empty
-                            if dict_from_file[mustbe]["responses"] == []:
-                                dict_from_file[mustbe]["responses"].append("No " + str(mustbe) + " responses set for " + str(maincom) + ".")
+                        bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
+                        for comalias in comaliases:
+                            if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+                                bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
 
                     else:
 
@@ -1289,10 +1340,10 @@ def dict_command_configs(bot):
                             if dict_from_file["specialcase"][speckey]["updates_enabled"]:
                                 adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(speckey), dict_from_file["specialcase"][speckey]["replies"], 'startup', 'long', 'sayings')
 
-                    bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
-                    for comalias in comaliases:
-                        if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-                            bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
+                        bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
+                        for comalias in comaliases:
+                            if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+                                bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
 
 
 def bot_dictcom_run(bot, trigger):
@@ -1341,9 +1392,15 @@ def bot_dictcom_run(bot, trigger):
 
     if botcom.commandtype == "newtest":
 
-        # Run the command with the given info
-        command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
-        eval(command_function_run)
+        # IF "&&" is in the full input, it is treated as multiple commands, and is split
+        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        if commands_array == []:
+            commands_array = [[]]
+        for command_split_partial in commands_array:
+            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+
+        bot_dictcom_newtest(bot, botcom)  # TODO rename
+
         return
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
@@ -1854,9 +1911,16 @@ def bot_dictcom_readfromfile(bot, botcom):
 
 def bot_dictcom_newtest(bot, botcom):
 
-    responsekey = "?default"
+    botcom.responsekey = "?default"
 
-    replies = spicemanip(bot, botcom.dotcommand_dict[responsekey]["responses"], 'random', 'return')
+    # handling for special cases
+    posscom = spicemanip(bot, botcom.triggerargsarray, 1)
+    if posscom.lower() in botcom.dotcommand_dict.keys():
+        botcom.responsekey = posscom.lower()
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+        botcom.specialcase = posscom.lower()
+
+    replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
 
     # This handles responses in list form
     if not isinstance(replies, list):
@@ -1867,6 +1931,8 @@ def bot_dictcom_newtest(bot, botcom):
             osd(bot, botcom.channel_current, 'action', rply.replace("*a ", ""))
         else:
             osd(bot, botcom.channel_current, 'say', rply)
+
+    osd(bot, botcom.channel_current, 'say', str(botcom.dotcommand_dict))
 
 
 """
