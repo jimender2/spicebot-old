@@ -1707,6 +1707,9 @@ def bot_dictcom_readfromfile(bot, botcom):
 
 def bot_dictcom_process(bot, botcom):
 
+    if botcom.commandtype.endswith("old"):
+        return return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " command has " + str(len(botcom.dotcommand_dict[botcom.responsekey]["responses"])) + " entries.")
+
     # use the default key, unless otherwise specified
     botcom.responsekey = "?default"
 
