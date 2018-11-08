@@ -1888,6 +1888,7 @@ def getGif(bot, searchdict):
     if searchdict["pickingselection"] not in ["random", "last"]:
         if searchdict["pickingselection"] > len(gifapiresults):
             searchdict["pickingselection"] = len(gifapiresults)
+    bot.msg("#spicebottest", str(searchdict["pickingselection"]))
     gifdict = spicemanip(bot, gifapiresults, searchdict["pickingselection"])
 
     # return dict
