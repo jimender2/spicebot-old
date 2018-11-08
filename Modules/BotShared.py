@@ -68,7 +68,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'target', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", 'newtest']
+valid_com_types = ['simple', 'simpleold', 'target', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", 'newtest']
 
 
 """
@@ -1396,7 +1396,7 @@ def bot_dictcom_run(bot, trigger):
     # execute function based on command type
     botcom.commandtype = botcom.dotcommand_dict["type"].lower()
 
-    if botcom.commandtype == "newtest":
+    if botcom.commandtype == "simple":
 
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
@@ -1552,7 +1552,7 @@ def bot_dictcom_run(bot, trigger):
         eval(command_function_run)
 
 
-def bot_dictcom_simple(bot, botcom):
+def bot_dictcom_simpleold(bot, botcom):
 
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict["replies"]):
@@ -1900,22 +1900,22 @@ def bot_dictcom_gif(bot, botcom):
 
 
 def bot_dictcom_ascii_art(bot, botcom):
-    return bot_dictcom_simple(bot, botcom)
+    return bot_dictcom_simpleold(bot, botcom)
 
 
 def bot_dictcom_sayings(bot, botcom):
-    return bot_dictcom_simple(bot, botcom)
+    return bot_dictcom_simpleold(bot, botcom)
 
 
 def bot_dictcom_readfromurl(bot, botcom):
-    return bot_dictcom_simple(bot, botcom)
+    return bot_dictcom_simpleold(bot, botcom)
 
 
 def bot_dictcom_readfromfile(bot, botcom):
-    return bot_dictcom_simple(bot, botcom)
+    return bot_dictcom_simpleold(bot, botcom)
 
 
-def bot_dictcom_newtest(bot, botcom):
+def bot_dictcom_simple(bot, botcom):
 
     botcom.responsekey = "?default"
 

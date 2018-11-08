@@ -1,5 +1,4 @@
 {
-"type": "simple",
 "validcoms": ['lifehack', 'lh', 'lifehacks'],
 "defaultreplies": [],
 "updates_enabled": True,

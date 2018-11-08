@@ -1,5 +1,4 @@
 {
-"type": "simple",
 "validcoms": ['yes', 'yep', 'yeahnahyeah', 'aye', 'ayo', 'da', 'hai', 'ja', 'jes', 'oui', 'si', 'ya', 'yea', 'yebo', 'yo', 'yoh'],
 "defaultreplies": [
             "Does the Pope shit in the woods?",

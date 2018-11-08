@@ -1,5 +1,4 @@
 {
-"type": "simple",
 "validcoms": ['fortune', 'cookie'],
 "defaultreplies": [
           "A conclusion is simply the place where you got tired of thinking.",

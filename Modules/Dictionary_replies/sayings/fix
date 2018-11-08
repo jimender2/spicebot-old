@@ -1,5 +1,4 @@
 {
-"type": "simple",
 "validcoms": ['fix', 'user'],
 "defaultreplies": [
           "User complained monitor was hurting their eyes. Cut out users eyes.",
