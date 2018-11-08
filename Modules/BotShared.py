@@ -68,7 +68,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'simpleold', 'target', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif"]
+valid_com_types = ['simple', 'simpleold', 'targetold', 'fillintheblankold', 'targetplusreasonold', 'sayingsold', "readfromfilolde", "readfromurlold", "ascii_artold", "gifold"]
 
 
 """
@@ -1217,7 +1217,7 @@ def dict_command_configs(bot):
                         dict_from_file["type"] = 'simple'
                         dict_from_file["replies"] = "This command is not setup with a proper 'type'."
 
-                    if dict_from_file["type"] == "simple":
+                    if not dict_from_file["type"].endswith("old"):
                         keysprocessed = []
 
                         # Don't process these
@@ -1396,7 +1396,7 @@ def bot_dictcom_run(bot, trigger):
     # execute function based on command type
     botcom.commandtype = botcom.dotcommand_dict["type"].lower()
 
-    if botcom.commandtype == "simple":
+    if not botcom.commandtype.endswith("old"):
 
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
@@ -1589,7 +1589,7 @@ def bot_dictcom_simpleold(bot, botcom):
             osd(bot, botcom.channel_current, 'say', rply)
 
 
-def bot_dictcom_target(bot, botcom):
+def bot_dictcom_targetold(bot, botcom):
 
     # some commands cannot run without input
     targetrequired, ignoretarget = 1, 0
@@ -1672,7 +1672,7 @@ def bot_dictcom_target(bot, botcom):
             osd(bot, botcom.channel_current, 'say', rply)
 
 
-def bot_dictcom_fillintheblank(bot, botcom):
+def bot_dictcom_fillintheblankold(bot, botcom):
 
     # some commands cannot run without input
     inputrequired = 1
@@ -1730,7 +1730,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
             osd(bot, botcom.channel_current, 'say', rply)
 
 
-def bot_dictcom_targetplusreason(bot, botcom):
+def bot_dictcom_targetplusreasonold(bot, botcom):
 
     # some commands cannot run without input
     targetrequired, ignoretarget = 1, 0
@@ -1837,7 +1837,7 @@ def bot_dictcom_targetplusreason(bot, botcom):
             osd(bot, botcom.channel_current, 'say', rply)
 
 
-def bot_dictcom_gif(bot, botcom):
+def bot_dictcom_gifold(bot, botcom):
 
     if "query" in botcom.dotcommand_dict.keys():
         query = botcom.dotcommand_dict["query"]
@@ -1899,19 +1899,19 @@ def bot_dictcom_gif(bot, botcom):
             osd(bot, botcom.channel_current, 'say', rply)
 
 
-def bot_dictcom_ascii_art(bot, botcom):
+def bot_dictcom_ascii_artold(bot, botcom):
     return bot_dictcom_simpleold(bot, botcom)
 
 
-def bot_dictcom_sayings(bot, botcom):
+def bot_dictcom_sayingsold(bot, botcom):
     return bot_dictcom_simpleold(bot, botcom)
 
 
-def bot_dictcom_readfromurl(bot, botcom):
+def bot_dictcom_readfromurlold(bot, botcom):
     return bot_dictcom_simpleold(bot, botcom)
 
 
-def bot_dictcom_readfromfile(bot, botcom):
+def bot_dictcom_readfromfileold(bot, botcom):
     return bot_dictcom_simpleold(bot, botcom)
 
 
