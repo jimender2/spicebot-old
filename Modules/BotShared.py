@@ -1164,17 +1164,17 @@ def dict_command_configs(bot):
 
                 if maincom not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
 
-                    if botcom.commandtype == "newtest":
+                    # check that type is set
+                    if "type" not in dict_from_file.keys():
+                        dict_from_file["type"] = quick_coms_type.lower()
+                    if dict_from_file["type"] not in valid_com_types:
+                        dict_from_file["type"] = 'simple'
+                        dict_from_file["replies"] = "This command is not setup with a proper 'type'."
+
+                    if dict_from_file["type"] == "newtest":
                         dummyvar = 5
 
                     else:
-
-                        # check that type is set
-                        if "type" not in dict_from_file.keys():
-                            dict_from_file["type"] = quick_coms_type.lower()
-                        if dict_from_file["type"] not in valid_com_types:
-                            dict_from_file["type"] = 'simple'
-                            dict_from_file["replies"] = "This command is not setup with a proper 'type'."
 
                         # check that reply is set
                         if "replies" not in dict_from_file.keys():
