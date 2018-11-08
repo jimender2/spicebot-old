@@ -87,6 +87,9 @@ bot_dict = {
                             # External Config
                             "ext_conf": {},
 
+                            # Gif API
+                            "valid_gif_api_dict": {},
+
                             # Loaded configs
                             "dict_commands": {},
                             "dict_commands_loaded": [],
@@ -212,6 +215,16 @@ mode_dict_alias = {
                     "h": "HALFOP",
                     }
 
+
+gif_dontusesites = [
+                        "http://forgifs.com", "http://a.dilcdn.com", "http://www.bestgifever.com",
+                        "http://s3-ec.buzzfed.com", "http://i.minus.com", "http://fap.to", "http://prafulla.net",
+                        "http://3.bp.blogspot.com"
+                        ]
+
+gif_dontuseextensions = ['.jpg', '.png']
+
+
 """
 Dict functions
 """
@@ -229,6 +242,9 @@ def botdict_open(bot):
 
     # load external config file
     bot_external_config(bot)
+
+    # Gif API
+    bot_gif_api_access(bot)
 
     # Server connected to, default assumes ZNC bouncer configuration
     # this can be tweaked below
@@ -1009,6 +1025,69 @@ def bot_external_config(bot):
                 bot.memory["botdict"]["tempvals"]['ext_conf'][each_section][each_key] = each_val
 
 
+def bot_gif_api_access(bot):
+
+    # Don't load commands if already loaded
+    if bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'] != dict():
+        return
+
+    valid_gif_api_dict = {
+                            "giphy": {
+                                        "url": "http://api.giphy.com/v1/gifs/search?",
+                                        "query": 'q=',
+                                        "limit": '&limit=',
+                                        "id": None,
+                                        "api_id": None,
+                                        "key": "&api_key=",
+                                        "apikey": bot.memory["botdict"]["tempvals"]['ext_conf']["giphy"]["apikey"],
+                                        "nsfw": None,
+                                        "sfw": 'rating=R',
+                                        "results": 'data',
+                                        "cururl": 'url',
+                                        },
+                            "tenor": {
+                                        "url": "https://api.tenor.com/v1/search?",
+                                        "query": 'q=',
+                                        "limit": '&limit=',
+                                        "id": None,
+                                        "api_id": None,
+                                        "key": "&key=",
+                                        "apikey": bot.memory["botdict"]["tempvals"]['ext_conf']["tenor"]["apikey"],
+                                        "nsfw": '&contentfilter=off',
+                                        "sfw": '&contentfilter=low',
+                                        "results": 'results',
+                                        "cururl": 'url',
+                                        },
+                            "gfycat": {
+                                        "url": "https://api.gfycat.com/v1/gfycats/search?",
+                                        "query": 'search_text=',
+                                        "limit": '&count=',
+                                        "id": None,
+                                        "api_id": None,
+                                        "key": None,
+                                        "apikey": None,
+                                        "nsfw": '&nsfw=3',
+                                        "sfw": '&nsfw=1',
+                                        "results": 'gfycats',
+                                        "cururl": 'gifUrl',
+                                        },
+                            "gifme": {
+                                        "url": "http://api.gifme.io/v1/search?",
+                                        "query": 'query=',
+                                        "limit": '&limit=',
+                                        "id": None,
+                                        "api_id": None,
+                                        "key": "&key=",
+                                        "apikey": 'rX7kbMzkGu7WJwvG',
+                                        "nsfw": '&sfw=false',
+                                        "sfw": '&sfw=true',
+                                        "results": 'data',
+                                        "cururl": 'link',
+                                        },
+                            }
+    bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'] = valid_gif_api_dict
+
+
 def bot_read_txt_files(bot):
     # Don't load commands if already loaded
     if bot.memory["botdict"]["tempvals"]['txt_files'] != dict():
@@ -1620,6 +1699,35 @@ def bot_dictcom_targetplusreason(bot, botcom):
             osd(bot, botcom.channel_current, 'say', rply)
 
 
+def bot_dictcom_gif(bot, botcom):
+
+    if "query" in botcom.dotcommand_dict.keys():
+        query = botcom.dotcommand_dict["query"]
+    else:
+        query = botcom.completestring
+
+    if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
+        searchapis = [botcom.dotcommand]
+    elif "queryapi" in botcom.dotcommand_dict.keys():
+        searchapis = botcom.dotcommand_dict["queryapi"]
+    else:
+        searchapis = bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys()
+
+    searchdict = {"query": query}
+
+    # nsfwenabled = get_database_value(bot, bot.nick, 'channels_nsfw') or []
+    # if botcom.channel_current in nsfwenabled:
+    #    searchdict['nsfw'] = True
+
+    gifdict = getGif(bot, searchdict)
+
+    if gifdict["error"]:
+        osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
+        return
+
+    osd(bot, trigger.sender, 'say',  gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
+
+
 def bot_dictcom_ascii_art(bot, botcom):
     return bot_dictcom_simple(bot, botcom)
 
@@ -1641,8 +1749,109 @@ Gif Searching
 """
 
 
-def gifdummy(bot):
-    dd = 5
+def getGif(bot, searchdict):
+
+    # list of defaults
+    query_defaults = {
+                    "query": None,
+                    "searchnum": 'random',
+                    "gifsearch": bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys(),
+                    "gifsearchremove": ['gifme'],
+                    "searchlimit": 'default',
+                    "nsfw": False,
+                    }
+
+    # set defaults if they don't exist
+    for key in query_defaults:
+        if key not in searchdict.keys():
+            searchdict[key] = query_defaults[key]
+            if key == "gifsearch":
+                for remx in query_defaults["gifsearchremove"]:
+                    searchdict["gifsearch"].remove(remx)
+
+    # Replace spaces in search query
+    searchdict["searchquery"] = searchdict["query"].replace(' ', '%20')
+
+    # set api usage
+    if not isinstance(searchdict['gifsearch'], list):
+        if str(searchdict['gifsearch']) in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
+            searchdict['gifsearch'] = [searchdict['gifsearch']]
+        else:
+            searchdict['gifsearch'] = bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys()
+    else:
+        for apis in searchdict['gifsearch']:
+            if apis not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
+                searchdict['gifsearch'].remove(apis)
+
+    # Verify search limit
+    if searchdict['searchlimit'] == 'default' or not isinstance(searchdict['searchlimit'], int):
+        searchdict['searchlimit'] = 50
+
+    # Random handling for searchnum
+    if searchdict["searchnum"] == 'random':
+        searchdict["searchnum"] = randint(0, searchdict['searchlimit'])
+
+    # Make sure there is a valid input of query and search number
+    if not searchdict["query"]:
+        return {"error": 'No Query to Search'}
+
+    if not str(searchdict["searchnum"]).isdigit():
+        return {"error": 'No Search Number or Random Specified'}
+
+    gifapiresults = []
+    for currentapi in searchdict['gifsearch']:
+
+        # url base
+        url = str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['url'])
+        # query
+        url += str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['query']) + str(searchdict["searchquery"])
+        # limit
+        url += str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['limit']) + str(searchdict["searchlimit"])
+        # nsfw search?
+        if searchdict['nsfw']:
+            url += str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['nsfw'])
+        else:
+            url += str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['sfw'])
+        # api key
+        url += str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['key']) + str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['apikey'])
+
+        page = requests.get(url, headers=None)
+        if page.status_code != 500 and page.status_code != 503:
+
+            data = json.loads(urllib2.urlopen(url).read())
+
+            results = data[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['results']]
+            resultsarray = []
+            for result in results:
+                cururl = result[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['cururl']]
+                if not str(cururl).startswith(tuple(gif_dontusesites)) and not str(cururl).endswith(tuple(gif_dontuseextensions)):
+                    resultsarray.append(cururl)
+
+            # make sure there are results
+            resultsamount = len(resultsarray)
+            if resultsarray != []:
+
+                # Create Temp dict for every result
+                tempresultnum = 0
+                for tempresult in resultsarray:
+                    tempdict = dict()
+                    tempdict["returnnum"] = tempresultnum
+                    tempdict["returnurl"] = tempresult
+                    tempdict["gifapi"] = currentapi
+                    tempresultnum += 1
+                    gifapiresults.append(tempdict)
+
+    if gifapiresults == []:
+        return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}
+
+    # shuffle and select random entry
+    random.shuffle(gifapiresults)
+    random.shuffle(gifapiresults)
+    gifdict = spicemanip(bot, gifapiresults, 'random')
+
+    # return dict
+    gifdict['error'] = None
+    return gifdict
 
 
 """
