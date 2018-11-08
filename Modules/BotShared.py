@@ -1930,7 +1930,7 @@ def bot_dictcom_simple(bot, botcom):
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'options']
+    validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contrib', "contributors", 'author']
     botcom.specified = None
     argone, argtwo = spicemanip(bot, botcom.triggerargsarray, 1), spicemanip(bot, botcom.triggerargsarray, 'last')
     if str(argone).startswith("!") and len(str(argone)) > 1:
@@ -1958,15 +1958,19 @@ def bot_dictcom_simple(bot, botcom):
             botcom.specified = int(botcom.specified)
 
     # Hardcoded commands Below
-    if botcom.specified == 'options':
+    if botcom.specified == 'special':
         nonstockoptions = []
         for command in botcom.dotcommand_dict.keys():
             if command not in ["?default"]:
                 nonstockoptions.append(command)
         nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
-        return osd(bot, botcom.channel_current, 'say', "The options for " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " command include: " + str(nonstockoptions) + ".")
+        return osd(bot, botcom.channel_current, 'say', "The options for " + str(botcom.maincom) + " command include: " + str(nonstockoptions) + ".")
     elif botcom.specified == 'count':
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " command has " + str(len(botcom.dotcommand_dict[botcom.responsekey]["responses"])) + " entries.")
+    elif botcom.specified == 'author':
+        return osd(bot, botcom.channel_current, 'say', "The author of " + str(botcom.maincom) + " command is " + botcom.dotcommand_dict["author"] + ".")
+    elif botcom.specified in ['contrib', "contributors"]:
+        return osd(bot, botcom.channel_current, 'say', "The contributors of " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["contributors"], "andlist") + ".")
 
     botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
 
