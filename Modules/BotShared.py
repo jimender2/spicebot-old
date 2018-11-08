@@ -1707,7 +1707,7 @@ def bot_dictcom_gif(bot, botcom):
 
     if "query" in botcom.dotcommand_dict.keys():
         query = botcom.dotcommand_dict["query"]
-    elif botcom.dotcommand not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys() and botcom.dotcommand not == 'gif':
+    elif botcom.dotcommand not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys() and botcom.dotcommand != 'gif':
         query = botcom.dotcommand
     else:
         query = botcom.completestring
