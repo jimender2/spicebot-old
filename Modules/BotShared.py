@@ -1918,7 +1918,6 @@ def bot_dictcom_newtest(bot, botcom):
     if posscom.lower() in botcom.dotcommand_dict.keys():
         botcom.responsekey = posscom.lower()
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-        botcom.specialcase = posscom.lower()
 
     replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
 
