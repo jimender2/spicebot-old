@@ -1037,6 +1037,7 @@ def dict_command_configs(bot):
 
                 if comconf == 'shrug':
                     bot.msg("deathbybandaid", dict_from_file["replies"][0])
+                    bot.msg("deathbybandaid", " ¯\_(ツ)_/¯ ")
 
                 # Close File
                 inf.close()
