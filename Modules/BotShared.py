@@ -1135,7 +1135,7 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             if "type" in dict_from_file.keys():
                 dict_from_file[mustbe]["type"] = dict_from_file["type"]
             else:
-                dict_from_file[mustbe]["type"] = "simple"
+                dict_from_file[mustbe]["type"] = "simpleold"
 
         # each usecase needs a response
         if "responses" not in dict_from_file[mustbe].keys():
@@ -1214,7 +1214,7 @@ def dict_command_configs(bot):
                     if "type" not in dict_from_file.keys():
                         dict_from_file["type"] = quick_coms_type.lower()
                     if dict_from_file["type"] not in valid_com_types:
-                        dict_from_file["type"] = 'simple'
+                        dict_from_file["type"] = 'simpleold'
                         dict_from_file["replies"] = "This command is not setup with a proper 'type'."
 
                     if not dict_from_file["type"].endswith("old"):
