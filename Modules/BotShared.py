@@ -1730,7 +1730,9 @@ def bot_dictcom_gif(bot, botcom):
 
     if gifdict["error"]:
         if "noinputreplies" in botcom.dotcommand_dict.keys():
+
             botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
+
             if botcom.specified:
                 if botcom.specified > len(botcom.dotcommand_dict["replies"]):
                     botcom.specified = len(botcom.dotcommand_dict["replies"])
