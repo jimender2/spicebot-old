@@ -1118,7 +1118,7 @@ def bot_read_txt_files(bot):
             bot.memory["botdict"]["tempvals"]['txt_files'][txtfile] = text_file_list
 
 
-def bot_dict_use_cases(bot, dict_from_file, process_list):
+def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
 
     for mustbe in process_list:
 
@@ -1238,7 +1238,7 @@ def dict_command_configs(bot):
 
                         # handle basic required dict handling
                         dict_required = ["?default"]
-                        dict_from_file = bot_dict_use_cases(bot, dict_from_file, dict_required)
+                        dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, dict_required)
                         keysprocessed.extend(dict_required)
 
                         # all other keys not processed above are considered potential use cases
@@ -1246,7 +1246,7 @@ def dict_command_configs(bot):
                         for otherkey in dict_from_file.keys():
                             if otherkey not in keysprocessed:
                                 otherkeys.append(otherkey)
-                        dict_from_file = bot_dict_use_cases(bot, dict_from_file, otherkeys)
+                        dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, otherkeys)
                         keysprocessed.extend(otherkeys)
 
                         bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
