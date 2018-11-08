@@ -1141,6 +1141,18 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         if "updates_enabled" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["updates_enabled"] = False
 
+        # each usecase needs to know if it needs a target
+        if "target_required" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["target_required"] = False
+        if "target_backup" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["target_backup"] = False
+
+        # each usecase needs to know if it needs input for fillintheblank
+        if "blank_required" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["blank_required"] = False
+        if "blank_backup" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["blank_backup"] = False
+
         if dict_from_file[mustbe]["updates_enabled"]:
             adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
             dict_from_file[mustbe]["responses"] = get_nick_value(bot, str(bot.nick), maincom + "_" + str(mustbe), 'long', 'sayings') or []

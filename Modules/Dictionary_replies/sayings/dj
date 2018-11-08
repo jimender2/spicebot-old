@@ -1,4 +1,5 @@
 {
+"contributors": ["jimender2", "dysonparkes"]
 "?default": {
               "type": "simple",
               "responses": ["What playlist would you like? Options are: $specialoptions."],
