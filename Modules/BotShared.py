@@ -1968,9 +1968,23 @@ def bot_dictcom_simple(bot, botcom):
     elif botcom.specified == 'count':
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " command has " + str(len(botcom.dotcommand_dict[botcom.responsekey]["responses"])) + " entries.")
     elif botcom.specified == 'author':
-        return osd(bot, botcom.channel_current, 'say', "The author of " + str(botcom.maincom) + " command is " + botcom.dotcommand_dict["author"] + ".")
+        return osd(bot, botcom.channel_current, 'say', "The author of the " + str(botcom.maincom) + " command is " + botcom.dotcommand_dict["author"] + ".")
     elif botcom.specified in ['contrib', "contributors"]:
-        return osd(bot, botcom.channel_current, 'say', "The contributors of " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["contributors"], "andlist") + ".")
+        return osd(bot, botcom.channel_current, 'say', "The contributors of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["contributors"], "andlist") + ".")
+    elif botcom.specified == 'view':
+        if botcom.dotcommand_dict["replies"] == []:
+            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " command appears to have no entries!")
+        else:
+            osd(bot, botcom.instigator, 'notice', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " command contains:")
+            listnumb, relist = 1, []
+            for item in botcom.dotcommand_dict[botcom.responsekey]["responses"]:
+                if listnumb <= 20:
+                    relist.append(str("[#" + str(listnumb) + "] " + str(item)))
+                listnumb += 1
+            osd(bot, botcom.instigator, 'say', relist)
+            if listnumb > 20:
+                osd(bot, botcom.instigator, 'say', "List cut off after the 20th entry to prevent bot lag.")
+            return
 
     botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
 
