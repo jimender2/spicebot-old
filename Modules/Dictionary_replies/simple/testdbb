@@ -5,4 +5,9 @@
               "responses": ["YOUR SOUND CARD WORKS PERFECTLY"],
               },
 
+"canada": {
+              "type": "simple",
+              "responses": ["Blame Canada!!!   https://www.youtube.com/watch?v=bOR38552MJA"],
+              },
+
 }

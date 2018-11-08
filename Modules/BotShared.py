@@ -1918,6 +1918,7 @@ def bot_dictcom_readfromfileold(bot, botcom):
 
 def bot_dictcom_simple(bot, botcom):
 
+    # use the default key, unless otherwise specified
     botcom.responsekey = "?default"
 
     # handling for special cases
