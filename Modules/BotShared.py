@@ -1157,7 +1157,7 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
                 page = requests.get(dict_from_file[mustbe]["responses"], headers=header)
                 tree = html.fromstring(page.content)
                 if page.status_code == 200:
-                    htmlfile = urllib.urlopen(dict_from_file[mustbe])
+                    htmlfile = urllib.urlopen(dict_from_file[mustbe]["responses"])
                     lines = htmlfile.read().splitlines()
                     dict_from_file[mustbe]["responses"] = lines
             else:
