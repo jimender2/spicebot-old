@@ -68,7 +68,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'simpleold', 'targetold', 'fillintheblankold', 'targetplusreasonold', 'sayingsold', "readfromfilolde", "readfromurlold", "ascii_artold", "gifold"]
+valid_com_types = ['simple', 'targetold', 'fillintheblankold', 'targetplusreasonold', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gifold"]
 
 
 """
@@ -1137,12 +1137,31 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             else:
                 dict_from_file[mustbe]["type"] = "simple"
 
+        # each usecase needs to know if it can be updated. Default is false
+        if "updates_enabled" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["updates_enabled"] = False
+
+        if dict_from_file[mustbe]["updates_enabled"]:
+            adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
+            dict_from_file[mustbe]["responses"] = get_nick_value(bot, str(bot.nick), maincom + "_" + str(mustbe), 'long', 'sayings') or []
+
         # each usecase needs a response
         if "responses" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["responses"] = []
+
         # verify responses are in list form
         if not isinstance(dict_from_file[mustbe]["responses"], list):
-            dict_from_file[mustbe]["responses"] = [dict_from_file[mustbe]["responses"]]
+            if dict_from_file[mustbe]["responses"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
+                dict_from_file[mustbe]["responses"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file[mustbe]["responses"]]
+            elif str(dict_from_file[mustbe]["responses"]).startswith(tuple(["https://", "http://"])):
+                page = requests.get(dict_from_file[mustbe]["responses"], headers=header)
+                tree = html.fromstring(page.content)
+                if page.status_code == 200:
+                    htmlfile = urllib.urlopen(dict_from_file[mustbe])
+                    lines = htmlfile.read().splitlines()
+                    dict_from_file[mustbe]["responses"] = lines
+            else:
+                dict_from_file[mustbe]["responses"] = [dict_from_file[mustbe]["responses"]]
 
         # each usecase needs a prefixtext
         if "prefixtext" not in dict_from_file[mustbe].keys():
@@ -1174,10 +1193,6 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         # Verify responses list is not empty
         if dict_from_file[mustbe]["responses"] == []:
             dict_from_file[mustbe]["responses"].append("No " + str(mustbe) + " responses set for " + str(maincom) + ".")
-
-        # each usecase needs to know if it can be updated. Default is false
-        if "updates_enabled" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["updates_enabled"] = False
 
     return dict_from_file
 
@@ -1759,8 +1774,8 @@ def bot_dictcom_ascii_artold(bot, botcom):
     return bot_dictcom_simpleold(bot, botcom)
 
 
-def bot_dictcom_sayingsold(bot, botcom):
-    return bot_dictcom_simpleold(bot, botcom)
+def bot_dictcom_sayings(bot, botcom):
+    return bot_dictcom_simple(bot, botcom)
 
 
 def bot_dictcom_readfromurlold(bot, botcom):
@@ -1781,6 +1796,7 @@ def bot_dictcom_process(bot, botcom):
     if posscom.lower() in botcom.dotcommand_dict.keys():
         botcom.responsekey = posscom.lower()
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+    botcom.commandtype = botcom.dotcommand_dict[botcom.responsekey]["type"]
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contrib', "contributors", 'author']
@@ -1809,6 +1825,10 @@ def bot_dictcom_process(bot, botcom):
     if botcom.specified:
         if str(botcom.specified).isdigit():
             botcom.specified = int(botcom.specified)
+
+    # commands that can be updated
+    if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"]:
+        botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey), 'long', 'sayings') or []
 
     # Hardcoded commands Below
     if botcom.specified == 'special':
@@ -1845,14 +1865,14 @@ def bot_dictcom_process(bot, botcom):
 
     elif botcom.specified == 'add':
 
-        if not botcom.dotcommand_dict[botcom.responsekey]:
+        if not botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"]:
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list cannot be updated.")
 
         fulltext = spicemanip(bot, botcom.triggerargsarray, 0)
         if not fulltext:
             return osd(bot, botcom.channel_current, 'say', "What would you like to add to the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list?")
 
-        if fulltext in botcom.dotcommand_dict[botcom.responsekey]:
+        if fulltext in botcom.dotcommand_dict[botcom.responsekey][]:
             return osd(bot, botcom.channel_current, 'say', "The following was already in the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
         adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
@@ -1861,7 +1881,7 @@ def bot_dictcom_process(bot, botcom):
 
     elif botcom.specified in ['del', 'remove']:
 
-        if not botcom.dotcommand_dict[botcom.responsekey]:
+        if not botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"]:
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list cannot be updated.")
 
         fulltext = spicemanip(bot, botcom.triggerargsarray, 0)
@@ -1882,10 +1902,6 @@ def bot_dictcom_process(bot, botcom):
 
     command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
     eval(command_function_run)
-
-    # bot_dictcom_reply_shared(bot, botcom)
-
-    # osd(bot, botcom.channel_current, 'say', str(botcom.dotcommand_dict))
 
 
 def bot_dictcom_reply_shared(bot, botcom):
@@ -1928,6 +1944,15 @@ def bot_dictcom_reply_shared(bot, botcom):
                     rply = rply.replace("$replyvariation", variation)
                 else:
                     rply = rply.replace("$replyvariation", '')
+
+            # display special options for this command
+            if "$specialoptions" in rply:
+                nonstockoptions = []
+                for command in botcom.dotcommand_dict.keys():
+                    if command not in ["?default", "validcoms", "contributors", "author", "type", "?noinput"]:
+                        nonstockoptions.append(command)
+                nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
+                rply = rply.replace("$specialoptions", nonstockoptions)
 
             # saying, or action?
             if rply.startswith("*a "):

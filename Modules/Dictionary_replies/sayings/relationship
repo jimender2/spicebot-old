@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "simple",
+              "updates_enabled": True,
+              "responses": [
+                          "Fuck everyone",
+                          ],
+              },
+
+}
