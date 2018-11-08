@@ -1726,10 +1726,10 @@ def bot_dictcom_gif(bot, botcom):
     gifdict = getGif(bot, searchdict)
 
     if gifdict["error"]:
-        osd(bot, trigger.sender, 'say',  str(gifdict["error"]))
+        osd(bot, botcom.channel_current, 'say',  str(gifdict["error"]))
         return
 
-    osd(bot, trigger.sender, 'say',  gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
+    osd(bot, botcom.channel_current, 'say',  gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
 
 
 def bot_dictcom_ascii_art(bot, botcom):
