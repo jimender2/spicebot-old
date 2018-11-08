@@ -1707,6 +1707,8 @@ def bot_dictcom_gif(bot, botcom):
 
     if "query" in botcom.dotcommand_dict.keys():
         query = botcom.dotcommand_dict["query"]
+    elif botcom.dotcommand not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys() and botcom.dotcommand not == 'gif':
+        query = botcom.dotcommand
     else:
         query = botcom.completestring
 
@@ -1729,41 +1731,32 @@ def bot_dictcom_gif(bot, botcom):
     gifdict = getGif(bot, searchdict)
 
     if gifdict["error"]:
-        if "noinputreplies" in botcom.dotcommand_dict.keys():
+        if "searchfail" in botcom.dotcommand_dict.keys():
+            gifdict["error"] = botcom.dotcommand_dict["searchfail"]
+        replies = gifdict["error"]
+    else:
+        replies = str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
 
-            botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
+    if not isinstance(replies, list):
+        replies = [replies]
 
-            if botcom.specified:
-                if botcom.specified > len(botcom.dotcommand_dict["replies"]):
-                    botcom.specified = len(botcom.dotcommand_dict["replies"])
-                replies = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
-            else:
-                replies = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
-
-            if not isinstance(replies, list):
-                replies = [replies]
-            # handling for embedded lists
-            for rply in replies:
-                if botcom.prefixtext != "":
-                    rply = botcom.prefixtext + rply
-                if botcom.suffixtext != "":
-                    rply = rply + botcom.suffixtext
-                rply = rply.replace("$instigator", botcom.instigator)
-                rply = rply.replace("$channel", botcom.channel_current)
-                rply = rply.replace("$botnick", bot.nick)
-                rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
-                if rply.startswith("time.sleep"):
-                    eval(rply)
-                elif rply.startswith("*a "):
-                    rply = rply.replace("*a ", "")
-                    osd(bot, botcom.channel_current, 'action', rply)
-                else:
-                    osd(bot, botcom.channel_current, 'say', rply)
+    # handling for embedded lists
+    for rply in replies:
+        if botcom.prefixtext != "":
+            rply = botcom.prefixtext + rply
+        if botcom.suffixtext != "":
+            rply = rply + botcom.suffixtext
+        rply = rply.replace("$instigator", botcom.instigator)
+        rply = rply.replace("$channel", botcom.channel_current)
+        rply = rply.replace("$botnick", bot.nick)
+        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.dotcommand_dict["validcoms"][0])
+        if rply.startswith("time.sleep"):
+            eval(rply)
+        elif rply.startswith("*a "):
+            rply = rply.replace("*a ", "")
+            osd(bot, botcom.channel_current, 'action', rply)
         else:
-            osd(bot, botcom.channel_current, 'say',  str(gifdict["error"]))
-        return
-
-    osd(bot, botcom.channel_current, 'say',  gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
+            osd(bot, botcom.channel_current, 'say', rply)
 
 
 def bot_dictcom_ascii_art(bot, botcom):

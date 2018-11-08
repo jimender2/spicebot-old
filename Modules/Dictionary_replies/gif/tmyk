@@ -1,0 +1,5 @@
+{
+"validcoms": ['tmyk', 'themoreyouknow', 'myk', 'moreyouknow'],
+"query": "the more you know",
+"searchfail": ['*a the more you know... **magic fingers**'],
+}
