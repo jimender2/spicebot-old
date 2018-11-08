@@ -1158,6 +1158,10 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         if dict_from_file[mustbe]["responses"] == []:
             dict_from_file[mustbe]["responses"].append("No " + str(mustbe) + " responses set for " + str(maincom) + ".")
 
+        # each usecase needs to know if it can be updated. Default is false
+        if "updates_enabled" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["updates_enabled"] = False
+
     return dict_from_file
 
 
@@ -1965,12 +1969,16 @@ def bot_dictcom_simple(bot, botcom):
                 nonstockoptions.append(command)
         nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
         return osd(bot, botcom.channel_current, 'say', "The special options for " + str(botcom.maincom) + " command include: " + str(nonstockoptions) + ".")
+
     elif botcom.specified == 'count':
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " command has " + str(len(botcom.dotcommand_dict[botcom.responsekey]["responses"])) + " entries.")
+
     elif botcom.specified == 'author':
         return osd(bot, botcom.channel_current, 'say', "The author of the " + str(botcom.maincom) + " command is " + botcom.dotcommand_dict["author"] + ".")
+
     elif botcom.specified in ['contrib', "contributors"]:
         return osd(bot, botcom.channel_current, 'say', "The contributors of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["contributors"], "andlist") + ".")
+
     elif botcom.specified == 'view':
         if botcom.dotcommand_dict[botcom.responsekey]["responses"] == []:
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " command appears to have no entries!")
@@ -1986,70 +1994,43 @@ def bot_dictcom_simple(bot, botcom):
                 osd(bot, botcom.instigator, 'say', "List cut off after the 20th entry to prevent bot lag.")
             return
 
+    elif botcom.specified == 'add':
+
+        if not botcom.dotcommand_dict[botcom.responsekey]:
+            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list cannot be updated.")
+
+        fulltext = spicemanip(bot, botcom.triggerargsarray, 0)
+        if not fulltext:
+            return osd(bot, botcom.channel_current, 'say', "What would you like to add to the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list?")
+
+        if fulltext in botcom.dotcommand_dict[botcom.responsekey]:
+            return osd(bot, botcom.channel_current, 'say', "The following was already in the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
+
+        adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
+
+        return osd(bot, botcom.channel_current, 'say', "The following was added to the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
+
+    elif botcom.specified in ['del', 'remove']:
+
+        if not botcom.dotcommand_dict[botcom.responsekey]:
+            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list cannot be updated.")
+
+        fulltext = spicemanip(bot, botcom.triggerargsarray, 0)
+        if not fulltext:
+            return osd(bot, botcom.channel_current, 'say', "What would you like to remove from the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list?")
+
+        if fulltext not in botcom.dotcommand_dict[botcom.responsekey]:
+            return osd(bot, botcom.channel_current, 'say', "The following was already not in the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
+
+        adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
+
+        return osd(bot, botcom.channel_current, 'say', "The following was removed from the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
+
     botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
 
     bot_dictcom_reply_shared(bot, botcom)
 
     # osd(bot, botcom.channel_current, 'say', str(botcom.dotcommand_dict))
-
-
-def copypasta(bot):
-    if botcom.specified == 'count':
-        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " command has " + str(len(botcom.dotcommand_dict["replies"])) + " entries.")
-    elif botcom.specified == 'view':
-        if botcom.dotcommand_dict["replies"] == []:
-            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " command appears to have no entries!")
-        else:
-            osd(bot, botcom.instigator, 'notice', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " command contains:")
-            listnumb, relist = 1, []
-            for item in botcom.dotcommand_dict["replies"]:
-                if listnumb <= 20:
-                    relist.append(str("[#" + str(listnumb) + "] " + str(item)))
-                listnumb += 1
-            osd(bot, botcom.instigator, 'say', relist)
-            if listnumb > 20:
-                osd(bot, botcom.instigator, 'say', "List cut off after the 20th entry to prevent bot lag.")
-            return
-
-    elif botcom.specified == 'add':
-
-        if botcom.specialcase:
-            if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["updates_enabled"]:
-                return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list cannot be updated.")
-        else:
-
-            if "updates_enabled" not in botcom.dotcommand_dict.keys():
-                return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list cannot be updated.")
-            if not botcom.dotcommand_dict["updates_enabled"]:
-                return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list cannot be updated.")
-
-        fulltext = spicemanip(bot, botcom.triggerargsarray, 0)
-        if not fulltext:
-            return osd(bot, botcom.channel_current, 'say', "What would you like to add to the " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list?")
-        if fulltext in botcom.dotcommand_dict["replies"]:
-            return osd(bot, botcom.channel_current, 'say', "The following was already in the " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list: '" + str(fulltext) + "'")
-        adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.specialcase or 'normal'), fulltext, botcom.specified, 'long', 'sayings')
-        return osd(bot, botcom.channel_current, 'say', "The following was added to the " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list: '" + str(fulltext) + "'")
-
-    elif botcom.specified in ['del', 'remove']:
-
-        if botcom.specialcase:
-            if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["updates_enabled"]:
-                return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list cannot be updated.")
-        else:
-
-            if "updates_enabled" not in botcom.dotcommand_dict.keys():
-                return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list cannot be updated.")
-            if not botcom.dotcommand_dict["updates_enabled"]:
-                return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list cannot be updated.")
-
-        fulltext = spicemanip(bot, botcom.triggerargsarray, 0)
-        if not fulltext:
-            return osd(bot, botcom.channel_current, 'say', "What would you like to remove from the " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list?")
-        if fulltext not in botcom.dotcommand_dict["replies"]:
-            return osd(bot, botcom.channel_current, 'say', "The following was already not in the " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list: '" + str(fulltext) + "'")
-        adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.specialcase or 'normal'), fulltext, botcom.specified, 'long', 'sayings')
-        return osd(bot, botcom.channel_current, 'say', "The following was removed from the " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " entry list: '" + str(fulltext) + "'")
 
 
 def bot_dictcom_reply_shared(bot, botcom):
