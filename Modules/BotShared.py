@@ -1438,9 +1438,9 @@ def bot_dictcom_simple(bot, botcom):
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict[botcom.responsekey]["responses"]):
             botcom.specified = len(botcom.dotcommand_dict[botcom.responsekey]["responses"])
-        replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], botcom.specified, 'return')
+        botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], botcom.specified, 'return')
     else:
-        replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
+        botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
 
     bot_dictcom_reply_shared(bot, botcom)
 
