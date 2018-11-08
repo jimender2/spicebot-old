@@ -1176,7 +1176,16 @@ def dict_command_configs(bot):
                         dict_from_file["replies"] = "This command is not setup with a proper 'type'."
 
                     if dict_from_file["type"] == "newtest":
-                        dummyvar = 5
+
+                        for mustbe in ["?default"]:
+
+                            # All of the above need to be in the dict if not
+                            if mustbe not in dict_from_file.keys():
+                                dict_from_file[mustbe] = dict()
+
+                            # verify if already there, that the key is a dict
+                            if not isinstance(dict_from_file[mustbe], dict):
+                                dict_from_file[mustbe] = dict()
 
                     else:
 
