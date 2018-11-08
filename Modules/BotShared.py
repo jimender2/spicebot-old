@@ -1972,7 +1972,7 @@ def bot_dictcom_simple(bot, botcom):
     elif botcom.specified in ['contrib', "contributors"]:
         return osd(bot, botcom.channel_current, 'say', "The contributors of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["contributors"], "andlist") + ".")
     elif botcom.specified == 'view':
-        if botcom.dotcommand_dict["replies"] == []:
+        if botcom.dotcommand_dict[botcom.responsekey]["responses"] == []:
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " command appears to have no entries!")
         else:
             osd(bot, botcom.instigator, 'notice', "The " + str(botcom.maincom) + " " + str(botcom.specialcase or '') + " command contains:")
