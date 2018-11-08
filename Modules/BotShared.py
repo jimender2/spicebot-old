@@ -978,15 +978,6 @@ def bot_command_function_canyouseeme(bot, botcom):
 
 
 """
-Testing
-"""
-
-
-def bot_command_function_dict(bot, botcom):
-    osd(bot, botcom.channel_current, 'say', str(bot.memory["botdict"]["users"]))
-
-
-"""
 Dictionary commands
 """
 
@@ -1043,6 +1034,9 @@ def dict_command_configs(bot):
                     dict_from_file = eval(inf.read())
                 except SyntaxError:
                     dict_from_file = dict()
+
+                if comconf == 'shrug':
+                    bot.msg("deathbybandaid", str(dict_from_file))
 
                 # Close File
                 inf.close()
