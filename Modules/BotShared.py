@@ -1193,7 +1193,7 @@ def dict_command_configs(bot):
 
                             # each usecase needs a response
                             if "responses" not in dict_from_file[mustbe].keys():
-                                dict_from_file[mustbe]["response"] = ["No Default Responses set"]
+                                dict_from_file[mustbe]["responses"] = ["No Default Responses set"]
 
                             # verify responses are in list form
                             if not isinstance(dict_from_file[mustbe]["responses"], list):
