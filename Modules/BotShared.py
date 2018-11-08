@@ -1925,19 +1925,24 @@ def bot_dictcom_newtest(bot, botcom):
         botcom.responsekey = posscom.lower()
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
-    replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
+    botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
+
+    bot_dictcom_reply_shared(bot, botcom)
+
+    osd(bot, botcom.channel_current, 'say', str(botcom.dotcommand_dict))
+
+
+def bot_dictcom_reply_shared(bot, botcom):
 
     # This handles responses in list form
-    if not isinstance(replies, list):
-        replies = [replies]
+    if not isinstance(botcom.replies, list):
+        botcom.replies = [botcom.replies]
 
-    for rply in replies:
+    for rply in botcom.replies:
         if rply.startswith("*a "):
             osd(bot, botcom.channel_current, 'action', rply.replace("*a ", ""))
         else:
             osd(bot, botcom.channel_current, 'say', rply)
-
-    osd(bot, botcom.channel_current, 'say', str(botcom.dotcommand_dict))
 
 
 """
