@@ -1251,7 +1251,7 @@ def dict_command_configs(bot):
                     if "type" not in dict_from_file.keys():
                         dict_from_file["type"] = quick_coms_type.lower()
                     if dict_from_file["type"] not in valid_com_types:
-                        dict_from_file["type"] = 'simpleold'
+                        dict_from_file["type"] = 'simple'
                         dict_from_file["replies"] = "This command is not setup with a proper 'type'."
 
                     if not dict_from_file["type"].endswith("old"):
@@ -1770,20 +1770,20 @@ def bot_dictcom_gifold(bot, botcom):
             osd(bot, botcom.channel_current, 'say', rply)
 
 
-def bot_dictcom_ascii_artold(bot, botcom):
-    return bot_dictcom_simpleold(bot, botcom)
+def bot_dictcom_ascii_art(bot, botcom):
+    return bot_dictcom_simple(bot, botcom)
 
 
 def bot_dictcom_sayings(bot, botcom):
     return bot_dictcom_simple(bot, botcom)
 
 
-def bot_dictcom_readfromurlold(bot, botcom):
-    return bot_dictcom_simpleold(bot, botcom)
+def bot_dictcom_readfromurl(bot, botcom):
+    return bot_dictcom_simple(bot, botcom)
 
 
-def bot_dictcom_readfromfileold(bot, botcom):
-    return bot_dictcom_simpleold(bot, botcom)
+def bot_dictcom_readfromfile(bot, botcom):
+    return bot_dictcom_simple(bot, botcom)
 
 
 def bot_dictcom_process(bot, botcom):
@@ -1872,7 +1872,7 @@ def bot_dictcom_process(bot, botcom):
         if not fulltext:
             return osd(bot, botcom.channel_current, 'say', "What would you like to add to the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list?")
 
-        if fulltext in botcom.dotcommand_dict[botcom.responsekey][]:
+        if fulltext in botcom.dotcommand_dict[botcom.responsekey]:
             return osd(bot, botcom.channel_current, 'say', "The following was already in the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
         adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
