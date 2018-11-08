@@ -1872,7 +1872,7 @@ def bot_dictcom_process(bot, botcom):
         if not fulltext:
             return osd(bot, botcom.channel_current, 'say', "What would you like to add to the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list?")
 
-        if fulltext in botcom.dotcommand_dict[botcom.responsekey]:
+        if fulltext in botcom.dotcommand_dict[botcom.responsekey]["responses"]:
             return osd(bot, botcom.channel_current, 'say', "The following was already in the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
         adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
@@ -1888,7 +1888,7 @@ def bot_dictcom_process(bot, botcom):
         if not fulltext:
             return osd(bot, botcom.channel_current, 'say', "What would you like to remove from the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list?")
 
-        if fulltext not in botcom.dotcommand_dict[botcom.responsekey]:
+        if fulltext not in botcom.dotcommand_dict[botcom.responsekey]["responses"]:
             return osd(bot, botcom.channel_current, 'say', "The following was already not in the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
         adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
