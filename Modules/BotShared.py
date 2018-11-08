@@ -1930,7 +1930,7 @@ def bot_dictcom_simple(bot, botcom):
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove']
+    validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'options']
     botcom.specified = None
     argone, argtwo = spicemanip(bot, botcom.triggerargsarray, 1), spicemanip(bot, botcom.triggerargsarray, 'last')
     if str(argone).startswith("!") and len(str(argone)) > 1:
