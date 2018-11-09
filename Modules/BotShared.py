@@ -1654,7 +1654,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
 
         if not botcom.completestring:
             if botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]:
-                botcom.dotcommand_dict[botcom.responsekey]["responses"] =  = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
+                botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
                 return bot_dictcom_reply_shared(bot, botcom)
             else:
                 return osd(bot, botcom.instigator, 'notice', "This command requires input.")
