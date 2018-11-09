@@ -1664,6 +1664,57 @@ def bot_dictcom_fillintheblank(bot, botcom):
     bot_dictcom_reply_shared(bot, botcom)
 
 
+def bot_dictcom_targetplusreason(bot, botcom):
+
+    commandrunconsensus = []
+
+    ignoretarget = 0
+    if not botcom.target and botcom.dotcommand_dict[botcom.responsekey]["target_backup"]:
+        botcom.target = botcom.dotcommand_dict[botcom.responsekey]["target_backup"]
+        if botcom.target == 'instigator':
+            botcom.target = botcom.instigator
+        elif botcom.target == 'random':
+            if not botcom.channel_current.startswith('#'):
+                botcom.target = botcom.instigator
+            else:
+                botcom.target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
+        else:
+            ignoretarget = 1
+
+    if botcom.dotcommand_dict[botcom.responsekey]["target_required"] and not botcom.target:
+        commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
+
+    if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+    if not ignoretarget and botcom.target:
+        targetchecking = bot_target_check(bot, botcom, botcom.target, botcom.dotcommand_dict[botcom.responsekey]["target_self"])
+        if not targetchecking["targetgood"]:
+            if targetchecking["reason"] not in ["bot", "self"]:
+                botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
+            else:
+                if targetchecking["reason"] == "bot" and botcom.dotcommand_dict[botcom.responsekey]["react_bot"]:
+                    botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_bot"]
+                elif targetchecking["reason"] == "self" and botcom.dotcommand_dict[botcom.responsekey]["react_self"]:
+                    botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_self"]
+
+    botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
+
+    if not botcom.completestring and botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]:
+        botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]
+
+    if botcom.dotcommand_dict[botcom.responsekey]["blank_required"] and not botcom.completestring:
+        commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["blank_fail"])
+
+    if commandrunconsensus != []:
+        if botcom.dotcommand_dict[botcom.responsekey]["response_fail"]:
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["response_fail"]
+        else:
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = commandrunconsensus[0]
+
+    bot_dictcom_reply_shared(bot, botcom)
+
+
 def bot_dictcom_targetplusreasonold(bot, botcom):
 
     # some commands cannot run without input
