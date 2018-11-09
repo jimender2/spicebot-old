@@ -1602,6 +1602,8 @@ def bot_dictcom_simple(bot, botcom):
 
 def bot_dictcom_target(bot, botcom):
 
+    commandrunconsensus = []
+
     ignoretarget = 0
     if not botcom.target and botcom.dotcommand_dict[botcom.responsekey]["target_backup"]:
         botcom.target = botcom.dotcommand_dict[botcom.responsekey]["target_backup"]
@@ -1648,10 +1650,16 @@ def bot_dictcom_fillintheblank(bot, botcom):
     botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
 
     if not botcom.completestring and botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]:
-        commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["blank_backup"])
+        botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]
 
     if botcom.dotcommand_dict[botcom.responsekey]["blank_required"] and not botcom.completestring:
-        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
+        commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["blank_fail"])
+
+    if commandrunconsensus != []:
+        if botcom.dotcommand_dict[botcom.responsekey]["response_fail"]:
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["response_fail"]
+        else:
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = commandrunconsensus[0]
 
     bot_dictcom_reply_shared(bot, botcom)
 
