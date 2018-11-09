@@ -2,7 +2,6 @@
 "validcoms": ['airbiscuit', 'float'],
 "?default": {
               "type": "target",
-              "target_required": False,
               "responses": ["$instigator floats an air biscuit in the general direction of $target."],
               "target_fail": ["$instigator floats an air biscuit."],
               },
