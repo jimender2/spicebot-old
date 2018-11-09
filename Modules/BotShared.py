@@ -1666,17 +1666,6 @@ def bot_dictcom_fillintheblank(bot, botcom):
 
 def bot_dictcom_fillintheblankold(bot, botcom):
 
-    online = False
-    onlineconsensus = []
-    for channel in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
-        if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users']:
-            onlineconsensus.append("True")
-        else:
-            onlineconsensus.append("False")
-
-    if 'True' not in onlineconsensus:
-        online = False
-
     # some commands cannot run without input
     inputrequired = 1
 
