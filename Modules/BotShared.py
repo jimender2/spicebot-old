@@ -1240,8 +1240,6 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             else:
                 dict_from_file[mustbe]["type"] = "simple"
 
-        # (basestring, str, unicode)
-
         # each usecase needs to know if it can be updated. Default is false
         if "updates_enabled" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["updates_enabled"] = False
@@ -1629,8 +1627,7 @@ def bot_dictcom_target(bot, botcom):
         if not botcom.target:
             if not botcom.dotcommand_dict[botcom.responsekey]["target_fail"]:
                 return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
-            if botcom.dotcommand_dict[botcom.responsekey]["target_fail"]:
-                botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_fail"]
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_fail"]
 
         if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
@@ -1645,9 +1642,8 @@ def bot_dictcom_target(bot, botcom):
                         botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_bot"]
                     elif targetchecking["reason"] == "self" and botcom.dotcommand_dict[botcom.responsekey]["react_self"]:
                         botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_self"]
-    else:
-        if botcom.dotcommand_dict[botcom.responsekey]["target_missing"]:
-            botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_missing"]
+    # else:
+    #    botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_missing"]
 
     bot_dictcom_reply_shared(bot, botcom)
 
@@ -1666,12 +1662,10 @@ def bot_dictcom_fillintheblank(bot, botcom):
         if not botcom.completestring:
             if not botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]:
                 return osd(bot, botcom.instigator, 'notice', "This command requires input.")
-            if botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]:
-                botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
 
     else:
-        if botcom.dotcommand_dict[botcom.responsekey]["blank_missing"]:
-            botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_missing"]
+        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_missing"]
 
     bot_dictcom_reply_shared(bot, botcom)
 
@@ -2208,7 +2202,7 @@ def bot_target_check(bot, botcom, target, target_self):
 
     # Optional don't allow self-target
     if not target_self:
-        if target == str(botcom.instigator):
+        if target == botcom.instigator:
             reasons.append("self")
             targetgoodconsensus.append("This command does not allow you to target yourself.")
 
