@@ -2165,7 +2165,7 @@ def bot_target_check(bot, botcom, target, target_self):
     targetgoodconsensus, reasons = [], []
 
     # Optional don't allow self-target
-    if not selftarget:
+    if not target_self:
         if target == botcom.instigator:
             reasons.append("self")
             targetgoodconsensus.append("This command does not allow you to target yourself.")
