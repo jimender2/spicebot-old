@@ -6,7 +6,6 @@
               "blank_backup": 'for that.',
               "blank_required": False,
               "blank_reasonhandle": ["for", "because"],
-              "response_fail": "*a rolls eyes at $instigator.",
               },
 
 }

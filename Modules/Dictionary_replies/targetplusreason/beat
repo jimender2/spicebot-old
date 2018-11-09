@@ -5,7 +5,6 @@
               "blank_backup": 'until moral improves.',
               "blank_required": False,
               "blank_reasonhandle": ["because", "for"],
-              "response_fail": "*a rolls eyes at $instigator.",
               },
 
 }
