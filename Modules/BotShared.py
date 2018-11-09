@@ -68,7 +68,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'fillintheblankold', 'targetplusreasonold', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gifold"]
+valid_com_types = ['simple', 'fillintheblank', 'targetplusreasonold', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gifold"]
 
 
 """
@@ -1631,6 +1631,27 @@ def bot_dictcom_target(bot, botcom):
                     return bot_dictcom_reply_shared(bot, botcom)
                 else:
                     return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
+
+    bot_dictcom_reply_shared(bot, botcom)
+
+
+def bot_dictcom_fillintheblank(bot, botcom):
+
+    botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
+
+    if botcom.dotcommand_dict[botcom.responsekey]["blank_required"]:
+
+        ignoretarget = 0
+
+        if not botcom.completestring and botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]:
+            botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]
+
+        if not botcom.completestring:
+            if botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]:
+                botcom.replies = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
+                return bot_dictcom_reply_shared(bot, botcom)
+            else:
+                return osd(bot, botcom.instigator, 'notice', "This command requires input.")
 
     bot_dictcom_reply_shared(bot, botcom)
 
