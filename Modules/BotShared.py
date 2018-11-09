@@ -1196,7 +1196,7 @@ def dict_command_configs(bot):
                     keysprocessed.append("contributors")
 
                     # handle basic required dict handling
-                    dict_required = ["?default", "?noinput"]
+                    dict_required = ["?default"]
                     dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, dict_required)
                     keysprocessed.extend(dict_required)
 
@@ -1218,7 +1218,9 @@ def dict_command_configs(bot):
 
 
 def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
-    bot.msg("deathbybandaid", str(process_list))
+
+    if maincom == "testdbb":
+        bot.msg("deathbybandaid", str(process_list))
 
     for mustbe in process_list:
 
@@ -1309,10 +1311,6 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
                 else:
                     dict_from_file[mustbe]["responses"].append(dict_from_file["responses"])
                 del dict_from_file["responses"]
-
-        # This is to give no input an alternate message
-        if dict_from_file[mustbe]["responses"] == [] and mustbe == "?noinput":
-            dict_from_file[mustbe]["responses"].append("No input given for " + str(maincom) + ".")
 
         # Verify responses list is not empty
         if dict_from_file[mustbe]["responses"] == []:
@@ -1431,7 +1429,7 @@ def bot_dictcom_process(bot, botcom):
     if botcom.specified == 'special':
         nonstockoptions = []
         for command in botcom.dotcommand_dict.keys():
-            if command not in ["?default", "validcoms", "contributors", "author", "type", "?noinput"]:
+            if command not in ["?default", "validcoms", "contributors", "author", "type"]:
                 nonstockoptions.append(command)
         nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
         return osd(bot, botcom.channel_current, 'say', "The special options for " + str(botcom.maincom) + " command include: " + str(nonstockoptions) + ".")
@@ -1546,7 +1544,7 @@ def bot_dictcom_reply_shared(bot, botcom):
             if "$specialoptions" in rply:
                 nonstockoptions = []
                 for command in botcom.dotcommand_dict.keys():
-                    if command not in ["?default", "validcoms", "contributors", "author", "type", "?noinput"]:
+                    if command not in ["?default", "validcoms", "contributors", "author", "type"]:
                         nonstockoptions.append(command)
                 nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
                 rply = rply.replace("$specialoptions", nonstockoptions)
