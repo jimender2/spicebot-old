@@ -5,7 +5,6 @@
               "blank_required": False,
               "blank_backup": 'somewhere tropical',
               "target_backup": 'instigator',
-              "blank_reasonhandle": ["because", "for"],
               },
 
 }

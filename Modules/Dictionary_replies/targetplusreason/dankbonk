@@ -1,7 +1,7 @@
 {
 "?default": {
               "type": "targetplusreason",
-              "responses": ["$instigator whacks  $target with a 42 pound sack of primo cheeba $blank"],
+              "responses": ["$instigator whacks $target with a 42 pound sack of primo cheeba $blank"],
               "blank_required": False,
               "blank_reasonhandle": ["because", "for"],
               "react_bot": ["*a teaches $instigator a lesson by sitting on $instigator"],
