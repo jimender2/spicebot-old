@@ -1,0 +1,16 @@
+{
+"?default": {
+              "type": "targetplusreason",
+              "responses": ["I blame $target $blank"],
+              "blank_backup": 'for that.',
+              "target_backup": 'random',
+              "blank_required": False,
+              "blank_reasonhandle": ["for", "because"],
+              "response_fail": "*a rolls eyes at $instigator.",
+              },
+"canada": {
+              "type": "simple",
+              "responses": ["Blame Canada!!!   https://www.youtube.com/watch?v=bOR38552MJA"],
+              },
+
+}
