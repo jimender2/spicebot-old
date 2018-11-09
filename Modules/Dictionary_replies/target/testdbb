@@ -2,7 +2,8 @@
 
 "?default": {
               "type": "target",
-              "responses": ["dbb testing?"],
+              "responses": ["dbb $target testing?"],
+              "target_required": True,
               },
 
 }
