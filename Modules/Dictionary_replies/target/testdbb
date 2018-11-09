@@ -1,9 +1,0 @@
-{
-
-"?default": {
-              "type": "target",
-              "responses": ["dbb $target testing?"],
-              "target_backup": "instigator",
-              },
-
-}
