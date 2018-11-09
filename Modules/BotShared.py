@@ -1607,7 +1607,8 @@ def bot_dictcom_target(bot, botcom):
 
         if not botcom.target:
             if botcom.dotcommand_dict[botcom.responsekey]["target_fail"]:
-                return osd(bot, botcom.instigator, 'notice', botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
+                botcom.replies = botcom.dotcommand_dict[botcom.responsekey]["target_fail"]
+                return bot_dictcom_reply_shared(bot, botcom)
             else:
                 return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
 
@@ -1618,9 +1619,11 @@ def bot_dictcom_target(bot, botcom):
             targetchecking = bot_target_check(bot, botcom, botcom.target, botcom.dotcommand_dict[botcom.responsekey]["target_self"])
             if not targetchecking["targetgood"]:
                 if targetchecking["reason"] == "bot" and botcom.dotcommand_dict[botcom.responsekey]["react_bot"]:
-                    return osd(bot, botcom.instigator, 'notice', botcom.dotcommand_dict[botcom.responsekey]["react_bot"])
+                    botcom.replies = botcom.dotcommand_dict[botcom.responsekey]["react_bot"]
+                    return bot_dictcom_reply_shared(bot, botcom)
                 elif targetchecking["reason"] == "self" and botcom.dotcommand_dict[botcom.responsekey]["react_self"]:
-                    return osd(bot, botcom.instigator, 'notice', botcom.dotcommand_dict[botcom.responsekey]["react_self"])
+                    botcom.replies = botcom.dotcommand_dict[botcom.responsekey]["react_self"]
+                    return bot_dictcom_reply_shared(bot, botcom)
                 else:
                     return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
 
