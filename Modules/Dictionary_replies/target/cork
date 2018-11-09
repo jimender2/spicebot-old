@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["*a applies the Cork of Sean to $target"],
+              "target_backup": "instigator",
+              },
+
+}

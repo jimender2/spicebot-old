@@ -1,0 +1,23 @@
+{
+"validcoms": ['dd', 'doubled'],
+"?default": {
+              "type": "target",
+              "responses": [
+                            "*a punches $target who is clearly a motherfucker, in the mouth.",
+                            "*a punches $target who is clearly a prick, in the mouth.",
+                            "*a punches $target who is clearly a wanker, in the mouth.",
+                            ],
+              "target_fail": ["Who are you pissed at now?"],
+              },
+
+"cert": {
+          "type": "simple",
+          "responses": ["Here is the link to DD link for the noobs who have never seen it before. https://ibb.co/ibxD2n"],
+          },
+
+"certification": {
+          "type": "simple",
+          "responses": ["Here is the link to DD link for the noobs who have never seen it before. https://ibb.co/ibxD2n"],
+          },
+
+}

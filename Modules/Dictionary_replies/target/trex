@@ -1,0 +1,8 @@
+{
+"?default": {
+              "type": "target",
+              "responses": ["$target has short arms.", "All of the other dinosaurs feared $target"],
+              "target_fail": ["T-Rex has short arms.", "All of the other dinosaurs feared the T-Rex"],
+              },
+
+}

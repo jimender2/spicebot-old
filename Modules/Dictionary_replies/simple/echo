@@ -2,7 +2,9 @@
 
 "?default": {
               "type": "simple",
-              "responses": [[" $input", " $input", " $input"]],
+              "responses": [
+                            [" $input", " $input", " $input"]
+                            ],
               },
 
 }
