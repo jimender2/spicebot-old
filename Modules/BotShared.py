@@ -1152,6 +1152,10 @@ def dict_command_configs(bot):
                 if not isinstance(dict_from_file, dict):
                     dict_from_file = dict()
 
+                # current file path
+                if "filepath" not in dict_from_file.keys():
+                    dict_from_file["filepath"] = os.path.join(coms_type_file_path, comconf)
+
                 # default command to filename
                 if "validcoms" not in dict_from_file.keys():
                     dict_from_file["validcoms"] = [comconf]
@@ -1176,7 +1180,7 @@ def dict_command_configs(bot):
 
                     # Don't process these.
                     keysprocessed = []
-                    keysprocessed.extend(["validcoms"])
+                    keysprocessed.extend(["validcoms", "filepath"])
 
                     # the command must have an author
                     if "author" not in dict_from_file.keys():
@@ -1207,7 +1211,8 @@ def dict_command_configs(bot):
                     for otherkey in dict_from_file.keys():
                         if otherkey not in keysprocessed:
                             otherkeys.append(otherkey)
-                    dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, otherkeys)
+                    if otherkeys != []:
+                        dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, otherkeys)
                     keysprocessed.extend(otherkeys)
 
                     bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
@@ -1245,8 +1250,8 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         # each usecase needs to know if it needs a target
         if "target_required" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_required"] = False
-        # if maincom == "testdbb":
-        #    bot.msg("deathbybandaid", str(maincom) + " " + str(dict_from_file[mustbe]["target_required"]))
+        if maincom == "testdbb":
+            bot.msg("deathbybandaid", str(maincom) + " " + str(dict_from_file[mustbe]["target_required"]))
         if "target_backup" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_backup"] = False
         if "target_fail" not in dict_from_file[mustbe].keys():
