@@ -1637,7 +1637,6 @@ def bot_dictcom_target(bot, botcom):
                     return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
     else:
         botcom.replies = botcom.dotcommand_dict[botcom.responsekey]["target_fail"]
-        return bot_dictcom_reply_shared(bot, botcom)
 
     bot_dictcom_reply_shared(bot, botcom)
 
