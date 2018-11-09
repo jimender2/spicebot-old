@@ -1254,6 +1254,9 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             dict_from_file[mustbe]["target_backup"] = False
         if "target_fail" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_fail"] = False
+        if dict_from_file[mustbe]["target_fail"]:
+            if not isinstance(dict_from_file[mustbe]["target_fail"], list):
+                dict_from_file[mustbe]["target_fail"] = [dict_from_file[mustbe]["target_fail"]]
         if "target_self" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_self"] = False
 
@@ -1273,6 +1276,9 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             dict_from_file[mustbe]["blank_backup"] = False
         if "blank_fail" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["blank_fail"] = False
+        if dict_from_file[mustbe]["blank_fail"]:
+            if not isinstance(dict_from_file[mustbe]["blank_fail"], list):
+                dict_from_file[mustbe]["blank_fail"] = [dict_from_file[mustbe]["blank_fail"]]
 
         if dict_from_file[mustbe]["updates_enabled"]:
             adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
