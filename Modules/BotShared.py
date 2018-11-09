@@ -1257,11 +1257,6 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         if dict_from_file[mustbe]["target_fail"]:
             if not isinstance(dict_from_file[mustbe]["target_fail"], list):
                 dict_from_file[mustbe]["target_fail"] = [dict_from_file[mustbe]["target_fail"]]
-        if "target_missing" not in dict_from_file[mustbe].keys():
-            if dict_from_file[mustbe]["target_fail"]:
-                dict_from_file[mustbe]["target_missing"] = dict_from_file[mustbe]["target_fail"]
-            else:
-                dict_from_file[mustbe]["target_missing"] = False
         if "target_self" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_self"] = False
 
@@ -1284,11 +1279,6 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         if dict_from_file[mustbe]["blank_fail"]:
             if not isinstance(dict_from_file[mustbe]["blank_fail"], list):
                 dict_from_file[mustbe]["blank_fail"] = [dict_from_file[mustbe]["blank_fail"]]
-                if "blank_missing" not in dict_from_file[mustbe].keys():
-                    if dict_from_file[mustbe]["blank_fail"]:
-                        dict_from_file[mustbe]["blank_missing"] = dict_from_file[mustbe]["blank_fail"]
-                    else:
-                        dict_from_file[mustbe]["blank_missing"] = False
 
         if dict_from_file[mustbe]["updates_enabled"]:
             adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
@@ -1646,7 +1636,7 @@ def bot_dictcom_target(bot, botcom):
                 else:
                     return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
     else:
-        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_missing"]
+        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_fail"]
 
     bot_dictcom_reply_shared(bot, botcom)
 
@@ -1664,12 +1654,10 @@ def bot_dictcom_fillintheblank(bot, botcom):
 
         if not botcom.completestring:
             if botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]:
-                botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
+                botcom.dotcommand_dict[botcom.responsekey]["responses"] =  = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
                 return bot_dictcom_reply_shared(bot, botcom)
             else:
                 return osd(bot, botcom.instigator, 'notice', "This command requires input.")
-    else:
-        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_missing"]
 
     bot_dictcom_reply_shared(bot, botcom)
 
