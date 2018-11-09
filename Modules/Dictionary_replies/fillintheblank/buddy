@@ -2,16 +2,19 @@
 "?default": {
               "type": "fillintheblank",
               "responses": ["let me call my buddy and get him down here... he's an expert on $blank"],
-              "blank_required": False,
               "response_fail": [
                               "What is your buddy good at?",
-                              [
-                              "I'm not your friend, buddy",
-                              "I'm not your buddy, pal",
-                              "I'm not your pal, guy",
-                              "I'm not your guy, friend ",
-                              ]
                               ],
               },
-
+"not": {
+          "type": "simple",
+          "responses": [
+                          [
+                          "I'm not your friend, buddy",
+                          "I'm not your buddy, pal",
+                          "I'm not your pal, guy",
+                          "I'm not your guy, friend ",
+                          ]
+                        ],
+          },
 }
