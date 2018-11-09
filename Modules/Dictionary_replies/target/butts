@@ -3,7 +3,7 @@
 "?default": {
               "type": "target",
               "responses": ["*a rains butts down on $target"],
-              "target_fail": ["*a rains butts down on everyone."],
+              "response_fail": ["*a rains butts down on everyone."],
               },
 
 }

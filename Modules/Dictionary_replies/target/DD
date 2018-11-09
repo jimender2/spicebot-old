@@ -7,7 +7,7 @@
                             "*a punches $target who is clearly a prick, in the mouth.",
                             "*a punches $target who is clearly a wanker, in the mouth.",
                             ],
-              "target_fail": ["Who are you pissed at now?"],
+              "response_fail": ["Who are you pissed at now?"],
               },
 
 "cert": {

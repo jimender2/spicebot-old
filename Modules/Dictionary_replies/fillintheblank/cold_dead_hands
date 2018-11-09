@@ -3,7 +3,7 @@
 "?default": {
               "type": "fillintheblank",
               "responses": ["You can have my $blank, when you pry it from my cold dead hands!!"],
-              "blank_fail": ["You can have my gun, when you pry it from my cold dead hands!!"],
+              "response_fail": ["You can have my gun, when you pry it from my cold dead hands!!"],
               },
 
 }

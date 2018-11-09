@@ -3,7 +3,7 @@
 "?default": {
               "type": "target",
               "responses": ["*a grabs popcorn and goes to watch $target's situation unfold."],
-              "target_fail": [
+              "response_fail": [
                                 [
 
                                 "*a grabs popcorn and goes to watch the action",

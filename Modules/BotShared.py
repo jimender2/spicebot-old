@@ -1253,10 +1253,9 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         if "target_backup" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_backup"] = False
         if "target_fail" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["target_fail"] = False
-        if dict_from_file[mustbe]["target_fail"]:
-            if not isinstance(dict_from_file[mustbe]["target_fail"], list):
-                dict_from_file[mustbe]["target_fail"] = [dict_from_file[mustbe]["target_fail"]]
+            dict_from_file[mustbe]["target_fail"] = ["This command requires a target."]
+        if not isinstance(dict_from_file[mustbe]["target_fail"], list):
+            dict_from_file[mustbe]["target_fail"] = [dict_from_file[mustbe]["target_fail"]]
         if "target_self" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_self"] = False
 
@@ -1275,10 +1274,15 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         if "blank_backup" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["blank_backup"] = False
         if "blank_fail" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["blank_fail"] = False
-        if dict_from_file[mustbe]["blank_fail"]:
-            if not isinstance(dict_from_file[mustbe]["blank_fail"], list):
-                dict_from_file[mustbe]["blank_fail"] = [dict_from_file[mustbe]["blank_fail"]]
+            dict_from_file[mustbe]["blank_fail"] = ["This command requires input."]
+        if not isinstance(dict_from_file[mustbe]["blank_fail"], list):
+            dict_from_file[mustbe]["blank_fail"] = [dict_from_file[mustbe]["blank_fail"]]
+
+        if "response_fail" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["response_fail"] = False
+        if dict_from_file[mustbe]["response_fail"]:
+            if not isinstance(dict_from_file[mustbe]["response_fail"], list):
+                dict_from_file[mustbe]["response_fail"] = [dict_from_file[mustbe]["response_fail"]]
 
         if dict_from_file[mustbe]["updates_enabled"]:
             adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
@@ -1598,45 +1602,35 @@ def bot_dictcom_simple(bot, botcom):
 
 def bot_dictcom_target(bot, botcom):
 
-    if botcom.dotcommand_dict[botcom.responsekey]["target_required"]:
-
-        ignoretarget = 0
-
-        if not botcom.target and botcom.dotcommand_dict[botcom.responsekey]["target_backup"]:
-            botcom.target = botcom.dotcommand_dict[botcom.responsekey]["target_backup"]
-            if botcom.target == 'instigator':
+    ignoretarget = 0
+    if not botcom.target and botcom.dotcommand_dict[botcom.responsekey]["target_backup"]:
+        botcom.target = botcom.dotcommand_dict[botcom.responsekey]["target_backup"]
+        if botcom.target == 'instigator':
+            botcom.target = botcom.instigator
+        elif botcom.target == 'random':
+            if not botcom.channel_current.startswith('#'):
                 botcom.target = botcom.instigator
-            elif botcom.target == 'random':
-                if not botcom.channel_current.startswith('#'):
-                    botcom.target = botcom.instigator
-                else:
-                    botcom.target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
             else:
-                ignoretarget = 1
+                botcom.target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
+        else:
+            ignoretarget = 1
 
-        if not botcom.target:
-            if botcom.dotcommand_dict[botcom.responsekey]["target_fail"]:
-                botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_fail"]
-                return bot_dictcom_reply_shared(bot, botcom)
+    if botcom.dotcommand_dict[botcom.responsekey]["target_required"] and not botcom.target:
+        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_fail"]
+
+    if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
+        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+    if not ignoretarget:
+        targetchecking = bot_target_check(bot, botcom, botcom.target, botcom.dotcommand_dict[botcom.responsekey]["target_self"])
+        if not targetchecking["targetgood"]:
+            if not in targetchecking["reason"] in ["bot", "self"]:
+                return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
             else:
-                return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
-
-        if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
-            botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-
-        if not ignoretarget:
-            targetchecking = bot_target_check(bot, botcom, botcom.target, botcom.dotcommand_dict[botcom.responsekey]["target_self"])
-            if not targetchecking["targetgood"]:
                 if targetchecking["reason"] == "bot" and botcom.dotcommand_dict[botcom.responsekey]["react_bot"]:
                     botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_bot"]
-                    return bot_dictcom_reply_shared(bot, botcom)
                 elif targetchecking["reason"] == "self" and botcom.dotcommand_dict[botcom.responsekey]["react_self"]:
                     botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_self"]
-                    return bot_dictcom_reply_shared(bot, botcom)
-                else:
-                    return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
-    else:
-        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_fail"]
 
     bot_dictcom_reply_shared(bot, botcom)
 
@@ -1645,24 +1639,27 @@ def bot_dictcom_fillintheblank(bot, botcom):
 
     botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
 
-    if botcom.dotcommand_dict[botcom.responsekey]["blank_required"]:
+    if not botcom.completestring and botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]:
+        botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]
 
-        ignoretarget = 0
-
-        if not botcom.completestring and botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]:
-            botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]
-
-        if not botcom.completestring:
-            if botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]:
-                botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
-                return bot_dictcom_reply_shared(bot, botcom)
-            else:
-                return osd(bot, botcom.instigator, 'notice', "This command requires input.")
+    if botcom.dotcommand_dict[botcom.responsekey]["blank_required"] and not botcom.completestring:
+        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
 
     bot_dictcom_reply_shared(bot, botcom)
 
 
 def bot_dictcom_fillintheblankold(bot, botcom):
+
+    online = False
+    onlineconsensus = []
+    for channel in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+        if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users']:
+            onlineconsensus.append("True")
+        else:
+            onlineconsensus.append("False")
+
+    if 'True' not in onlineconsensus:
+        online = False
 
     # some commands cannot run without input
     inputrequired = 1
