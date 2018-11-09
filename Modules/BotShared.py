@@ -1254,6 +1254,8 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             dict_from_file[mustbe]["target_backup"] = False
         if "target_fail" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_fail"] = False
+        if "target_self" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["target_self"] = False
 
         # special target reactions
         if "react_bot" not in dict_from_file[mustbe].keys():
@@ -1613,7 +1615,7 @@ def bot_dictcom_target(bot, botcom):
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
         if not ignoretarget:
-            targetchecking = bot_target_check(bot, botcom, botcom.target, True)
+            targetchecking = bot_target_check(bot, botcom, botcom.target, botcom.dotcommand_dict[botcom.responsekey]["target_self"])
             if not targetchecking["targetgood"]:
                 if targetchecking["reason"] == "bot" and botcom.dotcommand_dict[botcom.responsekey]["react_bot"]:
                     return osd(bot, botcom.instigator, 'notice', botcom.dotcommand_dict[botcom.responsekey]["react_bot"])
@@ -2157,13 +2159,13 @@ def nick_actual(bot, nick):
     return nick_actual
 
 
-def bot_target_check(bot, botcom, target, selftarget):
+def bot_target_check(bot, botcom, target, target_self):
     targetgood = {"targetgood": True, "error": "None", "reason": None}
 
     targetgoodconsensus, reasons = [], []
 
     # Optional don't allow self-target
-    if selftarget:
+    if not selftarget:
         if target == botcom.instigator:
             reasons.append("self")
             targetgoodconsensus.append("This command does not allow you to target yourself.")
