@@ -3,7 +3,7 @@
 "?default": {
               "type": "target",
               "responses": ["dbb $target testing?"],
-              "target_required": True,
+              "target_backup": "$instigator",
               },
 
 }

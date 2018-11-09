@@ -68,7 +68,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'targetold', 'fillintheblankold', 'targetplusreasonold', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gifold"]
+valid_com_types = ['simple', 'fillintheblankold', 'targetplusreasonold', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gifold"]
 
 
 """
@@ -1246,7 +1246,10 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
 
         # each usecase needs to know if it needs a target
         if "target_required" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["target_required"] = False
+            if dict_from_file[mustbe]["type"] in ['target', 'targetplusreason']:
+                dict_from_file[mustbe]["target_required"] = True
+            else:
+                dict_from_file[mustbe]["target_required"] = False
         if "target_backup" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_backup"] = False
         if "target_fail" not in dict_from_file[mustbe].keys():
@@ -1260,7 +1263,10 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
 
         # each usecase needs to know if it needs input for fillintheblank
         if "blank_required" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["blank_required"] = False
+            if dict_from_file[mustbe]["type"] in ['fillintheblank', 'targetplusreason']:
+                dict_from_file[mustbe]["blank_required"] = True
+            else:
+                dict_from_file[mustbe]["blank_required"] = False
         if "blank_backup" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["blank_backup"] = False
         if "blank_fail" not in dict_from_file[mustbe].keys():
@@ -1624,89 +1630,6 @@ def bot_dictcom_target(bot, botcom):
         botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
 
     bot_dictcom_reply_shared(bot, botcom)
-
-
-def bot_dictcom_targetold(bot, botcom):
-
-    # some commands cannot run without input
-    targetrequired, ignoretarget = 1, 0
-
-    if botcom.specialcase:
-        if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["inputrequired"]:
-            targetrequired = 0
-
-    if "backuptarget" in botcom.dotcommand_dict.keys() and not botcom.target:
-        targetrequired = 0
-        botcom.target = botcom.dotcommand_dict["backuptarget"]
-        if botcom.target == 'instigator':
-            botcom.target = botcom.instigator
-        elif botcom.target == 'random':
-            if not botcom.channel_current.startswith('#'):
-                botcom.target = botcom.instigator
-            else:
-                botcom.target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
-        else:
-            ignoretarget = 1
-
-    if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.target and targetrequired:
-        targetrequired = 0
-        botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
-
-    if botcom.target:
-        targetrequired = 0
-
-    if targetrequired:
-        return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
-
-    # remove target
-    if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
-        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-
-    if not ignoretarget and botcom.target:
-        targetchecking = bot_target_check(bot, botcom, botcom.target)
-        if not targetchecking["targetgood"]:
-            if targetchecking["reason"] == "bot" and "botreact" in botcom.dotcommand_dict.keys():
-                botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["botreact"]
-            else:
-                return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
-
-    if botcom.specified:
-        if botcom.specified > len(botcom.dotcommand_dict["replies"]):
-            botcom.specified = len(botcom.dotcommand_dict["replies"])
-        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
-    else:
-        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
-
-    if not isinstance(replies, list):
-        replies = [replies]
-
-    if not botcom.target:
-        ignoretarget = 1
-        botcom.target = ''
-
-    for rply in replies:
-        if botcom.prefixtext != "":
-            rply = botcom.prefixtext + rply
-        if botcom.suffixtext != "":
-            rply = rply + botcom.suffixtext
-        rply = rply.replace("$target", botcom.target)
-        rply = rply.replace("$instigator", botcom.instigator)
-        rply = rply.replace("$channel", botcom.channel_current)
-        rply = rply.replace("$botnick", bot.nick)
-        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.maincom)
-        if "$replyvariation" in rply:
-            if botcom.dotcommand_dict["replyvariation"] != [] and isinstance(botcom.dotcommand_dict["replyvariation"], list):
-                variation = spicemanip(bot, botcom.dotcommand_dict["replyvariation"], 'random')
-                rply = rply.replace("$replyvariation", variation)
-            else:
-                rply = rply.replace("$replyvariation", '')
-        if rply.startswith("time.sleep"):
-            eval(rply)
-        elif rply.startswith("*a "):
-            rply = rply.replace("*a ", "")
-            osd(bot, botcom.channel_current, 'action', rply)
-        else:
-            osd(bot, botcom.channel_current, 'say', rply)
 
 
 def bot_dictcom_fillintheblankold(bot, botcom):
