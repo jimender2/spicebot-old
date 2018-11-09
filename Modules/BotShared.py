@@ -1531,7 +1531,7 @@ def bot_dictcom_reply_shared(bot, botcom):
             if "$botnick" in rply:
                 rply = rply.replace("$botnick", bot.nick or '')
 
-            # bot.nick
+            # target
             if "$target" in rply:
                 rply = rply.replace("$target", botcom.target or '')
 
