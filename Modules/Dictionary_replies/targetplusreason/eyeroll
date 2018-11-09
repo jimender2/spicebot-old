@@ -4,7 +4,7 @@
               "responses": ["$instigator rolls their eyes at $target $blank"],
               "blank_backup": "",
               "reasonhandle": ["because", "for"],
-              "response_fail": "*a rolls eyes at $insigator.",
+              "response_fail": "*a rolls eyes at $instigator.",
               },
 
 }
