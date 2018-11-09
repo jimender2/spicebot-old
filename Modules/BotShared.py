@@ -1223,8 +1223,8 @@ def dict_command_configs(bot):
 
 def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
 
-    if maincom == "testdbb":
-        bot.msg("deathbybandaid", str(process_list))
+    # if maincom == "testdbb":
+    #    bot.msg("deathbybandaid", str(process_list))
 
     for mustbe in process_list:
 
@@ -1250,8 +1250,8 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         # each usecase needs to know if it needs a target
         if "target_required" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_required"] = False
-        if maincom == "testdbb":
-            bot.msg("deathbybandaid", str(maincom) + " " + str(dict_from_file[mustbe]["target_required"]))
+        # if maincom == "testdbb":
+        #    bot.msg("deathbybandaid", str(maincom) + " " + str(dict_from_file[mustbe]["target_required"]))
         if "target_backup" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_backup"] = False
         if "target_fail" not in dict_from_file[mustbe].keys():
@@ -1574,12 +1574,14 @@ def bot_dictcom_simple(bot, botcom):
 
 def bot_dictcom_target(bot, botcom):
 
-    if botcom.dotcommand_dict["target_required"]:
+    # bot.msg("deathbybandaid", str(botcom.dotcommand_dict))
+
+    if botcom.dotcommand_dict[botcom.responsekey]["target_required"]:
 
         ignoretarget = 0
 
-        if not botcom.target and botcom.dotcommand_dict["target_backup"]:
-            botcom.target = botcom.dotcommand_dict["target_backup"]
+        if not botcom.target and botcom.dotcommand_dict[botcom.responsekey]["target_backup"]:
+            botcom.target = botcom.dotcommand_dict[botcom.responsekey]["target_backup"]
             if botcom.target == 'instigator':
                 botcom.target = botcom.instigator
             elif botcom.target == 'random':
@@ -1591,8 +1593,8 @@ def bot_dictcom_target(bot, botcom):
                 ignoretarget = 1
 
         if not botcom.target:
-            if botcom.dotcommand_dict["target_fail"]:
-                return osd(bot, botcom.instigator, 'notice', botcom.dotcommand_dict["target_fail"])
+            if botcom.dotcommand_dict[botcom.responsekey]["target_fail"]:
+                return osd(bot, botcom.instigator, 'notice', botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
             else:
                 return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
 
@@ -1602,10 +1604,10 @@ def bot_dictcom_target(bot, botcom):
         if not ignoretarget:
             targetchecking = bot_target_check(bot, botcom, botcom.target, True)
             if not targetchecking["targetgood"]:
-                if targetchecking["reason"] == "bot" and botcom.dotcommand_dict["react_bot"]:
-                    return osd(bot, botcom.instigator, 'notice', botcom.dotcommand_dict["react_bot"])
-                elif targetchecking["reason"] == "self" and botcom.dotcommand_dict["react_self"]:
-                    return osd(bot, botcom.instigator, 'notice', botcom.dotcommand_dict["react_self"])
+                if targetchecking["reason"] == "bot" and botcom.dotcommand_dict[botcom.responsekey]["react_bot"]:
+                    return osd(bot, botcom.instigator, 'notice', botcom.dotcommand_dict[botcom.responsekey]["react_bot"])
+                elif targetchecking["reason"] == "self" and botcom.dotcommand_dict[botcom.responsekey]["react_self"]:
+                    return osd(bot, botcom.instigator, 'notice', botcom.dotcommand_dict[botcom.responsekey]["react_self"])
                 else:
                     return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
 
