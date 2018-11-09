@@ -1623,7 +1623,6 @@ def bot_dictcom_target(bot, botcom):
     if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
-    bot.msg("#spicebotest", str(botcom.target))
     if not ignoretarget and botcom.target:
         targetchecking = bot_target_check(bot, botcom, botcom.target, botcom.dotcommand_dict[botcom.responsekey]["target_self"])
         if not targetchecking["targetgood"]:
