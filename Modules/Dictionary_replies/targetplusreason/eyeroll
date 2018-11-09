@@ -2,7 +2,6 @@
 "?default": {
               "type": "targetplusreason",
               "responses": ["$instigator rolls their eyes at $target $blank"],
-              "blank_backup": "",
               "blank_required": False,
               "reasonhandle": ["because", "for"],
               "response_fail": "*a rolls eyes at $instigator.",
