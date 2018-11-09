@@ -1223,9 +1223,6 @@ def dict_command_configs(bot):
 
 def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
 
-    # if maincom == "testdbb":
-    #    bot.msg("deathbybandaid", str(process_list))
-
     for mustbe in process_list:
 
         # All of the above need to be in the dict if not
@@ -1250,8 +1247,6 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         # each usecase needs to know if it needs a target
         if "target_required" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_required"] = False
-        # if maincom == "testdbb":
-        #    bot.msg("deathbybandaid", str(maincom) + " " + str(dict_from_file[mustbe]["target_required"]))
         if "target_backup" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_backup"] = False
         if "target_fail" not in dict_from_file[mustbe].keys():
@@ -1573,8 +1568,6 @@ def bot_dictcom_simple(bot, botcom):
 
 
 def bot_dictcom_target(bot, botcom):
-
-    # bot.msg("deathbybandaid", str(botcom.dotcommand_dict))
 
     if botcom.dotcommand_dict[botcom.responsekey]["target_required"]:
 
