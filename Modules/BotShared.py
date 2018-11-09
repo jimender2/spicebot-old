@@ -1664,64 +1664,6 @@ def bot_dictcom_fillintheblank(bot, botcom):
     bot_dictcom_reply_shared(bot, botcom)
 
 
-def bot_dictcom_fillintheblankold(bot, botcom):
-
-    # some commands cannot run without input
-    inputrequired = 1
-
-    if botcom.specialcase:
-        if not botcom.dotcommand_dict["specialcase"][botcom.specialcase]["inputrequired"]:
-            inputrequired = 0
-
-    if "backupblank" in botcom.dotcommand_dict.keys() and not botcom.completestring:
-        botcom.completestring = botcom.dotcommand_dict["backupblank"]
-
-    if "noinputreplies" in botcom.dotcommand_dict.keys() and not botcom.completestring and inputrequired:
-        inputrequired = 0
-        botcom.dotcommand_dict["replies"] = botcom.dotcommand_dict["noinputreplies"]
-
-    if botcom.completestring:
-        inputrequired = 0
-
-    if inputrequired:
-        return osd(bot, botcom.instigator, 'notice', "This command requires input.")
-
-    if botcom.specified:
-        if botcom.specified > len(botcom.dotcommand_dict["replies"]):
-            botcom.specified = len(botcom.dotcommand_dict["replies"])
-        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], botcom.specified, 'return')
-    else:
-        replies = spicemanip(bot, botcom.dotcommand_dict["replies"], 'random', 'return')
-
-    # handling for embedded lists
-    if not isinstance(replies, list):
-        replies = [replies]
-
-    for rply in replies:
-        if botcom.prefixtext != "":
-            rply = botcom.prefixtext + rply
-        if botcom.suffixtext != "":
-            rply = rply + botcom.suffixtext
-        rply = rply.replace("$blank", botcom.completestring)
-        rply = rply.replace("$instigator", botcom.instigator)
-        rply = rply.replace("$channel", botcom.channel_current)
-        rply = rply.replace("$botnick", bot.nick)
-        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.maincom)
-        if "$replyvariation" in rply:
-            if botcom.dotcommand_dict["replyvariation"] != [] and isinstance(botcom.dotcommand_dict["replyvariation"], list):
-                variation = spicemanip(bot, botcom.dotcommand_dict["replyvariation"], 'random')
-                rply = rply.replace("$replyvariation", variation)
-            else:
-                rply = rply.replace("$replyvariation", '')
-        if rply.startswith("time.sleep"):
-            eval(rply)
-        elif rply.startswith("*a "):
-            rply = rply.replace("*a ", "")
-            osd(bot, botcom.channel_current, 'action', rply)
-        else:
-            osd(bot, botcom.channel_current, 'say', rply)
-
-
 def bot_dictcom_targetplusreasonold(bot, botcom):
 
     # some commands cannot run without input
