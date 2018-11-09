@@ -1624,7 +1624,7 @@ def bot_dictcom_target(bot, botcom):
     if not ignoretarget:
         targetchecking = bot_target_check(bot, botcom, botcom.target, botcom.dotcommand_dict[botcom.responsekey]["target_self"])
         if not targetchecking["targetgood"]:
-            if not in targetchecking["reason"] in ["bot", "self"]:
+            if targetchecking["reason"] not in ["bot", "self"]:
                 return osd(bot, botcom.instigator, 'notice', targetchecking["error"])
             else:
                 if targetchecking["reason"] == "bot" and botcom.dotcommand_dict[botcom.responsekey]["react_bot"]:
