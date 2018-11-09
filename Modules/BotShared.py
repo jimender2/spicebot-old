@@ -1520,16 +1520,28 @@ def bot_dictcom_reply_shared(bot, botcom):
                 rply = rply + botcom.dotcommand_dict[botcom.responsekey]["suffixtext"]
 
             # trigger.nick
-            rply = rply.replace("$instigator", botcom.instigator)
+            if "$instigator" in rply:
+                rply = rply.replace("$instigator", botcom.instigator or '')
 
             # current channel
-            rply = rply.replace("$channel", botcom.channel_current)
+            if "$channel" in rply:
+                rply = rply.replace("$channel", botcom.channel_current or '')
 
             # bot.nick
-            rply = rply.replace("$botnick", bot.nick)
+            if "$botnick" in rply:
+                rply = rply.replace("$botnick", bot.nick or '')
+
+            # bot.nick
+            if "$target" in rply:
+                rply = rply.replace("$target", botcom.target or '')
 
             # the remaining input
-            rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.maincom)
+            if "$input" in rply:
+                rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.maincom)
+
+            # fill in the blank
+            if "$blank" in rply:
+                rply = rply.replace("$blank", spicemanip(bot, botcom.triggerargsarray, 0) or '')
 
             # smaller variations for the text
             if "$replyvariation" in rply:
