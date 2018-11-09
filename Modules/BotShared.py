@@ -1556,6 +1556,10 @@ def bot_dictcom_reply_shared(bot, botcom):
             if "$target" in rply:
                 rply = rply.replace("$target", botcom.target or '')
 
+            # blank
+            if "$target" in rply:
+                rply = rply.replace("$blank", botcom.completestring)
+
             # the remaining input
             if "$input" in rply:
                 rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.maincom)
