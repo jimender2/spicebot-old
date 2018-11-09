@@ -1557,7 +1557,7 @@ def bot_dictcom_reply_shared(bot, botcom):
                 rply = rply.replace("$target", botcom.target or '')
 
             # blank
-            if "$target" in rply:
+            if "$blank" in rply:
                 rply = rply.replace("$blank", botcom.completestring)
 
             # the remaining input
