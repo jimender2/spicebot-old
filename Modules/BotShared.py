@@ -68,7 +68,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'fillintheblank', 'targetplusreasonold', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gifold"]
+valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gifold"]
 
 
 """
