@@ -1240,6 +1240,8 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             else:
                 dict_from_file[mustbe]["type"] = "simple"
 
+        # (basestring, str, unicode)
+
         # each usecase needs to know if it can be updated. Default is false
         if "updates_enabled" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["updates_enabled"] = False
@@ -1643,7 +1645,8 @@ def bot_dictcom_target(bot, botcom):
                     elif targetchecking["reason"] == "self" and botcom.dotcommand_dict[botcom.responsekey]["react_self"]:
                         botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_self"]
     else:
-        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_missing"]
+        if botcom.dotcommand_dict[botcom.responsekey]["target_missing"]:
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_missing"]
 
     bot_dictcom_reply_shared(bot, botcom)
 
@@ -1665,7 +1668,8 @@ def bot_dictcom_fillintheblank(bot, botcom):
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
 
     else:
-        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_missing"]
+        if botcom.dotcommand_dict[botcom.responsekey]["blank_missing"]:
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_missing"]
 
     bot_dictcom_reply_shared(bot, botcom)
 
