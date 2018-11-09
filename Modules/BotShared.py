@@ -1730,7 +1730,7 @@ def bot_dictcom_targetplusreason(bot, botcom):
 
     if botcom.completestring and botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"]:
         if botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"] != []:
-            if spicemanip(bot, botcom.completestring, 1).lower() not in botcom.dotcommand_dict["reasonhandle"]:
+            if spicemanip(bot, botcom.completestring, 1).lower() not in botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"]:
                 botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"][0] + " " + botcom.completestring
             elif spicemanip(bot, botcom.completestring, 1).lower() in botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"]:
                 if spicemanip(bot, botcom.completestring, 1).lower() != botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"][0]:
