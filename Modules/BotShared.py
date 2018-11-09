@@ -1629,7 +1629,8 @@ def bot_dictcom_target(bot, botcom):
         if not botcom.target:
             if not botcom.dotcommand_dict[botcom.responsekey]["target_fail"]:
                 return osd(bot, botcom.instigator, 'notice', "This command requires a target.")
-            botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_fail"]
+            if botcom.dotcommand_dict[botcom.responsekey]["target_fail"]:
+                botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_fail"]
 
         if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
@@ -1665,7 +1666,8 @@ def bot_dictcom_fillintheblank(bot, botcom):
         if not botcom.completestring:
             if not botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]:
                 return osd(bot, botcom.instigator, 'notice', "This command requires input.")
-            botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
+            if botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]:
+                botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
 
     else:
         if botcom.dotcommand_dict[botcom.responsekey]["blank_missing"]:
