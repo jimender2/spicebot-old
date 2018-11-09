@@ -1168,12 +1168,11 @@ def dict_command_configs(bot):
 
                 if maincom not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
 
-                    # check that type is set
+                    # check that type is set, use cases will inherit this if not set
                     if "type" not in dict_from_file.keys():
                         dict_from_file["type"] = quick_coms_type.lower()
                     if dict_from_file["type"] not in valid_com_types:
                         dict_from_file["type"] = 'simple'
-                        dict_from_file["replies"] = "This command is not setup with a proper 'type'."
 
                     # Don't process these.
                     keysprocessed = []
