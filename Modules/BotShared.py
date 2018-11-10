@@ -1823,6 +1823,10 @@ def bot_dictcom_readfromfile(bot, botcom):
     return bot_dictcom_simple(bot, botcom)
 
 
+def bot_dictcom_translate(bot, botcom):
+    return bot_dictcom_fillintheblank(bot, botcom)
+
+
 """
 Text Processing
 """
