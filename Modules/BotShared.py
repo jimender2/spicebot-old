@@ -1758,6 +1758,7 @@ def bot_dictcom_gif(bot, botcom):
         query = botcom.dotcommand
     else:
         query = botcom.completestring
+    bot.say(str(query))
 
     if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
         searchapis = [botcom.dotcommand]
