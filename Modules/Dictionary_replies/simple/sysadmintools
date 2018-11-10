@@ -1,0 +1,13 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": [
+                            "https://sysadmin.it-landscape.info/",
+                            "https://sysadmin.libhunt.com/",
+                            "https://github.com/n1trux/awesome-sysadmin",
+                            "https://docs.microsoft.com/en-us/sysinternals/"
+                            ],
+              },
+
+}
