@@ -1752,14 +1752,6 @@ def bot_dictcom_targetplusreason(bot, botcom):
 
 def bot_dictcom_gif(bot, botcom):
 
-    # what are we searching
-    # if botcom.dotcommand_dict[botcom.responsekey]["responses"]:
-    #    queries = botcom.dotcommand_dict[botcom.responsekey]["responses"]
-    # elif botcom.dotcommand not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys() and botcom.dotcommand != 'gif':
-    #    queries = [botcom.dotcommand]
-    # else:
-    #    queries = [botcom.completestring]
-
     if botcom.dotcommand_dict[botcom.responsekey]["blank_required"] and not botcom.completestring:
         botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
         return bot_dictcom_reply_shared(bot, botcom)
