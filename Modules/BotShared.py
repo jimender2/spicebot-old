@@ -1525,8 +1525,8 @@ def bot_dictcom_process(bot, botcom):
 
     posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
     botcom.target = False
-    if posstarget in bot.memory["botdict"]["users"].keys():
-        botcom.target = posstarget
+    if posstarget.lower() in [u.lower() for u in bot.memory["botdict"]["users"].keys()]:
+        botcom.target = nick_actual(bot, posstarget)
 
     command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
     eval(command_function_run)
