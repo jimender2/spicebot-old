@@ -1849,6 +1849,12 @@ def bot_translate_process(bot, totranslate, translationtypes):
         elif translationtype == "ermahgerd":
             totranslate = trernslert(totranslate)
 
+        elif translationtype == "upper":
+            totranslate = spicemanip(bot, totranslate, 0).upper()
+
+        elif translationtype == "lower":
+            totranslate = spicemanip(bot, totranslate, 0).lower()
+
     return totranslate
 
 

@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["Madness? THIS IS $blank"],
+              "translations": ["upper"],
+              "blank_backup": 'SPARTA',
+              },
+
+}
