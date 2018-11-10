@@ -10,14 +10,11 @@
               "response_fail": ["Who are you pissed at now?"],
               },
 
-"cert": {
+("cert", "certification"): {
           "type": "simple",
           "responses": ["Here is the link to DD link for the noobs who have never seen it before. https://ibb.co/ibxD2n"],
           },
 
-"certification": {
-          "type": "simple",
-          "responses": ["Here is the link to DD link for the noobs who have never seen it before. https://ibb.co/ibxD2n"],
-          },
+
 
 }
