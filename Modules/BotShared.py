@@ -68,7 +68,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gifold"]
+valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif"]
 
 
 """
@@ -1339,6 +1339,12 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         if dict_from_file[mustbe]["responses"] == []:
             dict_from_file[mustbe]["responses"].append("No " + str(mustbe) + " responses set for " + str(maincom) + ".")
 
+        # Some commands run query mode
+        if "query" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["query"] = None
+        if "search_fail" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["search_fail"] = None
+
     return dict_from_file
 
 
@@ -1741,11 +1747,11 @@ def bot_dictcom_targetplusreason(bot, botcom):
     bot_dictcom_reply_shared(bot, botcom)
 
 
-def bot_dictcom_gifold(bot, botcom):
+def bot_dictcom_gif(bot, botcom):
 
-    if "query" in botcom.dotcommand_dict.keys():
+    if botcom.dotcommand_dict[botcom.responsekey]["query"]:
         query = botcom.dotcommand_dict["query"]
-    elif botcom.dotcommand not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys() and botcom.dotcommand != 'gif':
+    elif botcom.dotcommand not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
         query = botcom.dotcommand
     else:
         query = botcom.completestring
@@ -1769,38 +1775,13 @@ def bot_dictcom_gifold(bot, botcom):
     gifdict = getGif(bot, searchdict)
 
     if gifdict["error"]:
-        if "searchfail" in botcom.dotcommand_dict.keys():
-            gifdict["error"] = botcom.dotcommand_dict["searchfail"]
-        replies = gifdict["error"]
+        if botcom.dotcommand_dict[botcom.responsekey]["search_fail"]:
+            gifdict["error"] = botcom.dotcommand_dict[botcom.responsekey]["search_fail"]
+        botcom.replies = [gifdict["error"]]
     else:
-        replies = str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))
+        botcom.replies = [str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))]
 
-    if not isinstance(replies, list):
-        replies = [replies]
-
-    # handling for embedded lists
-    for rply in replies:
-        if botcom.prefixtext != "":
-            rply = botcom.prefixtext + rply
-        if botcom.suffixtext != "":
-            rply = rply + botcom.suffixtext
-        rply = rply.replace("$instigator", botcom.instigator)
-        rply = rply.replace("$channel", botcom.channel_current)
-        rply = rply.replace("$botnick", bot.nick)
-        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.maincom)
-        if "$replyvariation" in rply:
-            if botcom.dotcommand_dict["replyvariation"] != [] and isinstance(botcom.dotcommand_dict["replyvariation"], list):
-                variation = spicemanip(bot, botcom.dotcommand_dict["replyvariation"], 'random')
-                rply = rply.replace("$replyvariation", variation)
-            else:
-                rply = rply.replace("$replyvariation", '')
-        if rply.startswith("time.sleep"):
-            eval(rply)
-        elif rply.startswith("*a "):
-            rply = rply.replace("*a ", "")
-            osd(bot, botcom.channel_current, 'action', rply)
-        else:
-            osd(bot, botcom.channel_current, 'say', rply)
+    bot_dictcom_reply_shared(bot, botcom)
 
 
 def bot_dictcom_ascii_art(bot, botcom):
