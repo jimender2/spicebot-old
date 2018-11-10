@@ -1753,13 +1753,12 @@ def bot_dictcom_targetplusreason(bot, botcom):
 def bot_dictcom_gif(bot, botcom):
 
     # what are we searching
-    if botcom.dotcommand_dict[botcom.responsekey]["blank_required"] and not botcom.completestring:
-        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
-        return bot_dictcom_reply_shared(bot, botcom)
-    elif botcom.dotcommand_dict[botcom.responsekey]["blank_required"] and botcom.completestring:
-        queries = [botcom.completestring]
-    else:
+    if botcom.dotcommand_dict[botcom.responsekey]["responses"]:
         queries = botcom.dotcommand_dict[botcom.responsekey]["responses"]
+    elif botcom.dotcommand not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys() and botcom.dotcommand != 'gif':
+        queries = [botcom.dotcommand]
+    else:
+        queries = [botcom.completestring]
 
     # which api's are we using to search
     if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
@@ -1772,9 +1771,9 @@ def bot_dictcom_gif(bot, botcom):
     if botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict[botcom.responsekey]["responses"]):
             botcom.specified = len(botcom.dotcommand_dict[botcom.responsekey]["responses"])
-        query = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], botcom.specified, 'return')
+        query = spicemanip(bot, queries, botcom.specified, 'return')
     else:
-        query = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
+        query = spicemanip(bot, queries, 'random', 'return')
 
     searchdict = {"query": query, "gifsearch": searchapis}
 
