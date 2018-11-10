@@ -1415,8 +1415,11 @@ def bot_dictcom_process(bot, botcom):
 
     # handling for special cases
     posscom = spicemanip(bot, botcom.triggerargsarray, 1)
-    if posscom.lower() in botcom.dotcommand_dict.keys():
-        botcom.responsekey = posscom.lower()
+    if posscom.lower() in [command.lower() for command in botcom.dotcommand_dict.keys()]:
+        for command in botcom.dotcommand_dict.keys():
+            if command.lower() == posscom.lower():
+                posscom = command
+        botcom.responsekey = posscom
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
     botcom.commandtype = botcom.dotcommand_dict[botcom.responsekey]["type"]
 
