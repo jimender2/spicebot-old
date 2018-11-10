@@ -1,4 +1,9 @@
 {
+"?default": {
+              "type": "gif",
+              "query": "Jeri Ryan",
+              "search_fail": ["Resistance is futile"],
+              },
 "query": "Darwin Award",
 "searchfail": ["$instigator is not a contender for the Darwin award, thank fuck."],
 }

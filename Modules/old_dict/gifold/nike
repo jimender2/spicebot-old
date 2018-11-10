@@ -1,4 +1,9 @@
 {
+"?default": {
+              "type": "gif",
+              "query": "Jeri Ryan",
+              "search_fail": ["Resistance is futile"],
+              },
 "query": "Just do it",
 "searchfail": ['*a thinks you should stop being a little bitch and just do it.'],
 }
