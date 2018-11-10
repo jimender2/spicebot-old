@@ -4,7 +4,7 @@
               "responses": ["$instigator beats $target $blank"],
               "blank_backup": 'until moral improves.',
               "blank_required": False,
-              "blank_reasonhandle": ["because", "for"],
+              "blank_phrasehandle": ["because", "for"],
               },
 
 }

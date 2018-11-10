@@ -5,7 +5,7 @@
               "blank_backup": 'for that.',
               "target_backup": 'random',
               "blank_required": False,
-              "blank_reasonhandle": ["for", "because"],
+              "blank_phrasehandle": ["for", "because"],
               },
 "canada": {
               "type": "simple",

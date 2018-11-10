@@ -3,7 +3,7 @@
               "type": "targetplusreason",
               "responses": ["$target should really consider selling everything and moving $blank to sell drugs on a beach."],
               "blank_required": False,
-              "blank_backup": 'somewhere tropical',
+              "blank_backup": 'to somewhere tropical',
               "target_backup": 'instigator',
               },
 

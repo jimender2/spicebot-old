@@ -1278,11 +1278,11 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         if not isinstance(dict_from_file[mustbe]["blank_fail"], list):
             dict_from_file[mustbe]["blank_fail"] = [dict_from_file[mustbe]["blank_fail"]]
 
-        if "blank_reasonhandle" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["blank_reasonhandle"] = False
-        if dict_from_file[mustbe]["blank_reasonhandle"]:
-            if not isinstance(dict_from_file[mustbe]["blank_reasonhandle"], list):
-                dict_from_file[mustbe]["blank_reasonhandle"] = [dict_from_file[mustbe]["blank_reasonhandle"]]
+        if "blank_phrasehandle" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["blank_phrasehandle"] = False
+        if dict_from_file[mustbe]["blank_phrasehandle"]:
+            if not isinstance(dict_from_file[mustbe]["blank_phrasehandle"], list):
+                dict_from_file[mustbe]["blank_phrasehandle"] = [dict_from_file[mustbe]["blank_phrasehandle"]]
 
         if "response_fail" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["response_fail"] = False
@@ -1667,15 +1667,15 @@ def bot_dictcom_fillintheblank(bot, botcom):
         else:
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = commandrunconsensus[0]
 
-    if botcom.completestring and botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"]:
-        if botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"] != []:
+    if botcom.completestring and botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
+        if botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"] != []:
             if spicemanip(bot, botcom.completestring, 1).lower() not in botcom.dotcommand_dict["reasonhandle"]:
-                botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"][0] + " " + botcom.completestring
-            elif spicemanip(bot, botcom.completestring, 1).lower() in botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"]:
-                if spicemanip(bot, botcom.completestring, 1).lower() != botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"][0]:
+                botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0] + " " + botcom.completestring
+            elif spicemanip(bot, botcom.completestring, 1).lower() in botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
+                if spicemanip(bot, botcom.completestring, 1).lower() != botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0]:
                     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
                     if botcom.triggerargsarray != []:
-                        botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
+                        botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
 
     bot_dictcom_reply_shared(bot, botcom)
 
@@ -1728,15 +1728,15 @@ def bot_dictcom_targetplusreason(bot, botcom):
         else:
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = commandrunconsensus[0]
 
-    if botcom.completestring and botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"]:
-        if botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"] != []:
-            if spicemanip(bot, botcom.completestring, 1).lower() not in botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"]:
-                botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"][0] + " " + botcom.completestring
-            elif spicemanip(bot, botcom.completestring, 1).lower() in botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"]:
-                if spicemanip(bot, botcom.completestring, 1).lower() != botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"][0]:
+    if botcom.completestring and botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
+        if botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"] != []:
+            if spicemanip(bot, botcom.completestring, 1).lower() not in botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
+                botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0] + " " + botcom.completestring
+            elif spicemanip(bot, botcom.completestring, 1).lower() in botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
+                if spicemanip(bot, botcom.completestring, 1).lower() != botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0]:
                     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
                     if botcom.triggerargsarray != []:
-                        botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_reasonhandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
+                        botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
 
     bot_dictcom_reply_shared(bot, botcom)
 
