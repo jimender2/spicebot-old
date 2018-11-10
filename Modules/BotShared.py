@@ -1461,13 +1461,16 @@ def bot_dictcom_process(bot, botcom):
     if botcom.specified == 'special':
         nonstockoptions = []
         for command in botcom.dotcommand_dict.keys():
-            if command not in ["?default", "validcoms", "contributors", "author", "type"]:
+            if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath"]:
                 nonstockoptions.append(command)
         nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
         return osd(bot, botcom.channel_current, 'say', "The special options for " + str(botcom.maincom) + " command include: " + str(nonstockoptions) + ".")
 
     elif botcom.specified == 'count':
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " command has " + str(len(botcom.dotcommand_dict[botcom.responsekey]["responses"])) + " entries.")
+
+    elif botcom.specified == 'filepath':
+        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " file is located at " + str(len(botcom.dotcommand_dict["filepath"])))
 
     elif botcom.specified == 'author':
         return osd(bot, botcom.channel_current, 'say', "The author of the " + str(botcom.maincom) + " command is " + botcom.dotcommand_dict["author"] + ".")
@@ -1601,7 +1604,7 @@ def bot_dictcom_reply_shared(bot, botcom):
             if "$specialoptions" in rply:
                 nonstockoptions = []
                 for command in botcom.dotcommand_dict.keys():
-                    if command not in ["?default", "validcoms", "contributors", "author", "type"]:
+                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath"]:
                         nonstockoptions.append(command)
                 nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
                 rply = rply.replace("$specialoptions", nonstockoptions)
