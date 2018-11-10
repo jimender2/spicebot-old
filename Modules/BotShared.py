@@ -1613,9 +1613,16 @@ def bot_dictcom_reply_shared(bot, botcom):
 
             # saying, or action?
             if rply.startswith("*a "):
-                osd(bot, botcom.channel_current, 'action', rply.replace("*a ", ""))
+                rplytype = 'action'
+                rply = rply.replace("*a ", "")
             else:
-                osd(bot, botcom.channel_current, 'say', rply)
+                rplytype = 'say'
+
+            # translation
+            if botcom.dotcommand_dict[botcom.responsekey]["translation"]:
+                rply = bot_translate_process(bot, rply)
+
+            osd(bot, botcom.channel_current, rplytype, rply)
 
 
 def bot_dictcom_simple(bot, botcom):
@@ -1814,6 +1821,15 @@ def bot_dictcom_readfromurl(bot, botcom):
 
 def bot_dictcom_readfromfile(bot, botcom):
     return bot_dictcom_simple(bot, botcom)
+
+
+"""
+Text Processing
+"""
+
+
+def bot_translate_process(bot, totranslate):
+    return totranslate
 
 
 """
