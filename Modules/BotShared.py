@@ -1321,8 +1321,11 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             dict_from_file[mustbe]["suffixtext"] = False
 
         # Translations
-        if "translation" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["translation"] = False
+        if "translations" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["translations"] = False
+        if dict_from_file[mustbe]["translations"]:
+            if not isinstance(dict_from_file[mustbe]["translations"], list):
+                dict_from_file[mustbe]["translations"] = [dict_from_file[mustbe]["translations"]]
 
         # make sure we have the smaller variation list
         if "replyvariation" not in dict_from_file[mustbe].keys():
@@ -1619,8 +1622,8 @@ def bot_dictcom_reply_shared(bot, botcom):
                 rplytype = 'say'
 
             # translation
-            if botcom.dotcommand_dict[botcom.responsekey]["translation"]:
-                rply = bot_translate_process(bot, rply)
+            if botcom.dotcommand_dict[botcom.responsekey]["translations"]:
+                rply = bot_translate_process(bot, rply, botcom.dotcommand_dict[botcom.responsekey]["translations"])
 
             osd(bot, botcom.channel_current, rplytype, rply)
 
@@ -1832,7 +1835,17 @@ Text Processing
 """
 
 
-def bot_translate_process(bot, totranslate):
+def bot_translate_process(bot, totranslate, translationtypes):
+
+    # just in case
+    if not isinstance(translationtypes, list):
+        translationtypes = [translationtypes]
+
+    for translationtype in translationtypes:
+
+        if translationtype == "hyphen":
+            totranslate = spicemanip(bot, totranslate, 0).replace(' ', '-')
+
     return totranslate
 
 
