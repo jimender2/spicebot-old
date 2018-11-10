@@ -1320,6 +1320,10 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         if "suffixtext" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["suffixtext"] = False
 
+        # Translations
+        if "translation" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["translation"] = False
+
         # make sure we have the smaller variation list
         if "replyvariation" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["replyvariation"] = []
