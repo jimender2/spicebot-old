@@ -1174,9 +1174,11 @@ def dict_command_configs(bot):
                 for validkey in dict_from_file.keys():
                     if isinstance(validkey, tuple):
                         tuple_bak = validkey
+                        for var in tuple_bak:
+                            bot.msg("deathbybandaid", str(maincom) + " " + str(var))
                         tuple_contents_bak = dict_from_file[validkey]
                         del dict_from_file[validkey]
-                        bot.msg("deathbybandaid", str(maincom) + " " + str(dict_from_file))
+                        # bot.msg("deathbybandaid", str(maincom) + " " + str(dict_from_file))
 
                 if maincom not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
 
