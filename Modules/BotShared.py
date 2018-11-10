@@ -1173,7 +1173,7 @@ def dict_command_configs(bot):
                 # check for tuple dict keys and split
                 for validkey in dict_from_file.keys():
                     if isinstance(validkey, tuple):
-                        bot.msg("deathbybandaid", str(maincom) + " " + str(validkey))
+                        bot.msg("deathbybandaid", str(maincom) + " " + str(dict_from_file[validkey]))
 
                 if maincom not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
 
