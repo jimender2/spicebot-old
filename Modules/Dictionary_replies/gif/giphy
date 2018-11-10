@@ -1,7 +1,6 @@
 {
 "?default": {
               "type": "gif",
-              "responses": [''],
               "blank_required": True,
               },
 }

@@ -1,12 +1,11 @@
 {
 "?default": {
               "type": "gif",
-              "responses": [''],
               "blank_required": True,
               },
 "roulette": {
               "type": "gif",
-              "responses": None,
+              "responses": ['Starter Pack'],
               "updates_enabled": True,
               },
 }
