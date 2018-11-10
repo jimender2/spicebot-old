@@ -1,7 +1,7 @@
 {
 "?default": {
               "type": "fillintheblank",
-              "responses": [" mumble grumble$blank"],
+              "responses": ["mumble grumble $blank"],
               "translations": ["hyphen"],
               "blank_backup": 'bullshit',
               },
