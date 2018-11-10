@@ -1846,7 +1846,7 @@ def bot_translate_process(bot, totranslate, translationtypes):
         if translationtype == "hyphen":
             totranslate = spicemanip(bot, totranslate, 0).replace(' ', '-')
 
-        elif translationtype == "ermergerd":
+        elif translationtype == "ermahgerd":
             totranslate = trernslert(totranslate)
 
     return totranslate
