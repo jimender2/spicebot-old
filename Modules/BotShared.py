@@ -1843,7 +1843,7 @@ def getGif(bot, searchdict):
                     searchdict["gifsearch"].remove(remx)
 
     # Replace spaces in search query
-    if not searchdict["searchquery"]:
+    if not searchdict["query"]:
         return {"error": 'No Query to Search'}
     searchdict["searchquery"] = searchdict["query"].replace(' ', '%20')
 
