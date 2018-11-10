@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["ERMAHGERD, $blank"],
+              "translations": ["ermahgerd"],
+              "response_fail": ["Whert der yer wernt ter trernslert?",],
+              },
+
+}
