@@ -3,7 +3,7 @@
               "type": "fillintheblank",
               "responses": ["$blank"],
               "translations": ["hyphen"],
-              "prefixtext": "mumble-grumble-"
+              "prefixtext": "mumble grumble "
               "blank_backup": 'bullshit',
               },
 
