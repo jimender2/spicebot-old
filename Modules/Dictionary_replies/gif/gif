@@ -1,6 +1,12 @@
 {
 "?default": {
               "type": "gif",
-              "query": None,
+              "responses": None,
+              "blank_required": True,
+              },
+"roulette": {
+              "type": "gif",
+              "responses": None,
+              "updates_enabled": True,
               },
 }

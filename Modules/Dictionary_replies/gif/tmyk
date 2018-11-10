@@ -2,7 +2,7 @@
 "validcoms": ['tmyk', 'themoreyouknow', 'myk', 'moreyouknow'],
 "?default": {
               "type": "gif",
-              "query": "the more you know",
+              "responses": "the more you know",
               "search_fail": ['*a the more you know... **magic fingers**'],
               },
 

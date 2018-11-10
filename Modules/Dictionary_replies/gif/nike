@@ -1,7 +1,7 @@
 {
 "?default": {
               "type": "gif",
-              "query": "Just do it",
+              "responses": "Just do it",
               "search_fail": ['*a thinks you should stop being a little bitch and just do it.'],
               },
 

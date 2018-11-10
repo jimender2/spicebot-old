@@ -1,6 +1,7 @@
 {
 "?default": {
               "type": "gif",
-              "query": None,
+              "responses": None,
+              "blank_required": True,
               },
 }

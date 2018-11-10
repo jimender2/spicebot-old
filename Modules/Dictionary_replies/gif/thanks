@@ -2,7 +2,7 @@
 "validcoms": ['thanks', 'thanksspicebot'],
 "?default": {
               "type": "gif",
-              "query": "your welcome",
+              "responses": "your welcome",
               "search_fail": ["You're welcome!"],
               },
 

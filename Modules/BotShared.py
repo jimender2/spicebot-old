@@ -1340,8 +1340,6 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             dict_from_file[mustbe]["responses"].append("No " + str(mustbe) + " responses set for " + str(maincom) + ".")
 
         # Some commands run query mode
-        if "query" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["query"] = None
         if "search_fail" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["search_fail"] = None
         if dict_from_file[mustbe]["search_fail"]:
@@ -1411,9 +1409,6 @@ def bot_dictcom_run(bot, trigger):
 
 
 def bot_dictcom_process(bot, botcom):
-
-    if botcom.commandtype.endswith("old"):
-        return osd(bot, botcom.channel_current, 'say', "Stay tuned.")
 
     # use the default key, unless otherwise specified
     botcom.responsekey = "?default"
@@ -1757,13 +1752,16 @@ def bot_dictcom_targetplusreason(bot, botcom):
 
 def bot_dictcom_gif(bot, botcom):
 
-    if botcom.dotcommand_dict[botcom.responsekey]["query"]:
-        query = botcom.dotcommand_dict[botcom.responsekey]["query"]
-    elif botcom.dotcommand not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys() and botcom.dotcommand != 'gif':
-        query = botcom.dotcommand
+    # what are we searching
+    if botcom.dotcommand_dict[botcom.responsekey]["blank_required"] and not botcom.completestring:
+        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
+        return bot_dictcom_reply_shared(bot, botcom)
+    elif botcom.dotcommand_dict[botcom.responsekey]["blank_required"] and botcom.completestring:
+        queries = [botcom.completestring]
     else:
-        query = botcom.completestring
+        queries = botcom.dotcommand_dict[botcom.responsekey]["responses"]
 
+    # which api's are we using to search
     if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
         searchapis = [botcom.dotcommand]
     elif "queryapi" in botcom.dotcommand_dict.keys():
@@ -1771,10 +1769,14 @@ def bot_dictcom_gif(bot, botcom):
     else:
         searchapis = bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys()
 
-    searchdict = {"query": query, "gifsearch": searchapis}
-
     if botcom.specified:
-        searchdict["pickingselection"] = botcom.specified
+        if botcom.specified > len(botcom.dotcommand_dict[botcom.responsekey]["responses"]):
+            botcom.specified = len(botcom.dotcommand_dict[botcom.responsekey]["responses"])
+        query = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], botcom.specified, 'return')
+    else:
+        query = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
+
+    searchdict = {"query": query, "gifsearch": searchapis}
 
     # nsfwenabled = get_database_value(bot, bot.nick, 'channels_nsfw') or []
     # if botcom.channel_current in nsfwenabled:
@@ -1823,7 +1825,6 @@ def getGif(bot, searchdict):
                     "gifsearchremove": ['gifme'],
                     "searchlimit": 'default',
                     "nsfw": False,
-                    "pickingselection": "random",
                     }
 
     # set defaults if they don't exist
@@ -1909,13 +1910,9 @@ def getGif(bot, searchdict):
     if gifapiresults == []:
         return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
-    if searchdict["pickingselection"] == "random":
-        random.shuffle(gifapiresults)
-        random.shuffle(gifapiresults)
-    if searchdict["pickingselection"] not in ["random", "last"]:
-        if searchdict["pickingselection"] > len(gifapiresults):
-            searchdict["pickingselection"] = len(gifapiresults)
-    gifdict = spicemanip(bot, gifapiresults, searchdict["pickingselection"])
+    random.shuffle(gifapiresults)
+    random.shuffle(gifapiresults)
+    gifdict = spicemanip(bot, gifapiresults, searchdict["random"])
 
     # return dict
     gifdict['error'] = None
