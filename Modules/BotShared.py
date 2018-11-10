@@ -2123,7 +2123,7 @@ def bot_target_check(bot, botcom, target, target_self):
         targetgoodconsensus.append("Leave " + nick_actual(bot, target) + " out of this private conversation!")
 
     # not in the same channel
-    if target.lower() in [command.lower() for command in bot.memory["botdict"]["tempvals"]['all_current_users']] and target.lower() in [u.lower() for u not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']]:
+    if target.lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['all_current_users']] and target.lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']]:
         reasons.append("diffchannel")
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
 
