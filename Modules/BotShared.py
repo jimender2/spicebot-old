@@ -68,7 +68,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif"]
+valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate"]
 
 
 """
@@ -1267,7 +1267,7 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
 
         # each usecase needs to know if it needs input for fillintheblank
         if "blank_required" not in dict_from_file[mustbe].keys():
-            if dict_from_file[mustbe]["type"] in ['fillintheblank', 'targetplusreason']:
+            if dict_from_file[mustbe]["type"] in ['fillintheblank', 'targetplusreason', "translate"]:
                 dict_from_file[mustbe]["blank_required"] = True
             else:
                 dict_from_file[mustbe]["blank_required"] = False
