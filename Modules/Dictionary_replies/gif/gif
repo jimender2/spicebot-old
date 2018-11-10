@@ -2,6 +2,7 @@
 "?default": {
               "type": "gif",
               "responses": None,
+              "blank_required": True,
               },
 "roulette": {
               "type": "gif",
