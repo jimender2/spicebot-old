@@ -1533,7 +1533,9 @@ def bot_dictcom_process(bot, botcom):
 
 def bot_dictcom_reply_shared(bot, botcom):
 
-    if botcom.specified:
+    if botcom.dotcommand_dict[botcom.responsekey]["type"] in ["gif"]:
+        botcom.replies = botcom.dotcommand_dict[botcom.responsekey]["responses"][0]
+    elif botcom.specified:
         if botcom.specified > len(botcom.dotcommand_dict[botcom.responsekey]["responses"]):
             botcom.specified = len(botcom.dotcommand_dict[botcom.responsekey]["responses"])
         botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], botcom.specified, 'return')
@@ -1758,7 +1760,6 @@ def bot_dictcom_gif(bot, botcom):
         query = botcom.dotcommand
     else:
         query = botcom.completestring
-    bot.say(str(query))
 
     if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
         searchapis = [botcom.dotcommand]
@@ -1781,9 +1782,9 @@ def bot_dictcom_gif(bot, botcom):
     if gifdict["error"]:
         if botcom.dotcommand_dict[botcom.responsekey]["search_fail"]:
             gifdict["error"] = botcom.dotcommand_dict[botcom.responsekey]["search_fail"]
-        botcom.replies = [gifdict["error"]]
+        botcom.dotcommand_dict[botcom.responsekey]["responses"] = [gifdict["error"]]
     else:
-        botcom.replies = [str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))]
+        botcom.dotcommand_dict[botcom.responsekey]["responses"] = [str(gifdict['gifapi'].title() + " Result (" + str(query) + " #" + str(gifdict["returnnum"]) + "): " + str(gifdict["returnurl"]))]
 
     bot_dictcom_reply_shared(bot, botcom)
 
