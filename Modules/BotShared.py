@@ -1921,7 +1921,7 @@ def getGif(bot, searchdict):
 
     random.shuffle(gifapiresults)
     random.shuffle(gifapiresults)
-    gifdict = spicemanip(bot, gifapiresults, searchdict["random"])
+    gifdict = spicemanip(bot, gifapiresults, "random")
 
     # return dict
     gifdict['error'] = None
