@@ -37,15 +37,7 @@
                         ],
               },
 
-"legal": {
-              "type": "target",
-              "target_backup": "instigator",
-              "responses": [
-                        "Please note that $target is not a lawyer. Any and all advice given by $target is to be taken with a whole lot of salt. $target, Freenode, Spiceworks, Microsoft, Aperture Science, Black Mesa, and/or Vault-Tec™ cannot be held liable for any injuries resulting from taking aforementioned advice.",
-                        ],
-              },
-
-"law": {
+("legal", "law"): {
               "type": "target",
               "target_backup": "instigator",
               "responses": [
@@ -61,29 +53,14 @@
                         ],
               },
 
-"porn": {
+("porn", "pornhub"): {
               "type": "simple",
               "responses": [
                         "Remember, NOTHING is as common as porn would have you believe.",
                         ],
               },
 
-"pornhub": {
-              "type": "simple",
-              "responses": [
-                        "Remember, NOTHING is as common as porn would have you believe.",
-                        ],
-              },
-
-"Cipher": {
-              "type": "target",
-              "target_backup": "instigator",
-              "responses": [
-                        "Frivolously pestering Cipher comes with a high risk of termination, $target",
-                        ],
-              },
-
-"Cipher-0": {
+("Cipher", "Cipher-0"): {
               "type": "target",
               "target_backup": "instigator",
               "responses": [
@@ -98,15 +75,7 @@
                         ],
               },
 
-"penis": {
-              "type": "target",
-              "target_backup": "instigator",
-              "responses": [
-                        "Please note that $target is not a penis enlarger manufacturer. $target is, however, not only their best tester but also their largest purchaser. Any views on penis enlargers given by $target should be taken as if it is a Michelin Star review, as they are seen as the utmost living expert on the subject of phallic enlargement devices.",
-                        ],
-              },
-
-"penispump": {
+("penis","penispump"): {
               "type": "target",
               "target_backup": "instigator",
               "responses": [
