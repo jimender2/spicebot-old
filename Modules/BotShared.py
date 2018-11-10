@@ -1344,6 +1344,9 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             dict_from_file[mustbe]["query"] = None
         if "search_fail" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["search_fail"] = None
+        if dict_from_file[mustbe]["search_fail"]:
+            if not isinstance(dict_from_file[mustbe]["search_fail"], list):
+                dict_from_file[mustbe]["search_fail"] = [dict_from_file[mustbe]["search_fail"]]
 
     return dict_from_file
 

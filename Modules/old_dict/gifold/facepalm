@@ -1,8 +1,0 @@
-{
-"?default": {
-              "type": "gif",
-              "query": "Jeri Ryan",
-              "search_fail": ["Resistance is futile"],
-              },
-"searchfail": ["There is not enough facepalm in the world for this"],
-}
