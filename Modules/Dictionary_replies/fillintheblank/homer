@@ -6,12 +6,12 @@
               "blank_backup": 'donuts',
               },
 
-"good": {
+('good', 'g'): {
               "type": "simple",
               "responses": ["WooHoo!"],
               },
 
-"bad": {
+('bad', 'b', 'bad?', 'good?'): {
               "type": "simple",
               "responses": ["D'ooooh!"],
               },
