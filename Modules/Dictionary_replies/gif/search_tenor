@@ -1,4 +1,5 @@
 {
+"validcoms": ['tenor'],
 "?default": {
               "type": "gif",
               "blank_required": True,

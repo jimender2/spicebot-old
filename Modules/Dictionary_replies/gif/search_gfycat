@@ -1,4 +1,5 @@
 {
+"validcoms": ['gfycat'],
 "?default": {
               "type": "gif",
               "blank_required": True,
