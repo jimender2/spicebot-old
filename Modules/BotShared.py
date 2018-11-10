@@ -1683,6 +1683,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
 def bot_dictcom_targetplusreason(bot, botcom):
 
     commandrunconsensus = []
+    bot.msg("deathbybandaid", str(botcom.target))
 
     ignoretarget = 0
     if not botcom.target and botcom.dotcommand_dict[botcom.responsekey]["target_backup"]:
