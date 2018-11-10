@@ -2103,25 +2103,27 @@ def bot_target_check(bot, botcom, target, target_self):
             targetgoodconsensus.append("This command does not allow you to target yourself.")
 
     # cannot target bots
-    if target in bot.memory["botdict"]["tempvals"]['bots_list']:
+    if target.lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['bots_list']]:
         reasons.append("bot")
         targetgoodconsensus.append(nick_actual(bot, target) + " is a bot and cannot be targeted.")
 
     # Not a valid user
-    if target not in bot.memory["botdict"]["users"].keys():
+    if target.lower() not in [u.lower() for u in bot.memory["botdict"]["users"].keys()]:
         reasons.append("unknown")
         targetgoodconsensus.append("I don't know who that is.")
 
     # User offline
-    if target not in bot.memory["botdict"]["tempvals"]['all_current_users']:
+    if target.lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['all_current_users']]:
         reasons.append("offline")
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is offline right now!")
 
+    # Private Message
     if not botcom.channel_current.startswith('#') and target != botcom.instigator:
         reasons.append("privmsg")
         targetgoodconsensus.append("Leave " + nick_actual(bot, target) + " out of this private conversation!")
 
-    if target in bot.memory["botdict"]["tempvals"]['all_current_users'] and target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
+    # not in the same channel
+    if target.lower() in [command.lower() for command in bot.memory["botdict"]["tempvals"]['all_current_users']] and target.lower() in [u.lower() for u not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']]:
         reasons.append("diffchannel")
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
 
