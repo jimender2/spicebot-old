@@ -14,7 +14,7 @@
                             "Damn it, man, I'm a doctor, not $blank!",
                             ],
               "blank_backup": "$replyvariation",
-              "replyvariation": ["fartbox"]
+              "replyvariation": ["fartbox"],
               "replyvariations": [
                                 "a moon shuttle conductor",
                                 "a bricklayer",
