@@ -6,13 +6,15 @@
               },
 
 "not": {
-              "type": "simple",
+              "type": "fillintheblank",
               "responses": [
-                            "Dammit Jim, I'm a doctor, not $replyvariation!!!",
-                            "What am I, a doctor or $replyvariation",
-                            "I'm not $replyvariation, Spock, just an old country doctor.",
-                            "Damn it, man, I'm a doctor, not $replyvariation!",
+                            "Dammit Jim, I'm a doctor, not $blank!!!",
+                            "What am I, a doctor or $blank",
+                            "I'm not $blank, Spock, just an old country doctor.",
+                            "Damn it, man, I'm a doctor, not $blank!",
                             ],
+              "blank_backup": "$replyvariation",
+              "blank_phrasehandle": ["a"],
               "replyvariation": [
                                 "a moon shuttle conductor",
                                 "a bricklayer",
