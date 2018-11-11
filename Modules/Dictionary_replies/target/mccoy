@@ -1,11 +1,11 @@
 {
-"?default": {
+"dead": {
               "type": "target",
               "responses": ["He's dead, $target."],
               "target_backup": "Jim",
               },
 
-"not": {
+"?default": {
               "type": "fillintheblank",
               "responses": [
                             "Dammit Jim, I'm a doctor, not $blank!!!",
