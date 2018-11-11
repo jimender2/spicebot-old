@@ -14,7 +14,7 @@
                             "Damn it, man, I'm a doctor, not $blank!",
                             ],
               "blank_backup": "$replyvariation",
-              "blank_phrasehandle": ["a"],
+              "blank_phrasehandle": ["a", "an"],
               "replyvariation": [
                                 "a moon shuttle conductor",
                                 "a bricklayer",
