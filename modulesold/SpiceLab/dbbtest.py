@@ -32,5 +32,5 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     bot.say(str(type("fart")))
 
-    for i in range(1, 6):
-        bot.say(str(i))
+    # for i in range(1, 6):
+    #    bot.say(str(i))
