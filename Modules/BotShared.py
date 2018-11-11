@@ -1411,7 +1411,7 @@ def bot_dictcom_run(bot, trigger):
     botcom.maincom = botcom.dotcommand_dict["validcoms"][0]
 
     # execute function based on command type
-    botcom.commandtype = botcom.dotcommand_dict[botcom.responsekey]["type"].lower()
+    botcom.commandtype = botcom.dotcommand_dict["type"].lower()
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
