@@ -2,7 +2,7 @@
 "?default": {
               "type": "fillintheblank",
               "responses": ["Madness? THIS IS $blank"],
-              "translations": ["upper"],
+              "translations": ["upper", "hyphen"],
               "blank_backup": 'SPARTA',
               },
 
