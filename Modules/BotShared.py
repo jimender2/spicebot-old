@@ -1611,6 +1611,7 @@ def bot_dictcom_reply_shared(bot, botcom):
             # smaller variations for the text
             if "$replyvariation" in rply:
                 if botcom.dotcommand_dict[botcom.responsekey]["replyvariation"] != []:
+                    bot.msg("deathbybandaid", str(botcom.dotcommand_dict[botcom.responsekey]["replyvariation"]))
                     variation = spicemanip(bot, botcom.dotcommand_dict["replyvariation"], 'random')
                     rply = rply.replace("$replyvariation", variation)
                 else:
