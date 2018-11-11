@@ -15,6 +15,7 @@ from os.path import exists
 import sys
 
 # Additional imports
+import copy
 import datetime
 import time
 import re
@@ -1397,7 +1398,8 @@ def bot_dictcom_run(bot, trigger):
         botcom.dotcommand = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["aliasfor"]
 
     # simplify usage of the bot command going forward
-    botcom.dotcommand_dict = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].copy()
+    # botcom.dotcommand_dict = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].copy()
+    botcom.dotcommand_dict = copy.deepcopy(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand])
 
     # remainder, if any is the new arg list
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')
