@@ -6,16 +6,14 @@
               },
 
 "not": {
-              "type": "fillintheblank",
+              "type": "simple",
               "responses": [
-                            "Dammit Jim, I'm a doctor, not $blank!!!",
-                            "What am I, a doctor or $blank",
-                            "I'm not $blank, Spock, just an old country doctor.",
-                            "Damn it, man, I'm a doctor, not $blank!",
+                            "Dammit Jim, I'm a doctor, not $replyvariation!!!",
+                            "What am I, a doctor or $replyvariation",
+                            "I'm not $replyvariation, Spock, just an old country doctor.",
+                            "Damn it, man, I'm a doctor, not $replyvariation!",
                             ],
-              "blank_backup": "$replyvariation",
-              "replyvariation": ["fartbox"],
-              "replyvariations": [
+              "replyvariation": [
                                 "a moon shuttle conductor",
                                 "a bricklayer",
                                 "a psychiatrist",
