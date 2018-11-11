@@ -1411,7 +1411,7 @@ def bot_dictcom_run(bot, trigger):
     botcom.maincom = botcom.dotcommand_dict["validcoms"][0]
 
     # execute function based on command type
-    botcom.commandtype = botcom.dotcommand_dict["type"].lower()
+    botcom.commandtype = botcom.dotcommand_dict[botcom.responsekey]["type"].lower()
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
@@ -1611,7 +1611,7 @@ def bot_dictcom_reply_shared(bot, botcom):
             # smaller variations for the text
             if "$replyvariation" in rply:
                 if botcom.dotcommand_dict[botcom.responsekey]["replyvariation"] != []:
-                    variation = spicemanip(bot, botcom.dotcommand_dict["replyvariation"], 'random')
+                    variation = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["replyvariation"], 'random')
                     rply = rply.replace("$replyvariation", variation)
                 else:
                     rply = rply.replace("$replyvariation", '')
@@ -1706,7 +1706,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
 
     if botcom.completestring and botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
         if botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"] != []:
-            if spicemanip(bot, botcom.completestring, 1).lower() not in botcom.dotcommand_dict["blank_phrasehandle"]:
+            if spicemanip(bot, botcom.completestring, 1).lower() not in botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
                 botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0] + " " + botcom.completestring
             elif spicemanip(bot, botcom.completestring, 1).lower() in botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
                 if spicemanip(bot, botcom.completestring, 1).lower() != botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0]:
@@ -1792,7 +1792,7 @@ def bot_dictcom_gif(bot, botcom):
     if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
         searchapis = [botcom.dotcommand]
     elif "queryapi" in botcom.dotcommand_dict.keys():
-        searchapis = botcom.dotcommand_dict["queryapi"]
+        searchapis = botcom.dotcommand_dict[botcom.responsekey]["queryapi"]
     else:
         searchapis = bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys()
 
