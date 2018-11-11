@@ -1705,7 +1705,6 @@ def bot_dictcom_fillintheblank(bot, botcom):
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = commandrunconsensus[0]
 
     if botcom.completestring and botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
-        bot.msg("deathbybandaid", str(botcom.dotcommand_dict["blank_phrasehandle"]))
         if botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"] != []:
             if spicemanip(bot, botcom.completestring, 1).lower() not in botcom.dotcommand_dict["blank_phrasehandle"]:
                 botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0] + " " + botcom.completestring

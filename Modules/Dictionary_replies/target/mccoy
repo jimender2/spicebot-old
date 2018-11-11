@@ -13,8 +13,7 @@
                             "I'm not $blank, Spock, just an old country doctor.",
                             "Damn it, man, I'm a doctor, not $blank!",
                             ],
-              "blank_backup": "$replyvariation",
-              "blank_phrasehandle": ["a"],
+              "blank_backup": "$replyvariatiosn",
               "replyvariation": [
                                 "a moon shuttle conductor",
                                 "a bricklayer",
