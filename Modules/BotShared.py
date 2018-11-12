@@ -1561,6 +1561,7 @@ def bot_dictcom_process(bot, botcom):
     if posstarget.lower() in [u.lower() for u in bot.memory["botdict"]["users"].keys()]:
         botcom.target = nick_actual(bot, posstarget)
 
+    botcom.success = True
     command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
     eval(command_function_run)
 
@@ -1644,11 +1645,11 @@ def bot_dictcom_reply_shared(bot, botcom):
                 rply = bot_translate_process(bot, rply, botcom.dotcommand_dict[botcom.responsekey]["translations"])
 
             # text to precede the output
-            if botcom.dotcommand_dict[botcom.responsekey]["prefixtext"]:
+            if botcom.dotcommand_dict[botcom.responsekey]["prefixtext"] and botcom.success:
                 rply = botcom.dotcommand_dict[botcom.responsekey]["prefixtext"] + rply
 
             # text to follow the output
-            if botcom.dotcommand_dict[botcom.responsekey]["suffixtext"]:
+            if botcom.dotcommand_dict[botcom.responsekey]["suffixtext"] and botcom.success:
                 rply = rply + botcom.dotcommand_dict[botcom.responsekey]["suffixtext"]
 
             # saying, or action?
@@ -1700,6 +1701,7 @@ def bot_dictcom_target(bot, botcom):
                     botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_self"]
 
     if commandrunconsensus != []:
+        botcom.success = False
         if botcom.dotcommand_dict[botcom.responsekey]["response_fail"]:
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["response_fail"]
         else:
@@ -1721,6 +1723,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
         commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["blank_fail"])
 
     if commandrunconsensus != []:
+        botcom.success = False
         if botcom.dotcommand_dict[botcom.responsekey]["response_fail"]:
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["response_fail"]
         else:
@@ -1782,6 +1785,7 @@ def bot_dictcom_targetplusreason(bot, botcom):
         commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["blank_fail"])
 
     if commandrunconsensus != []:
+        botcom.success = False
         if botcom.dotcommand_dict[botcom.responsekey]["response_fail"]:
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["response_fail"]
         else:
@@ -1834,6 +1838,7 @@ def bot_dictcom_gif(bot, botcom):
     gifdict = getGif(bot, searchdict)
 
     if gifdict["error"]:
+        botcom.success = False
         if botcom.dotcommand_dict[botcom.responsekey]["search_fail"]:
             gifdict["error"] = botcom.dotcommand_dict[botcom.responsekey]["search_fail"]
         botcom.dotcommand_dict[botcom.responsekey]["responses"] = [gifdict["error"]]
