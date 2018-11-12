@@ -1884,13 +1884,13 @@ def bot_translate_process(bot, totranslate, translationtypes):
             totranslate = spicemanip(bot, totranslate, 0).replace(' ', '-')
 
         elif translationtype == "ermahgerd":
-            totranslate = trernslert(totranslate)
+            totranslate = trernslert(bot, totranslate)
 
         elif translationtype == "obscure":
-            totranslate = text_obscure(totranslate)
+            totranslate = text_obscure(bot, totranslate)
 
         elif translationtype == "piglatin":
-            totranslate = text_piglatin(totranslate)
+            totranslate = text_piglatin(bot, totranslate)
 
         elif translationtype == "upper":
             totranslate = spicemanip(bot, totranslate, 0).upper()
@@ -1901,13 +1901,13 @@ def bot_translate_process(bot, totranslate, translationtypes):
     return totranslate
 
 
-def text_obscure(words):
+def text_obscure(bot, words):
     amountofletters = len(words)
     mystring = "*" * amountofletters
     return mystring
 
 
-def text_piglatin(words):
+def text_piglatin(bot, words):
     pyg = 'ay'
     firstsarray = ['a', 'e', 'i', 'o', 'u']
 
@@ -1924,7 +1924,7 @@ def text_piglatin(words):
     return words
 
 
-def trernslert(werds):
+def trernslert(bot, werds):
     terkerns = werds.split()
     er = ''
     for terk in terkerns:
