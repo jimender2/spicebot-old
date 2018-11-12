@@ -1372,6 +1372,63 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
     return dict_from_file
 
 
+def bot_dictquery_run(bot, trigger):
+
+    if not str(trigger).startswith(tuple(['?'])):
+        return
+
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # instigator
+    botcom.instigator = trigger.nick
+
+    # channel
+    botcom.channel_current = trigger.sender
+
+    # Bots can't run commands
+    if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        return
+
+    # create arg list
+    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+
+    # command issued, check if valid
+    botcom.querycommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
+    if len(botcom.querycommand) == 1:
+        commandlist = []
+        for command in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+            if command.startswith(botcom.querycommand):
+                commandlist.append(command)
+        if commandlist == []:
+            return osd(bot, botcom.channel_current, 'say', "No commands match " + str(botcom.querycommand) + ".")
+        else:
+            return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
+    else:
+        return
+
+    # Spell Check
+    if rpg.command_main.lower() not in rpg.gamedict['static']['commands'].keys() and rpg.command_main.lower() not in rpg.gamedict['static']['alt_commands'].keys() and rpg.command_main.lower() not in [x.lower() for x in rpg.gamedict["users"]['users_all']]:
+        startcom = rpg.command_main
+        sim_com, sim_num = [], []
+        command_type_list = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", "rpg.gamedict['users']['users_all']"]
+        for comtype in command_type_list:
+            comtype_eval = eval(comtype)
+            for com in comtype_eval:
+                similarlevel = similar(rpg.command_main.lower(), com.lower())
+                if similarlevel >= .75:
+                    sim_com.append(com)
+                    sim_num.append(similarlevel)
+        if sim_com != [] and sim_num != []:
+            sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
+            rpg.command_main = spicemanip(bot, sim_com, 'last')
+        if rpg.command_main.lower() != startcom.lower():
+            rpg.triggerargsarray.remove(startcom)
+            rpg.triggerargsarray.insert(0, rpg.command_main)
+            rpg.command_full = spicemanip(bot, rpg.triggerargsarray, 0)
+
+
 def bot_dictcom_run(bot, trigger):
 
     if not str(trigger).startswith(tuple(['.'])):
