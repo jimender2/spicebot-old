@@ -1908,6 +1908,8 @@ def text_obscure(bot, words):
 
 
 def text_piglatin(bot, words):
+    if not isinstance(words, list):
+        words = [words]
     pyg = 'ay'
     firstsarray = ['a', 'e', 'i', 'o', 'u']
 
