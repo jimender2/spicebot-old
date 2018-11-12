@@ -1,0 +1,10 @@
+{
+"validcoms": ['murder', 'moida'],
+"?default": {
+              "type": "target",
+              "updates_enabled": "user",
+              "prefixtext": "$instigator murders $target with",
+              "responses": ["a gun"],
+              },
+
+}
