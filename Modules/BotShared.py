@@ -1558,7 +1558,7 @@ def bot_dictcom_process(bot, botcom):
 
         return osd(bot, botcom.channel_current, 'say', "The following was removed from the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
-    elif not botcom.dotcommand_dict[botcom.responsekey]["selection_allowed"]:
+    elif botcom.specified and not botcom.dotcommand_dict[botcom.responsekey]["selection_allowed"]:
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " response list cannot be specified.")
 
     posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
