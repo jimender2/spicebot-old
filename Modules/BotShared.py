@@ -1426,8 +1426,13 @@ def bot_dictquery_run(bot, trigger):
             sim_com.append(com)
             sim_num.append(similarlevel)
         sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
-        closestmatch = spicemanip(bot, sim_com, 'last')
-        return osd(bot, botcom.channel_current, 'say', "The following commands may match " + str(botcom.querycommand) + ": " + str(closestmatch) + ".")
+        closestmatch = spicemanip(bot, sim_com, 'reverse', "list")
+        listnumb, relist = 1, []
+        for item in closestmatch:
+            if listnumb <= 10:
+                relist.append(str(item))
+            listnumb += 1
+        return osd(bot, botcom.channel_current, 'say', "The following commands may match " + str(botcom.querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".")
 
 
 def bot_dictcom_run(bot, trigger):
