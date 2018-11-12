@@ -1304,8 +1304,7 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
                 dict_from_file[mustbe]["response_fail"] = [dict_from_file[mustbe]["response_fail"]]
 
         if dict_from_file[mustbe]["updates_enabled"]:
-            if dict_from_file[mustbe]["updates_enabled"] == "shared":
-                adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
+            adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
             dict_from_file[mustbe]["responses"] = get_nick_value(bot, str(bot.nick), maincom + "_" + str(mustbe), 'long', 'sayings') or []
 
         # each usecase needs a response
