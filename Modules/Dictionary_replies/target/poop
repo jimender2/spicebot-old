@@ -16,7 +16,7 @@
 
 "boss": {
               "type": "target",
-              "responses": ["Boss makes a dollar, I make a dime. That's why $target poops on company time."],
+              "responses": ["Boss makes a dollar, $target makes a dime. That's why $target poops on company time."],
               "target_backup": "instigator",
               },
 
