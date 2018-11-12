@@ -1306,8 +1306,6 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         if dict_from_file[mustbe]["updates_enabled"]:
             if dict_from_file[mustbe]["updates_enabled"] == "shared":
                 adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
-            elif dict_from_file[mustbe]["updates_enabled"] == "user":
-                adjust_nick_array(bot, str(botcom.instigator), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
             dict_from_file[mustbe]["responses"] = get_nick_value(bot, str(bot.nick), maincom + "_" + str(mustbe), 'long', 'sayings') or []
 
         # each usecase needs a response
@@ -1480,6 +1478,7 @@ def bot_dictcom_process(bot, botcom):
         if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "shared":
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey), 'long', 'sayings') or []
         elif botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "user":
+            adjust_nick_array(bot, str(botcom.instigator), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(botcom.instigator), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey), 'long', 'sayings') or []
 
     # Hardcoded commands Below
