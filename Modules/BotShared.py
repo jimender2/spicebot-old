@@ -1889,6 +1889,9 @@ def bot_translate_process(bot, totranslate, translationtypes):
         elif translationtype == "obscure":
             totranslate = text_obscure(totranslate)
 
+        elif translationtype == "piglatin":
+            totranslate = text_piglatin(totranslate)
+
         elif translationtype == "upper":
             totranslate = spicemanip(bot, totranslate, 0).upper()
 
@@ -1902,6 +1905,23 @@ def text_obscure(words):
     amountofletters = len(words)
     mystring = "*" * amountofletters
     return mystring
+
+
+def text_piglatin(words):
+    pyg = 'ay'
+    firstsarray = ['a', 'e', 'i', 'o', 'u']
+
+    rebuildarray = []
+    for word in words:
+        word = word.lower()
+        first = word[:1]
+        if first in firstsarray:
+            new_word = word + pyg
+        else:
+            new_word = word[1:] + first + pyg
+        rebuildarray.append(new_word)
+    words = spicemanip(bot, rebuildarray, 0)
+    return words
 
 
 def trernslert(werds):
