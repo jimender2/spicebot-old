@@ -4,7 +4,7 @@
               "type": "target",
               "updates_enabled": "user",
               "target_backup": 'random',
-              "prefixtext": "$instigator murders $target with",
+              "prefixtext": "$instigator murders $target with ",
               "responses": ["a gun"],
               },
 "crow": {
