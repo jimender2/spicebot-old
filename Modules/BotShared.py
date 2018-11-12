@@ -1366,6 +1366,9 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             if not isinstance(dict_from_file[mustbe]["search_fail"], list):
                 dict_from_file[mustbe]["search_fail"] = [dict_from_file[mustbe]["search_fail"]]
 
+        if "selection_allowed" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["selection_allowed"] = True
+
     return dict_from_file
 
 
@@ -1554,6 +1557,9 @@ def bot_dictcom_process(bot, botcom):
             adjust_nick_array(bot, str(botcom.instigator), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
 
         return osd(bot, botcom.channel_current, 'say', "The following was removed from the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
+
+    elif not botcom.dotcommand_dict[botcom.responsekey]["selection_allowed"]:
+        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " response list cannot be specified.")
 
     posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
     botcom.target = False

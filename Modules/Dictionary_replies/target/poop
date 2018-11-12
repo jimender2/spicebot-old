@@ -2,6 +2,7 @@
 "validcoms": ['poop', 'poops', 'shit', 'shits'],
 "?default": {
               "type": "target",
+              "selection_allowed": False,
               "responses": [
                             "$instigator drops their pants and squats on $target's desk, but all they manage to do is fart.",
                             "$instigator overestimated their capabilities and poops themselves. $target is not impressed.",
