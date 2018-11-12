@@ -2,7 +2,7 @@
 "validcoms": ['yes', 'yep', 'yeahnahyeah', 'aye', 'ayo', 'da', 'hai', 'ja', 'jes', 'oui', 'si', 'ya', 'yea', 'yebo', 'yo', 'yoh'],
 "?default": {
               "type": "simple",
-              "updates_enabled": True,
+              "updates_enabled": "shared",
               "responses": [
                           "Does the Pope shit in the woods?",
                           "Are end-users horrifyingly stupid at times?",

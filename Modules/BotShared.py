@@ -1253,6 +1253,9 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         # each usecase needs to know if it can be updated. Default is false
         if "updates_enabled" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["updates_enabled"] = False
+        if dict_from_file[mustbe]["updates_enabled"]:
+            if dict_from_file[mustbe]["updates_enabled"] not in ["shared", "user"]:
+                dict_from_file[mustbe]["updates_enabled"] = "shared"
 
         # each usecase needs to know if it needs a target
         if "target_required" not in dict_from_file[mustbe].keys():
@@ -1301,7 +1304,10 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
                 dict_from_file[mustbe]["response_fail"] = [dict_from_file[mustbe]["response_fail"]]
 
         if dict_from_file[mustbe]["updates_enabled"]:
-            adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
+            if dict_from_file[mustbe]["updates_enabled"] == "shared":
+                adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
+            elif dict_from_file[mustbe]["updates_enabled"] == "user":
+                adjust_nick_array(bot, str(botcom.instigator), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
             dict_from_file[mustbe]["responses"] = get_nick_value(bot, str(bot.nick), maincom + "_" + str(mustbe), 'long', 'sayings') or []
 
         # each usecase needs a response
@@ -1471,7 +1477,10 @@ def bot_dictcom_process(bot, botcom):
 
     # commands that can be updated
     if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"]:
-        botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey), 'long', 'sayings') or []
+        if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "shared":
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey), 'long', 'sayings') or []
+        elif botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "user":
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(botcom.instigator), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey), 'long', 'sayings') or []
 
     # Hardcoded commands Below
     if botcom.specified == 'special':
@@ -1521,7 +1530,10 @@ def bot_dictcom_process(bot, botcom):
         if fulltext in botcom.dotcommand_dict[botcom.responsekey]["responses"]:
             return osd(bot, botcom.channel_current, 'say', "The following was already in the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
-        adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
+        if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "shared":
+            adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
+        elif botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "user":
+            adjust_nick_array(bot, str(botcom.instigator), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
 
         return osd(bot, botcom.channel_current, 'say', "The following was added to the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
@@ -1537,7 +1549,10 @@ def bot_dictcom_process(bot, botcom):
         if fulltext not in botcom.dotcommand_dict[botcom.responsekey]["responses"]:
             return osd(bot, botcom.channel_current, 'say', "The following was already not in the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
-        adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
+        if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "shared":
+            adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
+        elif botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "user":
+            adjust_nick_array(bot, str(botcom.instigator), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
 
         return osd(bot, botcom.channel_current, 'say', "The following was removed from the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 

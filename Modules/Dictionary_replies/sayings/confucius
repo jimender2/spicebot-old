@@ -1,7 +1,7 @@
 {
 "?default": {
               "type": "simple",
-              "updates_enabled": True,
+              "updates_enabled": "shared",
               "responses": [
                             "Man who lie on back, fucks up.",
                             "Man who piss into wind get wet.",

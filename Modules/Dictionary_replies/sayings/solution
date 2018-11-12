@@ -1,7 +1,7 @@
 {
 "?default": {
               "type": "simple",
-              "updates_enabled": True,
+              "updates_enabled": "shared",
               "responses": [
                           "Have you tried turning it off and on again?",
                           "Is it a layer 8 issue?",

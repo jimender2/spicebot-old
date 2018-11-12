@@ -2,7 +2,7 @@
 "validcoms": ['moviequotes', 'mq', 'gmq', 'goodmoviequotes'],
 "?default": {
               "type": "simple",
-              "updates_enabled": True,
+              "updates_enabled": "shared",
               "responses": [
                           "Yippee Ki Yay Motherfucker",
                           ],

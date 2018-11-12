@@ -1,7 +1,7 @@
 {
 "?default": {
               "type": "simple",
-              "updates_enabled": True,
+              "updates_enabled": "shared",
               "responses": [
                             "Don't be an ass",
                             "Why do you have two asses?",

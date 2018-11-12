@@ -2,7 +2,7 @@
 "validcoms": ['fortune', 'cookie'],
 "?default": {
               "type": "simple",
-              "updates_enabled": True,
+              "updates_enabled": "shared",
               "responses": [
                             "A conclusion is simply the place where you got tired of thinking.",
                             "A foolish man listens to his heart. A wise man listens to cookies.",

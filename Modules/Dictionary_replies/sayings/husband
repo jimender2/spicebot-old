@@ -1,7 +1,7 @@
 {
 "?default": {
               "type": "simple",
-              "updates_enabled": True,
+              "updates_enabled": "shared",
               "responses": [
                             "Honey, how do I change a diaper?",
                             "If you put it on the to-do list, I told you I'll do it. You don't have to remind me about it every 6 months.",

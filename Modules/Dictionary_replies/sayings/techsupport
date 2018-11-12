@@ -2,7 +2,7 @@
 "validcoms": ['techsupport', 'itsupport'],
 "?default": {
               "type": "simple",
-              "updates_enabled": True,
+              "updates_enabled": "shared",
               "responses": [
                           "Have you tried turning it off and on again?",
                           "Four! I mean five! I mean FIRE!",

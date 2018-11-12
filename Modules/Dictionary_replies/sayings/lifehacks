@@ -2,7 +2,7 @@
 "validcoms": ['lifehack', 'lh', 'lifehacks'],
 "?default": {
               "type": "simple",
-              "updates_enabled": True,
+              "updates_enabled": "shared",
               "responses": ["The answer to life, the world, and everything."],
               },
 

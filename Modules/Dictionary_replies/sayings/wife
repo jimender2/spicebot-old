@@ -1,7 +1,7 @@
 {
 "?default": {
               "type": "simple",
-              "updates_enabled": True,
+              "updates_enabled": "shared",
               "responses": [
                             "No.",
                             "Buy me jewellery!",

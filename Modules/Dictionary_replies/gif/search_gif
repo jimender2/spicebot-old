@@ -7,6 +7,6 @@
 "roulette": {
               "type": "gif",
               "responses": ['Starter Pack'],
-              "updates_enabled": True,
+              "updates_enabled": "shared",
               },
 }

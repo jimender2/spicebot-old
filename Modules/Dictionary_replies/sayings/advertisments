@@ -2,7 +2,7 @@
 "validcoms": ['ads', 'advertisements', 'ad', 'advertisement', 'spam'],
 "?default": {
               "type": "simple",
-              "updates_enabled": True,
+              "updates_enabled": "shared",
               "responses": [
                             "DoubleD recommends these new drapes https://goo.gl/BMTMde",
                             "Spiceduck for spicerex mascot 2k18", "Deathbybandaid is looking for developers for spicebot and spicethings",

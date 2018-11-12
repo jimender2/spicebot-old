@@ -110,7 +110,7 @@
 "type": "",  # (Optional) single "", see subfolders for options, if not specified, defaults to subfoldername
 "validcoms": [],  # (Optional) this can be a list of valid commands, or a single command in "", defaults to filename for command if not specified
 "defaultreplies": [] # use this instead of "replies" to allow these to be used to initialize the database with some entries
-"updates_enabled": True,  # REQUIRED if you want users to be able to update the listing
+"updates_enabled": "shared",  # REQUIRED if you want users to be able to update the listing
 }
 
 
