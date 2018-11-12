@@ -1,0 +1,11 @@
+{
+"?default": {
+              "type": "target",
+              "responses": [
+                            "$instigator gives $target a nice big nohomo hug!",
+                            ],
+              "target_backup": "themself",
+              "target_self": True,
+              },
+
+}
