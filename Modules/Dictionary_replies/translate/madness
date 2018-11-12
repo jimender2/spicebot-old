@@ -1,4 +1,5 @@
 {
+"validcoms": ['madness', 'sparta'],
 "?default": {
               "type": "fillintheblank",
               "prefixtext": "Madness? ",
