@@ -1588,22 +1588,6 @@ def bot_dictcom_reply_shared(bot, botcom):
             eval(rply)
         else:
 
-            # trigger.nick
-            if "$instigator" in rply:
-                rply = rply.replace("$instigator", botcom.instigator or '')
-
-            # current channel
-            if "$channel" in rply:
-                rply = rply.replace("$channel", botcom.channel_current or '')
-
-            # bot.nick
-            if "$botnick" in rply:
-                rply = rply.replace("$botnick", bot.nick or '')
-
-            # target
-            if "$target" in rply:
-                rply = rply.replace("$target", botcom.target or '')
-
             # blank
             if "$blank" in rply:
                 rply = rply.replace("$blank", botcom.completestring or '')
@@ -1651,6 +1635,22 @@ def bot_dictcom_reply_shared(bot, botcom):
             # text to follow the output
             if botcom.dotcommand_dict[botcom.responsekey]["suffixtext"] and botcom.success:
                 rply = rply + botcom.dotcommand_dict[botcom.responsekey]["suffixtext"]
+
+            # trigger.nick
+            if "$instigator" in rply:
+                rply = rply.replace("$instigator", botcom.instigator or '')
+
+            # current channel
+            if "$channel" in rply:
+                rply = rply.replace("$channel", botcom.channel_current or '')
+
+            # bot.nick
+            if "$botnick" in rply:
+                rply = rply.replace("$botnick", bot.nick or '')
+
+            # target
+            if "$target" in rply:
+                rply = rply.replace("$target", botcom.target or '')
 
             # saying, or action?
             if rply.startswith("*a "):
