@@ -1405,28 +1405,26 @@ def bot_dictquery_run(bot, trigger):
             return osd(bot, botcom.channel_current, 'say', "No commands match " + str(botcom.querycommand) + ".")
         else:
             return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
-    else:
-        return
 
-    # Spell Check
-    if rpg.command_main.lower() not in rpg.gamedict['static']['commands'].keys() and rpg.command_main.lower() not in rpg.gamedict['static']['alt_commands'].keys() and rpg.command_main.lower() not in [x.lower() for x in rpg.gamedict["users"]['users_all']]:
-        startcom = rpg.command_main
+    elif botcom.querycommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+        return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(botcom.querycommand) + ".")
+
+    else:
+
+        # Spell Check
+        startcom = botcom.querycommand
         sim_com, sim_num = [], []
-        command_type_list = ["rpg.gamedict['static']['commands'].keys()", "rpg.gamedict['static']['alt_commands'].keys()", "rpg.gamedict['users']['users_all']"]
-        for comtype in command_type_list:
-            comtype_eval = eval(comtype)
-            for com in comtype_eval:
-                similarlevel = similar(rpg.command_main.lower(), com.lower())
-                if similarlevel >= .75:
-                    sim_com.append(com)
-                    sim_num.append(similarlevel)
+        for com in bot.memory['botdict']['tempvals']['dict_commands'].keys():
+            similarlevel = similar(rpg.command_main.lower(), com.lower())
+            if similarlevel >= .75:
+                sim_com.append(com)
+                sim_num.append(similarlevel)
         if sim_com != [] and sim_num != []:
             sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
-            rpg.command_main = spicemanip(bot, sim_com, 'last')
-        if rpg.command_main.lower() != startcom.lower():
-            rpg.triggerargsarray.remove(startcom)
-            rpg.triggerargsarray.insert(0, rpg.command_main)
-            rpg.command_full = spicemanip(bot, rpg.triggerargsarray, 0)
+            closestmatch = spicemanip(bot, sim_com, 'last')
+            return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(closestmatch) + ".")
+        else:
+            return osd(bot, botcom.channel_current, 'say', "No commands match " + str(botcom.querycommand) + ".")
 
 
 def bot_dictcom_run(bot, trigger):
