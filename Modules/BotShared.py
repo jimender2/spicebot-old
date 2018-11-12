@@ -1412,19 +1412,14 @@ def bot_dictquery_run(bot, trigger):
     else:
 
         # Spell Check
-        startcom = botcom.querycommand
         sim_com, sim_num = [], []
         for com in bot.memory['botdict']['tempvals']['dict_commands'].keys():
-            similarlevel = similar(rpg.command_main.lower(), com.lower())
-            if similarlevel >= .75:
-                sim_com.append(com)
-                sim_num.append(similarlevel)
-        if sim_com != [] and sim_num != []:
-            sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
-            closestmatch = spicemanip(bot, sim_com, 'last')
-            return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(closestmatch) + ".")
-        else:
-            return osd(bot, botcom.channel_current, 'say', "No commands match " + str(botcom.querycommand) + ".")
+            similarlevel = similar(botcom.querycommand.lower(), com.lower())
+            sim_com.append(com)
+            sim_num.append(similarlevel)
+        sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
+        closestmatch = spicemanip(bot, sim_com, 'last')
+        return osd(bot, botcom.channel_current, 'say', "The following commands may match " + str(botcom.querycommand) + ": " + str(closestmatch) + ".")
 
 
 def bot_dictcom_run(bot, trigger):
