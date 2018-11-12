@@ -1,0 +1,8 @@
+{
+"validcoms": ['phish', 'catphish'],
+"?default": {
+              "type": "simple",
+              "responses": ["A/S/L ??"],
+              },
+
+}
