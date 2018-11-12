@@ -1414,10 +1414,9 @@ def bot_dictquery_run(bot, trigger):
         else:
             return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
 
-    elif botcom.querycommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-        return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(botcom.querycommand) + ".")
+    elif botcom.querycommand.endswith(tuple(['?'])):
 
-    else:
+        botcom.querycommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
 
         # Spell Check
         sim_com, sim_num = [], []
@@ -1433,6 +1432,19 @@ def bot_dictquery_run(bot, trigger):
                 relist.append(str(item))
             listnumb += 1
         return osd(bot, botcom.channel_current, 'say', "The following commands may match " + str(botcom.querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".")
+
+    elif botcom.querycommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+        return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(botcom.querycommand) + ".")
+
+    else:
+        commandlist = []
+        for command in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+            if command.startswith(botcom.querycommand):
+                commandlist.append(command)
+        if commandlist == []:
+            return osd(bot, botcom.channel_current, 'say', "No commands match " + str(botcom.querycommand) + ".")
+        else:
+            return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
 
 
 def bot_dictcom_run(bot, trigger):
