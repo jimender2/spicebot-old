@@ -1572,14 +1572,6 @@ def bot_dictcom_reply_shared(bot, botcom):
             eval(rply)
         else:
 
-            # text to precede the output
-            if botcom.dotcommand_dict[botcom.responsekey]["prefixtext"]:
-                rply = botcom.dotcommand_dict[botcom.responsekey]["prefixtext"] + rply
-
-            # text to follow the output
-            if botcom.dotcommand_dict[botcom.responsekey]["suffixtext"]:
-                rply = rply + botcom.dotcommand_dict[botcom.responsekey]["suffixtext"]
-
             # trigger.nick
             if "$instigator" in rply:
                 rply = rply.replace("$instigator", botcom.instigator or '')
@@ -1635,6 +1627,21 @@ def bot_dictcom_reply_shared(bot, botcom):
             # translation
             if botcom.dotcommand_dict[botcom.responsekey]["translations"]:
                 rply = bot_translate_process(bot, rply, botcom.dotcommand_dict[botcom.responsekey]["translations"])
+
+            # text to precede the output
+            if botcom.dotcommand_dict[botcom.responsekey]["prefixtext"]:
+                rply = botcom.dotcommand_dict[botcom.responsekey]["prefixtext"] + rply
+
+            # text to follow the output
+            if botcom.dotcommand_dict[botcom.responsekey]["suffixtext"]:
+                rply = rply + botcom.dotcommand_dict[botcom.responsekey]["suffixtext"]
+
+            # saying, or action?
+            if rply.startswith("*a "):
+                rplytype = 'action'
+                rply = rply.replace("*a ", "")
+            else:
+                rplytype = 'say'
 
             osd(bot, botcom.channel_current, rplytype, rply)
 
@@ -1860,6 +1867,9 @@ def bot_translate_process(bot, totranslate, translationtypes):
         elif translationtype == "ermahgerd":
             totranslate = trernslert(totranslate)
 
+        elif translationtype == "obscure":
+            totranslate = text_obscure(totranslate)
+
         elif translationtype == "upper":
             totranslate = spicemanip(bot, totranslate, 0).upper()
 
@@ -1867,6 +1877,12 @@ def bot_translate_process(bot, totranslate, translationtypes):
             totranslate = spicemanip(bot, totranslate, 0).lower()
 
     return totranslate
+
+
+def text_obscure(words):
+    amountofletters = len(words)
+    mystring = "*" * amountofletters
+    return mystring
 
 
 def trernslert(werds):

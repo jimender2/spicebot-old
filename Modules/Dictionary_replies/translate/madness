@@ -1,7 +1,8 @@
 {
 "?default": {
               "type": "fillintheblank",
-              "responses": ["Madness? THIS IS $blank"],
+              "prefixtext": "Madness? ",
+              "responses": ["THIS-IS-$blank"],
               "translations": ["upper", "hyphen"],
               "blank_backup": 'SPARTA',
               },

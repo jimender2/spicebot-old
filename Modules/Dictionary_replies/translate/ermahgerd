@@ -1,7 +1,8 @@
 {
 "?default": {
               "type": "fillintheblank",
-              "responses": ["ERMAHGERD, $blank"],
+              "prefixtext": "ERMAHGERD, ",
+              "responses": ["$blank"],
               "translations": ["ermahgerd"],
               "response_fail": ["Whert der yer wernt ter trernslert?",],
               },
