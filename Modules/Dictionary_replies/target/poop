@@ -1,0 +1,37 @@
+{
+"validcoms": ['poop', 'poops', 'shit', 'shits'],
+"?default": {
+              "type": "target",
+              "responses": [
+                            "$instigator drops their pants and squats on $target's desk, but all they manage to do is fart.",
+                            "$instigator overestimated their capabilities and poops themselves. $target is not impressed.",
+                            "$instigator gets halfway through pooping before realizing that this is their own desk, not $target's.",
+                            "$instigator trips over taking their pants off and shits everywhere BUT $target's desk.",
+                            "$instigator poops on $target's desk, maintaining eye contact the entire time!"
+                            ],
+              "react_self": "$instigator shits their pats for a sweet bowel release.",
+              "react_bot": "",
+              },
+
+"boss": {
+              "type": "target",
+              "responses": ["Boss makes a dollar, I make a dime. That's why $target poop on company time."],
+              "target_backup": "instigator",
+              },
+
+"corner": {
+              "type": "simple",
+              "responses": ["$instigator poops in the designated corner!"],
+              },
+
+"group": {
+              "type": "target",
+              "responses": ["$target, get your poop in a group."],
+              "target_backup": "instigator",
+              },
+
+('all', 'everyone', 'everyones'): {
+                                    "type": "simple",
+                                    "responses": ["$instigator poops on everyone's desk, one at a time!"],
+                                    },
+}
