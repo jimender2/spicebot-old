@@ -1,0 +1,11 @@
+{
+"?default": {
+              "type": "target",
+              "responses": [
+                            "$target should buy a boat.",
+                            ],
+              "target_backup": "instigator",
+              "target_self": True,
+              },
+
+}
