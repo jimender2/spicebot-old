@@ -1601,34 +1601,6 @@ def bot_dictcom_reply_shared(bot, botcom):
             if "$input" in rply:
                 rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.maincom)
 
-            # fill in the blank
-            if "$blank" in rply:
-                rply = rply.replace("$blank", spicemanip(bot, botcom.triggerargsarray, 0) or '')
-
-            # smaller variations for the text
-            if "$replyvariation" in rply:
-                if botcom.dotcommand_dict[botcom.responsekey]["replyvariation"] != []:
-                    variation = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["replyvariation"], 'random')
-                    rply = rply.replace("$replyvariation", variation)
-                else:
-                    rply = rply.replace("$replyvariation", '')
-
-            # display special options for this command
-            if "$specialoptions" in rply:
-                nonstockoptions = []
-                for command in botcom.dotcommand_dict.keys():
-                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath"]:
-                        nonstockoptions.append(command)
-                nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
-                rply = rply.replace("$specialoptions", nonstockoptions)
-
-            # saying, or action?
-            if rply.startswith("*a "):
-                rplytype = 'action'
-                rply = rply.replace("*a ", "")
-            else:
-                rplytype = 'say'
-
             # translation
             if botcom.dotcommand_dict[botcom.responsekey]["translations"]:
                 rply = bot_translate_process(bot, rply, botcom.dotcommand_dict[botcom.responsekey]["translations"])
@@ -1656,6 +1628,23 @@ def bot_dictcom_reply_shared(bot, botcom):
             # target
             if "$target" in rply:
                 rply = rply.replace("$target", botcom.target or '')
+
+            # smaller variations for the text
+            if "$replyvariation" in rply:
+                if botcom.dotcommand_dict[botcom.responsekey]["replyvariation"] != []:
+                    variation = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["replyvariation"], 'random')
+                    rply = rply.replace("$replyvariation", variation)
+                else:
+                    rply = rply.replace("$replyvariation", '')
+
+            # display special options for this command
+            if "$specialoptions" in rply:
+                nonstockoptions = []
+                for command in botcom.dotcommand_dict.keys():
+                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath"]:
+                        nonstockoptions.append(command)
+                nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
+                rply = rply.replace("$specialoptions", nonstockoptions)
 
             # saying, or action?
             if rply.startswith("*a "):
