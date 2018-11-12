@@ -1910,17 +1910,14 @@ def text_obscure(bot, words):
 def text_piglatin(bot, words):
     if not isinstance(words, list):
         words = [words]
-    pyg = 'ay'
-    firstsarray = ['a', 'e', 'i', 'o', 'u']
-
     rebuildarray = []
     for word in words:
         word = word.lower()
         first = word[:1]
-        if first in firstsarray:
-            new_word = word + pyg
+        if first in ['a', 'e', 'i', 'o', 'u']:
+            new_word = word + 'ay'
         else:
-            new_word = word[1:] + first + pyg
+            new_word = word[1:] + first + 'ay'
         rebuildarray.append(new_word)
     words = spicemanip(bot, rebuildarray, 0)
     return words
