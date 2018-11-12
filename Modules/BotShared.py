@@ -1476,10 +1476,10 @@ def bot_dictcom_process(bot, botcom):
     # commands that can be updated
     if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"]:
         if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "shared":
-            adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
+            adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), dict_from_file[botcom.responsekey]["responses"], 'startup', 'long', 'sayings')
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey), 'long', 'sayings') or []
         elif botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "user":
-            adjust_nick_array(bot, str(botcom.instigator), botcom.maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
+            adjust_nick_array(bot, str(botcom.instigator), botcom.maincom + "_" + str(botcom.responsekey), dict_from_file[botcom.responsekey]["responses"], 'startup', 'long', 'sayings')
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(botcom.instigator), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey), 'long', 'sayings') or []
 
     # Hardcoded commands Below
