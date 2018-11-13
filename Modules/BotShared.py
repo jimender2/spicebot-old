@@ -1416,7 +1416,7 @@ def bot_dictquery_run(bot, trigger):
 
     elif botcom.querycommand.endswith(tuple(["+"])):
         bot.msg("deathbybandaid", str(botcom.querycommand))
-        botcom.querycommand = botcom.querycommand[1:]
+        botcom.querycommand = botcom.querycommand[:-1]
         bot.msg("deathbybandaid", str(botcom.querycommand))
         if botcom.querycommand not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.querycommand) + " does not appear to be valid.")
@@ -1426,7 +1426,7 @@ def bot_dictquery_run(bot, trigger):
     elif botcom.querycommand.endswith(tuple(['?'])):
 
         bot.msg("deathbybandaid", str(botcom.querycommand))
-        botcom.querycommand = botcom.querycommand[1:]
+        botcom.querycommand = botcom.querycommand[:-1]
         bot.msg("deathbybandaid", str(botcom.querycommand))
 
         # Spell Check
