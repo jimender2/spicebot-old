@@ -1415,21 +1415,14 @@ def bot_dictquery_run(bot, trigger):
             return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
 
     elif botcom.querycommand.endswith(tuple(["+"])):
-        bot.msg("deathbybandaid", str(botcom.querycommand))
         botcom.querycommand = botcom.querycommand[:-1]
-        bot.msg("deathbybandaid", str(botcom.querycommand))
         if botcom.querycommand not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.querycommand) + " does not appear to be valid.")
         validcomlist = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.querycommand]["validcoms"]
         return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".")
 
     elif botcom.querycommand.endswith(tuple(['?'])):
-
-        bot.msg("deathbybandaid", str(botcom.querycommand))
         botcom.querycommand = botcom.querycommand[:-1]
-        bot.msg("deathbybandaid", str(botcom.querycommand))
-
-        # Spell Check
         sim_com, sim_num = [], []
         for com in bot.memory['botdict']['tempvals']['dict_commands'].keys():
             similarlevel = similar(botcom.querycommand.lower(), com.lower())
