@@ -1414,10 +1414,10 @@ def bot_dictquery_run(bot, trigger):
         else:
             return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
 
-    elif botcom.querycommand.endswith(tuple(['+'])):
+    elif botcom.querycommand.endswith(tuple(["+"])):
         botcom.querycommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-        if botcom.querycommand.lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['dict_commands'].keys()]:
-            return osd(bot, botcom.channel_current, 'say', "The following " + str(botcom.querycommand) + " does not appear to be valid.")
+        if botcom.querycommand not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.querycommand) + " does not appear to be valid.")
         validcomlist = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.querycommand]["validcoms"]
         return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".")
 
@@ -1440,7 +1440,7 @@ def bot_dictquery_run(bot, trigger):
             listnumb += 1
         return osd(bot, botcom.channel_current, 'say', "The following commands may match " + str(botcom.querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".")
 
-    if botcom.querycommand.lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['dict_commands'].keys()]:
+    elif botcom.querycommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
         return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(botcom.querycommand) + ".")
 
     else:
