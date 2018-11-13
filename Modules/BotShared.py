@@ -15,6 +15,7 @@ from os.path import exists
 import sys
 
 # Additional imports
+import ConfigParser
 import copy
 import datetime
 import time
@@ -60,10 +61,6 @@ import pickle
 # user agent and header
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
-
-
-# Opening and reading config files
-import ConfigParser
 
 
 # Ensure Encoding
@@ -1736,6 +1733,7 @@ def bot_dictcom_simple(bot, botcom):
 def bot_dictcom_target(bot, botcom):
 
     commandrunconsensus = []
+
     if botcom.target:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
@@ -1811,6 +1809,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
 def bot_dictcom_targetplusreason(bot, botcom):
 
     commandrunconsensus = []
+
     if botcom.target:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
