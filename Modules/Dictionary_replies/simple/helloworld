@@ -1,4 +1,6 @@
 {
+"author": "jimender2",
+"contributors": ['deathbybandaid'],
 "?default": {
               "type": "simple",
               "responses": [
