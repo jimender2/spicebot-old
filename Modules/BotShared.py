@@ -1739,6 +1739,7 @@ def bot_dictcom_target(bot, botcom):
 
     if botcom.target:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+        bot.msg("deathbybandaid", str(botcom.triggerargsarray))
 
     ignoretarget = 0
     if not botcom.target and botcom.dotcommand_dict[botcom.responsekey]["target_backup"]:
@@ -1815,6 +1816,7 @@ def bot_dictcom_targetplusreason(bot, botcom):
 
     if botcom.target:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+        bot.msg("deathbybandaid", str(botcom.triggerargsarray))
 
     ignoretarget = 0
     if not botcom.target and botcom.dotcommand_dict[botcom.responsekey]["target_backup"]:
