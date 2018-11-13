@@ -1407,19 +1407,19 @@ def bot_dictquery_run(bot, trigger):
             if command.startswith(botcom.querycommand):
                 commandlist.append(command)
         if commandlist == []:
-            return osd(bot, botcom.channel_current, 'say', "No commands match " + str(botcom.querycommand) + ".")
+            return osd(bot, botcom.instigator, 'say', "No commands match " + str(botcom.querycommand) + ".")
         else:
-            return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
+            return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
 
     elif botcom.querycommand.endswith(tuple(["+"])):
         botcom.querycommand = botcom.querycommand[:-1]
         if botcom.querycommand not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.querycommand) + " does not appear to be valid.")
+            return osd(bot, botcom.instigator, 'say', "The " + str(botcom.querycommand) + " does not appear to be valid.")
         realcom = botcom.querycommand
         if "aliasfor" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.querycommand].keys():
             realcom = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.querycommand]["aliasfor"]
         validcomlist = bot.memory["botdict"]["tempvals"]['dict_commands'][realcom]["validcoms"]
-        return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".")
+        return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".")
 
     elif botcom.querycommand.endswith(tuple(['?'])):
         botcom.querycommand = botcom.querycommand[:-1]
@@ -1435,10 +1435,10 @@ def bot_dictquery_run(bot, trigger):
             if listnumb <= 10:
                 relist.append(str(item))
             listnumb += 1
-        return osd(bot, botcom.channel_current, 'say', "The following commands may match " + str(botcom.querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".")
+        return osd(bot, botcom.instigator, 'say', "The following commands may match " + str(botcom.querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".")
 
     elif botcom.querycommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-        return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(botcom.querycommand) + ".")
+        return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(botcom.querycommand) + ".")
 
     elif not botcom.querycommand:
         return
@@ -1449,9 +1449,9 @@ def bot_dictquery_run(bot, trigger):
             if command.startswith(botcom.querycommand):
                 commandlist.append(command)
         if commandlist == []:
-            return osd(bot, botcom.channel_current, 'say', "No commands match " + str(botcom.querycommand) + ".")
+            return osd(bot, botcom.instigator, 'say', "No commands match " + str(botcom.querycommand) + ".")
         else:
-            return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
+            return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
 
 
 def bot_dictcom_run(bot, trigger):
