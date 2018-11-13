@@ -1418,7 +1418,10 @@ def bot_dictquery_run(bot, trigger):
         botcom.querycommand = botcom.querycommand[:-1]
         if botcom.querycommand not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.querycommand) + " does not appear to be valid.")
-        validcomlist = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.querycommand]["validcoms"]
+        realcom = botcom.querycommand
+        if "aliasfor" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.querycommand].keys():
+            realcom = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.querycommand]["aliasfor"]
+        validcomlist = bot.memory["botdict"]["tempvals"]['dict_commands'][realcom]["validcoms"]
         return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".")
 
     elif botcom.querycommand.endswith(tuple(['?'])):
@@ -1479,7 +1482,7 @@ def bot_dictcom_run(bot, trigger):
         return
 
     # command aliases
-    if "aliasfor" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]:
+    if "aliasfor" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
         botcom.dotcommand = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["aliasfor"]
 
     # simplify usage of the bot command going forward
