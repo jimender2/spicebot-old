@@ -5,28 +5,22 @@
                             'Python print("Hello World!")',
                             'Java (System.out.println("Hello World!");',
                             'C printf("Hello World!");',
-                    ],
+                            ],
               },
 
 "Python": {
               "type": "simple",
-              "responses": [
-                            'Python print("Hello World!")',
-                    ],
+              "responses": ['Python print("Hello World!")',],
               },
 
 "Java": {
               "type": "simple",
-              "responses": [
-                            'Java (System.out.println("Hello World!");',
-                    ],
+              "responses": ['Java (System.out.println("Hello World!");'],
               },
 
 "C": {
               "type": "simple",
-              "responses": [
-                            'C printf("Hello World!");',
-                    ],
+              "responses": ['C printf("Hello World!");'],
               },
 
 }
