@@ -1533,9 +1533,9 @@ def bot_dictcom_process(bot, botcom):
     validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contrib', "contributors", 'author']
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
-    if str(argone).startswith("--") and len(str(argone)) > 1:
-        if str(argone[1:]).isdigit() or str(argone[1:]) in validspecifides:
-            botcom.specified = argone[1:]
+    if str(argone).startswith("--") and len(str(argone)) > 2:
+        if str(argone[2:]).isdigit() or str(argone[2:]) in validspecifides:
+            botcom.specified = argone[2:]
         else:
             try:
                 botcom.specified = w2n.word_to_num(str(argone[1:]))
