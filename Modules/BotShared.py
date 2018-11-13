@@ -1441,7 +1441,7 @@ def bot_dictquery_run(bot, trigger):
         return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(botcom.querycommand) + ".")
 
     elif not botcom.querycommand:
-        return osd(bot, botcom.channel_current, 'say', "Please specify search parameters.")
+        return
 
     else:
         commandlist = []
