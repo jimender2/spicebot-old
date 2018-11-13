@@ -1415,7 +1415,9 @@ def bot_dictquery_run(bot, trigger):
             return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
 
     elif botcom.querycommand.endswith(tuple(["+"])):
-        botcom.querycommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
+        bot.msg("deathbybandaid", str(botcom.querycommand))
+        botcom.querycommand = botcom.querycommand[1:]
+        bot.msg("deathbybandaid", str(botcom.querycommand))
         if botcom.querycommand not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.querycommand) + " does not appear to be valid.")
         validcomlist = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.querycommand]["validcoms"]
@@ -1423,7 +1425,9 @@ def bot_dictquery_run(bot, trigger):
 
     elif botcom.querycommand.endswith(tuple(['?'])):
 
-        botcom.querycommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
+        bot.msg("deathbybandaid", str(botcom.querycommand))
+        botcom.querycommand = botcom.querycommand[1:]
+        bot.msg("deathbybandaid", str(botcom.querycommand))
 
         # Spell Check
         sim_com, sim_num = [], []
