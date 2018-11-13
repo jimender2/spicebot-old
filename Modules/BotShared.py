@@ -1736,7 +1736,6 @@ def bot_dictcom_simple(bot, botcom):
 def bot_dictcom_target(bot, botcom):
 
     commandrunconsensus = []
-
     if botcom.target:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
@@ -1812,7 +1811,6 @@ def bot_dictcom_fillintheblank(bot, botcom):
 def bot_dictcom_targetplusreason(bot, botcom):
 
     commandrunconsensus = []
-
     if botcom.target:
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
