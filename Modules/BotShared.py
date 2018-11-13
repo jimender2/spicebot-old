@@ -1414,6 +1414,12 @@ def bot_dictquery_run(bot, trigger):
         else:
             return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
 
+    elif botcom.querycommand.endswith(tuple(['+'])):
+        if botcom.querycommand.lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['dict_commands'].keys()]:
+            return osd(bot, botcom.channel_current, 'say', "The following " + str(botcom.querycommand) + " does not appear to be valid.")
+        validcomlist = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.querycommand]["validcoms"]
+        return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".")
+
     elif botcom.querycommand.endswith(tuple(['?'])):
 
         botcom.querycommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
@@ -1433,7 +1439,7 @@ def bot_dictquery_run(bot, trigger):
             listnumb += 1
         return osd(bot, botcom.channel_current, 'say', "The following commands may match " + str(botcom.querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".")
 
-    elif botcom.querycommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+    if botcom.querycommand.lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['dict_commands'].keys()]:
         return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(botcom.querycommand) + ".")
 
     else:
@@ -1525,8 +1531,8 @@ def bot_dictcom_process(bot, botcom):
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contrib', "contributors", 'author']
     botcom.specified = None
-    argone, argtwo = spicemanip(bot, botcom.triggerargsarray, 1), spicemanip(bot, botcom.triggerargsarray, 'last')
-    if str(argone).startswith("!") and len(str(argone)) > 1:
+    argone = spicemanip(bot, botcom.triggerargsarray, 1)
+    if str(argone).startswith("--") and len(str(argone)) > 1:
         if str(argone[1:]).isdigit() or str(argone[1:]) in validspecifides:
             botcom.specified = argone[1:]
         else:
@@ -1536,16 +1542,7 @@ def bot_dictcom_process(bot, botcom):
                 botcom.specified = None
         if botcom.specified:
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-    elif str(argtwo).startswith("!") and len(str(argtwo)) > 1:
-        if str(argtwo[1:]).isdigit() or str(argtwo[1:]) in validspecifides:
-            botcom.specified = argtwo[1:]
-        else:
-            try:
-                botcom.specified = w2n.word_to_num(str(argtwo[1:]))
-            except ValueError:
-                botcom.specified = None
-        if botcom.specified:
-            botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'last!', 'list')
+
     if botcom.specified:
         if str(botcom.specified).isdigit():
             botcom.specified = int(botcom.specified)
