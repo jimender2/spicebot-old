@@ -1753,7 +1753,7 @@ def bot_dictcom_target(bot, botcom):
     if botcom.dotcommand_dict[botcom.responsekey]["target_required"] and not botcom.target:
         commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
 
-    if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
+    if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target.lower():
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
     if not ignoretarget and botcom.target:
@@ -1829,7 +1829,7 @@ def bot_dictcom_targetplusreason(bot, botcom):
     if botcom.dotcommand_dict[botcom.responsekey]["target_required"] and not botcom.target:
         commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
 
-    if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target:
+    if spicemanip(bot, botcom.triggerargsarray, 1) == botcom.target.lower():
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
     if not ignoretarget and botcom.target:
