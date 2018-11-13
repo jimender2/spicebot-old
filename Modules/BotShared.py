@@ -1440,6 +1440,9 @@ def bot_dictquery_run(bot, trigger):
     elif botcom.querycommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
         return osd(bot, botcom.channel_current, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(botcom.querycommand) + ".")
 
+    elif not botcom.querycommand:
+        return osd(bot, botcom.channel_current, 'say', "Please specify search parameters.")
+
     else:
         commandlist = []
         for command in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
