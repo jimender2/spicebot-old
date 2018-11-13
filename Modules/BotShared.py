@@ -236,7 +236,7 @@ gif_dontuseextensions = ['.jpg', '.png']
 
 
 """
-Dict functions
+Dictionary Database functions
 """
 
 
