@@ -1966,6 +1966,9 @@ def bot_translate_process(bot, totranslate, translationtypes):
         elif translationtype == "binaryinvert":
             totranslate = text_binary_swap(bot, totranslate)
 
+        elif translationtype == "onetozero":
+            totranslate = text_one_to_zero_swap(bot, totranslate)
+
         elif translationtype == "upper":
             totranslate = spicemanip(bot, totranslate, 0).upper()
 
@@ -2069,10 +2072,26 @@ def ermergerd(w):
 
 
 def text_one_to_zero_swap(bot, words):
-    if isinstance(words, list):
-        words = spicemanip(bot, words, 0)
-    # if not str(words).isdigit():
-    return words
+    if not words or words == []:
+        return "No input provided"
+    if not isinstance(words, list):
+        words = [words]
+    words = spicemanip(bot, words, 0).split(" ")
+    outputarray = []
+    for word in words:
+        origbinary = True
+        if not isitbinary(word):
+            origbinary = False
+            word = string2bits(word) or 1
+            word = spicemanip(bot, word, 0)
+        word = word.replace('1', '2')
+        word = word.replace('0', '1')
+        word = word.replace('2', '0')
+        if not origbinary:
+            word = bits2string(word) or 'error'
+        outputarray.append(str(word))
+    outputarray = spicemanip(bot, outputarray, 0)
+    return outputarray
 
 
 def text_binary_swap(bot, words):
@@ -2084,9 +2103,9 @@ def text_binary_swap(bot, words):
     outputarray = []
     for word in words:
         if isitbinary(word):
-            word = bits2string(word) or 1
+            word = bits2string(word) or 'error'
         else:
-            word = string2bits(word) or 'error'
+            word = string2bits(word) or 1
             word = spicemanip(bot, word, 0)
         outputarray.append(str(word))
     outputarray = spicemanip(bot, outputarray, 0)
