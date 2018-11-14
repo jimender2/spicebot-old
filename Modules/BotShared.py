@@ -2081,10 +2081,9 @@ def text_one_to_zero_swap(bot, words):
     for word in words:
         if not isitbinary(word):
             word = text_binary_swap(bot, word)
-        else:
-            word = str(word).replace('1', '2')
-            word = str(word).replace('0', '1')
-            word = str(word).replace('2', '0')
+        word = str(word).replace('1', '2')
+        word = str(word).replace('0', '1')
+        word = str(word).replace('2', '0')
         outputarray.append(str(word))
     outputarray = spicemanip(bot, outputarray, 0)
     return outputarray
