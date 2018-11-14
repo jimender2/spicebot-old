@@ -2084,9 +2084,9 @@ def text_one_to_zero_swap(bot, words):
             origbinary = False
             word = string2bits(word) or 1
             word = spicemanip(bot, word, 0)
-        word = word.replace('1', '2')
-        word = word.replace('0', '1')
-        word = word.replace('2', '0')
+        word = str(word).replace('1', '2')
+        word = str(word).replace('0', '1')
+        word = str(word).replace('2', '0')
         if not origbinary:
             word = bits2string(word) or 'error'
         outputarray.append(str(word))
