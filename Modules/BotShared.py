@@ -2080,7 +2080,7 @@ def text_binary_swap(bot, words):
         words = [words]
     outputarray = []
     for word in words:
-        if str(words).isdigit():
+        if not str(words).isdigit():
             word = bits2string(word) or 1
         else:
             word = bits2string(word) or 'error'
