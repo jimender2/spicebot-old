@@ -2079,9 +2079,10 @@ def text_binary_swap(bot, words):
     if isinstance(words, list):
         words = spicemanip(bot, rebuildarray, 0)
     if not str(words).isdigit():
-        spititout = str(string2bits(words)) or 'error'
+        spititout = string2bits(words) or [1]
+        spititout = spicemanip(bot, spititout, 0)
     else:
-        spititout = bits2string(words) or 1
+        spititout = bits2string(words) or 'error'
     return spititout
 
 
