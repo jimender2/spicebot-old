@@ -1133,12 +1133,14 @@ def dict_command_configs(bot):
 
     quick_coms_path = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/"
 
-    # iterate over organizational folders
+    # iterate over organizational folder
+    modulecount = 0
     for quick_coms_type in os.listdir(quick_coms_path):
 
         # iterate over files within
         coms_type_file_path = os.path.join(quick_coms_path, quick_coms_type)
         for comconf in os.listdir(coms_type_file_path):
+            modulecount += 1
 
             # check if command file is already in the list
             if comconf not in bot.memory["botdict"]["tempvals"]['dict_commands_loaded']:
@@ -1234,6 +1236,7 @@ def dict_command_configs(bot):
                     for comalias in comaliases:
                         if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
                             bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
+    bot.memory["botdict"]["tempvals"]['dict_module_count'] = modulecount
 
 
 def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
