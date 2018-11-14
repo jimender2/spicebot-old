@@ -6,8 +6,8 @@
               "prefixtext": ["$target has been diagnosed with "],
               "suffixtext": [
                               " and is being treated.",
-                              " and has died abruptly."
-                              " and is recovering."
+                              " and has died abruptly.",
+                              " and is recovering.",
                               ],
               "responses": [
                             "Ischemic heart disease",
