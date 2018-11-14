@@ -2084,7 +2084,6 @@ def text_binary_swap(bot, words):
             word = bits2string(word) or 1
         else:
             word = bits2string(word) or 'error'
-            word = spicemanip(bot, word, 0)
         outputarray.append(word)
     outputarray = spicemanip(bot, outputarray, 0)
     return outputarray
