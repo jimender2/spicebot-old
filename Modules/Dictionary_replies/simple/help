@@ -1,0 +1,8 @@
+{
+
+"?default": {
+              "type": "simple",
+              "responses": ["Online Docs:     https://github.com/SpiceBot/SpiceBot/wiki"],
+              },
+
+}
