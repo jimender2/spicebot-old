@@ -1963,6 +1963,9 @@ def bot_translate_process(bot, totranslate, translationtypes):
         elif translationtype == "piglatin":
             totranslate = text_piglatin(bot, totranslate)
 
+        elif translationtype == "binaryinvert":
+            totranslate = text_binary_swap(bot, words)
+
         elif translationtype == "upper":
             totranslate = spicemanip(bot, totranslate, 0).upper()
 
@@ -2063,6 +2066,29 @@ def ermergerd(w):
         er = er[0] + er[1:].replace('y', 'er')
         er = er.replace('rr', 'r')
         return er.upper()
+
+
+def text_one_to_zero_swap(bot, words):
+    if isinstance(words, list):
+        words = spicemanip(bot, rebuildarray, 0)
+
+
+def text_binary_swap(bot, words):
+    if isinstance(words, list):
+        words = spicemanip(bot, rebuildarray, 0)
+    if str(words).isdigit():
+        spititout = str(string2bits(current_translate)) or 'error'
+    else:
+        spititout = bits2string(current_translate) or 1
+    return spititout
+
+
+def string2bits(s=''):
+    return [bin(ord(x))[2:].zfill(8) for x in s]
+
+
+def bits2string(b=None):
+    return ''.join(chr(int(b[i*8:i*8+8], 2)) for i in range(len(b)//8))
 
 
 """
