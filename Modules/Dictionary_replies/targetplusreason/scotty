@@ -2,7 +2,7 @@
 "?default": {
               "type": "targetplusreason",
               "responses": ["*a beams $target to $blank"],
-              "blank_fail": ["What coordinates am I setting for transport?",]
+              "blank_fail": ["What coordinates am I setting for transport?",],
               "target_backup": 'instigator',
               },
 "know": {
