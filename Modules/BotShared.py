@@ -2070,20 +2070,24 @@ def ermergerd(w):
 
 def text_one_to_zero_swap(bot, words):
     if isinstance(words, list):
-        words = spicemanip(bot, rebuildarray, 0)
+        words = spicemanip(bot, words, 0)
     # if not str(words).isdigit():
     return words
 
 
 def text_binary_swap(bot, words):
-    if isinstance(words, list):
-        words = spicemanip(bot, rebuildarray, 0)
-    if not str(words).isdigit():
-        spititout = string2bits(words) or [1]
-        spititout = spicemanip(bot, spititout, 0)
-    else:
-        spititout = bits2string(words) or 'error'
-    return spititout
+    if not isinstance(words, list):
+        words = [words]
+    outputarray = []
+    for word in words:
+        if str(words).isdigit():
+            word = bits2string(word) or 1
+        else:
+            word = bits2string(word) or 'error'
+            word = spicemanip(bot, word, 0)
+        outputarray.append(word)
+    outputarray = spicemanip(bot, outputarray, 0)
+    return outputarray
 
 
 def string2bits(s=''):
