@@ -1,0 +1,8 @@
+{
+"validcoms": ['kev', 'kevinny'],
+"?default": {
+              "type": "simple",
+              "responses": ["CLICK ALL THE LINKS!!!"],
+              },
+
+}
