@@ -2,7 +2,7 @@
 "?default": {
               "type": "targetplusreason",
               "responses": ["*a beams a $blank to $target"],
-              "blank_fail": ["What am I beaming?",]
+              "blank_fail": ["What am I beaming?",],
               "target_backup": 'instigator',
               },
 
