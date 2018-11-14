@@ -1336,10 +1336,16 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         # each usecase needs a prefixtext
         if "prefixtext" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["prefixtext"] = False
+        if dict_from_file[mustbe]["prefixtext"]:
+            if not isinstance(dict_from_file[mustbe]["prefixtext"], list):
+                dict_from_file[mustbe]["prefixtext"] = [dict_from_file[mustbe]["prefixtext"]]
 
         # each usecase needs a suffixtext
         if "suffixtext" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["suffixtext"] = False
+        if dict_from_file[mustbe]["suffixtext"]:
+            if not isinstance(dict_from_file[mustbe]["suffixtext"], list):
+                dict_from_file[mustbe]["suffixtext"] = [dict_from_file[mustbe]["suffixtext"]]
 
         # Translations
         if "translations" not in dict_from_file[mustbe].keys():
@@ -1377,6 +1383,15 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
         if "selection_allowed" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["selection_allowed"] = True
 
+        # Translations
+        if "randnum" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["translations"] = False
+        if dict_from_file[mustbe]["randnum"]:
+            if not isinstance(dict_from_file[mustbe]["randnum"], list):
+                dict_from_file[mustbe]["randnum"] = [0, 50]
+            if len(dict_from_file[mustbe]["randnum"]) == 1:
+                dict_from_file[mustbe]["randnum"] = [0, dict_from_file[mustbe]["randnum"][0]]
+
     return dict_from_file
 
 
@@ -1407,7 +1422,7 @@ def bot_dictquery_run(bot, trigger):
     if len(botcom.querycommand) == 1:
         commandlist = []
         for command in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-            if command.startswith(botcom.querycommand):
+            if command.lower().startswith(botcom.querycommand):
                 commandlist.append(command)
         if commandlist == []:
             return osd(bot, botcom.instigator, 'say', "No commands match " + str(botcom.querycommand) + ".")
@@ -1449,7 +1464,7 @@ def bot_dictquery_run(bot, trigger):
     else:
         commandlist = []
         for command in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-            if command.startswith(botcom.querycommand):
+            if command.lower().startswith(botcom.querycommand):
                 commandlist.append(command)
         if commandlist == []:
             return osd(bot, botcom.instigator, 'say', "No commands match " + str(botcom.querycommand) + ".")
@@ -1669,6 +1684,14 @@ def bot_dictcom_reply_shared(bot, botcom):
             eval(rply)
         else:
 
+            # random number
+            if "$randnum" in rply:
+                if botcom.dotcommand_dict[botcom.responsekey]["randnum"]:
+                    randno = randint(botcom.dotcommand_dict[botcom.responsekey]["randnum"][0], botcom.dotcommand_dict[botcom.responsekey]["randnum"][1])
+                else:
+                    randno = randint(0, 50)
+                rply = rply.replace("$randnum", randno or 0)
+
             # blank
             if "$blank" in rply:
                 rply = rply.replace("$blank", botcom.completestring or '')
@@ -1683,11 +1706,11 @@ def bot_dictcom_reply_shared(bot, botcom):
 
             # text to precede the output
             if botcom.dotcommand_dict[botcom.responsekey]["prefixtext"] and botcom.success:
-                rply = botcom.dotcommand_dict[botcom.responsekey]["prefixtext"] + rply
+                rply = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["prefixtext"], 'random') + rply
 
             # text to follow the output
             if botcom.dotcommand_dict[botcom.responsekey]["suffixtext"] and botcom.success:
-                rply = rply + botcom.dotcommand_dict[botcom.responsekey]["suffixtext"]
+                rply = rply + spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["suffixtext"], 'random')
 
             # trigger.nick
             if "$instigator" in rply:
