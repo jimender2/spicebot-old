@@ -2079,16 +2079,16 @@ def text_one_to_zero_swap(bot, words):
     words = spicemanip(bot, words, 0).split(" ")
     outputarray = []
     for word in words:
-        origbinary = True
         if not isitbinary(word):
-            origbinary = False
-            word = string2bits(word) or 1
-            word = spicemanip(bot, word, 0)
-        word = str(word).replace('1', '2')
-        word = str(word).replace('0', '1')
-        word = str(word).replace('2', '0')
-        if not origbinary:
-            word = bits2string(word) or 'error'
+            word = text_binary_swap(bot, word)
+            word = str(word).replace('1', '2')
+            word = str(word).replace('0', '1')
+            word = str(word).replace('2', '0')
+            word = text_binary_swap(bot, word)
+        else:
+            word = str(word).replace('1', '2')
+            word = str(word).replace('0', '1')
+            word = str(word).replace('2', '0')
         outputarray.append(str(word))
     outputarray = spicemanip(bot, outputarray, 0)
     return outputarray
