@@ -2083,7 +2083,7 @@ def text_binary_swap(bot, words):
         if str(word).isdigit():
             word = bits2string(word) or 1
         else:
-            word = bits2string(word) or 'error'
+            word = string2bits(word) or 'error'
         outputarray.append(str(word))
     outputarray = spicemanip(bot, outputarray, 0)
     return outputarray
