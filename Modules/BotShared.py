@@ -1951,6 +1951,9 @@ def bot_translate_process(bot, totranslate, translationtypes):
         if translationtype == "hyphen":
             totranslate = spicemanip(bot, totranslate, 0).replace(' ', '-')
 
+        elif translationtype == "underscore":
+            totranslate = spicemanip(bot, totranslate, 0).replace(' ', '_')
+
         elif translationtype == "ermahgerd":
             totranslate = trernslert(bot, totranslate)
 
