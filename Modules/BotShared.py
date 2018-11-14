@@ -1964,7 +1964,7 @@ def bot_translate_process(bot, totranslate, translationtypes):
             totranslate = text_piglatin(bot, totranslate)
 
         elif translationtype == "binaryinvert":
-            totranslate = text_binary_swap(bot, words)
+            totranslate = text_binary_swap(bot, totranslate)
 
         elif translationtype == "upper":
             totranslate = spicemanip(bot, totranslate, 0).upper()
@@ -2071,6 +2071,8 @@ def ermergerd(w):
 def text_one_to_zero_swap(bot, words):
     if isinstance(words, list):
         words = spicemanip(bot, rebuildarray, 0)
+    # if not str(words).isdigit():
+    return words
 
 
 def text_binary_swap(bot, words):
