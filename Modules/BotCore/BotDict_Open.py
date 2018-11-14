@@ -38,7 +38,7 @@ def initialsetup(bot):
     availablecomsnum += len(bot.memory["botdict"]["tempvals"]['dict_commands'].keys())
     availablecomsfiles += bot.memory["botdict"]["tempvals"]['dict_module_count']
 
-    startupcomplete.append("There are " + str(availablecomsnum) + " commands available.")
+    startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " modules.")
     for channel in bot.channels:
         osd(bot, channel, 'notice', startupcomplete)
     bot_saved_jobs_run(bot)
