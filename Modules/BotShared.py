@@ -1548,7 +1548,7 @@ def bot_dictcom_process(bot, botcom):
     botcom.commandtype = botcom.dotcommand_dict[botcom.responsekey]["type"]
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contrib', "contributors", 'author']
+    validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contrib', "contributors", 'author', "alias"]
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
@@ -1595,6 +1595,9 @@ def bot_dictcom_process(bot, botcom):
 
     elif botcom.specified in ['contrib', "contributors"]:
         return osd(bot, botcom.channel_current, 'say', "The contributors of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["contributors"], "andlist") + ".")
+
+    elif botcom.specified == 'alias':
+        return osd(bot, botcom.channel_current, 'say', "The alaises of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["validcoms"], "andlist") + ".")
 
     elif botcom.specified == 'view':
         if botcom.dotcommand_dict[botcom.responsekey]["responses"] == []:
@@ -1715,6 +1718,11 @@ def bot_dictcom_reply_shared(bot, botcom):
             # trigger.nick
             if "$instigator" in rply:
                 rply = rply.replace("$instigator", botcom.instigator or '')
+
+            # random user
+            if "$randuser" in rply:
+                randuser = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
+                rply = rply.replace("$randuser", randuser)
 
             # current channel
             if "$channel" in rply:

@@ -1,0 +1,8 @@
+{
+"validcoms": ['crazy','cray'],
+"?default": {
+              "type": "simple",
+              "responses": ["That's just crazy enough it might work!"],
+              },
+
+}
