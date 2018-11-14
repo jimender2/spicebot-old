@@ -3,11 +3,23 @@
               "type": "target",
               "updates_enabled": "shared",
               "target_backup": "instigator",
-              "prefixtext": "$target is so old they remember shit like ",
+              "prefixtext": ["$target has been diagnosed with "],
+              "suffixtext": [
+                              " and is being treated.",
+                              " and has died abruptly."
+                              " and is recovering."
+                              ],
               "responses": [
-                            "BBS Servers",
-                            "Rev drives",
-                            "Tape storage",
+                            "Ischemic heart disease",
+                            "Stroke",
+                            "Lower respiratory infections",
+                            "Chronic obstructive pulmonary disease",
+                            "Trachea, bronchus, and lung cancer",
+                            "Diabetes mellitus",
+                            "Alzheimer’s disease",
+                            "Dehydration",
+                            "Tuberculosis",
+                            "Cirrhosis",
                             ],
               },
 
