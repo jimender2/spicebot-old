@@ -2080,6 +2080,7 @@ def text_binary_swap(bot, words):
         return "No input provided"
     if not isinstance(words, list):
         words = [words]
+    words = spicemanip(bot, words, 0).split(" ")
     outputarray = []
     for word in words:
         if isitbinary(word):
@@ -2088,10 +2089,7 @@ def text_binary_swap(bot, words):
             word = string2bits(word) or 'error'
             word = spicemanip(bot, word, 0)
         outputarray.append(str(word))
-    if isitbinary(outputarray[0]):
-        outputarray = spicemanip(bot, outputarray, 0).replace(" ", "")
-    else:
-        outputarray = spicemanip(bot, outputarray, 0)
+    outputarray = spicemanip(bot, outputarray, 0)
     return outputarray
 
 
