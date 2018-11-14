@@ -1385,7 +1385,7 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
 
         # Translations
         if "randnum" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["translations"] = False
+            dict_from_file[mustbe]["randnum"] = False
         if dict_from_file[mustbe]["randnum"]:
             if not isinstance(dict_from_file[mustbe]["randnum"], list):
                 dict_from_file[mustbe]["randnum"] = [0, 50]
