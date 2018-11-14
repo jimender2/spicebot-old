@@ -1690,7 +1690,7 @@ def bot_dictcom_reply_shared(bot, botcom):
                     randno = randint(botcom.dotcommand_dict[botcom.responsekey]["randnum"][0], botcom.dotcommand_dict[botcom.responsekey]["randnum"][1])
                 else:
                     randno = randint(0, 50)
-                rply = rply.replace("$randnum", randno or 0)
+                rply = rply.replace("$randnum", str(randno))
 
             # blank
             if "$blank" in rply:
