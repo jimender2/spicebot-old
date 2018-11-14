@@ -1,0 +1,10 @@
+{
+"?default": {
+              "type": "target",
+              "responses": [
+                            "$instigator dry humps $target.",
+                            ],
+              "target_backup": "random",
+              },
+
+}
