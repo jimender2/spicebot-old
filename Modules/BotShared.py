@@ -2076,12 +2076,14 @@ def text_one_to_zero_swap(bot, words):
 
 
 def text_binary_swap(bot, words):
+    if not words or words == []:
+        return "No input provided"
     if not isinstance(words, list):
         words = [words]
     outputarray = []
     for word in words:
         if str(word).isdigit():
-            word = bits2string(word) or 1
+            word = bits2string(int(word)) or 1
         else:
             word = string2bits(word) or 'error'
             word = spicemanip(bot, word, 0)
