@@ -1621,7 +1621,10 @@ def bot_dictcom_process(bot, botcom):
             listnumb, relist = 1, []
             for item in botcom.dotcommand_dict[botcom.responsekey]["responses"]:
                 if listnumb <= 20:
-                    relist.append(str("[#" + str(listnumb) + "] " + str(item)))
+                    if isinstance(item, dict) or isinstance(item, list):
+                        relist.append(str("[#" + str(listnumb) + "] COMPLEX Entry"))
+                    else:
+                        relist.append(str("[#" + str(listnumb) + "] " + str(item)))
                 listnumb += 1
             osd(bot, botcom.instigator, 'say', relist)
             if listnumb > 20:
