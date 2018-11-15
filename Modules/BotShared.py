@@ -148,6 +148,10 @@ bot_dict = {
                                                     "spiceRPGdev": "My Dungeon Master, $instigator, hath commandeth me to restart. I shall return post haste!",
                                                     },
                                     },
+
+                            # Channels
+                            "channels_list": {},
+
                             },
 
                 # Users lists
@@ -217,6 +221,9 @@ valid_botnick_commands = {
                             "gitpull": {
                                         'privs': ['admin', 'OP'],
                                         },
+                            "auth": {
+                                        'privs': ['admin', 'OP'],
+                                        },
                             }
 
 mode_dict_alias = {
@@ -224,7 +231,7 @@ mode_dict_alias = {
                     "v": "VOICE",
                     "h": "HALFOP",
                     "a": "ADMIN",
-                    "Q": "OWNER",
+                    "q": "OWNER",
                     }
 
 
@@ -446,6 +453,12 @@ def botdict_setup_channels(bot):
         for channel in bot.channels:
             if channel not in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
                 bot.memory["botdict"]["tempvals"]['channels_list'][channel] = dict()
+            if channel not in bot.memory["botdict"]["static"]['channels_list'].keys():
+                bot.memory["botdict"]["static"]['channels_list'][channel] = dict()
+            if "auth_block" not in bot.memory["botdict"]["static"]['channels_list'][channel].keys():
+                bot.memory["botdict"]["static"]['channels_list'][channel]["auth_block"] = []
+            if bot.memory["botdict"]["static"]['channels_list'][channel]["auth_block"] == []:
+                bot.memory["botdict"]["static"]['channels_list'][channel]["auth_block"].append("all")
 
 
 # other bot configs will be detected in this directory
@@ -980,14 +993,6 @@ def bot_nickcom_run_check(bot, botcom):
     return commandrun
 
 
-def dumm():
-
-    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'] = []
-    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops'] = []
-    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices'] = []
-    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] = []
-
-
 # how we handdle user PART
 def bot_watch_part_run(bot, trigger):
 
@@ -1422,6 +1427,55 @@ def bot_saved_jobs_run(bot):
             bot.memory["bot_jobs"].remove(botjob_dict)
 
     botdict_save(bot)
+
+
+"""
+Authorization in channels
+"""
+
+
+def bot_nickcom_function_auth(bot, botcom):
+
+    # Channel
+    targetchannels = []
+    if botcom.triggerargsarray == []:
+        if botcom.channel_current.startswith('#'):
+            targetchannels.append(botcom.channel_current)
+        else:
+            osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
+            return
+    else:
+        for targetchan in botcom.triggerargsarray:
+            if targetchan in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+                targetchannels.append(targetchan)
+    if targetchannels == []:
+        return osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
+
+    # usergroup target (case sensative)
+    targetgroups = []
+    for targetgroup in botcom.triggerargsarray:
+        if targetgroup in ['OP', 'HOP', 'VOICE', 'OWNER', 'ADMIN', 'admin', 'all']:
+            targetgroups.append(targetgroup)
+    if targetgroups == []:
+        return osd(bot, botcom.instigator, 'notice', "You must specify a valid targetgroup.")
+
+    directionchange = None
+    for possdirection in botcom.triggerargsarray:
+        if possdirection in ['add', 'del']:
+            directionchange = possdirection
+    if not directionchange:
+        return osd(bot, botcom.instigator, 'notice', "You must specify a valid add/del.")
+
+    for channelcheck in targetchannels:
+        for groups in targetgroups:
+            if directionchange == 'add':
+                if groups not in bot.memory["botdict"]["static"]['channels_list'][channelcheck][auth_block]:
+                    bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'].append(groups)
+            elif directionchange == 'add':
+                if groups in bot.memory["botdict"]["static"]['channels_list'][channelcheck][auth_block]:
+                    bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'].remove(groups)
+        if bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'] == []:
+            bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'].append("all")
 
 
 """
