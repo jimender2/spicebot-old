@@ -863,7 +863,7 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
 # startup privacy sweep
 def bot_setup_privacy_sweep(bot):
 
-    for channelcheck in bot.memory["botdict"]["static"]['channels_list'][channel].keys():
+    for channelcheck in bot.memory["botdict"]["static"]['channels_list'].keys():
         allowedusers = []
 
         if "all" not in bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block']:
