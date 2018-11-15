@@ -1074,6 +1074,7 @@ def bot_watch_nick_run(bot, trigger):
     # botcom.target = trigger.args[1]
 
     #
+    bot.msg("#spicebottest", str(trigger.nick))
     bot.msg(botcom.channel_current, str(trigger.nick))
     bot.msg(botcom.channel_current, str(trigger.args))
     bot.msg(botcom.channel_current, str(trigger.group(0)))
