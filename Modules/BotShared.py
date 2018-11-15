@@ -1241,6 +1241,28 @@ def bot_watch_join_run(bot, trigger):
     # channel
     botcom.channel_current = trigger.sender
 
+    # Privacy Sweep
+    allowedusers = []
+    if "all" not in bot.memory["botdict"]['channels_list'][botcom.channel_current]['auth_block'] and bot.privileges[botcom.channel_current.lower()][bot.nick.lower()] >= module.OP:
+        for authedgroup in bot.memory["botdict"]['channels_list'][botcom.channel_current]['auth_block']:
+            if authedgroup == 'OP':
+                allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanops'])
+            elif authedgroup == 'HOP':
+                allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanhalfops'])
+            elif authedgroup == 'VOICE':
+                allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanvoices'])
+            elif authedgroup == 'OWNER':
+                allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanowners'])
+            elif authedgroup == 'ADMIN':
+                allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanadmins'])
+            elif authedgroup == 'admin':
+                allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_admins'])
+            elif authedgroup == 'owner':
+                allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_owners'])
+        if botcom.instigator not in allowedusers:
+            bot.write(['KICK', botcom.channel_current, botcom.instigator], "You are not authorized to join " + botcom.channel_current + ".")
+            return
+
     # database entry for user
     if botcom.instigator not in bot.memory["botdict"]["users"].keys():
         bot.memory["botdict"]["users"][botcom.instigator] = dict()
