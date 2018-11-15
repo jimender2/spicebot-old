@@ -2060,104 +2060,100 @@ def bot_dictcom_process(bot, botcom):
 
 def bot_dictcom_reply_shared(bot, botcom):
 
-    for responses in ["responses"]:
+    if botcom.specified:
+        if botcom.specified > len(botcom.dotcommand_dict[botcom.responsekey]["responses"]):
+            currentspecified = len(botcom.dotcommand_dict[botcom.responsekey]["responses"])
+        else:
+            currentspecified = botcom.specified
+        botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], currentspecified, 'return')
+    else:
+        botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
 
-        if botcom.dotcommand_dict[botcom.responsekey][responses]:
+    # This handles responses in list form
+    if not isinstance(botcom.replies, list):
+        botcom.replies = [botcom.replies]
 
-            if botcom.specified:
-                if botcom.specified > len(botcom.dotcommand_dict[botcom.responsekey][responses]):
-                    currentspecified = len(botcom.dotcommand_dict[botcom.responsekey][responses])
+    for rply in botcom.replies:
+
+        # replies that can be evaluated as code
+        if rply.startswith("time.sleep"):
+            eval(rply)
+        else:
+
+            # random number
+            if "$randnum" in rply:
+                if botcom.dotcommand_dict[botcom.responsekey]["randnum"]:
+                    randno = randint(botcom.dotcommand_dict[botcom.responsekey]["randnum"][0], botcom.dotcommand_dict[botcom.responsekey]["randnum"][1])
                 else:
-                    currentspecified = botcom.specified
-                botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey][responses], currentspecified, 'return')
+                    randno = randint(0, 50)
+                rply = rply.replace("$randnum", str(randno))
+
+            # blank
+            if "$blank" in rply:
+                rply = rply.replace("$blank", botcom.completestring or '')
+
+            # the remaining input
+            if "$input" in rply:
+                rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.maincom)
+
+            # translation
+            if botcom.dotcommand_dict[botcom.responsekey]["translations"]:
+                rply = bot_translate_process(bot, rply, botcom.dotcommand_dict[botcom.responsekey]["translations"])
+
+            # text to precede the output
+            if botcom.dotcommand_dict[botcom.responsekey]["prefixtext"] and botcom.success:
+                rply = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["prefixtext"], 'random') + rply
+
+            # text to follow the output
+            if botcom.dotcommand_dict[botcom.responsekey]["suffixtext"] and botcom.success:
+                rply = rply + spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["suffixtext"], 'random')
+
+            # trigger.nick
+            if "$instigator" in rply:
+                rply = rply.replace("$instigator", botcom.instigator or '')
+
+            # random user
+            if "$randuser" in rply:
+                randuser = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
+                rply = rply.replace("$randuser", randuser)
+
+            # current channel
+            if "$channel" in rply:
+                rply = rply.replace("$channel", botcom.channel_current or '')
+
+            # bot.nick
+            if "$botnick" in rply:
+                rply = rply.replace("$botnick", bot.nick or '')
+
+            # target
+            if "$target" in rply:
+                rply = rply.replace("$target", botcom.target or '')
+
+            # smaller variations for the text
+            if "$replyvariation" in rply:
+                if botcom.dotcommand_dict[botcom.responsekey]["replyvariation"] != []:
+                    variation = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["replyvariation"], 'random')
+                    rply = rply.replace("$replyvariation", variation)
+                else:
+                    rply = rply.replace("$replyvariation", '')
+
+            # display special options for this command
+            if "$specialoptions" in rply:
+                nonstockoptions = []
+                for command in botcom.dotcommand_dict.keys():
+                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath"]:
+                        nonstockoptions.append(command)
+                nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
+                rply = rply.replace("$specialoptions", nonstockoptions)
+
+            # saying, or action?
+            if rply.startswith("*a "):
+                rplytype = 'action'
+                rply = rply.replace("*a ", "")
             else:
-                botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey][responses], 'random', 'return')
+                rplytype = 'say'
 
-            # This handles responses in list form
-            if not isinstance(botcom.replies, list):
-                botcom.replies = [botcom.replies]
-
-            for rply in botcom.replies:
-
-                # replies that can be evaluated as code
-                if rply.startswith("time.sleep"):
-                    eval(rply)
-                else:
-
-                    # random number
-                    if "$randnum" in rply:
-                        if botcom.dotcommand_dict[botcom.responsekey]["randnum"]:
-                            randno = randint(botcom.dotcommand_dict[botcom.responsekey]["randnum"][0], botcom.dotcommand_dict[botcom.responsekey]["randnum"][1])
-                        else:
-                            randno = randint(0, 50)
-                        rply = rply.replace("$randnum", str(randno))
-
-                    # blank
-                    if "$blank" in rply:
-                        rply = rply.replace("$blank", botcom.completestring or '')
-
-                    # the remaining input
-                    if "$input" in rply:
-                        rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.maincom)
-
-                    # translation
-                    if botcom.dotcommand_dict[botcom.responsekey]["translations"]:
-                        rply = bot_translate_process(bot, rply, botcom.dotcommand_dict[botcom.responsekey]["translations"])
-
-                    # text to precede the output
-                    if botcom.dotcommand_dict[botcom.responsekey]["prefixtext"] and botcom.success:
-                        rply = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["prefixtext"], 'random') + rply
-
-                    # text to follow the output
-                    if botcom.dotcommand_dict[botcom.responsekey]["suffixtext"] and botcom.success:
-                        rply = rply + spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["suffixtext"], 'random')
-
-                    # trigger.nick
-                    if "$instigator" in rply:
-                        rply = rply.replace("$instigator", botcom.instigator or '')
-
-                    # random user
-                    if "$randuser" in rply:
-                        randuser = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
-                        rply = rply.replace("$randuser", randuser)
-
-                    # current channel
-                    if "$channel" in rply:
-                        rply = rply.replace("$channel", botcom.channel_current or '')
-
-                    # bot.nick
-                    if "$botnick" in rply:
-                        rply = rply.replace("$botnick", bot.nick or '')
-
-                    # target
-                    if "$target" in rply:
-                        rply = rply.replace("$target", botcom.target or '')
-
-                    # smaller variations for the text
-                    if "$replyvariation" in rply:
-                        if botcom.dotcommand_dict[botcom.responsekey]["replyvariation"] != []:
-                            variation = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["replyvariation"], 'random')
-                            rply = rply.replace("$replyvariation", variation)
-                        else:
-                            rply = rply.replace("$replyvariation", '')
-
-                    # display special options for this command
-                    if "$specialoptions" in rply:
-                        nonstockoptions = []
-                        for command in botcom.dotcommand_dict.keys():
-                            if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath"]:
-                                nonstockoptions.append(command)
-                        nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
-                        rply = rply.replace("$specialoptions", nonstockoptions)
-
-                    # saying, or action?
-                    if rply.startswith("*a "):
-                        rplytype = 'action'
-                        rply = rply.replace("*a ", "")
-                    else:
-                        rplytype = 'say'
-
-                    osd(bot, botcom.channel_current, rplytype, rply)
+            osd(bot, botcom.channel_current, rplytype, rply)
 
 
 def bot_dictcom_simple(bot, botcom):
