@@ -861,33 +861,26 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
 
 # startup privacy sweep
 def bot_setup_privacy_sweep(bot):
-
     for channelcheck in bot.memory["botdict"]['channels_list'].keys():
         allowedusers = []
-
         if "all" not in bot.memory["botdict"]['channels_list'][channelcheck]['auth_block']:
-
             for authedgroup in bot.memory["botdict"]['channels_list'][channelcheck]['auth_block']:
-                currentauthgroupcheck = []
-
                 if authedgroup == 'OP':
-                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops']
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'])
                 elif authedgroup == 'HOP':
-                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops']
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops'])
                 elif authedgroup == 'VOICE':
-                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices']
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices'])
                 elif authedgroup == 'OWNER':
-                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanowners']
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanowners'])
                 elif authedgroup == 'ADMIN':
-                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanadmins']
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanadmins'])
                 elif authedgroup == 'admin':
-                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['bot_admins']
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_admins'])
                 elif authedgroup == 'owner':
-                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['bot_owners']
-                authedgroup.extend(currentauthgroupcheck)
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_owners'])
             kickinglist = []
             for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
-
                 if user not in authedgroup:
                     kickinglist.append(user)
             bot.msg("#spicebottest", str(kickinglist))
