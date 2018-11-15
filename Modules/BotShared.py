@@ -869,7 +869,8 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
 def bot_setup_privacy_sweep(bot):
     for channelcheck in bot.memory["botdict"]['channels_list'].keys():
         allowedusers = []
-        if "all" not in bot.memory["botdict"]['channels_list'][channelcheck]['auth_block']:
+        if "all" not in bot.memory["botdict"]['channels_list'][channelcheck]['auth_block'] and bot.privileges[channelcheck.lower()][bot.nick.lower()] >= module.OP:
+            bot.msg(channelcheck, "Running User Sweep for " + channelcheck + ". Unauthorized users will be kicked.")
             for authedgroup in bot.memory["botdict"]['channels_list'][channelcheck]['auth_block']:
                 if authedgroup == 'OP':
                     allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'])
@@ -889,8 +890,8 @@ def bot_setup_privacy_sweep(bot):
             for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
                 if user not in allowedusers:
                     kickinglist.append(user)
-            bot.msg(channelcheck, str(kickinglist))
-            bot.msg(channelcheck, str(bot.privileges[channelcheck]['deathbybandaid'] or 0))
+            for user in kickinglist:
+                bot.write(['KICK', channelcheck, user], "You are not authorized to join " + channelcheck + ".")
 
 
 # This is how the dict is saved to the database
