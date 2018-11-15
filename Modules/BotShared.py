@@ -1244,6 +1244,8 @@ def bot_watch_join_run(bot, trigger):
     # Privacy Sweep
     allowedusers = []
     if "all" not in bot.memory["botdict"]['channels_list'][botcom.channel_current]['auth_block'] and bot.privileges[botcom.channel_current.lower()][bot.nick.lower()] >= module.OP:
+        # give chanserv time to OP
+        time.sleep(5)
         for authedgroup in bot.memory["botdict"]['channels_list'][botcom.channel_current]['auth_block']:
             if authedgroup == 'OP':
                 allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanops'])
