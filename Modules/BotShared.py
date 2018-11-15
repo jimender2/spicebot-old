@@ -2723,32 +2723,32 @@ def bot_target_check(bot, botcom, target, target_self):
 
     # Optional don't allow self-target
     if not target_self:
-        if target == botcom.instigator:
+        if str(target) == botcom.instigator:
             reasons.append("self")
             targetgoodconsensus.append("This command does not allow you to target yourself.")
 
     # cannot target bots
-    if target.lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['bots_list']]:
+    if str(target).lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['bots_list']]:
         reasons.append("bot")
         targetgoodconsensus.append(nick_actual(bot, target) + " is a bot and cannot be targeted.")
 
     # Not a valid user
-    if target.lower() not in [u.lower() for u in bot.memory["botdict"]["users"].keys()]:
+    if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["users"].keys()]:
         reasons.append("unknown")
         targetgoodconsensus.append("I don't know who that is.")
 
     # User offline
-    if target.lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['all_current_users']]:
+    if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['all_current_users']]:
         reasons.append("offline")
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is offline right now!")
 
     # Private Message
-    if not botcom.channel_current.startswith('#') and target != botcom.instigator:
+    if not botcom.channel_current.startswith('#') and str(target) != botcom.instigator:
         reasons.append("privmsg")
         targetgoodconsensus.append("Leave " + nick_actual(bot, target) + " out of this private conversation!")
 
     # not in the same channel
-    if target.lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['all_current_users']] and target.lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']]:
+    if str(target).lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['all_current_users']] and str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']]:
         reasons.append("diffchannel")
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
 
