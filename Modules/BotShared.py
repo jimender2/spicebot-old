@@ -1075,7 +1075,7 @@ def bot_watch_nick_run(bot, trigger):
 
     #
     bot.msg(botcom.channel_current, str(trigger.args))
-    bot.msg(botcom.channel_current, str(trigger.group))
+    bot.msg(botcom.channel_current, str(trigger.group(0)))
 
 
 # how we handdle user QUIT
