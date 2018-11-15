@@ -546,6 +546,8 @@ def botdict_setup_users(bot):
                 if userprivdict[user] == eval(privtype):
                     if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
                         bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(user)
+                elif userprivdict[user] >= eval(privtype) and privtype == 'OWNER':
+                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(user)
                 else:
                     if user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
                         bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].remove(user)
