@@ -1,0 +1,22 @@
+# An example of a shout output (for streaming to Icecast):
+#
+audio_output {
+        type            "shout"
+#       encoding        "ogg"                   # optional
+        name            "MPD Stream"
+        host            "localhost"
+        port            "8000"
+        mount           "/mpd"
+        password        "1c3c4st"
+#       quality         "4.0"
+        bitrate         "128"
+        format          "44100:16:1"
+#       protocol        "icecast2"              # optional
+#       user            "source"                # optional
+        description     "Audio stream"     # optional
+#       url             "http://example.com"    # optional
+#       genre           "jazz"                  # optional
+#       public          "no"                    # optional
+#       timeout         "0"                     # optional
+#       mixer_type      "software"              # optional
+}
