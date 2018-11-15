@@ -124,6 +124,7 @@ bot_dict = {
                             # Bots
                             "bots_list": {},
                             "bot_admins": [],
+                            "bot_owners": [],
 
                             # temp user values
                             "uservals": {},
@@ -284,6 +285,9 @@ def botdict_open(bot):
 
     # dictionary commands
     dict_command_configs(bot)
+
+    # iniital privacy sweep
+    bot_setup_privacy_sweep(bot)
 
     # use this to prevent bot usage if the above isn't done loading
     bot.memory["botdict_loaded"] = True
@@ -466,6 +470,8 @@ def botdict_setup_bots(bot):
 
     if bot.memory["botdict"]["tempvals"]['bot_admins'] == []:
         bot.memory["botdict"]["tempvals"]['bot_admins'] = bot.config.core.admins
+    if bot.memory["botdict"]["tempvals"]['bot_owners'] == []:
+        bot.memory["botdict"]["tempvals"]['bot_owners'] = [bot.config.core.owner]
 
     if not bot.memory["botdict"]["tempvals"]['config_dir']:
         bot.memory["botdict"]["tempvals"]['config_dir'] = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
@@ -852,6 +858,40 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
                 dict_from_file[mustbe]["randnum"] = [0, dict_from_file[mustbe]["randnum"][0]]
 
     return dict_from_file
+
+
+# startup privacy sweep
+def bot_setup_privacy_sweep(bot):
+
+    for channelcheck in bot.memory["botdict"]["static"]['channels_list'][channel].keys():
+        allowedusers = []
+
+        if "all" not in bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block']:
+
+            for authedgroup in bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block']:
+                currentauthgroupcheck = []
+
+                if authedgroup == 'OP':
+                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops']
+                elif authedgroup == 'HOP':
+                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops']
+                elif authedgroup == 'VOICE':
+                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices']
+                elif authedgroup == 'OWNER':
+                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanowners']
+                elif authedgroup == 'ADMIN':
+                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanadmins']
+                elif authedgroup == 'admin':
+                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['bot_admins']
+                elif authedgroup == 'owner':
+                    currentauthgroupcheck = bot.memory["botdict"]["tempvals"]['bot_owners']
+                authedgroup.extend(currentauthgroupcheck)
+            kickinglist = []
+            for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
+
+                if user not in authedgroup:
+                    kickinglist.append(user)
+            bot.msg("#spicebottest", str(kickinglist))
 
 
 # This is how the dict is saved to the database
