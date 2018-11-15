@@ -1457,6 +1457,18 @@ def bot_nickcom_function_auth(bot, botcom):
     if targetchannels == []:
         return osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
 
+    directionchange = None
+    for possdirection in botcom.triggerargsarray:
+        if possdirection in ['add', 'del', 'view']:
+            directionchange = possdirection
+    if not directionchange:
+        return osd(bot, botcom.instigator, 'notice', "You must specify a valid add/del.")
+    elif directionchange == 'view':
+        osdmessage = []
+        for channelcheck in targetchannels:
+            osdmessage.append(str(channelcheck) + " permitted users list is currently set to " + str(spicemanip(bot, bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'], 'andlist')))
+        return osd(bot, botcom.channel_current, 'say', osdmessage)
+
     # usergroup target (case sensative)
     targetgroups = []
     for targetgroup in botcom.triggerargsarray:
@@ -1464,13 +1476,6 @@ def bot_nickcom_function_auth(bot, botcom):
             targetgroups.append(targetgroup)
     if targetgroups == []:
         return osd(bot, botcom.instigator, 'notice', "You must specify a valid targetgroup.")
-
-    directionchange = None
-    for possdirection in botcom.triggerargsarray:
-        if possdirection in ['add', 'del']:
-            directionchange = possdirection
-    if not directionchange:
-        return osd(bot, botcom.instigator, 'notice', "You must specify a valid add/del.")
 
     osdmessage = []
     for channelcheck in targetchannels:
@@ -1484,6 +1489,7 @@ def bot_nickcom_function_auth(bot, botcom):
         if bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'] == []:
             bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'].append("all")
         osdmessage.append(str(channelcheck) + " permitted users list is now set to " + str(spicemanip(bot, bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'], 'andlist')))
+    return osd(bot, botcom.channel_current, 'say', osdmessage)
 
 
 """
