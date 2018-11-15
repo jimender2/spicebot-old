@@ -547,7 +547,8 @@ def botdict_setup_users(bot):
                     if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
                         bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(user)
                 elif userprivdict[user] >= eval(privtype) and privtype == 'OWNER':
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(user)
+                    if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(user)
                 else:
                     if user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
                         bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].remove(user)
@@ -1170,6 +1171,9 @@ def bot_watch_nick_run(bot, trigger):
             if userprivdict[botcom.target] == eval(privtype):
                 if botcom.target not in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
                     bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring].append(botcom.target)
+            elif userprivdict[botcom.target] >= eval(privtype) and privtype == 'OWNER':
+                if botcom.target not in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(botcom.target)
             else:
                 if botcom.target in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
                     bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring].remove(botcom.target)
@@ -1257,6 +1261,9 @@ def bot_watch_join_run(bot, trigger):
         if userprivdict[botcom.instigator] == eval(privtype):
             if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
                 bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].append(botcom.instigator)
+        elif userprivdict[botcom.instigator] >= eval(privtype) and privtype == 'OWNER':
+            if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
+                bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(botcom.instigator)
         else:
             if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
                 bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(botcom.instigator)
@@ -1312,7 +1319,7 @@ def bot_watch_mode_run(bot, trigger):
                         bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(target)
                 else:
                     if target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
-                        bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].append(target)
+                        bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(target)
 
 
 # the query command watches everytime a ? is use
