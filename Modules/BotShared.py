@@ -1510,6 +1510,7 @@ Authorization in channels
 
 def bot_nickcom_function_sweep(bot, botcom):
     bot_setup_privacy_sweep(bot)
+    osd(bot, botcom.channel_current, 'say', "Unauthorized users (if any) have been removed.")
 
 
 def bot_nickcom_function_auth(bot, botcom):
