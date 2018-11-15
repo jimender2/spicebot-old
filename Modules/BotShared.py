@@ -773,20 +773,6 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             else:
                 dict_from_file[mustbe]["responses"] = [dict_from_file[mustbe]["responses"]]
 
-        # each usecase needs a prefix reply
-        if "prefixresponses" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["prefixresponses"] = False
-        if dict_from_file[mustbe]["prefixresponses"]:
-            if not isinstance(dict_from_file[mustbe]["prefixresponses"], list):
-                dict_from_file[mustbe]["prefixresponses"] = [dict_from_file[mustbe]["prefixresponses"]]
-
-        # each usecase needs a suffix reply
-        if "suffixresponses" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["suffixresponses"] = False
-        if dict_from_file[mustbe]["suffixresponses"]:
-            if not isinstance(dict_from_file[mustbe]["suffixresponses"], list):
-                dict_from_file[mustbe]["suffixresponses"] = [dict_from_file[mustbe]["suffixresponses"]]
-
         # each usecase needs a prefixtext
         if "prefixtext" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["prefixtext"] = False
@@ -2074,7 +2060,7 @@ def bot_dictcom_process(bot, botcom):
 
 def bot_dictcom_reply_shared(bot, botcom):
 
-    for responses in ["prefixresponses", "responses", "suffixresponses"]:
+    for responses in ["responses"]:
 
         if botcom.dotcommand_dict[botcom.responsekey][responses]:
 
