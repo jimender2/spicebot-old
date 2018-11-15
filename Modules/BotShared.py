@@ -1469,10 +1469,10 @@ def bot_nickcom_function_auth(bot, botcom):
     for channelcheck in targetchannels:
         for groups in targetgroups:
             if directionchange == 'add':
-                if groups not in bot.memory["botdict"]["static"]['channels_list'][channelcheck][auth_block]:
+                if groups not in bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block']:
                     bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'].append(groups)
             elif directionchange == 'add':
-                if groups in bot.memory["botdict"]["static"]['channels_list'][channelcheck][auth_block]:
+                if groups in bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block']:
                     bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'].remove(groups)
         if bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'] == []:
             bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'].append("all")
