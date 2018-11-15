@@ -457,7 +457,7 @@ def botdict_setup_channels(bot):
             if channel not in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
                 bot.memory["botdict"]["tempvals"]['channels_list'][channel] = dict()
             if channel not in bot.memory["botdict"]['channels_list'].keys():
-                bot.memory["botdict"]["static"]['channels_list'][channel] = dict()
+                bot.memory["botdict"]['channels_list'][channel] = dict()
             if "auth_block" not in bot.memory["botdict"]['channels_list'][channel].keys():
                 bot.memory["botdict"]['channels_list'][channel]["auth_block"] = []
             if bot.memory["botdict"]['channels_list'][channel]["auth_block"] == []:
