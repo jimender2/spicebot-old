@@ -224,6 +224,9 @@ valid_botnick_commands = {
                             "auth": {
                                         'privs': ['admin', 'OP'],
                                         },
+                            "sweep": {
+                                        'privs': ['admin', 'OP'],
+                                        },
                             }
 
 mode_dict_alias = {
@@ -883,7 +886,7 @@ def bot_setup_privacy_sweep(bot):
             for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
                 if user not in authedgroup:
                     kickinglist.append(user)
-            bot.msg("#spicebottest", str(kickinglist))
+            bot.msg(channelcheck, str(kickinglist))
 
 
 # This is how the dict is saved to the database
@@ -1470,6 +1473,10 @@ def bot_saved_jobs_run(bot):
 """
 Authorization in channels
 """
+
+
+def bot_nickcom_function_sweep(bot, botcom):
+    bot_setup_privacy_sweep(bot)
 
 
 def bot_nickcom_function_auth(bot, botcom):
