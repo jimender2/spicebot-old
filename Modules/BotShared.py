@@ -1523,7 +1523,7 @@ def bot_nickcom_function_auth(bot, botcom):
             if directionchange == 'add':
                 if groups not in bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block']:
                     bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'].append(groups)
-            elif directionchange == 'add':
+            elif directionchange == 'del':
                 if groups in bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block']:
                     bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'].remove(groups)
         if bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'] == []:
