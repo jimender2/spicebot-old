@@ -2723,7 +2723,7 @@ def bot_target_check(bot, botcom, target, target_self):
 
     # Optional don't allow self-target
     if not target_self:
-        if str(target) == botcom.instigator:
+        if str(target).lower() == (botcom.instigator).lower():
             reasons.append("self")
             targetgoodconsensus.append("This command does not allow you to target yourself.")
 
@@ -2743,12 +2743,12 @@ def bot_target_check(bot, botcom, target, target_self):
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is offline right now!")
 
     # Private Message
-    if not botcom.channel_current.startswith('#') and str(target) != botcom.instigator:
+    if not str(botcom.channel_current).startswith('#') and str(target) != str(botcom.instigator):
         reasons.append("privmsg")
         targetgoodconsensus.append("Leave " + nick_actual(bot, target) + " out of this private conversation!")
 
     # not in the same channel
-    if str(target).lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['all_current_users']] and str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']]:
+    if str(target).lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['all_current_users']] and str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][str(botcom.channel_current)]['current_users']]:
         reasons.append("diffchannel")
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
 
