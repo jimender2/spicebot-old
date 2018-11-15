@@ -1070,14 +1070,33 @@ def bot_watch_nick_run(bot, trigger):
     # channel
     botcom.channel_current = trigger.sender
 
-    # target user
-    # botcom.target = trigger.args[1]
+    botcom.target = trigger.args[0]
 
-    #
-    bot.msg("#spicebottest", str(trigger.nick))
-    bot.msg(botcom.channel_current, str(trigger.nick))
-    bot.msg(botcom.channel_current, str(trigger.args))
-    bot.msg(botcom.channel_current, str(trigger.group(0)))
+    # database entry for user
+    if botcom.instigator not in bot.memory["botdict"]["users"].keys():
+        bot.memory["botdict"]["users"][botcom.instigator] = dict()
+    if botcom.target not in bot.memory["botdict"]["users"].keys():
+        bot.memory["botdict"]["users"][botcom.target] = dict()
+
+    # channel list
+    for channel in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+        if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users']:
+            bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users'].remove(botcom.instigator)
+            if botcom.target not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+                bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users'].append(botcom.target)
+
+    # offline
+    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
+            bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
+    if botcom.target in bot.memory["botdict"]["tempvals"]['offline_users']:
+        bot.memory["botdict"]["tempvals"]['offline_users'].remove(botcom.target)
+
+    # all current users
+    if botcom.instigator in bot.memory["botdict"]["tempvals"]['all_current_users']:
+        bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
+    if botcom.target not in bot.memory["botdict"]["tempvals"]['all_current_users']:
+        bot.memory["botdict"]["tempvals"]['all_current_users'].append(botcom.target)
 
 
 # how we handdle user QUIT
@@ -1100,7 +1119,7 @@ def bot_watch_quit_run(bot, trigger):
     # channel list
     for channel in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
         if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users']:
-            bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].remove(botcom.instigator)
+            bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users'].remove(botcom.instigator)
 
     if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
