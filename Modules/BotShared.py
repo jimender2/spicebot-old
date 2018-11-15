@@ -150,13 +150,12 @@ bot_dict = {
                                                     },
                                     },
 
-                            # Channels
-                            "channels_list": {},
-
                             },
 
                 # Users lists
                 "users": {},
+                # Channels
+                "channels_list": {},
 
                 }
 
@@ -457,12 +456,12 @@ def botdict_setup_channels(bot):
         for channel in bot.channels:
             if channel not in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
                 bot.memory["botdict"]["tempvals"]['channels_list'][channel] = dict()
-            if channel not in bot.memory["botdict"]["static"]['channels_list'].keys():
+            if channel not in bot.memory["botdict"]['channels_list'].keys():
                 bot.memory["botdict"]["static"]['channels_list'][channel] = dict()
-            if "auth_block" not in bot.memory["botdict"]["static"]['channels_list'][channel].keys():
-                bot.memory["botdict"]["static"]['channels_list'][channel]["auth_block"] = []
-            if bot.memory["botdict"]["static"]['channels_list'][channel]["auth_block"] == []:
-                bot.memory["botdict"]["static"]['channels_list'][channel]["auth_block"].append("all")
+            if "auth_block" not in bot.memory["botdict"]['channels_list'][channel].keys():
+                bot.memory["botdict"]['channels_list'][channel]["auth_block"] = []
+            if bot.memory["botdict"]['channels_list'][channel]["auth_block"] == []:
+                bot.memory["botdict"]['channels_list'][channel]["auth_block"].append("all")
 
 
 # other bot configs will be detected in this directory
@@ -863,12 +862,12 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
 # startup privacy sweep
 def bot_setup_privacy_sweep(bot):
 
-    for channelcheck in bot.memory["botdict"]["static"]['channels_list'].keys():
+    for channelcheck in bot.memory["botdict"]['channels_list'].keys():
         allowedusers = []
 
-        if "all" not in bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block']:
+        if "all" not in bot.memory["botdict"]['channels_list'][channelcheck]['auth_block']:
 
-            for authedgroup in bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block']:
+            for authedgroup in bot.memory["botdict"]['channels_list'][channelcheck]['auth_block']:
                 currentauthgroupcheck = []
 
                 if authedgroup == 'OP':
@@ -1506,7 +1505,7 @@ def bot_nickcom_function_auth(bot, botcom):
     elif directionchange == 'view':
         osdmessage = []
         for channelcheck in targetchannels:
-            osdmessage.append(str(channelcheck) + " permitted users list is currently set to " + str(spicemanip(bot, bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'], 'andlist')))
+            osdmessage.append(str(channelcheck) + " permitted users list is currently set to " + str(spicemanip(bot, bot.memory["botdict"]['channels_list'][channelcheck]['auth_block'], 'andlist')))
         return osd(bot, botcom.channel_current, 'say', osdmessage)
 
     # usergroup target (case sensative)
@@ -1521,14 +1520,14 @@ def bot_nickcom_function_auth(bot, botcom):
     for channelcheck in targetchannels:
         for groups in targetgroups:
             if directionchange == 'add':
-                if groups not in bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block']:
-                    bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'].append(groups)
+                if groups not in bot.memory["botdict"]['channels_list'][channelcheck]['auth_block']:
+                    bot.memory["botdict"]['channels_list'][channelcheck]['auth_block'].append(groups)
             elif directionchange == 'del':
-                if groups in bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block']:
-                    bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'].remove(groups)
-        if bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'] == []:
-            bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'].append("all")
-        osdmessage.append(str(channelcheck) + " permitted users list is now set to " + str(spicemanip(bot, bot.memory["botdict"]["static"]['channels_list'][channelcheck]['auth_block'], 'andlist')))
+                if groups in bot.memory["botdict"]['channels_list'][channelcheck]['auth_block']:
+                    bot.memory["botdict"]['channels_list'][channelcheck]['auth_block'].remove(groups)
+        if bot.memory["botdict"]['channels_list'][channelcheck]['auth_block'] == []:
+            bot.memory["botdict"]['channels_list'][channelcheck]['auth_block'].append("all")
+        osdmessage.append(str(channelcheck) + " permitted users list is now set to " + str(spicemanip(bot, bot.memory["botdict"]['channels_list'][channelcheck]['auth_block'], 'andlist')))
     return osd(bot, botcom.channel_current, 'say', osdmessage)
 
 
