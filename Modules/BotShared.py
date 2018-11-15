@@ -1531,8 +1531,7 @@ Authorization in channels
 
 
 def bot_nickcom_function_sweep(bot, botcom):
-    if bot.privileges[channelcheck.lower()][bot.nick.lower()] >= module.OP:
-        bot_setup_privacy_sweep(bot)
+    bot_setup_privacy_sweep(bot)
 
 
 def bot_nickcom_function_auth(bot, botcom):
@@ -1586,8 +1585,7 @@ def bot_nickcom_function_auth(bot, botcom):
         osdmessage.append(str(channelcheck) + " permitted users list is now set to " + str(spicemanip(bot, bot.memory["botdict"]['channels_list'][channelcheck]['auth_block'], 'andlist')))
     return osd(bot, botcom.channel_current, 'say', osdmessage)
 
-    if bot.privileges[channelcheck.lower()][bot.nick.lower()] >= module.OP:
-        bot_setup_privacy_sweep(bot)
+    bot_setup_privacy_sweep(bot)
 
 
 """
