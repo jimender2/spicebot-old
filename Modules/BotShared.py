@@ -223,6 +223,8 @@ mode_dict_alias = {
                     "o": "OP",
                     "v": "VOICE",
                     "h": "HALFOP",
+                    "a": "ADMIN",
+                    "Q": "OWNER",
                     }
 
 
@@ -501,6 +503,12 @@ def botdict_setup_users(bot):
         if 'chanvoices' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
             bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices'] = []
 
+        if 'chanowners' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
+            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanowners'] = []
+
+        if 'chanadmins' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
+            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanadmins'] = []
+
         if 'current_users' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
             bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] = []
 
@@ -512,7 +520,7 @@ def botdict_setup_users(bot):
 
         for user in userprivdict.keys():
 
-            for privtype in ['VOICE', 'HALFOP', 'OP']:
+            for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
                 privstring = str("chan" + privtype.lower() + "s")
                 if userprivdict[user] == eval(privtype):
                     if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
@@ -945,6 +953,24 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
+        if 'OWNER' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+            if botcom.channel_current.startswith('#'):
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanowners']:
+                    commandrunconsensus.append('False')
+                else:
+                    commandrunconsensus.append('True')
+            else:
+                commandrunconsensus.append('False')
+
+        if 'ADMIN' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+            if botcom.channel_current.startswith('#'):
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanadmins']:
+                    commandrunconsensus.append('False')
+                else:
+                    commandrunconsensus.append('True')
+            else:
+                commandrunconsensus.append('False')
+
         if valid_botnick_commands[botcom.command_main.lower()]['privs'] == []:
             commandrunconsensus.append('True')
 
@@ -984,7 +1010,7 @@ def bot_watch_part_run(bot, trigger):
         bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].remove(botcom.instigator)
 
     # status
-    for status in ['chanops', 'chanhalfops', 'chanvoices', 'current_users']:
+    for status in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
         if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][status]:
             bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][status].remove(botcom.instigator)
 
@@ -1034,7 +1060,7 @@ def bot_watch_kick_run(bot, trigger):
         bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].remove(botcom.target)
 
     # status
-    for status in ['chanops', 'chanhalfops', 'chanvoices', 'current_users']:
+    for status in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
         if botcom.target in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][status]:
             bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][status].remove(botcom.target)
 
@@ -1088,12 +1114,12 @@ def bot_watch_nick_run(bot, trigger):
                 bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users'].append(botcom.target)
 
         # status
-        for status in ['chanops', 'chanhalfops', 'chanvoices', 'current_users']:
+        for status in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
             if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel][status]:
                 bot.memory["botdict"]["tempvals"]['channels_list'][channel][status].remove(botcom.instigator)
         userprivdict = {}
         userprivdict[botcom.target] = bot.privileges[channel][botcom.target] or 0
-        for privtype in ['VOICE', 'HALFOP', 'OP']:
+        for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
             privstring = str("chan" + privtype.lower() + "s")
             if userprivdict[botcom.target] == eval(privtype):
                 if botcom.target not in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
@@ -1139,7 +1165,7 @@ def bot_watch_quit_run(bot, trigger):
             bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users'].remove(botcom.instigator)
 
         # status
-        for status in ['chanops', 'chanhalfops', 'chanvoices', 'current_users']:
+        for status in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
             if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel][status]:
                 bot.memory["botdict"]["tempvals"]['channels_list'][channel][status].remove(botcom.instigator)
 
@@ -1180,7 +1206,7 @@ def bot_watch_join_run(bot, trigger):
 
     userprivdict = {}
     userprivdict[botcom.instigator] = bot.privileges[botcom.channel_current][botcom.instigator] or 0
-    for privtype in ['VOICE', 'HALFOP', 'OP']:
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         if userprivdict[botcom.instigator] == eval(privtype):
             if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
@@ -1225,7 +1251,7 @@ def bot_watch_mode_run(bot, trigger):
         userprivdict = {}
         userprivdict[target] = eval(mode_dict_alias[modeused[1:]])
 
-        for privtype in ['VOICE', 'HALFOP', 'OP']:
+        for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
             privstring = str("chan" + privtype.lower() + "s")
             if modetype == 'add':
                 if userprivdict[target] == eval(privtype):
@@ -1780,7 +1806,7 @@ Channel
 def bot_nickcom_function_channel(bot, botcom):
 
     # SubCommand used
-    valid_subcommands = ['list', 'op', 'hop', 'voice', 'users']
+    valid_subcommands = ['list', 'op', 'hop', 'voice', 'owner', 'admin', 'users']
     subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x.lower() in valid_subcommands], 1) or 'list'
     if subcommand in botcom.triggerargsarray:
         botcom.triggerargsarray.remove(subcommand)
@@ -1840,6 +1866,28 @@ def bot_nickcom_function_channel(bot, botcom):
             else:
                 voicelist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanvoices'], 'andlist')
                 dispmsg.append("Channel VOICE for " + str(channeltarget) + " are: " + voicelist)
+        osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        return
+
+    # owner List
+    if subcommand.lower() == 'owner':
+        for channeltarget in targetchannels:
+            if bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanowners'] == []:
+                dispmsg.append("There are no Channel OWNER for " + str(channeltarget))
+            else:
+                ownerlist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanowners'], 'andlist')
+                dispmsg.append("Channel OWNER for " + str(channeltarget) + " are: " + ownerlist)
+        osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        return
+
+    # admin List
+    if subcommand.lower() == 'admin':
+        for channeltarget in targetchannels:
+            if bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanadmins'] == []:
+                dispmsg.append("There are no Channel ADMIN for " + str(channeltarget))
+            else:
+                adminlist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][channeltarget]['chanadmins'], 'andlist')
+                dispmsg.append("Channel ADMIN for " + str(channeltarget) + " are: " + adminlist)
         osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
         return
 
