@@ -882,10 +882,10 @@ def bot_setup_privacy_sweep(bot):
                     allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_admins'])
                 elif authedgroup == 'owner':
                     allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_owners'])
-            bot.msg(channelcheck, str(allowedusers))
+            # bot.msg(channelcheck, str(allowedusers))
             kickinglist = []
             for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
-                if user not in authedgroup:
+                if user not in allowedusers:
                     kickinglist.append(user)
             bot.msg(channelcheck, str(kickinglist))
 
