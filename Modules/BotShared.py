@@ -882,12 +882,12 @@ def bot_setup_privacy_sweep(bot):
                     allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_admins'])
                 elif authedgroup == 'owner':
                     allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_owners'])
-            # bot.msg(channelcheck, str(allowedusers))
             kickinglist = []
             for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
                 if user not in allowedusers:
                     kickinglist.append(user)
             bot.msg(channelcheck, str(kickinglist))
+            bot.msg(channelcheck, str(bot.privileges[channelcheck]['deathbybandaid'] or 0))
 
 
 # This is how the dict is saved to the database
