@@ -924,6 +924,9 @@ def bot_nickcom_run(bot, trigger):
     if invalidcomslist != []:
         osd(bot, botcom.instigator, 'notice', "I was unable to process the following Bot Nick commands due to privilege issues: " + spicemanip(bot, invalidcomslist, 'andlist'))
 
+    # save dictionary now
+    botdict_save(bot)
+
 
 # most of these nick commands require privilege to run
 def bot_nickcom_run_check(bot, botcom):
@@ -1378,7 +1381,10 @@ def bot_watch_dot_run(bot, trigger):
     # command issued, check if valid
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
     if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-        return bot_dictcom_handle(bot, botcom)
+        bot_dictcom_handle(bot, botcom)
+
+    # save dictionary now
+    botdict_save(bot)
 
 
 """
