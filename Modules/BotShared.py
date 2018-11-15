@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 from sopel import module, tools
 import sopel.module
-from sopel.module import commands, nickname_commands, event, rule, OP, ADMIN, VOICE, HALFOP, thread, priority, example
+from sopel.module import commands, nickname_commands, event, rule, OP, ADMIN, VOICE, HALFOP, OWNER, thread, priority, example
 from sopel.tools import Identifier
 from sopel.tools.time import get_timezone, format_time
 
@@ -506,22 +506,20 @@ def botdict_setup_users(bot):
 
         userprivdict = {}
         for user in bot.privileges[channelcheck].keys():
-            if user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-                if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(user)
-                userprivdict[user] = bot.privileges[channelcheck][user] or 0
+            if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] and user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+                bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(user)
+            userprivdict[user] = bot.privileges[channelcheck][user] or 0
 
-        for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
-            if user in userprivdict.keys():
+        for user in userprivdict.keys():
 
-                for privtype in ['VOICE', 'HALFOP', 'OP']:
-                    privstring = str("chan" + privtype.lower() + "s")
-                    if userprivdict[user] == eval(privtype):
-                        if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
-                            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(user)
-                    else:
-                        if user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
-                            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].remove(user)
+            for privtype in ['VOICE', 'HALFOP', 'OP']:
+                privstring = str("chan" + privtype.lower() + "s")
+                if userprivdict[user] == eval(privtype):
+                    if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(user)
+                else:
+                    if user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring]:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].remove(user)
 
         for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
             if user not in bot.memory["botdict"]["users"].keys():
@@ -956,6 +954,14 @@ def bot_nickcom_run_check(bot, botcom):
     return commandrun
 
 
+def dumm():
+
+    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'] = []
+    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops'] = []
+    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices'] = []
+    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] = []
+
+
 # how we handdle user PART
 def bot_watch_part_run(bot, trigger):
 
@@ -964,10 +970,10 @@ def bot_watch_part_run(bot, trigger):
     botcom.default = 'botcom'
 
     # instigator
-    botcom.instigator = trigger.nick
+    botcom.instigator = str(trigger.nick)
 
     # channel
-    botcom.channel_current = trigger.sender
+    botcom.channel_current = str(trigger.sender)
 
     # database entry for user
     if botcom.instigator not in bot.memory["botdict"]["users"].keys():
@@ -976,6 +982,11 @@ def bot_watch_part_run(bot, trigger):
     # channel list
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
         bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].remove(botcom.instigator)
+
+    # status
+    for status in ['chanops', 'chanhalfops', 'chanvoices', 'current_users']:
+        if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][status]:
+            bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][status].remove(botcom.instigator)
 
     online = False
     onlineconsensus = []
@@ -1006,13 +1017,13 @@ def bot_watch_kick_run(bot, trigger):
     botcom.default = 'botcom'
 
     # instigator
-    botcom.instigator = trigger.nick
+    botcom.instigator = str(trigger.nick)
 
     # channel
-    botcom.channel_current = trigger.sender
+    botcom.channel_current = str(trigger.sender)
 
     # target user
-    botcom.target = trigger.args[1]
+    botcom.target = str(trigger.args[1])
 
     # database entry for user
     if botcom.target not in bot.memory["botdict"]["users"].keys():
@@ -1021,6 +1032,11 @@ def bot_watch_kick_run(bot, trigger):
     # channel list
     if botcom.target in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
         bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'].remove(botcom.target)
+
+    # status
+    for status in ['chanops', 'chanhalfops', 'chanvoices', 'current_users']:
+        if botcom.target in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][status]:
+            bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][status].remove(botcom.target)
 
     online = False
     onlineconsensus = []
@@ -1071,6 +1087,21 @@ def bot_watch_nick_run(bot, trigger):
             if botcom.target not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
                 bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users'].append(botcom.target)
 
+        # status
+        for status in ['chanops', 'chanhalfops', 'chanvoices', 'current_users']:
+            if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel][status]:
+                bot.memory["botdict"]["tempvals"]['channels_list'][channel][status].remove(botcom.instigator)
+        userprivdict = {}
+        userprivdict[botcom.target] = bot.privileges[channel][botcom.target] or 0
+        for privtype in ['VOICE', 'HALFOP', 'OP']:
+            privstring = str("chan" + privtype.lower() + "s")
+            if userprivdict[botcom.target] == eval(privtype):
+                if botcom.target not in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring].append(botcom.target)
+            else:
+                if botcom.target in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
+                    bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring].remove(botcom.target)
+
     # offline
     if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
@@ -1107,6 +1138,11 @@ def bot_watch_quit_run(bot, trigger):
         if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users']:
             bot.memory["botdict"]["tempvals"]['channels_list'][channel]['current_users'].remove(botcom.instigator)
 
+        # status
+        for status in ['chanops', 'chanhalfops', 'chanvoices', 'current_users']:
+            if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel][status]:
+                bot.memory["botdict"]["tempvals"]['channels_list'][channel][status].remove(botcom.instigator)
+
     if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
             bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
@@ -1141,6 +1177,17 @@ def bot_watch_join_run(bot, trigger):
         # all current users and offline users
         if botcom.instigator not in bot.memory["botdict"]["tempvals"]['all_current_users']:
             bot.memory["botdict"]["tempvals"]['all_current_users'].append(botcom.instigator)
+
+    userprivdict = {}
+    userprivdict[botcom.instigator] = bot.privileges[botcom.channel_current][botcom.instigator] or 0
+    for privtype in ['VOICE', 'HALFOP', 'OP']:
+        privstring = str("chan" + privtype.lower() + "s")
+        if userprivdict[botcom.instigator] == eval(privtype):
+            if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
+                bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].append(botcom.instigator)
+        else:
+            if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
+                bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(botcom.instigator)
 
     # remove from offline
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['offline_users']:
@@ -1734,9 +1781,10 @@ def bot_nickcom_function_channel(bot, botcom):
 
     # SubCommand used
     valid_subcommands = ['list', 'op', 'hop', 'voice', 'users']
-    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'list'
+    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x.lower() in valid_subcommands], 1) or 'list'
     if subcommand in botcom.triggerargsarray:
         botcom.triggerargsarray.remove(subcommand)
+    subcommand = subcommand.lower()
 
     # list channels
     if subcommand == 'list':
