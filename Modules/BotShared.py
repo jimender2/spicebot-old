@@ -1344,6 +1344,28 @@ def bot_watch_mode_run(bot, trigger):
                     if target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
                         bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(target)
 
+        # Privacy Sweep
+        allowedusers = []
+        if "all" not in bot.memory["botdict"]['channels_list'][botcom.channel_current]['auth_block'] and bot.privileges[botcom.channel_current.lower()][bot.nick.lower()] >= module.OP:
+            for authedgroup in bot.memory["botdict"]['channels_list'][botcom.channel_current]['auth_block']:
+                if authedgroup == 'OP':
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanops'])
+                elif authedgroup == 'HOP':
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanhalfops'])
+                elif authedgroup == 'VOICE':
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanvoices'])
+                elif authedgroup == 'OWNER':
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanowners'])
+                elif authedgroup == 'ADMIN':
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanadmins'])
+                elif authedgroup == 'admin':
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_admins'])
+                elif authedgroup == 'owner':
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_owners'])
+            if target not in allowedusers:
+                bot.write(['KICK', botcom.channel_current, target], "You are not authorized to join " + botcom.channel_current + ".")
+                return
+
 
 # the query command watches everytime a ? is use
 def bot_dictquery_run(bot, trigger):
@@ -1509,8 +1531,8 @@ Authorization in channels
 
 
 def bot_nickcom_function_sweep(bot, botcom):
-    bot_setup_privacy_sweep(bot)
-    osd(bot, botcom.channel_current, 'say', "Unauthorized users (if any) have been removed.")
+    if bot.privileges[channelcheck.lower()][bot.nick.lower()] >= module.OP:
+        bot_setup_privacy_sweep(bot)
 
 
 def bot_nickcom_function_auth(bot, botcom):
@@ -1563,6 +1585,9 @@ def bot_nickcom_function_auth(bot, botcom):
             bot.memory["botdict"]['channels_list'][channelcheck]['auth_block'].append("all")
         osdmessage.append(str(channelcheck) + " permitted users list is now set to " + str(spicemanip(bot, bot.memory["botdict"]['channels_list'][channelcheck]['auth_block'], 'andlist')))
     return osd(bot, botcom.channel_current, 'say', osdmessage)
+
+    if bot.privileges[channelcheck.lower()][bot.nick.lower()] >= module.OP:
+        bot_setup_privacy_sweep(bot)
 
 
 """
