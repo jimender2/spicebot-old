@@ -30,13 +30,13 @@ bot.nick do this
 
 @rule('(.*)')
 @sopel.module.thread(True)
-def bot_dictcom_hub(bot, trigger):
+def bot_watch_dot_hub(bot, trigger):
     if not str(trigger).startswith(tuple(['.'])):
         return
 
     if "botdict_loaded" not in bot.memory:
-        bot_saved_jobs_process(bot, trigger, 'bot_dictcom')
+        bot_saved_jobs_process(bot, trigger, 'bot_watch_dot')
         return
 
-    bot_dictcom_run(bot, trigger)
+    bot_watch_dot_run(bot, trigger)
     botdict_save(bot)

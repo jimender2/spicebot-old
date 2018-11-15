@@ -1486,7 +1486,7 @@ def bot_dictquery_run(bot, trigger):
             return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
 
 
-def bot_dictcom_run(bot, trigger):
+def bot_watch_dot_run(bot, trigger):
 
     if not str(trigger).startswith(tuple(['.'])):
         return
@@ -1510,8 +1510,11 @@ def bot_dictcom_run(bot, trigger):
 
     # command issued, check if valid
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-    if botcom.dotcommand not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-        return
+    if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+        return bot_dictcom_handle(bot, botcom)
+
+
+def bot_dictcom_handle(bot, botcom):
 
     # command aliases
     if "aliasfor" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
