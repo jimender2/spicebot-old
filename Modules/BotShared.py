@@ -1343,7 +1343,7 @@ def bot_watch_mode_run(bot, trigger):
                     if target in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
                         bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(target)
                 else:
-                    if target not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
+                    if target in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
                         bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(target)
 
         # Privacy Sweep
