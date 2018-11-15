@@ -2748,9 +2748,10 @@ def bot_target_check(bot, botcom, target, target_self):
         targetgoodconsensus.append("Leave " + nick_actual(bot, target) + " out of this private conversation!")
 
     # not in the same channel
-    if str(target).lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['all_current_users']] and str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][str(botcom.channel_current)]['current_users']]:
-        reasons.append("diffchannel")
-        targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
+    if str(target).lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['all_current_users']] and not str(botcom.channel_current).startswith('#'):
+        if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][str(botcom.channel_current)]['current_users']]:
+            reasons.append("diffchannel")
+            targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
 
     if targetgoodconsensus != []:
         targetgood = {"targetgood": False, "error": targetgoodconsensus[0], "reason": reasons[0]}
