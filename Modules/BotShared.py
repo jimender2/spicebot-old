@@ -255,7 +255,7 @@ def botdict_open(bot):
     botdict_setup_external_config(bot)
 
     # Gif API
-    bot_gif_api_access(bot)
+    botdict_setup_gif_api_access(bot)
 
     # Server connected to, default assumes ZNC bouncer configuration
     # this can be tweaked below
