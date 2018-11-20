@@ -2392,17 +2392,19 @@ def bot_dictcom_reply_shared(bot, botcom):
                 rply = rply.replace("$botnick", bot.nick or '')
 
             # target
-            if "$targets" in rply:
+            if "$target" in rply:
                 targetnames = botcom.target or ''
-                if targetnames.lower() == "your":
-                    targetnames = targetnames
-                elif targetnames.endswith("s"):
-                    targetnames = targetnames + "'s"
+                if "$targets" in rply:
+                    if targetnames.lower() == "your":
+                        targetnames = targetnames
+                    elif targetnames.endswith("s"):
+                        targetnames = targetnames + "'s"
+                    else:
+                        targetnames = targetnames + "s"
+                    rply = rply.replace("$targets", targetnames)
                 else:
-                    targetnames = targetnames + "s"
-                rply = rply.replace("$targets", targetnames)
-            elif "$target" in rply:
-                rply = rply.replace("$target", botcom.target or '')
+                    targetnames = targetnames
+                    rply = rply.replace("$target", targetnames)
 
             # smaller variations for the text
             if "$replyvariation" in rply:
