@@ -2396,12 +2396,12 @@ def bot_dictcom_reply_shared(bot, botcom):
                 targetnames = botcom.target or ''
                 if targetnames.lower() == "your":
                     targetnames = targetnames
-                elif not targetnames.endswith("s"):
-                    targetnames = targetnames + "s"
-                else:
+                elif targetnames.endswith("s"):
                     targetnames = targetnames + "'s"
+                else:
+                    targetnames = targetnames + "s"
                 rply = rply.replace("$targets", targetnames)
-            if "$target" in rply:
+            elif "$target" in rply:
                 rply = rply.replace("$target", botcom.target or '')
 
             # smaller variations for the text
