@@ -533,7 +533,7 @@ def botdict_setup_users(bot):
         if 'current_users' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
             bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] = []
 
-        userprivdict = {}
+        userprivdict = dict()
         for user in bot.privileges[channelcheck].keys():
             if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] and user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
                 bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(user)
@@ -1166,8 +1166,11 @@ def bot_watch_nick_run(bot, trigger):
             if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel][status]:
                 bot.memory["botdict"]["tempvals"]['channels_list'][channel][status].remove(botcom.instigator)
         if botcom.target in bot.privileges[channel].keys():
-            userprivdict = {}
-            userprivdict[botcom.target] = bot.privileges[channel][botcom.target] or 0
+            userprivdict = dict()
+            try:
+                userprivdict[botcom.target] = bot.privileges[channel][botcom.target] or 0
+            except KeyError:
+                userprivdict[botcom.target] = 0
             for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
                 privstring = str("chan" + privtype.lower() + "s")
                 if userprivdict[botcom.target] == eval(privtype):
@@ -1280,7 +1283,7 @@ def bot_watch_join_run(bot, trigger):
         if botcom.instigator not in bot.memory["botdict"]["tempvals"]['all_current_users']:
             bot.memory["botdict"]["tempvals"]['all_current_users'].append(botcom.instigator)
 
-    userprivdict = {}
+    userprivdict = dict()
     userprivdict[botcom.instigator] = bot.privileges[botcom.channel_current][botcom.instigator] or 0
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
@@ -1327,7 +1330,7 @@ def bot_watch_mode_run(bot, trigger):
 
     if modeused[1:] in mode_dict_alias.keys():
 
-        userprivdict = {}
+        userprivdict = dict()
         userprivdict[target] = eval(mode_dict_alias[modeused[1:]])
 
         for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
