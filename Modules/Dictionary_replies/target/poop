@@ -34,4 +34,18 @@
                                     "type": "simple",
                                     "responses": ["$instigator poops on everyone's desk, one at a time!"],
                                     },
+
+"random": {
+              "type": "target",
+              "selection_allowed": False,
+              "responses": [
+                            "$instigator drops their pants and squats on $target's desk, but all they manage to do is fart.",
+                            "$instigator overestimated their capabilities and poops themselves. $target is not impressed.",
+                            "$instigator gets halfway through pooping before realizing that this is their own desk, not $target's.",
+                            "$instigator trips over taking their pants off and shits everywhere BUT $target's desk.",
+                            "$instigator poops on $target's desk, maintaining eye contact the entire time!"
+                            ],
+              "react_self": ["$instigator shits their pants for a sweet bowel release."],
+              "target_backup": "random",
+              },
 }

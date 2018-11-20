@@ -1,9 +1,8 @@
 {
-"validcoms": ['dryhump', 'hump'],
 "?default": {
               "type": "target",
               "responses": [
-                            "$instigator runs over to $target and dry humps their leg.",
+                            "$instigator runs over to $target and gropes them.",
                             ],
               "target_backup": "random",
               },
