@@ -2,7 +2,7 @@
 "validcoms": ['ants', 'ant'],
 "?default": {
               "type": "fillintheblank",
-              "responses": ["The $blank is a lie!!"],
-              "blank_backup": 'cake',
+              "responses": ["Do you want $blank cause that's how you get $blank!"],
+              "blank_backup": 'ants',
               },
 }

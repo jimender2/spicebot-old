@@ -1,5 +1,5 @@
 {
-"validcoms": ['notsaying', 'aliens'],
+
 "?default": {
               "type": "fillintheblank",
               "responses": ["Really ?? We dont have a $blank yet??"],
