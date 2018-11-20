@@ -1,10 +1,11 @@
 {
 "?default": {
-              "type": "target",
+              "type": "targetplusreason",
               "responses": [
-                            "$target should buy a boat.",
+                            "$target should buy a $blank.",
                             ],
               "target_backup": "instigator",
+              "blank_backup": "boat",
               "target_self": True,
               },
 

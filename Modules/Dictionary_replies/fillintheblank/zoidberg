@@ -1,8 +1,0 @@
-{
-"?default": {
-              "type": "fillintheblank",
-              "responses": ["Your $blank is bad, and you should feel bad!"],
-              "blank_backup": "music",
-              },
-
-}

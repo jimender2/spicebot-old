@@ -2392,6 +2392,15 @@ def bot_dictcom_reply_shared(bot, botcom):
                 rply = rply.replace("$botnick", bot.nick or '')
 
             # target
+            if "$targets" in rply:
+                targetnames = botcom.target or ''
+                if targetnames.lower() == "your":
+                    targetnames = targetnames
+                elif not targetnames.endswith("s"):
+                    targetnames = botcom.target + "s"
+                else:
+                    targetnames = botcom.target + "'s"
+                rply = rply.replace("$targets", targetnames)
             if "$target" in rply:
                 rply = rply.replace("$target", botcom.target or '')
 

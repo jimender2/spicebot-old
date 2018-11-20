@@ -8,7 +8,7 @@ import os
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from BotShared import *
+from BotSharedold import *
 
 deities = ['God', 'Cthulhu', 'Landru', 'Odin', 'Satan', 'Developer', 'Frigg', 'Hades', 'Zeus', 'Lord deathbybandaid', 'Ra']
 

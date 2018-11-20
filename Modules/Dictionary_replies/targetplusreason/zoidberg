@@ -1,0 +1,9 @@
+{
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$targets $blank is bad, and you should feel bad!"],
+              "blank_backup": "music",
+              "target_backup": "Your",
+              },
+
+}

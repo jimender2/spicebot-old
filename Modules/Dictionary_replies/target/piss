@@ -1,0 +1,11 @@
+{
+"?default": {
+              "type": "target",
+              "responses": [
+                            "$instigator pisses off $targets",
+                            ],
+              "target_backup": "random",
+              "target_self": True,
+              },
+
+}
