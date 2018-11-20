@@ -1141,12 +1141,12 @@ def bot_watch_nick_run(bot, trigger):
     botcom.default = 'botcom'
 
     # instigator
-    botcom.instigator = trigger.nick
+    botcom.instigator = str(trigger.nick)
 
     # channel
-    botcom.channel_current = trigger.sender
+    botcom.channel_current = str(trigger.sender)
 
-    botcom.target = trigger.args[0]
+    botcom.target = str(trigger.args[0])
 
     # database entry for user
     if botcom.instigator not in bot.memory["botdict"]["users"].keys():
@@ -1165,19 +1165,20 @@ def bot_watch_nick_run(bot, trigger):
         for status in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
             if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel][status]:
                 bot.memory["botdict"]["tempvals"]['channels_list'][channel][status].remove(botcom.instigator)
-        userprivdict = {}
-        userprivdict[botcom.target] = bot.privileges[channel][botcom.target] or 0
-        for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
-            privstring = str("chan" + privtype.lower() + "s")
-            if userprivdict[botcom.target] == eval(privtype):
-                if botcom.target not in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring].append(botcom.target)
-            elif userprivdict[botcom.target] >= eval(privtype) and privtype == 'OWNER':
-                if botcom.target not in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(botcom.target)
-            else:
-                if botcom.target in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
-                    bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring].remove(botcom.target)
+        if botcom.target in bot.privileges[channel].keys():
+            userprivdict = {}
+            userprivdict[botcom.target] = bot.privileges[channel][botcom.target] or 0
+            for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+                privstring = str("chan" + privtype.lower() + "s")
+                if userprivdict[botcom.target] == eval(privtype):
+                    if botcom.target not in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring].append(botcom.target)
+                elif userprivdict[botcom.target] >= eval(privtype) and privtype == 'OWNER':
+                    if botcom.target not in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][privstring].append(botcom.target)
+                else:
+                    if botcom.target in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
+                        bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring].remove(botcom.target)
 
     # offline
     if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
@@ -1201,10 +1202,10 @@ def bot_watch_quit_run(bot, trigger):
     botcom.default = 'botcom'
 
     # instigator
-    botcom.instigator = trigger.nick
+    botcom.instigator = str(trigger.nick)
 
     # channel
-    botcom.channel_current = trigger.sender
+    botcom.channel_current = str(trigger.sender)
 
     # database entry for user
     if botcom.instigator not in bot.memory["botdict"]["users"].keys():
@@ -1236,10 +1237,10 @@ def bot_watch_join_run(bot, trigger):
     botcom.default = 'botcom'
 
     # instigator
-    botcom.instigator = trigger.nick
+    botcom.instigator = str(trigger.nick)
 
     # channel
-    botcom.channel_current = trigger.sender
+    botcom.channel_current = str(trigger.sender)
 
     # Privacy Sweep
     allowedusers = []
@@ -1308,16 +1309,16 @@ def bot_watch_mode_run(bot, trigger):
     botcom.default = 'botcom'
 
     # instigator
-    botcom.instigator = trigger.nick
+    botcom.instigator = str(trigger.nick)
 
     # channel
-    botcom.channel_current = trigger.sender
+    botcom.channel_current = str(trigger.sender)
 
     # target
-    target = trigger.args[-1]
+    target = str(trigger.args[-1])
 
     # Mode set
-    modeused = trigger.args[1]
+    modeused = str(trigger.args[1])
 
     if str(modeused).startswith("-"):
         modetype = 'del'
