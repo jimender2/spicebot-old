@@ -1,5 +1,5 @@
 {
-"validcoms": ['tr', 'thatssexist'],
+"validcoms": ['ts', 'thatssexist'],
 "?default": {
               "type": "fillintheblank",
               "responses": ["That's sexist against $blank! (you misogynistic prick!)"],
