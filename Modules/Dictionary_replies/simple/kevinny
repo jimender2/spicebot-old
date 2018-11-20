@@ -2,7 +2,10 @@
 "validcoms": ['kev', 'kevinny'],
 "?default": {
               "type": "simple",
-              "responses": ["CLICK ALL THE LINKS!!!"],
+              "responses": [
+                            "CLICK ALL THE LINKS!!!",
+                            "Watch my training video → https://www.youtube.com/watch?v=1LLTsSnGWMI",
+                            ],
               },
 
 }

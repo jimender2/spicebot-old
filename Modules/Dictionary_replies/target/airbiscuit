@@ -1,5 +1,5 @@
 {
-"validcoms": ['airbiscuit', 'float'],
+"validcoms": ['airbiscuit', 'float', 'fart', 'farts'],
 "?default": {
               "type": "target",
               "responses": ["$instigator floats an air biscuit in the general direction of $target."],

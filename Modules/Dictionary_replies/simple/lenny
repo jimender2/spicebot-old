@@ -1,8 +1,0 @@
-{
-
-"?default": {
-              "type": "simple",
-              "responses": ["Tell me about the bunnies, $instigator... BLAM!"],
-              },
-
-}

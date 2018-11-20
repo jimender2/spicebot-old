@@ -1,5 +1,5 @@
 {
-
+"validcoms": ['thc', 'doobie', 'pot'],
 "?default": {
               "type": "fillintheblank",
               "responses": ["Sorry dude, I'm way too fucking high right now for $blank!!"],
