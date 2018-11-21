@@ -3013,10 +3013,13 @@ def bot_target_check(bot, botcom, target, target_self):
 
     # Optional don't allow self-target
     if not target_self:
-        bot.msg("#spicebottest", str("self = true"))
+        bot.msg("#spicebottest", str("self = false"))
         if bot_check_inlist(bot, target, botcom.instigator):
+            bot.msg("#spicebottest", str("in self list"))
             reasons.append("self")
             targetgoodconsensus.append("This command does not allow you to target yourself.")
+    else:
+        bot.msg("#spicebottest", str("self = true"))
 
     # cannot target bots
     if bot_check_inlist(bot, target, bot.nick):
