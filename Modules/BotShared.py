@@ -2367,13 +2367,20 @@ def bot_dictcom_process(bot, botcom):
 
     if str(botcom.channel_current).startswith('#'):
         if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
-            osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command cannot be used in " + str(botcom.channel_current) + " for the following reason: " + str(bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]))
-            return
+            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command cannot be used in " + str(botcom.channel_current) + " for the following reason: " + str(bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]))
 
     # hardcoded_channel_block
+    if str(botcom.channel_current).startswith('#'):
+        if str(botcom.channel_current) in botcom.dotcommand_dict["hardcoded_channel_block"]:
+            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command cannot be used in " + str(botcom.channel_current) + " because it is hardcoded not to.")
+
+    # hardcoded_channel_block
+    if str(botcom.channel_current).startswith('#'):
+        if str(botcom.channel_current) in botcom.dotcommand_dict[botcom.responsekey]["hardcoded_channel_block"]:
+            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " command cannot be used in " + str(botcom.channel_current) + " because it is hardcoded not to.")
 
     botcom.success = True
-    if botcom.commandtype in ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "translate", "responses"]:
+    if botcom.commandtype in ['simple', 'fillintheblank', "target", 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "translate", "responses"]:
         return bot_dictcom_responses(bot, botcom)
     else:
         command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
