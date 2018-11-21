@@ -634,7 +634,7 @@ def dict_command_configs(bot):
 
                 # current file path
                 if "filepath" not in dict_from_file.keys():
-                    dict_from_file["filepath"] = str(coms_type_file_path + comconf)
+                    dict_from_file["filepath"] = os.path.join(coms_type_file_path, comconf)
 
                 # default command to filename
                 if "validcoms" not in dict_from_file.keys():
@@ -2247,7 +2247,7 @@ def bot_dictcom_process(bot, botcom):
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " command has " + str(len(botcom.dotcommand_dict[botcom.responsekey]["responses"])) + " entries.")
 
     elif botcom.specified == 'filepath':
-        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " file is located at " + str(len(botcom.dotcommand_dict["filepath"])))
+        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " file is located at " + str(botcom.dotcommand_dict["filepath"]))
 
     elif botcom.specified == 'author':
         return osd(bot, botcom.channel_current, 'say', "The author of the " + str(botcom.maincom) + " command is " + botcom.dotcommand_dict["author"] + ".")
