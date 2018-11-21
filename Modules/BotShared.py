@@ -2437,6 +2437,7 @@ def bot_dictcom_process(bot, botcom):
 def bot_dictcom_responses(bot, botcom):
 
     commandrunconsensus = []
+    reaction = False
 
     # A target is required
     if botcom.dotcommand_dict[botcom.responsekey]["target_required"]:
@@ -2457,7 +2458,6 @@ def bot_dictcom_responses(bot, botcom):
                     else:
                         botcom.target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
             else:
-                reaction = False
                 botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
                 for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
                     if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
@@ -2491,7 +2491,7 @@ def bot_dictcom_responses(bot, botcom):
 
     if commandrunconsensus != []:
         botcom.success = False
-        if botcom.dotcommand_dict[botcom.responsekey]["response_fail"]:
+        if botcom.dotcommand_dict[botcom.responsekey]["response_fail"] and not reaction:
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["response_fail"]
         else:
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = commandrunconsensus[0]
