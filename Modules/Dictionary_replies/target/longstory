@@ -3,7 +3,7 @@
 "?default": {
               "type": "target",
               "responses": ["This a long story, $target?"],
-              "target_fail": ["This a long story?"],
+              "response_fail": ["This a long story?"],
               },
 
 }

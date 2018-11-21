@@ -761,10 +761,6 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
                 dict_from_file[mustbe]["target_required"] = False
         if "target_backup" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_backup"] = False
-        if "target_fail" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["target_fail"] = ["This command requires a target."]
-        if not isinstance(dict_from_file[mustbe]["target_fail"], list):
-            dict_from_file[mustbe]["target_fail"] = [dict_from_file[mustbe]["target_fail"]]
         if "target_bypass" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["target_bypass"] = []
 
@@ -2458,13 +2454,12 @@ def bot_dictcom_responses(bot, botcom):
                     else:
                         botcom.target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
             else:
-                botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
                 for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
                     if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
                         reaction = True
                         commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["react_"+reason])
                 if not reaction:
-                    commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
+                    commandrunconsensus.append([targetchecking["error"]])
         else:
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
