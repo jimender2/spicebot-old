@@ -457,14 +457,14 @@ def botdict_setup_channels(bot):
     # All channels the bot is in
     if bot.memory["botdict"]["tempvals"]['channels_list'].keys() == []:
         for channel in bot.channels:
-            if channel not in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
-                bot.memory["botdict"]["tempvals"]['channels_list'][channel] = dict()
-            if channel not in bot.memory["botdict"]['channels_list'].keys():
-                bot.memory["botdict"]['channels_list'][channel] = dict()
+            if str(channel) not in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+                bot.memory["botdict"]["tempvals"]['channels_list'][str(channel)] = dict()
+            if str(channel) not in bot.memory["botdict"]['channels_list'].keys():
+                bot.memory["botdict"]['channels_list'][str(channel)] = dict()
             if "auth_block" not in bot.memory["botdict"]['channels_list'][channel].keys():
-                bot.memory["botdict"]['channels_list'][channel]["auth_block"] = []
-            if bot.memory["botdict"]['channels_list'][channel]["auth_block"] == []:
-                bot.memory["botdict"]['channels_list'][channel]["auth_block"].append("all")
+                bot.memory["botdict"]['channels_list'][str(channel)]["auth_block"] = []
+            if bot.memory["botdict"]['channels_list'][str(channel)]["auth_block"] == []:
+                bot.memory["botdict"]['channels_list'][str(channel)]["auth_block"].append("all")
 
 
 # other bot configs will be detected in this directory
@@ -536,11 +536,11 @@ def botdict_setup_users(bot):
         userprivdict = dict()
         for user in bot.privileges[channelcheck].keys():
             if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] and user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-                bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(user)
+                bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(str(user))
             try:
-                userprivdict[user] = bot.privileges[channelcheck][user] or 0
+                userprivdict[user] = bot.privileges[channelcheck][str(user)] or 0
             except KeyError:
-                userprivdict[user] = 0
+                userprivdict[str(user)] = 0
 
         for user in userprivdict.keys():
 
