@@ -3027,7 +3027,7 @@ def bot_target_check(bot, botcom, target, target_self):
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is offline right now!")
 
     # Private Message
-    if not str(botcom.channel_current).startswith('#') not bot_check_inlist(bot, target, botcom.instigator):
+    if not str(botcom.channel_current).startswith('#') and not bot_check_inlist(bot, target, botcom.instigator):
         reasons.append("privmsg")
         targetgoodconsensus.append("Leave " + nick_actual(bot, target) + " out of this private conversation!")
 
