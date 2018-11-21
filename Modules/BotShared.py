@@ -2978,6 +2978,23 @@ def nick_actual(bot, nick):
     return nick_actual
 
 
+def bot_check_inlist(bot, searchterm, searchlist):
+
+    # verify we are searching a list
+    if not isinstance(searchlist, list):
+        searchlist = [searchlist]
+    rebuildlist = []
+    for searchitem in searchlist:
+        rebuildlist.append(str(searchitem))
+
+    searchterm = str(searchterm)
+
+    if searchterm.lower() in [searching.lower() for searching in rebuildlist]:
+        return True
+    else:
+        return False
+
+
 def bot_target_check(bot, botcom, target, target_self):
     targetgood = {"targetgood": True, "error": "None", "reason": None}
 
@@ -2987,35 +3004,35 @@ def bot_target_check(bot, botcom, target, target_self):
 
     # Optional don't allow self-target
     if not target_self:
-        if str(target).lower() == (botcom.instigator).lower():
+        if bot_check_inlist(bot, target, botcom.instigator):
             reasons.append("self")
             targetgoodconsensus.append("This command does not allow you to target yourself.")
 
     # cannot target bots
-    if str(target).lower() == bot.nick.lower():
+    if bot_check_inlist(bot, target, bot.nick):
         reasons.append("bot")
         targetgoodconsensus.append("I am a bot and cannot be targeted.")
-    if str(target).lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['bots_list']]:
+    elif bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['bots_list']):
         reasons.append("bots")
         targetgoodconsensus.append(nick_actual(bot, target) + " is a bot and cannot be targeted.")
 
     # Not a valid user
-    if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["users"].keys()]:
+    if bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
         reasons.append("unknown")
         targetgoodconsensus.append("I don't know who that is.")
 
     # User offline
-    if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['all_current_users']]:
+    if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
         reasons.append("offline")
         targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is offline right now!")
 
     # Private Message
-    if not str(botcom.channel_current).startswith('#') and str(target) != str(botcom.instigator):
+    if not str(botcom.channel_current).startswith('#') not bot_check_inlist(bot, target, botcom.instigator):
         reasons.append("privmsg")
         targetgoodconsensus.append("Leave " + nick_actual(bot, target) + " out of this private conversation!")
 
     # not in the same channel
-    if str(target).lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['all_current_users']] and str(botcom.channel_current).startswith('#'):
+    if str(botcom.channel_current).startswith('#') and bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
         if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][str(botcom.channel_current)]['current_users']]:
             reasons.append("diffchannel")
             targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
