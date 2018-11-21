@@ -2317,8 +2317,9 @@ def bot_dictcom_process(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
 
         trailingmessage = spicemanip(bot, botcom.triggerargsarray, 0) or "No reason given."
-        bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom] = {"reason": trailingmessage}
-        return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is now " + botcom.specified + "d in " + str(botcom.channel_current) + " for the following reason: " + trailingmessage)
+        timestamp = datetime.datetime.utcnow()
+        bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom] = {"reason": trailingmessage, "timestamp": timestamp}
+        return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is now " + botcom.specified + "d in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + trailingmessage)
 
     elif botcom.specified == 'special':
         nonstockoptions = []
@@ -2411,7 +2412,9 @@ def bot_dictcom_process(bot, botcom):
 
     if str(botcom.channel_current).startswith('#'):
         if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
-            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command cannot be used in " + str(botcom.channel_current) + " for the following reason: " + str(bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]))
+            reason = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]
+            timestamp = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["timestamp"]
+            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command was disabled in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + str(reason))
 
     # hardcoded_channel_block
     if str(botcom.channel_current).startswith('#'):
