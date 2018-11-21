@@ -3008,7 +3008,7 @@ def bot_target_check(bot, botcom, target, target_self):
     # cannot target bots
     if bot_check_inlist(bot, target, bot.nick):
         return {"targetgood": False, "error": "I am a bot and cannot be targeted.", "reason": "bot"}
-    if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['bots_list']):
+    if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['bots_list'].keys()):
         return {"targetgood": False, "error": nick_actual(bot, target) + " is a bot and cannot be targeted.", "reason": "bots"}
 
     # Not a valid user
