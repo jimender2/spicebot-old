@@ -2498,10 +2498,12 @@ def bot_dictcom_reply_shared(bot, botcom):
 
 
 def bot_dictcom_simple(bot, botcom):
+    return bot_dictcom_responses(bot, botcom)
     bot_dictcom_reply_shared(bot, botcom)
 
 
 def bot_dictcom_target(bot, botcom):
+    return bot_dictcom_responses(bot, botcom)
 
     commandrunconsensus = []
 
@@ -2544,6 +2546,7 @@ def bot_dictcom_target(bot, botcom):
 
 
 def bot_dictcom_fillintheblank(bot, botcom):
+    return bot_dictcom_responses(bot, botcom)
 
     commandrunconsensus = []
 
@@ -2576,6 +2579,7 @@ def bot_dictcom_fillintheblank(bot, botcom):
 
 
 def bot_dictcom_targetplusreason(bot, botcom):
+    return bot_dictcom_responses(bot, botcom)
 
     commandrunconsensus = []
 
@@ -2681,22 +2685,27 @@ def bot_dictcom_gif(bot, botcom):
 
 
 def bot_dictcom_ascii_art(bot, botcom):
+    return bot_dictcom_responses(bot, botcom)
     return bot_dictcom_simple(bot, botcom)
 
 
 def bot_dictcom_sayings(bot, botcom):
+    return bot_dictcom_responses(bot, botcom)
     return bot_dictcom_simple(bot, botcom)
 
 
 def bot_dictcom_readfromurl(bot, botcom):
+    return bot_dictcom_responses(bot, botcom)
     return bot_dictcom_simple(bot, botcom)
 
 
 def bot_dictcom_readfromfile(bot, botcom):
+    return bot_dictcom_responses(bot, botcom)
     return bot_dictcom_simple(bot, botcom)
 
 
 def bot_dictcom_translate(bot, botcom):
+    return bot_dictcom_responses(bot, botcom)
     return bot_dictcom_fillintheblank(bot, botcom)
 
 
