@@ -2352,13 +2352,15 @@ def bot_dictcom_responses(bot, botcom):
                         botcom.target = botcom.instigator
                     else:
                         botcom.target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
-            elif botcom.dotcommand_dict[botcom.responsekey]["target_fail"]:
-                commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
             else:
+                reaction = False
                 botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
                 for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
                     if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
+                        reaction = True
                         commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["react_"+reason])
+                if not reaction:
+                    commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
         else:
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
