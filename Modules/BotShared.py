@@ -2980,8 +2980,8 @@ def nick_actual(bot, nick):
 
 def bot_check_inlist(bot, searchterm, searchlist):
 
-    bot.msg("#spicebottest", str(searchterm + "."))
-    bot.msg("#spicebottest", str(searchlist))
+    # bot.msg("#spicebottest", str(searchterm))
+    # bot.msg("#spicebottest", str(searchlist))
 
     # verify we are searching a list
     if not isinstance(searchlist, list):
@@ -3048,7 +3048,7 @@ def bot_target_check(bot, botcom, target, target_self):
         targetgood = {"targetgood": False, "error": targetgoodconsensus[0], "reason": reasons[0]}
         if targetgood["reason"] == 'unknown':
             sim_user, sim_num = [], []
-            for user in bot.memory['botdict']['tempvals']['dict_commands'].keys():
+            for user in bot.memory["botdict"]["users"].keys():
                 similarlevel = similar(str(target).lower(), user.lower())
                 if similarlevel >= .75:
                     sim_user.append(user)
