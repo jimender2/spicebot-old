@@ -2317,7 +2317,7 @@ def bot_dictcom_process(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
 
         trailingmessage = spicemanip(bot, botcom.triggerargsarray, 0) or "No reason given."
-        timestamp = datetime.datetime.utcnow()
+        timestamp = str(datetime.datetime.utcnow())
         bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom] = {"reason": trailingmessage, "timestamp": timestamp}
         return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is now " + botcom.specified + "d in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + trailingmessage)
 
