@@ -99,6 +99,14 @@
                         ],
               },
 
+"vet": {
+            "type": "target",
+            "target_backup": "instigator",
+            "responses": [
+                      "$target is not a vet. The views/opinions/information expressed by $target are not intended or implied to be a substitute for professional advice, diagnosis or treatment. Treat any advice regarding sleeping with the patients of $target as a bad idea.",
+                      ],
+            },
+
 "options": {
               "type": "simple",
               "target_backup": "instigator",
