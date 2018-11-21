@@ -2332,6 +2332,7 @@ def bot_dictcom_process(bot, botcom):
 def bot_dictcom_responses(bot, botcom):
 
     bot.msg("#spicebottest", "Test good")
+    commandrunconsensus = []
 
     # A target is required
     if botcom.dotcommand_dict[botcom.responsekey]["target_required"]:
@@ -2352,14 +2353,12 @@ def bot_dictcom_responses(bot, botcom):
                     else:
                         botcom.target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
             elif botcom.dotcommand_dict[botcom.responsekey]["target_fail"]:
-                botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_fail"]
-                return bot_dictcom_reply_shared(bot, botcom)
+                commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
             else:
                 botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
                 for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
                     if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
-                        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]
-                return bot_dictcom_reply_shared(bot, botcom)
+                        commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["react_"+reason])
         else:
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
@@ -2372,8 +2371,7 @@ def bot_dictcom_responses(bot, botcom):
             if botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]:
                 botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]
             else:
-                botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
-                return bot_dictcom_reply_shared(bot, botcom)
+                commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["blank_fail"])
 
         if botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
             if botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"] != []:
@@ -2384,6 +2382,13 @@ def bot_dictcom_responses(bot, botcom):
                         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
                         if botcom.triggerargsarray != []:
                             botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
+
+    if commandrunconsensus != []:
+        botcom.success = False
+        if botcom.dotcommand_dict[botcom.responsekey]["response_fail"]:
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["response_fail"]
+        else:
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = commandrunconsensus[0]
 
     bot_dictcom_reply_shared(bot, botcom)
 
