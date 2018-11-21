@@ -2469,12 +2469,10 @@ def bot_dictcom_target(bot, botcom):
         target_self = botcom.dotcommand_dict[botcom.responsekey]["target_self"]
         targetchecking = bot_target_check(bot, botcom, botcom.target, target_self)
         if not targetchecking["targetgood"]:
-            if targetchecking["reason"] not in ["bot", "self"]:
-                botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
-            else:
-                for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
-                    if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
-                        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
+            for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
+                if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
+                    botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]
 
     if commandrunconsensus != []:
         botcom.success = False
@@ -2545,12 +2543,10 @@ def bot_dictcom_targetplusreason(bot, botcom):
         target_self = botcom.dotcommand_dict[botcom.responsekey]["target_self"]
         targetchecking = bot_target_check(bot, botcom, botcom.target, target_self)
         if not targetchecking["targetgood"]:
-            if targetchecking["reason"] not in ["bot", "self"]:
-                botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
-            else:
-                for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
-                    if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
-                        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
+            for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
+                if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
+                    botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]
 
     botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
 
