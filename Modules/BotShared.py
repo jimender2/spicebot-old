@@ -3062,7 +3062,7 @@ def bot_target_check(bot, botcom, target, target_self):
                         relist.append(str(item))
                     listnumb += 1
                 closestmatches = spicemanip(bot, relist, "andlist")
-                targetgood["reason"] = "I'm not sure who " + str(target) + " is, but these users may be a better match: " + str(closestmatches) + "."
+                targetgood["error"] = "I'm not sure who " + str(target) + " is, but these users may be a better match: " + str(closestmatches) + "."
 
     if targetgoodconsensus != []:
         targetgood = {"targetgood": False, "error": targetgoodconsensus[0], "reason": reasons[0]}
