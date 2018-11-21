@@ -5,7 +5,7 @@
                             "$instigator removes $targets pants and wack him with a fish",
                             ],
               "target_backup": "random",
-              "target_self": True,
+              "target_bypass": ['self'],
               },
 
 }

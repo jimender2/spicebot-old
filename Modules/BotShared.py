@@ -750,8 +750,8 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             dict_from_file[mustbe]["target_fail"] = ["This command requires a target."]
         if not isinstance(dict_from_file[mustbe]["target_fail"], list):
             dict_from_file[mustbe]["target_fail"] = [dict_from_file[mustbe]["target_fail"]]
-        if "target_self" not in dict_from_file[mustbe].keys():
-            dict_from_file[mustbe]["target_self"] = False
+        if "target_bypass" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["target_bypass"] = []
 
         # special target reactions
         for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
@@ -2319,14 +2319,23 @@ def bot_dictcom_process(bot, botcom):
     elif botcom.specified and not botcom.dotcommand_dict[botcom.responsekey]["selection_allowed"]:
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " response list cannot be specified.")
 
-    posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
     botcom.target = False
+    posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
     if posstarget.lower() in [u.lower() for u in bot.memory["botdict"]["users"].keys()]:
         botcom.target = nick_actual(bot, posstarget)
 
     botcom.success = True
     command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
     eval(command_function_run)
+
+
+def bot_dictcom_responses(bot, botcom):
+
+    if botcom.dotcommand_dict[botcom.responsekey]["target_required"]:
+
+        # try first term as a target
+        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
+        targetbypass = botcom.dotcommand_dict[botcom.responsekey]["target_bypass"]
 
 
 def bot_dictcom_reply_shared(bot, botcom):
@@ -2466,8 +2475,8 @@ def bot_dictcom_target(bot, botcom):
         commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
 
     if not ignoretarget and botcom.target:
-        target_self = botcom.dotcommand_dict[botcom.responsekey]["target_self"]
-        targetchecking = bot_target_check(bot, botcom, botcom.target, target_self)
+        targetbypass = botcom.dotcommand_dict[botcom.responsekey]["target_bypass"]
+        targetchecking = bot_target_check(bot, botcom, botcom.target, targetbypass)
         if not targetchecking["targetgood"]:
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
             for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
@@ -2540,8 +2549,8 @@ def bot_dictcom_targetplusreason(bot, botcom):
         commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
 
     if not ignoretarget and botcom.target:
-        target_self = botcom.dotcommand_dict[botcom.responsekey]["target_self"]
-        targetchecking = bot_target_check(bot, botcom, botcom.target, target_self)
+        targetbypass = botcom.dotcommand_dict[botcom.responsekey]["target_bypass"]
+        targetchecking = bot_target_check(bot, botcom, botcom.target, targetbypass)
         if not targetchecking["targetgood"]:
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
             for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
@@ -2998,53 +3007,67 @@ def bot_check_inlist(bot, searchterm, searchlist):
         return False
 
 
-def bot_target_check(bot, botcom, target, target_self):
+def bot_target_check(bot, botcom, target, targetbypass):
     targetgood = {"targetgood": True, "error": "None", "reason": None}
 
+    if not isinstance(targetbypass, list):
+        targetbypass = [targetbypass]
+
+    if "notarget" not in targetbypass:
+        if not target or target == '':
+            return {"targetgood": False, "error": "This Command Requires a target.", "reason": "notarget"}
+
     # Optional don't allow self-target
-    if not target_self and bot_check_inlist(bot, target, botcom.instigator):
-        return {"targetgood": False, "error": "This command does not allow you to target yourself.", "reason": "self"}
+    if "self" not in targetbypass:
+        if bot_check_inlist(bot, target, botcom.instigator):
+            return {"targetgood": False, "error": "This command does not allow you to target yourself.", "reason": "self"}
 
     # cannot target bots
-    if bot_check_inlist(bot, target, bot.nick):
-        return {"targetgood": False, "error": "I am a bot and cannot be targeted.", "reason": "bot"}
-    if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['bots_list'].keys()):
-        return {"targetgood": False, "error": nick_actual(bot, target) + " is a bot and cannot be targeted.", "reason": "bots"}
+    if "bot" not in targetbypass:
+        if bot_check_inlist(bot, target, bot.nick):
+            return {"targetgood": False, "error": "I am a bot and cannot be targeted.", "reason": "bot"}
+    if "bots" not in targetbypass:
+        if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['bots_list'].keys()):
+            return {"targetgood": False, "error": nick_actual(bot, target) + " is a bot and cannot be targeted.", "reason": "bots"}
 
     # Not a valid user
-    if not bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
-        sim_user, sim_num = [], []
-        for user in bot.memory["botdict"]["users"].keys():
-            similarlevel = similar(str(target).lower(), user.lower())
-            if similarlevel >= .75:
-                sim_user.append(user)
-                sim_num.append(similarlevel)
-        if sim_user != [] and sim_num != []:
-            sim_num, sim_user = array_arrangesort(bot, sim_num, sim_user)
-            closestmatch = spicemanip(bot, sim_user, 'reverse', "list")
-            listnumb, relist = 1, []
-            for item in closestmatch:
-                if listnumb <= 3:
-                    relist.append(str(item))
-                listnumb += 1
-            closestmatches = spicemanip(bot, relist, "andlist")
-            targetgooderror = "I'm not sure who " + str(target) + " is, but these users may be a better match: " + str(closestmatches) + "."
-        else:
-            targetgooderror = "I am not sure who that is."
-        return {"targetgood": False, "error": targetgooderror, "reason": "unknown"}
+    if "unknown" not in targetbypass:
+        if not bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
+            sim_user, sim_num = [], []
+            for user in bot.memory["botdict"]["users"].keys():
+                similarlevel = similar(str(target).lower(), user.lower())
+                if similarlevel >= .75:
+                    sim_user.append(user)
+                    sim_num.append(similarlevel)
+            if sim_user != [] and sim_num != []:
+                sim_num, sim_user = array_arrangesort(bot, sim_num, sim_user)
+                closestmatch = spicemanip(bot, sim_user, 'reverse', "list")
+                listnumb, relist = 1, []
+                for item in closestmatch:
+                    if listnumb <= 3:
+                        relist.append(str(item))
+                    listnumb += 1
+                closestmatches = spicemanip(bot, relist, "andlist")
+                targetgooderror = "I'm not sure who " + str(target) + " is, but these users may be a better match: " + str(closestmatches) + "."
+            else:
+                targetgooderror = "I am not sure who that is."
+            return {"targetgood": False, "error": targetgooderror, "reason": "unknown"}
 
     # User offline
-    if not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
-        return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is offline right now!", "reason": "offline"}
+    if "offline" not in targetbypass:
+        if not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
+            return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is offline right now!", "reason": "offline"}
 
     # Private Message
-    if not str(botcom.channel_current).startswith('#') and not bot_check_inlist(bot, target, botcom.instigator):
-        return {"targetgood": False, "error": "Leave " + nick_actual(bot, target) + " out of this private conversation!", "reason": "privmsg"}
+    if "privmsg" not in targetbypass:
+        if not str(botcom.channel_current).startswith('#') and not bot_check_inlist(bot, target, botcom.instigator):
+            return {"targetgood": False, "error": "Leave " + nick_actual(bot, target) + " out of this private conversation!", "reason": "privmsg"}
 
     # not in the same channel
-    if str(botcom.channel_current).startswith('#') and bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
-        if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][str(botcom.channel_current)]['current_users']]:
-            return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.", "reason": "diffchannel"}
+    if "diffchannel" not in targetbypass:
+        if str(botcom.channel_current).startswith('#') and bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
+            if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][str(botcom.channel_current)]['current_users']]:
+                return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.", "reason": "diffchannel"}
 
     return targetgood
 

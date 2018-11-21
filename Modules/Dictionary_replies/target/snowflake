@@ -5,7 +5,7 @@
                             "$target didn't choose the snowflake life, the snowflake life chose $target.",
                             ],
               "target_backup": "instigator",
-              "target_self": True,
+              "target_bypass": ['self'],
               },
 
 }

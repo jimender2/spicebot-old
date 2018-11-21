@@ -5,7 +5,7 @@
                             "$instigator pisses off $targets",
                             ],
               "target_backup": "random",
-              "target_self": True,
+              "target_bypass": ['self'],
               },
 
 }

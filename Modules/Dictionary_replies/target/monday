@@ -5,7 +5,7 @@
                             "Sounds like $target has a case of the Mondays.",
                             ],
               "target_backup": "instigator",
-              "target_self": True,
+              "target_bypass": ['self'],
               },
 
 }

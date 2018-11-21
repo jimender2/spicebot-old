@@ -6,7 +6,7 @@
                             ],
               "target_backup": "instigator",
               "blank_backup": "boat",
-              "target_self": True,
+              "target_bypass": ['self'],
               },
 
 }
