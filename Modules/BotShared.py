@@ -634,7 +634,7 @@ def dict_command_configs(bot):
 
                 # current file path
                 if "filepath" not in dict_from_file.keys():
-                    dict_from_file["filepath"] = os.path.join(coms_type_file_path, comconf)
+                    dict_from_file["filepath"] = str(coms_type_file_path + comconf)
 
                 # default command to filename
                 if "validcoms" not in dict_from_file.keys():
