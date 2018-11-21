@@ -2990,9 +2990,9 @@ def bot_check_inlist(bot, searchterm, searchlist):
 
     searchterm = str(searchterm)
 
-    if searchterm in rebuildlist:
+    if str(searchterm) in rebuildlist:
         return True
-    elif searchterm.casefold() in [searching.casefold() for searching in rebuildlist]:
+    elif str(searchterm).casefold() in [searching.casefold() for searching in rebuildlist]:
         return True
     else:
         return False
@@ -3001,64 +3001,50 @@ def bot_check_inlist(bot, searchterm, searchlist):
 def bot_target_check(bot, botcom, target, target_self):
     targetgood = {"targetgood": True, "error": "None", "reason": None}
 
-    targetgoodconsensus, reasons = [], []
-
     # Optional don't allow self-target
     if not target_self and bot_check_inlist(bot, target, botcom.instigator):
-        bot.msg("#spicebottest", str("in self list"))
         return {"targetgood": False, "error": "This command does not allow you to target yourself.", "reason": "self"}
 
     # cannot target bots
     if bot_check_inlist(bot, target, bot.nick):
-        reasons.append("bot")
-        targetgoodconsensus.append("I am a bot and cannot be targeted.")
-    elif bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['bots_list']):
-        reasons.append("bots")
-        targetgoodconsensus.append(nick_actual(bot, target) + " is a bot and cannot be targeted.")
+        return {"targetgood": False, "error": "I am a bot and cannot be targeted.", "reason": "bot"}
+    if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['bots_list']):
+        return {"targetgood": False, "error": nick_actual(bot, target) + " is a bot and cannot be targeted.", "reason": "bots"}
 
     # Not a valid user
     if bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
-        reasons.append("unknown")
-        targetgoodconsensus.append("I am not sure who that is.")
+        sim_user, sim_num = [], []
+        for user in bot.memory["botdict"]["users"].keys():
+            similarlevel = similar(str(target).lower(), user.lower())
+            if similarlevel >= .75:
+                sim_user.append(user)
+                sim_num.append(similarlevel)
+        if sim_user != [] and sim_num != []:
+            sim_num, sim_user = array_arrangesort(bot, sim_num, sim_user)
+            closestmatch = spicemanip(bot, sim_user, 'reverse', "list")
+            listnumb, relist = 1, []
+            for item in closestmatch:
+                if listnumb <= 3:
+                    relist.append(str(item))
+                listnumb += 1
+            closestmatches = spicemanip(bot, relist, "andlist")
+            targetgooderror = "I'm not sure who " + str(target) + " is, but these users may be a better match: " + str(closestmatches) + "."
+        else:
+            targetgooderror = "I am not sure who that is."
+        return {"targetgood": False, "error": targetgooderror, "reason": "unknown"}
 
     # User offline
     if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
-        reasons.append("offline")
-        targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is offline right now!")
+        return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is offline right now!", "reason": "offline"}
 
     # Private Message
     if not str(botcom.channel_current).startswith('#') and not bot_check_inlist(bot, target, botcom.instigator):
-        reasons.append("privmsg")
-        targetgoodconsensus.append("Leave " + nick_actual(bot, target) + " out of this private conversation!")
+        return {"targetgood": False, "error": "Leave " + nick_actual(bot, target) + " out of this private conversation!", "reason": "privmsg"}
 
     # not in the same channel
     if str(botcom.channel_current).startswith('#') and bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
         if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][str(botcom.channel_current)]['current_users']]:
-            reasons.append("diffchannel")
-            targetgoodconsensus.append("It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.")
-
-    if targetgoodconsensus != []:
-        targetgood = {"targetgood": False, "error": targetgoodconsensus[0], "reason": reasons[0]}
-        if targetgood["reason"] == 'unknown':
-            sim_user, sim_num = [], []
-            for user in bot.memory["botdict"]["users"].keys():
-                similarlevel = similar(str(target).lower(), user.lower())
-                if similarlevel >= .75:
-                    sim_user.append(user)
-                    sim_num.append(similarlevel)
-            if sim_user != [] and sim_num != []:
-                sim_num, sim_user = array_arrangesort(bot, sim_num, sim_user)
-                closestmatch = spicemanip(bot, sim_user, 'reverse', "list")
-                listnumb, relist = 1, []
-                for item in closestmatch:
-                    if listnumb <= 3:
-                        relist.append(str(item))
-                    listnumb += 1
-                closestmatches = spicemanip(bot, relist, "andlist")
-                targetgood["error"] = "I'm not sure who " + str(target) + " is, but these users may be a better match: " + str(closestmatches) + "."
-
-    if targetgoodconsensus != []:
-        targetgood = {"targetgood": False, "error": targetgoodconsensus[0], "reason": reasons[0]}
+            return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.", "reason": "diffchannel"}
 
     return targetgood
 
