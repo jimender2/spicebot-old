@@ -2325,8 +2325,11 @@ def bot_dictcom_process(bot, botcom):
         botcom.target = nick_actual(bot, posstarget)
 
     botcom.success = True
-    command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
-    eval(command_function_run)
+    if botcom.commandtype in ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "translate", "responses"]:
+        return bot_dictcom_responses(bot, botcom)
+    else:
+        command_function_run = str('bot_dictcom_' + botcom.commandtype + '(bot, botcom)')
+        eval(command_function_run)
 
 
 def bot_dictcom_responses(bot, botcom):
@@ -2503,22 +2506,6 @@ def bot_dictcom_reply_shared(bot, botcom):
             osd(bot, botcom.channel_current, rplytype, rply)
 
 
-def bot_dictcom_simple(bot, botcom):
-    return bot_dictcom_responses(bot, botcom)
-
-
-def bot_dictcom_target(bot, botcom):
-    return bot_dictcom_responses(bot, botcom)
-
-
-def bot_dictcom_fillintheblank(bot, botcom):
-    return bot_dictcom_responses(bot, botcom)
-
-
-def bot_dictcom_targetplusreason(bot, botcom):
-    return bot_dictcom_responses(bot, botcom)
-
-
 def bot_dictcom_gif(bot, botcom):
 
     if botcom.dotcommand_dict[botcom.responsekey]["blank_required"] and not botcom.completestring:
@@ -2562,26 +2549,6 @@ def bot_dictcom_gif(bot, botcom):
 
     botcom.specified = False
     bot_dictcom_reply_shared(bot, botcom)
-
-
-def bot_dictcom_ascii_art(bot, botcom):
-    return bot_dictcom_responses(bot, botcom)
-
-
-def bot_dictcom_sayings(bot, botcom):
-    return bot_dictcom_responses(bot, botcom)
-
-
-def bot_dictcom_readfromurl(bot, botcom):
-    return bot_dictcom_responses(bot, botcom)
-
-
-def bot_dictcom_readfromfile(bot, botcom):
-    return bot_dictcom_responses(bot, botcom)
-
-
-def bot_dictcom_translate(bot, botcom):
-    return bot_dictcom_responses(bot, botcom)
 
 
 """
