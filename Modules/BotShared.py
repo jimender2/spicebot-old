@@ -154,6 +154,7 @@ bot_dict = {
 
                 # Users lists
                 "users": {},
+
                 # Channels
                 "channels_list": {},
 
@@ -457,14 +458,24 @@ def botdict_setup_channels(bot):
     # All channels the bot is in
     if bot.memory["botdict"]["tempvals"]['channels_list'].keys() == []:
         for channel in bot.channels:
+
+            # curent channels
             if str(channel) not in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
                 bot.memory["botdict"]["tempvals"]['channels_list'][str(channel)] = dict()
+
+            # all channels ever
             if str(channel) not in bot.memory["botdict"]['channels_list'].keys():
                 bot.memory["botdict"]['channels_list'][str(channel)] = dict()
+
+            # authorized user groups for channels
             if "auth_block" not in bot.memory["botdict"]['channels_list'][channel].keys():
                 bot.memory["botdict"]['channels_list'][str(channel)]["auth_block"] = []
             if bot.memory["botdict"]['channels_list'][str(channel)]["auth_block"] == []:
                 bot.memory["botdict"]['channels_list'][str(channel)]["auth_block"].append("all")
+
+            # diabled commands per channel
+            if "disabled_commands" not in bot.memory["botdict"]['channels_list'][channel].keys():
+                bot.memory["botdict"]['channels_list'][str(channel)]["disabled_commands"] = {}
 
 
 # other bot configs will be detected in this directory
@@ -687,6 +698,10 @@ def dict_command_configs(bot):
                         dict_from_file["contributors"].append(dict_from_file["author"])
                     keysprocessed.append("contributors")
 
+                    if "hardcoded_channel_block" not in dict_from_file.keys():
+                        dict_from_file["hardcoded_channel_block"] = []
+                    keysprocessed.append("hardcoded_channel_block")
+
                     # handle basic required dict handling
                     dict_required = ["?default"]
                     dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, dict_required)
@@ -863,6 +878,9 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
                 dict_from_file[mustbe]["randnum"] = [0, 50]
             if len(dict_from_file[mustbe]["randnum"]) == 1:
                 dict_from_file[mustbe]["randnum"] = [0, dict_from_file[mustbe]["randnum"][0]]
+
+        if "hardcoded_channel_block" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["hardcoded_channel_block"] = []
 
     return dict_from_file
 
@@ -2207,7 +2225,7 @@ def bot_dictcom_process(bot, botcom):
     botcom.commandtype = botcom.dotcommand_dict[botcom.responsekey]["type"]
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contrib', "contributors", 'author', "alias", "filepath"]
+    validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable"]
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
@@ -2235,7 +2253,30 @@ def bot_dictcom_process(bot, botcom):
             botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(botcom.instigator), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey), 'long', 'sayings') or []
 
     # Hardcoded commands Below
-    if botcom.specified == 'special':
+    if botcom.specified == 'enable':
+
+        if not botcom.channel_current.startswith('#'):
+            return osd(bot, botcom.instigator, 'notice', "This command must be run in the channel you which to " + botcom.specified + " it in.")
+
+        if botcom.maincom not in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
+            return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
+
+        del bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom]
+        return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is now " + botcom.specified + "d in " + str(botcom.channel_current))
+
+    elif botcom.specified == 'disable':
+
+        if not botcom.channel_current.startswith('#'):
+            return osd(bot, botcom.instigator, 'notice', "This command must be run in the channel you which to " + botcom.specified + " it in.")
+
+        if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
+            return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
+
+        trailingmessage = spicemanip(bot, botcom.triggerargsarray, 0) or "No reason given."
+        bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom] = {"reason": trailingmessage}
+        return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is now " + botcom.specified + "d in " + str(botcom.channel_current) + " for the following reason: " + trailingmessage)
+
+    elif botcom.specified == 'special':
         nonstockoptions = []
         for command in botcom.dotcommand_dict.keys():
             if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath"]:
@@ -2323,6 +2364,13 @@ def bot_dictcom_process(bot, botcom):
     posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
     if posstarget.lower() in [u.lower() for u in bot.memory["botdict"]["users"].keys()]:
         botcom.target = nick_actual(bot, posstarget)
+
+    if str(botcom.channel_current).startswith('#'):
+        if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
+            osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command cannot be used in " + str(botcom.channel_current) + " for the following reason: " + str(bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]))
+            return
+
+    # hardcoded_channel_block
 
     botcom.success = True
     if botcom.commandtype in ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "translate", "responses"]:
