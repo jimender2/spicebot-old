@@ -2980,6 +2980,9 @@ def nick_actual(bot, nick):
 
 def bot_check_inlist(bot, searchterm, searchlist):
 
+    bot.msg("#spicebottest", str(searchterm))
+    bot.msg("#spicebottest", str(searchlist))
+
     # verify we are searching a list
     if not isinstance(searchlist, list):
         searchlist = [searchlist]
@@ -2997,8 +3000,6 @@ def bot_check_inlist(bot, searchterm, searchlist):
 
 def bot_target_check(bot, botcom, target, target_self):
     targetgood = {"targetgood": True, "error": "None", "reason": None}
-
-    bot.msg("#spicebottest", str(target))
 
     targetgoodconsensus, reasons = [], []
 
