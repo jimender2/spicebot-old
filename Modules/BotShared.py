@@ -74,7 +74,7 @@ Variables # TODO add to botdict
 
 osd_limit = 420  # Ammount of text allowed to display per line
 
-valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate"]
+valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate", "responses"]
 
 
 """
@@ -2331,11 +2331,61 @@ def bot_dictcom_process(bot, botcom):
 
 def bot_dictcom_responses(bot, botcom):
 
+    bot.msg("#spicebottest", "Test good")
+
+    # A target is required
     if botcom.dotcommand_dict[botcom.responsekey]["target_required"]:
 
         # try first term as a target
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
         targetbypass = botcom.dotcommand_dict[botcom.responsekey]["target_bypass"]
+        targetchecking = bot_target_check(bot, botcom, botcom.target, targetbypass)
+        if not targetchecking["targetgood"]:
+
+            if botcom.dotcommand_dict[botcom.responsekey]["target_backup"]:
+                botcom.target = botcom.dotcommand_dict[botcom.responsekey]["target_backup"]
+                if botcom.target == 'instigator':
+                    botcom.target = botcom.instigator
+                elif botcom.target == 'random':
+                    if not botcom.channel_current.startswith('#'):
+                        botcom.target = botcom.instigator
+                    else:
+                        botcom.target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
+            elif botcom.dotcommand_dict[botcom.responsekey]["target_fail"]:
+                botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["target_fail"]
+                return bot_dictcom_reply_shared(bot, botcom)
+            else:
+                botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
+                for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
+                    if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
+                        botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]
+                return bot_dictcom_reply_shared(bot, botcom)
+        else:
+            botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+    # $blank input
+    botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0) or ''
+    if botcom.dotcommand_dict[botcom.responsekey]["blank_required"]:
+
+        if botcom.completestring == '' or not botcom.completestring:
+
+            if botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]:
+                botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_backup"]
+            else:
+                botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["blank_fail"]
+                return bot_dictcom_reply_shared(bot, botcom)
+
+        if botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
+            if botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"] != []:
+                if spicemanip(bot, botcom.completestring, 1).lower() not in botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
+                    botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0] + " " + botcom.completestring
+                elif spicemanip(bot, botcom.completestring, 1).lower() in botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
+                    if spicemanip(bot, botcom.completestring, 1).lower() != botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0]:
+                        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+                        if botcom.triggerargsarray != []:
+                            botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
+
+    bot_dictcom_reply_shared(bot, botcom)
 
 
 def bot_dictcom_reply_shared(bot, botcom):
