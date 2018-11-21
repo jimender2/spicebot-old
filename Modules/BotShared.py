@@ -2990,9 +2990,9 @@ def bot_check_inlist(bot, searchterm, searchlist):
 
     searchterm = str(searchterm)
 
-    if str(searchterm) in rebuildlist:
+    if searchterm in rebuildlist:
         return True
-    elif str(searchterm).casefold() in [searching.casefold() for searching in rebuildlist]:
+    elif searchterm.lower() in [searching.lower() for searching in rebuildlist]:
         return True
     else:
         return False
