@@ -754,7 +754,7 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             dict_from_file[mustbe]["target_self"] = False
 
         # special target reactions
-        for reason in ['self', 'bot', 'offline', 'unknown', 'privmsg', 'diffchannel']:
+        for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
             if 'react_'+reason not in dict_from_file[mustbe].keys():
                 dict_from_file[mustbe]['react_'+reason] = False
 
@@ -2471,7 +2471,7 @@ def bot_dictcom_target(bot, botcom):
             if targetchecking["reason"] not in ["bot", "self"]:
                 botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
             else:
-                for reason in ['self', 'bot', 'offline', 'unknown', 'privmsg', 'diffchannel']:
+                for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
                     if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
                         botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]
 
@@ -2546,7 +2546,7 @@ def bot_dictcom_targetplusreason(bot, botcom):
             if targetchecking["reason"] not in ["bot", "self"]:
                 botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
             else:
-                for reason in ['self', 'bot', 'offline', 'unknown', 'privmsg', 'diffchannel']:
+                for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
                     if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
                         botcom.dotcommand_dict[botcom.responsekey]["responses"] = botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]
 
@@ -2990,8 +2990,11 @@ def bot_target_check(bot, botcom, target, target_self):
             targetgoodconsensus.append("This command does not allow you to target yourself.")
 
     # cannot target bots
-    if str(target).lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['bots_list']]:
+    if str(target).lower() == bot.nick.lower():
         reasons.append("bot")
+        targetgoodconsensus.append("I am a bot and cannot be targeted.")
+    if str(target).lower() in [u.lower() for u in bot.memory["botdict"]["tempvals"]['bots_list']]:
+        reasons.append("bots")
         targetgoodconsensus.append(nick_actual(bot, target) + " is a bot and cannot be targeted.")
 
     # Not a valid user
