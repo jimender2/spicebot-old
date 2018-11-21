@@ -538,7 +538,7 @@ def botdict_setup_users(bot):
             if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] and user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
                 bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(user)
             try:
-                userprivdict[user] = bot.privileges[channel][user] or 0
+                userprivdict[user] = bot.privileges[channelcheck][user] or 0
             except KeyError:
                 userprivdict[user] = 0
 
@@ -1288,7 +1288,7 @@ def bot_watch_join_run(bot, trigger):
 
     userprivdict = dict()
     try:
-        userprivdict[botcom.instigator] = bot.privileges[channel][botcom.instigator] or 0
+        userprivdict[botcom.instigator] = bot.privileges[botcom.channel_current][botcom.instigator] or 0
     except KeyError:
         userprivdict[botcom.instigator] = 0
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
