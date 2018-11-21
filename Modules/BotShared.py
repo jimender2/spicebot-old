@@ -3074,7 +3074,7 @@ def bot_target_check(bot, botcom, target, targetbypass):
 
     if "notarget" not in targetbypass:
         if not target or target == '':
-            return {"targetgood": False, "error": "This Command Requires a target.", "reason": "notarget"}
+            return {"targetgood": False, "error": "No target Given.", "reason": "notarget"}
 
     # Optional don't allow self-target
     if "self" not in targetbypass:
