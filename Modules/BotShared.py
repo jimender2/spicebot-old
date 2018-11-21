@@ -3034,7 +3034,7 @@ def bot_target_check(bot, botcom, target, target_self):
         return {"targetgood": False, "error": targetgooderror, "reason": "unknown"}
 
     # User offline
-    if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
+    if not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
         return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is offline right now!", "reason": "offline"}
 
     # Private Message
