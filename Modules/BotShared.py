@@ -2314,7 +2314,7 @@ def bot_dictcom_process(bot, botcom):
 
         trailingmessage = spicemanip(bot, botcom.triggerargsarray, 0) or "No reason given."
         timestamp = str(datetime.datetime.utcnow())
-        bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom] = {"reason": trailingmessage, "timestamp": timestamp}
+        bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom] = {"reason": trailingmessage, "timestamp": timestamp, "disabledby": botcom.instigator}
         return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is now " + botcom.specified + "d in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + trailingmessage)
 
     elif botcom.specified == 'special':
@@ -2410,7 +2410,8 @@ def bot_dictcom_process(bot, botcom):
         if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
             reason = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]
             timestamp = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["timestamp"]
-            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command was disabled in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + str(reason))
+            bywhom = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["disabledby"]
+            return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command was disabled by " + bywhom + " in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + str(reason))
 
     # hardcoded_channel_block
     if str(botcom.channel_current).startswith('#'):
