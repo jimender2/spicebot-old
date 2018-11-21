@@ -2331,7 +2331,6 @@ def bot_dictcom_process(bot, botcom):
 
 def bot_dictcom_responses(bot, botcom):
 
-    bot.msg("#spicebottest", "Test good")
     commandrunconsensus = []
 
     # A target is required
