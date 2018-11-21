@@ -3012,7 +3012,7 @@ def bot_target_check(bot, botcom, target, target_self):
         return {"targetgood": False, "error": nick_actual(bot, target) + " is a bot and cannot be targeted.", "reason": "bots"}
 
     # Not a valid user
-    if bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
+    if not bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
         sim_user, sim_num = [], []
         for user in bot.memory["botdict"]["users"].keys():
             similarlevel = similar(str(target).lower(), user.lower())
