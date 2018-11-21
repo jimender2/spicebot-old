@@ -2981,6 +2981,8 @@ def nick_actual(bot, nick):
 def bot_target_check(bot, botcom, target, target_self):
     targetgood = {"targetgood": True, "error": "None", "reason": None}
 
+    bot.msg("#spicebottest", str(target))
+
     targetgoodconsensus, reasons = [], []
 
     # Optional don't allow self-target
