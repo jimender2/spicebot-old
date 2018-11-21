@@ -2466,7 +2466,8 @@ def bot_dictcom_target(bot, botcom):
         commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
 
     if not ignoretarget and botcom.target:
-        targetchecking = bot_target_check(bot, botcom, botcom.target, botcom.dotcommand_dict[botcom.responsekey]["target_self"])
+        target_self = botcom.dotcommand_dict[botcom.responsekey]["target_self"]
+        targetchecking = bot_target_check(bot, botcom, botcom.target, target_self)
         if not targetchecking["targetgood"]:
             if targetchecking["reason"] not in ["bot", "self"]:
                 botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
@@ -2541,7 +2542,8 @@ def bot_dictcom_targetplusreason(bot, botcom):
         commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["target_fail"])
 
     if not ignoretarget and botcom.target:
-        targetchecking = bot_target_check(bot, botcom, botcom.target, botcom.dotcommand_dict[botcom.responsekey]["target_self"])
+        target_self = botcom.dotcommand_dict[botcom.responsekey]["target_self"]
+        targetchecking = bot_target_check(bot, botcom, botcom.target, target_self)
         if not targetchecking["targetgood"]:
             if targetchecking["reason"] not in ["bot", "self"]:
                 botcom.dotcommand_dict[botcom.responsekey]["responses"] = [targetchecking["error"]]
@@ -3011,6 +3013,7 @@ def bot_target_check(bot, botcom, target, target_self):
 
     # Optional don't allow self-target
     if not target_self:
+        bot.msg("#spicebottest", str("self = true"))
         if bot_check_inlist(bot, target, botcom.instigator):
             reasons.append("self")
             targetgoodconsensus.append("This command does not allow you to target yourself.")
