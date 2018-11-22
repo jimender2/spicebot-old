@@ -24,5 +24,5 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 @sopel.module.thread(True)
 def real_startup(bot, trigger):
-    time.sleep(120)
-    bot.msg("#spicebottest", "loading test")
+    for channel in bot.channels:
+        osd(bot, channel, 'notice', bot.nick + " needs to start faster, thus this test.")
