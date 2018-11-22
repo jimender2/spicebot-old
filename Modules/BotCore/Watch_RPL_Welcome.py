@@ -47,11 +47,21 @@ def real_startup(bot, trigger):
     bot_saved_jobs_run(bot)
 
     # Check for python module errors during this startup
-    searchphrasefound = 0
+    searchphrasefound = []
     for line in os.popen("sudo service " + bot.nick + " status").read().split('\n'):
-        if not searchphrasefound and "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
-            searchphrasefound = str(line).split("]:", -1)[1]
+        if "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
+            searchphrase = str(line).split("]:", -1)[1].replace(" modules failed to load", "")
+            searchphrasefound.append(str(searchphrase) + " module(s) failed")
+        elif "Warning: Couldn't load any modules" in str(line):
+            searchphrasefound.append("No module(s) were loaded")
+        elif "dict files failed to load" in str(line) and "0 dict files failed to load" not in str(line):
+            searchphrase = str(line).split("]:", -1)[1].replace(" dict files failed to load", "")
+            searchphrasefound.append(str(searchphrase) + " dict file(s) failed")
+        elif "Warning: Couldn't load any dict files" in str(line):
+            searchphrasefound.append("No dict file(s) were loaded")
 
-    if searchphrasefound:
+    if searchphrasefound != []:
+        searchphrasefound.insert(0, "Notice to Bot Admins: ")
+        searchphrasefound.append("Run the debug command for more information.")
         for channel in bot.channels:
-            osd(bot, channel, 'say', "Notice to Bot Admins: " + str(searchphrasefound) + ". Run the debug command for more information.")
+            osd(bot, channel, 'say', searchphrasefound)
