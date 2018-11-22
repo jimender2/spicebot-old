@@ -20,7 +20,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@event('001')
+@event('005')
 @rule('.*')
 @sopel.module.thread(True)
 def real_startup(bot, trigger):
