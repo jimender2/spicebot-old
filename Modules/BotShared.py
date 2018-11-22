@@ -728,10 +728,10 @@ def dict_command_configs(bot):
                 else:
                     dictopenfail += 1
     if dictcount > 1:
-        stderr('\n\nRegistered %d  dict modules,' % (dictcount))
-        stderr('%d dict modules failed to load\n\n' % dictopenfail)
+        stderr('\n\nRegistered %d  dict files,' % (dictcount))
+        stderr('%d dict files failed to load\n\n' % dictopenfail)
     else:
-        stderr("Warning: Couldn't load any dict modules")
+        stderr("Warning: Couldn't load any dict files")
 
     bot.memory["botdict"]["tempvals"]['dict_module_count'] = dictcount
 
