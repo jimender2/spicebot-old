@@ -24,10 +24,12 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 @sopel.module.thread(True)
 def real_startup(bot, trigger):
-    # prevent multiple runs every second
-    if "botdict_setup" in bot.memory:
-        return
-    bot.memory["botdict_setup"] = True
+
+    # Startup
+    for channel in bot.channels:
+        osd(bot, channel, 'notice', bot.nick + " is now starting. Please wait while I finish loading my dictionary configuration.")
+
+    # Open Bot memory dictionary
     botdict_open(bot)
 
     startupcomplete = [bot.nick + " startup complete"]
@@ -43,3 +45,13 @@ def real_startup(bot, trigger):
     for channel in bot.channels:
         osd(bot, channel, 'notice', startupcomplete)
     bot_saved_jobs_run(bot)
+
+    # Check for python module errors during this startup
+    searchphrasefound = 0
+    for line in os.popen("sudo service " + bot.nick + " status").read().split('\n'):
+        if not searchphrasefound and "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
+            searchphrasefound = str(line).split("]:", -1)[1]
+
+    if searchphrasefound:
+        for channel in bot.channels:
+            osd(bot, channel, 'say', "Notice to Bot Admins: " + str(searchphrasefound) + ". Run the debug command for more information.")
