@@ -2456,6 +2456,7 @@ def bot_dictcom_responses(bot, botcom):
                 if not reaction:
                     commandrunconsensus.append([targetchecking["error"]])
         else:
+            botcom.target = spicemanip(bot, botcom.triggerargsarray, 1)
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
     # $blank input
