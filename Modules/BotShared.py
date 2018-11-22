@@ -2402,9 +2402,6 @@ def bot_dictcom_process(bot, botcom):
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " response list cannot be specified.")
 
     botcom.target = False
-    posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
-    if posstarget.lower() in [u.lower() for u in bot.memory["botdict"]["users"].keys()]:
-        botcom.target = nick_actual(bot, posstarget)
 
     if str(botcom.channel_current).startswith('#'):
         if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
@@ -2442,7 +2439,7 @@ def bot_dictcom_responses(bot, botcom):
         # try first term as a target
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
         targetbypass = botcom.dotcommand_dict[botcom.responsekey]["target_bypass"]
-        targetchecking = bot_target_check(bot, botcom, botcom.target, targetbypass)
+        targetchecking = bot_target_check(bot, botcom, posstarget, targetbypass)
         if not targetchecking["targetgood"]:
 
             if botcom.dotcommand_dict[botcom.responsekey]["target_backup"]:
