@@ -3056,7 +3056,7 @@ def bot_target_check(bot, botcom, target, targetbypass):
                         relist.append(str(item))
                     listnumb += 1
                 closestmatches = spicemanip(bot, relist, "andlist")
-                targetgooderror = "I'm not sure who " + str(target) + " is, but these users may be a better match: " + str(closestmatches) + "."
+                targetgooderror = "It looks like you're trying to target someone! Did you mean: " + str(closestmatches) + "?"
             else:
                 targetgooderror = "I am not sure who that is."
             return {"targetgood": False, "error": targetgooderror, "reason": "unknown"}
