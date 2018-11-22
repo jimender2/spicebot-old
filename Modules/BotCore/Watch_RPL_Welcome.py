@@ -25,6 +25,8 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def real_startup(bot, trigger):
 
+    time.sleep(10)
+
     # Startup
     for channel in bot.channels:
         osd(bot, channel, 'notice', bot.nick + " is now starting. Please wait while I finish loading my dictionary configuration.")
