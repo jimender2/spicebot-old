@@ -45,5 +45,4 @@ def initialsetup(bot):
 
 
 def setup(bot):
-    if "uptime" not in bot.memory:
-        bot.msg("#spicebottest", "loading test")
+    bot.msg("#spicebottest", "loading test")
