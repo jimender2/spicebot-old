@@ -20,7 +20,8 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@module.event(tools.events.RPL_WELCOME)
+# @module.event(tools.events.RPL_WELCOME)
+@event('RPL_WELCOME')
 @module.rule('.*')
 def real_startup(bot, trigger):
     bot.msg("#spicebottest", "loading test")
