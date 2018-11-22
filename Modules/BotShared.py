@@ -2984,7 +2984,7 @@ def bot_random_valid_target(bot, botcom, outputtype):
         validtargs.extend([str(bot.nick), botcom.instigator])
     else:
         for user in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
-            targetchecking = bot_target_check(bot, botcom, user, [targetbypass])
+            targetchecking = bot_target_check(bot, botcom, user, [])
             if targetchecking["targetgood"]:
                 validtargs.append(user)
     if outputtype == 'list':
