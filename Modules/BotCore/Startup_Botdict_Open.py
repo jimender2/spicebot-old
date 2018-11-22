@@ -42,3 +42,8 @@ def initialsetup(bot):
     for channel in bot.channels:
         osd(bot, channel, 'notice', startupcomplete)
     bot_saved_jobs_run(bot)
+
+
+def setup(bot):
+    if "uptime" not in bot.memory:
+        bot.msg("#spicebottest", "loading test")
