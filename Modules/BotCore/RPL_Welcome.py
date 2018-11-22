@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
+from sopel import module, tools
 
 # imports for system and OS access, directories
 import os
@@ -20,8 +21,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-# @module.event(tools.events.RPL_WELCOME)
-@event('RPL_WELCOME')
+@module.event(tools.events.RPL_WELCOME)
 @module.rule('.*')
 def real_startup(bot, trigger):
     bot.msg("#spicebottest", "loading test")
