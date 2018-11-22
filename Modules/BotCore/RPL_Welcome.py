@@ -24,4 +24,5 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 @sopel.module.thread(True)
 def real_startup(bot, trigger):
+    time.sleep(120)
     bot.msg("#spicebottest", "loading test")
