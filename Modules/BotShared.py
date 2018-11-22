@@ -2447,10 +2447,7 @@ def bot_dictcom_responses(bot, botcom):
                 if botcom.target == 'instigator':
                     botcom.target = botcom.instigator
                 elif botcom.target == 'random':
-                    if not botcom.channel_current.startswith('#'):
-                        botcom.target = botcom.instigator
-                    else:
-                        botcom.target = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
+                    botcom.target = bot_random_valid_target(bot, botcom, 'random')
             else:
                 for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
                     if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
@@ -2979,6 +2976,21 @@ def nick_actual(bot, nick):
         if u.lower() == str(nick).lower():
             nick_actual = u
     return nick_actual
+
+
+def bot_random_valid_target(bot, botcom, outputtype):
+    validtargs = []
+    if not botcom.channel_current.startswith('#'):
+        validtargs.extend([str(bot.nick), botcom.instigator])
+    else:
+        for user in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
+            targetchecking = bot_target_check(bot, botcom, user, [targetbypass])
+            if targetchecking["targetgood"]:
+                validtargs.append(user)
+    if outputtype == 'list':
+        return validtargs
+    elif outputtype == 'random':
+        return spicemanip(bot, validtargs, 'random')
 
 
 def bot_check_inlist(bot, searchterm, searchlist):
