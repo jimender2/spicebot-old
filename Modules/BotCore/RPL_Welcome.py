@@ -20,9 +20,26 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@event('005')
+@event('001')
 @rule('.*')
 @sopel.module.thread(True)
 def real_startup(bot, trigger):
+    # prevent multiple runs every second
+    if "botdict_setup" in bot.memory:
+        return
+    bot.memory["botdict_setup"] = True
+    botdict_open(bot)
+
+    startupcomplete = [bot.nick + " startup complete"]
+
+    availablecomsnum = 0
+    availablecomsfiles = 0
+
+    # dict commands
+    availablecomsnum += len(bot.memory["botdict"]["tempvals"]['dict_commands'].keys())
+    availablecomsfiles += bot.memory["botdict"]["tempvals"]['dict_module_count']
+
+    startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " modules.")
     for channel in bot.channels:
-        osd(bot, channel, 'notice', bot.nick + " needs to start faster, thus this test.")
+        osd(bot, channel, 'notice', startupcomplete)
+    bot_saved_jobs_run(bot)

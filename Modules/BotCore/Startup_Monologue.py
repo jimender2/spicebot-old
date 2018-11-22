@@ -23,6 +23,7 @@ sys.setdefaultencoding('utf-8')
 
 @sopel.module.interval(1)  # TODO make this progress with the game
 def bot_start_monologue(bot):
+    return
 
     if "bot_monologue" in bot.memory:
         return
