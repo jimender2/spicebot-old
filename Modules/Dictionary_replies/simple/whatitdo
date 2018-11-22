@@ -2,7 +2,7 @@
 
 "?default": {
               "type": "simple",
-              "responses": [What it is?"],
+              "responses": ["What it is?"],
               },
 
 }
