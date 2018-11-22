@@ -950,10 +950,10 @@ def bot_nickcom_run(bot, trigger):
     botcom.default = 'botcom'
 
     # instigator
-    botcom.instigator = trigger.nick
+    botcom.instigator = str(trigger.nick)
 
     # channel
-    botcom.channel_current = trigger.sender
+    botcom.channel_current = str(trigger.sender)
 
     # Bots can't run commands
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
