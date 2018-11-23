@@ -9,6 +9,10 @@ from sopel.module import commands, nickname_commands, event, rule, OP, ADMIN, VO
 from sopel.tools import Identifier, stderr
 from sopel.tools.time import get_timezone, format_time
 
+# additional shared files
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
+
 # imports for system and OS access, directories
 import os
 from os.path import exists
@@ -18,6 +22,7 @@ import threading
 import subprocess
 import select
 import Queue
+from jsonsocket import Client, Server
 
 # Additional imports
 import ConfigParser
@@ -61,9 +66,6 @@ from statistics import mean
 import itertools
 import inspect
 import pickle
-
-sys.path.append(moduledir)
-from jsonsocket import Client, Server
 
 
 # user agent and header
