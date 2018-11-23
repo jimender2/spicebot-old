@@ -15,6 +15,7 @@ from os.path import exists
 import sys
 import socket
 import threading
+import subprocess
 
 # Additional imports
 import ConfigParser
@@ -376,7 +377,7 @@ def bot_setup_sockmsg(bot):
     if sock:  # the socket will already exist if the module is being reloaded
         return
     sock = socket.socket()  # the default socket types should be fine for sending text to localhost
-    find_unused_port_in_range(bot, 8080, 9090)
+    find_unused_port_in_range(bot, 8080, 8082)
     try:
         sock.bind(('0.0.0.0', PORT))
         stderr("Loaded socket on port %s" % (PORT))
@@ -388,15 +389,12 @@ def bot_setup_sockmsg(bot):
 
 def find_unused_port_in_range(bot, rangestart, rangeend):
     for i in range(rangestart, rangeend + 1):
-        if is_port_in_use(i):
-            bot.msg("#spicebottest", str(i) + " true")
-        else:
-            bot.msg("#spicebottest", str(i) + " false")
+        bot.msg("#spicebottest", str(i))
+        bot.msg("#spicebottest", str(is_port_in_use(i)))
 
 
 def is_port_in_use(port):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        return s.connect_ex(('localhost', port)) == 0
+    return str(len(subprocess.Popen("netstat -lant | awk '{print $4}' | grep 0.0.0.0:" + str(port), shell=True, stdout=subprocess.PIPE).stdout.read()) > 0)
 
 
 def sock_receiver(conn, bot):
