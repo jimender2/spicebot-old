@@ -369,7 +369,8 @@ def botdict_setup_external_config(bot):
 
 
 # setup listening socket
-def bot_setup_api_socket_old(bot):
+def bot_setup_api_socket(bot):
+    return
 
     # Don't load sock if already loaded
     if bot.memory["botdict"]["tempvals"]['sock']:
