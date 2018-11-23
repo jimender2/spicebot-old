@@ -395,8 +395,7 @@ def bot_setup_sockmsg(bot):
 
 def find_unused_port_in_range(bot, rangestart, rangeend):
     for i in range(rangestart, rangeend + 1):
-        if is_port_in_use(i):
-            bot.msg("#spicebottest", str(i))
+        if str(is_port_in_use(i)) == "False":
             return i
 
 
