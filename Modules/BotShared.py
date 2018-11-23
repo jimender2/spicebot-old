@@ -375,7 +375,7 @@ def bot_setup_api_socket(bot):
     if bot.memory["botdict"]["tempvals"]['sock']:
         return
 
-    bot.memory["botdict"]["tempvals"]['sock'] = socket.socket()
+    bot.memory["botdict"]["tempvals"]['sock'] = socket.socket()  # the default socket types should be fine for sending text to localhost
 
     # port number to use, try previous port, if able
     currentport = None
@@ -410,9 +410,12 @@ def is_port_in_use(port):
         return False
 
 
-def bot_api_socket_handler(conn, bot):
+def bot_api_socket_handler(conn, addr, bot):
     data = conn.recv(2048)
     if not data:
+
+        # Possibly add a api key
+        conn.send("hello world")
         conn.close()
     else:
 
