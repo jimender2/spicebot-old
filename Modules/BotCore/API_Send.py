@@ -40,10 +40,10 @@ def listener(bot, trigger):
     # Json API listner
     while True:
         conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
-        print("Connection accepted from " + repr(addr[1]))
+        bot.msg("#spicebottest", "Connection accepted from " + str(repr(addr[1])))
 
         conn.send("Server approved connection\n")
-        print repr(addr[1]) + ": " + c.recv(1026)
+        bot.msg("#spicebottest", str(repr(addr[1]))) + ": " + str(c.recv(1026))
         conn.close()
 
 
