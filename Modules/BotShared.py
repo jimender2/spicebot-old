@@ -16,6 +16,8 @@ import sys
 import socket
 import threading
 import subprocess
+import select
+import Queue
 
 # Additional imports
 import ConfigParser
@@ -276,7 +278,7 @@ def botdict_open(bot):
     botdict_setup_external_config(bot)
 
     # open the sockmsg feature
-    bot_setup_sockmsg(bot)
+    bot_setup_api_socket(bot)
 
     # Gif API
     botdict_setup_gif_api_access(bot)
@@ -367,13 +369,13 @@ def botdict_setup_external_config(bot):
 
 
 # setup listening socket
-def bot_setup_sockmsg(bot):
+def bot_setup_api_socket(bot):
 
     # Don't load sock if already loaded
     if bot.memory["botdict"]["tempvals"]['sock']:
         return
 
-    bot.memory["botdict"]["tempvals"]['sock'] = socket.socket()  # the default socket types should be fine for sending text to localhost
+    bot.memory["botdict"]["tempvals"]['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # port number to use, try previous port, if able
     currentport = None
@@ -408,11 +410,7 @@ def is_port_in_use(port):
         return False
 
 
-def sock_sender(conn, bot):
-    dothing = 1
-
-
-def sock_receiver(conn, bot):
+def bot_api_socket_handler(conn, bot):
     data = conn.recv(2048)
     if not data:
         conn.close()

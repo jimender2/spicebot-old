@@ -37,24 +37,7 @@ def listener(bot, trigger):
         else:
             time.sleep(1)
 
-    # Json API listner
+    # API listner
     while True:
         conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
-        bot.msg("#spicebottest", "Connection accepted from " + str(repr(addr[1])))
-
-        conn.send("Server approved connection\n")
-        bot.msg("#spicebottest", str(repr(addr[1]))) + ": " + str(c.recv(1026))
-        conn.close()
-
-
-"""
-
-# Json API listner
-while True:
-    conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
-    threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
-
-        clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        clientsocket.connect(('0.0.0.0', bot.memory["botdict"]['sock_port']))
-        clientsocket.send(bot.memory["botdict"])
-"""
+        threading.Thread(target=bot_api_socket_handler, args=(conn, bot), name='sockmsg-listener').start()
