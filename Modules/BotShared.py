@@ -378,7 +378,7 @@ def bot_setup_sockmsg(bot):
     # port number to use
     currentport = None
     if bot.memory["botdict"]['sock_port']:
-        if str(is_port_in_use(i)) == "False":
+        if not is_port_in_use(i):
             currentport = bot.memory["botdict"]['sock_port']
     if not currentport:
         currentport = find_unused_port_in_range(bot, 8080, 9090)
@@ -393,32 +393,29 @@ def bot_setup_sockmsg(bot):
 
 def find_unused_port_in_range(bot, rangestart, rangeend):
     for i in range(rangestart, rangeend + 1):
-        if str(is_port_in_use(i)) == "False":
+        if not is_port_in_use(i):
             return i
 
 
 def is_port_in_use(port):
-    return str(len(subprocess.Popen("netstat -lant | awk '{print $4}' | grep 0.0.0.0:" + str(port), shell=True, stdout=subprocess.PIPE).stdout.read()) > 0)
+    checkport = str(len(subprocess.Popen("netstat -lant | awk '{print $4}' | grep 0.0.0.0:" + str(port), shell=True, stdout=subprocess.PIPE).stdout.read()) > 0)
+    if checkport == "True":
+        return True
+    elif checkport == "False":
+        return False
+    else:
+        return False
 
 
 def sock_receiver(conn, bot):
-    buffer = ''
     data = conn.recv(2048)
-    buffer += data
     if not data:
-        conn.close()
         return
-
-    if '\n' in buffer:
-        data, _, buffer = buffer.rpartition('\n')
-        sayit(bot, data)
-    sayit(bot, buffer)
-    osd(bot, botcom.instigator, 'notice', "")
-
-
-def sayit(bot, data):
-    for line in data.splitlines():
-        bot.say("[sockmsg] %s" % line, '#spicebottest')
+    try:
+        jsondict = eval(data)
+    except Exception as e:
+        return
+    osd(bot, "#spicebottest", 'say', str(jsondict))
 
 
 # gif searching api

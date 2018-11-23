@@ -66,7 +66,7 @@ def real_startup(bot, trigger):
         elif "Error loading socket on port" in str(line):
             searchphrasefound.append("Socket Port failed to load correctly")
         elif "Loaded socket on port" in str(line):
-            searchphrase = str(line).split("]:", -1)[1].replace("Loaded socket on port", "")
+            searchphrase = str(line).split("]:", -1)[1].replace("Loaded socket on port ", "")
             startupcomplete.append("Socket Port set to " + str(searchphrase))
 
     for channel in bot.channels:
