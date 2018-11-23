@@ -393,7 +393,7 @@ def bot_setup_api_socket(bot):
         bot.memory["botdict"]["tempvals"]['sock'].bind(('0.0.0.0', bot.memory["botdict"]['sock_port']))
         stderr("Loaded socket on port %s" % (bot.memory["botdict"]['sock_port']))
         bot.memory["botdict"]["tempvals"]['sock'].listen(10)
-        bot.memory["botdict"]["tempvals"]['sock'].sendall(str(bot.memory["botdict"]))
+        bot.memory["botdict"]["tempvals"]['sock'].sendall(str({"teswt": "fat"}))
     except socket.error as msg:
         stderr("Error loading socket on port %s: %s (%s)" % (bot.memory["botdict"]['sock_port'], str(msg[0]), str(msg[1])))
         return
