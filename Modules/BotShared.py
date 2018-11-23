@@ -387,7 +387,7 @@ def bot_setup_sockmsg(bot):
     except socket.error as msg:
         stderr("Error loading socket on port %s: %s (%s)" % (PORT, str(msg[0]), str(msg[1])))
         return
-    find_unused_port_in_range(bot, 8080, 9090)
+    find_unused_port_in_range(bot, 8080, 8082)
     bot.memory["botdict"]["tempvals"]['sock'].listen(5)
     conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
     threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
