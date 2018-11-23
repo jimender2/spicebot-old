@@ -29,7 +29,7 @@ def listener(bot, trigger):
 
     beguinelisten = False
     while not beguinelisten:
-        if len(bot.channels) > 0:
+        if "botdict_loaded" in bot.memory:
             beguinelisten = True
         else:
             time.sleep(1)
