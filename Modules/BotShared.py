@@ -22,6 +22,7 @@ sys.path.append(moduledir)
 # API
 import socket
 import threading
+import subprocess
 
 # Additional imports
 import ConfigParser
