@@ -423,15 +423,15 @@ def bot_api_socket_handler(conn, bot):
 
     data = conn.recv(2048)
     if not data:
-        stderr("[API] test.")
         conn.close()
     else:
-        stderr(data)
 
         # verify bot is reasdy to recieve a message
         if "botdict_loaded" not in bot.memory:
             stderr("[API] Not ready to process requests.")
             return
+
+        # conn.send()
 
         # catch errors with api format
         try:
@@ -460,6 +460,7 @@ def bot_api_socket_handler(conn, bot):
         # success
         stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
         osd(bot, jsondict["channel"], 'say', jsondict["message"])
+        conn.close()
 
 
 # gif searching api
