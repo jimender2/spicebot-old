@@ -431,8 +431,6 @@ def bot_api_socket_handler(conn, bot):
             stderr("[API] Not ready to process requests.")
             return
 
-        conn.send("helloworld")
-
         # catch errors with api format
         try:
             jsondict = eval(data)
