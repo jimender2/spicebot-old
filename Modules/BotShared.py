@@ -415,8 +415,7 @@ def is_port_in_use(port):
 
 
 def bot_api_socket_handler(conn, bot):
-    for connkey in conn.keys():
-        osd(bot, "#spicebottest", 'say', str(connkey))
+
     data = conn.recv(2048)
     if not data:
         conn.close()
