@@ -410,7 +410,7 @@ def is_port_in_use(port):
         return False
 
 
-def bot_api_socket_handler(conn, addr, bot):
+def bot_api_socket_handler(conn, bot):
     data = conn.recv(2048)
     if not data:
         conn.close()
