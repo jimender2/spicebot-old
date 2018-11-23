@@ -413,10 +413,6 @@ def is_port_in_use(port):
 def bot_api_socket_handler(conn, addr, bot):
     data = conn.recv(2048)
     if not data:
-
-        # Possibly add a api key
-
-        sock.send("HTTP/1.1 200 OK\n" + "Content-Type: text/html\n" + "\n" + "<html><body>Hello World</body></html>\n")
         conn.close()
     else:
 
