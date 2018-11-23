@@ -413,12 +413,6 @@ def is_port_in_use(port):
 def bot_api_socket_handler(conn, bot):
     data = conn.recv(2048)
     if not data:
-        conn.send(r'''HTTP/1.0 200 OK
-                    Content-Type: text/plain
-
-                    Hello, world!
-
-                    ''')
         conn.close()
     else:
 
