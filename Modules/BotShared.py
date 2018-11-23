@@ -426,6 +426,7 @@ def bot_api_socket_handler(conn, bot):
         stderr("[API] test.")
         conn.close()
     else:
+        stderr(str(data))
 
         # verify bot is reasdy to recieve a message
         if "botdict_loaded" not in bot.memory:
