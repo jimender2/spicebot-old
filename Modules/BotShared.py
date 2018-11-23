@@ -410,12 +410,15 @@ def is_port_in_use(port):
 def sock_receiver(conn, bot):
     data = conn.recv(2048)
     if not data:
-        return
-    try:
-        jsondict = eval(data)
-    except Exception as e:
-        return
-    osd(bot, "#spicebottest", 'say', str(jsondict))
+        conn.close()
+    else:
+        try:
+            jsondict = eval(data)
+            stderr("message recieved (%s)" % (str(jsondict)))
+        except Exception as e:
+            stderr("Error with message (%s)" % (e))
+            return
+        osd(bot, "#spicebottest", 'say', str(jsondict))
 
 
 # gif searching api

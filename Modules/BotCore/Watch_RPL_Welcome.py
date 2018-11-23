@@ -79,6 +79,8 @@ def real_startup(bot, trigger):
         for channel in bot.channels:
             osd(bot, channel, 'say', searchphrasefound)
 
+    # Json API listner
     if bot.memory["botdict"]["tempvals"]['sock']:
-        conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
-        threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
+        while True:
+            conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
+            threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
