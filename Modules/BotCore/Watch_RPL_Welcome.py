@@ -49,9 +49,6 @@ def real_startup(bot, trigger):
     availablecomsfiles += bot.memory["botdict"]["tempvals"]['dict_module_count']
 
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " modules.")
-    for channel in bot.channels:
-        osd(bot, channel, 'notice', startupcomplete)
-    bot_saved_jobs_run(bot)
 
     # Check for python module errors during this startup
     searchphrasefound = []
@@ -68,11 +65,16 @@ def real_startup(bot, trigger):
             searchphrasefound.append("No dict file(s) were loaded")
         elif "Error loading socket on port" in str(line):
             searchphrasefound.append("Socket Port failed to load correctly")
+        elif "Loaded socket on port" in str(line):
+            searchphrase = str(line).split("]:", -1)[1].replace("Loaded socket on port", "")
+            startupcomplete.append("Socket Port set to " + str(searchphrase))
+
+    for channel in bot.channels:
+        osd(bot, channel, 'notice', startupcomplete)
+    bot_saved_jobs_run(bot)
 
     if searchphrasefound != []:
         searchphrasefound.insert(0, "Notice to Bot Admins: ")
         searchphrasefound.append("Run the debug command for more information.")
         for channel in bot.channels:
             osd(bot, channel, 'say', searchphrasefound)
-
-    find_unused_port_in_range(bot, 8080, 8082)
