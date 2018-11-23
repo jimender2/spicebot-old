@@ -22,10 +22,6 @@ sys.path.append(moduledir)
 # API
 import socket
 import threading
-import subprocess
-import select
-import Queue
-from jsonsocket import Client, Server
 
 # Additional imports
 import ConfigParser
