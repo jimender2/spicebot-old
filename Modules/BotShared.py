@@ -375,13 +375,14 @@ def bot_setup_sockmsg(bot):
 
     bot.memory["botdict"]["tempvals"]['sock'] = socket.socket()  # the default socket types should be fine for sending text to localhost
 
-    # port number to use
+    # port number to use, try previous port, if able
     currentport = None
     if bot.memory["botdict"]['sock_port']:
         if not is_port_in_use(i):
             currentport = bot.memory["botdict"]['sock_port']
     if not currentport:
         currentport = find_unused_port_in_range(bot, 8080, 9090)
+    bot.memory["botdict"]['sock_port'] = currentport
     try:
         bot.memory["botdict"]["tempvals"]['sock'].bind(('0.0.0.0', currentport))
         stderr("Loaded socket on port %s" % (currentport))
