@@ -29,8 +29,11 @@ def listener(bot, trigger):
 
     beguinelisten = False
     while not beguinelisten:
-        if bot.memory["botdict"]["tempvals"]['sock']:
-            beguinelisten = True
+        if "botdict_loaded" in bot.memory:
+            if bot.memory["botdict"]["tempvals"]['sock']:
+                beguinelisten = True
+            else:
+                time.sleep(1)
         else:
             time.sleep(1)
 
