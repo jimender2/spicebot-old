@@ -26,7 +26,6 @@ sys.setdefaultencoding('utf-8')
 @event('001')
 @rule('.*')
 def listener(bot, trigger):
-    return
 
     beguinelisten = False
     while not beguinelisten:

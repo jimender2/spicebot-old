@@ -412,45 +412,43 @@ def sock_sender(conn, bot):
     dothing = 1
 
 
-def sock_receiver(conn, addr, bot):
+def sock_receiver(conn, bot):
     data = conn.recv(2048)
     if not data:
         conn.close()
     else:
 
-        senderval = str(repr(addr[1]))
-
         # verify bot is reasdy to recieve a message
         if "botdict_loaded" not in bot.memory:
-            stderr("[API](" + senderval + ") Not ready to process requests.")
+            stderr("[API] Not ready to process requests.")
             return
 
         # catch errors with api format
         try:
             jsondict = eval(data)
         except Exception as e:
-            stderr("[API](" + senderval + ") Error recieving from : (%s)" % (e))
+            stderr("[API] Error recieving: (%s)" % (e))
             return
 
         # must be a message included
         if not jsondict["message"]:
-            stderr("[API](" + senderval + ") No message included.")
+            stderr("[API] No message included.")
             return
 
         # must be a channel or user included
         if not jsondict["channel"]:
-            stderr("[API](" + senderval + ") No channel included.")
+            stderr("[API] No channel included.")
             return
 
         # must be a current channel or user
         if not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['all_current_users']):
-            stderr("[API](" + senderval + ") " + str(jsondict["channel"]) + " is not a current channel or user.")
+            stderr("[API] " + str(jsondict["channel"]) + " is not a current channel or user.")
             return
 
         # Possibly add a api key
 
         # success
-        stderr("[API](" + senderval + ") Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
+        stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
         osd(bot, jsondict["channel"], 'say', jsondict["message"])
 
 
