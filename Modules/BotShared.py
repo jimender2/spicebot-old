@@ -415,7 +415,7 @@ def bot_api_socket_handler(conn, addr, bot):
     if not data:
 
         # Possibly add a api key
-        
+
         sock.send("HTTP/1.1 200 OK\n" + "Content-Type: text/html\n" + "\n" + "<html><body>Hello World</body></html>\n")
         conn.close()
     else:
