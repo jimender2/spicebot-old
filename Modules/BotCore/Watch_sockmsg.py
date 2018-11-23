@@ -23,8 +23,8 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-HOST = '127.0.0.1'
-PORT = 7675  # SOPL
+HOST = '0.0.0.0'
+PORT = 8080  # SOPL
 TARGET = '#spicebottest'
 
 sock = None
