@@ -391,7 +391,7 @@ def bot_setup_api_socket(bot):
     try:
         bot.memory["botdict"]["tempvals"]['sock'].bind(('0.0.0.0', bot.memory["botdict"]['sock_port']))
         stderr("Loaded socket on port %s" % (bot.memory["botdict"]['sock_port']))
-        bot.memory["botdict"]["tempvals"]['sock'].listen(5)
+        bot.memory["botdict"]["tempvals"]['sock'].listen(10)
     except socket.error as msg:
         stderr("Error loading socket on port %s: %s (%s)" % (bot.memory["botdict"]['sock_port'], str(msg[0]), str(msg[1])))
         return
@@ -414,6 +414,7 @@ def is_port_in_use(port):
 
 
 def bot_api_socket_handler(conn, bot):
+    osd(bot, "#spicebottest", 'say', str(conn))
     data = conn.recv(2048)
     if not data:
         conn.close()
