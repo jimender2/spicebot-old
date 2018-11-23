@@ -38,7 +38,6 @@ def listener(bot, trigger):
             time.sleep(1)
 
     # Json API listner
-    if bot.memory["botdict"]["tempvals"]['sock']:
-        while True:
-            conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
-            threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
+    while True:
+        conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
+        threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
