@@ -27,15 +27,22 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 def listener(bot, trigger):
 
-    beguinelisten = False
-    while not beguinelisten:
+    beguineload = False
+    while not beguineload:
         if "botdict_loaded" in bot.memory:
-            if bot.memory["botdict"]["tempvals"]['sock']:
-                beguinelisten = True
-            else:
-                time.sleep(1)
+            beguineload = True
         else:
             time.sleep(1)
 
-    conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
-    threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
+    beguinelisten = False
+    while not beguinelisten:
+        if bot.memory["botdict"]["tempvals"]['sock']:
+            beguinelisten = True
+        else:
+            time.sleep(1)
+
+    # Json API listner
+    if bot.memory["botdict"]["tempvals"]['sock']:
+        while True:
+            conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
+            threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()

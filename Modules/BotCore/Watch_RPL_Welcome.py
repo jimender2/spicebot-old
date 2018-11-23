@@ -27,7 +27,7 @@ def real_startup(bot, trigger):
 
     beguineload = False
     while not beguineload:
-        if len(bot.channels) > 0:
+        if "botdict_loaded" in bot.memory:
             beguineload = True
         else:
             time.sleep(1)
@@ -67,7 +67,7 @@ def real_startup(bot, trigger):
             searchphrasefound.append("Socket Port failed to load correctly")
         elif "Loaded socket on port" in str(line):
             searchphrase = str(line).split("]:", -1)[1].replace("Loaded socket on port ", "")
-            startupcomplete.append("Socket Port set to " + str(searchphrase))
+            startupcomplete.append("API Port set to " + str(searchphrase))
 
     for channel in bot.channels:
         osd(bot, channel, 'notice', startupcomplete)
@@ -78,9 +78,3 @@ def real_startup(bot, trigger):
         searchphrasefound.append("Run the debug command for more information.")
         for channel in bot.channels:
             osd(bot, channel, 'say', searchphrasefound)
-
-    # Json API listner
-    if bot.memory["botdict"]["tempvals"]['sock']:
-        while True:
-            conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
-            threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
