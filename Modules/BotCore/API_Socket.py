@@ -34,7 +34,7 @@ def listener(bot, trigger):
         else:
             time.sleep(1)
 
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server = socket.socket()
     server.setblocking(0)
     server.bind(('0.0.0.0', 8080))
     inputs = [server]
@@ -79,6 +79,23 @@ def listener(bot, trigger):
 
 
 """
+
+# port number to use, try previous port, if able
+currentport = None
+if bot.memory["botdict"]['sock_port']:
+    if not is_port_in_use(bot.memory["botdict"]['sock_port']):
+        currentport = bot.memory["botdict"]['sock_port']
+if not currentport:
+    currentport = find_unused_port_in_range(bot, 8080, 9090)
+bot.memory["botdict"]['sock_port'] = currentport
+try:
+    bot.memory["botdict"]["tempvals"]['sock'].bind(('0.0.0.0', bot.memory["botdict"]['sock_port']))
+    stderr("Loaded socket on port %s" % (bot.memory["botdict"]['sock_port']))
+    bot.memory["botdict"]["tempvals"]['sock'].listen(5)
+except socket.error as msg:
+    stderr("Error loading socket on port %s: %s (%s)" % (bot.memory["botdict"]['sock_port'], str(msg[0]), str(msg[1])))
+    return
+
 
     # API listner
     while True:

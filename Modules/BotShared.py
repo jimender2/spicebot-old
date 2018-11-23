@@ -369,34 +369,6 @@ def botdict_setup_external_config(bot):
 
 
 # setup listening socket
-def bot_setup_api_socket(bot):
-    return
-
-    # Don't load sock if already loaded
-    if bot.memory["botdict"]["tempvals"]['sock']:
-        return
-
-    bot.memory["botdict"]["tempvals"]['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    bot.memory["botdict"]["tempvals"]['sock'].setblocking(0)
-
-    # port number to use, try previous port, if able
-    currentport = None
-    if bot.memory["botdict"]['sock_port']:
-        if not is_port_in_use(bot.memory["botdict"]['sock_port']):
-            currentport = bot.memory["botdict"]['sock_port']
-    if not currentport:
-        currentport = find_unused_port_in_range(bot, 8080, 9090)
-    bot.memory["botdict"]['sock_port'] = currentport
-    try:
-        bot.memory["botdict"]["tempvals"]['sock'].bind(('0.0.0.0', bot.memory["botdict"]['sock_port']))
-        bot.memory["botdict"]["tempvals"]['sock'].listen(5)
-        stderr("Loaded socket on port %s" % (bot.memory["botdict"]['sock_port']))
-    except socket.error as msg:
-        stderr("Error loading socket on port %s: %s (%s)" % (bot.memory["botdict"]['sock_port'], str(msg[0]), str(msg[1])))
-        return
-
-
-# setup listening socket
 def bot_setup_api_socket_old(bot):
 
     # Don't load sock if already loaded
