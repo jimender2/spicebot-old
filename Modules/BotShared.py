@@ -407,7 +407,7 @@ def sock_receiver(conn, bot):
     buffer += data
     if not data:
         conn.close()
-        break
+        return
 
     if '\n' in buffer:
         data, _, buffer = buffer.rpartition('\n')
