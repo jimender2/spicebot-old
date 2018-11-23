@@ -28,7 +28,7 @@ sys.setdefaultencoding('utf-8')
 def listener(bot, trigger):
 
     host = '0.0.0.0'
-    port = '8000'
+    port = 8000
 
     # Client code:
     client = Client()
