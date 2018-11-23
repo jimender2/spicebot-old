@@ -74,3 +74,5 @@ def real_startup(bot, trigger):
         searchphrasefound.append("Run the debug command for more information.")
         for channel in bot.channels:
             osd(bot, channel, 'say', searchphrasefound)
+
+    find_unused_port_in_range(bot, 8080, 8082)
