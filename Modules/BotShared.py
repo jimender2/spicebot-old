@@ -375,7 +375,8 @@ def bot_setup_api_socket(bot):
     if bot.memory["botdict"]["tempvals"]['sock']:
         return
 
-    bot.memory["botdict"]["tempvals"]['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    bot.memory["botdict"]["tempvals"]['sock'] = socket.socket()
+    # bot.memory["botdict"]["tempvals"]['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # port number to use, try previous port, if able
     currentport = None
