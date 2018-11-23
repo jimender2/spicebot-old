@@ -36,7 +36,6 @@ def listener(bot, trigger):
 
     server = bot.memory["botdict"]["tempvals"]['sock']
     server.setblocking(0)
-    server.bind(('0.0.0.0', 8080))
     inputs = [server]
     outputs = []
     message_queues = {}
