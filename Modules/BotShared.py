@@ -13,6 +13,8 @@ from sopel.tools.time import get_timezone, format_time
 import os
 from os.path import exists
 import sys
+import socket
+import threading
 
 # Additional imports
 import ConfigParser

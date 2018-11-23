@@ -8,8 +8,7 @@ import sopel.module
 # imports for system and OS access, directories
 import os
 import sys
-import socket
-import threading
+
 
 # imports based on THIS file
 moduledir = os.path.dirname(__file__)
