@@ -91,6 +91,8 @@ bot_dict = {
                             # Indicate if we need to pull the dict from the database
                             "dict_loaded": False,
 
+                            "sock": None,
+
                             # Time The Bot started last
                             "uptime": None,
 
@@ -373,18 +375,20 @@ def botdict_setup_external_config(bot):
 
 # setup listening socket
 def bot_setup_sockmsg(bot):
-    global sock
-    if sock:  # the socket will already exist if the module is being reloaded
+
+    # Don't load sock if already loaded
+    if bot.memory["botdict"]["tempvals"]['sock']:
         return
-    sock = socket.socket()  # the default socket types should be fine for sending text to localhost
+
+    bot.memory["botdict"]["tempvals"]['sock'] = socket.socket()  # the default socket types should be fine for sending text to localhost
     try:
-        sock.bind(('0.0.0.0', PORT))
+        bot.memory["botdict"]["tempvals"]['sock'].bind(('0.0.0.0', PORT))
         stderr("Loaded socket on port %s" % (PORT))
     except socket.error as msg:
         stderr("Error loading socket on port %s: %s (%s)" % (PORT, str(msg[0]), str(msg[1])))
         return
     find_unused_port_in_range(bot, 8080, 8082)
-    sock.listen(5)
+    bot.memory["botdict"]["tempvals"]['sock'].listen(5)
 
 
 def find_unused_port_in_range(bot, rangestart, rangeend):

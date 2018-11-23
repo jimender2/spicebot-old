@@ -29,12 +29,10 @@ def listener(bot, trigger):
 
     beguinelisten = False
     while not beguinelisten:
-        if "botdict_loaded" in bot.memory:
+        if bot.memory["botdict"]["tempvals"]['sock']:
             beguinelisten = True
         else:
             time.sleep(1)
 
-    global sock
-    while True:
-        conn, addr = sock.accept()
-        threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
+    conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
+    threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
