@@ -377,9 +377,9 @@ def bot_setup_sockmsg(bot):
 
     # port number to use
     currentport = None
-    if bot.memory["botdict"]["tempvals"]['sock_port']:
+    if bot.memory["botdict"]['sock_port']:
         if str(is_port_in_use(i)) == "False":
-            currentport = bot.memory["botdict"]["tempvals"]['sock_port']
+            currentport = bot.memory["botdict"]['sock_port']
     if not currentport:
         currentport = find_unused_port_in_range(bot, 8080, 9090)
     try:
