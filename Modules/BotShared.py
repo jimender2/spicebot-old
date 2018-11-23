@@ -9,14 +9,17 @@ from sopel.module import commands, nickname_commands, event, rule, OP, ADMIN, VO
 from sopel.tools import Identifier, stderr
 from sopel.tools.time import get_timezone, format_time
 
-# additional shared files
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
 
 # imports for system and OS access, directories
 import os
 from os.path import exists
 import sys
+
+# additional shared files
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
+
+# API
 import socket
 import threading
 import subprocess
