@@ -66,6 +66,8 @@ def real_startup(bot, trigger):
             searchphrasefound.append(str(searchphrase) + " dict file(s) failed")
         elif "Warning: Couldn't load any dict files" in str(line):
             searchphrasefound.append("No dict file(s) were loaded")
+        elif "Error loading socket on port" in str(line):
+            searchphrasefound.append("Socket Port failed to load correctly")
 
     if searchphrasefound != []:
         searchphrasefound.insert(0, "Notice to Bot Admins: ")

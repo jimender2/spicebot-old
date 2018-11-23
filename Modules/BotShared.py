@@ -249,6 +249,16 @@ gif_dontuseextensions = ['.jpg', '.png']
 
 
 """
+Sock
+"""
+
+
+sock = None
+PORT = 8080  # SOPL
+TARGET = '#spicebottest'
+
+
+"""
 Bot Startup
 """
 
@@ -266,6 +276,9 @@ def botdict_open(bot):
 
     # load external config file
     botdict_setup_external_config(bot)
+
+    # open the sockmsg feature
+    bot_setup_sockmsg(bot)
 
     # Gif API
     botdict_setup_gif_api_access(bot)
@@ -353,6 +366,40 @@ def botdict_setup_external_config(bot):
 
             if each_key not in bot.memory["botdict"]["tempvals"]['ext_conf'][each_section].keys():
                 bot.memory["botdict"]["tempvals"]['ext_conf'][each_section][each_key] = each_val
+
+
+# setup listening socket
+def bot_setup_sockmsg(bot):
+    global sock
+    if sock:  # the socket will already exist if the module is being reloaded
+        return
+    sock = socket.socket()  # the default socket types should be fine for sending text to localhost
+    try:
+        sock.bind(('0.0.0.0', PORT))
+        stderr("Loaded socket on port %s" % (PORT))
+    except socket.error as msg:
+        stderr("Error loading socket on port %s: %s (%s)" % (PORT, str(msg[0]), str(msg[1])))
+        return
+    sock.listen(5)
+
+
+def sock_receiver(conn, bot):
+    buffer = ''
+    while True:
+        data = conn.recv(2048)
+        buffer += data
+        if not data:
+            conn.close()
+            break
+        if '\n' in buffer:
+            data, _, buffer = buffer.rpartition('\n')
+            sayit(bot, data)
+    sayit(bot, buffer)
+
+
+def sayit(bot, data):
+    for line in data.splitlines():
+        bot.say("[sockmsg] %s" % line, TARGET)
 
 
 # gif searching api
