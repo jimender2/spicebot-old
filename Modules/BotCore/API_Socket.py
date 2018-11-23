@@ -27,26 +27,6 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 def listener(bot, trigger):
 
-    host = '0.0.0.0'
-    port = 8000
-
-    # Client code:
-    client = Client()
-    client.connect(host, port).send({'some_list': [123, 456]})
-    response = client.recv()
-    # response now is {'data': {'some_list': [123, 456]}}
-    client.close()
-
-    # Server code:
-    server = Server(host, port)
-    server.accept()
-    data = server.recv()
-    # data now is: {'some_list': [123, 456]}
-    server.send({'data': data}).close()
-
-
-"""
-
     beguinelisten = False
     while not beguinelisten:
         if "botdict_loaded" in bot.memory:
@@ -58,4 +38,3 @@ def listener(bot, trigger):
     while True:
         conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
         threading.Thread(target=bot_api_socket_handler, args=(conn, bot), name='sockmsg-listener').start()
-"""
