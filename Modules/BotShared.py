@@ -163,6 +163,9 @@ bot_dict = {
                 # Channels
                 "channels_list": {},
 
+                # sock port
+                "sock_port": None,
+
                 }
 
 # valid commands that the bot will reply to by name
@@ -251,16 +254,6 @@ gif_dontusesites = [
                         ]
 
 gif_dontuseextensions = ['.jpg', '.png']
-
-
-"""
-Sock
-"""
-
-
-sock = None
-PORT = 8080  # SOPL
-TARGET = '#spicebottest'
 
 
 """
@@ -381,16 +374,21 @@ def bot_setup_sockmsg(bot):
         return
 
     bot.memory["botdict"]["tempvals"]['sock'] = socket.socket()  # the default socket types should be fine for sending text to localhost
+
+    # port number to use
+    currentport = None
+    if bot.memory["botdict"]["tempvals"]['sock_port']:
+        if str(is_port_in_use(i)) == "False":
+            currentport = bot.memory["botdict"]["tempvals"]['sock_port']
+    if not currentport:
+        currentport = find_unused_port_in_range(bot, 8080, 9090)
     try:
-        bot.memory["botdict"]["tempvals"]['sock'].bind(('0.0.0.0', PORT))
-        stderr("Loaded socket on port %s" % (PORT))
+        bot.memory["botdict"]["tempvals"]['sock'].bind(('0.0.0.0', currentport))
+        stderr("Loaded socket on port %s" % (currentport))
+        bot.memory["botdict"]["tempvals"]['sock'].listen(5)
     except socket.error as msg:
-        stderr("Error loading socket on port %s: %s (%s)" % (PORT, str(msg[0]), str(msg[1])))
+        stderr("Error loading socket on port %s: %s (%s)" % (currentport, str(msg[0]), str(msg[1])))
         return
-    find_unused_port_in_range(bot, 8080, 8082)
-    bot.memory["botdict"]["tempvals"]['sock'].listen(5)
-    conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
-    threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
 
 
 def find_unused_port_in_range(bot, rangestart, rangeend):
@@ -405,21 +403,22 @@ def is_port_in_use(port):
 
 def sock_receiver(conn, bot):
     buffer = ''
-    while True:
-        data = conn.recv(2048)
-        buffer += data
-        if not data:
-            conn.close()
-            break
-        if '\n' in buffer:
-            data, _, buffer = buffer.rpartition('\n')
-            sayit(bot, data)
+    data = conn.recv(2048)
+    buffer += data
+    if not data:
+        conn.close()
+        break
+
+    if '\n' in buffer:
+        data, _, buffer = buffer.rpartition('\n')
+        sayit(bot, data)
     sayit(bot, buffer)
+    osd(bot, botcom.instigator, 'notice', "")
 
 
 def sayit(bot, data):
     for line in data.splitlines():
-        bot.say("[sockmsg] %s" % line, TARGET)
+        bot.say("[sockmsg] %s" % line, '#spicebottest')
 
 
 # gif searching api

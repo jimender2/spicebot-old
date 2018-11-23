@@ -78,3 +78,7 @@ def real_startup(bot, trigger):
         searchphrasefound.append("Run the debug command for more information.")
         for channel in bot.channels:
             osd(bot, channel, 'say', searchphrasefound)
+
+    if bot.memory["botdict"]["tempvals"]['sock']:
+        conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
+        threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
