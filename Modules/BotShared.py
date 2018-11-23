@@ -416,6 +416,12 @@ def is_port_in_use(port):
 
 def bot_api_socket_handler(conn, bot):
 
+    # verify bot is reasdy to recieve a message
+    if "botdict_loaded" not in bot.memory:
+        stderr("[API] Not ready to process requests.")
+        return
+    stderr("[API] test.")
+
     data = conn.recv(2048)
     if not data:
         conn.close()
