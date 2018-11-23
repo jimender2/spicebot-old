@@ -412,13 +412,36 @@ def sock_receiver(conn, bot):
     if not data:
         conn.close()
     else:
+
+        # verify bot is reasdy to recieve a message
+        if "botdict_loaded" not in bot.memory:
+            stderr("API not ready to process requests.")
+            return
+
+        # catch errors with api format
         try:
             jsondict = eval(data)
-            stderr("message recieved (%s)" % (str(jsondict)))
         except Exception as e:
-            stderr("Error with message (%s)" % (e))
+            stderr("Error recieving API message (%s)" % (e))
             return
-        osd(bot, "#spicebottest", 'say', str(jsondict))
+
+        # must be a message included
+        if not jsondict["message"]:
+            stderr("No message included in API usage.")
+            return
+
+        # must be a channel or user included
+        if not jsondict["channel"]:
+            stderr("No channel included in API usage.")
+            return
+
+        # must be a current channel or user
+        if not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['all_current_users']):
+            stderr("API channel is not a current channel or user.")
+            return
+
+        stderr("Successful API recieved.")
+        osd(bot, jsondict["channel"], 'say', jsondict["message"])
 
 
 # gif searching api
