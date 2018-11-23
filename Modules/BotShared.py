@@ -377,13 +377,13 @@ def bot_setup_sockmsg(bot):
     if sock:  # the socket will already exist if the module is being reloaded
         return
     sock = socket.socket()  # the default socket types should be fine for sending text to localhost
-    find_unused_port_in_range(bot, 8080, 8082)
     try:
         sock.bind(('0.0.0.0', PORT))
         stderr("Loaded socket on port %s" % (PORT))
     except socket.error as msg:
         stderr("Error loading socket on port %s: %s (%s)" % (PORT, str(msg[0]), str(msg[1])))
         return
+    find_unused_port_in_range(bot, 8080, 8082)
     sock.listen(5)
 
 
