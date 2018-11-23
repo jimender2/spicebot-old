@@ -389,6 +389,8 @@ def bot_setup_sockmsg(bot):
         return
     find_unused_port_in_range(bot, 8080, 8082)
     bot.memory["botdict"]["tempvals"]['sock'].listen(5)
+    conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
+    threading.Thread(target=sock_receiver, args=(conn, bot), name='sockmsg-listener').start()
 
 
 def find_unused_port_in_range(bot, rangestart, rangeend):
