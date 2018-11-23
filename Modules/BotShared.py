@@ -370,6 +370,7 @@ def botdict_setup_external_config(bot):
 
 # setup listening socket
 def bot_setup_api_socket(bot):
+    return
 
     # Don't load sock if already loaded
     if bot.memory["botdict"]["tempvals"]['sock']:
@@ -403,7 +404,6 @@ def bot_setup_api_socket_old(bot):
         return
 
     bot.memory["botdict"]["tempvals"]['sock'] = socket.socket()
-    # bot.memory["botdict"]["tempvals"]['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # port number to use, try previous port, if able
     currentport = None

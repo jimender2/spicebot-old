@@ -30,14 +30,13 @@ def listener(bot, trigger):
     beguinelisten = False
     while not beguinelisten:
         if "botdict" in bot.memory:
-            if bot.memory["botdict"]["tempvals"]['sock']:
-                beguinelisten = True
-            else:
-                time.sleep(1)
+            beguinelisten = True
         else:
             time.sleep(1)
 
-    server = bot.memory["botdict"]["tempvals"]['sock']
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.setblocking(0)
+    server.bind(('0.0.0.0', 8080))
     inputs = [server]
     outputs = []
     message_queues = {}
