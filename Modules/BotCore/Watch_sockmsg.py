@@ -26,6 +26,14 @@ sys.setdefaultencoding('utf-8')
 @event('001')
 @rule('.*')
 def listener(bot, trigger):
+
+    beguinelisten = False
+    while not beguinelisten:
+        if len(bot.channels) > 0:
+            beguinelisten = True
+        else:
+            time.sleep(1)
+
     global sock
     while True:
         conn, addr = sock.accept()
