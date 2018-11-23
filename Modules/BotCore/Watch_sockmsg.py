@@ -27,17 +27,13 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 def listener(bot, trigger):
 
-    beguineload = False
-    while not beguineload:
-        if "botdict_loaded" in bot.memory:
-            beguineload = True
-        else:
-            time.sleep(1)
-
     beguinelisten = False
     while not beguinelisten:
-        if bot.memory["botdict"]["tempvals"]['sock']:
-            beguinelisten = True
+        if "botdict" in bot.memory:
+            if bot.memory["botdict"]["tempvals"]['sock']:
+                beguinelisten = True
+            else:
+                time.sleep(1)
         else:
             time.sleep(1)
 

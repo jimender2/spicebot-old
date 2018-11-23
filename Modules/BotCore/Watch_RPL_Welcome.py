@@ -27,7 +27,7 @@ def real_startup(bot, trigger):
 
     beguineload = False
     while not beguineload:
-        if "botdict_loaded" in bot.memory:
+        if len(bot.channels) > 0:
             beguineload = True
         else:
             time.sleep(1)
