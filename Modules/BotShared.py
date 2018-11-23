@@ -62,6 +62,9 @@ import itertools
 import inspect
 import pickle
 
+sys.path.append(moduledir)
+from jsonsocket import Client, Server
+
 
 # user agent and header
 ua = UserAgent()
