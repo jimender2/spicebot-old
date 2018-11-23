@@ -38,7 +38,7 @@ def setup(bot):
     try:
         sock.bind((HOST, PORT))
     except socket.error as msg:
-        print "socket fucked up: " + str(msg[0]) + ": " + str(msg[1])
+        dothing = 1  # print "socket fucked up: " + str(msg[0]) + ": " + str(msg[1])
         return
     sock.listen(5)
 
