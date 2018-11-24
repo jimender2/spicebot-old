@@ -381,6 +381,31 @@ def bot_setup_api_socket(bot):
     if bot.memory["botdict"]["tempvals"]['sock']:
         return
 
+    bot.memory["botdict"]["tempvals"]['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # port number to use, try previous port, if able
+    currentport = None
+    if bot.memory["botdict"]['sock_port']:
+        if not is_port_in_use(bot.memory["botdict"]['sock_port']):
+            currentport = bot.memory["botdict"]['sock_port']
+    if not currentport:
+        currentport = find_unused_port_in_range(bot, 8080, 9090)
+    bot.memory["botdict"]['sock_port'] = currentport
+    try:
+        bot.memory["botdict"]["tempvals"]['sock'].bind(('0.0.0.0', bot.memory["botdict"]['sock_port']))
+        stderr("Loaded socket on port %s" % (bot.memory["botdict"]['sock_port']))
+        bot.memory["botdict"]["tempvals"]['sock'].listen(10)
+    except socket.error as msg:
+        stderr("Error loading socket on port %s: %s (%s)" % (bot.memory["botdict"]['sock_port'], str(msg[0]), str(msg[1])))
+        return
+
+
+def bot_setup_api_socket_old(bot):
+
+    # Don't load sock if already loaded
+    if bot.memory["botdict"]["tempvals"]['sock']:
+        return
+
     bot.memory["botdict"]["tempvals"]['sock'] = socket.socket()  # the default socket types should be fine for sending text to localhost
 
     # port number to use, try previous port, if able
@@ -416,7 +441,7 @@ def is_port_in_use(port):
         return False
 
 
-def bot_api_socket_handler(conn, bot):
+def bot_api_socket_handler_old(conn, bot):
 
     # verify bot is reasdy to recieve a message
     if "botdict_loaded" not in bot.memory:

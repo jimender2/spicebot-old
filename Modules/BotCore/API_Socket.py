@@ -35,12 +35,89 @@ def listener(bot, trigger):
             time.sleep(1)
     bot.msg("#spicebottest", "[R] testing api")
 
+
+def functional_socket_old(bot):
+    while True:
+        conn, addr = bot.memory["botdict"]["tempvals"]['sock'].accept()
+        threading.Thread(target=bot_api_socket_handler, args=(conn, bot), name='sockmsg-listener').start()
+
+
+def bot_api_socket_handler(conn, bot):
+
+    try:
+        bot.msg("#spicebottest", "[R] connection from " + str(client_address))
+
+        # Receive the data in small chunks and retransmit it
+        while True:
+            data = connection.recv(2048)
+            bot.msg("#spicebottest", "[R] received " + str(data))
+            if data:
+
+                # verify bot is reasdy to recieve a message
+                if "botdict_loaded" not in bot.memory:
+                    stderr("[API] Not ready to process requests.")
+                    return
+
+                # Sending Botdict out
+                if str(data).startswith("GET"):
+
+                    # Possibly add a api key
+
+                    bot.msg("#spicebottest", "[R] sending data back to the client")
+                    connection.sendall(str(str(bot.memory["botdict"]) + "\n"))
+                    bot.msg("#spicebottest", "[R] sent data back to the client")
+                    break
+
+                else:
+
+                    # catch errors with api format
+                    try:
+                        jsondict = eval(data)
+                    except Exception as e:
+                        stderr("[API] Error recieving: (%s)" % (e))
+                        return
+
+                    # must be a message included
+                    if not jsondict["message"]:
+                        stderr("[API] No message included.")
+                        return
+
+                    # must be a channel or user included
+                    if not jsondict["channel"]:
+                        stderr("[API] No channel included.")
+                        return
+
+                    # must be a current channel or user
+                    if not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['all_current_users']):
+                        stderr("[API] " + str(jsondict["channel"]) + " is not a current channel or user.")
+                        return
+
+                    # Possibly add a api key
+
+                    # success
+                    stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
+                    osd(bot, jsondict["channel"], 'say', jsondict["message"])
+                    break
+
+            else:
+                bot.msg("#spicebottest", "[R] no more data from " + str(client_address))
+                break
+
+    finally:
+        # Clean up the connection
+        bot.msg("#spicebottest", "[R] closing connection")
+        connection.close()
+
+
+def functional_socket_complete(bot):
+
     # Create a TCP/IP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Bind the socket to the port
     server_address = ('0.0.0.0', 9091)
     sock.bind(server_address)
+    # sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     bot.msg("#spicebottest", "[R] starting up on " + str(sock.getsockname()))
 
     # Listen for incoming connections
