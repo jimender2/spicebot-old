@@ -86,6 +86,8 @@ def listener(bot, trigger):
 
                         # don't include this
                         del savedict["tempvals"]['sock']
+
+                        # convert to json
                         data_string = json.dumps(savedict, default=json_util.default).encode('utf-8')
 
                         try:
