@@ -59,62 +59,62 @@ def listener(bot, trigger):
         stderr("[API] Waiting for a connection.")
         connection, client_address = sock.accept()
 
-        try:
-            stderr("[API] Connection from " + str(client_address))
+        # try:
+        stderr("[API] Connection from " + str(client_address))
 
-            # Receive the data in small chunks and retransmit it
-            while True:
-                data = connection.recv(2048)
-                stderr("[API] received " + str(data))
-                if data:
+        # Receive the data in small chunks and retransmit it
+        while True:
+            data = connection.recv(2048)
+            stderr("[API] received " + str(data))
+            if data:
 
-                    # verify bot is reasdy to recieve a message
-                    if "botdict_loaded" not in bot.memory:
-                        stderr("[API] Not ready to process requests.")
-                        return
+                # verify bot is reasdy to recieve a message
+                if "botdict_loaded" not in bot.memory:
+                    stderr("[API] Not ready to process requests.")
+                    return
 
-                    # Sending Botdict out
-                    if str(data).startswith("GET"):
+                # Sending Botdict out
+                if str(data).startswith("GET"):
 
-                        # Possibly add a api key
+                    # Possibly add a api key
 
-                        stderr("[API] sending data back to the client " + str(data))
-                        connection.sendall(str(str(bot.memory["botdict"]) + "\n"))
-                        break
-
-                    else:
-
-                        # catch errors with api format
-                        try:
-                            jsondict = eval(data)
-                        except Exception as e:
-                            stderr("[API] Error recieving: (%s)" % (e))
-                            return
-
-                        # must be a message included
-                        if not jsondict["message"]:
-                            stderr("[API] No message included.")
-                            return
-
-                        # must be a channel or user included
-                        if not jsondict["channel"]:
-                            stderr("[API] No channel included.")
-                            return
-
-                        # must be a current channel or user
-                        if not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['all_current_users']):
-                            stderr("[API] " + str(jsondict["channel"]) + " is not a current channel or user.")
-                            return
-
-                        # Possibly add a api key
-
-                        # success
-                        stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
-                        osd(bot, jsondict["channel"], 'say', jsondict["message"])
-                        break
+                    stderr("[API] sending data back to the client " + str(data))
+                    connection.sendall(str(str(bot.memory["botdict"]) + "\n"))
+                    break
 
                 else:
+
+                    # catch errors with api format
+                    try:
+                        jsondict = eval(data)
+                    except Exception as e:
+                        stderr("[API] Error recieving: (%s)" % (e))
+                        return
+
+                    # must be a message included
+                    if not jsondict["message"]:
+                        stderr("[API] No message included.")
+                        return
+
+                    # must be a channel or user included
+                    if not jsondict["channel"]:
+                        stderr("[API] No channel included.")
+                        return
+
+                    # must be a current channel or user
+                    if not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['all_current_users']):
+                        stderr("[API] " + str(jsondict["channel"]) + " is not a current channel or user.")
+                        return
+
+                    # Possibly add a api key
+
+                    # success
+                    stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
+                    osd(bot, jsondict["channel"], 'say', jsondict["message"])
                     break
+
+            else:
+                break
 
         # finally:
             # Clean up the connection
