@@ -79,8 +79,8 @@ def listener(bot, trigger):
                         # Possibly add a api key
 
                         # dump botdict into json format
+                        data_string = pickle.dumps(bot.memory["botdict"], -1)
                         # data_string = str(bot.memory["botdict"])
-                        data_string = json.dumps(bot.memory["botdict"], indent=4, cls=CustomEncoder)
 
                         try:
                             stderr("[API] Sending data back to the client.")
