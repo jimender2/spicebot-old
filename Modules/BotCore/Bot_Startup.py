@@ -34,7 +34,7 @@ def real_startup(bot, trigger):
 
     # Startup
     for channel in bot.channels:
-        osd(bot, channel, 'notice', bot.nick + " is now starting. Please wait while I finish loading my dictionary configuration.")
+        osd(bot, channel, 'notice', bot.nick + " is now starting. Please wait while I load my configuration.")
 
     # Open Bot memory dictionary
     botdict_open(bot)
