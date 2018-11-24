@@ -43,19 +43,21 @@ def listener(bot, trigger):
     bot.msg("#spicebottest", "[S] starting up on " + str(server_address))
     sock.connect(server_address)
 
-    # Send data
-    message = 'This is the message.  It will be repeated.'
-    bot.msg("#spicebottest", "[S] sending " + str(message))
-    sock.sendall(message)
+    try:
+        # Send data
+        message = 'This is the message.  It will be repeated.'
+        bot.msg("#spicebottest", "[S] sending " + str(message))
+        sock.sendall(message)
 
-    # Look for the response
-    amount_received = 0
-    amount_expected = len(message)
+        # Look for the response
+        amount_received = 0
+        amount_expected = len(message)
 
-    while amount_received < amount_expected:
-        data = sock.recv(2048)
-        amount_received += len(data)
-        bot.msg("#spicebottest", "[S] received " + str(data))
+        while amount_received < amount_expected:
+            data = sock.recv(2048)
+            amount_received += len(data)
+            bot.msg("#spicebottest", "[S] received " + str(data))
 
-    bot.msg("#spicebottest", "[S] closing socket")
-    sock.close()
+    finally:
+        bot.msg("#spicebottest", "[S] closing socket")
+        sock.close()
