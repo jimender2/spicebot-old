@@ -74,8 +74,8 @@ def listener(bot, trigger):
                         break
 
                     # Sending Botdict out
-                    if str(data).startswith("GET"):
-                        pathrequested = spicemanip(bot, data, 1)
+                    if spicemanip(bot, str(data), 1) == "GET":
+                        pathrequested = spicemanip(bot, data, 2)
                         bot.msg("#spicebottest", str(pathrequested))
 
                         # Possibly add a api key
