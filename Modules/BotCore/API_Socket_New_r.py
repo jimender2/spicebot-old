@@ -39,12 +39,12 @@ def listener(bot, trigger):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Bind the socket to the port
-    server_address = ('0.0.0.0', 9091)
-    bot.msg("#spicebottest", "[R] starting up on " + str(server_address))
+    server_address = ('', 9091)
+    bot.msg("#spicebottest", "[R] starting up on " + str(sock.getsockname()))
     sock.bind(server_address)
 
     # Listen for incoming connections
-    sock.listen(1)
+    sock.listen(10)
 
     while True:
         # Wait for a connection
