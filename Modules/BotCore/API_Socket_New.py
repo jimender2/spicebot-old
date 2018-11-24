@@ -53,16 +53,13 @@ def listener(bot, trigger):
 
         bot.msg("#spicebottest", "connection from " + str(client_address))
 
-
-"""
         # Receive the data in small chunks and retransmit it
         while True:
             data = connection.recv(16)
-            print >>sys.stderr, 'received "%s"' % data
+            bot.msg("#spicebottest", "'received " + str(data))
             if data:
-                print >>sys.stderr, 'sending data back to the client'
+                bot.msg("#spicebottest", "sending data back to the client")
                 connection.sendall(data)
             else:
-                print >>sys.stderr, 'no more data from', client_address
+                bot.msg("#spicebottest", "no more data from " + str(client_address))
                 break
-"""
