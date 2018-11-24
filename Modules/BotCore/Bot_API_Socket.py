@@ -75,7 +75,7 @@ def listener(bot, trigger):
 
                     # Sending Botdict out
                     if str(data).startswith("GET"):
-                        bot.msg("#spicebotest", str(data))
+                        bot.msg("#spicebottest", str(data))
 
                         # Possibly add a api key
 
