@@ -71,7 +71,7 @@ def listener(bot, trigger):
                         # Possibly add a api key
 
                         bot.msg("#spicebottest", "[R] sending data back to the client")
-                        connection.sendall(str(data + " helloworld"))
+                        connection.sendall(str("helloworld"))
                         bot.msg("#spicebottest", "[R] sent data back to the client")
                         break
 
