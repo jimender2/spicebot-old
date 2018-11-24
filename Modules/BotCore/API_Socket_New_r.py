@@ -73,6 +73,7 @@ def listener(bot, trigger):
                         bot.msg("#spicebottest", "[R] sending data back to the client")
                         connection.sendall(data)
                         bot.msg("#spicebottest", "[R] sent data back to the client")
+                        connection.close()
 
                     else:
 
