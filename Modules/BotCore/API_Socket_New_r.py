@@ -39,7 +39,7 @@ def listener(bot, trigger):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Bind the socket to the port
-    server_address = ('', 9091)
+    server_address = ('', 9092)
     bot.msg("#spicebottest", "[R] starting up on " + str(sock.getsockname()))
     sock.bind(server_address)
 
@@ -72,7 +72,7 @@ def listener(bot, trigger):
                         # connection.sendall(data)
                         message = 'This is the message.  It will be repeated.'
                         bot.msg("#spicebottest", "[S] sending " + str(message))
-                        sock.sendall(message)
+                        connection.sendall(message)
                     else:
 
                         # catch errors with api format
