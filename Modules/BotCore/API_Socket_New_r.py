@@ -33,14 +33,14 @@ def listener(bot, trigger):
             beguinelisten = True
         else:
             time.sleep(1)
-    bot.msg("#spicebottest", "testing api")
+    bot.msg("#spicebottest", "[R] testing api")
 
     # Create a TCP/IP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Bind the socket to the port
     server_address = ('0.0.0.0', 10000)
-    bot.msg("#spicebottest", "starting up on " + str(server_address))
+    bot.msg("#spicebottest", "[R] starting up on " + str(server_address))
     sock.bind(server_address)
 
     # Listen for incoming connections
@@ -48,22 +48,22 @@ def listener(bot, trigger):
 
     while True:
         # Wait for a connection
-        bot.msg("#spicebottest", "waiting for a connection")
+        bot.msg("#spicebottest", "[R] waiting for a connection")
         connection, client_address = sock.accept()
 
-        bot.msg("#spicebottest", "connection from " + str(client_address))
+        bot.msg("#spicebottest", "[R] connection from " + str(client_address))
 
         # Receive the data in small chunks and retransmit it
         while True:
             data = connection.recv(2048)
-            bot.msg("#spicebottest", "'received " + str(data))
+            bot.msg("#spicebottest", "[R] received " + str(data))
             if data:
-                bot.msg("#spicebottest", "sending data back to the client")
+                bot.msg("#spicebottest", "[R] sending data back to the client")
                 connection.sendall(data)
             else:
-                bot.msg("#spicebottest", "no more data from " + str(client_address))
+                bot.msg("#spicebottest", "[R] no more data from " + str(client_address))
                 break
 
         # Clean up the connection
-        bot.msg("#spicebottest", "closing connection")
+        bot.msg("#spicebottest", "[R] closing connection")
         connection.close()

@@ -33,19 +33,19 @@ def listener(bot, trigger):
             beguinelisten = True
         else:
             time.sleep(1)
-    bot.msg("#spicebottest", "testing api")
+    bot.msg("#spicebottest", "[S] testing api")
 
     # Create a TCP/IP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Bind the socket to the port
     server_address = ('0.0.0.0', 10001)
-    bot.msg("#spicebottest", "starting up on " + str(server_address))
+    bot.msg("#spicebottest", "[S] starting up on " + str(server_address))
     sock.connect(server_address)
 
     # Send data
     message = 'This is the message.  It will be repeated.'
-    bot.msg("#spicebottest", "sending " + str(message))
+    bot.msg("#spicebottest", "[S] sending " + str(message))
     sock.sendall(message)
 
     # Look for the response
@@ -55,7 +55,7 @@ def listener(bot, trigger):
     while amount_received < amount_expected:
         data = sock.recv(2048)
         amount_received += len(data)
-        bot.msg("#spicebottest", "received " + str(data))
+        bot.msg("#spicebottest", "[S] received " + str(data))
 
-    bot.msg("#spicebottest", "closing socket")
+    bot.msg("#spicebottest", "[S] closing socket")
     sock.close()
