@@ -65,7 +65,7 @@ def listener(bot, trigger):
             # Receive the data in small chunks and retransmit it
             while True:
                 data = connection.recv(2048)
-                stderr("[API] received " + str(data))
+                stderr("[API] received data.")
                 if data:
 
                     # verify bot is reasdy to recieve a message
@@ -78,7 +78,7 @@ def listener(bot, trigger):
 
                         # Possibly add a api key
 
-                        stderr("[API] sending data back to the client " + str(data))
+                        stderr("[API] Sending data back to the client.")
                         connection.sendall(str(str(bot.memory["botdict"]) + "\n"))
                         break
 
