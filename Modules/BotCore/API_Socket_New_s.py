@@ -57,5 +57,5 @@ def listener(bot, trigger):
         amount_received += len(data)
         bot.msg("#spicebottest", "received " + str(data))
 
-        bot.msg("#spicebottest", "closing socket")
-        sock.close()
+    bot.msg("#spicebottest", "closing socket")
+    sock.close()
