@@ -61,7 +61,6 @@ def listener(bot, trigger):
 
         try:
             stderr("[API] Connection from " + str(client_address))
-            connection.send('Thank you for connecting')
 
             # Receive the data in small chunks and retransmit it
             while True:
