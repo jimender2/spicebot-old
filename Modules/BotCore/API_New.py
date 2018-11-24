@@ -39,9 +39,8 @@ def listener(bot, trigger):
 
     bot.msg("#spicebottest", "api test started")
 
-    api.add_resource(User, "/user/<string:name>")
-
-    app.run(debug=True)
+    app = Flask(__name__)
+    api = Api(app)
 
     users = [
             {
@@ -60,6 +59,10 @@ def listener(bot, trigger):
                 "occupation": "Web Developer"
             }
         ]
+
+    api.add_resource(User, "/user/<string:name>")
+
+    app.run(debug=True)
 
 
 class User(Resource):
