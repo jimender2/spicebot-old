@@ -78,9 +78,12 @@ def listener(bot, trigger):
 
                         # Possibly add a api key
 
+                        # dump botdict into json format
+                        data_string = json.dumps(bot.memory["botdict"])
+
                         try:
                             stderr("[API] Sending data back to the client.")
-                            connection.sendall(str(str(bot.memory["botdict"]) + "\n"))
+                            connection.sendall(data_string)
                             break
                         except Exception as e:
                             stderr("[API] Error Sending Data: (%s)" % (e))

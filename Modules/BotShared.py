@@ -400,31 +400,6 @@ def bot_setup_api_socket(bot):
         return
 
 
-def bot_setup_api_socket_old(bot):
-
-    # Don't load sock if already loaded
-    if bot.memory["botdict"]["tempvals"]['sock']:
-        return
-
-    bot.memory["botdict"]["tempvals"]['sock'] = socket.socket()  # the default socket types should be fine for sending text to localhost
-
-    # port number to use, try previous port, if able
-    currentport = None
-    if bot.memory["botdict"]['sock_port']:
-        if not is_port_in_use(bot.memory["botdict"]['sock_port']):
-            currentport = bot.memory["botdict"]['sock_port']
-    if not currentport:
-        currentport = find_unused_port_in_range(bot, 8080, 9090)
-    bot.memory["botdict"]['sock_port'] = currentport
-    try:
-        bot.memory["botdict"]["tempvals"]['sock'].bind(('0.0.0.0', bot.memory["botdict"]['sock_port']))
-        stderr("Loaded socket on port %s" % (bot.memory["botdict"]['sock_port']))
-        bot.memory["botdict"]["tempvals"]['sock'].listen(10)
-    except socket.error as msg:
-        stderr("Error loading socket on port %s: %s (%s)" % (bot.memory["botdict"]['sock_port'], str(msg[0]), str(msg[1])))
-        return
-
-
 def find_unused_port_in_range(bot, rangestart, rangeend):
     for i in range(rangestart, rangeend + 1):
         if not is_port_in_use(i):
@@ -439,53 +414,6 @@ def is_port_in_use(port):
         return False
     else:
         return False
-
-
-def bot_api_socket_handler_old(conn, bot):
-
-    # verify bot is reasdy to recieve a message
-    if "botdict_loaded" not in bot.memory:
-        stderr("[API] Not ready to process requests.")
-        return
-
-    data = conn.recv(2048)
-    if not data:
-        conn.close()
-    else:
-
-        # verify bot is reasdy to recieve a message
-        if "botdict_loaded" not in bot.memory:
-            stderr("[API] Not ready to process requests.")
-            return
-
-        # catch errors with api format
-        try:
-            jsondict = eval(data)
-        except Exception as e:
-            stderr("[API] Error recieving: (%s)" % (e))
-            return
-
-        # must be a message included
-        if not jsondict["message"]:
-            stderr("[API] No message included.")
-            return
-
-        # must be a channel or user included
-        if not jsondict["channel"]:
-            stderr("[API] No channel included.")
-            return
-
-        # must be a current channel or user
-        if not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['all_current_users']):
-            stderr("[API] " + str(jsondict["channel"]) + " is not a current channel or user.")
-            return
-
-        # Possibly add a api key
-
-        # success
-        stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
-        osd(bot, jsondict["channel"], 'say', jsondict["message"])
-        conn.close()
 
 
 # gif searching api
