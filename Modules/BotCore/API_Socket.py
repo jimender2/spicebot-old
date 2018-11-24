@@ -33,7 +33,6 @@ def listener(bot, trigger):
             beguinelisten = True
         else:
             time.sleep(1)
-    bot.msg("#spicebottest", "[R] testing api")
 
     # Create a TCP/IP socket
     sock = bot.memory["botdict"]["tempvals"]['sock']
