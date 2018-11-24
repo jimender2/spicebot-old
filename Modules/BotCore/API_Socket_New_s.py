@@ -53,7 +53,7 @@ def listener(bot, trigger):
         amount_received = 0
         amount_expected = len(message)
 
-        while True:
+        while amount_received < amount_expected:
             data = sock.recv(2048)
             amount_received += len(data)
             bot.msg("#spicebottest", "[S] received " + str(data))
