@@ -75,14 +75,11 @@ def listener(bot, trigger):
 
                     # Sending Botdict out
                     if str(data).startswith("GET"):
+                        bot.msg("#spicebotest", str(data))
 
                         # Possibly add a api key
 
-                        # convert dict to string
-                        # data_string = str(savedict)
-
                         # copy dict to not overwrite
-                        # savedict = bot.memory["botdict"].copy()
                         savedict = copy.deepcopy(bot.memory["botdict"])
 
                         # don't include this
