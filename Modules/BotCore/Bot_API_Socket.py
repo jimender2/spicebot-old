@@ -137,8 +137,9 @@ def listener(bot, trigger):
 
         except Exception as e:
             stderr("[API] Error: (%s)" % (e))
-            break
+            continue
 
+        # If broken enough, connection will be closed
         finally:
             # Clean up the connection
             stderr("[API] Closing Connection.")
