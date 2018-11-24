@@ -55,7 +55,7 @@ def listener(bot, trigger):
 
         # Receive the data in small chunks and retransmit it
         while True:
-            data = connection.recv(16)
+            data = connection.recv(2048)
             bot.msg("#spicebottest", "'received " + str(data))
             if data:
                 bot.msg("#spicebottest", "sending data back to the client")
