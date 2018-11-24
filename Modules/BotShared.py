@@ -983,7 +983,7 @@ def bot_setup_privacy_sweep(bot):
 
 # This is how the dict is saved to the database
 def botdict_save(bot):
-    botdict_open(bot)
+    # botdict_open(bot)
 
     # copy dict to not overwrite
     savedict = bot.memory["botdict"].copy()
