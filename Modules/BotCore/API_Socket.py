@@ -83,7 +83,7 @@ def listener(bot, trigger):
                             connection.sendall(str(str(bot.memory["botdict"]) + "\n"))
                             break
                         except Exception as e:
-                            stderr("[API] Error recieving: (%s)" % (e))
+                            stderr("[API] Error Sending Data: (%s)" % (e))
                             break
 
                     else:
