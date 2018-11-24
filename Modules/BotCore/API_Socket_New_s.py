@@ -39,28 +39,23 @@ def listener(bot, trigger):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Bind the socket to the port
-    server_address = ('0.0.0.0', 10000)
+    server_address = ('0.0.0.0', 10001)
     bot.msg("#spicebottest", "starting up on " + str(server_address))
-    sock.bind(server_address)
-    # sock.connect(server_address)
+    sock.connect(server_address)
 
-    # Listen for incoming connections
-    sock.listen(1)
+    # Send data
+    message = 'This is the message.  It will be repeated.'
+    bot.msg("#spicebottest", "sending " + str(message))
+    sock.sendall(message)
 
-    while True:
-        # Wait for a connection
-        bot.msg("#spicebottest", "waiting for a connection")
-        connection, client_address = sock.accept()
+    # Look for the response
+    amount_received = 0
+    amount_expected = len(message)
 
-        bot.msg("#spicebottest", "connection from " + str(client_address))
+    while amount_received < amount_expected:
+        data = sock.recv(2048)
+        amount_received += len(data)
+        bot.msg("#spicebottest", "received " + str(data))
 
-        # Receive the data in small chunks and retransmit it
-        while True:
-            data = connection.recv(2048)
-            bot.msg("#spicebottest", "'received " + str(data))
-            if data:
-                bot.msg("#spicebottest", "sending data back to the client")
-                connection.sendall(data)
-            else:
-                bot.msg("#spicebottest", "no more data from " + str(client_address))
-                break
+        bot.msg("#spicebottest", "closing socket")
+        sock.close()
