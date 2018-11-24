@@ -104,6 +104,7 @@ def listener(bot, trigger):
                         # success
                         stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
                         osd(bot, jsondict["channel"], 'say', jsondict["message"])
+                        break
 
                 else:
                     bot.msg("#spicebottest", "[R] no more data from " + str(client_address))
