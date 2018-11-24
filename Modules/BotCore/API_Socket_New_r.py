@@ -67,12 +67,12 @@ def listener(bot, trigger):
 
                     # Sending Botdict out
                     if str(data).startswith("GET"):
+
                         # Possibly add a api key
-                        # bot.msg("#spicebottest", "[R] sending data back to the client")
-                        # connection.sendall(data)
-                        message = 'This is the message.  It will be repeated.'
-                        bot.msg("#spicebottest", "[S] sending " + str(message))
-                        connection.sendall(message)
+
+                        bot.msg("#spicebottest", "[R] sending data back to the client")
+                        connection.sendall(data)
+
                     else:
 
                         # catch errors with api format
