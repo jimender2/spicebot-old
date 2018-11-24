@@ -79,8 +79,14 @@ def listener(bot, trigger):
                         # Possibly add a api key
 
                         # convert dict to string
-                        # data_string = str(bot.memory["botdict"])
-                        data_string = json.dumps(bot.memory["botdict"], default=json_util.default).encode('utf-8')
+                        # data_string = str(savedict)
+
+                        # copy dict to not overwrite
+                        savedict = bot.memory["botdict"].copy()
+
+                        # don't include this
+                        del savedict["tempvals"]['sock']
+                        data_string = json.dumps(savedict, default=json_util.default).encode('utf-8')
 
                         try:
                             stderr("[API] Sending data back to the client.")
