@@ -987,7 +987,8 @@ def botdict_save(bot):
     # botdict_open(bot)
 
     # copy dict to not overwrite
-    savedict = bot.memory["botdict"].copy()
+    # savedict = bot.memory["botdict"].copy()
+    savedict = copy.deepcopy(bot.memory["botdict"])
 
     # Values to not save to database
     savedict_del = ['tempvals', 'static']

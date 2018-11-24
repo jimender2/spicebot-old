@@ -82,10 +82,13 @@ def listener(bot, trigger):
                         # data_string = str(savedict)
 
                         # copy dict to not overwrite
-                        savedict = bot.memory["botdict"].copy()
+                        # savedict = bot.memory["botdict"].copy()
+                        savedict = copy.deepcopy(bot.memory["botdict"])
 
                         # don't include this
-                        del savedict["tempvals"]['sock']
+                        if "tempvals" in savedict:
+                            if 'sock' in savedict["tempvals"]:
+                                del savedict["tempvals"]['sock']
 
                         # convert to json
                         data_string = json.dumps(savedict, default=json_util.default).encode('utf-8')
