@@ -59,41 +59,44 @@ def listener(bot, trigger):
                 data = connection.recv(2048)
                 bot.msg("#spicebottest", "[R] received " + str(data))
                 if data:
-                    bot.msg("#spicebottest", "[R] sending data back to the client")
-                    connection.sendall(data)
 
                     # verify bot is reasdy to recieve a message
                     if "botdict_loaded" not in bot.memory:
                         stderr("[API] Not ready to process requests.")
                         return
 
-                    # catch errors with api format
-                    try:
-                        jsondict = eval(data)
-                    except Exception as e:
-                        stderr("[API] Error recieving: (%s)" % (e))
-                        return
+                    if str(data).startswith("GET"):
+                        bot.msg("#spicebottest", "[R] sending data back to the client")
+                        connection.sendall("helloworld")
+                    else:
 
-                    # must be a message included
-                    if not jsondict["message"]:
-                        stderr("[API] No message included.")
-                        return
+                        # catch errors with api format
+                        try:
+                            jsondict = eval(data)
+                        except Exception as e:
+                            stderr("[API] Error recieving: (%s)" % (e))
+                            return
 
-                    # must be a channel or user included
-                    if not jsondict["channel"]:
-                        stderr("[API] No channel included.")
-                        return
+                        # must be a message included
+                        if not jsondict["message"]:
+                            stderr("[API] No message included.")
+                            return
 
-                    # must be a current channel or user
-                    if not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['all_current_users']):
-                        stderr("[API] " + str(jsondict["channel"]) + " is not a current channel or user.")
-                        return
+                        # must be a channel or user included
+                        if not jsondict["channel"]:
+                            stderr("[API] No channel included.")
+                            return
 
-                    # Possibly add a api key
+                        # must be a current channel or user
+                        if not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['all_current_users']):
+                            stderr("[API] " + str(jsondict["channel"]) + " is not a current channel or user.")
+                            return
 
-                    # success
-                    stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
-                    osd(bot, jsondict["channel"], 'say', jsondict["message"])
+                        # Possibly add a api key
+
+                        # success
+                        stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
+                        osd(bot, jsondict["channel"], 'say', jsondict["message"])
 
                 else:
                     bot.msg("#spicebottest", "[R] no more data from " + str(client_address))
