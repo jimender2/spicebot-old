@@ -65,9 +65,12 @@ def listener(bot, trigger):
                         stderr("[API] Not ready to process requests.")
                         return
 
+                    # Sending Botdict out
                     if str(data).startswith("GET"):
+                        # Possibly add a api key
                         bot.msg("#spicebottest", "[R] sending data back to the client")
-                        connection.sendall("helloworld")
+                        connection.sendall(data)
+                        # connection.sendall("helloworld")
                     else:
 
                         # catch errors with api format
