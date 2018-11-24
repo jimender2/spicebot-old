@@ -38,27 +38,18 @@ def listener(bot, trigger):
     # Create a TCP/IP socket
     sock = bot.memory["botdict"]["tempvals"]['sock']
 
-    # Bind the socket to the port
-    # server_address = ('0.0.0.0', 9091)
-    # sock.bind(server_address)
-    # sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    bot.msg("#spicebottest", "[R] starting up on " + str(sock.getsockname()))
-
-    # Listen for incoming connections
-    # sock.listen(10)
-
     while True:
         # Wait for a connection
-        bot.msg("#spicebottest", "[R] waiting for a connection")
+        stderr("[API] Waiting for a connection.")
         connection, client_address = sock.accept()
 
         try:
-            bot.msg("#spicebottest", "[R] connection from " + str(client_address))
+            stderr("[API] Connection from " + str(client_address))
 
             # Receive the data in small chunks and retransmit it
             while True:
                 data = connection.recv(2048)
-                bot.msg("#spicebottest", "[R] received " + str(data))
+                stderr("[API] received " + str(data))
                 if data:
 
                     # verify bot is reasdy to recieve a message
@@ -71,9 +62,8 @@ def listener(bot, trigger):
 
                         # Possibly add a api key
 
-                        bot.msg("#spicebottest", "[R] sending data back to the client")
+                        stderr("[API] sending data back to the client " + str(data))
                         connection.sendall(str(str(bot.memory["botdict"]) + "\n"))
-                        bot.msg("#spicebottest", "[R] sent data back to the client")
                         break
 
                     else:
@@ -108,10 +98,9 @@ def listener(bot, trigger):
                         break
 
                 else:
-                    bot.msg("#spicebottest", "[R] no more data from " + str(client_address))
                     break
 
         finally:
             # Clean up the connection
-            bot.msg("#spicebottest", "[R] closing connection")
+            stderr("[API] Closing Connection.")
             connection.close()
