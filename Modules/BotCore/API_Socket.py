@@ -116,7 +116,7 @@ def listener(bot, trigger):
                 else:
                     break
 
-        finally:
+        # finally:
             # Clean up the connection
-            stderr("[API] Closing Connection.")
-            connection.close()
+        #    stderr("[API] Closing Connection.")
+        #    connection.close()
