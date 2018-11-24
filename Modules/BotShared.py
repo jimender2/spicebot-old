@@ -100,6 +100,8 @@ bot_dict = {
 
                             "sock": None,
 
+                            "api_log": {},
+
                             # Time The Bot started last
                             "uptime": None,
 
