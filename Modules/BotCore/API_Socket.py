@@ -80,7 +80,7 @@ def listener(bot, trigger):
 
                         # convert dict to string
                         # data_string = str(bot.memory["botdict"])
-                        data_string = json.dumps(bot.memory["botdict"]).encode('utf-8')
+                        data_string = json.dumps(bot.memory["botdict"], default=json_util.default).encode('utf-8')
 
                         try:
                             stderr("[API] Sending data back to the client.")
