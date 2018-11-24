@@ -34,6 +34,7 @@ def listener(bot, trigger):
         else:
             time.sleep(1)
     bot.msg("#spicebottest", "[R] testing api")
+    functional_socket_old(bot)
 
 
 def functional_socket_old(bot):
