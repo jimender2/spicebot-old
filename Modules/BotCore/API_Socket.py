@@ -82,7 +82,7 @@ def listener(bot, trigger):
                             stderr("[API] Sending data back to the client.")
                             connection.sendall(str(str(bot.memory["botdict"]) + "\n"))
                             break
-                        except BrokenPipeError as e:
+                        except Exception as e:
                             stderr("[API] Error recieving: (%s)" % (e))
                             break
 
