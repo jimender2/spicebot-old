@@ -111,12 +111,12 @@ def listener(bot, trigger):
                             break
 
                         # must be a message included
-                        if not jsondict["message"]:
+                        if "message" not in jsondict.keys():
                             stderr("[API] No message included.")
                             break
 
                         # must be a channel or user included
-                        if not jsondict["channel"]:
+                        if "channel" not in jsondict.keys():
                             stderr("[API] No channel included.")
                             break
 
@@ -139,7 +139,7 @@ def listener(bot, trigger):
             stderr("[API] Error: (%s)" % (e))
             break
 
-        # finally:
-        #    # Clean up the connection
-        #    stderr("[API] Closing Connection.")
-        #    connection.close()
+        finally:
+            # Clean up the connection
+            stderr("[API] Closing Connection.")
+            connection.close()
