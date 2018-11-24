@@ -79,7 +79,8 @@ def listener(bot, trigger):
                         # Possibly add a api key
 
                         # dump botdict into json format
-                        data_string = json.dumps(bot.memory["botdict"])
+                        # data_string = str(bot.memory["botdict"])
+                        data_string = json.dumps(bot.memory["botdict"], indent=4, cls=CustomEncoder)
 
                         try:
                             stderr("[API] Sending data back to the client.")
@@ -131,3 +132,13 @@ def listener(bot, trigger):
             # Clean up the connection
             stderr("[API] Closing Connection.")
             connection.close()
+
+
+class CustomEncoder(json.JSONEncoder):
+
+    def default(self, o):
+
+        if isinstance(o, datetime):
+            return {'__datetime__': o.replace(microsecond=0).isoformat()}
+
+        return {'__{}__'.format(o.__class__.__name__): o.__dict__}
