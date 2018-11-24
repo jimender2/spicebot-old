@@ -39,7 +39,7 @@ def listener(bot, trigger):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Bind the socket to the port
-    server_address = ('0.0.0.0', 10000)
+    server_address = ('0.0.0.0', 10001)
     bot.msg("#spicebottest", "starting up on " + str(server_address))
     sock.bind(server_address)
     sock.connect(server_address)
