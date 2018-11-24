@@ -71,7 +71,7 @@ def listener(bot, trigger):
                     # verify bot is reasdy to recieve a message
                     if "botdict_loaded" not in bot.memory:
                         stderr("[API] Not ready to process requests.")
-                        return
+                        break
 
                     # Sending Botdict out
                     if str(data).startswith("GET"):
@@ -108,22 +108,22 @@ def listener(bot, trigger):
                             jsondict = eval(data)
                         except Exception as e:
                             stderr("[API] Error recieving: (%s)" % (e))
-                            return
+                            break
 
                         # must be a message included
                         if not jsondict["message"]:
                             stderr("[API] No message included.")
-                            return
+                            break
 
                         # must be a channel or user included
                         if not jsondict["channel"]:
                             stderr("[API] No channel included.")
-                            return
+                            break
 
                         # must be a current channel or user
                         if not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['all_current_users']):
                             stderr("[API] " + str(jsondict["channel"]) + " is not a current channel or user.")
-                            return
+                            break
 
                         # Possibly add a api key
 
@@ -143,13 +143,3 @@ def listener(bot, trigger):
             # Clean up the connection
             stderr("[API] Closing Connection.")
             connection.close()
-
-
-class CustomEncoder(json.JSONEncoder):
-
-    def default(self, o):
-
-        if isinstance(o, datetime):
-            return {'__datetime__': o.replace(microsecond=0).isoformat()}
-
-        return {'__{}__'.format(o.__class__.__name__): o.__dict__}
