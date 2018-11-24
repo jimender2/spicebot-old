@@ -40,8 +40,8 @@ def listener(bot, trigger):
 
     # Bind the socket to the port
     server_address = ('0.0.0.0', 9091)
-    bot.msg("#spicebottest", "[R] starting up on " + str(sock.getsockname()))
     sock.bind(server_address)
+    bot.msg("#spicebottest", "[R] starting up on " + str(sock.getsockname()))
 
     # Listen for incoming connections
     sock.listen(10)
