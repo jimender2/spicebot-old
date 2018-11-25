@@ -1575,6 +1575,31 @@ def bot_watch_dot_run(bot, trigger):
     botdict_save(bot)
 
 
+def bot_watch_exclamation(bot, trigger):
+
+    if not str(trigger).startswith(tuple(['.'])):
+        return
+
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # instigator
+    botcom.instigator = trigger.nick
+
+    # channel
+    botcom.channel_current = trigger.sender
+
+    # Bots can't run commands
+    if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        return
+
+    # create arg list
+    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+
+    osd(bot, botcom.instigator, 'notice', "Exclamation Testing")
+
+
 """
 Jobs Handling
 """
