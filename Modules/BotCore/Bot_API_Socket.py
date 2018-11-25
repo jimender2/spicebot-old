@@ -145,6 +145,39 @@ def listener(bot, trigger):
                             stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
                             break
 
+                        elif jsondict["type"] == "command":
+
+                            # must be a message included
+                            if "command" not in jsondict.keys():
+                                stderr("[API] No command included.")
+                                break
+
+                            if jsondict["command"] not in ["update"]:
+                                stderr("[API] Included Command invalid.")
+                                break
+
+                            if jsondict["command"] == 'update':
+                                stderr("[API] Recieved Command to update.")
+                                for channel in bot.channels:
+                                    osd(bot, channel, 'say', "Recived API command to update from Github and restart. Be Back Soon!")
+
+                                for channel in bot.channels:
+                                    osd(bot, channel, 'action', "Is Pulling " + str(bot.memory["botdict"]["tempvals"]['bots_list'][bot.nick]['directory']) + " From Github...")
+                                g = git.cmd.Git(bot.memory["botdict"]["tempvals"]['bots_list'][bot.nick]['directory'])
+                                g.pull()
+
+                                for channel in bot.channels:
+                                    osd(bot, channel, 'action', "Is Closing API socket...")
+                                stderr("[API] Closing Connection.")
+                                connection.close()
+
+                                for channel in bot.channels:
+                                    osd(bot, channel, 'action', "Is Restarting the " + bot.nick + " Service...")
+                                os.system("sudo service " + str(bot.nick) + " restart")
+
+                                # Pointless, but breaks the loop if needbe
+                                break
+
                         else:
                             stderr("[API] Type does not exist")
                             break
