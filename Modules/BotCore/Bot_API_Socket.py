@@ -87,18 +87,15 @@ def listener(bot, trigger):
                                 del savedict["tempvals"]['sock']
 
                         # convert to json
-                        # data_string = json.dumps(savedict, default=json_util.default).encode('utf-8')
                         msg = json.dumps(savedict, default=json_util.default).encode('utf-8')
-                        # msg = "<html><body><h1>This is a test</h1><p>More content here</p></body></html>"
 
+                        # response_headers
                         response_headers = {
                                             'Content-Type': 'text/html; encoding=utf8',
                                             'Content-Length': len(msg),
                                             'Connection': 'close',
                                             }
-
                         response_headers_raw = ''.join('%s: %s\r\n' % (k, v) for k, v in response_headers.items())
-
                         response_proto = 'HTTP/1.1'
                         response_status = '200'
                         response_status_text = 'OK'  # this can be random
@@ -115,16 +112,6 @@ def listener(bot, trigger):
                         except Exception as e:
                             stderr("[API] Error Sending Data: (%s)" % (e))
                             break
-
-                        """
-                        try:
-                            stderr("[API] Sending data back to the client.")
-                            connection.sendall(data_string)
-                            break
-                        except Exception as e:
-                            stderr("[API] Error Sending Data: (%s)" % (e))
-                            break
-                        """
 
                     else:
 

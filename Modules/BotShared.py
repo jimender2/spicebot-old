@@ -1599,17 +1599,17 @@ def bot_watch_exclamation(bot, trigger):
 
     osd(bot, botcom.instigator, 'notice', "Exclamation Testing")
 
-    joke = getJoke()
-    osd(bot, botcom.instigator, 'notice', str(joke))
+    botdict_return = botdict_fetch()
+    osd(bot, botcom.instigator, 'notice', str(botdict_return))
 
 
-def getJoke():
+def botdict_fetch():
     url = 'http://localhost:8080'
     page = requests.get(url)
     result = page.content
     botdict_ret = json.loads(result)
-    joke = botdict_ret["tempvals"]["dict_loaded"]
-    return joke
+    botdict_return = botdict_ret["tempvals"]["uptime"]
+    return botdict_return
 
 
 """
