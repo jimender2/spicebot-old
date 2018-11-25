@@ -1607,7 +1607,7 @@ def botdict_fetch():
     url = 'http://localhost:8080'
     page = requests.get(url)
     result = page.content
-    botdict_ret = json.loads(result)
+    botdict_ret = json.loads(result, object_hook=json_util.object_hook)
     botdict_return = botdict_ret["tempvals"]["uptime"]
     return botdict_return
 
