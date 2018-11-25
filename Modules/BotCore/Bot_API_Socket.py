@@ -87,8 +87,9 @@ def listener(bot, trigger):
                                 del savedict["tempvals"]['sock']
 
                         # convert to json
-                        data_string = json.dumps(savedict, default=json_util.default).encode('utf-8')
-                        msg = "<html><body><h1>This is a test</h1><p>More content here</p></body></html>"
+                        # data_string = json.dumps(savedict, default=json_util.default).encode('utf-8')
+                        msg = json.dumps(savedict, default=json_util.default).encode('utf-8')
+                        # msg = "<html><body><h1>This is a test</h1><p>More content here</p></body></html>"
 
                         response_headers = {
                                             'Content-Type': 'text/html; encoding=utf8',
