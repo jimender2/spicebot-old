@@ -1577,7 +1577,7 @@ def bot_watch_dot_run(bot, trigger):
 
 def bot_watch_exclamation(bot, trigger):
 
-    if not str(trigger).startswith(tuple(['.'])):
+    if not str(trigger).startswith(tuple(['!'])):
         return
 
     # botcom dynamic Class
