@@ -123,6 +123,11 @@ def listener(bot, trigger):
                             stderr("[API] No type included.")
                             break
 
+                        if "sender" not in jsondict.keys():
+                            sender = "API"
+                        else:
+                            sender = jsondict["sender"]
+
                         # message a specific channel/user or all channels
                         if jsondict["type"] == "message":
 
@@ -132,27 +137,45 @@ def listener(bot, trigger):
                                 break
 
                             # must be a channel or user included
-                            if "target" not in jsondict.keys():
+                            if "targets" not in jsondict.keys():
                                 stderr("[API] No channel included.")
                                 break
 
-                            # must be a current channel or user
-                            if not bot_check_inlist(bot, jsondict["target"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["target"], bot.memory["botdict"]["tempvals"]['all_current_users']) and jsondict["target"] not in ["all_chan", "all_user"]:
-                                stderr("[API] " + str(jsondict["target"]) + " is not a current channel or user.")
+                            # accept list inputs
+                            if not isinstance(jsondict["targets"], dict):
+                                listtargets = [jsondict["targets"]]
+                            else:
+                                listtargets = jsondict["targets"]
+
+                            # check all targets in list
+                            failedtargets = []
+                            goodtargets = []
+                            for target in listtargets:
+                                if not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']) and target not in ["all_chan", "all_user"]:
+                                    failedtargets.append(target)
+                                else:
+                                    goodtargets.append(target)
+
+                            if failedtargets != []:
+                                stderr("[API] " + str(spicemanip(bot, failedtargets, 'andlist')) + " is/are not current channel(s) or user(s).")
+
+                            if goodtargets == []:
+                                stderr("[API] No current channel or user to target.")
                                 break
 
-                            if jsondict["target"] in ["all_chan", "all_user"]:
-                                targets = [jsondict["target"]]
-                                if jsondict["target"] == "all_chan":
-                                    targets = bot.memory["botdict"]["tempvals"]['channels_list'].keys()
-                                if jsondict["target"] == "all_user":
-                                    targets = bot.memory["botdict"]["tempvals"]['all_current_users']
-                            else:
-                                targets = [jsondict["target"]]
+                            for target in goodtargets:
 
+                                if target in ["all_chan", "all_user"]:
+                                    if target == "all_chan":
+                                        targets = bot.memory["botdict"]["tempvals"]['channels_list'].keys()
+                                    if target == "all_user":
+                                        targets = bot.memory["botdict"]["tempvals"]['all_current_users']
+                                else:
+                                    targets = [target]
+
+                                osd(bot, targets, 'say', jsondict["message"])
                             # success
-                            osd(bot, targets, 'say', jsondict["message"])
-                            stderr("[API] Success: Sendto=" + jsondict["target"] + " message='" + str(jsondict["message"]) + "'")
+                            stderr("[API] Success: Sendto=" + str(jsondict["targets"]) + " message='" + str(jsondict["message"]) + "'")
                             break
 
                         elif jsondict["type"] == "command":
@@ -162,34 +185,55 @@ def listener(bot, trigger):
                                 stderr("[API] No command included.")
                                 break
 
-                            if jsondict["command"] not in ["update"]:
-                                stderr("[API] Included Command invalid.")
-                                break
-
                             if jsondict["command"] == 'update':
                                 stderr("[API] Recieved Command to update.")
                                 for channel in bot.channels:
-                                    osd(bot, channel, 'say', "Recived API command to update from Github and restart. Be Back Soon!")
+                                    if sender != "API":
+                                        osd(bot, channel, 'say', "Recived API command from " + sender + " to update from Github and restart. Be Back Soon!")
+                                    else:
+                                        osd(bot, channel, 'say', "Recived API command to update from Github and restart. Be Back Soon!")
 
-                                for channel in bot.channels:
-                                    osd(bot, channel, 'action', "Is Pulling " + str(bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']) + " From Github...")
+                                # Pull directory from github
+                                stderr("[API] Pulling From Github.")
                                 g = git.cmd.Git(bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'])
                                 g.pull()
 
-                                for channel in bot.channels:
-                                    osd(bot, channel, 'action', "Is Closing API socket...")
+                                # close connection
                                 stderr("[API] Closing Connection.")
                                 connection.close()
 
-                                for channel in bot.channels:
-                                    osd(bot, channel, 'action', "Is Restarting the " + str(bot.nick) + " Service...")
+                                # restart systemd service
+                                stderr("[API] Restarting Service.")
                                 os.system("sudo service " + str(bot.nick) + " restart")
 
                                 # Pointless, but breaks the loop if needbe
                                 break
 
+                            elif jsondict["command"] == 'restart':
+                                stderr("[API] Recieved Command to restart.")
+                                for channel in bot.channels:
+                                    if sender != "API":
+                                        osd(bot, channel, 'say', "Recived API command from " + sender + " to restart. Be Back Soon!")
+                                    else:
+                                        osd(bot, channel, 'say', "Recived API command to restart. Be Back Soon!")
+
+                                # close connection
+                                stderr("[API] Closing Connection.")
+                                connection.close()
+
+                                # restart systemd service
+                                stderr("[API] Restarting Service.")
+                                os.system("sudo service " + str(bot.nick) + " restart")
+
+                                # Pointless, but breaks the loop if needbe
+                                break
+
+                            else:
+                                stderr("[API] Included Command invalid.")
+                                break
+
                         else:
-                            stderr("[API] Type does not exist")
+                            stderr("[API] Included Type invalid.")
                             break
 
                 else:
