@@ -1605,14 +1605,10 @@ def bot_watch_exclamation(bot, trigger):
 
 def getJoke():
     url = 'http://localhost:8080'
-    try:
-        page = requests.get(url)
-        result = page.content
-        jsonjoke = json.loads(result)
-        joke = jsonjoke['value']['joke']
-        joke = joke.replace('&quot;', '\"')
-    except ValueError:
-        joke = "Chuck Norris broke the interwebs."
+    page = requests.get(url)
+    result = page.content
+    botdict_ret = json.loads(result)
+    joke = botdict_ret["tempvals"]["dict_loaded"]
     return joke
 
 
