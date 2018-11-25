@@ -1604,7 +1604,7 @@ def bot_watch_exclamation(bot, trigger):
 
     osd(bot, botcom.channel_current, 'say', "API Testing")
 
-    botdict_return = botdict_fetch(bot, "8080")
+    botdict_return = botdict_fetch(bot, "8081")
     if botdict_return:
         osd(bot, botcom.channel_current, 'say', "botmem " + str(bot.memory["botdict"]["tempvals"]["uptime"]))
         osd(bot, botcom.channel_current, 'say', "botapi " + str(botdict_return))
