@@ -142,18 +142,8 @@ def listener(bot, trigger):
 
                             # success
                             osd(bot, jsondict["channel"], 'say', jsondict["message"])
-                            msg = str("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
-                            stderr(msg)
-                            try:
-                                response_headers_raw, r = bot_api_response_headers(bot, msg)
-                                connection.send(r)
-                                connection.send(response_headers_raw)
-                                connection.send('\r\n')  # to separate headers from body
-                                connection.send(msg.encode(encoding="utf-8"))
-                                break
-                            except Exception as e:
-                                stderr("[API] Error recieving: (%s)" % (e))
-                                break
+                            stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
+                            break
 
                         else:
                             stderr("[API] Type does not exist")
