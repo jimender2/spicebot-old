@@ -162,8 +162,8 @@ def listener(bot, trigger):
                                     osd(bot, channel, 'say', "Recived API command to update from Github and restart. Be Back Soon!")
 
                                 for channel in bot.channels:
-                                    osd(bot, channel, 'action', "Is Pulling " + str(bot.memory["botdict"]["tempvals"]['bots_list'][bot.nick]['directory']) + " From Github...")
-                                g = git.cmd.Git(bot.memory["botdict"]["tempvals"]['bots_list'][bot.nick]['directory'])
+                                    osd(bot, channel, 'action', "Is Pulling " + str(bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']) + " From Github...")
+                                g = git.cmd.Git(bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'])
                                 g.pull()
 
                                 for channel in bot.channels:
@@ -172,7 +172,7 @@ def listener(bot, trigger):
                                 connection.close()
 
                                 for channel in bot.channels:
-                                    osd(bot, channel, 'action', "Is Restarting the " + bot.nick + " Service...")
+                                    osd(bot, channel, 'action', "Is Restarting the " + str(bot.nick) + " Service...")
                                 os.system("sudo service " + str(bot.nick) + " restart")
 
                                 # Pointless, but breaks the loop if needbe
