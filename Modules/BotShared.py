@@ -1599,6 +1599,22 @@ def bot_watch_exclamation(bot, trigger):
 
     osd(bot, botcom.instigator, 'notice', "Exclamation Testing")
 
+    joke = getJoke()
+    osd(bot, botcom.instigator, 'notice', str(joke))
+
+
+def getJoke():
+    url = 'http://localhost:8080'
+    try:
+        page = requests.get(url)
+        result = page.content
+        jsonjoke = json.loads(result)
+        joke = jsonjoke['value']['joke']
+        joke = joke.replace('&quot;', '\"')
+    except ValueError:
+        joke = "Chuck Norris broke the interwebs."
+    return joke
+
 
 """
 Jobs Handling
