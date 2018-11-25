@@ -123,6 +123,7 @@ def listener(bot, trigger):
                             stderr("[API] No type included.")
                             break
 
+                        # message a specific channel/user or all channels
                         if jsondict["type"] == "message":
 
                             # must be a message included
@@ -136,12 +137,21 @@ def listener(bot, trigger):
                                 break
 
                             # must be a current channel or user
-                            if not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['all_current_users']):
+                            if not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['all_current_users']) and jsondict["channel"] not in ["all_chan", "all_user"]:
                                 stderr("[API] " + str(jsondict["channel"]) + " is not a current channel or user.")
                                 break
 
+                            if jsondict["channel"] in ["all_chan", "all_user"]:
+                                targets = [jsondict["channel"]]
+                                if jsondict["channel"] == "all_chan":
+                                    targets = bot.memory["botdict"]["tempvals"]['channels_list'].keys()
+                                if jsondict["channel"] == "all_user":
+                                    targets = bot.memory["botdict"]["tempvals"]['all_current_users']
+                            else:
+                                targets = [jsondict["channel"]]
+
                             # success
-                            osd(bot, jsondict["channel"], 'say', jsondict["message"])
+                            osd(bot, targets, 'say', jsondict["message"])
                             stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
                             break
 
