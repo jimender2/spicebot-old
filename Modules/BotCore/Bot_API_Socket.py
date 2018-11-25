@@ -132,27 +132,27 @@ def listener(bot, trigger):
                                 break
 
                             # must be a channel or user included
-                            if "channel" not in jsondict.keys():
+                            if "target" not in jsondict.keys():
                                 stderr("[API] No channel included.")
                                 break
 
                             # must be a current channel or user
-                            if not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["channel"], bot.memory["botdict"]["tempvals"]['all_current_users']) and jsondict["channel"] not in ["all_chan", "all_user"]:
-                                stderr("[API] " + str(jsondict["channel"]) + " is not a current channel or user.")
+                            if not bot_check_inlist(bot, jsondict["target"], bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, jsondict["target"], bot.memory["botdict"]["tempvals"]['all_current_users']) and jsondict["target"] not in ["all_chan", "all_user"]:
+                                stderr("[API] " + str(jsondict["target"]) + " is not a current channel or user.")
                                 break
 
-                            if jsondict["channel"] in ["all_chan", "all_user"]:
-                                targets = [jsondict["channel"]]
-                                if jsondict["channel"] == "all_chan":
+                            if jsondict["target"] in ["all_chan", "all_user"]:
+                                targets = [jsondict["target"]]
+                                if jsondict["target"] == "all_chan":
                                     targets = bot.memory["botdict"]["tempvals"]['channels_list'].keys()
-                                if jsondict["channel"] == "all_user":
+                                if jsondict["target"] == "all_user":
                                     targets = bot.memory["botdict"]["tempvals"]['all_current_users']
                             else:
-                                targets = [jsondict["channel"]]
+                                targets = [jsondict["target"]]
 
                             # success
                             osd(bot, targets, 'say', jsondict["message"])
-                            stderr("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
+                            stderr("[API] Success: Sendto=" + jsondict["target"] + " message='" + str(jsondict["message"]) + "'")
                             break
 
                         elif jsondict["type"] == "command":
