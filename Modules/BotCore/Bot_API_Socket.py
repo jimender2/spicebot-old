@@ -54,18 +54,6 @@ def listener(bot, trigger):
             return
     sock = bot.memory["botdict"]["tempvals"]['sock']
 
-    # response_headers
-    response_headers = {
-                        'Content-Type': 'text/html; encoding=utf8',
-                        'Content-Length': len(msg),
-                        'Connection': 'close',
-                        }
-    response_headers_raw = ''.join('%s: %s\r\n' % (k, v) for k, v in response_headers.items())
-    response_proto = 'HTTP/1.1'
-    response_status = '200'
-    response_status_text = 'OK'  # this can be random
-    r = '%s %s %s\r\n' % (response_proto, response_status, response_status_text)
-
     while True:
         # Wait for a connection
         stderr("[API] Waiting for a connection.")
@@ -100,6 +88,7 @@ def listener(bot, trigger):
 
                         # convert to json
                         msg = json.dumps(savedict, default=json_util.default).encode('utf-8')
+                        response_headers_raw, r = bot_api_response_headers(bot, msg)
 
                         # sending all this stuff
                         try:
@@ -155,11 +144,16 @@ def listener(bot, trigger):
                             osd(bot, jsondict["channel"], 'say', jsondict["message"])
                             msg = str("[API] Success: Sendto=" + jsondict["channel"] + " message='" + str(jsondict["message"]) + "'")
                             stderr(msg)
-                            connection.send(r)
-                            connection.send(response_headers_raw)
-                            connection.send('\r\n')  # to separate headers from body
-                            connection.send(msg.encode(encoding="utf-8"))
-                            break
+                            try:
+                                response_headers_raw, r = bot_api_response_headers(bot, msg)
+                                connection.send(r)
+                                connection.send(response_headers_raw)
+                                connection.send('\r\n')  # to separate headers from body
+                                connection.send(msg.encode(encoding="utf-8"))
+                                break
+                            except Exception as e:
+                                stderr("[API] Error recieving: (%s)" % (e))
+                                break
 
                         else:
                             stderr("[API] Type does not exist")
@@ -177,3 +171,15 @@ def listener(bot, trigger):
             # Clean up the connection
             stderr("[API] Closing Connection.")
             connection.close()
+
+
+def bot_api_response_headers(bot, msg):
+    # response_headers
+    response_headers = {
+                        'Content-Type': 'text/html; encoding=utf8',
+                        'Content-Length': len(msg),
+                        'Connection': 'close',
+                        }
+    response_headers_raw = ''.join('%s: %s\r\n' % (k, v) for k, v in response_headers.items())
+    r = '%s %s %s\r\n' % ('HTTP/1.1', '200', 'OK')
+    return response_headers_raw, r
