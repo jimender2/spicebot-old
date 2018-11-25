@@ -1602,7 +1602,7 @@ def bot_watch_exclamation(bot, trigger):
     if botcom.dotcommand not in ["apitest"]:
         return
 
-    osd(bot, botcom.instigator, 'notice', "Exclamation Testing")
+    osd(bot, botcom.channel_current, 'notice', "Exclamation Testing")
 
     botdict_return = botdict_fetch()
     osd(bot, botcom.channel_current, 'notice', "botmem " + str(bot.memory["botdict"]["tempvals"]["uptime"]))
