@@ -1604,7 +1604,7 @@ def bot_watch_exclamation(bot, trigger):
 
     osd(bot, botcom.channel_current, 'say', "API Testing")
 
-    botdict_return = botdict_fetch(bot, "8081")
+    botdict_return = bot_api_fetch(bot, "8081")
     if botdict_return:
         osd(bot, botcom.channel_current, 'say', "botmem " + str(bot.memory["botdict"]["tempvals"]["uptime"]))
         osd(bot, botcom.channel_current, 'say', "botapi " + str(botdict_return))
@@ -1612,7 +1612,7 @@ def bot_watch_exclamation(bot, trigger):
         osd(bot, botcom.channel_current, 'say', "botapi failed to connect")
 
 
-def botdict_fetch(bot, botport):
+def bot_api_fetch(bot, botport):
     botdict_return = None
 
     # what url to check
@@ -1632,6 +1632,10 @@ def botdict_fetch(bot, botport):
     botdict_return = botdict_ret["tempvals"]["uptime"]
 
     return botdict_return
+
+
+def bot_api_send(bot, botport):
+    dummyher = 5
 
 
 """
