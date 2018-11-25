@@ -1602,19 +1602,35 @@ def bot_watch_exclamation(bot, trigger):
     if botcom.dotcommand not in ["apitest"]:
         return
 
-    osd(bot, botcom.channel_current, 'notice', "Exclamation Testing")
+    osd(bot, botcom.channel_current, 'say', "API Testing")
 
-    botdict_return = botdict_fetch()
-    osd(bot, botcom.channel_current, 'notice', "botmem " + str(bot.memory["botdict"]["tempvals"]["uptime"]))
-    osd(bot, botcom.channel_current, 'notice', "botapi " + str(botdict_return))
+    botdict_return = botdict_fetch(bot, "8080")
+    if botdict_return:
+        osd(bot, botcom.channel_current, 'say', "botmem " + str(bot.memory["botdict"]["tempvals"]["uptime"]))
+        osd(bot, botcom.channel_current, 'say', "botapi " + str(botdict_return))
+    else:
+        osd(bot, botcom.channel_current, 'say', "botapi failed to connect")
 
 
-def botdict_fetch():
-    url = 'http://localhost:8080'
-    page = requests.get(url)
+def botdict_fetch(bot, botport):
+    botdict_return = None
+
+    # what url to check
+    url = str('http://localhost:' + botport)
+
+    # try to get data
+    try:
+        page = requests.get(url)
+    except ConnectionError:
+        return botdict_return
+
+    # examine results
     result = page.content
     botdict_ret = json.loads(result, object_hook=json_util.object_hook)
+
+    # get the wanted results
     botdict_return = botdict_ret["tempvals"]["uptime"]
+
     return botdict_return
 
 
