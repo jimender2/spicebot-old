@@ -1600,6 +1600,7 @@ def bot_watch_exclamation(bot, trigger):
     osd(bot, botcom.instigator, 'notice', "Exclamation Testing")
 
     botdict_return = botdict_fetch()
+    osd(bot, botcom.instigator, 'notice', str(botdict["tempvals"]["uptime"]))
     osd(bot, botcom.instigator, 'notice', str(botdict_return))
 
 
