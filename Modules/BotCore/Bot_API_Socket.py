@@ -138,11 +138,11 @@ def listener(bot, trigger):
 
                             # must be a channel or user included
                             if "targets" not in jsondict.keys():
-                                stderr("[API] No channel included.")
+                                stderr("[API] No targets included.")
                                 break
 
                             # accept list inputs
-                            if not isinstance(jsondict["targets"], dict):
+                            if not isinstance(jsondict["targets"], list):
                                 listtargets = [jsondict["targets"]]
                             else:
                                 listtargets = jsondict["targets"]
