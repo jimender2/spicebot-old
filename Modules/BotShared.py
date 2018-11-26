@@ -1634,10 +1634,10 @@ def bot_register_handler_startup(bot):
     hostslist = ["192.168.5.100", "192.168.5.101"]
     hostsprocess = []
     for host in hostslist:
-        portslist = find_used_port_in_range(bot, 8080, 9090, host)
-        for port in portslist:
-            hostsprocesscur = {"host": host, "port": port}
-            hostsprocess.append(hostsprocesscur)
+        hostsprocess = []
+        for i in range(8080, 9091):
+            if bot_api_port_test(bot, host, port):
+                hostsprocess.append({"host": host, "port": i})
     if hostsprocess == []:
         stderr("[API] No Bots To Query")
     else:
@@ -1701,6 +1701,22 @@ def bot_api_fetch(bot, botport, host="localhost"):
     botdict_return = botdict_return["tempvals"]["uptime"]
 
     return botdict_return
+
+
+def bot_api_port_test(bot, host, port):
+    returnval = False
+
+    # Create a TCP/IP socket
+    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        # Bind the socket to the port
+        server_address = (str(host), int(port))
+        tempsock.connect(server_address)
+        tempsock.close()
+        returnval = True
+    except Exception as e:
+        tempsock.close()
+    return returnval
 
 
 def bot_api_send(bot, botport, messagedict, host="localhost"):
