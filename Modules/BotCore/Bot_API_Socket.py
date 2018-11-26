@@ -51,11 +51,11 @@ def listener(bot, trigger):
             currentport = find_unused_port_in_range(bot, 8080, 9090)
         set_database_value(bot, bot.nick, 'sock_port', currentport)
         try:
-            bot.memory['sock'].bind(('0.0.0.0', previouslyusedport))
-            stderr("Loaded socket on port %s" % (previouslyusedport))
+            bot.memory['sock'].bind(('0.0.0.0', int(currentport)))
+            stderr("Loaded socket on port %s" % (currentport))
             bot.memory['sock'].listen(10)
         except socket.error as msg:
-            stderr("Error loading socket on port %s: %s (%s)" % (previouslyusedport, str(msg[0]), str(msg[1])))
+            stderr("Error loading socket on port %s: %s (%s)" % (currentport, str(msg[0]), str(msg[1])))
             return
     sock = bot.memory['sock']
 
