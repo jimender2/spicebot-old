@@ -1661,14 +1661,14 @@ def bot_api_send(bot, botport, host="localhost"):
     # convert to json
     messagedict = {"type": "message", "targets": ["deathbybandaid"], "message": "test of user notification"}
     msg = json.dumps(messagedict, default=json_util.default).encode('utf-8')
-    response_headers_raw, r = bot_api_response_headers(bot, msg)
+    # response_headers_raw, r = bot_api_response_headers(bot, msg)
 
     # sending all this stuff
     try:
         stderr("[API] Sending data.")
-        tempsock.send(r)
-        tempsock.send(response_headers_raw)
-        tempsock.send('\r\n')  # to separate headers from body
+        # tempsock.send(r)
+        # tempsock.send(response_headers_raw)
+        # tempsock.send('\r\n')  # to separate headers from body
         tempsock.send(msg.encode(encoding="utf-8"))
     except Exception as e:
         stderr("[API] Error Sending Data: (%s)" % (e))
