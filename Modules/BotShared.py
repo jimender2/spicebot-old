@@ -1638,6 +1638,7 @@ def bot_register_handler_startup(bot):
             if host != registerdict["host"] and port != registerdict["port"]:
                 hostsprocesscur = {"host": host, "port": port}
                 hostsprocess.append(hostsprocesscur)
+    bot.msg("#spicebottest", str(hostsprocess))
     if hostsprocess == []:
         stderr("[API] No Bots To Query")
     else:
