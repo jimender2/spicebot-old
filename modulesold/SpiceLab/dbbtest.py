@@ -31,6 +31,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
     bot.say(str(bot.memory['command-list']))
+    bot.say(str(bot.command_groups))
 
     # bot.say(str(type("fart")))
 
