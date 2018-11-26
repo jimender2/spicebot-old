@@ -680,13 +680,13 @@ def dict_command_configs(bot):
     filescan = []
     quick_coms_path = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/" + str(bot.nick) + "/"
     if os.path.exists(quick_coms_path) and os.path.isdir(quick_coms_path):
-        if len(os.listdir(quick_coms_path)) > 0:
+        if len(os.listdir(quick_coms_path)) > 0 and not os.path.isfile(quick_coms_path):
             filescan.append(quick_coms_path)
 
     if str(bot.nick).endswith("dev"):
         quick_coms_path_alt = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/" + str(str(bot.nick).replace("dev", "")) + "/"
         if os.path.exists(quick_coms_path_alt) and os.path.isdir(quick_coms_path_alt):
-            if len(os.listdir(quick_coms_path_alt)) > 0:
+            if len(os.listdir(quick_coms_path_alt)) > 0 and not os.path.isfile(quick_coms_path_alt):
                 filescan.append(quick_coms_path_alt)
 
     # proceed with file iteration
@@ -697,7 +697,7 @@ def dict_command_configs(bot):
 
             # iterate over files within
             coms_type_file_path = os.path.join(quick_coms_path, quick_coms_type)
-            if len(os.listdir(coms_type_file_path)) > 0 and os.path.isdir(coms_type_file_path):
+            if not os.path.isfile(coms_type_file_path) and len(os.listdir(coms_type_file_path)) > 0:
 
                 for comconf in os.listdir(coms_type_file_path):
 
