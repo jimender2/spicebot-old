@@ -1643,10 +1643,8 @@ def bot_api_fetch(bot, botport, host="localhost"):
     result = page.content
     botdict_return = json.loads(result, object_hook=json_util.object_hook)
 
-    """
     # get the wanted results
     botdict_return = botdict_return["tempvals"]["uptime"]
-    """
 
     return botdict_return
 
