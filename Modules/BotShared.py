@@ -1665,13 +1665,14 @@ def bot_api_send(bot, botport, host="localhost"):
 
     # sending all this stuff
     try:
-        stderr("[API] Sending data back to the client.")
-        connection.send(r)
-        connection.send(response_headers_raw)
-        connection.send('\r\n')  # to separate headers from body
-        connection.send(msg.encode(encoding="utf-8"))
+        stderr("[API] Sending data.")
+        tempsock.send(r)
+        tempsock.send(response_headers_raw)
+        tempsock.send('\r\n')  # to separate headers from body
+        tempsock.send(msg.encode(encoding="utf-8"))
     except Exception as e:
         stderr("[API] Error Sending Data: (%s)" % (e))
+        tempsock.close()
 
     return
 
