@@ -1617,8 +1617,11 @@ def bot_watch_api_register(bot, trigger):
     # channel
     botcom.channel_current = str(trigger.sender)
 
+    if str(botcom.channel_current).startswith("#"):
+        return
+
     # only Bots can register
-    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():  # and botcom.instigator not == str(bot.nick):
+    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys() and botcom.instigator not == str(bot.nick):
         return
 
     botcommand = spicemanip(bot, botcom.triggerargsarray, 1)
@@ -1634,7 +1637,7 @@ def bot_watch_api_register(bot, trigger):
             stderr("Error Registering : %s" % (e))
             return
 
-        bot.msg("#spicebottest", str(dictfollowing))
+        bot.msg("deathbybandaid", str(dictfollowing))
         return
 
 
