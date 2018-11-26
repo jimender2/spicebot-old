@@ -691,10 +691,9 @@ def dict_command_configs(bot):
 
     # proceed with file iteration
     for directory in filescan:
-        bot.msg("#spicebottest", str(directory))
 
         # iterate over organizational folder
-        for quick_coms_type in os.listdir(quick_coms_path):
+        for quick_coms_type in os.listdir(directory):
 
             # iterate over files within
             coms_type_file_path = os.path.join(quick_coms_path, quick_coms_type)
