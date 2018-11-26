@@ -52,7 +52,7 @@ def real_startup(bot, trigger):
 
     beguinedisp = False
     while not beguinedisp:
-        if not bot.memory['sock']:
+        if 'sock' not in bot.memory:
             time.sleep(1)
         else:
             beguinedisp = True
