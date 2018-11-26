@@ -113,6 +113,10 @@ bot_dict = {
                             "valid_gif_api_dict": {},
 
                             # Loaded configs
+                            "module_commands": {},
+                            "module_commands_loaded": [],
+
+                            # Loaded configs
                             "dict_commands": {},
                             "dict_commands_loaded": [],
 
@@ -624,16 +628,16 @@ def bot_read_txt_files(bot):
 
 # Module commands
 def modules_command_listing(bot):
-    bot.memory["botdict"]["tempvals"]['module_count'] = 0
-    bot.memory["botdict"]["tempvals"]['module_commands'] = dict()
+    modulecount = 0
     for modules in bot.command_groups.items():
-        bot.memory["botdict"]["tempvals"]['module_count'] += 1
+        modulecount += 1
         for commands in modules:
             bot.msg("#spicebottest", str(commands))
             filename = commands[0]
             # validcoms = commands[1]
             # for com in validcoms:
             #    bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
+    bot.memory["botdict"]["tempvals"]['module_count'] = modulecount
 
 
 # Command configs
