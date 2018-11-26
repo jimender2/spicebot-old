@@ -1605,7 +1605,7 @@ def bot_watch_exclamation(bot, trigger):
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, "2+")
 
     subcommand = spicemanip(bot, botcom.triggerargsarray, 1) or None
-    if not subcommand or subcommand not in []:
+    if not subcommand or subcommand not in ['send', 'get']:
         osd(bot, botcom.channel_current, 'say', "need a valid subcommand")
         return
 
