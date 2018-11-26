@@ -677,11 +677,16 @@ def dict_command_configs(bot):
         return
 
     dictcount, dictopenfail = 0, 0
-
     filescan = []
     quick_coms_path = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/" + str(bot.nick) + "/"
     if os.path.isdir(quick_coms_path):
         filescan.append(quick_coms_path)
+
+    if str(bot.nick).endswith("dev"):
+        trynick = str(bot.nick).replace("dev", "")
+        quick_coms_path_alt = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/" + str(trynick) + "/"
+        if os.path.isdir(quick_coms_path_alt):
+            filescan.append(quick_coms_path_alt)
 
     # proceed with file iteration
     for directory in filescan:
