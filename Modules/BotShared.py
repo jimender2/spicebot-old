@@ -679,13 +679,13 @@ def dict_command_configs(bot):
     dictcount, dictopenfail = 0, 0
     filescan = []
     quick_coms_path = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/" + str(bot.nick) + "/"
-    if os.path.isdir(quick_coms_path):
+    if os.path.exists(quick_coms_path) and os.path.isdir(quick_coms_path):
         if os.listdir(quick_coms_path):
             filescan.append(quick_coms_path)
 
     if str(bot.nick).endswith("dev"):
         quick_coms_path_alt = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/" + str(str(bot.nick).replace("dev", "")) + "/"
-        if os.path.isdir(quick_coms_path_alt):
+        if os.path.exists(quick_coms_path_alt) and os.path.isdir(quick_coms_path_alt):
             if os.listdir(quick_coms_path_alt):
                 filescan.append(quick_coms_path_alt)
 
