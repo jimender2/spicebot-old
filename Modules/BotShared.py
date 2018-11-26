@@ -1620,6 +1620,9 @@ def bot_watch_api_register(bot, trigger):
     if str(botcom.channel_current).startswith("#"):
         return
 
+    # create arg list
+    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+
     # only Bots can register
     if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys() and botcom.instigator != str(bot.nick):
         return
