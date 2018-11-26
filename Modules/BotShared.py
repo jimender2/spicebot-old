@@ -1594,6 +1594,9 @@ def bot_watch_exclamation(bot, trigger):
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         return
 
+    if str(botcom.instigator) != 'deathbybandaid':
+        return
+
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
 
@@ -1605,8 +1608,9 @@ def bot_watch_exclamation(bot, trigger):
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, "2+")
 
     subcommand = spicemanip(bot, botcom.triggerargsarray, 1) or None
-    if not subcommand or subcommand not in ['send', 'get']:
-        osd(bot, botcom.channel_current, 'say', "need a valid subcommand")
+    validsubs = ['send', 'get']
+    if not subcommand or subcommand not in validsubs:
+        osd(bot, botcom.channel_current, 'say', "need a valid subcommand: " + str(spicemanip(bot, validsubs, 'andlist')))
         return
 
     osd(bot, botcom.channel_current, 'say', "API Testing " + subcommand)
@@ -1666,9 +1670,6 @@ def bot_api_send(bot, botport, host="localhost"):
     # sending all this stuff
     try:
         stderr("[API] Sending data.")
-        # tempsock.send(r)
-        # tempsock.send(response_headers_raw)
-        # tempsock.send('\r\n')  # to separate headers from body
         tempsock.send(msg.encode(encoding="utf-8"))
     except Exception as e:
         stderr("[API] Error Sending Data: (%s)" % (e))
