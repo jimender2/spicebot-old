@@ -1612,9 +1612,9 @@ def bot_watch_exclamation(bot, trigger):
     osd(bot, botcom.channel_current, 'say', "API Testing " + subcommand)
 
     if bot.nick == "SpiceBotdev":
-        port = "8081"
+        port = 8081
     elif bot.nick == "SpiceBot":
-        port = "8080"
+        port = 8080
 
     if subcommand == 'send':
         bot_api_send(bot, port)
@@ -1631,7 +1631,7 @@ def bot_api_fetch(bot, botport, host="localhost"):
     botdict_return = None
 
     # what url to check
-    addr = str("http://" + host + ":" + botport)
+    addr = str("http://" + str(host) + ":" + str(botport))
 
     # try to get data
     try:
@@ -1651,7 +1651,7 @@ def bot_api_fetch(bot, botport, host="localhost"):
 
 def bot_api_send(bot, botport, host="localhost"):
 
-    addr = (host, botport)
+    addr = (str(host), int(botport))
 
     tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
