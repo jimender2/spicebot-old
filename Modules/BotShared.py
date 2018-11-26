@@ -1636,7 +1636,7 @@ def bot_register_handler_startup(bot):
     for host in hostslist:
         hostsprocess = []
         for i in range(8080, 9091):
-            if bot_api_port_test(bot, host, port):
+            if bot_api_port_test(bot, host, i):
                 hostsprocess.append({"host": host, "port": i})
     if hostsprocess == []:
         stderr("[API] No Bots To Query")
