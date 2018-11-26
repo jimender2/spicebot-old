@@ -50,6 +50,13 @@ def real_startup(bot, trigger):
 
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " modules.")
 
+    beguinedisp = False
+    while not beguinedisp:
+        if not bot.memory["botdict"]["tempvals"]['sock']:
+            time.sleep(1)
+        else:
+            beguinedisp = True
+
     # Check for python module errors during this startup
     searchphrasefound = []
     for line in os.popen("sudo service " + bot.nick + " status").read().split('\n'):
