@@ -1640,7 +1640,10 @@ def bot_register_handler_single(bot, host, port, dictsend):
 
     # Bind the socket to the port
     server_address = (str(host), int(port))
-    tempsock.connect(server_address)
+    try:
+        tempsock.connect(server_address)
+    except Exception as e:
+        return
 
     # convert to json
     msg = json.dumps(dictsend, default=json_util.default).encode('utf-8')
