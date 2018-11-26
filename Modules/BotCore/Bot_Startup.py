@@ -36,8 +36,7 @@ def real_startup(bot, trigger):
 
     startupcomplete = [bot.nick + " startup complete"]
 
-    availablecomsnum = 0
-    availablecomsfiles = 0
+    availablecomsnum, availablecomsfiles = 0, 0
 
     # dict commands
     availablecomsnum += len(bot.memory["botdict"]["tempvals"]['dict_commands'].keys())

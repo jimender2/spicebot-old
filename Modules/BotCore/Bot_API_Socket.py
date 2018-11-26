@@ -27,13 +27,6 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 def listener(bot, trigger):
 
-    beguinelisten = False
-    while not beguinelisten:
-        if "botdict_loaded" in bot.memory:
-            beguinelisten = True
-        else:
-            time.sleep(1)
-
     # Create a TCP/IP socket
     bot.memory['sock'] = None
     currenthost_ip = socket.gethostbyname(socket.gethostname())
