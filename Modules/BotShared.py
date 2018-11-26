@@ -700,7 +700,7 @@ def dict_command_configs(bot):
 
                 # iterate over files within
                 coms_type_file_path = os.path.join(quick_coms_path, quick_coms_type)
-                if os.path.exists(coms_type_file_path) and not os.path.isfile(coms_type_file_path) and len(os.listdir(coms_type_file_path)) > 0:
+                if os.path.exists(coms_type_file_path) and os.path.isfile(coms_type_file_path) and len(os.listdir(coms_type_file_path)) > 0:
                     bot.msg("#spicebottest", "          * " + str(coms_type_file_path))
 
                     for comconf in os.listdir(coms_type_file_path):
