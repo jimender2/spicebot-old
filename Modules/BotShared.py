@@ -1644,8 +1644,8 @@ def bot_register_handler_startup(bot):
         bot_register_handler_single(bot, bots["host"], bots["port"], registerdict)
         stderr("[API] Sent API registration to other bots")
 
+    registerdict["command"] = "register_request"
     for bots in hostsprocess:
-        registerdict["command"] = "register_request"
         stderr("[API] Requesting API registration from other bots")
         bot_register_handler_single(bot, bots["host"], bots["port"], registerdict)
         stderr("[API] Requesting API registration from other bots: Complete")
