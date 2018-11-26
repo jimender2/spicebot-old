@@ -50,12 +50,12 @@ def real_startup(bot, trigger):
 
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " modules.")
 
-    beguinedisp = False
-    while not beguinedisp:
-        if 'sock' not in bot.memory:
-            time.sleep(1)
-        else:
-            beguinedisp = True
+    # beguinedisp = False
+    # while not beguinedisp:
+    #    if 'sock' not in bot.memory:
+    #        time.sleep(1)
+    #    else:
+    #        beguinedisp = True
 
     # Check for python module errors during this startup
     searchphrasefound = []
