@@ -9,7 +9,7 @@
               },
 "crow": {
               "type": "target",
-              "responses": ["A Crow flys down and pecks $targets eyeballs out of their sockets."],
+              "responses": ["A Crow flies down and pecks $targets eyeballs out of their sockets."],
               "response_fail": ["A Murder of Crows swarms the room looking for dead bodies."],
               },
 
