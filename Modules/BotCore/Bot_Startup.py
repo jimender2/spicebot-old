@@ -67,8 +67,9 @@ def real_startup(bot, trigger):
             searchphrase = str(line).split("]:", -1)[1].replace(" dict files failed to load", "")
             searchphrasefound.append(str(searchphrase) + " dict file(s) failed")
 
-    if 'sock_port' in bot.memory:
-        startupcomplete.append("API Port set to " + str(bot.memory['sock_port']))
+    while 'sock_port' not in bot.memory:
+        time.sleep(1)
+    startupcomplete.append("API Port set to " + str(bot.memory['sock_port']))
 
     for channel in bot.channels:
         osd(bot, channel, 'notice', startupcomplete)
