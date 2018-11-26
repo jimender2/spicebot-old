@@ -3204,7 +3204,7 @@ Small Functions
 """
 
 
-def find_used_port_in_range(bot, rangestart, rangeend, host="0.0.0.0"):
+def find_used_port_in_range(bot, rangestart, rangeend, host):
     returnlist = []
     for i in range(rangestart, rangeend + 1):
         if is_port_in_use(i, host):
@@ -3212,13 +3212,13 @@ def find_used_port_in_range(bot, rangestart, rangeend, host="0.0.0.0"):
     return returnlist
 
 
-def find_unused_port_in_range(bot, rangestart, rangeend, host="0.0.0.0"):
+def find_unused_port_in_range(bot, rangestart, rangeend, host):
     for i in range(rangestart, rangeend + 1):
         if not is_port_in_use(i, host):
             return i
 
 
-def is_port_in_use(port, host="0.0.0.0"):
+def is_port_in_use(port, host):
     checkport = str(len(subprocess.Popen("netstat -lant | awk '{print $4}' | grep " + str(host) + ":" + str(port), shell=True, stdout=subprocess.PIPE).stdout.read()) > 0)
     if checkport == "True":
         return True
