@@ -633,7 +633,7 @@ def modules_command_listing(bot):
         modulecount += 1
         for commands in list(modules):
             commands = list(commands)
-            bot.msg("#spicebottest", str(commands))
+            bot.msg("#spicebottest", str(commands[0]))
             # filename = commands[0]
             # validcoms = commands[1]
             # for com in validcoms:
