@@ -1599,6 +1599,9 @@ def bot_watch_exclamation(bot, trigger):
 
     osd(bot, botcom.channel_current, 'say', "API Testing " + subcommand)
 
+    if "sock_dict" in bot.memory:
+        osd(bot, botcom.channel_current, 'say', str(bot.memory["sock_dict"]))
+
     if bot.nick == "SpiceBotdev":
         port = 8081
     elif bot.nick == "SpiceBot":
