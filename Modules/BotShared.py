@@ -632,8 +632,8 @@ def modules_command_listing(bot):
             bot.msg("#spicebottest", str(commands))
             filename = commands[0]
             validcoms = commands[1]
-            for com in validcoms:
-                bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
+            # for com in validcoms:
+            #    bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
 
 
 # Command configs
