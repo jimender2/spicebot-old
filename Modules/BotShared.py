@@ -99,10 +99,6 @@ bot_dict = {
                             # Indicate if we need to pull the dict from the database
                             "dict_loaded": False,
 
-                            "sock": None,
-
-                            "api_log": {},
-
                             # Time The Bot started last
                             "uptime": None,
 
@@ -172,9 +168,6 @@ bot_dict = {
 
                 # Channels
                 "channels_list": {},
-
-                # sock port
-                "sock_port": None,
 
                 }
 
@@ -1634,13 +1627,14 @@ def bot_watch_api_register(bot, trigger):
 
     if botcommand == "register":
         dictfollowing = spicemanip(bot, botcom.triggerargsarray, "2+")
+        regdict = None
         try:
-            dictfollowing = eval(dictfollowing)
+            regdict = eval(dictfollowing)
         except Exception as e:
             stderr("Error Registering : %s" % (e))
             return
 
-        bot.msg("deathbybandaid", str(dictfollowing))
+        stderr("Registering : " + str(regdict))
         return
 
 

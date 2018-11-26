@@ -36,24 +36,25 @@ def listener(bot, trigger):
 
     # Create a TCP/IP socket
     currenthost_ip = socket.gethostbyname(socket.gethostname())
-    if not bot.memory["botdict"]["tempvals"]['sock'] or not bot.memory["botdict"]['sock_port']:
-        bot.memory["botdict"]["tempvals"]['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    previouslyusedport = get_database_value(bot, bot.nick, 'sock_port') or None
+    if not bot.memory['sock'] or not previouslyusedport:
+        bot.memory['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # port number to use, try previous port, if able
         currentport = None
-        if bot.memory["botdict"]['sock_port']:
-            if not is_port_in_use(bot.memory["botdict"]['sock_port']):
-                currentport = bot.memory["botdict"]['sock_port']
+        if previouslyusedport:
+            if not is_port_in_use(previouslyusedport):
+                currentport = previouslyusedport
         if not currentport:
             currentport = find_unused_port_in_range(bot, 8080, 9090)
-        bot.memory["botdict"]['sock_port'] = currentport
+        set_database_value(bot, bot.nick, 'sock_port', currentport)
         try:
-            bot.memory["botdict"]["tempvals"]['sock'].bind(('0.0.0.0', bot.memory["botdict"]['sock_port']))
-            stderr("Loaded socket on port %s" % (bot.memory["botdict"]['sock_port']))
-            bot.memory["botdict"]["tempvals"]['sock'].listen(10)
+            bot.memory['sock'].bind(('0.0.0.0', previouslyusedport))
+            stderr("Loaded socket on port %s" % (previouslyusedport))
+            bot.memory['sock'].listen(10)
         except socket.error as msg:
-            stderr("Error loading socket on port %s: %s (%s)" % (bot.memory["botdict"]['sock_port'], str(msg[0]), str(msg[1])))
+            stderr("Error loading socket on port %s: %s (%s)" % (previouslyusedport, str(msg[0]), str(msg[1])))
             return
-    sock = bot.memory["botdict"]["tempvals"]['sock']
+    sock = bot.memory['sock']
 
     # register this port with the other bots
     botslist = []
