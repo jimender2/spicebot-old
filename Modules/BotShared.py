@@ -1605,7 +1605,8 @@ def bot_watch_exclamation(bot, trigger):
         port = 8080
 
     if subcommand == 'send':
-        bot_api_send(bot, port)
+        messagedict = {"type": "command", "command": "update"}
+        bot_api_send(bot, messagedict, port)
     elif subcommand == 'get':
         botdict_return = bot_api_fetch(bot, port)
         if botdict_return:
@@ -2334,7 +2335,6 @@ def bot_dictcom_handle(bot, botcom):
         botcom.dotcommand = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["aliasfor"]
 
     # simplify usage of the bot command going forward
-    # botcom.dotcommand_dict = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].copy()
     botcom.dotcommand_dict = copy.deepcopy(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand])
 
     # remainder, if any is the new arg list
@@ -2828,7 +2828,7 @@ def bot_api_fetch(bot, botport, host="localhost"):
     return botdict_return
 
 
-def bot_api_send(bot, botport, message, host="localhost"):
+def bot_api_send(bot, botport, messagedict, host="localhost"):
 
     # Create a TCP/IP socket
     tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -2838,7 +2838,6 @@ def bot_api_send(bot, botport, message, host="localhost"):
     tempsock.connect(server_address)
 
     # convert to json
-    messagedict = {"type": "command", "command": "update"}
     msg = json.dumps(messagedict, default=json_util.default).encode('utf-8')
 
     # sending all this stuff

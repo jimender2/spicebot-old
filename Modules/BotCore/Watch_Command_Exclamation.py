@@ -30,7 +30,7 @@ bot.nick do this
 
 @rule('(.*)')
 @sopel.module.thread(True)
-def bot_watch_dot_hub(bot, trigger):
+def bot_watch_exclamation_hub(bot, trigger):
     if not str(trigger).startswith(tuple(['!'])):
         return
 
