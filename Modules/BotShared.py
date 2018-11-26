@@ -298,6 +298,9 @@ def botdict_open(bot):
     # Text Files
     bot_read_txt_files(bot)
 
+    # normal modules
+    modules_command_listing(bot)
+
     # dictionary commands
     dict_command_configs(bot)
 
@@ -622,7 +625,7 @@ def bot_read_txt_files(bot):
 # Module commands
 def modules_command_listing(bot):
     bot.memory["botdict"]["tempvals"]['module_count'] = 0
-    bot.memory["botdict"]["tempvals"]['module_commands'] = {}
+    bot.memory["botdict"]["tempvals"]['module_commands'] = dict()
     bot_visible_coms = []
     for modules in bot.command_groups.items():
         bot_visible_coms.append(modules)
