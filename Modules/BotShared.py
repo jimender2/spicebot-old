@@ -1621,7 +1621,7 @@ def bot_watch_api_register(bot, trigger):
         return
 
     # only Bots can register
-    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys() and botcom.instigator not == str(bot.nick):
+    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys() and botcom.instigator != str(bot.nick):
         return
 
     botcommand = spicemanip(bot, botcom.triggerargsarray, 1)
