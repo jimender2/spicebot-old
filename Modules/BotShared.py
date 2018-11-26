@@ -308,8 +308,6 @@ def botdict_open(bot):
     # dictionary commands
     dict_command_configs(bot)
 
-    # iniital privacy sweep
-    bot_setup_privacy_sweep(bot)
 
     # use this to prevent bot usage if the above isn't done loading
     bot.memory["botdict_loaded"] = True

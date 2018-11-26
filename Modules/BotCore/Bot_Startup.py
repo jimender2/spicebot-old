@@ -82,3 +82,6 @@ def real_startup(bot, trigger):
         searchphrasefound.insert(0, "Notice to Bot Admins: ")
         searchphrasefound.append("Run the debug command for more information.")
         osd(bot, bot.channels, 'say', searchphrasefound)
+
+    # iniital privacy sweep
+    bot_setup_privacy_sweep(bot)
