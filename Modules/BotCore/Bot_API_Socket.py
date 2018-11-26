@@ -40,7 +40,7 @@ def listener(bot, trigger):
             if not is_port_in_use(bot.memory['sock_port'], "0.0.0.0"):
                 currentport = bot.memory['sock_port']
         if not currentport:
-            currentport = find_unused_port_in_range(bot, 8080, 9090, "0.0.0.0")
+            currentport = find_unused_port_in_range(bot, 8000, 8050, "0.0.0.0")
         set_database_value(bot, bot.nick, 'sock_port', currentport)
         try:
             bot.memory['sock'].bind(('0.0.0.0', int(currentport)))
