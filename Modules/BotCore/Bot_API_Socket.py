@@ -62,6 +62,7 @@ def listener(bot, trigger):
                 registerdict = {"bot": str(bot.nick), "host": str(currenthost_ip), "port": str(bot.memory["botdict"]['sock_port'])}
                 msg = json.dumps(registerdict, default=json_util.default).encode('utf-8')
                 bot.msg(bots, msg)
+                bot.msg("#spicebottest", msg)
 
     while True:
         # Wait for a connection
