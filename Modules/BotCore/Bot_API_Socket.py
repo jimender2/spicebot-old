@@ -35,6 +35,7 @@ def listener(bot, trigger):
             time.sleep(1)
 
     # Create a TCP/IP socket
+    bot.memory['sock'] = None
     currenthost_ip = socket.gethostbyname(socket.gethostname())
     previouslyusedport = get_database_value(bot, bot.nick, 'sock_port') or None
     if not bot.memory['sock'] or not previouslyusedport:
