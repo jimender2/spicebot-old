@@ -29,7 +29,8 @@ def real_startup(bot, trigger):
         time.sleep(1)
 
     # Startup
-    osd(bot, bot.channels, 'notice', bot.nick + " is now starting. Please wait while I load my configuration.")
+    for channel in bot.channels:
+        osd(bot, channel, 'notice', bot.nick + " is now starting. Please wait while I load my configuration.")
 
     # Open Bot memory dictionary
     botdict_open(bot)
@@ -63,12 +64,14 @@ def real_startup(bot, trigger):
     startupcomplete.append("API Port set to " + str(bot.memory['sock_port']))
 
     # Announce to chan, then handle some closing stuff
-    osd(bot, bot.channels, 'notice', startupcomplete)
+    for channel in bot.channels:
+        osd(bot, channel, 'notice', startupcomplete)
 
     if searchphrasefound != []:
         searchphrasefound.insert(0, "Notice to Bot Admins: ")
         searchphrasefound.append("Run the debug command for more information.")
-        osd(bot, bot.channels, 'say', searchphrasefound)
+        for channel in bot.channels:
+            osd(bot, channel, 'say', searchphrasefound)
 
     stderr("Sending API registration to other bots")
     bot_register_handler_startup(bot)

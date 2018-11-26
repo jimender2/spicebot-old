@@ -51,6 +51,8 @@ def listener(bot, trigger):
             return
     sock = bot.memory['sock']
 
+    bot.memory["sock_dict"] = dict()
+
     while True:
         # Wait for a connection
         stderr("[API] Waiting for a connection.")
