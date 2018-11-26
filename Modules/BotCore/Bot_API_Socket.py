@@ -29,7 +29,6 @@ def listener(bot, trigger):
 
     # Create a TCP/IP socket
     bot.memory['sock'] = None
-    currenthost_ip = socket.gethostbyname(socket.gethostname())
     bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
     if bot.memory['sock_port']:
         bot.memory['sock_port'] = int(bot.memory['sock_port'])
@@ -51,18 +50,6 @@ def listener(bot, trigger):
             stderr("Error loading socket on port %s: %s (%s)" % (currentport, str(msg[0]), str(msg[1])))
             return
     sock = bot.memory['sock']
-
-    # register this port with the other bots
-    botslist = []
-    for bots in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-        if bots != str(bot.nick):
-            if bot.memory["botdict"]["tempvals"]['bots_list'][bots]['directory']:
-                botslist.append(bots)
-                registerdict = {"bot": str(bot.nick), "host": str(currenthost_ip), "port": str(bot.memory["botdict"]['sock_port'])}
-                msg = json.dumps(registerdict, default=json_util.default).encode('utf-8')
-                bot.msg(bots, msg)
-    if botslist != []:
-        stderr("Sent API registration to " + str(spicemanip(bot, botslist, 'andlist')))
 
     while True:
         # Wait for a connection
