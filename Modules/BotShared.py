@@ -1658,6 +1658,23 @@ def bot_api_send(bot, botport, host="localhost"):
     server_address = (str(host), botport)
     tempsock.connect(server_address)
 
+    # convert to json
+    messagedict = {"type": "message", "targets": ["deathbybandaid"], "message": "test of user notification"}
+    msg = json.dumps(messagedict, default=json_util.default).encode('utf-8')
+    response_headers_raw, r = bot_api_response_headers(bot, msg)
+
+    # sending all this stuff
+    try:
+        stderr("[API] Sending data back to the client.")
+        connection.send(r)
+        connection.send(response_headers_raw)
+        connection.send('\r\n')  # to separate headers from body
+        connection.send(msg.encode(encoding="utf-8"))
+    except Exception as e:
+        stderr("[API] Error Sending Data: (%s)" % (e))
+
+    return
+
     try:
         # Send data
         message = '{"type": "message", "targets": ["deathbybandaid"], "message": "test of user notification"}'
@@ -1666,23 +1683,8 @@ def bot_api_send(bot, botport, host="localhost"):
     except Exception as e:
         stderr("Error sending to %s: (%s)" % (addr, e))
         tempsock.close()
-        return
 
     return
-
-    addr = (str(host), int(botport))
-
-    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    data = {"type": "message", "targets": ["deathbybandaid"], "message": "test of user notification"}
-
-    try:
-        tempsock.sendto(str(data), addr)
-        tempsock.close()
-    except Exception as e:
-        stderr("Error sending to %s: (%s)" % (addr, e))
-        tempsock.close()
-        return
 
 
 """
