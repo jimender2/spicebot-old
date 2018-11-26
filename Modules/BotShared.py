@@ -1630,6 +1630,7 @@ def bot_register_handler_startup(bot):
                     }
 
     # This is for my custom use, hardcoded hosts
+    stderr("[API] Creating list of Bots To Query")
     hostslist = ["192.168.5.100", "192.168.5.101"]
     hostsprocess = []
     for host in hostslist:
