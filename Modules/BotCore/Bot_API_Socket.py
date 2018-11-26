@@ -215,7 +215,8 @@ def listener(bot, trigger):
                                     jsondict["reply"] = False
                                 if jsondict["reply"]:
                                     registerdict["reply"] = False
-                                    bot_register_handler_single(bot, jsondict["host"], jsondict["port"], registerdict)
+                                    if jsondict["host"] != registerdict["host"] and jsondict["port"] != registerdict["port"]:
+                                        bot_register_handler_single(bot, jsondict["host"], jsondict["port"], registerdict)
                                 break
 
                             elif jsondict["command"] == 'update':

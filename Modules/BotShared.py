@@ -1630,7 +1630,8 @@ def bot_register_handler_startup(bot):
     for host in hostslist:
         portslist = find_used_port_in_range(bot, 8080, 9090)
         for port in portslist:
-            bot_register_handler_single(bot, host, port, registerdict)
+            if host != registerdict["host"] and port != registerdict["port"]:
+                bot_register_handler_single(bot, host, port, registerdict)
 
 
 def bot_register_handler_single(bot, host, port, dictsend):
