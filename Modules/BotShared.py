@@ -1629,6 +1629,8 @@ def bot_register_handler_startup(bot):
     # This is for my custom use, hardcoded hosts
     hostslist = ["192.168.5.100", "192.168.5.101"]
     for host in hostslist:
+        if host == str(socket.gethostbyname(socket.gethostname())):
+            host == 'localhost'
         portslist = find_used_port_in_range(bot, 8080, 9090)
         for port in portslist:
             if host != registerdict["host"] and port != registerdict["port"]:
@@ -1639,6 +1641,9 @@ def bot_register_handler_single(bot, host, port, dictsend):
 
     # Create a TCP/IP socket
     tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    if host == str(socket.gethostbyname(socket.gethostname())):
+        host == 'localhost'
 
     # Bind the socket to the port
     server_address = (str(host), int(port))
@@ -1660,6 +1665,66 @@ def bot_register_handler_single(bot, host, port, dictsend):
         stderr("[API] Error Sending Data to " + str(host) + ":" + str(port) + " (" + str(e) + ")")
         tempsock.close()
     return
+
+
+def bot_api_fetch(bot, botport, host="localhost"):
+    botdict_return = None
+
+    # what url to check
+    addr = str("http://" + str(host) + ":" + str(botport))
+
+    # try to get data
+    try:
+        page = requests.get(addr)
+    except ConnectionError:
+        return botdict_return
+
+    # examine results
+    result = page.content
+    botdict_return = json.loads(result, object_hook=json_util.object_hook)
+
+    # get the wanted results
+    botdict_return = botdict_return["tempvals"]["uptime"]
+
+    return botdict_return
+
+
+def bot_api_send(bot, botport, messagedict, host="localhost"):
+
+    if host == str(socket.gethostbyname(socket.gethostname())):
+        host == 'localhost'
+
+    # Create a TCP/IP socket
+    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Bind the socket to the port
+    server_address = (str(host), int(botport))
+    tempsock.connect(server_address)
+
+    # convert to json
+    msg = json.dumps(messagedict, default=json_util.default).encode('utf-8')
+
+    # sending all this stuff
+    try:
+        stderr("[API] Sending data.")
+        tempsock.send(msg.encode(encoding="utf-8"))
+    except Exception as e:
+        stderr("[API] Error Sending Data: (%s)" % (e))
+        tempsock.close()
+
+    return
+
+
+def bot_api_response_headers(bot, msg):
+    # response_headers
+    response_headers = {
+                        'Content-Type': 'text/html; encoding=utf8',
+                        'Content-Length': len(msg),
+                        'Connection': 'close',
+                        }
+    response_headers_raw = ''.join('%s: %s\r\n' % (k, v) for k, v in response_headers.items())
+    r = '%s %s %s\r\n' % ('HTTP/1.1', '200', 'OK')
+    return response_headers_raw, r
 
 
 """
@@ -2806,63 +2871,6 @@ def bot_dictcom_gif(bot, botcom):
 """
 Text Processing
 """
-
-
-def bot_api_fetch(bot, botport, host="localhost"):
-    botdict_return = None
-
-    # what url to check
-    addr = str("http://" + str(host) + ":" + str(botport))
-
-    # try to get data
-    try:
-        page = requests.get(addr)
-    except ConnectionError:
-        return botdict_return
-
-    # examine results
-    result = page.content
-    botdict_return = json.loads(result, object_hook=json_util.object_hook)
-
-    # get the wanted results
-    botdict_return = botdict_return["tempvals"]["uptime"]
-
-    return botdict_return
-
-
-def bot_api_send(bot, botport, messagedict, host="localhost"):
-
-    # Create a TCP/IP socket
-    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # Bind the socket to the port
-    server_address = (str(host), int(botport))
-    tempsock.connect(server_address)
-
-    # convert to json
-    msg = json.dumps(messagedict, default=json_util.default).encode('utf-8')
-
-    # sending all this stuff
-    try:
-        stderr("[API] Sending data.")
-        tempsock.send(msg.encode(encoding="utf-8"))
-    except Exception as e:
-        stderr("[API] Error Sending Data: (%s)" % (e))
-        tempsock.close()
-
-    return
-
-
-def bot_api_response_headers(bot, msg):
-    # response_headers
-    response_headers = {
-                        'Content-Type': 'text/html; encoding=utf8',
-                        'Content-Length': len(msg),
-                        'Connection': 'close',
-                        }
-    response_headers_raw = ''.join('%s: %s\r\n' % (k, v) for k, v in response_headers.items())
-    r = '%s %s %s\r\n' % ('HTTP/1.1', '200', 'OK')
-    return response_headers_raw, r
 
 
 def bot_translate_process(bot, totranslate, translationtypes):
