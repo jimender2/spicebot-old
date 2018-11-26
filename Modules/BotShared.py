@@ -1606,9 +1606,9 @@ def bot_watch_exclamation(bot, trigger):
 
     if subcommand == 'send':
         messagedict = {"type": "command", "command": "update"}
-        bot_api_send(bot, messagedict, port)
+        bot_api_send(bot, messagedict, int(port))
     elif subcommand == 'get':
-        botdict_return = bot_api_fetch(bot, port)
+        botdict_return = bot_api_fetch(bot, int(port))
         if botdict_return:
             osd(bot, botcom.channel_current, 'say', "botmem " + str(bot.memory["botdict"]["tempvals"]["uptime"]))
             osd(bot, botcom.channel_current, 'say', "botapi " + str(botdict_return))
@@ -2834,7 +2834,7 @@ def bot_api_send(bot, botport, messagedict, host="localhost"):
     tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Bind the socket to the port
-    server_address = (str(host), botport)
+    server_address = (str(host), int(botport))
     tempsock.connect(server_address)
 
     # convert to json
