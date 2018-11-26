@@ -695,7 +695,7 @@ def dict_command_configs(bot):
 
         # iterate over organizational folder
         for quick_coms_type in os.listdir(directory):
-            if not os.path.isfile(os.path.join(directory, quick_coms_type)) and len(os.listdir(os.path.join(coms_type_file_path, comconf))) > 0:
+            if not os.path.isfile(os.path.join(directory, quick_coms_type)) and len(os.listdir(os.path.join(directory, quick_coms_type))) > 0:
                 bot.msg("#spicebottest", "     * " + str(quick_coms_type))
 
                 # iterate over files within
