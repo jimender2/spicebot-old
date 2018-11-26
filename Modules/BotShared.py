@@ -1663,9 +1663,8 @@ def bot_api_send(bot, botport, host="localhost"):
     tempsock.connect(server_address)
 
     # convert to json
-    messagedict = {"type": "message", "targets": ["deathbybandaid"], "message": "test of user notification"}
+    messagedict = {"type": "command", "command": "update"}
     msg = json.dumps(messagedict, default=json_util.default).encode('utf-8')
-    # response_headers_raw, r = bot_api_response_headers(bot, msg)
 
     # sending all this stuff
     try:
@@ -1673,17 +1672,6 @@ def bot_api_send(bot, botport, host="localhost"):
         tempsock.send(msg.encode(encoding="utf-8"))
     except Exception as e:
         stderr("[API] Error Sending Data: (%s)" % (e))
-        tempsock.close()
-
-    return
-
-    try:
-        # Send data
-        message = '{"type": "message", "targets": ["deathbybandaid"], "message": "test of user notification"}'
-        tempsock.sendall(message)
-        tempsock.close()
-    except Exception as e:
-        stderr("Error sending to %s: (%s)" % (addr, e))
         tempsock.close()
 
     return
