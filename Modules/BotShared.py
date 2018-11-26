@@ -285,9 +285,6 @@ def botdict_open(bot):
     # load external config file
     botdict_setup_external_config(bot)
 
-    # open the sockmsg feature
-    bot_setup_api_socket(bot)
-
     # Gif API
     botdict_setup_gif_api_access(bot)
 
@@ -374,47 +371,6 @@ def botdict_setup_external_config(bot):
 
             if each_key not in bot.memory["botdict"]["tempvals"]['ext_conf'][each_section].keys():
                 bot.memory["botdict"]["tempvals"]['ext_conf'][each_section][each_key] = each_val
-
-
-def bot_setup_api_socket(bot):
-
-    # Don't load sock if already loaded
-    if bot.memory["botdict"]["tempvals"]['sock']:
-        return
-
-    bot.memory["botdict"]["tempvals"]['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # port number to use, try previous port, if able
-    currentport = None
-    if bot.memory["botdict"]['sock_port']:
-        if not is_port_in_use(bot.memory["botdict"]['sock_port']):
-            currentport = bot.memory["botdict"]['sock_port']
-    if not currentport:
-        currentport = find_unused_port_in_range(bot, 8080, 9090)
-    bot.memory["botdict"]['sock_port'] = currentport
-    try:
-        bot.memory["botdict"]["tempvals"]['sock'].bind(('0.0.0.0', bot.memory["botdict"]['sock_port']))
-        stderr("Loaded socket on port %s" % (bot.memory["botdict"]['sock_port']))
-        bot.memory["botdict"]["tempvals"]['sock'].listen(10)
-    except socket.error as msg:
-        stderr("Error loading socket on port %s: %s (%s)" % (bot.memory["botdict"]['sock_port'], str(msg[0]), str(msg[1])))
-        return
-
-
-def find_unused_port_in_range(bot, rangestart, rangeend):
-    for i in range(rangestart, rangeend + 1):
-        if not is_port_in_use(i):
-            return i
-
-
-def is_port_in_use(port):
-    checkport = str(len(subprocess.Popen("netstat -lant | awk '{print $4}' | grep 0.0.0.0:" + str(port), shell=True, stdout=subprocess.PIPE).stdout.read()) > 0)
-    if checkport == "True":
-        return True
-    elif checkport == "False":
-        return False
-    else:
-        return False
 
 
 # gif searching api
@@ -1648,64 +1604,6 @@ def bot_watch_exclamation(bot, trigger):
             osd(bot, botcom.channel_current, 'say', "botapi failed to connect")
 
 
-def bot_api_fetch(bot, botport, host="localhost"):
-    botdict_return = None
-
-    # what url to check
-    addr = str("http://" + str(host) + ":" + str(botport))
-
-    # try to get data
-    try:
-        page = requests.get(addr)
-    except ConnectionError:
-        return botdict_return
-
-    # examine results
-    result = page.content
-    botdict_return = json.loads(result, object_hook=json_util.object_hook)
-
-    # get the wanted results
-    botdict_return = botdict_return["tempvals"]["uptime"]
-
-    return botdict_return
-
-
-def bot_api_send(bot, botport, host="localhost"):
-
-    # Create a TCP/IP socket
-    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # Bind the socket to the port
-    server_address = (str(host), botport)
-    tempsock.connect(server_address)
-
-    # convert to json
-    messagedict = {"type": "command", "command": "update"}
-    msg = json.dumps(messagedict, default=json_util.default).encode('utf-8')
-
-    # sending all this stuff
-    try:
-        stderr("[API] Sending data.")
-        tempsock.send(msg.encode(encoding="utf-8"))
-    except Exception as e:
-        stderr("[API] Error Sending Data: (%s)" % (e))
-        tempsock.close()
-
-    return
-
-
-def bot_api_response_headers(bot, msg):
-    # response_headers
-    response_headers = {
-                        'Content-Type': 'text/html; encoding=utf8',
-                        'Content-Length': len(msg),
-                        'Connection': 'close',
-                        }
-    response_headers_raw = ''.join('%s: %s\r\n' % (k, v) for k, v in response_headers.items())
-    r = '%s %s %s\r\n' % ('HTTP/1.1', '200', 'OK')
-    return response_headers_raw, r
-
-
 """
 Jobs Handling
 """
@@ -2853,6 +2751,64 @@ Text Processing
 """
 
 
+def bot_api_fetch(bot, botport, host="localhost"):
+    botdict_return = None
+
+    # what url to check
+    addr = str("http://" + str(host) + ":" + str(botport))
+
+    # try to get data
+    try:
+        page = requests.get(addr)
+    except ConnectionError:
+        return botdict_return
+
+    # examine results
+    result = page.content
+    botdict_return = json.loads(result, object_hook=json_util.object_hook)
+
+    # get the wanted results
+    botdict_return = botdict_return["tempvals"]["uptime"]
+
+    return botdict_return
+
+
+def bot_api_send(bot, botport, host="localhost"):
+
+    # Create a TCP/IP socket
+    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Bind the socket to the port
+    server_address = (str(host), botport)
+    tempsock.connect(server_address)
+
+    # convert to json
+    messagedict = {"type": "command", "command": "update"}
+    msg = json.dumps(messagedict, default=json_util.default).encode('utf-8')
+
+    # sending all this stuff
+    try:
+        stderr("[API] Sending data.")
+        tempsock.send(msg.encode(encoding="utf-8"))
+    except Exception as e:
+        stderr("[API] Error Sending Data: (%s)" % (e))
+        tempsock.close()
+
+    return
+
+
+def bot_api_response_headers(bot, msg):
+    # response_headers
+    response_headers = {
+                        'Content-Type': 'text/html; encoding=utf8',
+                        'Content-Length': len(msg),
+                        'Connection': 'close',
+                        }
+    response_headers_raw = ''.join('%s: %s\r\n' % (k, v) for k, v in response_headers.items())
+    r = '%s %s %s\r\n' % ('HTTP/1.1', '200', 'OK')
+    return response_headers_raw, r
+
+
 def bot_translate_process(bot, totranslate, translationtypes):
 
     # just in case
@@ -3168,6 +3124,22 @@ def bot_list_directory(bot, botcom):
 """
 Small Functions
 """
+
+
+def find_unused_port_in_range(bot, rangestart, rangeend):
+    for i in range(rangestart, rangeend + 1):
+        if not is_port_in_use(i):
+            return i
+
+
+def is_port_in_use(port):
+    checkport = str(len(subprocess.Popen("netstat -lant | awk '{print $4}' | grep 0.0.0.0:" + str(port), shell=True, stdout=subprocess.PIPE).stdout.read()) > 0)
+    if checkport == "True":
+        return True
+    elif checkport == "False":
+        return False
+    else:
+        return False
 
 
 def nick_actual(bot, nick):
