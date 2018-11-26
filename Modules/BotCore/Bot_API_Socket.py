@@ -30,7 +30,7 @@ def listener(bot, trigger):
     # Create a TCP/IP socket
     bot.memory['sock'] = None
     bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
-    if bot.memory['sock_port']:
+    if bot.memory['sock_port'] or bot.memory['sock_port'] == 'None':
         bot.memory['sock_port'] = int(bot.memory['sock_port'])
     if not bot.memory['sock'] or not bot.memory['sock_port']:
         bot.memory['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
