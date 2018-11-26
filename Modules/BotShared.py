@@ -1629,11 +1629,9 @@ def bot_register_handler_startup(bot):
     # This is for my custom use, hardcoded hosts
     hostslist = ["192.168.5.100", "192.168.5.101"]
     for host in hostslist:
-        portslist = find_used_port_in_range(bot, 8080, 9090)
+        portslist = find_used_port_in_range(bot, 8080, 9090, host)
         for port in portslist:
             if host != registerdict["host"] and port != registerdict["port"]:
-                if host == str(socket.gethostbyname(socket.gethostname())):
-                    host == 'localhost'
                 bot_register_handler_single(bot, host, port, registerdict)
 
 
@@ -1641,9 +1639,6 @@ def bot_register_handler_single(bot, host, port, dictsend):
 
     # Create a TCP/IP socket
     tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    if host == str(socket.gethostbyname(socket.gethostname())):
-        host == 'localhost'
 
     # Bind the socket to the port
     server_address = (str(host), int(port))
