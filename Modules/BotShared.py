@@ -631,12 +631,10 @@ def modules_command_listing(bot):
     modulecount = 0
     for modules in bot.command_groups.items():
         modulecount += 1
-        for commands in modules:
-            bot.msg("#spicebottest", str(type(commands)))
-            # filename = commands[0]
-            # validcoms = commands[1]
-            # for com in validcoms:
-            #    bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
+        filename = modules[0]
+        validcoms = modules[1]
+        for com in validcoms:
+            bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
     bot.memory["botdict"]["tempvals"]['module_count'] = modulecount
 
 
