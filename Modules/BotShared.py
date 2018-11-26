@@ -695,120 +695,121 @@ def dict_command_configs(bot):
 
         # iterate over organizational folder
         for quick_coms_type in os.listdir(directory):
-            bot.msg("#spicebottest", "     * " + str(quick_coms_type))
+            if not os.path.isfile(os.path.join(directory, quick_coms_type)) and len(os.listdir(os.path.join(coms_type_file_path, comconf))) > 0
+                bot.msg("#spicebottest", "     * " + str(quick_coms_type))
 
-            # iterate over files within
-            coms_type_file_path = os.path.join(quick_coms_path, quick_coms_type)
-            if os.path.exists(coms_type_file_path) and not os.path.isfile(coms_type_file_path) and len(os.listdir(coms_type_file_path)) > 0:
-                bot.msg("#spicebottest", "          * " + str(coms_type_file_path))
+                # iterate over files within
+                coms_type_file_path = os.path.join(quick_coms_path, quick_coms_type)
+                if os.path.exists(coms_type_file_path) and not os.path.isfile(coms_type_file_path) and len(os.listdir(coms_type_file_path)) > 0:
+                    bot.msg("#spicebottest", "          * " + str(coms_type_file_path))
 
-                for comconf in os.listdir(coms_type_file_path):
+                    for comconf in os.listdir(coms_type_file_path):
 
-                    if os.path.isfile(os.path.join(coms_type_file_path, comconf)):
+                        if os.path.isfile(os.path.join(coms_type_file_path, comconf)):
 
-                        # check if command file is already in the list
-                        if comconf not in bot.memory["botdict"]["tempvals"]['dict_commands_loaded']:
-                            bot.memory["botdict"]["tempvals"]['dict_commands_loaded'].append(comconf)
+                            # check if command file is already in the list
+                            if comconf not in bot.memory["botdict"]["tempvals"]['dict_commands_loaded']:
+                                bot.memory["botdict"]["tempvals"]['dict_commands_loaded'].append(comconf)
 
-                            # Read dictionary from file, if not, enable an empty dict
-                            filereadgood = True
-                            inf = codecs.open(os.path.join(coms_type_file_path, comconf), "r", encoding='utf-8')
-                            infread = inf.read()
-                            try:
-                                dict_from_file = eval(infread)
-                            except Exception as e:
-                                filereadgood = False
-                                stderr("Error loading dict %s: %s (%s)" % (comconf, e, os.path.join(coms_type_file_path, comconf)))
-                                dict_from_file = dict()
-                            # Close File
-                            inf.close()
+                                # Read dictionary from file, if not, enable an empty dict
+                                filereadgood = True
+                                inf = codecs.open(os.path.join(coms_type_file_path, comconf), "r", encoding='utf-8')
+                                infread = inf.read()
+                                try:
+                                    dict_from_file = eval(infread)
+                                except Exception as e:
+                                    filereadgood = False
+                                    stderr("Error loading dict %s: %s (%s)" % (comconf, e, os.path.join(coms_type_file_path, comconf)))
+                                    dict_from_file = dict()
+                                # Close File
+                                inf.close()
 
-                            if filereadgood and isinstance(dict_from_file, dict):
+                                if filereadgood and isinstance(dict_from_file, dict):
 
-                                dictcount += 1
+                                    dictcount += 1
 
-                                # current file path
-                                if "filepath" not in dict_from_file.keys():
-                                    dict_from_file["filepath"] = os.path.join(coms_type_file_path, comconf)
+                                    # current file path
+                                    if "filepath" not in dict_from_file.keys():
+                                        dict_from_file["filepath"] = os.path.join(coms_type_file_path, comconf)
 
-                                # default command to filename
-                                if "validcoms" not in dict_from_file.keys():
-                                    dict_from_file["validcoms"] = [comconf]
-                                elif dict_from_file["validcoms"] == []:
-                                    dict_from_file["validcoms"] = [comconf]
-                                elif not isinstance(dict_from_file['validcoms'], list):
-                                    dict_from_file["validcoms"] = [dict_from_file["validcoms"]]
+                                    # default command to filename
+                                    if "validcoms" not in dict_from_file.keys():
+                                        dict_from_file["validcoms"] = [comconf]
+                                    elif dict_from_file["validcoms"] == []:
+                                        dict_from_file["validcoms"] = [comconf]
+                                    elif not isinstance(dict_from_file['validcoms'], list):
+                                        dict_from_file["validcoms"] = [dict_from_file["validcoms"]]
 
-                                maincom = dict_from_file["validcoms"][0]
-                                if len(dict_from_file["validcoms"]) > 1:
-                                    comaliases = spicemanip(bot, dict_from_file["validcoms"], '2+', 'list')
+                                    maincom = dict_from_file["validcoms"][0]
+                                    if len(dict_from_file["validcoms"]) > 1:
+                                        comaliases = spicemanip(bot, dict_from_file["validcoms"], '2+', 'list')
+                                    else:
+                                        comaliases = []
+
+                                    # check for tuple dict keys and split
+                                    for validkey in dict_from_file.keys():
+                                        if isinstance(validkey, tuple):
+                                            tuple_bak = validkey
+                                            tuple_contents_bak = dict_from_file[validkey]
+                                            del dict_from_file[validkey]
+                                            for var in tuple_bak:
+                                                dict_from_file[var] = tuple_contents_bak
+
+                                    if maincom not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+
+                                        # check that type is set, use cases will inherit this if not set
+                                        if "type" not in dict_from_file.keys():
+                                            dict_from_file["type"] = quick_coms_type.lower()
+                                        if dict_from_file["type"] not in valid_com_types:
+                                            dict_from_file["type"] = 'simple'
+
+                                        # Don't process these.
+                                        keysprocessed = []
+                                        keysprocessed.extend(["validcoms", "filepath"])
+
+                                        # the command must have an author
+                                        if "author" not in dict_from_file.keys():
+                                            dict_from_file["author"] = "deathbybandaid"
+                                        keysprocessed.append("author")
+
+                                        # the command must have a contributors list
+                                        if "contributors" not in dict_from_file.keys():
+                                            dict_from_file["contributors"] = []
+                                        if not isinstance(dict_from_file["contributors"], list):
+                                            dict_from_file["contributors"] = [dict_from_file["contributors"]]
+                                        if "deathbybandaid" not in dict_from_file["contributors"]:
+                                            dict_from_file["contributors"].append("deathbybandaid")
+                                        if dict_from_file["author"] not in dict_from_file["contributors"]:
+                                            dict_from_file["contributors"].append(dict_from_file["author"])
+                                        keysprocessed.append("contributors")
+
+                                        if "hardcoded_channel_block" not in dict_from_file.keys():
+                                            dict_from_file["hardcoded_channel_block"] = []
+                                        keysprocessed.append("hardcoded_channel_block")
+
+                                        # handle basic required dict handling
+                                        dict_required = ["?default"]
+                                        dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, dict_required)
+                                        keysprocessed.extend(dict_required)
+
+                                        # remove later
+                                        keysprocessed.append("type")
+
+                                        # all other keys not processed above are considered potential use cases
+                                        otherkeys = []
+                                        for otherkey in dict_from_file.keys():
+                                            if otherkey not in keysprocessed:
+                                                otherkeys.append(otherkey)
+                                        if otherkeys != []:
+                                            dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, otherkeys)
+                                        keysprocessed.extend(otherkeys)
+
+                                        bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
+                                        for comalias in comaliases:
+                                            if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+                                                bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
                                 else:
-                                    comaliases = []
-
-                                # check for tuple dict keys and split
-                                for validkey in dict_from_file.keys():
-                                    if isinstance(validkey, tuple):
-                                        tuple_bak = validkey
-                                        tuple_contents_bak = dict_from_file[validkey]
-                                        del dict_from_file[validkey]
-                                        for var in tuple_bak:
-                                            dict_from_file[var] = tuple_contents_bak
-
-                                if maincom not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-
-                                    # check that type is set, use cases will inherit this if not set
-                                    if "type" not in dict_from_file.keys():
-                                        dict_from_file["type"] = quick_coms_type.lower()
-                                    if dict_from_file["type"] not in valid_com_types:
-                                        dict_from_file["type"] = 'simple'
-
-                                    # Don't process these.
-                                    keysprocessed = []
-                                    keysprocessed.extend(["validcoms", "filepath"])
-
-                                    # the command must have an author
-                                    if "author" not in dict_from_file.keys():
-                                        dict_from_file["author"] = "deathbybandaid"
-                                    keysprocessed.append("author")
-
-                                    # the command must have a contributors list
-                                    if "contributors" not in dict_from_file.keys():
-                                        dict_from_file["contributors"] = []
-                                    if not isinstance(dict_from_file["contributors"], list):
-                                        dict_from_file["contributors"] = [dict_from_file["contributors"]]
-                                    if "deathbybandaid" not in dict_from_file["contributors"]:
-                                        dict_from_file["contributors"].append("deathbybandaid")
-                                    if dict_from_file["author"] not in dict_from_file["contributors"]:
-                                        dict_from_file["contributors"].append(dict_from_file["author"])
-                                    keysprocessed.append("contributors")
-
-                                    if "hardcoded_channel_block" not in dict_from_file.keys():
-                                        dict_from_file["hardcoded_channel_block"] = []
-                                    keysprocessed.append("hardcoded_channel_block")
-
-                                    # handle basic required dict handling
-                                    dict_required = ["?default"]
-                                    dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, dict_required)
-                                    keysprocessed.extend(dict_required)
-
-                                    # remove later
-                                    keysprocessed.append("type")
-
-                                    # all other keys not processed above are considered potential use cases
-                                    otherkeys = []
-                                    for otherkey in dict_from_file.keys():
-                                        if otherkey not in keysprocessed:
-                                            otherkeys.append(otherkey)
-                                    if otherkeys != []:
-                                        dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, otherkeys)
-                                    keysprocessed.extend(otherkeys)
-
-                                    bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
-                                    for comalias in comaliases:
-                                        if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-                                            bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
-                            else:
-                                dictopenfail += 1
+                                    dictopenfail += 1
     if dictcount > 1:
         stderr('\n\nRegistered %d  dict files,' % (dictcount))
         stderr('%d dict files failed to load\n\n' % dictopenfail)
