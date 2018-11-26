@@ -1646,6 +1646,7 @@ def bot_register_handler_single(bot, host, port, dictsend):
         tempsock.connect(server_address)
     except Exception as e:
         stderr("[API] Error connecting to " + str(host) + ":" + str(port) + " (" + str(e) + ")")
+        tempsock.close()
         return
 
     # convert to json
