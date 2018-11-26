@@ -1651,7 +1651,7 @@ def bot_api_fetch(bot, botport, host="localhost"):
 
 def bot_api_send(bot, botport, host="localhost"):
 
-    addr = str("http://" + host + ":" + botport)
+    addr = (host, botport)
 
     tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
