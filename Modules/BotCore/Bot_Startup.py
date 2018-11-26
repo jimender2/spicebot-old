@@ -70,7 +70,7 @@ def real_startup(bot, trigger):
                 botslist.append(bots)
                 registerdict = {"bot": str(bot.nick), "host": str(socket.gethostbyname(socket.gethostname())), "port": str(bot.memory["botdict"]['sock_port'])}
                 msg = json.dumps(registerdict, default=json_util.default).encode('utf-8')
-                bot.msg(bots, msg)
+                bot.msg(bots, "register "+ msg)
     if botslist != []:
         stderr("Sent API registration to " + str(spicemanip(bot, botslist, 'andlist')))
 

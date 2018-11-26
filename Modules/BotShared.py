@@ -308,7 +308,6 @@ def botdict_open(bot):
     # dictionary commands
     dict_command_configs(bot)
 
-
     # use this to prevent bot usage if the above isn't done loading
     bot.memory["botdict_loaded"] = True
 
@@ -1638,12 +1637,14 @@ def bot_watch_api_register(bot, trigger):
     if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys() and botcom.instigator != str(bot.nick):
         return
 
-    botcommand = spicemanip(bot, botcom.triggerargsarray, 1)
+    botcommand = spicemanip(bot, botcom.triggerargsarray, 1) or None
 
-    if botcommand not in ["register"]:
+    if not botcommand or botcommand not in ["register"]:
         return
 
     if botcommand == "register":
+        stderr("Registering : " + str(spicemanip(bot, botcom.triggerargsarray, "2+")))
+        return
         dictfollowing = spicemanip(bot, botcom.triggerargsarray, "2+")
         regdict = None
         try:
