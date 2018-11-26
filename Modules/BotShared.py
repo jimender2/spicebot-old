@@ -699,8 +699,9 @@ def dict_command_configs(bot):
 
                 # iterate over files within
                 for comconf in os.listdir(coms_type_file_path):
+                    comconf_file_path = os.path.join(coms_type_file_path, comconf)
 
-                    if os.path.isfile(os.path.join(coms_type_file_path, comconf)):
+                    if os.path.isfile(comconf_file_path):
 
                         # check if command file is already in the list
                         if comconf not in bot.memory["botdict"]["tempvals"]['dict_commands_loaded']:
@@ -714,7 +715,7 @@ def dict_command_configs(bot):
                                 dict_from_file = eval(infread)
                             except Exception as e:
                                 filereadgood = False
-                                stderr("Error loading dict %s: %s (%s)" % (comconf, e, os.path.join(coms_type_file_path, comconf)))
+                                stderr("Error loading dict %s: %s (%s)" % (comconf, e, comconf_file_path))
                                 dict_from_file = dict()
                             # Close File
                             inf.close()
@@ -725,7 +726,7 @@ def dict_command_configs(bot):
 
                                 # current file path
                                 if "filepath" not in dict_from_file.keys():
-                                    dict_from_file["filepath"] = os.path.join(coms_type_file_path, comconf)
+                                    dict_from_file["filepath"] = comconf_file_path
 
                                 # default command to filename
                                 if "validcoms" not in dict_from_file.keys():
