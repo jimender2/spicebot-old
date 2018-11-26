@@ -682,17 +682,16 @@ def dict_command_configs(bot):
     if os.path.exists(quick_coms_path) and os.path.isdir(quick_coms_path):
         if not os.path.isfile(quick_coms_path) and len(os.listdir(quick_coms_path)) > 0:
             filescan.append(quick_coms_path)
-            bot.msg("#spicebottest", "hereas")
 
     if str(bot.nick).endswith("dev"):
         quick_coms_path_alt = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/" + str(str(bot.nick).replace("dev", "")) + "/"
         if os.path.exists(quick_coms_path_alt) and os.path.isdir(quick_coms_path_alt):
             if not os.path.isfile(quick_coms_path_alt) and len(os.listdir(quick_coms_path_alt)) > 0:
-                bot.msg("#spicebottest", "here")
                 filescan.append(quick_coms_path_alt)
 
     # proceed with file iteration
     for directory in filescan:
+        bot.msg("#spicebottest", str(directory))
 
         # iterate over organizational folder
         for quick_coms_type in os.listdir(quick_coms_path):
