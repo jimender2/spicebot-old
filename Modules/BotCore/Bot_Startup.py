@@ -62,26 +62,18 @@ def real_startup(bot, trigger):
         time.sleep(1)
     startupcomplete.append("API Port set to " + str(bot.memory['sock_port']))
 
-    # register this port with the other bots
-    botslist = []
-    for bots in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-        if bots != str(bot.nick):
-            if bot.memory["botdict"]["tempvals"]['bots_list'][bots]['directory']:
-                botslist.append(bots)
-                registerdict = {"bot": str(bot.nick), "host": str(socket.gethostbyname(socket.gethostname())), "port": str(bot.memory["botdict"]['sock_port'])}
-                msg = json.dumps(registerdict, default=json_util.default).encode('utf-8')
-                bot.msg(bots, "register "+ msg)
-    if botslist != []:
-        stderr("Sent API registration to " + str(spicemanip(bot, botslist, 'andlist')))
-
-    for channel in bot.channels:
-        osd(bot, channel, 'notice', startupcomplete)
-    bot_saved_jobs_run(bot)
+    # Announce to chan, then handle some closing stuff
+    osd(bot, bot.channels, 'notice', startupcomplete)
 
     if searchphrasefound != []:
         searchphrasefound.insert(0, "Notice to Bot Admins: ")
         searchphrasefound.append("Run the debug command for more information.")
         osd(bot, bot.channels, 'say', searchphrasefound)
+
+    stderr("Sent API registration to other bots")
+    bot_register_handler_startup(bot)
+
+    bot_saved_jobs_run(bot)
 
     # iniital privacy sweep
     bot_setup_privacy_sweep(bot)

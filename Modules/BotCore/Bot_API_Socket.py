@@ -182,7 +182,41 @@ def listener(bot, trigger):
                                 stderr("[API] No command included.")
                                 break
 
-                            if jsondict["command"] == 'update':
+                            if jsondict["command"] == 'register':
+
+                                # must be a bot included
+                                if "bot" not in jsondict.keys():
+                                    stderr("[API] No bot included.")
+                                    break
+
+                                # must be a host included
+                                if "host" not in jsondict.keys():
+                                    stderr("[API] No host included.")
+                                    break
+
+                                # must be a port included
+                                if "port" not in jsondict.keys():
+                                    stderr("[API] No port included.")
+                                    break
+
+                                registerdict = {
+                                                "type": "command",
+                                                "command": "register",
+                                                "bot": str(bot.nick),
+                                                "host": str(socket.gethostbyname(socket.gethostname())),
+                                                "port": str(bot.memory['sock_port']),
+                                                }
+
+                                if "reply" not in jsondict.keys():
+                                    jsondict["reply"] = True
+                                else:
+                                    jsondict["reply"] = False
+                                if jsondict["reply"]:
+                                    registerdict["reply"] = False
+                                    bot_register_handler_single(bot, jsondict["host"], jsondict["port"], registerdict)
+                                break
+
+                            elif jsondict["command"] == 'update':
                                 stderr("[API] Recieved Command to update.")
                                 for channel in bot.channels:
                                     if sender != "API":

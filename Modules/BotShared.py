@@ -1615,46 +1615,45 @@ def bot_watch_exclamation(bot, trigger):
             osd(bot, botcom.channel_current, 'say', "botapi failed to connect")
 
 
-def bot_watch_api_register(bot, trigger):
+def bot_register_handler_startup(bot):
 
-    # botcom dynamic Class
-    botcom = class_create('botcom')
-    botcom.default = 'botcom'
+    registerdict = {
+                    "type": "command",
+                    "command": "register",
+                    "bot": str(bot.nick),
+                    "host": str(socket.gethostbyname(socket.gethostname())),
+                    "port": str(bot.memory['sock_port']),
+                    }
 
-    # instigator
-    botcom.instigator = str(trigger.nick)
+    # This is for my custom use, hardcoded hosts
+    hostslist = ["192.168.5.100", "192.168.5.101"]
+    for host in hostslist:
+        portslist = find_used_port_in_range(bot, 8080, 9090)
+        for port in portslist:
+            bot_register_handler_single(bot, host, port, registerdict)
 
-    # channel
-    botcom.channel_current = str(trigger.sender)
 
-    if str(botcom.channel_current).startswith("#"):
-        return
+def bot_register_handler_single(bot, host, port, dictsend):
 
-    # create arg list
-    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+    # Create a TCP/IP socket
+    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # only Bots can register
-    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys() and botcom.instigator != str(bot.nick):
-        return
+    # Bind the socket to the port
+    server_address = (str(host), int(port))
+    tempsock.connect(server_address)
 
-    botcommand = spicemanip(bot, botcom.triggerargsarray, 1) or None
+    # convert to json
+    msg = json.dumps(dictsend, default=json_util.default).encode('utf-8')
 
-    if not botcommand or botcommand not in ["register"]:
-        return
-
-    if botcommand == "register":
-        stderr("Registering : " + str(spicemanip(bot, botcom.triggerargsarray, "2+")))
-        return
-        dictfollowing = spicemanip(bot, botcom.triggerargsarray, "2+")
-        regdict = None
-        try:
-            regdict = eval(dictfollowing)
-        except Exception as e:
-            stderr("Error Registering : %s" % (e))
-            return
-
-        stderr("Registering : " + str(regdict))
-        return
+    # sending all this stuff
+    try:
+        stderr("[API] Sending Registration data to " + str(host) + ":" + str(port))
+        tempsock.send(msg.encode(encoding="utf-8"))
+    except Exception as e:
+        stderr("[API] Error Sending Data: (%s)" % (e))
+        stderr("[API] Error Sending Data to " + str(host) + ":" + str(port) + " (" + e + ")")
+        tempsock.close()
+    return
 
 
 """
@@ -2826,7 +2825,7 @@ def bot_api_fetch(bot, botport, host="localhost"):
     return botdict_return
 
 
-def bot_api_send(bot, botport, host="localhost"):
+def bot_api_send(bot, botport, message, host="localhost"):
 
     # Create a TCP/IP socket
     tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -3179,14 +3178,22 @@ Small Functions
 """
 
 
-def find_unused_port_in_range(bot, rangestart, rangeend):
+def find_used_port_in_range(bot, rangestart, rangeend, host="0.0.0.0"):
+    returnlist = []
     for i in range(rangestart, rangeend + 1):
-        if not is_port_in_use(i):
+        if is_port_in_use(i):
+            returnlist.append(i, host)
+    return returnlist
+
+
+def find_unused_port_in_range(bot, rangestart, rangeend, host="0.0.0.0"):
+    for i in range(rangestart, rangeend + 1):
+        if not is_port_in_use(i, host):
             return i
 
 
-def is_port_in_use(port):
-    checkport = str(len(subprocess.Popen("netstat -lant | awk '{print $4}' | grep 0.0.0.0:" + str(port), shell=True, stdout=subprocess.PIPE).stdout.read()) > 0)
+def is_port_in_use(port, host="0.0.0.0"):
+    checkport = str(len(subprocess.Popen("netstat -lant | awk '{print $4}' | grep " + str(host) + ":" + str(port), shell=True, stdout=subprocess.PIPE).stdout.read()) > 0)
     if checkport == "True":
         return True
     elif checkport == "False":
