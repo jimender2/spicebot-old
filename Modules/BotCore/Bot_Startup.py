@@ -56,13 +56,9 @@ def real_startup(bot, trigger):
         if "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
             searchphrase = str(line).split("]:", -1)[1].replace(" modules failed to load", "")
             searchphrasefound.append(str(searchphrase) + " module(s) failed")
-        elif "Warning: Couldn't load any modules" in str(line):
-            searchphrasefound.append("No module(s) were loaded")
         elif "dict files failed to load" in str(line) and "0 dict files failed to load" not in str(line):
             searchphrase = str(line).split("]:", -1)[1].replace(" dict files failed to load", "")
             searchphrasefound.append(str(searchphrase) + " dict file(s) failed")
-        elif "Warning: Couldn't load any dict files" in str(line):
-            searchphrasefound.append("No dict file(s) were loaded")
         elif "Error loading socket on port" in str(line):
             searchphrasefound.append("Socket Port failed to load correctly")
         elif "Loaded socket on port" in str(line):
