@@ -630,9 +630,8 @@ def modules_command_listing(bot):
     for modules in bot.command_groups.items():
         bot_visible_coms.append(modules)
         bot.memory["botdict"]["tempvals"]['module_count'] += 1
-
-    for commands in bot_visible_coms:
-        bot.memory["botdict"]["tempvals"]['module_commands'][commands] = dict()
+        for commands in modules:
+            bot.memory["botdict"]["tempvals"]['module_commands'][commands] = dict()
 
 
 # Command configs
