@@ -224,7 +224,7 @@ def listener(bot, trigger):
                                 # add bot to keys
                                 if str(bot.nick) not in bot.memory["sock_dict"][str(registerdict["host"])].keys():
                                     bot.memory["sock_dict"][str(registerdict["host"])][str(bot.nick)] = dict()
-                                if str(bot.nick) not in bot.memory["sock_dict"][str(jsondict["host"])].keys():
+                                if str(jsondict["bot"]) not in bot.memory["sock_dict"][str(jsondict["host"])].keys():
                                     bot.memory["sock_dict"][str(jsondict["host"])][str(jsondict["bot"])] = dict()
 
                                 # register host

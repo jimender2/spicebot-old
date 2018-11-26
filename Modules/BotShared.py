@@ -1680,7 +1680,7 @@ def bot_register_handler_single(bot, host, port, dictsend):
     return
 
 
-def bot_api_fetch(bot, botport, host="localhost"):
+def bot_api_fetch(bot, botport, host):
     botdict_return = None
 
     # what url to check
@@ -1689,7 +1689,7 @@ def bot_api_fetch(bot, botport, host="localhost"):
     # try to get data
     try:
         page = requests.get(addr)
-    except ConnectionError:
+    except Exception as e:
         return botdict_return
 
     # examine results
