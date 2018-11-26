@@ -30,6 +30,24 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
+    bot.say("Hang on, I'm creating a list.")
+    msgs = []
+
+    name_length = max(6, max(len(k) for k in bot.command_groups.keys()))
+    for category, cmds in collections.OrderedDict(sorted(bot.command_groups.items())).items():
+        category = category.upper().ljust(name_length)
+        cmds = set(cmds)  # remove duplicates
+        cmds = '  '.join(cmds)
+        msg = category + '  ' + cmds
+        indent = ' ' * (name_length + 2)
+        # Honestly not sure why this is a list here
+        msgs.append('\n'.join(textwrap.wrap(msg, subsequent_indent=indent)))
+
+    url = "create_list(bot, '\n\n'.join(msgs))"
+    if not url:
+        return
+    bot.memory['command-list'] = (len(bot.command_groups), url)
+
     bot.say(str(bot.memory['command-list']))
     bot.say(str(bot.command_groups))
 
