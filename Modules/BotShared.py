@@ -1449,10 +1449,10 @@ def bot_dictquery_run(bot, trigger):
     botcom.default = 'botcom'
 
     # instigator
-    botcom.instigator = trigger.nick
+    botcom.instigator = str(trigger.nick)
 
     # channel
-    botcom.channel_current = trigger.sender
+    botcom.channel_current = str(trigger.sender)
 
     # Bots can't run commands
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
@@ -1527,10 +1527,10 @@ def bot_watch_dot_run(bot, trigger):
     botcom.default = 'botcom'
 
     # instigator
-    botcom.instigator = trigger.nick
+    botcom.instigator = str(trigger.nick)
 
     # channel
-    botcom.channel_current = trigger.sender
+    botcom.channel_current = str(trigger.sender)
 
     # Bots can't run commands
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
@@ -1548,6 +1548,7 @@ def bot_watch_dot_run(bot, trigger):
     botdict_save(bot)
 
 
+# possible ! commands,,, using for testing
 def bot_watch_exclamation(bot, trigger):
 
     if not str(trigger).startswith(tuple(['!'])):
@@ -1558,10 +1559,10 @@ def bot_watch_exclamation(bot, trigger):
     botcom.default = 'botcom'
 
     # instigator
-    botcom.instigator = trigger.nick
+    botcom.instigator = str(trigger.nick)
 
     # channel
-    botcom.channel_current = trigger.sender
+    botcom.channel_current = str(trigger.sender)
 
     # Bots can't run commands
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
@@ -1602,6 +1603,39 @@ def bot_watch_exclamation(bot, trigger):
             osd(bot, botcom.channel_current, 'say', "botapi " + str(botdict_return))
         else:
             osd(bot, botcom.channel_current, 'say', "botapi failed to connect")
+
+
+def bot_watch_api_register(bot, trigger):
+
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # instigator
+    botcom.instigator = str(trigger.nick)
+
+    # channel
+    botcom.channel_current = str(trigger.sender)
+
+    # only Bots can register
+    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():  # and botcom.instigator not == str(bot.nick):
+        return
+
+    botcommand = spicemanip(bot, botcom.triggerargsarray, 1)
+
+    if botcommand not in ["register"]:
+        return
+
+    if botcommand == "register":
+        dictfollowing = spicemanip(bot, botcom.triggerargsarray, "2+")
+        try:
+            dictfollowing = eval(dictfollowing)
+        except Exception as e:
+            stderr("Error Registering : %s" % (e))
+            return
+
+        bot.msg("#spicebottest", str(dictfollowing))
+        return
 
 
 """

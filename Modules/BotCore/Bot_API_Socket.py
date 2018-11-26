@@ -35,6 +35,7 @@ def listener(bot, trigger):
             time.sleep(1)
 
     # Create a TCP/IP socket
+    currenthost_ip = socket.gethostbyname(hostname)
     if not bot.memory["botdict"]["tempvals"]['sock'] or not bot.memory["botdict"]['sock_port']:
         bot.memory["botdict"]["tempvals"]['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # port number to use, try previous port, if able
@@ -53,6 +54,14 @@ def listener(bot, trigger):
             stderr("Error loading socket on port %s: %s (%s)" % (bot.memory["botdict"]['sock_port'], str(msg[0]), str(msg[1])))
             return
     sock = bot.memory["botdict"]["tempvals"]['sock']
+
+    # register this port with the other bots
+    for bots in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        if bots != str(bot.nick):
+            if bot.memory["botdict"]["tempvals"]['bots_list'][bots]['directory']:
+                registerdict = {"bot": str(bot.nick), "host": str(currenthost_ip), "port": str(bot.memory["botdict"]['sock_port'])}
+                msg = json.dumps(registerdict, default=json_util.default).encode('utf-8')
+                bot.msg(bots, msg)
 
     while True:
         # Wait for a connection
