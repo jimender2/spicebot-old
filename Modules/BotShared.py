@@ -1651,6 +1651,25 @@ def bot_api_fetch(bot, botport, host="localhost"):
 
 def bot_api_send(bot, botport, host="localhost"):
 
+    # Create a TCP/IP socket
+    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Bind the socket to the port
+    server_address = (str(host), botport)
+    tempsock.connect(server_address)
+
+    try:
+        # Send data
+        message = '{"type": "message", "targets": ["deathbybandaid"], "message": "test of user notification"}'
+        tempsock.sendall(message)
+        tempsock.close()
+    except Exception as e:
+        stderr("Error sending to %s: (%s)" % (addr, e))
+        tempsock.close()
+        return
+
+    return
+
     addr = (str(host), int(botport))
 
     tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
