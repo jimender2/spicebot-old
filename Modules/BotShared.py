@@ -1602,18 +1602,29 @@ def bot_watch_exclamation(bot, trigger):
     if botcom.dotcommand not in ["apitest"]:
         return
 
-    osd(bot, botcom.channel_current, 'say', "API Testing")
+    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, "2+")
 
-    bot_api_send(bot, botport, host="localhost")
+    subcommand = spicemanip(bot, botcom.triggerargsarray, 1) or None
+    if not subcommand or subcommand not in []:
+        osd(bot, botcom.channel_current, 'say', "need a valid subcommand")
+        return
 
-    """
-    botdict_return = bot_api_fetch(bot, "8081")
-    if botdict_return:
-        osd(bot, botcom.channel_current, 'say', "botmem " + str(bot.memory["botdict"]["tempvals"]["uptime"]))
-        osd(bot, botcom.channel_current, 'say', "botapi " + str(botdict_return))
-    else:
-        osd(bot, botcom.channel_current, 'say', "botapi failed to connect")
-    """
+    osd(bot, botcom.channel_current, 'say', "API Testing " + subcommand)
+
+    if bot.nick == "SpiceBotdev":
+        port = "8081"
+    elif bot.nick == "SpiceBot":
+        port = "8080"
+
+    if subcommand == 'send':
+        bot_api_send(bot, port)
+    elif subcommand == 'get':
+        botdict_return = bot_api_fetch(bot, port)
+        if botdict_return:
+            osd(bot, botcom.channel_current, 'say', "botmem " + str(bot.memory["botdict"]["tempvals"]["uptime"]))
+            osd(bot, botcom.channel_current, 'say', "botapi " + str(botdict_return))
+        else:
+            osd(bot, botcom.channel_current, 'say', "botapi failed to connect")
 
 
 def bot_api_fetch(bot, botport, host="localhost"):
