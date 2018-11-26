@@ -217,7 +217,7 @@ def listener(bot, trigger):
                                         del bot.memory["sock_dict"][str(socket.gethostbyname(socket.gethostname()))][str(bot.nick)][dictref]
 
                                 # register other bots
-                                stderr("Recieved API registration from " + str(jsondict["bot"]) + " on " + str(jsondict["host"]) + ":" + str(jsondict["port"]))
+                                stderr("[API] Recieved API registration from " + str(jsondict["bot"]) + " on " + str(jsondict["host"]) + ":" + str(jsondict["port"]))
                                 if str(jsondict["host"]) not in bot.memory["sock_dict"].keys():
                                     bot.memory["sock_dict"][str(jsondict["host"])] = dict()
                                 bot.memory["sock_dict"][str(jsondict["host"])][jsondict["bot"]] = copy.deepcopy(jsondict)
