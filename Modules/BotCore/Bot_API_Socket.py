@@ -208,6 +208,17 @@ def listener(bot, trigger):
                                                 "host": str(socket.gethostbyname(socket.gethostname())),
                                                 "port": str(bot.memory['sock_port']),
                                                 }
+                                # make sure this info is current
+                                bot.memory["sock_dict"][str(bot.nick)] = copy.deepcopy(registerdict)
+                                for dictref in ["type", "command", "reply"]:
+                                    if dictref in bot.memory["sock_dict"][str(bot.nick)].keys():
+                                        del bot.memory["sock_dict"][str(bot.nick)][dictref]
+
+                                # register other bots
+                                bot.memory["sock_dict"][jsondict["bot"]] = copy.deepcopy(jsondict)
+                                for dictref in ["type", "command", "reply"]:
+                                    if dictref in bot.memory["sock_dict"][str(bot.nick)].keys():
+                                        del bot.memory["sock_dict"][str(bot.nick)][dictref]
 
                                 if "reply" not in jsondict.keys():
                                     jsondict["reply"] = True
