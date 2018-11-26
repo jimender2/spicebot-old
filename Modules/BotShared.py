@@ -1653,7 +1653,6 @@ def bot_register_handler_single(bot, host, port, dictsend):
         stderr("[API] Sending Registration data to " + str(host) + ":" + str(port))
         tempsock.send(msg.encode(encoding="utf-8"))
     except Exception as e:
-        stderr("[API] Error Sending Data: (%s)" % (e))
         stderr("[API] Error Sending Data to " + str(host) + ":" + str(port) + " (" + e + ")")
         tempsock.close()
     return
