@@ -691,17 +691,14 @@ def dict_command_configs(bot):
 
     # proceed with file iteration
     for directory in filescan:
-        bot.msg("#spicebottest", str(directory))
 
         # iterate over organizational folder
         for quick_coms_type in os.listdir(directory):
             coms_type_file_path = os.path.join(directory, quick_coms_type)
             if os.path.exists(coms_type_file_path) and not os.path.isfile(coms_type_file_path) and len(os.listdir(coms_type_file_path)) > 0:
-                bot.msg("#spicebottest", "     * " + str(coms_type_file_path))
 
                 # iterate over files within
                 for comconf in os.listdir(coms_type_file_path):
-                    bot.msg("#spicebottest", "          * " + str(comconf))
 
                     if os.path.isfile(os.path.join(coms_type_file_path, comconf)):
 
@@ -977,7 +974,7 @@ def bot_setup_privacy_sweep(bot):
     for channelcheck in bot.memory["botdict"]['channels_list'].keys():
         allowedusers = []
         if "all" not in bot.memory["botdict"]['channels_list'][channelcheck]['auth_block'] and bot.privileges[channelcheck.lower()][bot.nick.lower()] >= module.OP:
-            bot.msg(channelcheck, "Running User Sweep for " + channelcheck + ". Unauthorized users will be kicked.")
+            osd(bot, channelcheck, 'notice', "Running User Sweep for " + channelcheck + ". Unauthorized users will be kicked.")
             for authedgroup in bot.memory["botdict"]['channels_list'][channelcheck]['auth_block']:
                 if authedgroup == 'OP':
                     allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'])
@@ -3201,9 +3198,6 @@ def bot_random_valid_target(bot, botcom, outputtype):
 
 
 def bot_check_inlist(bot, searchterm, searchlist):
-
-    # bot.msg("#spicebottest", str(searchterm))
-    # bot.msg("#spicebottest", str(searchlist))
 
     # verify we are searching a list
     if not isinstance(searchlist, list):
