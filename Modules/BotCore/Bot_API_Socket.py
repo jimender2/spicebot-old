@@ -38,6 +38,8 @@ def listener(bot, trigger):
     bot.memory['sock'] = None
     currenthost_ip = socket.gethostbyname(socket.gethostname())
     previouslyusedport = get_database_value(bot, bot.nick, 'sock_port') or None
+    if previouslyusedport:
+        previouslyusedport = int(previouslyusedport)
     if not bot.memory['sock'] or not previouslyusedport:
         bot.memory['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # port number to use, try previous port, if able
