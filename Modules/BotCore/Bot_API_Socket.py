@@ -37,16 +37,16 @@ def listener(bot, trigger):
     # Create a TCP/IP socket
     bot.memory['sock'] = None
     currenthost_ip = socket.gethostbyname(socket.gethostname())
-    previouslyusedport = get_database_value(bot, bot.nick, 'sock_port') or None
-    if previouslyusedport:
-        previouslyusedport = int(previouslyusedport)
-    if not bot.memory['sock'] or not previouslyusedport:
+    bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
+    if bot.memory['sock_port']:
+        bot.memory['sock_port'] = int(bot.memory['sock_port'])
+    if not bot.memory['sock'] or not bot.memory['sock_port']:
         bot.memory['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # port number to use, try previous port, if able
         currentport = None
-        if previouslyusedport:
-            if not is_port_in_use(previouslyusedport):
-                currentport = previouslyusedport
+        if bot.memory['sock_port']:
+            if not is_port_in_use(bot.memory['sock_port']):
+                currentport = bot.memory['sock_port']
         if not currentport:
             currentport = find_unused_port_in_range(bot, 8080, 9090)
         set_database_value(bot, bot.nick, 'sock_port', currentport)

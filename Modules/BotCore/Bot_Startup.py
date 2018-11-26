@@ -66,11 +66,9 @@ def real_startup(bot, trigger):
         elif "dict files failed to load" in str(line) and "0 dict files failed to load" not in str(line):
             searchphrase = str(line).split("]:", -1)[1].replace(" dict files failed to load", "")
             searchphrasefound.append(str(searchphrase) + " dict file(s) failed")
-        elif "Error loading socket on port" in str(line):
-            searchphrasefound.append("Socket Port failed to load correctly")
-        elif "Loaded socket on port" in str(line):
-            searchphrase = str(line).split("]:", -1)[1].replace("Loaded socket on port ", "")
-            startupcomplete.append("API Port set to " + str(searchphrase))
+
+    if 'sock_port' in bot.memory:
+        startupcomplete.append("API Port set to " + str(bot.memory['sock_port']))
 
     for channel in bot.channels:
         osd(bot, channel, 'notice', startupcomplete)
