@@ -248,15 +248,3 @@ def listener(bot, trigger):
             # Clean up the connection
             stderr("[API] Closing Connection.")
             connection.close()
-
-
-def bot_api_response_headers(bot, msg):
-    # response_headers
-    response_headers = {
-                        'Content-Type': 'text/html; encoding=utf8',
-                        'Content-Length': len(msg),
-                        'Connection': 'close',
-                        }
-    response_headers_raw = ''.join('%s: %s\r\n' % (k, v) for k, v in response_headers.items())
-    r = '%s %s %s\r\n' % ('HTTP/1.1', '200', 'OK')
-    return response_headers_raw, r
