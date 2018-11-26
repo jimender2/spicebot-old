@@ -678,13 +678,13 @@ def dict_command_configs(bot):
 
     dictcount, dictopenfail = 0, 0
 
-    filescan = False
+    filescan = []
     quick_coms_path = bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'] + "/Modules/Dictionary_replies/" + str(bot.nick) + "/"
     if os.path.isdir(quick_coms_path):
-        filescan = True
+        filescan.append(quick_coms_path)
 
     # proceed with file iteration
-    if filescan:
+    for directory in filescan:
 
         # iterate over organizational folder
         for quick_coms_type in os.listdir(quick_coms_path):
