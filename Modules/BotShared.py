@@ -701,9 +701,10 @@ def dict_command_configs(bot):
 
                 # iterate over files within
                 for comconf in coms_type_file_path:
+                    bot.msg("#spicebottest", "          * " + str(comconf))
 
                     if os.path.isfile(os.path.join(coms_type_file_path, comconf)):
-                        bot.msg("#spicebottest", "          * " + str(comconf))
+
 
                         # check if command file is already in the list
                         if comconf not in bot.memory["botdict"]["tempvals"]['dict_commands_loaded']:
