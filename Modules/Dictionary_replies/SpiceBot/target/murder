@@ -1,5 +1,5 @@
 {
-"validcoms": ['murder', 'moida'],
+"validcoms": ['murder', 'moida', 'kill'],
 "?default": {
               "type": "target",
               "updates_enabled": "user",
