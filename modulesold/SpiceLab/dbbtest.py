@@ -30,7 +30,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
-    bot.say(str(type("fart")))
+    bot.say(str(bot.memory['command-list']))
+
+    # bot.say(str(type("fart")))
 
     # for i in range(1, 6):
     #    bot.say(str(i))
