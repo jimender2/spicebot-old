@@ -1638,10 +1638,13 @@ def bot_register_handler_startup(bot):
             if host != registerdict["host"] and port != registerdict["port"]:
                 hostsprocesscur = {"host": host, "port": port}
                 hostsprocess.append(hostsprocesscur)
+
     for bots in hostsprocess:
         stderr("[API] Sending API registration to other bots")
         bot_register_handler_single(bot, bots["host"], bots["port"], registerdict)
         stderr("[API] Sent API registration to other bots")
+
+    for bots in hostsprocess:
         registerdict["command"] = "register_request"
         stderr("[API] Requesting API registration from other bots")
         bot_register_handler_single(bot, bots["host"], bots["port"], registerdict)
