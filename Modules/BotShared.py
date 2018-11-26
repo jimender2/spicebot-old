@@ -3181,8 +3181,8 @@ Small Functions
 def find_used_port_in_range(bot, rangestart, rangeend, host="0.0.0.0"):
     returnlist = []
     for i in range(rangestart, rangeend + 1):
-        if is_port_in_use(i):
-            returnlist.append(i, host)
+        if is_port_in_use(i, host):
+            returnlist.append(i)
     return returnlist
 
 
