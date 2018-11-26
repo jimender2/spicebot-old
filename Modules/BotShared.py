@@ -631,8 +631,8 @@ def modules_command_listing(bot):
         bot_visible_coms.append(modules)
         bot.memory["botdict"]["tempvals"]['module_count'] += 1
         bot.msg("#spicebottest", str(modules))
-        # for commands in modules:
-        #    bot.memory["botdict"]["tempvals"]['module_commands'][commands] = dict()
+        for commands in modules:
+            bot.memory["botdict"]["tempvals"]['module_commands'][commands[1]] = dict()
 
 
 # Command configs
