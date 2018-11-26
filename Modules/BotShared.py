@@ -1598,16 +1598,14 @@ def bot_watch_exclamation(bot, trigger):
         return
 
     osd(bot, botcom.channel_current, 'say', "API Testing " + subcommand)
-    reset_database_value(bot, bot.nick, 'sock_port')
-    return
 
     if "sock_dict" in bot.memory:
         osd(bot, botcom.channel_current, 'say', str(bot.memory["sock_dict"]))
 
     if bot.nick == "SpiceBotdev":
-        port = 8081
+        port = 8000
     elif bot.nick == "SpiceBot":
-        port = 8080
+        port = 8001
 
     if subcommand == 'send':
         messagedict = {"type": "command", "command": "update"}
