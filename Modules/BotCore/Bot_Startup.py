@@ -73,6 +73,7 @@ def real_startup(bot, trigger):
         for channel in bot.channels:
             osd(bot, channel, 'say', searchphrasefound)
 
+    # register with other bots
     bot_register_handler_startup(bot)
 
     bot_saved_jobs_run(bot)
