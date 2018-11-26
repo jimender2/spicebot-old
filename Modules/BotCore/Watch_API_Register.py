@@ -23,7 +23,7 @@ sys.setdefaultencoding('utf-8')
 
 @rule('(.*)')
 @sopel.module.thread(True)
-def bot_watch_api_register(bot, trigger):
+def bot_watch_api_registration(bot, trigger):
     if str(trigger.sender).startswith("#"):
         return
 
