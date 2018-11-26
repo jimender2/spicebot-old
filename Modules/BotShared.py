@@ -1634,7 +1634,6 @@ def bot_register_handler_startup(bot):
     hostslist = ["192.168.5.100", "192.168.5.101"]
     hostsprocess = []
     for host in hostslist:
-        hostsprocess = []
         for i in range(8080, 9091):
             if bot_api_port_test(bot, host, i):
                 hostsprocess.append({"host": host, "port": i})
