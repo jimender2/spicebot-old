@@ -35,7 +35,7 @@ def listener(bot, trigger):
             time.sleep(1)
 
     # Create a TCP/IP socket
-    currenthost_ip = socket.gethostbyname(hostname)
+    currenthost_ip = socket.gethostbyname(socket.gethostname())
     if not bot.memory["botdict"]["tempvals"]['sock'] or not bot.memory["botdict"]['sock_port']:
         bot.memory["botdict"]["tempvals"]['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # port number to use, try previous port, if able
@@ -56,13 +56,19 @@ def listener(bot, trigger):
     sock = bot.memory["botdict"]["tempvals"]['sock']
 
     # register this port with the other bots
+    botslist = []
     for bots in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         if bots != str(bot.nick):
             if bot.memory["botdict"]["tempvals"]['bots_list'][bots]['directory']:
+                botslist.append(bots)
                 registerdict = {"bot": str(bot.nick), "host": str(currenthost_ip), "port": str(bot.memory["botdict"]['sock_port'])}
                 msg = json.dumps(registerdict, default=json_util.default).encode('utf-8')
                 bot.msg(bots, msg)
+
+                bot.msg("#spicebottest", str(bots))
                 bot.msg("#spicebottest", msg)
+    if botslist != []:
+        stderr("Sent API registration to " + str(spicemanip(bot, botslist, 'andlist')))
 
     while True:
         # Wait for a connection
