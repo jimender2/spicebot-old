@@ -619,6 +619,19 @@ def bot_read_txt_files(bot):
             bot.memory["botdict"]["tempvals"]['txt_files'][txtfile] = text_file_list
 
 
+# Module commands
+def modules_command_listing(bot):
+    bot.memory["botdict"]["tempvals"]['module_count'] = 0
+    bot.memory["botdict"]["tempvals"]['module_commands'] = {}
+    bot_visible_coms = []
+    for modules in bot.command_groups.items():
+        bot_visible_coms.append(modules)
+        bot.memory["botdict"]["tempvals"]['module_count'] += 1
+
+    for commands in bot_visible_coms:
+        bot.memory["botdict"]["tempvals"]['module_commands'][commands] = dict()
+
+
 # Command configs
 def dict_command_configs(bot):
 

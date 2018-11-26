@@ -42,6 +42,10 @@ def real_startup(bot, trigger):
     availablecomsnum += len(bot.memory["botdict"]["tempvals"]['dict_commands'].keys())
     availablecomsfiles += bot.memory["botdict"]["tempvals"]['dict_module_count']
 
+    # Module Commands
+    availablecomsnum += len(bot.memory["botdict"]["tempvals"]['module_commands'].keys())
+    availablecomsfiles += bot.memory["botdict"]["tempvals"]['module_count']
+
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " modules.")
 
     # Check for python module errors during this startup
