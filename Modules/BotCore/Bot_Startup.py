@@ -70,8 +70,9 @@ def real_startup(bot, trigger):
         searchphrasefound.append("Run the debug command for more information.")
         osd(bot, bot.channels, 'say', searchphrasefound)
 
-    stderr("Sent API registration to other bots")
+    stderr("Sending API registration to other bots")
     bot_register_handler_startup(bot)
+    stderr("Sent API registration to other bots")
 
     bot_saved_jobs_run(bot)
 
