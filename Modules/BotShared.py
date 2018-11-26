@@ -1606,7 +1606,7 @@ def bot_watch_exclamation(bot, trigger):
 
     if subcommand == 'send':
         messagedict = {"type": "command", "command": "update"}
-        bot_api_send(bot, messagedict, int(port))
+        bot_api_send(bot, int(port), messagedict)
     elif subcommand == 'get':
         botdict_return = bot_api_fetch(bot, int(port))
         if botdict_return:
