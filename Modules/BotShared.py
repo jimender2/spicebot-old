@@ -1629,11 +1629,11 @@ def bot_register_handler_startup(bot):
     # This is for my custom use, hardcoded hosts
     hostslist = ["192.168.5.100", "192.168.5.101"]
     for host in hostslist:
-        if host == str(socket.gethostbyname(socket.gethostname())):
-            host == 'localhost'
         portslist = find_used_port_in_range(bot, 8080, 9090)
         for port in portslist:
             if host != registerdict["host"] and port != registerdict["port"]:
+                if host == str(socket.gethostbyname(socket.gethostname())):
+                    host == 'localhost'
                 bot_register_handler_single(bot, host, port, registerdict)
 
 
