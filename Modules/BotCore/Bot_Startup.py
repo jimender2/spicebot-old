@@ -25,16 +25,11 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def real_startup(bot, trigger):
 
-    beguineload = False
-    while not beguineload:
-        if len(bot.channels) > 0:
-            beguineload = True
-        else:
-            time.sleep(1)
+    while not len(bot.channels) > 0:
+        time.sleep(1)
 
     # Startup
-    for channel in bot.channels:
-        osd(bot, channel, 'notice', bot.nick + " is now starting. Please wait while I load my configuration.")
+    osd(bot, bot.channels, 'notice', bot.nick + " is now starting. Please wait while I load my configuration.")
 
     # Open Bot memory dictionary
     botdict_open(bot)
@@ -49,13 +44,6 @@ def real_startup(bot, trigger):
     availablecomsfiles += bot.memory["botdict"]["tempvals"]['dict_module_count']
 
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " modules.")
-
-    # beguinedisp = False
-    # while not beguinedisp:
-    #    if 'sock' not in bot.memory:
-    #        time.sleep(1)
-    #    else:
-    #        beguinedisp = True
 
     # Check for python module errors during this startup
     searchphrasefound = []
@@ -78,5 +66,4 @@ def real_startup(bot, trigger):
     if searchphrasefound != []:
         searchphrasefound.insert(0, "Notice to Bot Admins: ")
         searchphrasefound.append("Run the debug command for more information.")
-        for channel in bot.channels:
-            osd(bot, channel, 'say', searchphrasefound)
+        osd(bot, bot.channels, 'say', searchphrasefound)
