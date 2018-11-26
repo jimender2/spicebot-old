@@ -184,7 +184,7 @@ def listener(bot, trigger):
                                 stderr("[API] No command included.")
                                 break
 
-                            if jsondict["command"] == 'register':
+                            if jsondict["command"] == 'register_give':
 
                                 # must be a bot included
                                 if "bot" not in jsondict.keys():
@@ -201,39 +201,55 @@ def listener(bot, trigger):
                                     stderr("[API] No port included.")
                                     break
 
+                                # successful recieving
+                                stderr("[API] Recieved API registration from " + str(jsondict["bot"]) + " on " + str(jsondict["host"]) + ":" + str(jsondict["port"]))
+
+                                # make sure this info is current
                                 registerdict = {
                                                 "type": "command",
-                                                "command": "register",
+                                                "command": "register_give",
                                                 "bot": str(bot.nick),
                                                 "host": str(socket.gethostbyname(socket.gethostname())),
                                                 "port": str(bot.memory['sock_port']),
                                                 }
-                                # make sure this info is current
-                                if str(socket.gethostbyname(socket.gethostname())) not in bot.memory["sock_dict"].keys():
-                                    bot.memory["sock_dict"][str(socket.gethostbyname(socket.gethostname()))] = dict()
-                                bot.memory["sock_dict"][str(socket.gethostbyname(socket.gethostname()))][str(bot.nick)] = copy.deepcopy(registerdict)
-                                for dictref in ["type", "command", "reply"]:
-                                    if dictref in bot.memory["sock_dict"][str(socket.gethostbyname(socket.gethostname()))][str(bot.nick)].keys():
-                                        del bot.memory["sock_dict"][str(socket.gethostbyname(socket.gethostname()))][str(bot.nick)][dictref]
+                                if registerdict["host"] == jsondict["host"] and registerdict["port"] == jsondict["port"] and registerdict["bot"] == jsondict["bot"]:
+                                    break
 
-                                # register other bots
-                                stderr("[API] Recieved API registration from " + str(jsondict["bot"]) + " on " + str(jsondict["host"]) + ":" + str(jsondict["port"]))
+                                # bot memory of the hosts for keys
+                                if str(registerdict["host"]) not in bot.memory["sock_dict"].keys():
+                                    bot.memory["sock_dict"][str(registerdict["host"])] = dict()
                                 if str(jsondict["host"]) not in bot.memory["sock_dict"].keys():
                                     bot.memory["sock_dict"][str(jsondict["host"])] = dict()
-                                bot.memory["sock_dict"][str(jsondict["host"])][jsondict["bot"]] = copy.deepcopy(jsondict)
-                                for dictref in ["type", "command", "reply"]:
-                                    if dictref in bot.memory["sock_dict"][str(jsondict["host"])][str(bot.nick)].keys():
-                                        del bot.memory["sock_dict"][str(jsondict["host"])][str(bot.nick)][dictref]
 
-                                if "reply" not in jsondict.keys():
-                                    jsondict["reply"] = True
-                                else:
-                                    jsondict["reply"] = False
-                                if jsondict["reply"]:
-                                    registerdict["reply"] = False
-                                    if jsondict["host"] != registerdict["host"] and jsondict["port"] != registerdict["port"]:
-                                        bot_register_handler_single(bot, jsondict["host"], jsondict["port"], registerdict)
+                                # add bot to keys
+                                if str(bot.nick) not in bot.memory["sock_dict"][str(registerdict["host"])].keys():
+                                    bot.memory["sock_dict"][str(registerdict["host"])][str(bot.nick)] = dict()
+                                if str(bot.nick) not in bot.memory["sock_dict"][str(jsondict["host"])].keys():
+                                    bot.memory["sock_dict"][str(jsondict["host"])][str(jsondict["bot"])] = dict()
+
+                                # register host
+                                bot.memory["sock_dict"][str(registerdict["host"])][str(bot.nick)]["host"] = registerdict["host"]
+                                bot.memory["sock_dict"][str(jsondict["host"])][str(jsondict["bot"])]["host"] = jsondict["host"]
+
+                                # register port
+                                bot.memory["sock_dict"][str(registerdict["host"])][str(bot.nick)]["port"] = registerdict["port"]
+                                bot.memory["sock_dict"][str(jsondict["host"])][str(jsondict["bot"])]["port"] = jsondict["port"]
                                 break
+
+                            elif jsondict["command"] == 'register_request':
+
+                                # make sure this info is current
+                                registerdict = {
+                                                "type": "command",
+                                                "command": "register_give",
+                                                "bot": str(bot.nick),
+                                                "host": str(socket.gethostbyname(socket.gethostname())),
+                                                "port": str(bot.memory['sock_port']),
+                                                }
+                                if registerdict["host"] == jsondict["host"] and registerdict["port"] == jsondict["port"] and registerdict["bot"] == jsondict["bot"]:
+                                    break
+
+                                bot_register_handler_single(bot, jsondict["host"], jsondict["port"], registerdict)
 
                             elif jsondict["command"] == 'update':
                                 stderr("[API] Recieved Command to update.")

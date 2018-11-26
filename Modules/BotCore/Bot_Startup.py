@@ -73,9 +73,7 @@ def real_startup(bot, trigger):
         for channel in bot.channels:
             osd(bot, channel, 'say', searchphrasefound)
 
-    stderr("Sending API registration to other bots")
     bot_register_handler_startup(bot)
-    stderr("Sent API registration to other bots")
 
     bot_saved_jobs_run(bot)
 

@@ -1623,7 +1623,7 @@ def bot_register_handler_startup(bot):
 
     registerdict = {
                     "type": "command",
-                    "command": "register",
+                    "command": "register_give",
                     "bot": str(bot.nick),
                     "host": str(socket.gethostbyname(socket.gethostname())),
                     "port": str(bot.memory['sock_port']),
@@ -1631,11 +1631,21 @@ def bot_register_handler_startup(bot):
 
     # This is for my custom use, hardcoded hosts
     hostslist = ["192.168.5.100", "192.168.5.101"]
+    hostsprocess = []
     for host in hostslist:
         portslist = find_used_port_in_range(bot, 8080, 9090, host)
         for port in portslist:
             if host != registerdict["host"] and port != registerdict["port"]:
-                bot_register_handler_single(bot, host, port, registerdict)
+                hostsprocesscur = {"host": host, "port": port}
+                hostsprocess.append(hostsprocesscur)
+    for bots in hostsprocess:
+        stderr("[API] Sending API registration to other bots")
+        bot_register_handler_single(bot, bots["host"], bots["port"], registerdict)
+        stderr("[API] Sent API registration to other bots")
+        registerdict["command"] = "register_request"
+        stderr("[API] Requesting API registration from other bots")
+        bot_register_handler_single(bot, bots["host"], bots["port"], registerdict)
+        stderr("[API] Requesting API registration from other bots: Complete")
 
 
 def bot_register_handler_single(bot, host, port, dictsend):
