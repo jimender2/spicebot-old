@@ -12,10 +12,12 @@ from BotShared import *
 import subprocess
 import json
 
-validcoms = 'dbbtest', 'dbbtesta'
+
+import textwrap
+import collections
 
 
-@sopel.module.commands('dbbtest')
+@sopel.module.commands('dbbtest', 'dbbtesta')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     # IF "&&" is in the full input, it is treated as multiple commands, and is split

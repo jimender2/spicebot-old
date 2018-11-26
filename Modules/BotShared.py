@@ -67,6 +67,7 @@ import itertools
 import inspect
 import pickle
 from bson import json_util
+import textwrap
 
 
 # user agent and header
