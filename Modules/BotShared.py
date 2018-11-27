@@ -2018,6 +2018,7 @@ def bot_api_get_users(bot):
         for bots in bot.memory["sock_dict"][host].keys():
             if bots not in returninfo[host].keys():
                 returninfo[host][bots] = dict()
+            bot.msg("#spicebottest", str(bot.memory["sock_dict"][host][bots]))
             returnedinfo = bot_api_fetch(bot, int(returninfo[host][bots]["port"]), str(returninfo[host][bots]["host"]))
             if returnedinfo:
                 returninfo[host][bots]['all_current_users'] = returnedinfo["tempvals"]['all_current_users']
