@@ -1526,6 +1526,45 @@ def bot_dictquery_run(bot, trigger):
             return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
 
 
+# watches all chat traffic
+def bot_watch_all_run(bot, trigger):
+
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # instigator
+    botcom.instigator = str(trigger.nick)
+
+    # Bots block
+    if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        return
+
+    # channel
+    botcom.channel_current = str(trigger.sender)
+
+    # what they said
+    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+
+    if not botcom.channel_current.startswith("#"):
+        return
+
+    usertalkdict = {
+                    "server": str(bot.memory["botdict"]["tempvals"]['servername']),
+                    "channel": botcom.channel_current,
+                    "spoken": spicemanip(bot, botcom.triggerargsarray, 0),
+                    }
+
+    currentnickrecord = get_nick_value(bot, botcom.instigator, 'list', 'long', 'user_activity') or []
+    currentnickrecord.append(usertalkdict)
+    if len(currentnickrecord) > 10:
+        del currentnickrecord[0]
+
+    set_nick_value(bot, botcom.instigator, 'list', currentnickrecord, 'temp', 'user_activity')
+
+    bot.msg("#spicebottest", str(currentnickrecord))
+
+
 # watches for dot commands
 def bot_watch_dot_run(bot, trigger):
 
@@ -1617,6 +1656,11 @@ def bot_watch_exclamation(bot, trigger):
             osd(bot, botcom.channel_current, 'say', "botapi " + str(botdict_return))
         else:
             osd(bot, botcom.channel_current, 'say', "botapi failed to connect")
+
+
+"""
+API Handling
+"""
 
 
 def bot_register_handler_startup(bot):
@@ -2070,7 +2114,7 @@ Directory Browsing
 
 def bot_nickcom_function_gitpull(bot, botcom):
 
-    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', longevity='temp') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
+    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', 'temp') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
     osd(bot, botcom.channel_current, 'say', "attempting to git pull " + botcom.directory)
     g = git.cmd.Git(botcom.directory)
     g.pull()
@@ -2078,7 +2122,7 @@ def bot_nickcom_function_gitpull(bot, botcom):
 
 def bot_nickcom_function_dir(bot, botcom):
 
-    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', longevity='temp') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
+    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', 'temp') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
     botcom = bot_list_directory(bot, botcom)
     if botcom.directory == []:
         osd(bot, botcom.channel_current, 'say', "It appears this directory is empty.")
@@ -2093,7 +2137,7 @@ def bot_nickcom_function_dir(bot, botcom):
 def bot_nickcom_function_cd(bot, botcom):
 
     validfolderoptions = ['..', 'reset']
-    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', longevity='temp') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
+    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', 'temp') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
     botcom = bot_list_directory(bot, botcom)
 
     for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
@@ -2115,7 +2159,7 @@ def bot_nickcom_function_cd(bot, botcom):
     else:
         movepath = os.path.join(botcom.directory, str(movepath+"/"))
 
-    set_nick_value(bot, botcom.instigator, 'current_admin_dir', str(movepath), longevity='temp')
+    set_nick_value(bot, botcom.instigator, 'current_admin_dir', str(movepath), 'temp')
 
     osd(bot, botcom.channel_current, 'say', "Directory Changed to : " + str(movepath))
 
