@@ -28,7 +28,7 @@ def duel_action(bot, trigger):
     if 'intent' not in trigger.tags:
         maincom = str(trigger.group(0))
     else:
-        maincom = str(trigger.group(1))
+        maincom = str(trigger.group(0))
     bot.msg("#spicebottest", str(maincom))
 
 
