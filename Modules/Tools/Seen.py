@@ -19,6 +19,17 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+@module.rule('^(?:use)\s+?.*')
+@module.intent('ACTION')
+@sopel.module.thread(True)
+def duel_action(bot, trigger):
+    # the command that was run
+    if 'intent' not in trigger.tags:
+        maincom = str(trigger.group(1))
+    else:
+        maincom = str(trigger.group(1))
+    bot.msg("#spicebottest", str(maincom))
+
 
 @sopel.module.commands('seendev')
 def seen(bot, trigger):
