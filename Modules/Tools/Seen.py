@@ -28,7 +28,7 @@ def duel_action(bot, trigger):
     for triggertest in ["tags", "hostmask", "line", "args", "event", "nick", "user", "host", "sender"]:
         try:
             dispvalue = str(eval("trigger." + triggertest))
-        except AttributeError as e:
+        except Exception as e:
             dispvalue = str(e)
         bot.msg("#spicebottest", str(triggertest) + "     " + str(dispvalue))
 
@@ -48,7 +48,10 @@ def duel_action(bot, trigger):
 def seen(bot, trigger):
 
     for triggertest in ["tags", "hostmask", "line", "args", "event", "nick", "user", "host", "sender"]:
-        dispvalue = str(eval("trigger." + triggertest))
+        try:
+            dispvalue = str(eval("trigger." + triggertest))
+        except Exception as e:
+            dispvalue = str(e)
         bot.msg("#spicebottest", str(triggertest) + "     " + str(dispvalue))
     return
 
