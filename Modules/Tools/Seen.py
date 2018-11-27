@@ -31,6 +31,9 @@ def seen(bot, trigger):
     if not botcom.modulerun:
         return
 
+    if "sock_bot_list" not in bot.memory:
+        bot.memory["sock_bot_list"] = []
+
     posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
     if not posstarget:
         return osd(bot, botcom.channel_current, 'say', ".seen <nick> - Reports when <nick> was last seen.")
@@ -57,6 +60,8 @@ def seen(bot, trigger):
     otherbotmatch = []
     for host in otherbots.keys():
         for bots in otherbots[host].keys():
+            if str(bots) not in bot.memory["sock_bot_list"]:
+                bot.memory["sock_bot_list"].append(str(bots))
             if bot_check_inlist(bot, posstarget, otherbots[host][bots]['users'].keys()):
                 otherbotmatch.append(nick_actual(bot, posstarget, otherbots[host][bots]['users'].keys()))
                 if bot_check_inlist(bot, target, otherbots[host][bots]['all_current_users']):
