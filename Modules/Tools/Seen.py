@@ -26,8 +26,14 @@ sys.setdefaultencoding('utf-8')
 def duel_action(bot, trigger):
 
     bot.msg("#spicebottest", str(trigger.tags))
-    if 'intent' not in trigger.tags:
-        maincom = str(trigger.group(0))
+    bot.msg("#spicebottest", str(trigger.group))
+    bot.msg("#spicebottest", str(trigger.args))
+    return
+    if 'intent' in trigger.tags:
+        if trigger.tags['intent'] == 'ACTION':
+            maincom = str(trigger.group(0))
+        else:
+            maincom = str(trigger.group(0))
     else:
         maincom = str(trigger.group(0))
     bot.msg("#spicebottest", str(maincom))
