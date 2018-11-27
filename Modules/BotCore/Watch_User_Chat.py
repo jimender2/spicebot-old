@@ -31,4 +31,4 @@ def watch_all_hub(bot, trigger):
         bot_saved_jobs_process(bot, trigger, 'bot_watch_all')
         return
 
-    bot_watch_all_run(bot)
+    bot_watch_all_run(bot, trigger)
