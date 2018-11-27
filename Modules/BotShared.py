@@ -986,7 +986,7 @@ def bot_nickcom_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1126,7 +1126,7 @@ def bot_watch_part_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1193,7 +1193,7 @@ def bot_watch_kick_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1263,7 +1263,7 @@ def bot_watch_nick_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1347,7 +1347,7 @@ def bot_watch_quit_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1402,7 +1402,7 @@ def bot_watch_join_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1497,7 +1497,7 @@ def bot_watch_mode_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1589,7 +1589,7 @@ def bot_dictquery_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1690,7 +1690,7 @@ def bot_watch_all_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1725,7 +1725,7 @@ def bot_watch_all_run(bot, trigger):
     if botcom.channel_priv:
         return
 
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     usertalkdict = {
                     "server": str(bot.memory["botdict"]["tempvals"]['servername']),
@@ -1754,7 +1754,7 @@ def bot_watch_dot_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1806,7 +1806,7 @@ def bot_watch_exclamation(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -2041,7 +2041,7 @@ Jobs Handling
 def bot_saved_jobs_process(bot, trigger, jobtype, timeset='asap'):
 
     if timeset == 'asap':
-        timeset = trigger.time
+        timeset = time.time()
 
     # ID #
     dictsave = {"jobtype": jobtype, "trigger": trigger, "timeset": timeset}
@@ -2060,7 +2060,7 @@ def bot_saved_jobs_process(bot, trigger, jobtype, timeset='asap'):
 
 def bot_saved_jobs_run(bot):
 
-    now = now = time.time()
+    now = time.time()
 
     if "bot_jobs" not in bot.memory:
         bot.memory["bot_jobs"] = []
@@ -2708,7 +2708,7 @@ def bot_module_prerun(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    botcom.timestart = trigger.time
+    botcom.timestart = time.time()
 
     # default if module will run
     botcom.modulerun = True
