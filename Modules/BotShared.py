@@ -1471,11 +1471,17 @@ def bot_dictquery_run(bot, trigger):
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
 
+    commands_list = dict()
+    for commandstype in ['dict_commands', 'module_commands']:
+        for com in bot.memory['botdict']['tempvals'][commandstype].keys():
+            if com not in commands_list.keys():
+                commands_list[com] = bot.memory['botdict']['tempvals'][commandstype][com]
+
     # command issued, check if valid
     botcom.querycommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
     if len(botcom.querycommand) == 1:
         commandlist = []
-        for command in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+        for command in commands_list.keys():
             if command.lower().startswith(botcom.querycommand):
                 commandlist.append(command)
         if commandlist == []:
@@ -1485,18 +1491,18 @@ def bot_dictquery_run(bot, trigger):
 
     elif botcom.querycommand.endswith(tuple(["+"])):
         botcom.querycommand = botcom.querycommand[:-1]
-        if botcom.querycommand not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+        if botcom.querycommand not in commands_list.keys():
             return osd(bot, botcom.instigator, 'say', "The " + str(botcom.querycommand) + " does not appear to be valid.")
         realcom = botcom.querycommand
-        if "aliasfor" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.querycommand].keys():
-            realcom = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.querycommand]["aliasfor"]
-        validcomlist = bot.memory["botdict"]["tempvals"]['dict_commands'][realcom]["validcoms"]
+        if "aliasfor" in commands_list[botcom.querycommand].keys():
+            realcom = commands_list[botcom.querycommand]["aliasfor"]
+        validcomlist = commands_list[realcom]["validcoms"]
         return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".")
 
     elif botcom.querycommand.endswith(tuple(['?'])):
         botcom.querycommand = botcom.querycommand[:-1]
         sim_com, sim_num = [], []
-        for com in bot.memory['botdict']['tempvals']['dict_commands'].keys():
+        for com in commands_list.keys():
             similarlevel = similar(botcom.querycommand.lower(), com.lower())
             sim_com.append(com)
             sim_num.append(similarlevel)
@@ -1509,7 +1515,7 @@ def bot_dictquery_run(bot, trigger):
             listnumb += 1
         return osd(bot, botcom.instigator, 'say', "The following commands may match " + str(botcom.querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".")
 
-    elif botcom.querycommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+    elif botcom.querycommand in commands_list.keys():
         return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(botcom.querycommand) + ".")
 
     elif not botcom.querycommand:
@@ -1517,7 +1523,7 @@ def bot_dictquery_run(bot, trigger):
 
     else:
         commandlist = []
-        for command in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+        for command in commands_list.keys():
             if command.lower().startswith(botcom.querycommand):
                 commandlist.append(command)
         if commandlist == []:
@@ -1563,8 +1569,6 @@ def bot_watch_all_run(bot, trigger):
 
     set_nick_value(bot, botcom.instigator, 'list', currentnickrecord, 'long', 'user_activity')
 
-    bot.msg("#spicebottest", str(len(currentnickrecord)))
-
 
 # watches for dot commands
 def bot_watch_dot_run(bot, trigger):
@@ -1591,11 +1595,11 @@ def bot_watch_dot_run(bot, trigger):
 
     # command issued, check if valid
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-    if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+    if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys() and botcom.dotcommand not in bot.memory['botdict']['tempvals']['module_commands'].keys():
         bot_dictcom_handle(bot, botcom)
 
-    # save dictionary now
-    botdict_save(bot)
+        # save dictionary now
+        botdict_save(bot)
 
 
 # possible ! commands,,, using for testing

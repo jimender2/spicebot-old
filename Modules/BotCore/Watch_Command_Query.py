@@ -21,13 +21,6 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-"""
-bot.nick do this
-"""
-
-# TODO make sure restart and update save database
-
-
 @rule('(.*)')
 @sopel.module.thread(True)
 def bot_dictcom_hub(bot, trigger):
