@@ -95,7 +95,13 @@ def seen(bot, trigger):
 
     howlongago = humanized_time(time.time() - lastseenwinner["time"])
 
+    intent = 'saying'
+    if "intent" in lastseenwinner.keys():
+        if lastseenwinner["intent"]:
+            if lastseenwinner["intent"] == 'action':
+                intent = 'doing'
+
     if bot_check_inlist(bot, posstarget, otherbots[host][bots]['all_current_users']) or bot_check_inlist(bot, posstarget, otherbotmatchcur):
-        osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen " + str(howlongago) + " by " + str(lastseenwinner["bot_eyes"]) + " on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " saying " + str(lastseenwinner["spoken"]))
+        osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen " + str(howlongago) + " ago by " + str(lastseenwinner["bot_eyes"]) + " on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " " + intent + " " + str(lastseenwinner["spoken"]))
     else:
-        osd(bot, botcom.channel_current, 'say', str(posstarget) + " was last seen " + str(howlongago) + " ago on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " by " + str(lastseenwinner["bot_eyes"]) + " saying " + str(lastseenwinner["spoken"]))
+        osd(bot, botcom.channel_current, 'say', str(posstarget) + " was last seen " + str(howlongago) + " ago on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " by " + str(lastseenwinner["bot_eyes"]) + " " + intent + " " + str(lastseenwinner["spoken"]))

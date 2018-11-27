@@ -1733,6 +1733,7 @@ def bot_watch_all_run(bot, trigger):
                     "spoken": spicemanip(bot, botcom.triggerargsarray, 0),
                     "time": botcom.timestart,
                     "bot_eyes": str(bot.nick),
+                    "intent": 'intent' in trigger.tags,
                     }
 
     currentnickrecord = get_nick_value(bot, botcom.instigator, 'list', 'long', 'user_activity') or []
