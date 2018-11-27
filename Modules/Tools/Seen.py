@@ -25,9 +25,9 @@ def seen(bot, trigger):
 
     # the command that was run
     if 'intent' not in trigger.tags:
-        botcom.maincom = str(trigger.group(1))
+        maincom = str(trigger.group(1))
     else:
-        botcom.maincom = str(trigger.group(1))
+        maincom = str(trigger.group(1))
     bot.msg("#spicebottest", str(botcom.maincom))
 
     # don't run jobs if not ready
