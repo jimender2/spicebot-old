@@ -93,7 +93,7 @@ def seen(bot, trigger):
     else:
         posstarget = nick_actual(bot, posstarget, otherbotmatch)
 
-    lastseenwinner["time"] = datetime.datetime.fromtimestamp(lastseenwinner["time"])
+    lastseenwinner["time"] = datetime.datetime.fromtimestamp(float(lastseenwinner["time"]))
     lastseenwinner["time"] = lastseenwinner["time"].strftime('%Y-%m-%d %H:%M:%S')
 
     if bot_check_inlist(bot, posstarget, otherbots[host][bots]['all_current_users']) or bot_check_inlist(bot, posstarget, otherbotmatchcur):
