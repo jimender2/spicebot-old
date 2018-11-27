@@ -55,6 +55,7 @@ def seen(bot, trigger):
                     lastseen.append(lastseenrecord[-1])
 
     # other bots
+    """
     otherbots = bot_api_get_users(bot)
     otherbotmatchcur = []
     otherbotmatch = []
@@ -72,6 +73,7 @@ def seen(bot, trigger):
                             lastseenrecord = otherbots[host][bots]["users"][str(posstarget)]['user_activity']['list']
                             if lastseenrecord != []:
                                 lastseen.append(lastseenrecord[-1])
+                                """
 
     if lastseen == []:
         return osd(bot, botcom.channel_current, 'say', "Sorry, the network of SpiceBots have never seen " + str(posstarget) + " around.")
