@@ -78,16 +78,11 @@ def bot_module_prerun(bot, trigger):
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         return
 
-    botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-
-    # the command that was run
-    if 'intent' not in trigger.tags:
-        botcom.maincom = str(trigger.group(1))
-    else:
-        botcom.maincom = str(trigger.group(1))
-
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+
+    # the command that was run
+    botcom.maincom = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = []
