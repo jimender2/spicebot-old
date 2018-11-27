@@ -44,7 +44,7 @@ def duel_action(bot, trigger):
 def seen(bot, trigger):
 
     bot.msg("#spicebottest", str(trigger.tags))
-    bot.msg("#spicebottest", str(trigger.group))
+    bot.msg("#spicebottest", str(trigger))
     bot.msg("#spicebottest", str(trigger.args))
     return
 
