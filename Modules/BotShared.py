@@ -326,7 +326,7 @@ def botdict_setup_open(bot):
     if not botdict["tempvals"]["dict_loaded"]:
         opendict = botdict.copy()
         dbbotdict = get_database_value(bot, bot.nick, 'bot_dict') or dict()
-        dbbotdict = json.loads(dbbotdict, object_hook=json_util.object_hook)
+        # dbbotdict = json.loads(dbbotdict, object_hook=json_util.object_hook)
         opendict = merge_botdict(opendict, dbbotdict)
         botdict.update(opendict)
         botdict["tempvals"]['dict_loaded'] = True
@@ -967,7 +967,7 @@ def botdict_save(bot):
             del savedict[dontsave]
 
     # serialize
-    savedict = json.dumps(savedict, default=json_util.default).encode('utf-8')
+    # savedict = json.dumps(savedict, default=json_util.default).encode('utf-8')
 
     # save to database
     set_database_value(bot, bot.nick, 'bot_dict', savedict)
