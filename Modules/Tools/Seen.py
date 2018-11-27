@@ -23,7 +23,6 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.commands('seendev')
 def seen(bot, trigger):
 
-
     # the command that was run
     if 'intent' not in trigger.tags:
         botcom.maincom = str(trigger.group(1))
