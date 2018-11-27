@@ -806,7 +806,7 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             dict_from_file[mustbe]["target_bypass"] = []
 
         # special target reactions
-        for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
+        for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel', 'diffbot']:
             if 'react_'+reason not in dict_from_file[mustbe].keys():
                 dict_from_file[mustbe]['react_'+reason] = False
 
@@ -1869,7 +1869,7 @@ def bot_watch_exclamation(bot, trigger):
         botdict_return = bot_api_fetch(bot, int(port), "0.0.0.0")
         if botdict_return:
             osd(bot, botcom.channel_current, 'say', "botmem " + str(bot.memory["botdict"]["tempvals"]["uptime"]))
-            osd(bot, botcom.channel_current, 'say', "botapi " + str(botdict_return))
+            osd(bot, botcom.channel_current, 'say', "botapi " + str(botdict_return["tempvals"]["uptime"]))
         else:
             osd(bot, botcom.channel_current, 'say', "botapi failed to connect")
 
@@ -1956,9 +1956,6 @@ def bot_api_fetch(bot, botport, host):
     result = page.content
     botdict_return = json.loads(result, object_hook=json_util.object_hook)
 
-    # get the wanted results
-    botdict_return = botdict_return["tempvals"]["uptime"]
-
     return botdict_return
 
 
@@ -2011,6 +2008,26 @@ def bot_api_response_headers(bot, msg):
     response_headers_raw = ''.join('%s: %s\r\n' % (k, v) for k, v in response_headers.items())
     r = '%s %s %s\r\n' % ('HTTP/1.1', '200', 'OK')
     return response_headers_raw, r
+
+
+def bot_api_get_users(bot):
+    returninfo = {}
+    for host in bot.memory["sock_dict"].keys():
+        if host not in returninfo.keys():
+            returninfo[host] = dict()
+        for bots in bot.memory["sock_dict"][host].keys():
+            if bots not in returninfo[host].keys():
+                returninfo[host][bots] = dict()
+            returnedinfo = bot_api_fetch(bot, bots["port"], bots["host"])
+            if returnedinfo:
+                returninfo[host][bots]['all_current_users'] = returnedinfo["tempvals"]['all_current_users']
+                returninfo[host][bots]['users'] = returnedinfo['users']
+                returninfo[host][bots]['servername'] = returnedinfo["tempvals"]['servername']
+            else:
+                returninfo[host][bots]['all_current_users'] = []
+                returninfo[host][bots]['users'] = dict()
+                returninfo[host][bots]['servername'] = ''
+    return returninfo
 
 
 """
@@ -2959,7 +2976,7 @@ def bot_dictcom_responses(bot, botcom):
                 elif botcom.target == 'random':
                     botcom.target = bot_random_valid_target(bot, botcom, 'random')
             else:
-                for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel']:
+                for reason in ['self', 'bot', 'bots', 'offline', 'unknown', 'privmsg', 'diffchannel', 'diffbot']:
                     if targetchecking["reason"] == reason and botcom.dotcommand_dict[botcom.responsekey]["react_"+reason]:
                         reaction = True
                         commandrunconsensus.append(botcom.dotcommand_dict[botcom.responsekey]["react_"+reason])
@@ -3570,28 +3587,53 @@ def bot_target_check(bot, botcom, target, targetbypass):
         if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['bots_list'].keys()):
             return {"targetgood": False, "error": nick_actual(bot, target) + " is a bot and cannot be targeted.", "reason": "bots"}
 
+    # Different Bot
+    otherbots = bot_api_get_users(bot)
+    otherbotmatch = []
+    otherbotmatchcur = []
+    for host in otherbots.keys():
+        for bots in otherbots[host].keys():
+            userkeys = otherbots[host]['users']
+            if bot_check_inlist(bot, target, otherbots[host]['users'].keys()):
+                matchmade = {"bot": bots, "servername": otherbots[host][bots]["servername"]}
+                if bot_check_inlist(bot, target, otherbots[host]['all_current_users'].keys()):
+                    otherbotmatchcur.append(matchmade)
+                otherbotmatch.append(matchmade)
+
     # Not a valid user
     if "unknown" not in targetbypass:
         if not bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
-            sim_user, sim_num = [], []
-            for user in bot.memory["botdict"]["users"].keys():
-                similarlevel = similar(str(target).lower(), user.lower())
-                if similarlevel >= .75:
-                    sim_user.append(user)
-                    sim_num.append(similarlevel)
-            if sim_user != [] and sim_num != []:
-                sim_num, sim_user = array_arrangesort(bot, sim_num, sim_user)
-                closestmatch = spicemanip(bot, sim_user, 'reverse', "list")
-                listnumb, relist = 1, []
-                for item in closestmatch:
-                    if listnumb <= 3:
-                        relist.append(str(item))
-                    listnumb += 1
-                closestmatches = spicemanip(bot, relist, "andlist")
-                targetgooderror = "It looks like you're trying to target someone! Did you mean: " + str(closestmatches) + "?"
+            if otherbotmatch != []:
+                if otherbotmatchcur != []:
+                    if otherbotmatchcur[0]["servername"] != bot.memory["botdict"]["tempvals"]['servername']:
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target) + " logged onto " + str(otherbotmatchcur[0]["servername"]) + " right now!", "reason": "diffbot"}
+                    else:
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target) + " logged on right now!", "reason": "diffbot"}
+                else:
+                    if otherbotmatchcur[0]["servername"] != bot.memory["botdict"]["tempvals"]['servername']:
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " has a listing for " + nick_actual(bot, target) + " on " + str(otherbotmatchcur[0]["servername"]) + ", but they are offline at the moment!", "reason": "diffbot"}
+                    else:
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " has a listing for " + nick_actual(bot, target) + ", but they are offline at the moment!", "reason": "diffbot"}
             else:
-                targetgooderror = "I am not sure who that is."
-            return {"targetgood": False, "error": targetgooderror, "reason": "unknown"}
+                sim_user, sim_num = [], []
+                for user in bot.memory["botdict"]["users"].keys():
+                    similarlevel = similar(str(target).lower(), user.lower())
+                    if similarlevel >= .75:
+                        sim_user.append(user)
+                        sim_num.append(similarlevel)
+                if sim_user != [] and sim_num != []:
+                    sim_num, sim_user = array_arrangesort(bot, sim_num, sim_user)
+                    closestmatch = spicemanip(bot, sim_user, 'reverse', "list")
+                    listnumb, relist = 1, []
+                    for item in closestmatch:
+                        if listnumb <= 3:
+                            relist.append(str(item))
+                        listnumb += 1
+                    closestmatches = spicemanip(bot, relist, "andlist")
+                    targetgooderror = "It looks like you're trying to target someone! Did you mean: " + str(closestmatches) + "?"
+                else:
+                    targetgooderror = "I am not sure who that is."
+                return {"targetgood": False, "error": targetgooderror, "reason": "unknown"}
 
     # User offline
     if "offline" not in targetbypass:
