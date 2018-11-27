@@ -1721,16 +1721,14 @@ def bot_watch_all_run(bot, trigger):
     if botcom.channel_priv:
         return
 
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     usertalkdict = {
                     "server": str(bot.memory["botdict"]["tempvals"]['servername']),
                     "channel": botcom.channel_current,
                     "spoken": spicemanip(bot, botcom.triggerargsarray, 0),
                     "time": botcom.timestart,
+                    "bot_eyes": str(bot.nick),
                     }
 
     currentnickrecord = get_nick_value(bot, botcom.instigator, 'list', 'long', 'user_activity') or []
@@ -2695,6 +2693,159 @@ def bot_nickcom_function_canyouseeme(bot, botcom):
 
 
 """
+Module Prerun
+"""
+
+
+def bot_module_prerun(bot, trigger):
+
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # what time was this triggered
+    botcom.timestart = trigger.time
+
+    # default if module will run
+    botcom.modulerun = True
+
+    # instigator
+    botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
+
+    # channel
+    botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
+
+    # Bots can't run commands
+    if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        return
+
+    # create arg list
+    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+
+    # the command that was run
+    botcom.maincom = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
+
+    # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
+    validspecifides = []
+    botcom.specified = None
+    argone = spicemanip(bot, botcom.triggerargsarray, 1)
+    if str(argone).startswith("--") and len(str(argone)) > 2:
+        if str(argone[2:]).isdigit() or str(argone[2:]) in validspecifides:
+            botcom.specified = argone[2:]
+        else:
+            try:
+                botcom.specified = w2n.word_to_num(str(argone[1:]))
+            except ValueError:
+                botcom.specified = None
+        if botcom.specified:
+            botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+
+    if botcom.specified:
+        if str(botcom.specified).isdigit():
+            botcom.specified = int(botcom.specified)
+
+    # Hardcoded commands Below
+    if botcom.specified == 'enable':
+        botcom.modulerun = False
+
+        if botcom.channel_priv:
+            osd(bot, botcom.instigator, 'notice', "This command must be run in the channel you which to " + botcom.specified + " it in.")
+            return botcom
+
+        if botcom.maincom not in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
+            osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
+            return botcom
+
+        commandrunconsensus, commandrun = [], True
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bot_admins']:
+            commandrunconsensus.append('False')
+        else:
+            commandrunconsensus.append('True')
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanops']:
+            commandrunconsensus.append('False')
+        else:
+            commandrunconsensus.append('True')
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanowners']:
+            commandrunconsensus.append('False')
+        else:
+            commandrunconsensus.append('True')
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanadmins']:
+            commandrunconsensus.append('False')
+        else:
+            commandrunconsensus.append('True')
+        if 'True' not in commandrunconsensus:
+            commandrun = False
+        if not commandrun:
+            osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
+            return botcom
+
+        del bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom]
+        osd(bot, botcom.channel_current, 'say', botcom.maincom + " is now " + botcom.specified + "d in " + str(botcom.channel_current))
+        return botcom
+
+    elif botcom.specified == 'disable':
+        botcom.modulerun = False
+
+        if botcom.channel_priv:
+            osd(bot, botcom.instigator, 'notice', "This command must be run in the channel you which to " + botcom.specified + " it in.")
+            return botcom
+
+        if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
+            osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
+            return botcom
+
+        commandrunconsensus, commandrun = [], True
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bot_admins']:
+            commandrunconsensus.append('False')
+        else:
+            commandrunconsensus.append('True')
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanops']:
+            commandrunconsensus.append('False')
+        else:
+            commandrunconsensus.append('True')
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanowners']:
+            commandrunconsensus.append('False')
+        else:
+            commandrunconsensus.append('True')
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanadmins']:
+            commandrunconsensus.append('False')
+        else:
+            commandrunconsensus.append('True')
+        if 'True' not in commandrunconsensus:
+            commandrun = False
+        if not commandrun:
+            osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
+            return botcom
+
+        if not botcom.channel_priv:
+            if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
+                reason = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]
+                timestamp = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["timestamp"]
+                bywhom = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["disabledby"]
+                osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command was disabled by " + bywhom + " in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + str(reason))
+                return botcom
+
+    return botcom
+
+
+"""
 Dictionary commands
 """
 
@@ -3572,26 +3723,6 @@ def bot_check_inlist(bot, searchterm, searchlist):
 def bot_target_check(bot, botcom, target, targetbypass=[]):
     targetgood = {"targetgood": True, "error": "None", "reason": None}
 
-    if not isinstance(targetbypass, list):
-        targetbypass = [targetbypass]
-
-    if "notarget" not in targetbypass:
-        if not target or target == '':
-            return {"targetgood": False, "error": "No target Given.", "reason": "notarget"}
-
-    # Optional don't allow self-target
-    if "self" not in targetbypass:
-        if bot_check_inlist(bot, target, botcom.instigator):
-            return {"targetgood": False, "error": "This command does not allow you to target yourself.", "reason": "self"}
-
-    # cannot target bots
-    if "bot" not in targetbypass:
-        if bot_check_inlist(bot, target, bot.nick):
-            return {"targetgood": False, "error": "I am a bot and cannot be targeted.", "reason": "bot"}
-    if "bots" not in targetbypass:
-        if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['bots_list'].keys()):
-            return {"targetgood": False, "error": nick_actual(bot, target) + " is a bot and cannot be targeted.", "reason": "bots"}
-
     # Different Bot
     otherbots = bot_api_get_users(bot)
     otherbotmatch = []
@@ -3606,20 +3737,42 @@ def bot_target_check(bot, botcom, target, targetbypass=[]):
                 otherbotnickmatch.append(nick_actual(bot, target, otherbots[host][bots]['users'].keys()))
                 otherbotmatch.append(matchmade)
 
+    if not isinstance(targetbypass, list):
+        targetbypass = [targetbypass]
+
+    if "notarget" not in targetbypass:
+        if not target or target == '':
+            return {"targetgood": False, "error": "No target Given.", "reason": "notarget", "otherbots": otherbots}
+
+    # Optional don't allow self-target
+    if "self" not in targetbypass:
+        if bot_check_inlist(bot, target, botcom.instigator):
+            return {"targetgood": False, "error": "This command does not allow you to target yourself.", "reason": "self", "otherbots": otherbots}
+
+    # cannot target bots
+    if "bot" not in targetbypass:
+        if bot_check_inlist(bot, target, bot.nick):
+            return {"targetgood": False, "error": "I am a bot and cannot be targeted.", "reason": "bot", "otherbots": otherbots}
+    if "bots" not in targetbypass:
+        if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['bots_list'].keys()):
+            return {"targetgood": False, "error": nick_actual(bot, target) + " is a bot and cannot be targeted.", "reason": "bots", "otherbots": otherbots}
+        if bot_check_inlist(bot, target, bot.memory["sock_bot_list"]):
+            return {"targetgood": False, "error": nick_actual(bot, target, bot.memory["sock_bot_list"]) + " is a bot and cannot be targeted.", "reason": "bots", "otherbots": otherbots}
+
     # Not a valid user
     if "unknown" not in targetbypass:
         if not bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
             if otherbotmatch != [] and "diffbot" not in targetbypass:
                 if otherbotmatchcur != []:
                     if otherbotmatchcur[0]["servername"] != bot.memory["botdict"]["tempvals"]['servername']:
-                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged onto " + str(otherbotmatchcur[0]["servername"]) + " right now!", "reason": "diffbot"}
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged onto " + str(otherbotmatchcur[0]["servername"]) + " right now!", "reason": "diffbot", "otherbots": otherbots}
                     else:
-                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged on right now!", "reason": "diffbot"}
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged on right now!", "reason": "diffbot", "otherbots": otherbots}
                 else:
                     if otherbotmatchcur[0]["servername"] != bot.memory["botdict"]["tempvals"]['servername']:
-                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatch[0]["bot"]) + " has a listing for " + nick_actual(bot, target, otherbotnickmatch) + " on " + str(otherbotmatch[0]["servername"]) + ", but they are offline at the moment!", "reason": "diffbot"}
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatch[0]["bot"]) + " has a listing for " + nick_actual(bot, target, otherbotnickmatch) + " on " + str(otherbotmatch[0]["servername"]) + ", but they are offline at the moment!", "reason": "diffbot", "otherbots": otherbots}
                     else:
-                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatch[0]["bot"]) + " has a listing for " + nick_actual(bot, target, otherbotnickmatch) + ", but they are offline at the moment!", "reason": "diffbot"}
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatch[0]["bot"]) + " has a listing for " + nick_actual(bot, target, otherbotnickmatch) + ", but they are offline at the moment!", "reason": "diffbot", "otherbots": otherbots}
             else:
                 sim_user, sim_num = [], []
                 for user in bot.memory["botdict"]["users"].keys():
@@ -3639,7 +3792,7 @@ def bot_target_check(bot, botcom, target, targetbypass=[]):
                     targetgooderror = "It looks like you're trying to target someone! Did you mean: " + str(closestmatches) + "?"
                 else:
                     targetgooderror = "I am not sure who that is."
-                return {"targetgood": False, "error": targetgooderror, "reason": "unknown"}
+                return {"targetgood": False, "error": targetgooderror, "reason": "unknown", "otherbots": otherbots}
 
     # User offline
     if "offline" not in targetbypass:
@@ -3647,22 +3800,22 @@ def bot_target_check(bot, botcom, target, targetbypass=[]):
             if otherbotmatch != [] and "diffbot" not in targetbypass:
                 if otherbotmatchcur != []:
                     if otherbotmatchcur[0]["servername"] != bot.memory["botdict"]["tempvals"]['servername']:
-                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged onto " + str(otherbotmatchcur[0]["servername"]) + " right now!", "reason": "diffbot"}
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged onto " + str(otherbotmatchcur[0]["servername"]) + " right now!", "reason": "diffbot", "otherbots": otherbots}
                     else:
-                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged on right now!", "reason": "diffbot"}
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged on right now!", "reason": "diffbot", "otherbots": otherbots}
             else:
-                return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is offline right now!", "reason": "offline"}
+                return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is offline right now!", "reason": "offline", "otherbots": otherbots}
 
     # Private Message
     if "privmsg" not in targetbypass:
         if botcom.channel_priv and not bot_check_inlist(bot, target, botcom.instigator):
-            return {"targetgood": False, "error": "Leave " + nick_actual(bot, target) + " out of this private conversation!", "reason": "privmsg"}
+            return {"targetgood": False, "error": "Leave " + nick_actual(bot, target) + " out of this private conversation!", "reason": "privmsg", "otherbots": otherbots}
 
     # not in the same channel
     if "diffchannel" not in targetbypass:
         if not botcom.channel_priv and bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
             if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][str(botcom.channel_current)]['current_users']]:
-                return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.", "reason": "diffchannel"}
+                return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.", "reason": "diffchannel", "otherbots": otherbots}
 
     return targetgood
 

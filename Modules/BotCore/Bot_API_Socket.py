@@ -52,6 +52,8 @@ def listener(bot, trigger):
     sock = bot.memory['sock']
 
     bot.memory["sock_dict"] = dict()
+    if "sock_bot_list" not in bot.memory:
+        bot.memory["sock_bot_list"] = []
 
     while True:
         # Wait for a connection
@@ -234,6 +236,12 @@ def listener(bot, trigger):
                                 # register port
                                 bot.memory["sock_dict"][str(registerdict["host"])][str(bot.nick)]["port"] = registerdict["port"]
                                 bot.memory["sock_dict"][str(jsondict["host"])][str(jsondict["bot"])]["port"] = jsondict["port"]
+
+                                # add to otherbotslist
+                                bot.memory["botdict"]["tempvals"]['bots_list']
+                                if str(jsondict["bot"]) not in bot.memory["sock_bot_list"]:
+                                    bot.memory["sock_bot_list"].append(str(jsondict["bot"]))
+
                                 break
 
                             elif jsondict["command"] == 'register_request':
