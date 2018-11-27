@@ -20,7 +20,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@module.rule('^(?:use)\s+?.*')
+@module.rule('.*')
 @module.intent('ACTION')
 @sopel.module.thread(True)
 def duel_action(bot, trigger):
@@ -33,6 +33,7 @@ def duel_action(bot, trigger):
 
 
 @sopel.module.commands('seendev')
+@sopel.module.thread(True)
 def seen(bot, trigger):
 
     # the command that was run
