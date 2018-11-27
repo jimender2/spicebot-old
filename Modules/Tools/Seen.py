@@ -19,6 +19,7 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+
 @module.rule('^(?:use)\s+?.*')
 @module.intent('ACTION')
 @sopel.module.thread(True)
