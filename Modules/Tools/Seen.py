@@ -23,7 +23,13 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.commands('seendev')
 def seen(bot, trigger):
 
-    bot.msg("#spicebottest", str('intent' in trigger.tags))
+
+    # the command that was run
+    if 'intent' not in trigger.tags:
+        botcom.maincom = str(trigger.group(1))
+    else:
+        botcom.maincom = str(trigger.group(1))
+    bot.msg("#spicebottest", str(botcom.maincom))
 
     # don't run jobs if not ready
     while "botdict_loaded" not in bot.memory:
@@ -56,7 +62,10 @@ def bot_module_prerun(bot, trigger):
         return
 
     # the command that was run
-    botcom.maincom = trigger.group(1)
+    if 'intent' not in trigger.tags:
+        botcom.maincom = str(trigger.group(1))
+    else:
+        botcom.maincom = str(trigger.group(1))
 
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
