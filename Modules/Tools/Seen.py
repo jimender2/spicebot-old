@@ -23,7 +23,7 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.commands('seendev')
 def seen(bot, trigger):
 
-    bot.msg("#spicebottest", str(trigger.tags))
+    bot.msg("#spicebottest", str('intent' in trigger.tags))
 
     # don't run jobs if not ready
     while "botdict_loaded" not in bot.memory:
