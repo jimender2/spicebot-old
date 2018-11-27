@@ -47,19 +47,14 @@ def duel_action(bot, trigger):
 @sopel.module.thread(True)
 def seen(bot, trigger):
 
-    for triggertest in ["", ".sender", ".time", ".raw", ".is_privmsg", ".hostmask", ".user", ".nick", ".event", ".match", ".group(0)", ".groups", ".groupdict", ".args", ".tags", ".admin", ".owner", ".account"]:
+    for triggertest in ["", "._callables['high']", "._callables['medium']", "._callables['low']", ".config", ".doc", "._command_groups", ".stats", ".times", ".server_capabilities", ".enabled_capabilities", "._cap_reqs", ".privileges", ".channels", ".users", ".db", ".shutdown_methods"]:
         try:
-            dispvalue = str(eval("trigger" + triggertest))
+            dispvalue = str(eval("bot" + triggertest))
         except Exception as e:
             dispvalue = str(e)
-        bot.msg("#spicebottest", str(triggertest) + "     " + str(dispvalue))
+        bot.msg("#spicebottest", str(triggertest))
+        bot.msg("#spicebottest", "     " + str(dispvalue))
 
-    return
-
-    bot.msg("#spicebottest", str(trigger.tags))
-    bot.msg("#spicebottest", str(trigger))
-    bot.msg("#spicebottest", str(trigger.args))
-    bot.msg("#spicebottest", str(trigger.hostmask))
     return
 
     # don't run jobs if not ready
