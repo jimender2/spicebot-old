@@ -25,7 +25,7 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def duel_action(bot, trigger):
 
-    for triggertest in ["", ".tags", ".hostmask", ".line", ".args", ".event", ".nick", ".user", ".host", ".sender"]:
+    for triggertest in ["", ".sender", ".time", ".raw", ".is_privmsg", ".hostmask", ".user", ".nick", ".event", ".match", ".group(0)", ".groups", ".groupdict", ".args", ".tags", ".admin", ".owner", ".account"]:
         try:
             dispvalue = str(eval("trigger" + triggertest))
         except Exception as e:
@@ -47,7 +47,7 @@ def duel_action(bot, trigger):
 @sopel.module.thread(True)
 def seen(bot, trigger):
 
-    for triggertest in ["", ".tags", ".hostmask", ".line", ".args", ".event", ".nick", ".user", ".host", ".sender"]:
+    for triggertest in ["", ".sender", ".time", ".raw", ".is_privmsg", ".hostmask", ".user", ".nick", ".event", ".match", ".group(0)", ".groups", ".groupdict", ".args", ".tags", ".admin", ".owner", ".account"]:
         try:
             dispvalue = str(eval("trigger" + triggertest))
         except Exception as e:
