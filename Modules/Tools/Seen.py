@@ -89,6 +89,6 @@ def seen(bot, trigger):
         posstarget = nick_actual(bot, posstarget, otherbotmatch)
 
     if bot_check_inlist(bot, target, otherbots[host][bots]['all_current_users']) or bot_check_inlist(bot, target, otherbotmatchcur):
-        osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen speaking on " + str(lastseenwinner["server"]) " in " + str(lastseenwinner["channel"]) + "at " + str(lastseenwinner["time"]) + " saying " + str(lastseenwinner["spoken"]))
+        osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen by " + str(lastseenwinner["bot_eyes"]) + " on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + "at " + str(lastseenwinner["time"]) + " saying " + str(lastseenwinner["spoken"]))
     else:
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " was last seen at " + str(lastseenwinner["time"]) + "on " + str(lastseenwinner["server"]) " in " + str(lastseenwinner["channel"]) + " by " + str(lastseenwinner["bot_eyes"]) + " saying " + str(lastseenwinner["spoken"]))
