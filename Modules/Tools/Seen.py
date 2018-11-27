@@ -26,7 +26,7 @@ sys.setdefaultencoding('utf-8')
 def duel_action(bot, trigger):
     # the command that was run
     if 'intent' not in trigger.tags:
-        maincom = str(trigger.group(1))
+        maincom = str(trigger.group(0))
     else:
         maincom = str(trigger.group(1))
     bot.msg("#spicebottest", str(maincom))
