@@ -25,10 +25,10 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def duel_action(bot, trigger):
 
-    bot.msg("#spicebottest", str(trigger.tags))
-    bot.msg("#spicebottest", str(trigger))
-    bot.msg("#spicebottest", str(trigger.args))
-    bot.msg("#spicebottest", str(trigger.hostmask))
+    for triggertest in ["tags", "hostmask", "line", "args", "event", "nick", "user", "host", "sender"]:
+        dispvalue = str(eval("trigger." + triggertest))
+        bot.msg("#spicebottest", str(triggertest) + "     " + str(dispvalue))
+
     return
     if 'intent' in trigger.tags:
         if trigger.tags['intent'] == 'ACTION':
@@ -43,6 +43,11 @@ def duel_action(bot, trigger):
 @sopel.module.commands('seendev')
 @sopel.module.thread(True)
 def seen(bot, trigger):
+
+    for triggertest in ["tags", "hostmask", "line", "args", "event", "nick", "user", "host", "sender"]:
+        dispvalue = str(eval("trigger." + triggertest))
+        bot.msg("#spicebottest", str(triggertest) + "     " + str(dispvalue))
+    return
 
     bot.msg("#spicebottest", str(trigger.tags))
     bot.msg("#spicebottest", str(trigger))
