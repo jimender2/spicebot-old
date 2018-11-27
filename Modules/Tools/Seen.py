@@ -28,6 +28,7 @@ def duel_action(bot, trigger):
     bot.msg("#spicebottest", str(trigger.tags))
     bot.msg("#spicebottest", str(trigger))
     bot.msg("#spicebottest", str(trigger.args))
+    bot.msg("#spicebottest", str(trigger.hostmask))
     return
     if 'intent' in trigger.tags:
         if trigger.tags['intent'] == 'ACTION':
@@ -46,6 +47,7 @@ def seen(bot, trigger):
     bot.msg("#spicebottest", str(trigger.tags))
     bot.msg("#spicebottest", str(trigger))
     bot.msg("#spicebottest", str(trigger.args))
+    bot.msg("#spicebottest", str(trigger.hostmask))
     return
 
     # don't run jobs if not ready
