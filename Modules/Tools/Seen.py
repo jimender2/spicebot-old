@@ -43,12 +43,10 @@ def duel_action(bot, trigger):
 @sopel.module.thread(True)
 def seen(bot, trigger):
 
-    # the command that was run
-    if 'intent' not in trigger.tags:
-        maincom = str(trigger.group(1))
-    else:
-        maincom = str(trigger.group(1))
-    bot.msg("#spicebottest", str(maincom))
+    bot.msg("#spicebottest", str(trigger.tags))
+    bot.msg("#spicebottest", str(trigger.group))
+    bot.msg("#spicebottest", str(trigger.args))
+    return
 
     # don't run jobs if not ready
     while "botdict_loaded" not in bot.memory:
