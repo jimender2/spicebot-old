@@ -995,6 +995,12 @@ def bot_nickcom_run(bot, trigger):
     botcom = class_create('botcom')
     botcom.default = 'botcom'
 
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
+
     # instigator
     botcom.instigator = str(trigger.nick)
 
@@ -1115,6 +1121,12 @@ def bot_watch_part_run(bot, trigger):
     botcom = class_create('botcom')
     botcom.default = 'botcom'
 
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
+
     # instigator
     botcom.instigator = str(trigger.nick)
 
@@ -1161,6 +1173,12 @@ def bot_watch_kick_run(bot, trigger):
     # botcom dynamic Class
     botcom = class_create('botcom')
     botcom.default = 'botcom'
+
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1211,6 +1229,12 @@ def bot_watch_nick_run(bot, trigger):
     # botcom dynamic Class
     botcom = class_create('botcom')
     botcom.default = 'botcom'
+
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1276,6 +1300,12 @@ def bot_watch_quit_run(bot, trigger):
     botcom = class_create('botcom')
     botcom.default = 'botcom'
 
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
+
     # instigator
     botcom.instigator = str(trigger.nick)
 
@@ -1310,6 +1340,12 @@ def bot_watch_join_run(bot, trigger):
     # botcom dynamic Class
     botcom = class_create('botcom')
     botcom.default = 'botcom'
+
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1386,6 +1422,12 @@ def bot_watch_mode_run(bot, trigger):
     botcom = class_create('botcom')
     botcom.default = 'botcom'
 
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
+
     # instigator
     botcom.instigator = str(trigger.nick)
 
@@ -1457,6 +1499,12 @@ def bot_dictquery_run(bot, trigger):
     # botcom dynamic Class
     botcom = class_create('botcom')
     botcom.default = 'botcom'
+
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1539,6 +1587,12 @@ def bot_watch_all_run(bot, trigger):
     botcom = class_create('botcom')
     botcom.default = 'botcom'
 
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
+
     # instigator
     botcom.instigator = str(trigger.nick)
 
@@ -1555,11 +1609,16 @@ def bot_watch_all_run(bot, trigger):
     if not botcom.channel_current.startswith("#"):
         return
 
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
+
     usertalkdict = {
                     "server": str(bot.memory["botdict"]["tempvals"]['servername']),
                     "channel": botcom.channel_current,
                     "spoken": spicemanip(bot, botcom.triggerargsarray, 0),
-                    "time": time.time(),
+                    "time": botcom.timestart,
                     }
 
     currentnickrecord = get_nick_value(bot, botcom.instigator, 'list', 'long', 'user_activity') or []
@@ -1579,6 +1638,12 @@ def bot_watch_dot_run(bot, trigger):
     # botcom dynamic Class
     botcom = class_create('botcom')
     botcom.default = 'botcom'
+
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1611,6 +1676,12 @@ def bot_watch_exclamation(bot, trigger):
     # botcom dynamic Class
     botcom = class_create('botcom')
     botcom.default = 'botcom'
+
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
 
     # instigator
     botcom.instigator = str(trigger.nick)
@@ -1809,8 +1880,20 @@ Jobs Handling
 
 def bot_saved_jobs_process(bot, trigger, jobtype, timeset='asap'):
 
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
+
     if timeset == 'asap':
-        timeset = time.time()
+        timeset = botcom.timestart
+    else:
+        timeset = botcom.timestart
 
     # ID #
     dictsave = {"jobtype": jobtype, "trigger": trigger, "timeset": timeset}

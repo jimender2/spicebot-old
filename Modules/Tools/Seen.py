@@ -47,7 +47,7 @@ def duel_action(bot, trigger):
 @sopel.module.thread(True)
 def seen(bot, trigger):
 
-    for triggertest in ["tags", "hostmask", "line", "args", "event", "nick", "user", "host", "sender"]:
+    for triggertest in ["tags", "hostmask", "line", "args", "event", "nick", "user", "host", "sender", "group(0)"]:
         try:
             dispvalue = str(eval("trigger." + triggertest))
         except Exception as e:
@@ -77,6 +77,12 @@ def bot_module_prerun(bot, trigger):
     # botcom dynamic Class
     botcom = class_create('botcom')
     botcom.default = 'botcom'
+
+    # what time was this triggered
+    if 'time' in trigger.tags:
+        botcom.timestart = trigger.tags['time']
+    else:
+        botcom.timestart = time.time()
 
     # default if module will run
     botcom.modulerun = True
