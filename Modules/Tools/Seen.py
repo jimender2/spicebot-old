@@ -28,7 +28,7 @@ def seen(bot, trigger):
         maincom = str(trigger.group(1))
     else:
         maincom = str(trigger.group(1))
-    bot.msg("#spicebottest", str(botcom.maincom))
+    bot.msg("#spicebottest", str(maincom))
 
     # don't run jobs if not ready
     while "botdict_loaded" not in bot.memory:
