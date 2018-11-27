@@ -1563,7 +1563,7 @@ def bot_watch_all_run(bot, trigger):
 
     set_nick_value(bot, botcom.instigator, 'list', currentnickrecord, 'long', 'user_activity')
 
-    bot.msg("#spicebottest", str(currentnickrecord))
+    bot.msg("#spicebottest", str(len(currentnickrecord)))
 
 
 # watches for dot commands
