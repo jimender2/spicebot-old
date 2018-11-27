@@ -98,7 +98,7 @@ def seen(bot, trigger):
     intent = 'saying'
     if "intent" in lastseenwinner.keys():
         if lastseenwinner["intent"]:
-            if lastseenwinner["intent"] == 'action':
+            if lastseenwinner["intent"]:
                 intent = 'doing'
 
     if bot_check_inlist(bot, posstarget, otherbots[host][bots]['all_current_users']) or bot_check_inlist(bot, posstarget, otherbotmatchcur):
