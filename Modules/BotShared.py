@@ -542,23 +542,9 @@ def botdict_setup_users(bot):
 
     for channelcheck in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
 
-        if 'chanops' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
-            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanops'] = []
-
-        if 'chanhalfops' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
-            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanhalfops'] = []
-
-        if 'chanvoices' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
-            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanvoices'] = []
-
-        if 'chanowners' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
-            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanowners'] = []
-
-        if 'chanadmins' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
-            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanadmins'] = []
-
-        if 'current_users' not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
-            bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] = []
+        for checktype in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
+            if checktype not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck].keys():
+                bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck][checktype] = []
 
         userprivdict = dict()
         for user in bot.privileges[channelcheck].keys():
@@ -996,16 +982,30 @@ def bot_nickcom_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     # instigator
     botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
 
     # channel
     botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
 
     # Bots can't run commands
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
@@ -1061,7 +1061,7 @@ def bot_nickcom_run_check(bot, botcom):
                 commandrunconsensus.append('True')
 
         if 'OP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
-            if botcom.channel_current.startswith('#'):
+            if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanops']:
                     commandrunconsensus.append('False')
                 else:
@@ -1070,7 +1070,7 @@ def bot_nickcom_run_check(bot, botcom):
                 commandrunconsensus.append('False')
 
         if 'HOP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
-            if botcom.channel_current.startswith('#'):
+            if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanhalfops']:
                     commandrunconsensus.append('False')
                 else:
@@ -1079,7 +1079,7 @@ def bot_nickcom_run_check(bot, botcom):
                 commandrunconsensus.append('False')
 
         if 'VOICE' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
-            if botcom.channel_current.startswith('#'):
+            if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanvoices']:
                     commandrunconsensus.append('False')
                 else:
@@ -1088,7 +1088,7 @@ def bot_nickcom_run_check(bot, botcom):
                 commandrunconsensus.append('False')
 
         if 'OWNER' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
-            if botcom.channel_current.startswith('#'):
+            if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanowners']:
                     commandrunconsensus.append('False')
                 else:
@@ -1097,7 +1097,7 @@ def bot_nickcom_run_check(bot, botcom):
                 commandrunconsensus.append('False')
 
         if 'ADMIN' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
-            if botcom.channel_current.startswith('#'):
+            if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanadmins']:
                     commandrunconsensus.append('False')
                 else:
@@ -1122,16 +1122,30 @@ def bot_watch_part_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     # instigator
     botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
 
     # channel
     botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
 
     # database entry for user
     if botcom.instigator not in bot.memory["botdict"]["users"].keys():
@@ -1175,16 +1189,30 @@ def bot_watch_kick_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     # instigator
     botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
 
     # channel
     botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
 
     # target user
     botcom.target = str(trigger.args[1])
@@ -1231,16 +1259,30 @@ def bot_watch_nick_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     # instigator
     botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
 
     # channel
     botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
 
     botcom.target = str(trigger.args[0])
 
@@ -1301,16 +1343,30 @@ def bot_watch_quit_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     # instigator
     botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
 
     # channel
     botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
 
     # database entry for user
     if botcom.instigator not in bot.memory["botdict"]["users"].keys():
@@ -1342,16 +1398,30 @@ def bot_watch_join_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     # instigator
     botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
 
     # channel
     botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
 
     # Privacy Sweep
     allowedusers = []
@@ -1423,16 +1493,30 @@ def bot_watch_mode_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     # instigator
     botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
 
     # channel
     botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
 
     # target
     target = str(trigger.args[-1])
@@ -1501,16 +1585,30 @@ def bot_dictquery_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     # instigator
     botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
 
     # channel
     botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
 
     # Bots can't run commands
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
@@ -1588,13 +1686,16 @@ def bot_watch_all_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     # instigator
     botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
 
     # Bots block
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
@@ -1602,11 +1703,22 @@ def bot_watch_all_run(bot, trigger):
 
     # channel
     botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
 
     # what they said
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
 
-    if not botcom.channel_current.startswith("#"):
+    if botcom.channel_priv:
         return
 
     if 'time' in trigger.tags:
@@ -1640,16 +1752,30 @@ def bot_watch_dot_run(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     # instigator
     botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
 
     # channel
     botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
 
     # Bots can't run commands
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
@@ -1678,16 +1804,30 @@ def bot_watch_exclamation(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     # instigator
     botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
 
     # channel
     botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
 
     # Bots can't run commands
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
@@ -1880,20 +2020,8 @@ Jobs Handling
 
 def bot_saved_jobs_process(bot, trigger, jobtype, timeset='asap'):
 
-    # botcom dynamic Class
-    botcom = class_create('botcom')
-    botcom.default = 'botcom'
-
-    # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
-
     if timeset == 'asap':
-        timeset = botcom.timestart
-    else:
-        timeset = botcom.timestart
+        timeset = trigger.time
 
     # ID #
     dictsave = {"jobtype": jobtype, "trigger": trigger, "timeset": timeset}
@@ -1947,7 +2075,7 @@ def bot_nickcom_function_auth(bot, botcom):
     # Channel
     targetchannels = []
     if botcom.triggerargsarray == []:
-        if botcom.channel_current.startswith('#'):
+        if not botcom.channel_priv:
             targetchannels.append(botcom.channel_current)
         else:
             osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
@@ -2280,7 +2408,7 @@ def bot_nickcom_function_msg(bot, botcom):
     targetchannels = []
     targetword = spicemanip(bot, botcom.triggerargsarray, 1)
     if targetword not in bot.memory["botdict"]["tempvals"]['channels_list'].keys() and targetword != 'all':
-        if botcom.channel_current.startswith('#'):
+        if not botcom.channel_priv:
             targetchannels.append(botcom.channel_current)
         else:
             osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
@@ -2312,7 +2440,7 @@ def bot_nickcom_function_action(bot, botcom):
     targetchannels = []
     targetword = spicemanip(bot, botcom.triggerargsarray, 1)
     if targetword not in bot.memory["botdict"]["tempvals"]['channels_list'].keys() and targetword != 'all':
-        if botcom.channel_current.startswith('#'):
+        if not botcom.channel_priv:
             targetchannels.append(botcom.channel_current)
         else:
             osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
@@ -2344,7 +2472,7 @@ def bot_nickcom_function_notice(bot, botcom):
     targets = []
     targetword = spicemanip(bot, botcom.triggerargsarray, 1)
     if targetword not in bot.memory["botdict"]["tempvals"]['all_current_users'] and targetword != 'all':
-        if botcom.channel_current.startswith('#'):
+        if not botcom.channel_priv:
             targets.append(botcom.channel_current)
         else:
             osd(bot, botcom.instigator, 'notice', "You must specify a valid target.")
@@ -2393,7 +2521,7 @@ def bot_nickcom_function_channel(bot, botcom):
     # Channel
     targetchannels = []
     if botcom.triggerargsarray == []:
-        if botcom.channel_current.startswith('#'):
+        if not botcom.channel_priv:
             targetchannels.append(botcom.channel_current)
         else:
             osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
@@ -2633,7 +2761,7 @@ def bot_dictcom_process(bot, botcom):
     # Hardcoded commands Below
     if botcom.specified == 'enable':
 
-        if not botcom.channel_current.startswith('#'):
+        if botcom.channel_priv:
             return osd(bot, botcom.instigator, 'notice', "This command must be run in the channel you which to " + botcom.specified + " it in.")
 
         if botcom.maincom not in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
@@ -2666,7 +2794,7 @@ def bot_dictcom_process(bot, botcom):
 
     elif botcom.specified == 'disable':
 
-        if not botcom.channel_current.startswith('#'):
+        if botcom.channel_priv:
             return osd(bot, botcom.instigator, 'notice', "This command must be run in the channel you which to " + botcom.specified + " it in.")
 
         if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
@@ -2785,7 +2913,7 @@ def bot_dictcom_process(bot, botcom):
 
     botcom.target = False
 
-    if str(botcom.channel_current).startswith('#'):
+    if not botcom.channel_priv:
         if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
             reason = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]
             timestamp = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["timestamp"]
@@ -2793,12 +2921,12 @@ def bot_dictcom_process(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command was disabled by " + bywhom + " in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + str(reason))
 
     # hardcoded_channel_block
-    if str(botcom.channel_current).startswith('#'):
+    if not botcom.channel_priv:
         if str(botcom.channel_current) in botcom.dotcommand_dict["hardcoded_channel_block"]:
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command cannot be used in " + str(botcom.channel_current) + " because it is hardcoded not to.")
 
     # hardcoded_channel_block
-    if str(botcom.channel_current).startswith('#'):
+    if not botcom.channel_priv:
         if str(botcom.channel_current) in botcom.dotcommand_dict[botcom.responsekey]["hardcoded_channel_block"]:
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " command cannot be used in " + str(botcom.channel_current) + " because it is hardcoded not to.")
 
@@ -3387,7 +3515,7 @@ def nick_actual(bot, nick):
 
 def bot_random_valid_target(bot, botcom, outputtype):
     validtargs = []
-    if not botcom.channel_current.startswith('#'):
+    if botcom.channel_priv:
         validtargs.extend([str(bot.nick), botcom.instigator])
     else:
         for user in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
@@ -3472,12 +3600,12 @@ def bot_target_check(bot, botcom, target, targetbypass):
 
     # Private Message
     if "privmsg" not in targetbypass:
-        if not str(botcom.channel_current).startswith('#') and not bot_check_inlist(bot, target, botcom.instigator):
+        if botcom.channel_priv and not bot_check_inlist(bot, target, botcom.instigator):
             return {"targetgood": False, "error": "Leave " + nick_actual(bot, target) + " out of this private conversation!", "reason": "privmsg"}
 
     # not in the same channel
     if "diffchannel" not in targetbypass:
-        if str(botcom.channel_current).startswith('#') and bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
+        if not botcom.channel_priv and bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
             if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][str(botcom.channel_current)]['current_users']]:
                 return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.", "reason": "diffchannel"}
 

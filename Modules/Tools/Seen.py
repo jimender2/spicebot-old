@@ -80,19 +80,33 @@ def bot_module_prerun(bot, trigger):
     botcom.default = 'botcom'
 
     # what time was this triggered
-    if 'time' in trigger.tags:
-        botcom.timestart = trigger.tags['time']
-    else:
-        botcom.timestart = time.time()
+    botcom.timestart = trigger.time
 
     # default if module will run
     botcom.modulerun = True
 
     # instigator
     botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
 
     # channel
     botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        privstring = str("chan" + privtype.lower() + "s")
+        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        if botcom.instigator in eval(evalstring):
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
 
     # Bots can't run commands
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
@@ -132,7 +146,7 @@ def bot_module_prerun(bot, trigger):
     if botcom.specified == 'enable':
         botcom.modulerun = False
 
-        if not botcom.channel_current.startswith('#'):
+        if botcom.channel_priv:
             osd(bot, botcom.instigator, 'notice', "This command must be run in the channel you which to " + botcom.specified + " it in.")
             return botcom
 
@@ -170,7 +184,7 @@ def bot_module_prerun(bot, trigger):
     elif botcom.specified == 'disable':
         botcom.modulerun = False
 
-        if not botcom.channel_current.startswith('#'):
+        if botcom.channel_priv:
             osd(bot, botcom.instigator, 'notice', "This command must be run in the channel you which to " + botcom.specified + " it in.")
             return botcom
 
@@ -201,7 +215,7 @@ def bot_module_prerun(bot, trigger):
             osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
             return botcom
 
-        if str(botcom.channel_current).startswith('#'):
+        if not botcom.channel_priv:
             if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
                 reason = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]
                 timestamp = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["timestamp"]
