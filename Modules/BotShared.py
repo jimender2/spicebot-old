@@ -1561,7 +1561,7 @@ def bot_watch_all_run(bot, trigger):
     if len(currentnickrecord) > 10:
         del currentnickrecord[0]
 
-    set_nick_value(bot, botcom.instigator, 'list', currentnickrecord, 'temp', 'user_activity')
+    set_nick_value(bot, botcom.instigator, 'list', currentnickrecord, 'long', 'user_activity')
 
     bot.msg("#spicebottest", str(currentnickrecord))
 
