@@ -1727,10 +1727,14 @@ def bot_watch_all_run(bot, trigger):
 
     botcom.timestart = time.time()
 
+    spoken = spicemanip(bot, botcom.triggerargsarray, 0)
+    if 'all' not in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["auth_block"]:
+        spoken = "***********"
+
     usertalkdict = {
                     "server": str(bot.memory["botdict"]["tempvals"]['servername']),
                     "channel": botcom.channel_current,
-                    "spoken": spicemanip(bot, botcom.triggerargsarray, 0),
+                    "spoken": spoken,
                     "time": botcom.timestart,
                     "bot_eyes": str(bot.nick),
                     "intent": 'intent' in trigger.tags,
