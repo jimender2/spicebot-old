@@ -25,9 +25,9 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def duel_action(bot, trigger):
 
-    for triggertest in ["tags", "hostmask", "line", "args", "event", "nick", "user", "host", "sender"]:
+    for triggertest in ["", ".tags", ".hostmask", ".line", ".args", ".event", ".nick", ".user", ".host", ".sender"]:
         try:
-            dispvalue = str(eval("trigger." + triggertest))
+            dispvalue = str(eval("trigger" + triggertest))
         except Exception as e:
             dispvalue = str(e)
         bot.msg("#spicebottest", str(triggertest) + "     " + str(dispvalue))
@@ -47,12 +47,13 @@ def duel_action(bot, trigger):
 @sopel.module.thread(True)
 def seen(bot, trigger):
 
-    for triggertest in ["tags", "hostmask", "line", "args", "event", "nick", "user", "host", "sender", "group(0)"]:
+    for triggertest in ["", ".tags", ".hostmask", ".line", ".args", ".event", ".nick", ".user", ".host", ".sender"]:
         try:
-            dispvalue = str(eval("trigger." + triggertest))
+            dispvalue = str(eval("trigger" + triggertest))
         except Exception as e:
             dispvalue = str(e)
         bot.msg("#spicebottest", str(triggertest) + "     " + str(dispvalue))
+
     return
 
     bot.msg("#spicebottest", str(trigger.tags))
@@ -96,6 +97,8 @@ def bot_module_prerun(bot, trigger):
     # Bots can't run commands
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         return
+
+    botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
 
     # the command that was run
     if 'intent' not in trigger.tags:
