@@ -2012,21 +2012,22 @@ def bot_api_response_headers(bot, msg):
 
 def bot_api_get_users(bot):
     returninfo = {}
-    for host in bot.memory["sock_dict"].keys():
-        if host not in returninfo.keys():
-            returninfo[host] = dict()
-        for bots in bot.memory["sock_dict"][host].keys():
-            if bots not in returninfo[host].keys():
-                returninfo[host][bots] = dict()
-            returnedinfo = bot_api_fetch(bot, int(bot.memory["sock_dict"][host][bots]["port"]), str(bot.memory["sock_dict"][host][bots]["host"]))
-            if returnedinfo:
-                returninfo[host][bots]['all_current_users'] = returnedinfo["tempvals"]['all_current_users']
-                returninfo[host][bots]['users'] = returnedinfo['users']
-                returninfo[host][bots]['servername'] = returnedinfo["tempvals"]['servername']
-            else:
-                returninfo[host][bots]['all_current_users'] = []
-                returninfo[host][bots]['users'] = dict()
-                returninfo[host][bots]['servername'] = ''
+    if "sock_dict" in bot.memory:
+        for host in bot.memory["sock_dict"].keys():
+            if host not in returninfo.keys():
+                returninfo[host] = dict()
+            for bots in bot.memory["sock_dict"][host].keys():
+                if bots not in returninfo[host].keys():
+                    returninfo[host][bots] = dict()
+                returnedinfo = bot_api_fetch(bot, int(bot.memory["sock_dict"][host][bots]["port"]), str(bot.memory["sock_dict"][host][bots]["host"]))
+                if returnedinfo:
+                    returninfo[host][bots]['all_current_users'] = returnedinfo["tempvals"]['all_current_users']
+                    returninfo[host][bots]['users'] = returnedinfo['users']
+                    returninfo[host][bots]['servername'] = returnedinfo["tempvals"]['servername']
+                else:
+                    returninfo[host][bots]['all_current_users'] = []
+                    returninfo[host][bots]['users'] = dict()
+                    returninfo[host][bots]['servername'] = ''
     return returninfo
 
 
