@@ -23,7 +23,9 @@ sys.setdefaultencoding('utf-8')
 @rule('.*')
 @sopel.module.thread(True)
 @sopel.module.interval(1800)
-def watch_all_hub(bot):
+def watch_all_hub(bot, trigger):
+
+    # trigger.tags
 
     if "botdict_loaded" not in bot.memory:
         bot_saved_jobs_process(bot, trigger, 'bot_watch_all')

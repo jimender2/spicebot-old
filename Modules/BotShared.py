@@ -1553,6 +1553,7 @@ def bot_watch_all_run(bot, trigger):
                     "server": str(bot.memory["botdict"]["tempvals"]['servername']),
                     "channel": botcom.channel_current,
                     "spoken": spicemanip(bot, botcom.triggerargsarray, 0),
+                    "time": time.time(),
                     }
 
     currentnickrecord = get_nick_value(bot, botcom.instigator, 'list', 'long', 'user_activity') or []
