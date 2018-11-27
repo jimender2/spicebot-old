@@ -55,7 +55,6 @@ def seen(bot, trigger):
                     lastseen.append(lastseenrecord[-1])
 
     # other bots
-    """
     otherbots = bot_api_get_users(bot)
     otherbotmatchcur = []
     otherbotmatch = []
@@ -65,7 +64,7 @@ def seen(bot, trigger):
                 bot.memory["sock_bot_list"].append(str(bots))
             if bot_check_inlist(bot, posstarget, otherbots[host][bots]['users'].keys()):
                 otherbotmatch.append(nick_actual(bot, posstarget, otherbots[host][bots]['users'].keys()))
-                if bot_check_inlist(bot, target, otherbots[host][bots]['all_current_users']):
+                if bot_check_inlist(bot, posstarget, otherbots[host][bots]['all_current_users']):
                     otherbotmatchcur.append(nick_actual(bot, posstarget, otherbots[host][bots]['users'].keys()))
                 if str(posstarget) in otherbots[host][bots]["users"].keys():
                     if 'user_activity' in otherbots[host][bots]["users"][str(posstarget)].keys():
@@ -73,7 +72,6 @@ def seen(bot, trigger):
                             lastseenrecord = otherbots[host][bots]["users"][str(posstarget)]['user_activity']['list']
                             if lastseenrecord != []:
                                 lastseen.append(lastseenrecord[-1])
-                                """
 
     if lastseen == []:
         return osd(bot, botcom.channel_current, 'say', "Sorry, the network of SpiceBots have never seen " + str(posstarget) + " around.")
@@ -95,7 +93,7 @@ def seen(bot, trigger):
     else:
         posstarget = nick_actual(bot, posstarget, otherbotmatch)
 
-    if bot_check_inlist(bot, target, otherbots[host][bots]['all_current_users']) or bot_check_inlist(bot, target, otherbotmatchcur):
+    if bot_check_inlist(bot, posstarget, otherbots[host][bots]['all_current_users']) or bot_check_inlist(bot, posstarget, otherbotmatchcur):
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen by " + str(lastseenwinner["bot_eyes"]) + " on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + "at " + str(lastseenwinner["time"]) + " saying " + str(lastseenwinner["spoken"]))
     else:
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " was last seen at " + str(lastseenwinner["time"]) + "on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " by " + str(lastseenwinner["bot_eyes"]) + " saying " + str(lastseenwinner["spoken"]))
