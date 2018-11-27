@@ -25,8 +25,6 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.interval(1800)
 def watch_all_hub(bot, trigger):
 
-    # trigger.tags
-
     if "botdict_loaded" not in bot.memory:
         bot_saved_jobs_process(bot, trigger, 'bot_watch_all')
         return
