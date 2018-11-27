@@ -92,5 +92,3 @@ def seen(bot, trigger):
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen speaking on " + str(lastseenwinner["server"]) " in " + str(lastseenwinner["channel"]) + "at " + str(lastseenwinner["time"]) + " saying " + str(lastseenwinner["spoken"]))
     else:
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " was last seen at " + str(lastseenwinner["time"]) + "on " + str(lastseenwinner["server"]) " in " + str(lastseenwinner["channel"]) + " by " + str(lastseenwinner["bot_eyes"]) + " saying " + str(lastseenwinner["spoken"]))
-
-    # posstarget = nick_actual(bot, posstarget)
