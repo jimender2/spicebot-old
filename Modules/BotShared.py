@@ -3595,7 +3595,7 @@ def bot_target_check(bot, botcom, target, targetbypass):
         for bots in otherbots[host].keys():
             if bot_check_inlist(bot, target, otherbots[host][bots]['users'].keys()):
                 matchmade = {"bot": bots, "servername": otherbots[host][bots]["servername"]}
-                if bot_check_inlist(bot, target, otherbots[host][bots]['all_current_users'].keys()):
+                if bot_check_inlist(bot, target, otherbots[host][bots]['all_current_users']):
                     otherbotmatchcur.append(matchmade)
                 otherbotmatch.append(matchmade)
 
