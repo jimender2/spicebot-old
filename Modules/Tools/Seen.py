@@ -20,53 +20,23 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@module.rule('.*')
-@module.intent('ACTION')
-@sopel.module.thread(True)
-def duel_action(bot, trigger):
-
-    for triggertest in ["", ".sender", ".time", ".raw", ".is_privmsg", ".hostmask", ".user", ".nick", ".event", ".match", ".group(0)", ".groups", ".groupdict", ".args", ".tags", ".admin", ".owner", ".account"]:
-        try:
-            dispvalue = str(eval("trigger" + triggertest))
-        except Exception as e:
-            dispvalue = str(e)
-        bot.msg("#spicebottest", str(triggertest) + "     " + str(dispvalue))
-
-    return
-    if 'intent' in trigger.tags:
-        if trigger.tags['intent'] == 'ACTION':
-            maincom = str(trigger.group(0))
-        else:
-            maincom = str(trigger.group(0))
-    else:
-        maincom = str(trigger.group(0))
-    bot.msg("#spicebottest", str(maincom))
-
-
 @sopel.module.commands('seendev')
 @sopel.module.thread(True)
 def seen(bot, trigger):
 
-    # for triggertest in ["", "._callables['high']", "._callables['medium']", "._callables['low']", ".config", ".doc", "._command_groups", ".stats", ".times", ".server_capabilities", ".enabled_capabilities", "._cap_reqs", ".privileges", ".channels", ".users", ".db", ".shutdown_methods"]:
-    for triggertest in [".ops", ".halfplus", ".voices"]:
-        try:
-            dispvalue = str(eval("bot" + triggertest))
-        except Exception as e:
-            dispvalue = str(e)
-        bot.msg("#spicebottest", str(triggertest))
-        bot.msg("#spicebottest", "     " + str(dispvalue))
+    botcom = bot_module_prerun(bot, trigger)
+    if not botcom.modulerun:
+        return
 
-    return
-
-    # don't run jobs if not ready
-    while "botdict_loaded" not in bot.memory:
-        time.sleep(1)
-
-    return
-
-    nick = trigger.group(3)
-    if not nick:
+    posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
+    targetchecking = bot_target_check(bot, botcom, posstarget)
+    if not targetchecking["targetgood"]:
         osd(bot, trigger.sender, 'say', ".seen <nick> - Reports when <nick> was last seen.")
+        return
+        if targetchecking["reason"] == "diffbot":
+            test = True
+        else:
+            return osd(bot, trigger.sender, 'say', ".seen <nick> - Reports when <nick> was last seen.")
 
 
 def bot_module_prerun(bot, trigger):

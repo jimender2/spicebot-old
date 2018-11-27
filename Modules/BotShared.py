@@ -3518,14 +3518,18 @@ def is_port_in_use(port, host):
         return False
 
 
-def nick_actual(bot, nick):
+def nick_actual(bot, nick, altlist=None):
     nick_actual = nick
     if "botdict_loaded" not in bot.memory:
         for u in bot.users:
             if u.lower() == str(nick).lower():
                 nick_actual = u
         return nick_actual
-    for u in bot.memory["botdict"]["users"].keys():
+    if not altlist:
+        searchuserlist = bot.memory["botdict"]["users"].keys()
+    else:
+        searchuserlist = altlist
+    for u in searchuserlist:
         if u.lower() == str(nick).lower():
             nick_actual = u
     return nick_actual
@@ -3565,7 +3569,7 @@ def bot_check_inlist(bot, searchterm, searchlist):
         return False
 
 
-def bot_target_check(bot, botcom, target, targetbypass):
+def bot_target_check(bot, botcom, target, targetbypass=[]):
     targetgood = {"targetgood": True, "error": "None", "reason": None}
 
     if not isinstance(targetbypass, list):
@@ -3592,28 +3596,30 @@ def bot_target_check(bot, botcom, target, targetbypass):
     otherbots = bot_api_get_users(bot)
     otherbotmatch = []
     otherbotmatchcur = []
+    otherbotnickmatch = []
     for host in otherbots.keys():
         for bots in otherbots[host].keys():
             if bot_check_inlist(bot, target, otherbots[host][bots]['users'].keys()):
                 matchmade = {"bot": bots, "servername": otherbots[host][bots]["servername"]}
                 if bot_check_inlist(bot, target, otherbots[host][bots]['all_current_users']):
                     otherbotmatchcur.append(matchmade)
+                otherbotnickmatch.append(nick_actual(bot, target, otherbots[host][bots]['users'].keys()))
                 otherbotmatch.append(matchmade)
 
     # Not a valid user
     if "unknown" not in targetbypass:
         if not bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
-            if otherbotmatch != []:
+            if otherbotmatch != [] and "diffbot" not in targetbypass:
                 if otherbotmatchcur != []:
                     if otherbotmatchcur[0]["servername"] != bot.memory["botdict"]["tempvals"]['servername']:
-                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target) + " logged onto " + str(otherbotmatchcur[0]["servername"]) + " right now!", "reason": "diffbot"}
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged onto " + str(otherbotmatchcur[0]["servername"]) + " right now!", "reason": "diffbot"}
                     else:
-                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target) + " logged on right now!", "reason": "diffbot"}
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged on right now!", "reason": "diffbot"}
                 else:
                     if otherbotmatchcur[0]["servername"] != bot.memory["botdict"]["tempvals"]['servername']:
-                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " has a listing for " + nick_actual(bot, target) + " on " + str(otherbotmatchcur[0]["servername"]) + ", but they are offline at the moment!", "reason": "diffbot"}
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatch[0]["bot"]) + " has a listing for " + nick_actual(bot, target, otherbotnickmatch) + " on " + str(otherbotmatch[0]["servername"]) + ", but they are offline at the moment!", "reason": "diffbot"}
                     else:
-                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " has a listing for " + nick_actual(bot, target) + ", but they are offline at the moment!", "reason": "diffbot"}
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatch[0]["bot"]) + " has a listing for " + nick_actual(bot, target, otherbotnickmatch) + ", but they are offline at the moment!", "reason": "diffbot"}
             else:
                 sim_user, sim_num = [], []
                 for user in bot.memory["botdict"]["users"].keys():
@@ -3638,7 +3644,14 @@ def bot_target_check(bot, botcom, target, targetbypass):
     # User offline
     if "offline" not in targetbypass:
         if not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
-            return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is offline right now!", "reason": "offline"}
+            if otherbotmatch != [] and "diffbot" not in targetbypass:
+                if otherbotmatchcur != []:
+                    if otherbotmatchcur[0]["servername"] != bot.memory["botdict"]["tempvals"]['servername']:
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged onto " + str(otherbotmatchcur[0]["servername"]) + " right now!", "reason": "diffbot"}
+                    else:
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged on right now!", "reason": "diffbot"}
+            else:
+                return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is offline right now!", "reason": "offline"}
 
     # Private Message
     if "privmsg" not in targetbypass:
