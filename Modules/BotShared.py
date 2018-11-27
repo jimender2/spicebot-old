@@ -2741,6 +2741,7 @@ def bot_module_prerun(bot, trigger):
 
     # the command that was run
     botcom.maincom = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
+    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', "list")
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = []
