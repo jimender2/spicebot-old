@@ -3650,6 +3650,30 @@ Small Functions
 """
 
 
+def humanized_time(countdownseconds):
+    time = float(countdownseconds)
+    year = time // (365 * 24 * 3600)
+    time = time % (365 * 24 * 3600)
+    day = time // (24 * 3600)
+    time = time % (24 * 3600)
+    time = time % (24 * 3600)
+    hour = time // 3600
+    time %= 3600
+    minute = time // 60
+    time %= 60
+    second = time
+    displaymsg = ''
+    timearray = ['year', 'day', 'hour', 'minute', 'second']
+    for x in timearray:
+        currenttimevar = eval(x)
+        if currenttimevar >= 1:
+            timetype = x
+            if currenttimevar > 1:
+                timetype = str(x+"s")
+            displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype + " ")
+    return displaymsg
+
+
 def find_used_port_in_range(bot, rangestart, rangeend, host):
     returnlist = []
     for i in range(rangestart, rangeend + 1):

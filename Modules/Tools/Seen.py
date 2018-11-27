@@ -93,10 +93,9 @@ def seen(bot, trigger):
     else:
         posstarget = nick_actual(bot, posstarget, otherbotmatch)
 
-    lastseenwinner["time"] = datetime.datetime.fromtimestamp(float(lastseenwinner["time"]))
-    lastseenwinner["time"] = lastseenwinner["time"].strftime('%Y-%m-%d %H:%M:%S')
+    howlongago = humanized_time(time.time() - lastseenwinner["time"])
 
     if bot_check_inlist(bot, posstarget, otherbots[host][bots]['all_current_users']) or bot_check_inlist(bot, posstarget, otherbotmatchcur):
-        osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen by " + str(lastseenwinner["bot_eyes"]) + " on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " at " + str(lastseenwinner["time"]) + " saying " + str(lastseenwinner["spoken"]))
+        osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen " + str(howlongago) + " by " + str(lastseenwinner["bot_eyes"]) + " on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " saying " + str(lastseenwinner["spoken"]))
     else:
-        osd(bot, botcom.channel_current, 'say', str(posstarget) + " was last seen at " + str(lastseenwinner["time"]) + "on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " by " + str(lastseenwinner["bot_eyes"]) + " saying " + str(lastseenwinner["spoken"]))
+        osd(bot, botcom.channel_current, 'say', str(posstarget) + " was last seen " + str(howlongago) + " ago on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " by " + str(lastseenwinner["bot_eyes"]) + " saying " + str(lastseenwinner["spoken"]))
