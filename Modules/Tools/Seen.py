@@ -20,7 +20,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@sopel.module.commands('seendev')
+@sopel.module.commands('seen')
 @sopel.module.thread(True)
 def seen(bot, trigger):
 
