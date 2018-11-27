@@ -101,7 +101,7 @@ def bot_module_prerun(bot, trigger):
     # channel creds
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
-        evalstring = str('bot.memory["botdict"]["tempvals"]["channels_list"[' + botcom.channel_current + '][' + privstring + ']')
+        evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
         if botcom.instigator in eval(evalstring):
             createuserdict = str("botcom." + privtype + " = True")
         else:
