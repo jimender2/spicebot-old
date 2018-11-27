@@ -24,7 +24,8 @@ sys.setdefaultencoding('utf-8')
 @module.intent('ACTION')
 @sopel.module.thread(True)
 def duel_action(bot, trigger):
-    # the command that was run
+
+    bot.msg("#spicebottest", str(trigger.tags))
     if 'intent' not in trigger.tags:
         maincom = str(trigger.group(0))
     else:
