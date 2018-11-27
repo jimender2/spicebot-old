@@ -47,7 +47,8 @@ def duel_action(bot, trigger):
 @sopel.module.thread(True)
 def seen(bot, trigger):
 
-    for triggertest in ["", "._callables['high']", "._callables['medium']", "._callables['low']", ".config", ".doc", "._command_groups", ".stats", ".times", ".server_capabilities", ".enabled_capabilities", "._cap_reqs", ".privileges", ".channels", ".users", ".db", ".shutdown_methods"]:
+    # for triggertest in ["", "._callables['high']", "._callables['medium']", "._callables['low']", ".config", ".doc", "._command_groups", ".stats", ".times", ".server_capabilities", ".enabled_capabilities", "._cap_reqs", ".privileges", ".channels", ".users", ".db", ".shutdown_methods"]:
+    for triggertest in [".ops", ".halfplus", ".voices"]:
         try:
             dispvalue = str(eval("bot" + triggertest))
         except Exception as e:
