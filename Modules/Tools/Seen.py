@@ -26,7 +26,10 @@ sys.setdefaultencoding('utf-8')
 def duel_action(bot, trigger):
 
     for triggertest in ["tags", "hostmask", "line", "args", "event", "nick", "user", "host", "sender"]:
-        dispvalue = str(eval("trigger." + triggertest))
+        try:
+            dispvalue = str(eval("trigger." + triggertest))
+        except Exception as e:
+            dispvalue = str(e)
         bot.msg("#spicebottest", str(triggertest) + "     " + str(dispvalue))
 
     return
