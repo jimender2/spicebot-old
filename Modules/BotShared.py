@@ -3652,6 +3652,8 @@ Small Functions
 
 
 def humanized_time(countdownseconds):
+    if countdownseconds == 0:
+        return "just now"
     time = float(countdownseconds)
     year = time // (365 * 24 * 3600)
     time = time % (365 * 24 * 3600)
