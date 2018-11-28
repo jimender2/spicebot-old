@@ -24,10 +24,6 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def seen(bot, trigger):
 
-    bot.msg("#spicebottest", str(bot.privileges))
-
-    return
-
     while 'botdict_loaded' not in bot.memory:
         time.sleep(1)
 
