@@ -272,13 +272,11 @@ Bot Startup
 # order of operations for startup
 def botdict_open(bot):
 
-    if "botdict_loaded" in bot.memory:
-        return
+    # Open botdict
+    botdict_setup_open(bot)
 
-    bot.memory["botdict"] = botdict_setup_open(bot)
-
-    if not bot.memory["botdict"]["tempvals"]["uptime"]:
-        bot.memory["botdict"]["tempvals"]["uptime"] = datetime.datetime.utcnow()
+    # Bot startup time
+    botdict_setup_uptime(bot)
 
     # load external config file
     botdict_setup_external_config(bot)
@@ -318,19 +316,23 @@ def botdict_open(bot):
 # open dictionary, and import saved values from database
 def botdict_setup_open(bot):
 
+    # if existing in memory, save, and then close and reopen
+    if "botdict" in bot.memory:
+        botdict_save(bot)
+        del bot.memory["botdict"]
+
     # open global dict
     global bot_dict
     botdict = bot_dict
 
-    # don't pull from database if already open
-    if not botdict["tempvals"]["dict_loaded"]:
-        opendict = botdict.copy()
-        dbbotdict = get_database_value(bot, bot.nick, 'bot_dict') or dict()
-        # dbbotdict = json.loads(dbbotdict, object_hook=json_util.object_hook)
-        opendict = merge_botdict(opendict, dbbotdict)
-        botdict.update(opendict)
-        botdict["tempvals"]['dict_loaded'] = True
-    return botdict
+    # pull from database and merge, some content is static
+    opendict = botdict.copy()
+    dbbotdict = get_database_value(bot, bot.nick, 'bot_dict') or dict()
+    opendict = merge_botdict(opendict, dbbotdict)
+    botdict.update(opendict)
+
+    # done loading
+    bot.memory["botdict"] = botdict
 
 
 # Merge database dict with stock
@@ -351,33 +353,57 @@ def merge_botdict(a, b, path=None):
     return a
 
 
+def botdict_setup_uptime(bot):
+
+    if "botdict" not in bot.memory:
+        botdict_setup_open(bot)
+
+    if "tempvals" not in bot.memory["botdict"].keys():
+        bot.memory["botdict"]["tempvals"] = dict()
+
+    if "uptime" not in bot.memory["botdict"]["tempvals"].keys():
+        bot.memory["botdict"]["tempvals"]["uptime"] = None
+
+    bot.memory["botdict"]["tempvals"]["uptime"] = datetime.datetime.utcnow()
+
+
 # externally stored config
 def botdict_setup_external_config(bot):
 
-    # Don't load commands if already loaded
-    if bot.memory["botdict"]["tempvals"]['ext_conf'] != dict():
-        return
+    if "botdict" not in bot.memory:
+        botdict_setup_open(bot)
+
+    if "tempvals" not in bot.memory["botdict"].keys():
+        bot.memory["botdict"]["tempvals"] = dict()
+
+    if "ext_conf" not in bot.memory["botdict"]["tempvals"]:
+        bot.memory["botdict"]["tempvals"]["ext_conf"] = dict()
 
     # Loop through external config file
     config = ConfigParser.ConfigParser()
     config.read("/home/spicebot/spicebot.conf")
     for each_section in config.sections():
 
-        if each_section not in bot.memory["botdict"]["tempvals"]['ext_conf'].keys():
-            bot.memory["botdict"]["tempvals"]['ext_conf'][each_section] = dict()
+        bot.memory["botdict"]["tempvals"]['ext_conf'][each_section] = dict()
 
         for (each_key, each_val) in config.items(each_section):
 
-            if each_key not in bot.memory["botdict"]["tempvals"]['ext_conf'][each_section].keys():
-                bot.memory["botdict"]["tempvals"]['ext_conf'][each_section][each_key] = each_val
+            bot.memory["botdict"]["tempvals"]['ext_conf'][each_section][each_key] = each_val
 
 
 # gif searching api
 def botdict_setup_gif_api_access(bot):
 
-    # Don't load commands if already loaded
-    if bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'] != dict():
-        return
+    if "botdict" not in bot.memory:
+        botdict_setup_open(bot)
+
+    if "tempvals" not in bot.memory["botdict"].keys():
+        bot.memory["botdict"]["tempvals"] = dict()
+
+    if "ext_conf" not in bot.memory["botdict"]["tempvals"]:
+        bot.memory["botdict"]["tempvals"]["ext_conf"] = dict()
+
+    bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'] = dict()
 
     valid_gif_api_dict = {
                             "giphy": {
@@ -387,7 +413,6 @@ def botdict_setup_gif_api_access(bot):
                                         "id": None,
                                         "api_id": None,
                                         "key": "&api_key=",
-                                        "apikey": bot.memory["botdict"]["tempvals"]['ext_conf']["giphy"]["apikey"],
                                         "nsfw": None,
                                         "sfw": 'rating=R',
                                         "results": 'data',
@@ -400,7 +425,6 @@ def botdict_setup_gif_api_access(bot):
                                         "id": None,
                                         "api_id": None,
                                         "key": "&key=",
-                                        "apikey": bot.memory["botdict"]["tempvals"]['ext_conf']["tenor"]["apikey"],
                                         "nsfw": '&contentfilter=off',
                                         "sfw": '&contentfilter=low',
                                         "results": 'results',
@@ -413,7 +437,6 @@ def botdict_setup_gif_api_access(bot):
                                         "id": None,
                                         "api_id": None,
                                         "key": None,
-                                        "apikey": None,
                                         "nsfw": '&nsfw=3',
                                         "sfw": '&nsfw=1',
                                         "results": 'gfycats',
@@ -426,14 +449,28 @@ def botdict_setup_gif_api_access(bot):
                                         "id": None,
                                         "api_id": None,
                                         "key": "&key=",
-                                        "apikey": 'rX7kbMzkGu7WJwvG',
                                         "nsfw": '&sfw=false',
                                         "sfw": '&sfw=true',
                                         "results": 'data',
                                         "cururl": 'link',
                                         },
                             }
-    bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'] = valid_gif_api_dict
+
+    apikeys = {}
+    for gif_api in valid_gif_api_dict.keys():
+        if gif_api not in bot.memory["botdict"]["tempvals"]['ext_conf'].keys():
+            bot.memory["botdict"]["tempvals"]['ext_conf'][gif_api] = dict()
+        if gif_api not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
+            bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][gif_api] = dict()
+        for gif_key_part in valid_gif_api_dict[gif_api].keys():
+            if gif_key_part not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][gif_api].keys():
+                bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][gif_api][gif_key_part] = valid_gif_api_dict[gif_api][gif_key_part]
+
+        if "apikey" not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][gif_api].keys():
+            if "apikey" in bot.memory["botdict"]["tempvals"]['ext_conf'][gif_api]:
+                bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][gif_api]["apikey"] = bot.memory["botdict"]["tempvals"]['ext_conf'][gif_api]["apikey"]
+            else:
+                bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][gif_api]["apikey"] = None
 
 
 # servername
@@ -954,10 +991,6 @@ def bot_setup_privacy_sweep(bot):
 
 # This is how the dict is saved to the database
 def botdict_save(bot):
-    # botdict_open(bot)
-
-    # copy dict to not overwrite
-    # savedict = bot.memory["botdict"].copy()
     savedict = copy.deepcopy(bot.memory["botdict"])
 
     # Values to not save to database
@@ -965,9 +998,6 @@ def botdict_save(bot):
     for dontsave in savedict_del:
         if dontsave in savedict.keys():
             del savedict[dontsave]
-
-    # serialize
-    # savedict = json.dumps(savedict, default=json_util.default).encode('utf-8')
 
     # save to database
     set_database_value(bot, bot.nick, 'bot_dict', savedict)
