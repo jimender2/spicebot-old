@@ -435,7 +435,8 @@ def botdict_setup_query_apis(bot):
                         bot.memory["sock_bot_list"].append(str(botname))
 
     for bothost in bot.memory["botdict"]["tempvals"]["api_query"].keys():
-        bot.msg("#spicebottest", str(bothost))
+        for botname in bot.memory["botdict"]["tempvals"]["api_query"][bothost].keys():
+            bot.msg("#spicebottest", str(bothost) + " " + str(botname))
 
 
 # externally stored config
