@@ -1968,7 +1968,7 @@ def bot_watch_dot_run(bot, trigger):
 
 
 # possible ! commands,,, using for testing
-def bot_watch_exclamation(bot, trigger):
+def bot_watch_dot_run(bot, trigger):
 
     if not str(trigger).startswith(tuple(['!'])):
         return
@@ -2010,45 +2010,16 @@ def bot_watch_exclamation(bot, trigger):
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         return
 
-    if str(botcom.instigator) != 'deathbybandaid':
-        return
-
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
 
     # command issued, check if valid
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-    if botcom.dotcommand not in ["apitest"]:
-        return
+    if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys() and botcom.dotcommand not in bot.memory['botdict']['tempvals']['module_commands'].keys():
+        bot_dictcom_handle(bot, botcom)
 
-    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, "2+")
-
-    subcommand = spicemanip(bot, botcom.triggerargsarray, 1) or None
-    validsubs = ['send', 'get']
-    if not subcommand or subcommand not in validsubs:
-        osd(bot, botcom.channel_current, 'say', "need a valid subcommand: " + str(spicemanip(bot, validsubs, 'andlist')))
-        return
-
-    osd(bot, botcom.channel_current, 'say', "API Testing " + subcommand)
-
-    if "sock_dict" in bot.memory:
-        osd(bot, botcom.channel_current, 'say', str(bot.memory["sock_dict"]))
-
-    if bot.nick == "SpiceBotdev":
-        port = 8000
-    elif bot.nick == "SpiceBot":
-        port = 8001
-
-    if subcommand == 'send':
-        messagedict = {"type": "command", "command": "update"}
-        bot_api_send(bot, int(port), messagedict, "0.0.0.0")
-    elif subcommand == 'get':
-        botdict_return = bot_api_fetch(bot, int(port), "0.0.0.0")
-        if botdict_return:
-            osd(bot, botcom.channel_current, 'say', "botmem " + str(bot.memory["botdict"]["tempvals"]["uptime"]))
-            osd(bot, botcom.channel_current, 'say', "botapi " + str(botdict_return["tempvals"]["uptime"]))
-        else:
-            osd(bot, botcom.channel_current, 'say', "botapi failed to connect")
+        # save dictionary now
+        botdict_save(bot)
 
 
 """
