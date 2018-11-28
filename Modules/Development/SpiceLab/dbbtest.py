@@ -20,7 +20,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@sopel.module.commands('dbbtest', 'dbbtesta')
+@sopel.module.commands('dbbtest')
 def mainfunction(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)

@@ -761,9 +761,10 @@ def modules_command_listing(bot):
     for modules in bot.command_groups.items():
         modulecount += 1
         filename = modules[0]
-        validcoms = modules[1]
-        for com in validcoms:
-            bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
+        if filename not in ["coretasks"]:
+            validcoms = modules[1]
+            for com in validcoms:
+                bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
     bot.memory["botdict"]["tempvals"]['module_count'] = modulecount
 
 
