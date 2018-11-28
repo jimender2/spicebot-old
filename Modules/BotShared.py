@@ -2986,8 +2986,8 @@ def bot_module_prerun(bot, trigger):
     validspecifides = []
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
-    bot.msg("#spicebottest", str(argone))
     if str(argone).startswith("--") and len(str(argone)) > 2:
+        bot.msg("#spicebottest", str(argone))
         if str(argone[2:]).isdigit() or str(argone[2:]) in validspecifides:
             botcom.specified = argone[2:]
         else:
@@ -2997,8 +2997,6 @@ def bot_module_prerun(bot, trigger):
                 botcom.specified = None
         if botcom.specified:
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-    bot.msg("#spicebottest", str(botcom.specified))
-    bot.msg("#spicebottest", str(botcom.triggerargsarray))
 
     if botcom.specified:
         if str(botcom.specified).isdigit():
