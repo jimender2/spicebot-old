@@ -41,10 +41,12 @@ def real_startup(bot, trigger):
 
     # dict commands
     availablecomsnum += len(bot.memory["botdict"]["tempvals"]['dict_commands'].keys())
+    bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['dict_commands'].keys()))
     availablecomsfiles += bot.memory["botdict"]["tempvals"]['dict_module_count']
 
     # Module Commands
     availablecomsnum += len(bot.memory["botdict"]["tempvals"]['module_commands'].keys())
+    bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['module_commands'].keys()))
     availablecomsfiles += bot.memory["botdict"]["tempvals"]['module_count']
 
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " modules.")

@@ -762,7 +762,6 @@ def modules_command_listing(bot):
         modulecount += 1
         filename = modules[0]
         if filename not in ["coretasks"]:
-            bot.msg("#spicebottest", str(filename))
             validcoms = modules[1]
             for com in validcoms:
                 bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
