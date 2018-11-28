@@ -37,6 +37,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
-    # bot.msg("#spicebottest", str(bot.privileges))
-    for botname in bot.privileges.keys():
-        bot.msg("#spicebottest", str(botname))
+    bot.msg("#spicebottest", "test complete")
