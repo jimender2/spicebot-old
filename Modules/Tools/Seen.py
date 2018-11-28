@@ -101,7 +101,7 @@ def seen(bot, trigger):
             if lastseenwinner["intent"]:
                 intent = 'doing'
 
-    if bot_check_inlist(bot, posstarget, otherbots[host][bots]['all_current_users']) or bot_check_inlist(bot, posstarget, otherbotmatchcur):
+    if bot_check_inlist(bot, posstarget, bot.memory["botdict"]["tempvals"]['all_current_users']) or bot_check_inlist(bot, posstarget, otherbotmatchcur):
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen " + str(howlongago).strip() + " ago by " + str(lastseenwinner["bot_eyes"]) + " on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " " + intent + " " + str(lastseenwinner["spoken"]))
     else:
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " was last seen " + str(howlongago).strip() + " ago on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " by " + str(lastseenwinner["bot_eyes"]) + " " + intent + " " + str(lastseenwinner["spoken"]))
