@@ -759,9 +759,9 @@ def bot_read_txt_files(bot):
 def modules_command_listing(bot):
     modulecount = 0
     for modules in bot.command_groups.items():
-        modulecount += 1
         filename = modules[0]
         if filename not in ["coretasks"]:
+            modulecount += 1
             validcoms = modules[1]
             for com in validcoms:
                 bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
