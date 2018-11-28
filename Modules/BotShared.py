@@ -2996,6 +2996,8 @@ def bot_module_prerun(bot, trigger):
                 botcom.specified = None
         if botcom.specified:
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+    bot.msg("#spicebottest", str(botcom.specified))
+    bot.msg("#spicebottest", str(botcom.triggerargsarray))
 
     if botcom.specified:
         if str(botcom.specified).isdigit():
