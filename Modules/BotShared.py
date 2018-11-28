@@ -421,7 +421,10 @@ def botdict_setup_query_apis(bot):
                 except Exception as e:
                     apiquery = dict()
                 if apiquery != {}:
-                    botname = apiquery["tempvals"]["bot_info"]["nick"]
+                    try:
+                        botname = apiquery["tempvals"]["bot_info"]["nick"]
+                    except Exception as e:
+                        break
                     if botname not in bot.memory["botdict"]["tempvals"]["api_query"][host].keys():
                         bot.memory["botdict"]["tempvals"]["api_query"][host][botname] = apiquery
                     if str(botname) not in bot.memory["sock_dict"][str(host)].keys():
