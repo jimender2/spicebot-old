@@ -3519,7 +3519,10 @@ def bot_dictcom_reply_shared(bot, botcom):
 
             # random user
             if "$randuser" in rply:
-                randuser = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
+                if not botcom.channel_priv:
+                    randuser = spicemanip(bot, bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users'], 'random')
+                else:
+                    randuser = botcom.instigator
                 rply = rply.replace("$randuser", randuser)
 
             # current channel
