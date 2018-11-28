@@ -323,9 +323,9 @@ def botdict_open(bot):
 def botdict_setup_open(bot):
 
     # if existing in memory, save, and then close and reopen
-    # if "botdict" in bot.memory:
-    #    botdict_save(bot)
-    #    del bot.memory["botdict"]
+    if "botdict" in bot.memory:
+        botdict_save(bot)
+        del bot.memory["botdict"]
 
     # open global dict
     global bot_dict
@@ -383,7 +383,7 @@ def botdict_setup_bot_info(bot):
 
     bot.memory["botdict"]["tempvals"]["bot_info"] = dict()
 
-    for botinf in ["nick", "config", "server_capabilities", "enabled_capabilities"]:
+    for botinf in ["nick"]:
         try:
             stringeval = eval("bot." + botinf)
         except Exception as e:
