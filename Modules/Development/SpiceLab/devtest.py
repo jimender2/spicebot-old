@@ -21,8 +21,21 @@ sys.setdefaultencoding('utf-8')
 
 
 @sopel.module.commands('devtest')
-@sopel.module.thread(True)
-def seen(bot, trigger):
+def mainfunction(bot, trigger):
+
+    botcom = bot_module_prerun(bot, trigger)
+    if not botcom.modulerun:
+        return
+    # IF "&&" is in the full input, it is treated as multiple commands, and is split
+    commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+    if commands_array == []:
+        commands_array = [[]]
+    for command_split_partial in commands_array:
+        botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+        execute_main(bot, trigger, botcom)
+
+
+def execute_main(bot, trigger, botcom):
 
     # bot.msg("#spicebottest", str(bot.privileges))
     for botname in bot.privileges.keys():
