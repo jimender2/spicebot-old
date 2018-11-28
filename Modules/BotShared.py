@@ -693,6 +693,7 @@ def botdict_setup_users(bot):
 
         userprivdict = dict()
         for user in bot.privileges[channelcheck].keys():
+            user = str(user)
             if user not in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'] and user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
                 bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users'].append(str(user))
             try:
@@ -1145,7 +1146,8 @@ def bot_nickcom_run(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
@@ -1288,7 +1290,8 @@ def bot_watch_part_run(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
@@ -1358,7 +1361,8 @@ def bot_watch_kick_run(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
@@ -1431,7 +1435,8 @@ def bot_watch_nick_run(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
@@ -1518,7 +1523,8 @@ def bot_watch_quit_run(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
@@ -1576,7 +1582,8 @@ def bot_watch_join_run(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
@@ -1674,7 +1681,8 @@ def bot_watch_mode_run(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
@@ -1769,7 +1777,8 @@ def bot_dictquery_run(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
@@ -1877,7 +1886,8 @@ def bot_watch_all_run(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
@@ -1945,7 +1955,8 @@ def bot_watch_dot_run(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
@@ -2000,7 +2011,8 @@ def bot_watch_exclamation(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
@@ -2054,7 +2066,8 @@ def bot_watch_exclamation_old(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
@@ -2965,7 +2978,8 @@ def bot_module_prerun(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         privstring = str("chan" + privtype.lower() + "s")
         evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-        if botcom.instigator in eval(evalstring):
+        grouplist = eval(evalstring)
+        if botcom.instigator in grouplist:
             createuserdict = str("botcom." + privtype + " = True")
         else:
             createuserdict = str("botcom." + privtype + " = False")
