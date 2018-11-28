@@ -591,6 +591,17 @@ def botdict_setup_server(bot):
     if server not in bot.memory["botdict"]['servers_list'].keys():
         bot.memory["botdict"]['servers_list'][server] = dict()
 
+    for host in bot.memory["botdict"]["tempvals"]["api_query"]:
+        for bots in bot.memory["botdict"]["tempvals"]["api_query"][host]:
+            botserver = bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["tempvals"]['server']
+
+            # permanent listing of the server
+            if botserver not in bot.memory["botdict"]['servers_list'].keys():
+                bot.memory["botdict"]['servers_list'][botserver] = dict()
+
+            if botserver not in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
+                bot.memory["botdict"]["tempvals"]["servers_list"][botserver] = dict()
+
 
 # create listing for channels the bot is in
 def botdict_setup_channels(bot):
@@ -601,20 +612,66 @@ def botdict_setup_channels(bot):
     if "tempvals" not in bot.memory["botdict"].keys():
         bot.memory["botdict"]["tempvals"] = dict()
 
-    if "servers_list" not in bot.memory["botdict"].keys():
+    if "servers_list" not in bot.memory["botdict"].keys() or "servers_list" not in bot.memory["botdict"]["tempvals"].keys():
         botdict_setup_server(bot)
+
+    currentservername = bot.memory["botdict"]["tempvals"]['server']
 
     for servername in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
 
         if "channels_list" not in bot.memory["botdict"]["tempvals"]["servers_list"][servername].keys():
             bot.memory["botdict"]["tempvals"]["servers_list"][servername]["channels_list"] = dict()
 
-        for channel in bot.privileges.keys():
-            channel = str(channel)
+        if "channels_list" not in bot.memory["botdict"]["servers_list"][servername].keys():
+            bot.memory["botdict"]["servers_list"][servername]["channels_list"] = dict()
 
-            # curent channels
-            if channel not in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
-                bot.memory["botdict"]["tempvals"]['channels_list'][channel] = dict()
+    for channel in bot.privileges.keys():
+        channel = str(channel)
+
+        # permanent listing of the channel
+        if channel not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][channel] = dict()
+
+        # curent channels
+        if channel not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][channel] = dict()
+
+        # disabled commands per channel
+        if "disabled_commands" not in bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][channel].keys():
+            bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][channel]["disabled_commands"] = {}
+
+        # authorized user groups for channels
+        if "auth_block" not in bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][channel].keys():
+            bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][channel]["auth_block"] = []
+        if bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][channel]["auth_block"] == []:
+            bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][channel]["auth_block"].append("all")
+
+    for host in bot.memory["botdict"]["tempvals"]["api_query"]:
+        for bots in bot.memory["botdict"]["tempvals"]["api_query"][host]:
+            botserver = bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["tempvals"]['server']
+            for channel in bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["tempvals"]['servers_list'][botserver]["channels_list"].keys():
+
+                # permanent listing of the channel
+                if channel not in bot.memory["botdict"]['servers_list'][botserver]["channels_list"].keys():
+                    bot.memory["botdict"]['servers_list'][botserver]["channels_list"][channel] = dict()
+
+                # curent channels
+                if channel not in bot.memory["botdict"]["tempvals"]["servers_list"][botserver]["channels_list"].keys():
+                    bot.memory["botdict"]["tempvals"]["servers_list"][botserver]["channels_list"][channel] = dict()
+
+                # disabled commands per channel
+                if "disabled_commands" not in bot.memory["botdict"]["servers_list"][botserver]['channels_list'][channel].keys():
+                    bot.memory["botdict"]["servers_list"][botserver]['channels_list'][channel]["disabled_commands"] = {}
+                if "disabled_commands" in bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["tempvals"]['servers_list'][botserver]["channels_list"][channel].keys():
+                    bot.memory["botdict"]["servers_list"][botserver]['channels_list'][channel]["disabled_commands"] = bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["tempvals"]['servers_list'][botserver]["channels_list"][channel]["disabled_commands"]
+
+                # authorized user groups for channels
+                if "auth_block" not in bot.memory["botdict"]["servers_list"][botserver]['channels_list'][channel].keys():
+                    bot.memory["botdict"]["servers_list"][botserver]['channels_list'][channel]["auth_block"] = []
+                if "auth_block" in bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["tempvals"]['servers_list'][botserver]["channels_list"][channel].keys():
+                    bot.memory["botdict"]["servers_list"][botserver]['channels_list'][channel]["auth_block"] = bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["tempvals"]['servers_list'][botserver]["channels_list"][channel]["auth_block"]
+                if bot.memory["botdict"]["servers_list"][botserver]['channels_list'][channel]["auth_block"] == []:
+                    bot.memory["botdict"]["servers_list"][botserver]['channels_list'][channel]["auth_block"].append("all")
 
     # All channels the bot is in
     for channel in bot.privileges.keys():
