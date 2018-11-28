@@ -24,4 +24,6 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def seen(bot, trigger):
 
-    bot.msg("#spicebottest", str(bot.privileges))
+    # bot.msg("#spicebottest", str(bot.privileges))
+    for botname in bot.privileges.keys():
+        bot.msg("#spicebottest", str(botname))
