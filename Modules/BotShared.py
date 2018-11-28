@@ -482,6 +482,7 @@ def botdict_setup_server(bot):
         bot.memory["botdict"]["tempvals"] = dict()
 
     bot.memory["botdict"]["tempvals"]['servername'] = "irc"
+    bot.memory["botdict"]["tempvals"]["servers_list"] = dict()
 
     # if host is set in the config without a bouncer, uncomment the next two lines:
     # bot.memory["botdict"]["tempvals"]['server'] = bot.config.core.host
