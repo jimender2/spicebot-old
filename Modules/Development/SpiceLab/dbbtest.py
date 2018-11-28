@@ -19,17 +19,20 @@ import collections
 
 @sopel.module.commands('dbbtest', 'dbbtesta')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+
+    botcom = bot_module_prerun(bot, trigger)
+    if not botcom.modulerun:
+        return
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
-    commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+    commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
     if commands_array == []:
         commands_array = [[]]
     for command_split_partial in commands_array:
-        triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
-        execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
+        botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+        execute_main(bot, trigger, botcom)
 
 
-def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+def execute_main(bot, trigger, botcom):
     osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")
 
     bot_visible_coms = []
