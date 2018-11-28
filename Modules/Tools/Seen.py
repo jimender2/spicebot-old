@@ -24,6 +24,10 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def seen(bot, trigger):
 
+    bot.msg("#spicebottest", str(bot.privileges))
+
+    return
+
     while 'botdict_loaded' not in bot.memory:
         time.sleep(1)
 
@@ -99,7 +103,7 @@ def seen(bot, trigger):
     if "intent" in lastseenwinner.keys():
         if lastseenwinner["intent"]:
             if lastseenwinner["intent"]:
-                intent = 'doing'
+                intent = "doing /me"
 
     if bot_check_inlist(bot, posstarget, bot.memory["botdict"]["tempvals"]['all_current_users']) or bot_check_inlist(bot, posstarget, otherbotmatchcur):
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen " + str(howlongago).strip() + " ago by " + str(lastseenwinner["bot_eyes"]) + " on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " " + intent + " " + str(lastseenwinner["spoken"]))

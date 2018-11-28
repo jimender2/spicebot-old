@@ -456,7 +456,6 @@ def botdict_setup_gif_api_access(bot):
                                         },
                             }
 
-    apikeys = {}
     for gif_api in valid_gif_api_dict.keys():
         if gif_api not in bot.memory["botdict"]["tempvals"]['ext_conf'].keys():
             bot.memory["botdict"]["tempvals"]['ext_conf'][gif_api] = dict()
@@ -476,6 +475,14 @@ def botdict_setup_gif_api_access(bot):
 # servername
 def botdict_setup_server(bot):
 
+    if "botdict" not in bot.memory:
+        botdict_setup_open(bot)
+
+    if "tempvals" not in bot.memory["botdict"].keys():
+        bot.memory["botdict"]["tempvals"] = dict()
+
+    bot.memory["botdict"]["tempvals"]['servername'] = "irc"
+
     # if host is set in the config without a bouncer, uncomment the next two lines:
     # bot.memory["botdict"]["tempvals"]['server'] = bot.config.core.host
     # return
@@ -483,31 +490,47 @@ def botdict_setup_server(bot):
     # The server the bot is connected to. Sopel limit is one
     # this detects the use of an IRC bouncer like ZNC
     # This is a custom function for this bot's connection
-    if not bot.memory["botdict"]["tempvals"]['server']:
-        if ipv4detect(bot, bot.config.core.host):
+
+    if ipv4detect(bot, bot.config.core.host):
+        try:
             servername = str(bot.config.core.user.split("/", 1)[1])
             if servername == 'SpiceBot':
-                server = 'irc.spicebot.net'
+                servername = 'irc.spicebot.net'
             elif servername == 'Freenode':
-                server = 'irc.freenode.net'
+                servername = 'irc.freenode.net'
             else:
-                server = bot.config.core.host
-        else:
-            server = bot.config.core.host
-        bot.memory["botdict"]["tempvals"]['server'] = server
-
-    if not bot.memory["botdict"]["tempvals"]['servername']:
-        if ipv4detect(bot, bot.config.core.host):
-            servername = str(bot.config.core.user.split("/", 1)[1])
-            if servername not in tuple(["SpiceBot", "Freenode"]):
                 servername = bot.config.core.host
-        else:
+        except Exception as e:
             servername = bot.config.core.host
-        bot.memory["botdict"]["tempvals"]['servername'] = servername
+    else:
+        servername = bot.config.core.host
+    bot.memory["botdict"]["tempvals"]['servername'] = servername
+
+    if servername not in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
+        bot.memory["botdict"]["tempvals"]["servers_list"][servername] = dict()
 
 
 # create listing for channels the bot is in
 def botdict_setup_channels(bot):
+
+    if "botdict" not in bot.memory:
+        botdict_setup_open(bot)
+
+    if "tempvals" not in bot.memory["botdict"].keys():
+        bot.memory["botdict"]["tempvals"] = dict()
+
+    if "servers_list" not in bot.memory["botdict"].keys():
+        botdict_setup_server(bot)
+
+    for servername in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
+
+        if "channels_list" not in bot.memory["botdict"]["tempvals"]["servers_list"][servername].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][servername]["channels_list"] = dict()
+
+        for channel in bot.channels:
+
+            if str(channel) not in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+                bot.memory["botdict"]["tempvals"]['channels_list'][str(channel)] = dict()
 
     # All channels the bot is in
     if bot.memory["botdict"]["tempvals"]['channels_list'].keys() == []:
