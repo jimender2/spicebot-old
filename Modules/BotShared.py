@@ -383,6 +383,17 @@ def botdict_setup_bot_info(bot):
 
     bot.memory["botdict"]["tempvals"]["bot_info"] = dict()
 
+    if 'bot_admins' not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
+        bot.memory["botdict"]["tempvals"]['bot_admins'] = []
+    for botadmin in bot.config.core.admins:
+        if botadmin not in bot.memory["botdict"]["tempvals"]['bot_admins']:
+            bot.memory["botdict"]["tempvals"]['bot_admins'].append(botadmin)
+
+    if 'bot_owners' not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
+        bot.memory["botdict"]["tempvals"]['bot_owners'] = []
+    if str(bot.config.core.owner) not in bot.memory["botdict"]["tempvals"]['bot_owners']:
+        bot.memory["botdict"]["tempvals"]['bot_owners'].append(str(bot.config.core.owner))
+
     for botinf in ["nick"]:
         try:
             stringeval = str(eval("bot." + botinf))
