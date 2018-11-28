@@ -2983,11 +2983,10 @@ def bot_module_prerun(bot, trigger):
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', "list")
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = []
+    validspecifides = ["enable", "disable"]
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
-        bot.msg("#spicebottest", str(argone))
         if str(argone[2:]).isdigit() or str(argone[2:]) in validspecifides:
             botcom.specified = argone[2:]
         else:
