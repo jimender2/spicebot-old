@@ -434,10 +434,6 @@ def botdict_setup_query_apis(bot):
                     if str(botname) not in bot.memory["sock_bot_list"]:
                         bot.memory["sock_bot_list"].append(str(botname))
 
-    for bothost in bot.memory["botdict"]["tempvals"]["api_query"].keys():
-        for botname in bot.memory["botdict"]["tempvals"]["api_query"][bothost].keys():
-            bot.msg("#spicebottest", str(bothost) + " " + str(botname))
-
 
 # externally stored config
 def botdict_setup_external_config(bot):
