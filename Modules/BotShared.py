@@ -3071,13 +3071,14 @@ def bot_module_prerun(bot, trigger):
             osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
             return botcom
 
-        if not botcom.channel_priv:
-            if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
-                reason = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]
-                timestamp = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["timestamp"]
-                bywhom = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["disabledby"]
-                osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command was disabled by " + bywhom + " in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + str(reason))
-                return botcom
+    if not botcom.channel_priv:
+        if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
+            botcom.modulerun = False
+            reason = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]
+            timestamp = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["timestamp"]
+            bywhom = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["disabledby"]
+            osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command was disabled by " + bywhom + " in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + str(reason))
+            return botcom
 
     return botcom
 
