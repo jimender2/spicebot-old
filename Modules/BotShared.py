@@ -323,9 +323,9 @@ def botdict_open(bot):
 def botdict_setup_open(bot):
 
     # if existing in memory, save, and then close and reopen
-    if "botdict" in bot.memory:
-        botdict_save(bot)
-        del bot.memory["botdict"]
+    # if "botdict" in bot.memory:
+    #    botdict_save(bot)
+    #    del bot.memory["botdict"]
 
     # open global dict
     global bot_dict
