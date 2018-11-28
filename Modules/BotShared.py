@@ -278,6 +278,12 @@ def botdict_open(bot):
     # Bot startup time
     botdict_setup_uptime(bot)
 
+    # basic bot info for use later
+    botdict_setup_bot_info(bot)
+
+    # Access configs stored by other bots
+    botdict_setup_query_apis(bot)
+
     # load external config file
     botdict_setup_external_config(bot)
 
@@ -367,6 +373,52 @@ def botdict_setup_uptime(bot):
     bot.memory["botdict"]["tempvals"]["uptime"] = datetime.datetime.utcnow()
 
 
+def botdict_setup_bot_info(bot):
+
+    if "botdict" not in bot.memory:
+        botdict_setup_open(bot)
+
+    if "tempvals" not in bot.memory["botdict"].keys():
+        bot.memory["botdict"]["tempvals"] = dict()
+
+    bot.memory["botdict"]["tempvals"]["bot_info"] = dict()
+
+    for botinf in ["nick", "config", "server_capabilities", "enabled_capabilities"]:
+        try:
+            stringeval = eval("bot." + botinf)
+        except Exception as e:
+            stringeval = None
+        if botinf not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
+            bot.memory["botdict"]["tempvals"]["bot_info"][botinf] = stringeval
+
+
+def botdict_setup_query_apis(bot):
+
+    if "botdict" not in bot.memory:
+        botdict_setup_open(bot)
+
+    if "tempvals" not in bot.memory["botdict"].keys():
+        bot.memory["botdict"]["tempvals"] = dict()
+
+    bot.memory["botdict"]["tempvals"]["api_query"] = dict()
+
+    hostslist = ["192.168.5.100", "192.168.5.101"]
+    hostsprocess = []
+    for host in hostslist:
+        if host not in bot.memory["botdict"]["tempvals"]["api_query"].keys():
+            bot.memory["botdict"]["tempvals"]["api_query"][host] = dict()
+        for i in range(8000, 8051):
+            if bot_api_port_test(bot, host, i):
+                try:
+                    apiquery = bot_api_fetch(bot, botport, host)
+                except Exception as e:
+                    apiquery = dict()
+                if apiquery != {}:
+                    botname = apiquery["tempvals"]["bot_info"]["nick"]
+                    if botname not in bot.memory["botdict"]["tempvals"]["api_query"][host].keys():
+                        bot.memory["botdict"]["tempvals"]["api_query"][host][botname] = apiquery
+
+
 # externally stored config
 def botdict_setup_external_config(bot):
 
@@ -376,8 +428,7 @@ def botdict_setup_external_config(bot):
     if "tempvals" not in bot.memory["botdict"].keys():
         bot.memory["botdict"]["tempvals"] = dict()
 
-    if "ext_conf" not in bot.memory["botdict"]["tempvals"]:
-        bot.memory["botdict"]["tempvals"]["ext_conf"] = dict()
+    bot.memory["botdict"]["tempvals"]["ext_conf"] = dict()
 
     # Loop through external config file
     config = ConfigParser.ConfigParser()
@@ -495,20 +546,22 @@ def botdict_setup_server(bot):
     if ipv4detect(bot, bot.config.core.host):
         try:
             servername = str(bot.config.core.user.split("/", 1)[1])
-            if servername == 'SpiceBot':
-                servername = 'irc.spicebot.net'
-            elif servername == 'Freenode':
-                servername = 'irc.freenode.net'
-            else:
-                servername = bot.config.core.host
         except Exception as e:
             servername = bot.config.core.host
     else:
         servername = bot.config.core.host
+
+    if servername == 'SpiceBot':
+        server = 'irc.spicebot.net'
+    elif servername == 'Freenode':
+        server = 'irc.freenode.net'
+    else:
+        server = bot.config.core.host
+
     bot.memory["botdict"]["tempvals"]['servername'] = servername
 
-    if servername not in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
-        bot.memory["botdict"]["tempvals"]["servers_list"][servername] = dict()
+    if server not in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
+        bot.memory["botdict"]["tempvals"]["servers_list"][server] = dict()
 
 
 # create listing for channels the bot is in
