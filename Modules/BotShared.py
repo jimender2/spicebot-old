@@ -385,7 +385,7 @@ def botdict_setup_bot_info(bot):
 
     for botinf in ["nick"]:
         try:
-            stringeval = eval("bot." + botinf)
+            stringeval = str(eval("bot." + botinf))
         except Exception as e:
             stringeval = None
         if botinf not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
@@ -402,21 +402,34 @@ def botdict_setup_query_apis(bot):
 
     bot.memory["botdict"]["tempvals"]["api_query"] = dict()
 
+    if "sock_dict" not in bot.memory:
+        bot.memory["sock_dict"] = dict()
+    if "sock_bot_list" not in bot.memory:
+        bot.memory["sock_bot_list"] = []
+
     hostslist = ["192.168.5.100", "192.168.5.101"]
     hostsprocess = []
     for host in hostslist:
         if host not in bot.memory["botdict"]["tempvals"]["api_query"].keys():
             bot.memory["botdict"]["tempvals"]["api_query"][host] = dict()
+        if str(host) not in bot.memory["sock_dict"].keys():
+            bot.memory["sock_dict"][str(host)] = dict()
         for i in range(8000, 8051):
             if bot_api_port_test(bot, host, i):
                 try:
-                    apiquery = bot_api_fetch(bot, botport, host)
+                    apiquery = bot_api_fetch(bot, i, host)
                 except Exception as e:
                     apiquery = dict()
                 if apiquery != {}:
                     botname = apiquery["tempvals"]["bot_info"]["nick"]
                     if botname not in bot.memory["botdict"]["tempvals"]["api_query"][host].keys():
                         bot.memory["botdict"]["tempvals"]["api_query"][host][botname] = apiquery
+                    if str(botname) not in bot.memory["sock_dict"][str(host)].keys():
+                        bot.memory["sock_dict"][str(host)][str(botname)] = dict()
+                    bot.memory["sock_dict"][str(host)][str(botname)]["port"] = i
+                    bot.memory["sock_dict"][str(host)][str(botname)]["host"] = str(host)
+                    if str(botname) not in bot.memory["sock_bot_list"]:
+                        bot.memory["sock_bot_list"].append(str(botname))
 
 
 # externally stored config

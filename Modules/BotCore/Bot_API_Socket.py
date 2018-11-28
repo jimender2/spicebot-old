@@ -51,7 +51,8 @@ def listener(bot, trigger):
             return
     sock = bot.memory['sock']
 
-    bot.memory["sock_dict"] = dict()
+    if "sock_dict" not in bot.memory:
+        bot.memory["sock_dict"] = dict()
     if "sock_bot_list" not in bot.memory:
         bot.memory["sock_bot_list"] = []
 
