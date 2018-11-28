@@ -24,9 +24,6 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def seen(bot, trigger):
 
-    while 'botdict_loaded' not in bot.memory:
-        time.sleep(1)
-
     botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:
         return

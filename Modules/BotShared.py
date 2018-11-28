@@ -2932,6 +2932,9 @@ Module Prerun
 
 def bot_module_prerun(bot, trigger):
 
+    while 'botdict_loaded' not in bot.memory:
+        time.sleep(1)
+
     # botcom dynamic Class
     botcom = class_create('botcom')
     botcom.default = 'botcom'
