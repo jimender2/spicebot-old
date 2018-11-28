@@ -617,26 +617,26 @@ def botdict_setup_channels(bot):
                 bot.memory["botdict"]["tempvals"]['channels_list'][channel] = dict()
 
     # All channels the bot is in
-    if bot.memory["botdict"]["tempvals"]['channels_list'].keys() == []:
-        for channel in bot.channels:
+    for channel in bot.privileges.keys():
+        channel = str(channel)
 
-            # curent channels
-            if str(channel) not in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
-                bot.memory["botdict"]["tempvals"]['channels_list'][str(channel)] = dict()
+        # curent channels
+        if channel not in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+            bot.memory["botdict"]["tempvals"]['channels_list'][channel] = dict()
 
-            # all channels ever
-            if str(channel) not in bot.memory["botdict"]['channels_list'].keys():
-                bot.memory["botdict"]['channels_list'][str(channel)] = dict()
+        # all channels ever
+        if channel not in bot.memory["botdict"]['channels_list'].keys():
+            bot.memory["botdict"]['channels_list'][channel] = dict()
 
-            # authorized user groups for channels
-            if "auth_block" not in bot.memory["botdict"]['channels_list'][channel].keys():
-                bot.memory["botdict"]['channels_list'][str(channel)]["auth_block"] = []
-            if bot.memory["botdict"]['channels_list'][str(channel)]["auth_block"] == []:
-                bot.memory["botdict"]['channels_list'][str(channel)]["auth_block"].append("all")
+        # authorized user groups for channels
+        if "auth_block" not in bot.memory["botdict"]['channels_list'][channel].keys():
+            bot.memory["botdict"]['channels_list'][channel]["auth_block"] = []
+        if bot.memory["botdict"]['channels_list'][channel]["auth_block"] == []:
+            bot.memory["botdict"]['channels_list'][channel]["auth_block"].append("all")
 
-            # diabled commands per channel
-            if "disabled_commands" not in bot.memory["botdict"]['channels_list'][channel].keys():
-                bot.memory["botdict"]['channels_list'][str(channel)]["disabled_commands"] = {}
+        # diabled commands per channel
+        if "disabled_commands" not in bot.memory["botdict"]['channels_list'][channel].keys():
+            bot.memory["botdict"]['channels_list'][channel]["disabled_commands"] = {}
 
 
 # other bot configs will be detected in this directory
