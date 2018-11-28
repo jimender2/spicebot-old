@@ -548,8 +548,15 @@ def botdict_setup_server(bot):
     if "tempvals" not in bot.memory["botdict"].keys():
         bot.memory["botdict"]["tempvals"] = dict()
 
+    if "api_query" not in bot.memory["botdict"].keys():
+        botdict_setup_query_apis(bot)
+
     bot.memory["botdict"]["tempvals"]['servername'] = "irc"
+    bot.memory["botdict"]["tempvals"]['server'] = "irc"
     bot.memory["botdict"]["tempvals"]["servers_list"] = dict()
+
+    if "servers_list" not in bot.memory["botdict"].keys():
+        bot.memory["botdict"]['servers_list'] = dict()
 
     # if host is set in the config without a bouncer, uncomment the next two lines:
     # bot.memory["botdict"]["tempvals"]['server'] = bot.config.core.host
@@ -575,9 +582,14 @@ def botdict_setup_server(bot):
         server = bot.config.core.host
 
     bot.memory["botdict"]["tempvals"]['servername'] = servername
+    bot.memory["botdict"]["tempvals"]['server'] = server
 
     if server not in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
         bot.memory["botdict"]["tempvals"]["servers_list"][server] = dict()
+
+    # permanent listing of the server
+    if server not in bot.memory["botdict"]['servers_list'].keys():
+        bot.memory["botdict"]['servers_list'][server] = dict()
 
 
 # create listing for channels the bot is in
@@ -597,10 +609,12 @@ def botdict_setup_channels(bot):
         if "channels_list" not in bot.memory["botdict"]["tempvals"]["servers_list"][servername].keys():
             bot.memory["botdict"]["tempvals"]["servers_list"][servername]["channels_list"] = dict()
 
-        for channel in bot.channels:
+        for channel in bot.privileges.keys():
+            channel = str(channel)
 
-            if str(channel) not in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
-                bot.memory["botdict"]["tempvals"]['channels_list'][str(channel)] = dict()
+            # curent channels
+            if channel not in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
+                bot.memory["botdict"]["tempvals"]['channels_list'][channel] = dict()
 
     # All channels the bot is in
     if bot.memory["botdict"]["tempvals"]['channels_list'].keys() == []:
@@ -1120,6 +1134,9 @@ def bot_nickcom_run(bot, trigger):
     botcom.admin = trigger.admin
     botcom.owner = trigger.owner
 
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
+
     # channel
     botcom.channel_current = str(trigger.sender)
     botcom.channel_priv = trigger.is_privmsg
@@ -1260,6 +1277,9 @@ def bot_watch_part_run(bot, trigger):
     botcom.admin = trigger.admin
     botcom.owner = trigger.owner
 
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
+
     # channel
     botcom.channel_current = str(trigger.sender)
     botcom.channel_priv = trigger.is_privmsg
@@ -1326,6 +1346,9 @@ def bot_watch_kick_run(bot, trigger):
     # bot credentials
     botcom.admin = trigger.admin
     botcom.owner = trigger.owner
+
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
 
     # channel
     botcom.channel_current = str(trigger.sender)
@@ -1396,6 +1419,9 @@ def bot_watch_nick_run(bot, trigger):
     # bot credentials
     botcom.admin = trigger.admin
     botcom.owner = trigger.owner
+
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
 
     # channel
     botcom.channel_current = str(trigger.sender)
@@ -1481,6 +1507,9 @@ def bot_watch_quit_run(bot, trigger):
     botcom.admin = trigger.admin
     botcom.owner = trigger.owner
 
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
+
     # channel
     botcom.channel_current = str(trigger.sender)
     botcom.channel_priv = trigger.is_privmsg
@@ -1535,6 +1564,9 @@ def bot_watch_join_run(bot, trigger):
     # bot credentials
     botcom.admin = trigger.admin
     botcom.owner = trigger.owner
+
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
 
     # channel
     botcom.channel_current = str(trigger.sender)
@@ -1631,6 +1663,9 @@ def bot_watch_mode_run(bot, trigger):
     botcom.admin = trigger.admin
     botcom.owner = trigger.owner
 
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
+
     # channel
     botcom.channel_current = str(trigger.sender)
     botcom.channel_priv = trigger.is_privmsg
@@ -1722,6 +1757,9 @@ def bot_dictquery_run(bot, trigger):
     # bot credentials
     botcom.admin = trigger.admin
     botcom.owner = trigger.owner
+
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
 
     # channel
     botcom.channel_current = str(trigger.sender)
@@ -1824,13 +1862,16 @@ def bot_watch_all_run(bot, trigger):
     botcom.admin = trigger.admin
     botcom.owner = trigger.owner
 
-    # Bots block
-    if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-        return
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
 
     # channel
     botcom.channel_current = str(trigger.sender)
     botcom.channel_priv = trigger.is_privmsg
+
+    # Bots block
+    if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        return
 
     # channel creds
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
@@ -1893,6 +1934,9 @@ def bot_watch_dot_run(bot, trigger):
     botcom.admin = trigger.admin
     botcom.owner = trigger.owner
 
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
+
     # channel
     botcom.channel_current = str(trigger.sender)
     botcom.channel_priv = trigger.is_privmsg
@@ -1944,6 +1988,9 @@ def bot_watch_exclamation(bot, trigger):
     # bot credentials
     botcom.admin = trigger.admin
     botcom.owner = trigger.owner
+
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
 
     # channel
     botcom.channel_current = str(trigger.sender)
@@ -2849,6 +2896,9 @@ def bot_module_prerun(bot, trigger):
     # bot credentials
     botcom.admin = trigger.admin
     botcom.owner = trigger.owner
+
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
 
     # channel
     botcom.channel_current = str(trigger.sender)
