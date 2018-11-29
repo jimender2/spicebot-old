@@ -175,11 +175,18 @@ def adjust_user_dict_array(bot, dynamic_class, nick, dictkey, entries, adjustmen
 
 """
 Current Method all users, kept in bot.memory
+
+* longevity can be long or temp, temp is wiped at bot reboot, long is saved to the database
+
+* sorting key is designed to organize functionality, claims, duels, etc would all be sorted together
+
+* use key is the actual value you are using
+
 """
 
 
 # get nick value from bot.memory
-def get_nick_value(bot, nick, secondarykey, longevity='long', mainkey='unsorted'):
+def get_nick_value(bot, nick, longevity, sortingkey, usekey):
 
     # verify nick dict exists
     if longevity == 'long':
@@ -189,29 +196,35 @@ def get_nick_value(bot, nick, secondarykey, longevity='long', mainkey='unsorted'
         if nick not in bot.memory["botdict"]["tempvals"]["uservals"].keys():
             bot.memory["botdict"]["tempvals"]["uservals"][nick] = dict()
 
-    # Verify mainkey exists
+    # Verify sortingkey exists
     if longevity == 'long':
-        if mainkey not in bot.memory["botdict"]["users"][nick].keys():
-            bot.memory["botdict"]["users"][nick][mainkey] = dict()
+        if sortingkey not in bot.memory["botdict"]["users"][nick].keys():
+            bot.memory["botdict"]["users"][nick][sortingkey] = dict()
     elif longevity == 'temp':
-        if mainkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
-            bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey] = dict()
+        if sortingkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey] = dict()
 
-    # Verify secondarykey exists
+    # Verify usekey exists
     if longevity == 'long':
-        if secondarykey not in bot.memory["botdict"]["users"][nick][mainkey].keys():
+        if usekey not in bot.memory["botdict"]["users"][nick][sortingkey].keys():
             return None
         else:
-            return bot.memory["botdict"]["users"][nick][mainkey][secondarykey]
+            return bot.memory["botdict"]["users"][nick][sortingkey][usekey]
     elif longevity == 'temp':
-        if secondarykey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey].keys():
+        if usekey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey].keys():
             return None
         else:
-            return bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]
+            return bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]
+
+
+# use this for math
+def adjust_nick_value(bot, nick, longevity, sortingkey, usekey, value):
+    oldvalue = get_nick_value(bot, nick, longevity, sortingkey, usekey) or 0
+    set_nick_value(bot, nick, longevity, sortingkey, usekey, int(oldvalue) + int(value))
 
 
 # set nick value in bot.memory
-def set_nick_value(bot, nick, secondarykey, value, longevity='long', mainkey='unsorted'):
+def set_nick_value(bot, nick, longevity, sortingkey, usekey, value):
 
     # verify nick dict exists
     if longevity == 'long':
@@ -221,24 +234,51 @@ def set_nick_value(bot, nick, secondarykey, value, longevity='long', mainkey='un
         if nick not in bot.memory["botdict"]["tempvals"]["uservals"].keys():
             bot.memory["botdict"]["tempvals"]["uservals"][nick] = dict()
 
-    # Verify mainkey exists
+    # Verify sortingkey exists
     if longevity == 'long':
-        if mainkey not in bot.memory["botdict"]["users"][nick].keys():
-            bot.memory["botdict"]["users"][nick][mainkey] = dict()
+        if sortingkey not in bot.memory["botdict"]["users"][nick].keys():
+            bot.memory["botdict"]["users"][nick][sortingkey] = dict()
     elif longevity == 'temp':
-        if mainkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
-            bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey] = dict()
+        if sortingkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey] = dict()
 
     # set
     if longevity == 'long':
-        bot.memory["botdict"]["users"][nick][mainkey][secondarykey] = value
+        bot.memory["botdict"]["users"][nick][sortingkey][usekey] = value
     elif longevity == 'temp':
-        bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey] = value
+        bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] = value
+
+
+# set nick value in bot.memory
+def reset_nick_value(bot, nick, longevity, sortingkey, usekey):
+
+    # verify nick dict exists
+    if longevity == 'long':
+        if nick not in bot.memory["botdict"]["users"].keys():
+            bot.memory["botdict"]["users"][nick] = dict()
+    elif longevity == 'temp':
+        if nick not in bot.memory["botdict"]["tempvals"]["uservals"].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick] = dict()
+
+    # Verify sortingkey exists
+    if longevity == 'long':
+        if sortingkey not in bot.memory["botdict"]["users"][nick].keys():
+            bot.memory["botdict"]["users"][nick][sortingkey] = dict()
+    elif longevity == 'temp':
+        if sortingkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey] = dict()
+
+    # reset
+    if longevity == 'long':
+        if usekey in bot.memory["botdict"]["users"][nick][sortingkey].keys():
+            del bot.memory["botdict"]["users"][nick][sortingkey][usekey] = value
+    elif longevity == 'temp':
+        if usekey in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey].keys():
+            del bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]
 
 
 # adjust a list of entries in bot.memory
-def adjust_nick_array(bot, nick, secondarykey, values, direction, longevity='long', mainkey='unsorted'):
-
+def adjust_nick_array(bot, nick, longevity, sortingkey, usekey, values, direction):
     if not isinstance(values, list):
         values = [values]
 
@@ -250,31 +290,31 @@ def adjust_nick_array(bot, nick, secondarykey, values, direction, longevity='lon
         if nick not in bot.memory["botdict"]["tempvals"]["uservals"].keys():
             bot.memory["botdict"]["tempvals"]["uservals"][nick] = dict()
 
-    # Verify mainkey exists
+    # Verify sortingkey exists
     if longevity == 'long':
-        if mainkey not in bot.memory["botdict"]["users"][nick].keys():
-            bot.memory["botdict"]["users"][nick][mainkey] = dict()
+        if sortingkey not in bot.memory["botdict"]["users"][nick].keys():
+            bot.memory["botdict"]["users"][nick][sortingkey] = dict()
     elif longevity == 'temp':
-        if mainkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
-            bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey] = dict()
+        if sortingkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey] = dict()
 
     # verify array exists
     if longevity == 'long':
-        if secondarykey not in bot.memory["botdict"]["users"][nick][mainkey]:
-            bot.memory["botdict"]["users"][nick][mainkey][secondarykey] = []
+        if usekey not in bot.memory["botdict"]["users"][nick][sortingkey]:
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey] = []
     elif longevity == 'temp':
-        if secondarykey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey]:
-            bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey] = []
+        if usekey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey]:
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] = []
 
     # startup entries
     if direction == 'startup':
         if longevity == 'long':
-            if bot.memory["botdict"]["users"][nick][mainkey][secondarykey] == []:
+            if bot.memory["botdict"]["users"][nick][sortingkey][usekey] == []:
                 direction == 'add'
             else:
                 return
         elif longevity == 'temp':
-            if bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey] == []:
+            if bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] == []:
                 direction == 'add'
             else:
                 return
@@ -283,21 +323,21 @@ def adjust_nick_array(bot, nick, secondarykey, values, direction, longevity='lon
     for value in values:
         if longevity == 'long':
             if direction == 'add':
-                if value not in bot.memory["botdict"]["users"][nick][mainkey][secondarykey]:
-                    bot.memory["botdict"]["users"][nick][mainkey][secondarykey].append(value)
+                if value not in bot.memory["botdict"]["users"][nick][sortingkey][usekey]:
+                    bot.memory["botdict"]["users"][nick][sortingkey][usekey].append(value)
             elif direction == 'startup':
-                if value not in bot.memory["botdict"]["users"][nick][mainkey][secondarykey]:
-                    bot.memory["botdict"]["users"][nick][mainkey][secondarykey].append(value)
+                if value not in bot.memory["botdict"]["users"][nick][sortingkey][usekey]:
+                    bot.memory["botdict"]["users"][nick][sortingkey][usekey].append(value)
             elif direction in ['del', 'remove']:
-                if value in bot.memory["botdict"]["users"][nick][mainkey][secondarykey]:
-                    bot.memory["botdict"]["users"][nick][mainkey][secondarykey].remove(value)
+                if value in bot.memory["botdict"]["users"][nick][sortingkey][usekey]:
+                    bot.memory["botdict"]["users"][nick][sortingkey][usekey].remove(value)
         elif longevity == 'temp':
             if direction == 'add':
-                if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]:
-                    bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey].append(value)
+                if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]:
+                    bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].append(value)
             elif direction == 'startup':
-                if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]:
-                    bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey].append(value)
+                if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]:
+                    bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].append(value)
             elif direction in ['del', 'remove']:
-                if value in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]:
-                    bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey].remove(value)
+                if value in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]:
+                    bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].remove(value)

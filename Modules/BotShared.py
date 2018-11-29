@@ -1051,8 +1051,8 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
                 dict_from_file[mustbe]["response_fail"] = [dict_from_file[mustbe]["response_fail"]]
 
         if dict_from_file[mustbe]["updates_enabled"]:
-            adjust_nick_array(bot, str(bot.nick), maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup', 'long', 'sayings')
-            dict_from_file[mustbe]["responses"] = get_nick_value(bot, str(bot.nick), maincom + "_" + str(mustbe), 'long', 'sayings') or []
+            adjust_nick_array(bot, str(bot.nick), 'long', 'sayings', maincom + "_" + str(mustbe), dict_from_file[mustbe]["responses"], 'startup')
+            dict_from_file[mustbe]["responses"] = get_nick_value(bot, str(bot.nick), 'long', 'sayings', maincom + "_" + str(mustbe)) or []
 
         # each usecase needs a response
         if "responses" not in dict_from_file[mustbe].keys():
@@ -2010,12 +2010,12 @@ def bot_watch_all_run(bot, trigger):
                     "intent": 'intent' in trigger.tags,
                     }
 
-    currentnickrecord = get_nick_value(bot, botcom.instigator, 'list', 'long', 'user_activity') or []
+    currentnickrecord = get_nick_value(bot, botcom.instigator, 'long', 'user_activity', 'list')
     currentnickrecord.append(usertalkdict)
     if len(currentnickrecord) > 10:
         del currentnickrecord[0]
 
-    set_nick_value(bot, botcom.instigator, 'list', currentnickrecord, 'long', 'user_activity')
+    set_nick_value(bot, botcom.instigator, 'long', 'user_activity', 'list', currentnickrecord)
 
 
 # watches for dot commands
@@ -2697,7 +2697,7 @@ Directory Browsing
 
 def bot_nickcom_function_gitpull(bot, botcom):
 
-    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', 'temp') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
+    botcom.directory = get_nick_value(bot, botcom.instigator, 'temp', 'unsorted', 'current_admin_dir') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
     osd(bot, botcom.channel_current, 'say', "attempting to git pull " + botcom.directory)
     g = git.cmd.Git(botcom.directory)
     g.pull()
@@ -2705,7 +2705,8 @@ def bot_nickcom_function_gitpull(bot, botcom):
 
 def bot_nickcom_function_dir(bot, botcom):
 
-    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', 'temp') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
+    botcom.directory = get_nick_value(bot, botcom.instigator, 'temp', 'unsorted', 'current_admin_dir') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
+    get_nick_value(bot, nick, longevity, sortingkey, usekey)
     botcom = bot_list_directory(bot, botcom)
     if botcom.directory == []:
         osd(bot, botcom.channel_current, 'say', "It appears this directory is empty.")
@@ -2720,7 +2721,8 @@ def bot_nickcom_function_dir(bot, botcom):
 def bot_nickcom_function_cd(bot, botcom):
 
     validfolderoptions = ['..', 'reset']
-    botcom.directory = get_nick_value(bot, botcom.instigator, 'current_admin_dir', 'temp') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
+    botcom.directory = get_nick_value(bot, botcom.instigator, 'temp', 'unsorted', 'current_admin_dir') or bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory']
+    get_nick_value(bot, nick, longevity, sortingkey, usekey)
     botcom = bot_list_directory(bot, botcom)
 
     for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
@@ -2742,7 +2744,7 @@ def bot_nickcom_function_cd(bot, botcom):
     else:
         movepath = os.path.join(botcom.directory, str(movepath+"/"))
 
-    set_nick_value(bot, botcom.instigator, 'current_admin_dir', str(movepath), 'temp')
+    set_nick_value(bot, botcom.instigator, 'temp', 'unsorted', 'current_admin_dir', str(movepath))
 
     osd(bot, botcom.channel_current, 'say', "Directory Changed to : " + str(movepath))
 
@@ -3284,11 +3286,11 @@ def bot_dictcom_process(bot, botcom):
     # commands that can be updated
     if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"]:
         if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "shared":
-            adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), botcom.dotcommand_dict[botcom.responsekey]["responses"], 'startup', 'long', 'sayings')
-            botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(bot.nick), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey), 'long', 'sayings') or []
+            adjust_nick_array(bot, str(bot.nick), 'long', 'sayings', botcom.maincom + "_" + str(botcom.responsekey), botcom.dotcommand_dict[botcom.responsekey]["responses"], 'startup')
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(bot.nick), 'long', 'sayings', botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey)) or []
         elif botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "user":
-            adjust_nick_array(bot, str(botcom.instigator), botcom.maincom + "_" + str(botcom.responsekey), botcom.dotcommand_dict[botcom.responsekey]["responses"], 'startup', 'long', 'sayings')
-            botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(botcom.instigator), botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey), 'long', 'sayings') or []
+            adjust_nick_array(bot, str(botcom.instigator), 'long', 'sayings', botcom.maincom + "_" + str(botcom.responsekey), botcom.dotcommand_dict[botcom.responsekey]["responses"], 'startup')
+            botcom.dotcommand_dict[botcom.responsekey]["responses"] = get_nick_value(bot, str(botcom.instigator), 'long', 'sayings', botcom.dotcommand_dict["validcoms"][0] + "_" + str(botcom.responsekey)) or []
 
     # Hardcoded commands Below
     if botcom.specified == 'enable':
@@ -3415,9 +3417,9 @@ def bot_dictcom_process(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "The following was already in the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
         if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "shared":
-            adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
+            adjust_nick_array(bot, str(bot.nick), 'long', 'sayings', botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified)
         elif botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "user":
-            adjust_nick_array(bot, str(botcom.instigator), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
+            adjust_nick_array(bot, str(botcom.instigator), 'long', 'sayings', botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified)
 
         return osd(bot, botcom.channel_current, 'say', "The following was added to the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
@@ -3434,9 +3436,9 @@ def bot_dictcom_process(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "The following was already not in the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
         if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "shared":
-            adjust_nick_array(bot, str(bot.nick), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
+            adjust_nick_array(bot, str(bot.nick), 'long', 'sayings', botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified)
         elif botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"] == "user":
-            adjust_nick_array(bot, str(botcom.instigator), botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified, 'long', 'sayings')
+            adjust_nick_array(bot, str(botcom.instigator), 'long', 'sayings', botcom.maincom + "_" + str(botcom.responsekey), fulltext, botcom.specified)
 
         return osd(bot, botcom.channel_current, 'say', "The following was removed from the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list: '" + str(fulltext) + "'")
 
@@ -4417,7 +4419,7 @@ def adjust_user_dict_array(bot, dynamic_class, nick, dictkey, entries, adjustmen
 
 
 # get nick value from bot.memory
-def get_nick_value(bot, nick, secondarykey, longevity='long', mainkey='unsorted'):
+def get_nick_value(bot, nick, longevity, sortingkey, usekey):
 
     # verify nick dict exists
     if longevity == 'long':
@@ -4427,29 +4429,34 @@ def get_nick_value(bot, nick, secondarykey, longevity='long', mainkey='unsorted'
         if nick not in bot.memory["botdict"]["tempvals"]["uservals"].keys():
             bot.memory["botdict"]["tempvals"]["uservals"][nick] = dict()
 
-    # Verify mainkey exists
+    # Verify sortingkey exists
     if longevity == 'long':
-        if mainkey not in bot.memory["botdict"]["users"][nick].keys():
-            bot.memory["botdict"]["users"][nick][mainkey] = dict()
+        if sortingkey not in bot.memory["botdict"]["users"][nick].keys():
+            bot.memory["botdict"]["users"][nick][sortingkey] = dict()
     elif longevity == 'temp':
-        if mainkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
-            bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey] = dict()
+        if sortingkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey] = dict()
 
-    # Verify secondarykey exists
+    # Verify usekey exists
     if longevity == 'long':
-        if secondarykey not in bot.memory["botdict"]["users"][nick][mainkey].keys():
+        if usekey not in bot.memory["botdict"]["users"][nick][sortingkey].keys():
             return None
         else:
-            return bot.memory["botdict"]["users"][nick][mainkey][secondarykey]
+            return bot.memory["botdict"]["users"][nick][sortingkey][usekey]
     elif longevity == 'temp':
-        if secondarykey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey].keys():
+        if usekey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey].keys():
             return None
         else:
-            return bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]
+            return bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]
+
+
+def adjust_nick_value(bot, nick, longevity, sortingkey, usekey, value):
+    oldvalue = get_nick_value(bot, nick, longevity, sortingkey, usekey) or 0
+    set_nick_value(bot, nick, longevity, sortingkey, usekey, int(oldvalue) + int(value))
 
 
 # set nick value in bot.memory
-def set_nick_value(bot, nick, secondarykey, value, longevity='long', mainkey='unsorted'):
+def set_nick_value(bot, nick, longevity, sortingkey, usekey, value):
 
     # verify nick dict exists
     if longevity == 'long':
@@ -4459,24 +4466,50 @@ def set_nick_value(bot, nick, secondarykey, value, longevity='long', mainkey='un
         if nick not in bot.memory["botdict"]["tempvals"]["uservals"].keys():
             bot.memory["botdict"]["tempvals"]["uservals"][nick] = dict()
 
-    # Verify mainkey exists
+    # Verify sortingkey exists
     if longevity == 'long':
-        if mainkey not in bot.memory["botdict"]["users"][nick].keys():
-            bot.memory["botdict"]["users"][nick][mainkey] = dict()
+        if sortingkey not in bot.memory["botdict"]["users"][nick].keys():
+            bot.memory["botdict"]["users"][nick][sortingkey] = dict()
     elif longevity == 'temp':
-        if mainkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
-            bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey] = dict()
+        if sortingkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey] = dict()
 
     # set
     if longevity == 'long':
-        bot.memory["botdict"]["users"][nick][mainkey][secondarykey] = value
+        bot.memory["botdict"]["users"][nick][sortingkey][usekey] = value
     elif longevity == 'temp':
-        bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey] = value
+        bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] = value
 
 
-# adjust a list of entries in bot.memory
-def adjust_nick_array(bot, nick, secondarykey, values, direction, longevity='long', mainkey='unsorted'):
+# set nick value in bot.memory
+def reset_nick_value(bot, nick, longevity, sortingkey, usekey):
 
+    # verify nick dict exists
+    if longevity == 'long':
+        if nick not in bot.memory["botdict"]["users"].keys():
+            bot.memory["botdict"]["users"][nick] = dict()
+    elif longevity == 'temp':
+        if nick not in bot.memory["botdict"]["tempvals"]["uservals"].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick] = dict()
+
+    # Verify sortingkey exists
+    if longevity == 'long':
+        if sortingkey not in bot.memory["botdict"]["users"][nick].keys():
+            bot.memory["botdict"]["users"][nick][sortingkey] = dict()
+    elif longevity == 'temp':
+        if sortingkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey] = dict()
+
+    # reset
+    if longevity == 'long':
+        if usekey in bot.memory["botdict"]["users"][nick][sortingkey].keys():
+            del bot.memory["botdict"]["users"][nick][sortingkey][usekey] = value
+    elif longevity == 'temp':
+        if usekey in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey].keys():
+            del bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]
+
+
+def adjust_nick_array(bot, nick, longevity, sortingkey, usekey, values, direction):
     if not isinstance(values, list):
         values = [values]
 
@@ -4488,31 +4521,31 @@ def adjust_nick_array(bot, nick, secondarykey, values, direction, longevity='lon
         if nick not in bot.memory["botdict"]["tempvals"]["uservals"].keys():
             bot.memory["botdict"]["tempvals"]["uservals"][nick] = dict()
 
-    # Verify mainkey exists
+    # Verify sortingkey exists
     if longevity == 'long':
-        if mainkey not in bot.memory["botdict"]["users"][nick].keys():
-            bot.memory["botdict"]["users"][nick][mainkey] = dict()
+        if sortingkey not in bot.memory["botdict"]["users"][nick].keys():
+            bot.memory["botdict"]["users"][nick][sortingkey] = dict()
     elif longevity == 'temp':
-        if mainkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
-            bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey] = dict()
+        if sortingkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey] = dict()
 
     # verify array exists
     if longevity == 'long':
-        if secondarykey not in bot.memory["botdict"]["users"][nick][mainkey]:
-            bot.memory["botdict"]["users"][nick][mainkey][secondarykey] = []
+        if usekey not in bot.memory["botdict"]["users"][nick][sortingkey]:
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey] = []
     elif longevity == 'temp':
-        if secondarykey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey]:
-            bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey] = []
+        if usekey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey]:
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] = []
 
     # startup entries
     if direction == 'startup':
         if longevity == 'long':
-            if bot.memory["botdict"]["users"][nick][mainkey][secondarykey] == []:
+            if bot.memory["botdict"]["users"][nick][sortingkey][usekey] == []:
                 direction == 'add'
             else:
                 return
         elif longevity == 'temp':
-            if bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey] == []:
+            if bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] == []:
                 direction == 'add'
             else:
                 return
@@ -4521,24 +4554,24 @@ def adjust_nick_array(bot, nick, secondarykey, values, direction, longevity='lon
     for value in values:
         if longevity == 'long':
             if direction == 'add':
-                if value not in bot.memory["botdict"]["users"][nick][mainkey][secondarykey]:
-                    bot.memory["botdict"]["users"][nick][mainkey][secondarykey].append(value)
+                if value not in bot.memory["botdict"]["users"][nick][sortingkey][usekey]:
+                    bot.memory["botdict"]["users"][nick][sortingkey][usekey].append(value)
             elif direction == 'startup':
-                if value not in bot.memory["botdict"]["users"][nick][mainkey][secondarykey]:
-                    bot.memory["botdict"]["users"][nick][mainkey][secondarykey].append(value)
+                if value not in bot.memory["botdict"]["users"][nick][sortingkey][usekey]:
+                    bot.memory["botdict"]["users"][nick][sortingkey][usekey].append(value)
             elif direction in ['del', 'remove']:
-                if value in bot.memory["botdict"]["users"][nick][mainkey][secondarykey]:
-                    bot.memory["botdict"]["users"][nick][mainkey][secondarykey].remove(value)
+                if value in bot.memory["botdict"]["users"][nick][sortingkey][usekey]:
+                    bot.memory["botdict"]["users"][nick][sortingkey][usekey].remove(value)
         elif longevity == 'temp':
             if direction == 'add':
-                if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]:
-                    bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey].append(value)
+                if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]:
+                    bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].append(value)
             elif direction == 'startup':
-                if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]:
-                    bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey].append(value)
+                if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]:
+                    bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].append(value)
             elif direction in ['del', 'remove']:
-                if value in bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey]:
-                    bot.memory["botdict"]["tempvals"]["uservals"][nick][mainkey][secondarykey].remove(value)
+                if value in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]:
+                    bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].remove(value)
 
 
 """
