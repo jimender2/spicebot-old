@@ -373,36 +373,6 @@ def botdict_setup_uptime(bot):
     bot.memory["botdict"]["tempvals"]["uptime"] = datetime.datetime.utcnow()
 
 
-def botdict_setup_bot_info(bot):
-
-    if "botdict" not in bot.memory:
-        botdict_setup_open(bot)
-
-    if "tempvals" not in bot.memory["botdict"].keys():
-        bot.memory["botdict"]["tempvals"] = dict()
-
-    bot.memory["botdict"]["tempvals"]["bot_info"] = dict()
-
-    if 'bot_admins' not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
-        bot.memory["botdict"]["tempvals"]['bot_admins'] = []
-    for botadmin in bot.config.core.admins:
-        if botadmin not in bot.memory["botdict"]["tempvals"]['bot_admins']:
-            bot.memory["botdict"]["tempvals"]['bot_admins'].append(botadmin)
-
-    if 'bot_owners' not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
-        bot.memory["botdict"]["tempvals"]['bot_owners'] = []
-    if str(bot.config.core.owner) not in bot.memory["botdict"]["tempvals"]['bot_owners']:
-        bot.memory["botdict"]["tempvals"]['bot_owners'].append(str(bot.config.core.owner))
-
-    for botinf in ["nick"]:
-        try:
-            stringeval = str(eval("bot." + botinf))
-        except Exception as e:
-            stringeval = None
-        if botinf not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
-            bot.memory["botdict"]["tempvals"]["bot_info"][botinf] = stringeval
-
-
 def botdict_setup_query_apis(bot):
 
     if "botdict" not in bot.memory:
@@ -630,6 +600,42 @@ def botdict_setup_server(bot):
 
             if botserver not in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
                 bot.memory["botdict"]["tempvals"]["servers_list"][botserver] = dict()
+
+
+def botdict_setup_bot_info(bot):
+
+    if "botdict" not in bot.memory:
+        botdict_setup_open(bot)
+
+    if "tempvals" not in bot.memory["botdict"].keys():
+        bot.memory["botdict"]["tempvals"] = dict()
+
+    if "api_query" not in bot.memory["botdict"].keys():
+        botdict_setup_query_apis(bot)
+
+    if "servers_list" not in bot.memory["botdict"].keys() or "server" not in bot.memory["botdict"].keys():
+        botdict_setup_server(bot)
+
+    bot.memory["botdict"]["tempvals"]["bot_info"] = dict()
+
+    if 'bot_admins' not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
+        bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins'] = []
+    for botadmin in bot.config.core.admins:
+        if botadmin not in bot.memory["botdict"]["tempvals"]['bot_admins']:
+            bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins'].append(botadmin)
+
+    if 'bot_owners' not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
+        bot.memory["botdict"]["tempvals"]["bot_info"]['bot_owners'] = []
+    if str(bot.config.core.owner) not in bot.memory["botdict"]["tempvals"]['bot_owners']:
+        bot.memory["botdict"]["tempvals"]["bot_info"]['bot_owners'].append(str(bot.config.core.owner))
+
+    for botinf in ["nick"]:
+        try:
+            stringeval = str(eval("bot." + botinf))
+        except Exception as e:
+            stringeval = None
+        if botinf not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
+            bot.memory["botdict"]["tempvals"]["bot_info"][botinf] = stringeval
 
 
 # create listing for channels the bot is in
@@ -1173,9 +1179,9 @@ def bot_setup_privacy_sweep(bot):
                 elif authedgroup == 'ADMIN':
                     allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['chanadmins'])
                 elif authedgroup == 'admin':
-                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_admins'])
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins'])
                 elif authedgroup == 'owner':
-                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_owners'])
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]["bot_info"]['bot_owners'])
             kickinglist = []
             for user in bot.memory["botdict"]["tempvals"]['channels_list'][channelcheck]['current_users']:
                 if user not in allowedusers:
@@ -1291,7 +1297,7 @@ def bot_nickcom_run_check(bot, botcom):
         commandrunconsensus = []
 
         if 'admin' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
-            if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bot_admins']:
+            if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins']:
                 commandrunconsensus.append('False')
             else:
                 commandrunconsensus.append('True')
@@ -1711,9 +1717,9 @@ def bot_watch_join_run(bot, trigger):
             elif authedgroup == 'ADMIN':
                 allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanadmins'])
             elif authedgroup == 'admin':
-                allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_admins'])
+                allowedusers.extend(bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins'])
             elif authedgroup == 'owner':
-                allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_owners'])
+                allowedusers.extend(bot.memory["botdict"]["tempvals"]["bot_info"]['bot_owners'])
         if botcom.instigator not in allowedusers:
             bot.write(['KICK', botcom.channel_current, botcom.instigator], "You are not authorized to join " + botcom.channel_current + ".")
             return
@@ -1844,9 +1850,9 @@ def bot_watch_mode_run(bot, trigger):
                 elif authedgroup == 'ADMIN':
                     allowedusers.extend(bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanadmins'])
                 elif authedgroup == 'admin':
-                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_admins'])
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins'])
                 elif authedgroup == 'owner':
-                    allowedusers.extend(bot.memory["botdict"]["tempvals"]['bot_owners'])
+                    allowedusers.extend(bot.memory["botdict"]["tempvals"]["bot_info"]['bot_owners'])
             if target not in allowedusers:
                 bot.write(['KICK', botcom.channel_current, target], "You are not authorized to join " + botcom.channel_current + ".")
                 return
@@ -3174,7 +3180,7 @@ def bot_module_prerun(bot, trigger):
             return botcom
 
         commandrunconsensus, commandrun = [], True
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bot_admins']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
@@ -3212,7 +3218,7 @@ def bot_module_prerun(bot, trigger):
             return botcom
 
         commandrunconsensus, commandrun = [], True
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bot_admins']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
@@ -3338,7 +3344,7 @@ def bot_dictcom_process(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
 
         commandrunconsensus, commandrun = [], True
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bot_admins']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
@@ -3371,7 +3377,7 @@ def bot_dictcom_process(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
 
         commandrunconsensus, commandrun = [], True
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bot_admins']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
@@ -5073,21 +5079,21 @@ def array_arrangesort(bot, sortbyarray, arrayb):
 
 
 """
-# Empty Classes
+Create Empty Class
 """
 
 
 def class_create(classname):
     compiletext = """
-        def __init__(self):
-            self.default = str(self.__class__.__name__)
-        def __repr__(self):
-            return repr(self.default)
-        def __str__(self):
-            return str(self.default)
-        def __iter__(self):
-            return str(self.default)
-        pass
+    def __init__(self):
+        self.default = str(self.__class__.__name__)
+    def __repr__(self):
+        return repr(self.default)
+    def __str__(self):
+        return str(self.default)
+    def __iter__(self):
+        return str(self.default)
+    pass
         """
     exec(compile("class class_" + str(classname) + ": " + compiletext, "", "exec"))
     newclass = eval('class_'+classname+"()")
