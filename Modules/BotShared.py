@@ -579,9 +579,6 @@ def botdict_setup_server(bot):
         servername = serverparts[-1].title()
         bot.memory["botdict"]["tempvals"]['servername'] = servername
 
-        bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['server']))
-        bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['servername']))
-
     else:
 
         # if host is set in the config without a bouncer, uncomment the next two lines:
