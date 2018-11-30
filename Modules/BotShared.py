@@ -217,6 +217,9 @@ valid_botnick_commands = {
                             "debug": {
                                         'privs': ['admin', 'OP'],
                                         },
+                            "logs": {
+                                        'privs': ['admin', 'OP'],
+                                        },
                             "update": {
                                         'privs': ['admin', 'OP'],
                                         },

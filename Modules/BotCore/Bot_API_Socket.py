@@ -67,21 +67,22 @@ def api_socket_run(bot):
     while True:
 
         # Wait for a connection
-        stderr("[API] Waiting for a connection.")
+        bot_logging(bot, "API", "[API] Waiting for a connection.")
         connection, client_address = sock.accept()
 
         try:
-            stderr("[API] Connection from " + str(client_address))
+            bot_logging(bot, "API", "[API] Connection from " + str(client_address))
 
             # Receive the data in small chunks and retransmit it
             while True:
                 data = connection.recv(2048)
-                stderr("[API] Received data.")
+                bot_logging(bot, "API", "[API] Received data.")
                 if data:
 
-                    # don't run jobs if not ready
-                    while "botdict_loaded" not in bot.memory:
-                        time.sleep(1)
+                    # verify bot is reasdy to recieve a message
+                    if "botdict_loaded" not in bot.memory:
+                        bot_logging(bot, "API", "[API] Not ready to process requests.")
+                        break
 
                     # Sending Botdict out
                     if spicemanip(bot, str(data), 1) == "GET":
@@ -102,14 +103,14 @@ def api_socket_run(bot):
 
                         # sending all this stuff
                         try:
-                            stderr("[API] Sending data back to the client.")
+                            bot_logging(bot, "API", "[API] Sending data back to the client.")
                             connection.send(r)
                             connection.send(response_headers_raw)
                             connection.send('\r\n')  # to separate headers from body
                             connection.send(msg.encode(encoding="utf-8"))
                             break
                         except Exception as e:
-                            stderr("[API] Error Sending Data: (%s)" % (e))
+                            bot_logging(bot, "API", "[API] Error Sending Data: (%s)" % (e))
                             break
 
                     else:
@@ -118,19 +119,19 @@ def api_socket_run(bot):
                         try:
                             jsondict = eval(data)
                         except Exception as e:
-                            stderr("[API] Error recieving: (%s)" % (e))
+                            bot_logging(bot, "API", "[API] Error recieving: (%s)" % (e))
                             break
 
                         # make sure we have the correct format to respond with
                         if not isinstance(jsondict, dict):
-                            stderr("[API] Recieved content not in correct dict format.")
+                            bot_logging(bot, "API", "[API] Recieved content not in correct dict format.")
                             break
 
                         # Possibly add a api key
 
                         # type
                         if "type" not in jsondict.keys():
-                            stderr("[API] No type included.")
+                            bot_logging(bot, "API", "[API] No type included.")
                             break
 
                         if "sender" not in jsondict.keys():
@@ -143,12 +144,12 @@ def api_socket_run(bot):
 
                             # must be a message included
                             if "message" not in jsondict.keys():
-                                stderr("[API] No message included.")
+                                bot_logging(bot, "API", "[API] No message included.")
                                 break
 
                             # must be a channel or user included
                             if "targets" not in jsondict.keys():
-                                stderr("[API] No targets included.")
+                                bot_logging(bot, "API", "[API] No targets included.")
                                 break
 
                             # accept list inputs
@@ -167,10 +168,10 @@ def api_socket_run(bot):
                                     goodtargets.append(target)
 
                             if failedtargets != []:
-                                stderr("[API] " + str(spicemanip(bot, failedtargets, 'andlist')) + " is/are not current channel(s) or user(s).")
+                                bot_logging(bot, "API", "[API] " + str(spicemanip(bot, failedtargets, 'andlist')) + " is/are not current channel(s) or user(s).")
 
                             if goodtargets == []:
-                                stderr("[API] No current channel or user to target.")
+                                bot_logging(bot, "API", "[API] No current channel or user to target.")
                                 break
 
                             for target in goodtargets:
@@ -185,35 +186,35 @@ def api_socket_run(bot):
 
                                 osd(bot, targets, 'say', jsondict["message"])
                             # success
-                            stderr("[API] Success: Sendto=" + str(jsondict["targets"]) + " message='" + str(jsondict["message"]) + "'")
+                            bot_logging(bot, "API", "[API] Success: Sendto=" + str(jsondict["targets"]) + " message='" + str(jsondict["message"]) + "'")
                             break
 
                         elif jsondict["type"] == "command":
 
                             # must be a message included
                             if "command" not in jsondict.keys():
-                                stderr("[API] No command included.")
+                                bot_logging(bot, "API", "[API] No command included.")
                                 break
 
                             if jsondict["command"] == 'register_give':
 
                                 # must be a bot included
                                 if "bot" not in jsondict.keys():
-                                    stderr("[API] No bot included.")
+                                    bot_logging(bot, "API", "[API] No bot included.")
                                     break
 
                                 # must be a host included
                                 if "host" not in jsondict.keys():
-                                    stderr("[API] No host included.")
+                                    bot_logging(bot, "API", "[API] No host included.")
                                     break
 
                                 # must be a port included
                                 if "port" not in jsondict.keys():
-                                    stderr("[API] No port included.")
+                                    bot_logging(bot, "API", "[API] No port included.")
                                     break
 
                                 # successful recieving
-                                stderr("[API] Recieved API registration from " + str(jsondict["bot"]) + " on " + str(jsondict["host"]) + ":" + str(jsondict["port"]))
+                                bot_logging(bot, "API", "[API] Recieved API registration from " + str(jsondict["bot"]) + " on " + str(jsondict["host"]) + ":" + str(jsondict["port"]))
 
                                 # make sure this info is current
                                 registerdict = {
@@ -277,7 +278,7 @@ def api_socket_run(bot):
                                         osd(bot, channel, 'say', "Recived API command to update from Github and restart. Be Back Soon!")
 
                                 # Pull directory from github
-                                stderr("[API] Pulling From Github.")
+                                bot_logging(bot, "API", "[API] Pulling From Github.")
                                 g = git.cmd.Git(bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'])
                                 g.pull()
 
@@ -312,22 +313,22 @@ def api_socket_run(bot):
                                 break
 
                             else:
-                                stderr("[API] Included Command invalid.")
+                                bot_logging(bot, "API", "[API] Included Command invalid.")
                                 break
 
                         else:
-                            stderr("[API] Included Type invalid.")
+                            bot_logging(bot, "API", "[API] Included Type invalid.")
                             break
 
                 else:
                     break
 
         except Exception as e:
-            stderr("[API] Error: (%s)" % (e))
+            bot_logging(bot, "API", "[API] Error: (%s)" % (e))
             continue
 
         # If broken enough, connection will be closed
         finally:
             # Clean up the connection
-            stderr("[API] Closing Connection.")
+            bot_logging(bot, "API", "[API] Closing Connection.")
             connection.close()
