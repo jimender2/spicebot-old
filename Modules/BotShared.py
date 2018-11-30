@@ -4503,7 +4503,7 @@ def reset_nick_value(bot, nick, longevity, sortingkey, usekey):
     # reset
     if longevity == 'long':
         if usekey in bot.memory["botdict"]["users"][nick][sortingkey].keys():
-            del bot.memory["botdict"]["users"][nick][sortingkey][usekey] = value
+            del bot.memory["botdict"]["users"][nick][sortingkey][usekey]
     elif longevity == 'temp':
         if usekey in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey].keys():
             del bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]
