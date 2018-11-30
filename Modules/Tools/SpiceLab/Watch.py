@@ -23,7 +23,7 @@ sys.setdefaultencoding('utf-8')
 
 
 # Start listener on welcome RPL, which should only ever be received once
-@module.event(events.RPL_WELCOME) 
+@module.event(events.RPL_WELCOME)
 @rule('.*')
 @sopel.module.thread(True)
 def api_socket_hub(bot, trigger):
