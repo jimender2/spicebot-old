@@ -22,8 +22,11 @@ sys.setdefaultencoding('utf-8')
 
 # save dictionary every half hour
 @sopel.module.interval(1800)
+@sopel.module.thread(True)
 def savingitall(bot):
+
     # don't run jobs if not ready
-    if "botdict_loaded" not in bot.memory:
-        return
+    while "botdict_loaded" not in bot.memory:
+        time.sleep(1)
+
     botdict_save(bot)

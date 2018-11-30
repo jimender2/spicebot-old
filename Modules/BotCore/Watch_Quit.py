@@ -25,8 +25,8 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def botcom_player_leave(bot, trigger):
 
-    if "botdict_loaded" not in bot.memory:
-        bot_saved_jobs_process(bot, trigger, 'bot_watch_quit')
-        return
+    # don't run jobs if not ready
+    while "botdict_loaded" not in bot.memory:
+        time.sleep(1)
 
     bot_watch_quit_run(bot, trigger)

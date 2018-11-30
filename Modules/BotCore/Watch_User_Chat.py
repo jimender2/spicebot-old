@@ -25,8 +25,8 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.interval(1800)
 def watch_all_hub(bot, trigger):
 
-    if "botdict_loaded" not in bot.memory:
-        bot_saved_jobs_process(bot, trigger, 'bot_watch_all')
-        return
+    # don't run jobs if not ready
+    while "botdict_loaded" not in bot.memory:
+        time.sleep(1)
 
     bot_watch_all_run(bot, trigger)

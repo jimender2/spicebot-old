@@ -32,9 +32,9 @@ bot.nick do this
 @sopel.module.thread(True)
 def bot_nickcom_hub(bot, trigger):
 
-    if "botdict_loaded" not in bot.memory:
-        bot_saved_jobs_process(bot, trigger, 'bot_nickcom')
-        return
+    # don't run jobs if not ready
+    while "botdict_loaded" not in bot.memory:
+        time.sleep(1)
 
     bot_nickcom_run(bot, trigger)
     botdict_save(bot)

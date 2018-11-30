@@ -25,9 +25,11 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def bot_join_hub(bot, trigger):
 
-    if "botdict_loaded" not in bot.memory:
-        if trigger.nick != bot.nick:
-            bot_saved_jobs_process(bot, trigger, 'bot_watch_join')
+    # don't run jobs if not ready
+    while "botdict_loaded" not in bot.memory:
+        time.sleep(1)
+
+    if trigger.nick == bot.nick:
         return
 
     bot_watch_join_run(bot, trigger)

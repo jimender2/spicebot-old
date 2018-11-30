@@ -21,10 +21,11 @@ sys.setdefaultencoding('utf-8')
 
 
 @sopel.module.interval(30)
+@sopel.module.thread(True)
 def run_saved_jobs(bot):
 
     # don't run jobs if not ready
-    if "botdict_loaded" not in bot.memory:
-        return
+    while "botdict_loaded" not in bot.memory:
+        time.sleep(1)
 
     bot_saved_jobs_run(bot)

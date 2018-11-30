@@ -25,9 +25,10 @@ sys.setdefaultencoding('utf-8')
 # Start listener on welcome RPL, which should only ever be received once
 @event('001')
 @rule('.*')
+@sopel.module.thread(True)
 def api_socket_hub(bot, trigger):
 
-    # API listener
+    # If Connection Closes, this should reopen it forever
     while True:
         api_socket_run(bot)
 
@@ -64,6 +65,7 @@ def api_socket_run(bot):
         bot.memory["sock_bot_list"] = []
 
     while True:
+
         # Wait for a connection
         stderr("[API] Waiting for a connection.")
         connection, client_address = sock.accept()
