@@ -134,9 +134,6 @@ bot_dict = {
                             # Current Users
                             "all_current_users": [],
 
-                            # offline users
-                            "offline_users": [],
-
                             # Bots
                             "bots_list": {},
                             "bot_admins": [],
@@ -663,6 +660,9 @@ def botdict_setup_chan_users(bot):
 
     currentservername = bot.memory["botdict"]["tempvals"]['server']
 
+    if "users" not in bot.memory["botdict"].keys():
+        bot.memory["botdict"]["users"] = dict()
+
     for servername in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
 
         # permanent
@@ -698,9 +698,46 @@ def botdict_setup_chan_users(bot):
             if checktype not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel].keys():
                 bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel][checktype] = []
 
+        if 'all_current_users' not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel]['all_current_users'] = []
+
+        userprivdict = dict()
+        for user in bot.privileges[channel].keys():
+            user = str(user)
+
+            if user not in bot.memory["botdict"]["users"].keys():
+                bot.memory["botdict"]["users"][user] = dict()
+
+            if user not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel]['all_current_users']:
+                bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel]['all_current_users'].append(user)
+
+            if user not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel]['current_users'] and user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+                bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel]['current_users'].append(str(user))
+            try:
+                userprivdict[user] = bot.privileges[channel][str(user)] or 0
+            except KeyError:
+                userprivdict[str(user)] = 0
+
+        for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+            privstring = str("chan" + privtype.lower() + "s")
+            if userprivdict[user] == eval(privtype):
+                if user not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel][privstring]:
+                    bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel][privstring].append(user)
+            elif userprivdict[user] >= eval(privtype) and privtype == 'OWNER':
+                if user not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel][privstring]:
+                    bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel][privstring].append(user)
+            else:
+                if user in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel][privstring]:
+                    bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel][privstring].remove(user)
 
     for host in bot.memory["botdict"]["tempvals"]["api_query"]:
         for bots in bot.memory["botdict"]["tempvals"]["api_query"][host]:
+
+            apiuserlist = bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["users"].keys()
+            for user in apiuserlist:
+                if user not in bot.memory["botdict"]["users"].keys():
+                    bot.memory["botdict"]["users"][user] = dict()
+
             botserver = bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["tempvals"]['server']
             for channel in bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["tempvals"]['servers_list'][botserver]["channels_list"].keys():
 
@@ -726,9 +763,20 @@ def botdict_setup_chan_users(bot):
                 if bot.memory["botdict"]["servers_list"][botserver]['channels_list'][channel]["auth_block"] == []:
                     bot.memory["botdict"]["servers_list"][botserver]['channels_list'][channel]["auth_block"].append("all")
 
+                if 'all_current_users' not in bot.memory["botdict"]["tempvals"]["servers_list"][botserver]['channels_list'][channel].keys():
+                    bot.memory["botdict"]["tempvals"]["servers_list"][botserver]['channels_list'][channel]['all_current_users'] = []
+
+                for user in bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["tempvals"]['servers_list'][botserver]["channels_list"][channel]['all_current_users']:
+                    if user not in bot.memory["botdict"]["tempvals"]["servers_list"][botserver]['channels_list'][channel]['all_current_users']:
+                        bot.memory["botdict"]["tempvals"]["servers_list"][botserver]['channels_list'][channel]['all_current_users'].append(user)
+
                 for checktype in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
                     if checktype not in bot.memory["botdict"]["tempvals"]["servers_list"][botserver]['channels_list'][channel].keys():
                         bot.memory["botdict"]["tempvals"]["servers_list"][botserver]['channels_list'][channel][checktype] = []
+                    apichanlist = bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["tempvals"]['servers_list'][botserver]["channels_list"][channel][checktype]
+                    for user in apichanlist:
+                        if user not in bot.memory["botdict"]["tempvals"]["servers_list"][botserver]['channels_list'][channel][checktype]:
+                            bot.memory["botdict"]["tempvals"]["servers_list"][botserver]['channels_list'][channel][checktype].append(user)
 
 
 # initial user list creation
@@ -791,12 +839,6 @@ def botdict_setup_users_chan(bot):
                 bot.memory["botdict"]["users"][user] = dict()
             if user not in bot.memory["botdict"]["tempvals"]['all_current_users']:
                 bot.memory["botdict"]["tempvals"]['all_current_users'].append(user)
-
-    for user in bot.memory["botdict"]["users"].keys():
-        if user not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-            if user not in bot.memory["botdict"]["tempvals"]['all_current_users']:
-                if user not in bot.memory["botdict"]["tempvals"]['offline_users']:
-                    bot.memory["botdict"]["tempvals"]['offline_users'].append(user)
 
 
 # files in the txt files dir will be imported
@@ -1401,10 +1443,6 @@ def bot_watch_part_run(bot, trigger):
 
     if not online:
 
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-            if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
-                bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
-
         if botcom.instigator in bot.memory["botdict"]["tempvals"]['all_current_users']:
             bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
 
@@ -1477,10 +1515,6 @@ def bot_watch_kick_run(bot, trigger):
         online = False
 
     if not online:
-
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-            if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
-                bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
 
         if botcom.instigator in bot.memory["botdict"]["tempvals"]['all_current_users']:
             bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
@@ -1563,13 +1597,6 @@ def bot_watch_nick_run(bot, trigger):
                     if botcom.target in bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring]:
                         bot.memory["botdict"]["tempvals"]['channels_list'][channel][privstring].remove(botcom.target)
 
-    # offline
-    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
-            bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
-    if botcom.target in bot.memory["botdict"]["tempvals"]['offline_users']:
-        bot.memory["botdict"]["tempvals"]['offline_users'].remove(botcom.target)
-
     # all current users
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['all_current_users']:
         bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
@@ -1630,10 +1657,6 @@ def bot_watch_quit_run(bot, trigger):
         for status in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
             if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][channel][status]:
                 bot.memory["botdict"]["tempvals"]['channels_list'][channel][status].remove(botcom.instigator)
-
-    if botcom.instigator not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['offline_users']:
-            bot.memory["botdict"]["tempvals"]['offline_users'].append(botcom.instigator)
 
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['all_current_users']:
         bot.memory["botdict"]["tempvals"]['all_current_users'].remove(botcom.instigator)
@@ -1733,10 +1756,6 @@ def bot_watch_join_run(bot, trigger):
         else:
             if botcom.instigator in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring]:
                 bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current][privstring].remove(botcom.instigator)
-
-    # remove from offline
-    if botcom.instigator in bot.memory["botdict"]["tempvals"]['offline_users']:
-        bot.memory["botdict"]["tempvals"]['offline_users'].remove(botcom.instigator)
 
 
 # how we handdle user and channel MODE
