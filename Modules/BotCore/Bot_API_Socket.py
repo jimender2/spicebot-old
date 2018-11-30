@@ -57,11 +57,11 @@ def api_socket_hub(bot, trigger):
         bot.memory["sock_bot_list"] = []
 
     # API listener
-    while True:
-        threading.Thread(target=api_socket_run, args=(bot)).start()
+    # while True:
+    #    threading.Thread(target=api_socket_run, args=(bot)).start()
 
 
-def api_socket_run(bot):
+# def api_socket_run(bot):
 
     while True:
         # Wait for a connection
