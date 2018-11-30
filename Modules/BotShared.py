@@ -2382,7 +2382,7 @@ def bot_logging(bot, logtype, logentry):
     if 'logs' not in bot.memory:
         bot.memory['logs'] = {}
 
-    if logtype in bot.memory['logs'].keys():
+    if logtype not in bot.memory['logs'].keys():
         bot.memory['logs'][logtype] = []
 
     bot.memory['logs'][logtype].append()
