@@ -640,7 +640,7 @@ def botdict_setup_bot_info(bot):
                 else:
                     bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['directory'] = None
 
-                bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['config_file'] = str(bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['directory'] + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/" + str(filenameminuscfg) + ".cfg")
+                bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['config_file'] = str(joindpath + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/" + str(filenameminuscfg) + ".cfg")
 
                 # Read configuration
                 bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['configuration'] = config_file_to_dict(bot, bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['config_file'])
