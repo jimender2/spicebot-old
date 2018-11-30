@@ -278,9 +278,6 @@ def botdict_open(bot):
     # Bot startup time
     botdict_setup_uptime(bot)
 
-    # basic bot info for use later
-    botdict_setup_bot_info(bot)
-
     # Access configs stored by other bots
     botdict_setup_query_apis(bot)
 
@@ -293,6 +290,9 @@ def botdict_open(bot):
     # Server connected to, default assumes ZNC bouncer configuration
     # this can be tweaked below
     botdict_setup_server(bot)
+
+    # basic bot info for use later
+    botdict_setup_bot_info(bot)
 
     # Channel Listing
     botdict_setup_channels(bot)
@@ -628,6 +628,14 @@ def botdict_setup_bot_info(bot):
         bot.memory["botdict"]["tempvals"]["bot_info"]['bot_owners'] = []
     if str(bot.config.core.owner) not in bot.memory["botdict"]["tempvals"]['bot_owners']:
         bot.memory["botdict"]["tempvals"]["bot_info"]['bot_owners'].append(str(bot.config.core.owner))
+
+    bot.memory["botdict"]["tempvals"]["bot_info"]['config_dir'] = str("/home/spicebot/.sopel/" + str(bot.nick) + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
+
+    for filename in os.listdir(bot.memory["botdict"]["tempvals"]["bot_info"]['config_dir']):
+        if str(filename).endswith(".cfg"):
+            filenameminuscfg = str(filename).replace(".cfg", "")
+            if filenameminuscfg not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+                bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg] = dict()
 
     for botinf in ["nick"]:
         try:
@@ -5079,21 +5087,21 @@ def array_arrangesort(bot, sortbyarray, arrayb):
 
 
 """
-Create Empty Class
+# Empty Classes
 """
 
 
 def class_create(classname):
     compiletext = """
-    def __init__(self):
-        self.default = str(self.__class__.__name__)
-    def __repr__(self):
-        return repr(self.default)
-    def __str__(self):
-        return str(self.default)
-    def __iter__(self):
-        return str(self.default)
-    pass
+        def __init__(self):
+            self.default = str(self.__class__.__name__)
+        def __repr__(self):
+            return repr(self.default)
+        def __str__(self):
+            return str(self.default)
+        def __iter__(self):
+            return str(self.default)
+        pass
         """
     exec(compile("class class_" + str(classname) + ": " + compiletext, "", "exec"))
     newclass = eval('class_'+classname+"()")
