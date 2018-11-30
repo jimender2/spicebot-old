@@ -31,12 +31,13 @@ bot.nick do this
 @rule('(.*)')
 @sopel.module.thread(True)
 def bot_watch_exclamation_hub(bot, trigger):
+
     if not str(trigger).startswith(tuple(['!'])):
         return
 
-    if "botdict_loaded" not in bot.memory:
-        bot_saved_jobs_process(bot, trigger, 'bot_watch_exclamation')
-        return
+    # don't run jobs if not ready
+    while "botdict_loaded" not in bot.memory:
+        time.sleep(1)
 
     bot_watch_exclamation(bot, trigger)
     botdict_save(bot)
