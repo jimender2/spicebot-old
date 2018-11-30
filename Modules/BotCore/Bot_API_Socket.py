@@ -28,13 +28,6 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def api_socket_hub(bot, trigger):
 
-    # If Connection Closes, this should reopen it forever
-    while True:
-        api_socket_run(bot)
-
-
-def api_socket_run(bot):
-
     # Create a TCP/IP socket
     bot.memory['sock'] = None
     bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
@@ -63,6 +56,13 @@ def api_socket_run(bot):
         bot.memory["sock_dict"] = dict()
     if "sock_bot_list" not in bot.memory:
         bot.memory["sock_bot_list"] = []
+
+    # If Connection Closes, this should reopen it forever
+    while True:
+        api_socket_run(bot, sock)
+
+
+def api_socket_run(bot, sock):
 
     while True:
 
