@@ -23,10 +23,15 @@ sys.setdefaultencoding('utf-8')
 
 
 # Start listener on welcome RPL, which should only ever be received once
-@module.event(events.RPL_WELCOME)
+@event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def api_socket_hub(bot, trigger):
+def watch_events_test(bot, trigger):
 
-    bot.msg("#spicebottest", str(trigger))
-    bot.msg("#spicebottest", str(trigger.args))
+    for value in ["trigger", "trigger.args", "trigger.nick", "trigger.sender"]:
+        try:
+            valueeval = str(eval(value))
+            valueeval = str(value + " = " + valueeval)
+        except Exception as e:
+            valueeval = str("error with " + str(value))
+        bot.msg("#spicebottest", str(valueeval))
