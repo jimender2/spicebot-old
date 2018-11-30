@@ -23,7 +23,7 @@ sys.setdefaultencoding('utf-8')
 
 
 # Start listener on welcome RPL, which should only ever be received once
-@module.event(events.RPL_WELCOME)
+@sopel.module.event(events.RPL_WELCOME)
 @sopel.module.rule('.*')
 @sopel.module.thread(True)
 def watch_events_test(bot, trigger):
