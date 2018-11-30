@@ -28,7 +28,10 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def watch_events_test(bot, trigger):
 
-    for value in ["trigger", "trigger.args", "trigger.nick", "trigger.sender"]:
+    while 'botdict_loaded' not in bot.memory:
+        time.sleep(1)
+
+    for value in ["trigger", "trigger.args", "trigger.nick", "trigger.sender", "trigger.hostmask", "trigger.user", "trigger.time", "trigger.is_privmsg", "trigger.admin", "trigger.owner"]:
         try:
             valueeval = str(eval(value))
             valueeval = str(value + " = " + valueeval)
