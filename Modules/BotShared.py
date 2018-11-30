@@ -2631,7 +2631,7 @@ def bot_nickcom_function_debug(bot, botcom):
             if targetbot in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
                 targetbots[targetbot] = dict()
 
-    osd(bot, botcom.channel_current, 'action', "Is Examining Log(s) for " + spicemanip(bot, targetbots.keys(), 'andlist'))
+    osd(bot, botcom.channel_current, 'action', "Is Examining systemd Log(s) for " + spicemanip(bot, targetbots.keys(), 'andlist'))
 
     for targetbot in targetbots.keys():
 
@@ -2657,6 +2657,18 @@ def bot_nickcom_function_debug(bot, botcom):
 
     if nobotlogs != []:
         osd(bot, botcom.channel_current, 'say', spicemanip(bot, nobotlogs, 'andlist') + " had no log(s) for some reason")
+
+
+def bot_nickcom_function_logs(bot, botcom):
+
+    logtype = spicemanip(bot, botcom.triggerargsarray, 1)
+    if not logtype or logtype not in bot.memory['logs'].keys():
+        return osd(bot, botcom.channel_current, 'action', "Valid current Log(s) include: " + spicemanip(bot, bot.memory['logs'].keys(), 'andlist'))
+
+    osd(bot, botcom.channel_current, 'action', "Is Examining " + str(logtype) + " Log(s).")
+
+    for line in bot.memory['logs'][logtype]:
+        osd(bot, botcom.channel_current, 'action', str(line))
 
 
 def bot_nickcom_function_permfix(bot, botcom):
