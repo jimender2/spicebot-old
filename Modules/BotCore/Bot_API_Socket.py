@@ -25,7 +25,13 @@ sys.setdefaultencoding('utf-8')
 # Start listener on welcome RPL, which should only ever be received once
 @event('001')
 @rule('.*')
-def listener(bot, trigger):
+def api_socket_hub(bot, trigger):
+    # API listener
+    while True:
+        threading.Thread(target=api_socket_run, args=(bot)).start()
+
+
+def api_socket_run(bot):
 
     # Create a TCP/IP socket
     bot.memory['sock'] = None
