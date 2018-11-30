@@ -28,9 +28,7 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def api_socket_hub(bot, trigger):
 
-    bot.msg("#spicebottest", str(trigger))
     bot.msg("#spicebottest", str(trigger.sender))
-    bot.msg("#spicebottest", str(trigger.args))
 
     # If Connection Closes, this should reopen it forever
     while True:
