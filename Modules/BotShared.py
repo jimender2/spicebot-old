@@ -2385,7 +2385,7 @@ def bot_logging(bot, logtype, logentry):
     if logtype not in bot.memory['logs'].keys():
         bot.memory['logs'][logtype] = []
 
-    bot.memory['logs'][logtype].append()
+    bot.memory['logs'][logtype].append(logentry)
     if len(bot.memory['logs'][logtype]) > 10:
         del bot.memory['logs'][logtype][0]
 
