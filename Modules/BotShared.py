@@ -576,7 +576,13 @@ def botdict_setup_server(bot):
 
         serverparts = bot.memory["connected_server"].split(".")
         del serverparts[-1]
-        servername = serverparts[-1].title()
+        servername = serverparts[-1]
+        if servername == 'spicebot':
+            servername = 'SpiceBot'
+        elif servername == 'freenode':
+            servername = 'Freenode'
+        else:
+            servername = servername.title
         bot.memory["botdict"]["tempvals"]['servername'] = servername
 
     else:
