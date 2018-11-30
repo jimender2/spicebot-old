@@ -26,12 +26,6 @@ sys.setdefaultencoding('utf-8')
 @event('001')
 @rule('.*')
 def api_socket_hub(bot, trigger):
-    # API listener
-    while True:
-        threading.Thread(target=api_socket_run, args=(bot)).start()
-
-
-def api_socket_run(bot):
 
     # Create a TCP/IP socket
     bot.memory['sock'] = None
@@ -61,6 +55,13 @@ def api_socket_run(bot):
         bot.memory["sock_dict"] = dict()
     if "sock_bot_list" not in bot.memory:
         bot.memory["sock_bot_list"] = []
+
+    # API listener
+    while True:
+        threading.Thread(target=api_socket_run, args=(bot)).start()
+
+
+def api_socket_run(bot):
 
     while True:
         # Wait for a connection
