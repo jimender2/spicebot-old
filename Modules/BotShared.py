@@ -576,7 +576,7 @@ def botdict_setup_server(bot):
 
         serverparts = bot.memory["connected_server"].split(".")
         del serverparts[-1]
-        servername = serverparts[-1]
+        servername = serverparts[-1].title()
         bot.memory["botdict"]["tempvals"]['servername'] = servername
 
         bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['server']))
