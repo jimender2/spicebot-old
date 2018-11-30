@@ -79,9 +79,10 @@ def api_socket_run(bot):
                 stderr("[API] Received data.")
                 if data:
 
-                    # don't run jobs if not ready
-                    while "botdict_loaded" not in bot.memory:
-                        time.sleep(1)
+                    # verify bot is reasdy to recieve a message
+                    if "botdict_loaded" not in bot.memory:
+                        stderr("[API] Not ready to process requests.")
+                        break
 
                     # Sending Botdict out
                     if spicemanip(bot, str(data), 1) == "GET":
