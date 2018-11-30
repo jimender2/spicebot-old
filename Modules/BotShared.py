@@ -298,10 +298,10 @@ def botdict_open(bot):
     botdict_setup_bot_info(bot)
 
     # Channel Listing
-    botdict_setup_channels(bot)
+    botdict_setup_chan_users(bot)
 
     # users
-    botdict_setup_users(bot)
+    botdict_setup_users_chan(bot)
 
     # Text Files
     bot_read_txt_files(bot)
@@ -650,7 +650,7 @@ def botdict_setup_bot_info(bot):
 
 
 # create listing for channels the bot is in
-def botdict_setup_channels(bot):
+def botdict_setup_chan_users(bot):
 
     if "botdict" not in bot.memory:
         botdict_setup_open(bot)
@@ -694,6 +694,11 @@ def botdict_setup_channels(bot):
         if bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][channel]["auth_block"] == []:
             bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][channel]["auth_block"].append("all")
 
+        for checktype in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
+            if checktype not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel].keys():
+                bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel][checktype] = []
+
+
     for host in bot.memory["botdict"]["tempvals"]["api_query"]:
         for bots in bot.memory["botdict"]["tempvals"]["api_query"][host]:
             botserver = bot.memory["botdict"]["tempvals"]["api_query"][host][bots]["tempvals"]['server']
@@ -721,6 +726,14 @@ def botdict_setup_channels(bot):
                 if bot.memory["botdict"]["servers_list"][botserver]['channels_list'][channel]["auth_block"] == []:
                     bot.memory["botdict"]["servers_list"][botserver]['channels_list'][channel]["auth_block"].append("all")
 
+                for checktype in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
+                    if checktype not in bot.memory["botdict"]["tempvals"]["servers_list"][botserver]['channels_list'][channel].keys():
+                        bot.memory["botdict"]["tempvals"]["servers_list"][botserver]['channels_list'][channel][checktype] = []
+
+
+# initial user list creation
+def botdict_setup_users_chan(bot):
+
     # All channels the bot is in
     for channel in bot.privileges.keys():
         channel = str(channel)
@@ -742,19 +755,6 @@ def botdict_setup_channels(bot):
         # diabled commands per channel
         if "disabled_commands" not in bot.memory["botdict"]['channels_list'][channel].keys():
             bot.memory["botdict"]['channels_list'][channel]["disabled_commands"] = {}
-
-
-# initial user list creation
-def botdict_setup_users(bot):
-
-    if "botdict" not in bot.memory:
-        botdict_setup_open(bot)
-
-    if "tempvals" not in bot.memory["botdict"].keys():
-        bot.memory["botdict"]["tempvals"] = dict()
-
-    if "servers_list" not in bot.memory["botdict"].keys() or "servers_list" not in bot.memory["botdict"]["tempvals"].keys():
-        botdict_setup_server(bot)
 
     for channelcheck in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
 
