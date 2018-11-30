@@ -569,31 +569,44 @@ def botdict_setup_server(bot):
     if "servers_list" not in bot.memory["botdict"].keys():
         bot.memory["botdict"]['servers_list'] = dict()
 
-    # if host is set in the config without a bouncer, uncomment the next two lines:
-    # bot.memory["botdict"]["tempvals"]['server'] = bot.config.core.host
-    # return
+    if "connected_server" in bot.memory:
 
-    # The server the bot is connected to. Sopel limit is one
-    # this detects the use of an IRC bouncer like ZNC
-    # This is a custom function for this bot's connection
+        bot.memory["botdict"]["tempvals"]['server'] = bot.memory["connected_server"]
 
-    if ipv4detect(bot, bot.config.core.host):
-        try:
-            servername = str(bot.config.core.user.split("/", 1)[1])
-        except Exception as e:
+        serverparts = bot.memory["connected_server"].split(".")
+        del serverparts[-1]
+        bot.memory["botdict"]["tempvals"]['servername'] = serverparts[0]
+
+        bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['server']))
+        bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['servername']))
+
+    else:
+
+        # if host is set in the config without a bouncer, uncomment the next two lines:
+        # bot.memory["botdict"]["tempvals"]['server'] = bot.config.core.host
+        # return
+
+        # The server the bot is connected to. Sopel limit is one
+        # this detects the use of an IRC bouncer like ZNC
+        # This is a custom function for this bot's connection
+
+        if ipv4detect(bot, bot.config.core.host):
+            try:
+                servername = str(bot.config.core.user.split("/", 1)[1])
+            except Exception as e:
+                servername = bot.config.core.host
+        else:
             servername = bot.config.core.host
-    else:
-        servername = bot.config.core.host
 
-    if servername == 'SpiceBot':
-        server = 'irc.spicebot.net'
-    elif servername == 'Freenode':
-        server = 'irc.freenode.net'
-    else:
-        server = bot.config.core.host
+        if servername == 'SpiceBot':
+            server = 'irc.spicebot.net'
+        elif servername == 'Freenode':
+            server = 'irc.freenode.net'
+        else:
+            server = bot.config.core.host
 
-    bot.memory["botdict"]["tempvals"]['servername'] = servername
-    bot.memory["botdict"]["tempvals"]['server'] = server
+        bot.memory["botdict"]["tempvals"]['servername'] = servername
+        bot.memory["botdict"]["tempvals"]['server'] = server
 
     if server not in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
         bot.memory["botdict"]["tempvals"]["servers_list"][server] = dict()
