@@ -571,11 +571,13 @@ def botdict_setup_server(bot):
 
     if "connected_server" in bot.memory:
 
-        bot.memory["botdict"]["tempvals"]['server'] = bot.memory["connected_server"]
+        server = bot.memory["connected_server"]
+        bot.memory["botdict"]["tempvals"]['server'] = server
 
         serverparts = bot.memory["connected_server"].split(".")
         del serverparts[-1]
-        bot.memory["botdict"]["tempvals"]['servername'] = serverparts[-1]
+        servername = serverparts[-1]
+        bot.memory["botdict"]["tempvals"]['servername'] = servername
 
         bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['server']))
         bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]['servername']))
