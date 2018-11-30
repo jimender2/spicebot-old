@@ -665,11 +665,13 @@ def botdict_setup_channels(bot):
 
     for servername in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
 
-        if "channels_list" not in bot.memory["botdict"]["tempvals"]["servers_list"][servername].keys():
-            bot.memory["botdict"]["tempvals"]["servers_list"][servername]["channels_list"] = dict()
-
+        # permanent
         if "channels_list" not in bot.memory["botdict"]["servers_list"][servername].keys():
             bot.memory["botdict"]["servers_list"][servername]["channels_list"] = dict()
+
+        # temp
+        if "channels_list" not in bot.memory["botdict"]["tempvals"]["servers_list"][servername].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][servername]["channels_list"] = dict()
 
     for channel in bot.privileges.keys():
         channel = str(channel)
@@ -744,6 +746,15 @@ def botdict_setup_channels(bot):
 
 # initial user list creation
 def botdict_setup_users(bot):
+
+    if "botdict" not in bot.memory:
+        botdict_setup_open(bot)
+
+    if "tempvals" not in bot.memory["botdict"].keys():
+        bot.memory["botdict"]["tempvals"] = dict()
+
+    if "servers_list" not in bot.memory["botdict"].keys() or "servers_list" not in bot.memory["botdict"]["tempvals"].keys():
+        botdict_setup_server(bot)
 
     for channelcheck in bot.memory["botdict"]["tempvals"]['channels_list'].keys():
 
@@ -874,7 +885,7 @@ def dict_command_configs(bot):
                                 dict_from_file = eval(infread)
                             except Exception as e:
                                 filereadgood = False
-                                stderr("Error loading dict %s: %s (%s)" % (comconf, e, comconf_file_path))
+                                bot_logging(bot, "API", "Error loading dict %s: %s (%s)" % (comconf, e, comconf_file_path))
                                 dict_from_file = dict()
                             # Close File
                             inf.close()
@@ -2231,7 +2242,7 @@ def bot_register_handler_startup(bot):
                     }
 
     # This is for my custom use, hardcoded hosts
-    stderr("[API] Creating list of Bots To Query")
+    bot_logging(bot, "API", "[API] Creating list of Bots To Query")
     hostslist = ["192.168.5.100", "192.168.5.101"]
     hostsprocess = []
     for host in hostslist:
@@ -2239,19 +2250,19 @@ def bot_register_handler_startup(bot):
             if bot_api_port_test(bot, host, i):
                 hostsprocess.append({"host": host, "port": i})
     if hostsprocess == []:
-        stderr("[API] No Bots To Query")
+        bot_logging(bot, "API", "[API] No Bots To Query")
     else:
 
-        stderr("[API] Sending API registration to other bots")
+        bot_logging(bot, "API", "[API] Sending API registration to other bots")
         for bots in hostsprocess:
             bot_register_handler_single(bot, bots["host"], bots["port"], registerdict)
-        stderr("[API] Sent API registration to other bots")
+        bot_logging(bot, "API", "[API] Sent API registration to other bots")
 
         registerdict["command"] = "register_request"
-        stderr("[API] Requesting API registration from other bots")
+        bot_logging(bot, "API", "[API] Requesting API registration from other bots")
         for bots in hostsprocess:
             bot_register_handler_single(bot, bots["host"], bots["port"], registerdict)
-        stderr("[API] Requesting API registration from other bots: Complete")
+        bot_logging(bot, "API", "[API] Requesting API registration from other bots: Complete")
 
 
 def bot_register_handler_single(bot, host, port, dictsend):
@@ -2264,7 +2275,7 @@ def bot_register_handler_single(bot, host, port, dictsend):
     try:
         tempsock.connect(server_address)
     except Exception as e:
-        stderr("[API] Error connecting to " + str(host) + ":" + str(port) + " (" + str(e) + ")")
+        bot_logging(bot, "API", "[API] Error connecting to " + str(host) + ":" + str(port) + " (" + str(e) + ")")
         tempsock.close()
         return
 
@@ -2273,10 +2284,10 @@ def bot_register_handler_single(bot, host, port, dictsend):
 
     # sending all this stuff
     try:
-        stderr("[API] Sending Registration data to " + str(host) + ":" + str(port))
+        bot_logging(bot, "API", "[API] Sending Registration data to " + str(host) + ":" + str(port))
         tempsock.send(msg.encode(encoding="utf-8"))
     except Exception as e:
-        stderr("[API] Error Sending Data to " + str(host) + ":" + str(port) + " (" + str(e) + ")")
+        bot_logging(bot, "API", "[API] Error Sending Data to " + str(host) + ":" + str(port) + " (" + str(e) + ")")
         tempsock.close()
     return
 
@@ -2330,10 +2341,10 @@ def bot_api_send(bot, botport, messagedict, host):
 
     # sending all this stuff
     try:
-        stderr("[API] Sending data.")
+        bot_logging(bot, "API", "[API] Sending data.")
         tempsock.send(msg.encode(encoding="utf-8"))
     except Exception as e:
-        stderr("[API] Error Sending Data: (%s)" % (e))
+        bot_logging(bot, "API", "[API] Error Sending Data: (%s)" % (e))
         tempsock.close()
 
     return
