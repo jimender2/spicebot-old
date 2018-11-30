@@ -31,7 +31,7 @@ def watch_events_test(bot, trigger):
     while 'botdict_loaded' not in bot.memory:
         time.sleep(1)
 
-    for value in ["trigger", "trigger.args", "trigger.tags", "trigger.nick", "trigger.sender", "trigger.hostmask", "trigger.user", "trigger.time", "trigger.is_privmsg", "trigger.admin", "trigger.owner"]:
+    for value in ["trigger", "trigger.args", "trigger.event", "trigger.tags", "trigger.nick", "trigger.sender", "trigger.hostmask", "trigger.user", "trigger.time", "trigger.is_privmsg", "trigger.admin", "trigger.owner"]:
         try:
             valueeval = str(eval(value))
             valueeval = str(value + " = " + valueeval)
