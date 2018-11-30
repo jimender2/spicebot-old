@@ -2028,7 +2028,7 @@ def bot_watch_all_run(bot, trigger):
                     "intent": 'intent' in trigger.tags,
                     }
 
-    currentnickrecord = get_nick_value(bot, botcom.instigator, 'long', 'user_activity', 'list')
+    currentnickrecord = get_nick_value(bot, botcom.instigator, 'long', 'user_activity', 'list') or []
     currentnickrecord.append(usertalkdict)
     if len(currentnickrecord) > 10:
         del currentnickrecord[0]
