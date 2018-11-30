@@ -297,9 +297,6 @@ def botdict_open(bot):
     # Channel Listing
     botdict_setup_channels(bot)
 
-    # Bot configs
-    botdict_setup_bots(bot)
-
     # users
     botdict_setup_users(bot)
 
@@ -425,18 +422,7 @@ def botdict_setup_external_config(bot):
     if "tempvals" not in bot.memory["botdict"].keys():
         bot.memory["botdict"]["tempvals"] = dict()
 
-    bot.memory["botdict"]["tempvals"]["ext_conf"] = dict()
-
-    # Loop through external config file
-    config = ConfigParser.ConfigParser()
-    config.read("/home/spicebot/spicebot.conf")
-    for each_section in config.sections():
-
-        bot.memory["botdict"]["tempvals"]['ext_conf'][each_section] = dict()
-
-        for (each_key, each_val) in config.items(each_section):
-
-            bot.memory["botdict"]["tempvals"]['ext_conf'][each_section][each_key] = each_val
+    bot.memory["botdict"]["tempvals"]["ext_conf"] = config_file_to_dict(bot, "/home/spicebot/spicebot.conf")
 
 
 # gif searching api
@@ -618,6 +604,14 @@ def botdict_setup_bot_info(bot):
 
     bot.memory["botdict"]["tempvals"]["bot_info"] = dict()
 
+    for botinf in ["nick"]:
+        try:
+            stringeval = str(eval("bot." + botinf))
+        except Exception as e:
+            stringeval = None
+        if botinf not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
+            bot.memory["botdict"]["tempvals"]["bot_info"][botinf] = stringeval
+
     if 'bot_admins' not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
         bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins'] = []
     for botadmin in bot.config.core.admins:
@@ -637,13 +631,19 @@ def botdict_setup_bot_info(bot):
             if filenameminuscfg not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
                 bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg] = dict()
 
-    for botinf in ["nick"]:
-        try:
-            stringeval = str(eval("bot." + botinf))
-        except Exception as e:
-            stringeval = None
-        if botinf not in bot.memory["botdict"]["tempvals"]["bot_info"].keys():
-            bot.memory["botdict"]["tempvals"]["bot_info"][botinf] = stringeval
+                if 'name' not in bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg].keys():
+                    bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['name'] = filenameminuscfg
+
+                joindpath = os.path.join("/home/spicebot/.sopel/", filenameminuscfg)
+                if os.path.isdir(joindpath):
+                    bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['directory'] = joindpath
+                else:
+                    bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['directory'] = None
+
+                bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['config_file'] = str(bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['directory'] + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/" + str(filenameminuscfg) + ".cfg")
+
+                # Read configuration
+                bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['configuration'] = config_file_to_dict(bot, bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg]['config_file'])
 
 
 # create listing for channels the bot is in
@@ -737,49 +737,6 @@ def botdict_setup_channels(bot):
         # diabled commands per channel
         if "disabled_commands" not in bot.memory["botdict"]['channels_list'][channel].keys():
             bot.memory["botdict"]['channels_list'][channel]["disabled_commands"] = {}
-
-
-# other bot configs will be detected in this directory
-def botdict_setup_bots(bot):
-
-    if bot.memory["botdict"]["tempvals"]['bot_admins'] == []:
-        bot.memory["botdict"]["tempvals"]['bot_admins'] = bot.config.core.admins
-    if bot.memory["botdict"]["tempvals"]['bot_owners'] == []:
-        bot.memory["botdict"]["tempvals"]['bot_owners'] = [bot.config.core.owner]
-
-    if not bot.memory["botdict"]["tempvals"]['config_dir']:
-        bot.memory["botdict"]["tempvals"]['config_dir'] = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
-
-    # all bot configs present
-    if bot.memory["botdict"]["tempvals"]['bots_list'].keys() == []:
-        for filename in os.listdir(bot.memory["botdict"]["tempvals"]['config_dir']):
-            filenameminuscfg = str(filename).replace(".cfg", "")
-            if filenameminuscfg not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-                bot.memory["botdict"]["tempvals"]['bots_list'][filenameminuscfg] = dict()
-
-    for botconf in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
-        if bot.memory["botdict"]["tempvals"]['bots_list'][botconf] == dict():
-            if 'name' not in bot.memory["botdict"]["tempvals"]['bots_list'][botconf].keys():
-                bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['name'] = botconf
-            if 'directory' not in bot.memory["botdict"]["tempvals"]['bots_list'][botconf].keys():
-                joindpath = os.path.join("/home/spicebot/.sopel/", botconf)
-                if os.path.isdir(joindpath):
-                    bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['directory'] = joindpath
-                else:
-                    bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['directory'] = None
-            if 'config_file' not in bot.memory["botdict"]["tempvals"]['bots_list'][botconf].keys():
-                bot.memory["botdict"]["tempvals"]['config_file'] = str(bot.memory["botdict"]["tempvals"]['config_dir'] + str(botconf) + ".cfg")
-            if 'configuration' not in bot.memory["botdict"]["tempvals"]['bots_list'][botconf].keys():
-                bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['configuration'] = dict()
-                # Read configuration
-                config = ConfigParser.ConfigParser()
-                config.read(bot.memory["botdict"]["tempvals"]['config_file'])
-                for each_section in config.sections():
-                    if each_section not in bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['configuration'].keys():
-                        bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['configuration'][each_section] = dict()
-                        for (each_key, each_val) in config.items(each_section):
-                            if each_key not in bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['configuration'][each_section].keys():
-                                bot.memory["botdict"]["tempvals"]['bots_list'][botconf]['configuration'][each_section][each_key] = each_val
 
 
 # initial user list creation
@@ -4061,6 +4018,26 @@ def bot_list_directory(bot, botcom):
 """
 Small Functions
 """
+
+
+def config_file_to_dict(bot, filetoread):
+
+    newdict = dict()
+
+    # Read configuration
+    config = ConfigParser.ConfigParser()
+    config.read(filetoread)
+
+    for each_section in config.sections():
+
+        if each_section not in newdict.keys():
+            newdict[each_section] = dict()
+
+            for (each_key, each_val) in config.items(each_section):
+                if each_key not in newdict[each_section].keys():
+                    newdict[each_section][each_key] = each_val
+
+    return newdict
 
 
 def humanized_time(countdownseconds):
