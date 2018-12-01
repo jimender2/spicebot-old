@@ -25,7 +25,7 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def real_startup(bot, trigger):
 
-    while not len(bot.channels) > 0:
+    while not len(bot.privileges.keys()) > 0:
         time.sleep(1)
 
     # Startup
