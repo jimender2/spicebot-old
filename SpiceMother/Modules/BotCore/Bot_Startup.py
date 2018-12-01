@@ -29,7 +29,7 @@ def real_startup(bot, trigger):
         time.sleep(1)
 
     # Startup
-    osd(bot, bot.privileges.keys(), 'notice', bot.nick + " is now starting. Please wait while I load my configuration.")
+    osd(bot, bot.privileges.keys(), 'action', " is now starting. Please wait while I load my configuration.")
 
     startupcomplete = [bot.nick + " startup complete"]
 
