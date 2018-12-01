@@ -28,14 +28,9 @@ def real_startup(bot, trigger):
     while not len(bot.privileges.keys()) > 0:
         time.sleep(1)
 
-    # Startup
-    osd(bot, bot.privileges.keys(), 'action', " is now starting. Please wait while I load my configuration.")
-
-    startupcomplete = [bot.nick + " startup complete"]
-
-    availablecomsnum, availablecomsfiles = 0, 0
-
-    startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " modules.")
+    # don't run jobs if not ready
+    while "bot_monlogue" not in bot.memory:
+        time.sleep(1)
 
     # Check for python module errors during this startup
     searchphrasefound = []
@@ -43,9 +38,6 @@ def real_startup(bot, trigger):
         if "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
             searchphrase = str(line).split("]:", -1)[1].replace(" modules failed to load", "")
             searchphrasefound.append(str(searchphrase) + " module(s) failed")
-
-    # Announce to chan, then handle some closing stuff
-    osd(bot, bot.privileges.keys(), 'notice', startupcomplete)
 
     if searchphrasefound != []:
         searchphrasefound.insert(0, "Notice to Bot Admins: ")
