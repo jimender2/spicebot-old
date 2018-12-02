@@ -30,8 +30,6 @@ This runs at startup to mark time of bootup
 @sopel.module.thread(True)
 def bot_startup_botinf(bot, trigger):
 
-    bot.memory["uptime"] = time.time()
-
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["botdict", "server"]):
         pass
@@ -47,6 +45,10 @@ def bot_startup_botinf(bot, trigger):
             stringeval = None
         bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)][botinf] = stringeval
 
+    bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] = str("/home/spicebot/.sopel/" + str(bot.nick) + "/")
+
+    bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["txt_dir"] = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Text-Files/"
+
     bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins'] = []
     for botadmin in bot.config.core.admins:
         if botadmin not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']:
@@ -56,7 +58,7 @@ def bot_startup_botinf(bot, trigger):
     if str(bot.config.core.owner) not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_owners']:
         bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_owners'].append(str(bot.config.core.owner))
 
-    bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_dir'] = str("/home/spicebot/.sopel/" + str(bot.nick) + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
+    bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_dir'] = str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
     bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_file'] = str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_dir'] + str(bot.nick) + ".cfg")
 
     bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_config'] = dict()
