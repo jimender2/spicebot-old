@@ -3,7 +3,7 @@
 "?default": {
               "type": "target",
               "responses": [
-                            "It was all shit and giggles until $target giggled and shat.",
+                            "It was all shits and giggles until $target giggled and shat.",
                             ],
               "response_fail": ["It's all shits and giggles until someone giggles and shits."],
               },
