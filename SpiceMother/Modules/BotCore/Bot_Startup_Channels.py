@@ -28,7 +28,7 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def watch_server_connection(bot, trigger):
 
-    while not bot_startup_requirements_met(bot, ["botdict", "server"]):
+    while not bot_startup_requirements_met(bot, ["connected", "botdict", "server"]):
         pass
 
     currentservername = bot.memory["botdict"]["tempvals"]['server']
