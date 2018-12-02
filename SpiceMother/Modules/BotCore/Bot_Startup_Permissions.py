@@ -47,14 +47,14 @@ def chown(path, user=None, group=None):
         _user = -1
     # user can either be an int (the uid) or a string (the system username)
     elif isinstance(user, basestring):
-        _user = _get_uid(user)
+        _user = os.popen("id -u %s" % user).read().strip()
         if _user is None:
             raise LookupError("no such user: {!r}".format(user))
 
     if group is None:
         _group = -1
     elif not isinstance(group, int):
-        _group = _get_gid(group)
+        _group = os.popen("id -g %s" % group).read().strip()
         if _group is None:
             raise LookupError("no such group: {!r}".format(group))
 
