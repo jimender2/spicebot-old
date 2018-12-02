@@ -25,7 +25,7 @@ sys.setdefaultencoding('utf-8')
 def bot_command_hub(bot, trigger):
 
     stderr("Recieved Command to update.")
-    osd(bot, bot.privileges.keys(), 'say', "Recived command from " + trigger.nick + " to update from Github and restart. Be Back Soon!")
+    osd(bot, bot.privileges.keys(), 'say', "Received command from " + trigger.nick + " to update from Github and restart. Be Back Soon!")
 
     # Pull directory from github
     stderr("Pulling From Github.")
