@@ -24,7 +24,7 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
-    osd(bot, botcom.channel_current, 'action', "Is Examining systemd Log(s).")
+    osd(bot, trigger.sender, 'action', "Is Examining systemd Log(s).")
 
     debuglines = []
     ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)", "COMMAND=/bin/chown", "Docs: http://sopel.chat/", "Main PID:", "systemctl status", "sudo service"]
@@ -33,7 +33,7 @@ def bot_command_hub(bot, trigger):
             debuglines.append(str(line))
 
     if len(debuglines) == 0:
-        return osd(bot, botcom.channel_current, 'say', spicemanip(bot, nobotlogs, 'andlist') + " had no log(s) for some reason")
+        return osd(bot, trigger.sender, 'say', spicemanip(bot, nobotlogs, 'andlist') + " had no log(s) for some reason")
 
     for line in debuglines:
-        osd(bot, botcom.channel_current, 'say', line)
+        osd(bot, trigger.sender, 'say', line)
