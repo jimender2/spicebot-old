@@ -26,6 +26,6 @@ def run_saved_jobs(bot):
 
     # don't run jobs if not ready
     while "botdict_loaded" not in bot.memory:
-        time.sleep(1)
+        pass
 
     bot_saved_jobs_run(bot)

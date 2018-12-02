@@ -27,6 +27,6 @@ def watch_all_hub(bot, trigger):
 
     # don't run jobs if not ready
     while "botdict_loaded" not in bot.memory:
-        time.sleep(1)
+        pass
 
     bot_watch_all_run(bot, trigger)

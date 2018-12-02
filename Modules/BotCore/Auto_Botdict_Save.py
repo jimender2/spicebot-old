@@ -27,6 +27,6 @@ def savingitall(bot):
 
     # don't run jobs if not ready
     while "botdict_loaded" not in bot.memory:
-        time.sleep(1)
+        pass
 
     botdict_save(bot)

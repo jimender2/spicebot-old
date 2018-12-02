@@ -34,7 +34,7 @@ def bot_nickcom_hub(bot, trigger):
 
     # don't run jobs if not ready
     while "botdict_loaded" not in bot.memory:
-        time.sleep(1)
+        pass
 
     bot_nickcom_run(bot, trigger)
     botdict_save(bot)

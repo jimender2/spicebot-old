@@ -26,7 +26,7 @@ sys.setdefaultencoding('utf-8')
 def real_startup(bot, trigger):
 
     while not len(bot.channels) > 0:
-        time.sleep(1)
+        pass
 
     # Startup
     for channel in bot.channels:
@@ -60,7 +60,7 @@ def real_startup(bot, trigger):
             searchphrasefound.append(str(searchphrase) + " dict file(s) failed")
 
     while 'sock_port' not in bot.memory:
-        time.sleep(1)
+        pass
     startupcomplete.append("API Port set to " + str(bot.memory['sock_port']))
 
     # Announce to chan, then handle some closing stuff

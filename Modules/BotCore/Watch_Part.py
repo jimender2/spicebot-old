@@ -27,6 +27,6 @@ def botcom_player_leave(bot, trigger):
 
     # don't run jobs if not ready
     while "botdict_loaded" not in bot.memory:
-        time.sleep(1)
+        pass
 
     bot_watch_part_run(bot, trigger)
