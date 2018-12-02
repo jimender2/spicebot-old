@@ -28,15 +28,20 @@ This runs at startup to mark time of bootup
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def bot_startup_ext_conf(bot, trigger):
+def bot_startup_modules(bot, trigger):
 
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["botdict"]):
         pass
 
-    if "tempvals" not in bot.memory:
-        bot.memory["tempvals"] = dict()
+    modulecount = 0
+    for modules in bot.command_groups.items():
+        filename = modules[0]
+        if filename not in ["coretasks"]:
+            modulecount += 1
+            validcoms = modules[1]
+            for com in validcoms:
+                bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
+    bot.memory["botdict"]["tempvals"]['module_count'] = modulecount
 
-    bot.memory["tempvals"]["ext_conf"] = config_file_to_dict(bot, "/home/" + str(os_dict["user"]) + "/" + str(os_dict["ext_conf"]))
-
-    bot_startup_requirements_set(bot, "ext_conf")
+    bot_startup_requirements_set(bot, "modules")
