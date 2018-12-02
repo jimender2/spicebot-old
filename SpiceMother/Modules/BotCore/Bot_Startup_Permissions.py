@@ -25,4 +25,4 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def bot_startup_main(bot, trigger):
 
-    os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
+    os.system("chown -R spicebot:sudo /home/spicebot/.sopel/")
