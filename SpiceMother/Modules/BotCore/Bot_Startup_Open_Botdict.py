@@ -39,6 +39,6 @@ def bot_startup_botdict_open(bot, trigger):
     # Tempvals section
     bot.memory["botdict"]["tempvals"] = dict()
 
-    bot.msg("#spicebottest", str(bot.memory["botdict"])
+    bot.msg("#spicebottest", str(bot.memory["botdict"]))
 
     bot_startup_requirements_set(bot, "botdict")
