@@ -35,6 +35,6 @@ def bot_startup_uptime(bot, trigger):
     while not bot_startup_requirements_met(bot, ["botdict"]):
         pass
 
-    bot.memory["tempvals"]["uptime"] = bot.memory["uptime"]
+    bot.memory["botdict"]["tempvals"]["uptime"] = bot.memory["uptime"]
 
     bot_startup_requirements_set(bot, "uptime")
