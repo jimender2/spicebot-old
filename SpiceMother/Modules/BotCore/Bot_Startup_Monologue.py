@@ -35,5 +35,7 @@ When Done, marks the monolgue as complete, for other functions to be triggered
 def bot_startup_monologue(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["connected"]):
-        pass
+    continueload = False
+    while not continueload:
+        if bot_startup_requirements_met(bot, ["connected"]):
+            continueload = True
