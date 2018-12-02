@@ -34,7 +34,7 @@ This Runs at start, waits for the amount of channels to exceed 0, in the case of
 def watch_server_connection(bot, trigger):
 
     while not len(bot.privileges.keys()) > 0:
-        time.sleep(1)
+        pass
     bot.msg("#spicemotherdev", "here")
 
     bot_startup_requirements_set(bot, "connected")
