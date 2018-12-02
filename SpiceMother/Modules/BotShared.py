@@ -164,11 +164,10 @@ def bot_startup_requirements_met(bot, listreq):
     continueconsensus = []
 
     for requirement in listreq:
-        if requirement not in bot.memory["bot_startup"].keys():
+        if requirement in bot.memory["bot_startup"].keys():
             continueconsensus.append("True")
         else:
             continueconsensus.append("False")
-    bot.msg("#spicemotherdev", str(continueconsensus))
 
     if "False" in continueconsensus:
         return False
