@@ -91,7 +91,11 @@ os_dict = {
             }
 
 
-bot_dict = {}
+bot_dict = {
+
+            "tempvals": {},
+
+            }
 
 
 github_dict = {
