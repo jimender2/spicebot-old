@@ -20,17 +20,21 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This is triggered after The bots startup monlogue is completed
+
+This prompts bot admins to run the debug command for information regarding errors during startup (if any)
+"""
+
+
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
 def bot_startup_errors(bot, trigger):
 
-    while not len(bot.privileges.keys()) > 0:
-        time.sleep(1)
-
     # don't run jobs if not ready
-    while "bot_monlogue" not in bot.memory:
-        time.sleep(1)
+    while "bot_monologue" not in bot.memory:
+        pass
 
     # Check for python module errors during this startup
     searchphrasefound = []

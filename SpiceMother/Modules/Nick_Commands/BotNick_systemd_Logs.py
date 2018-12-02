@@ -20,6 +20,11 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This allows the viewing of systemd logs from within IRC
+"""
+
+
 @nickname_commands('debug')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):

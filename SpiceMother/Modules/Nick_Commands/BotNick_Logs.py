@@ -20,6 +20,11 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This is an internal logging system for the bot
+"""
+
+
 @nickname_commands('logs')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):

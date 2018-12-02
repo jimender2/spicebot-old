@@ -20,9 +20,14 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This runs at startup to ensure the permissions of the bot directory are available to the bot user
+"""
+
+
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
 def bot_startup_main(bot, trigger):
 
-    chown("/home/spicebot/.sopel/" + str(bot.nick) + "/", "spicebot")
+    chown("/home/spicebot/.sopel/" + str(bot.nick) + "/", os_dict["user"])

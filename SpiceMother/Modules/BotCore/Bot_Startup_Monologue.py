@@ -20,13 +20,24 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This Runs at start, waits for the amount of channels to exceed 0, in the case of an IRC bouncer like ZNC
+
+It then will display information to all channels regarding current boot:
+    * Available Commands and how many files those commands are in
+        * This includes dictionary commands, as well as python modules
+
+When Done, marks the monolgue as complete, for other functions to be triggered
+"""
+
+
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def bot_startup_main(bot, trigger):
+def bot_startup_monologue(bot, trigger):
 
     while not len(bot.privileges.keys()) > 0:
-        time.sleep(1)
+        pass
 
     # Startup
     osd(bot, bot.privileges.keys(), 'action', " is now starting. Please wait while I load my configuration.")
@@ -40,5 +51,5 @@ def bot_startup_main(bot, trigger):
     # Announce to chan, then handle some closing stuff
     osd(bot, bot.privileges.keys(), 'notice', startupcomplete)
 
-    if "bot_monlogue" not in bot.memory:
-        bot.memory["bot_monlogue"] = True
+    if "bot_monologue" not in bot.memory:
+        bot.memory["bot_monologue"] = True

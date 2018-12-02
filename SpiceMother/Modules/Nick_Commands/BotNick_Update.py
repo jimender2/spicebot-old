@@ -20,6 +20,11 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This will pull files fropm Github and restart the bots service
+"""
+
+
 @nickname_commands('update')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
@@ -28,7 +33,7 @@ def bot_command_hub(bot, trigger):
     osd(bot, bot.privileges.keys(), 'say', "Received command from " + trigger.nick + " to update from Github and restart. Be Back Soon!")
 
     # Directory Permissions
-    chown("/home/spicebot/.sopel/" + str(bot.nick) + "/", "spicebot")
+    chown("/home/spicebot/.sopel/" + str(bot.nick) + "/", os_dict["user"])
 
     # Pull directory from github
     gitpull(bot, "/home/spicebot/.sopel/" + str(bot.nick))

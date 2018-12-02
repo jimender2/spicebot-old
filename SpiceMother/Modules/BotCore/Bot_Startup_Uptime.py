@@ -20,11 +20,25 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@nickname_commands('uptime')
+"""
+This runs at startup to mark time of bootup
+"""
+
+
+@event('001')
+@rule('.*')
 @sopel.module.thread(True)
-def bot_command_hub(bot, trigger):
+def bot_startup_main(bot, trigger):
 
     if "uptime" not in bot.memory:
         bot.memory["uptime"] = time.time()
 
-    osd(bot, trigger.sender, 'say', "I have been running since " + str(humanized_time(time.time() - bot.memory["uptime"])) + " ago.")
+    # don't run jobs if not ready
+    while "botdict" not in bot.memory:
+        pass
+
+    if "tempvals" not in bot.memory:
+        bot.memory["tempvals"] = dict()
+
+    if "uptime" not in bot.memory["tempvals"]:
+        bot.memory["tempvals"]["uptime"] = bot.memory["uptime"]

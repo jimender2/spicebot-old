@@ -20,9 +20,14 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This can be manually run to ensure the permissions of the bot directory are available to the bot user
+"""
+
+
 @nickname_commands('debug')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
-    chown("/home/spicebot/.sopel/" + str(bot.nick) + "/", "spicebot")
-    osd(bot, botcom.channel_current, 'say', "Permissions should now be fixed")
+    chown("/home/spicebot/.sopel/" + str(bot.nick) + "/", os_dict["user"])
+    osd(bot, botcom.channel_current, 'say', "Permissions should now set for the " + str(os_dict["user"]) + " linux user.")

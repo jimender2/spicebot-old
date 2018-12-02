@@ -20,6 +20,11 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This can be utilized to install/remove python pip packages from within IRC
+"""
+
+
 @nickname_commands('pip')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):

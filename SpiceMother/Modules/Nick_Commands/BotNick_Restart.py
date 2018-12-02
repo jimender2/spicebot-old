@@ -20,6 +20,11 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This will restart the bots service
+"""
+
+
 @nickname_commands('restart')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):

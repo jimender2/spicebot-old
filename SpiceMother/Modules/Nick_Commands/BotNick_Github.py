@@ -20,6 +20,11 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This will provide a link to the github repository
+"""
+
+
 @nickname_commands('github')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):

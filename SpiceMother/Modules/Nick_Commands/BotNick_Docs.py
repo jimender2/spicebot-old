@@ -20,6 +20,11 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This will display a link to the online wiki for the bot
+"""
+
+
 @nickname_commands('help', 'docs')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
