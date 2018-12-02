@@ -81,6 +81,37 @@ sys.setdefaultencoding('utf-8')
 
 
 """
+Time
+"""
+
+
+def humanized_time(countdownseconds):
+    time = float(countdownseconds)
+    if time == 0:
+        return "just now"
+    year = time // (365 * 24 * 3600)
+    time = time % (365 * 24 * 3600)
+    day = time // (24 * 3600)
+    time = time % (24 * 3600)
+    time = time % (24 * 3600)
+    hour = time // 3600
+    time %= 3600
+    minute = time // 60
+    time %= 60
+    second = time
+    displaymsg = ''
+    timearray = ['year', 'day', 'hour', 'minute', 'second']
+    for x in timearray:
+        currenttimevar = eval(x)
+        if currenttimevar >= 1:
+            timetype = x
+            if currenttimevar > 1:
+                timetype = str(x+"s")
+            displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype + " ")
+    return displaymsg
+
+
+"""
 Database
 """
 
