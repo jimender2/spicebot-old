@@ -154,7 +154,6 @@ Startup Requirements
 
 
 def bot_startup_requirements_met(bot, listreq):
-    bot.msg("#spicemotherdev", str(listreq))
 
     if not isinstance(listreq, list):
         listreq = [str(listreq)]
@@ -169,6 +168,7 @@ def bot_startup_requirements_met(bot, listreq):
             continueconsensus.append("True")
         else:
             continueconsensus.append("False")
+    bot.msg("#spicemotherdev", str(listreq))
 
     if "False" in continueconsensus:
         return False
