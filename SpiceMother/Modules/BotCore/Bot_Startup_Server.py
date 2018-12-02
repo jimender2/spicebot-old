@@ -28,7 +28,7 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def watch_server_connection(bot, trigger):
 
-    while not bot_startup_requirements_met(bot, ["connected", "botdict"]):
+    while not bot_startup_requirements_met(bot, ["botdict"]):
         pass
 
     # create temporary lists of servers on the SpiceNetwork
