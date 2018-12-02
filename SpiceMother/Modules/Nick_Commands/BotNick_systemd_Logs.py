@@ -20,7 +20,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@nickname_commands('update')
+@nickname_commands('debug')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
