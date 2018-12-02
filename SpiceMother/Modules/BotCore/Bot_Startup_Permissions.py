@@ -58,4 +58,4 @@ def chown(path, user=None, group=None):
         if _group is None:
             raise LookupError("no such group: {!r}".format(group))
 
-    os.chown(path, _user, _group)
+    os.chown(path, int(_user), int(_group))
