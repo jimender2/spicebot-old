@@ -47,7 +47,7 @@ def bot_setup_channels(bot, trigger):
             bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel)] = dict()
 
         # temp listing of channel
-        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel)] = dict()
+        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)] = dict()
 
         # disabled commands per channel
         if "disabled_commands" not in bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel)].keys():
