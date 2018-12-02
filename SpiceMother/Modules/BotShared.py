@@ -183,6 +183,7 @@ def bot_startup_requirements_set(bot, addonreq):
         bot.memory["bot_startup"] = dict()
 
     bot.memory["bot_startup"][str(addonreq)] = True
+    bot.msg("#spicemotherdev", str(bot.memory["bot_startup"]))
 
 
 """
