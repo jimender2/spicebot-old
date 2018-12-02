@@ -30,5 +30,6 @@ def watch_server_connection(bot, trigger):
 
     while not len(bot.privileges.keys()) > 0:
         pass
+    bot.msg("#spicebottest", "here")
 
     bot_startup_requirements_set(bot, "connected")
