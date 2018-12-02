@@ -1,0 +1,11 @@
+{
+"validcoms": ['twat', 'twatswat'],
+"?default": {
+              "type": "target",
+              "responses": [
+                            "*a swats $target who is clearly a cunt, in the twat.",
+                            "*a hits $target with a classic cunt-punt.",
+                            ],
+              "response_fail": ["Fuck off cunt."],
+              },
+}
