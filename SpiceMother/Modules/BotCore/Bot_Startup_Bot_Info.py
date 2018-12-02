@@ -33,7 +33,7 @@ def bot_startup_botinf(bot, trigger):
     bot.memory["uptime"] = time.time()
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["server"]):
+    while not bot_startup_requirements_met(bot, ["botdict", "server"]):
         pass
 
     bot.memory["botdict"]["tempvals"]["bot_info"] = dict()

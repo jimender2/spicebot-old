@@ -33,7 +33,7 @@ This prompts bot admins to run the debug command for information regarding error
 def bot_startup_errors(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["monologue"]):
+    while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
         pass
 
     # Check for python module errors during this startup
