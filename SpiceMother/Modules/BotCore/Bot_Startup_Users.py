@@ -46,7 +46,11 @@ def bot_setup_users(bot, trigger):
             bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)]['all_current_users'] = []
 
         userprivdict = dict()
-        for user in bot.privileges[channel].keys():
+        channelident = channel
+        for identchannel in bot.privileges.keys():
+            if str(identchannel) == str(channel):
+                channelident = identchannel
+        for user in bot.privileges[channelident].keys():
 
             bot.msg("#spicemotherdev", str(user))
 
