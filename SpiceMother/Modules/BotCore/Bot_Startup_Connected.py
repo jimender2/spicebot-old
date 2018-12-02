@@ -37,3 +37,5 @@ def watch_server_connection(bot, trigger):
         pass
 
     bot_startup_requirements_set(bot, "connected")
+
+    bot.msg("#spicemotherdev", str(bot_startup_requirements_met(bot, ["connected"])))
