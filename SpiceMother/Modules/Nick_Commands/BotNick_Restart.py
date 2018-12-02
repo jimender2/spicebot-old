@@ -32,5 +32,4 @@ def bot_command_hub(bot, trigger):
     # connection.close()
 
     # restart systemd service
-    stderr("Restarting Service.")
-    os.system("sudo service " + str(bot.nick) + " restart")
+    service_manip(bot, str(bot.nick), "restart")

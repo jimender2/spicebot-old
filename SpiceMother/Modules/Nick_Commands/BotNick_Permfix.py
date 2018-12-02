@@ -24,5 +24,5 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
-    os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
+    chown("/home/spicebot/.sopel/" + str(bot.nick) + "/", "spicebot")
     osd(bot, botcom.channel_current, 'say', "Permissions should now be fixed")
