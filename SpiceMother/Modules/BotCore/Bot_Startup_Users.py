@@ -26,7 +26,7 @@ sys.setdefaultencoding('utf-8')
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def bot_setup_channels(bot, trigger):
+def bot_setup_users(bot, trigger):
 
     while not bot_startup_requirements_met(bot, ["connected", "botdict", "server", "channels"]):
         pass
