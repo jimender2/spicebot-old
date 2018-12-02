@@ -44,8 +44,8 @@ def bot_setup_channels(bot, trigger):
     bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"] = dict()
 
     for channel in bot.privileges.keys():
-        bot.msg("#spicemotherdev", str(bot.privileges[channel]))
         channel = str(channel)
+        bot.msg("#spicemotherdev", str(bot.privileges[channel]))
 
         # permanent listing of the channel
         if channel not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"].keys():
