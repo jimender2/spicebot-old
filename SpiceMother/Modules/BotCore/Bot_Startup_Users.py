@@ -36,9 +36,6 @@ def bot_setup_users(bot, trigger):
     if "users" not in bot.memory["botdict"].keys():
         bot.memory["botdict"]["users"] = dict()
 
-    # temp
-    bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"] = dict()
-
     for channel in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'].keys():
 
         bot.msg("#spicemotherdev", str(channel))
