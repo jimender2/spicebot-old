@@ -169,7 +169,7 @@ def bot_startup_requirements_met(bot, listreq):
         else:
             continueconsensus.append("False")
 
-    bot.msg("#spicebottest", str(continueconsensus))
+    bot.msg("#spicemotherdev", str(continueconsensus))
 
     if "False" in continueconsensus:
         return False

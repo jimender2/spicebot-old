@@ -29,7 +29,7 @@ sys.setdefaultencoding('utf-8')
 def watch_server_connection(bot, trigger):
 
     while not len(bot.privileges.keys()) > 0:
-        time.sleep(1)
-    bot.msg("#spicebottest", "here")
+        pass
+    bot.msg("#spicemotherdev", "here")
 
     bot_startup_requirements_set(bot, "connected")
