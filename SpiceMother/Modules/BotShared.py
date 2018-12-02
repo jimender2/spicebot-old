@@ -168,7 +168,7 @@ def bot_startup_requirements_met(bot, listreq):
             continueconsensus.append("True")
         else:
             continueconsensus.append("False")
-    bot.msg("#spicemotherdev", str(listreq))
+    bot.msg("#spicemotherdev", str(continueconsensus))
 
     if "False" in continueconsensus:
         return False
