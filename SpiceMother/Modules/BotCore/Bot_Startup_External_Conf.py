@@ -32,9 +32,13 @@ def bot_startup_main(bot, trigger):
 
     bot.memory["uptime"] = time.time()
 
+    # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["botdict"]):
         pass
 
-    bot.memory["tempvals"]["uptime"] = bot.memory["uptime"]
+    if "tempvals" not in bot.memory:
+        bot.memory["tempvals"] = dict()
 
-    bot_startup_requirements_set(bot, "uptime")
+    bot.memory["tempvals"]["ext_conf"] = config_file_to_dict(bot, "/home/" + str(os_dict["user"]) + "/" + str(os_dict["ext_conf"]))
+
+    bot_startup_requirements_set(bot, "ext_conf")

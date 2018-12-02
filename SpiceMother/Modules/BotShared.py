@@ -87,6 +87,7 @@ Dictionaries
 
 os_dict = {
             "user": "spicebot",
+            "ext_conf": "spicebot.conf",
             }
 
 
@@ -145,6 +146,41 @@ def merge_botdict(a, b, path=None):
         else:
             a[key] = b[key]
     return a
+
+
+"""
+Startup Requirements
+"""
+
+
+def bot_startup_requirements_met(bot, listreq):
+
+    if not isinstance(listreq, list):
+        listreq = [str(listreq)]
+
+    if "bot_startup" not in bot.memory:
+        bot.memory["bot_startup"] = dict()
+
+    continueconsensus = []
+
+    for requirement in listreq:
+        if requirement not in bot.memory["bot_startup"].keys():
+            continueconsensus.append("True")
+        else:
+            continueconsensus.append("False")
+
+    if "False" in continueconsensus:
+        return False
+    else:
+        return True
+
+
+def bot_startup_requirements_set(bot, addonreq):
+
+    if "bot_startup" not in bot.memory:
+        bot.memory["bot_startup"] = dict()
+
+    bot.memory["bot_startup"][str(addonreq)] = True
 
 
 """
@@ -222,6 +258,25 @@ def service_manip(bot, servicename, dowhat):
         os.system("sudo service " + str(servicename) + " " + str(dowhat))
     except Exception as e:
         stderr(str(dowhat).title() + "ing " + str(servicename) + ".service Failed: " + str(e))
+
+
+def config_file_to_dict(bot, filetoread):
+
+    newdict = dict()
+
+    # Read configuration
+    config = ConfigParser.ConfigParser()
+    config.read(filetoread)
+
+    for each_section in config.sections():
+
+        if each_section not in newdict.keys():
+            newdict[each_section] = dict()
+
+            for (each_key, each_val) in config.items(each_section):
+                if each_key not in newdict[each_section].keys():
+                    newdict[each_section][each_key] = each_val
+    return newdict
 
 
 """

@@ -26,6 +26,37 @@ sys.setdefaultencoding('utf-8')
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def api_socket_hub(bot, trigger):
+def watch_server_connection(bot, trigger):
 
-    bot.memory["connected_server"] = str(trigger.sender)
+    while not bot_startup_requirements_met(bot, ["connected", "botdict"]):
+        pass
+
+    # create temporary lists of servers on the SpiceNetwork
+    bot.memory["botdict"]["tempvals"]["servers_list"] = dict()
+
+    # create permanent lists of servers on the SpiceNetwork
+    if "servers_list" not in bot.memory["botdict"].keys():
+        bot.memory["botdict"]['servers_list'] = dict()
+
+    bot.memory["botdict"]["tempvals"]['server'] = str(trigger.sender)
+
+    serverparts = str(trigger.sender).split(".")
+    del serverparts[-1]
+    servername = serverparts[-1]
+    if servername == 'spicebot':
+        servername = 'SpiceBot'
+    elif servername == 'freenode':
+        servername = 'Freenode'
+    else:
+        servername = servername.title
+    bot.memory["botdict"]["tempvals"]['servername'] = servername
+
+    # Temp listing for server
+    if str(trigger.sender) not in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
+        bot.memory["botdict"]["tempvals"]["servers_list"][str(trigger.sender)] = dict()
+
+    # permanent listing of the server
+    if str(trigger.sender) not in bot.memory["botdict"]['servers_list'].keys():
+        bot.memory["botdict"]['servers_list'][str(trigger.sender)] = dict()
+
+    bot_startup_requirements_set(bot, "server")

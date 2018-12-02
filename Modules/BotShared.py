@@ -4141,7 +4141,6 @@ def config_file_to_dict(bot, filetoread):
             for (each_key, each_val) in config.items(each_section):
                 if each_key not in newdict[each_section].keys():
                     newdict[each_section][each_key] = each_val
-
     return newdict
 
 

@@ -36,7 +36,8 @@ When Done, marks the monolgue as complete, for other functions to be triggered
 @sopel.module.thread(True)
 def bot_startup_monologue(bot, trigger):
 
-    while not len(bot.privileges.keys()) > 0:
+    # don't run jobs if not ready
+    while not bot_startup_requirements_met(bot, ["connected"]):
         pass
 
     # Startup
@@ -51,5 +52,4 @@ def bot_startup_monologue(bot, trigger):
     # Announce to chan, then handle some closing stuff
     osd(bot, bot.privileges.keys(), 'notice', startupcomplete)
 
-    if "bot_monologue" not in bot.memory:
-        bot.memory["bot_monologue"] = True
+    bot_startup_requirements_set(bot, "monologue")

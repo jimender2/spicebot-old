@@ -33,7 +33,7 @@ This prompts bot admins to run the debug command for information regarding error
 def bot_startup_errors(bot, trigger):
 
     # don't run jobs if not ready
-    while "bot_monologue" not in bot.memory:
+    while not bot_startup_requirements_met(bot, ["monologue"]):
         pass
 
     # Check for python module errors during this startup
@@ -47,3 +47,6 @@ def bot_startup_errors(bot, trigger):
         searchphrasefound.insert(0, "Notice to Bot Admins: ")
         searchphrasefound.append("Run the debug command for more information.")
         osd(bot, bot.privileges.keys(), 'say', searchphrasefound)
+
+    # Signify that startup is complete
+    bot_startup_requirements_set(bot, "errors")

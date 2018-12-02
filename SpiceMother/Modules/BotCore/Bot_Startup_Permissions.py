@@ -31,3 +31,5 @@ This runs at startup to ensure the permissions of the bot directory are availabl
 def bot_startup_main(bot, trigger):
 
     chown("/home/spicebot/.sopel/" + str(bot.nick) + "/", os_dict["user"])
+
+    bot_startup_requirements_set(bot, "permissions")
