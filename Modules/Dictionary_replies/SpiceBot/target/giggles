@@ -1,5 +1,5 @@
 {
-"validcoms": ['giggles', 'shiggles', 'shits'],
+"validcoms": ['giggles', 'shiggles'],
 "?default": {
               "type": "target",
               "responses": [
