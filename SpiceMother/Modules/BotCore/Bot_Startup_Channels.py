@@ -33,9 +33,6 @@ def bot_setup_channels(bot, trigger):
 
     currentservername = bot.memory["botdict"]["tempvals"]['server']
 
-    if "users" not in bot.memory["botdict"].keys():
-        bot.memory["botdict"]["users"] = dict()
-
     # permanent
     if "channels_list" not in bot.memory["botdict"]["servers_list"][currentservername].keys():
         bot.memory["botdict"]["servers_list"][currentservername]["channels_list"] = dict()
@@ -62,12 +59,5 @@ def bot_setup_channels(bot, trigger):
             bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][channel]["auth_block"] = []
         if bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][channel]["auth_block"] == []:
             bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][channel]["auth_block"].append("all")
-
-        for checktype in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
-            if checktype not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel].keys():
-                bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel][checktype] = []
-
-        if 'all_current_users' not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel].keys():
-            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][channel]['all_current_users'] = []
 
     bot_startup_requirements_set(bot, "channels")
