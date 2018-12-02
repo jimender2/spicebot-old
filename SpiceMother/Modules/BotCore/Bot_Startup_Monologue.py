@@ -41,6 +41,10 @@ def bot_startup_monologue(bot, trigger):
     # Startup
     osd(bot, bot.privileges.keys(), 'action', " is now starting. Please wait while I load my configuration.")
 
+    # these are requirements to be considered "ready"
+    while not bot_startup_requirements_met(bot, ["permissions", "botdict", "bot_info", "ext_conf", "server", "uptime"]):
+        pass
+
     startupcomplete = [bot.nick + " startup complete"]
 
     availablecomsnum, availablecomsfiles = 0, 0
