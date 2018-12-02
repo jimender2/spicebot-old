@@ -38,8 +38,6 @@ def bot_setup_users(bot, trigger):
 
     for channel in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'].keys():
 
-        bot.msg("#spicemotherdev", str(channel))
-
         for checktype in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
             if checktype not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)].keys():
                 bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)][checktype] = []
@@ -49,6 +47,8 @@ def bot_setup_users(bot, trigger):
 
         userprivdict = dict()
         for user in bot.privileges[channel].keys():
+
+            bot.msg("#spicemotherdev", str(user))
 
             if str(user) not in bot.memory["botdict"]["users"].keys():
                 bot.memory["botdict"]["users"][str(user)] = dict()
