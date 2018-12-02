@@ -209,12 +209,12 @@ OS Functions
 
 def gitpull(bot, directory):
     if os.path.isdir(directory):
-        bot.msg("#spicemotherdev", "here")
         stderr("Pulling " + str(directory) + "From Github.")
         try:
             g = git.cmd.Git(directory)
             g.pull()
         except Exception as e:
+            bot.msg("#spicemotherdev", "Pulling " + str(directory) + "From Github Failed: " + str(e))
             stderr("Pulling " + str(directory) + "From Github Failed: " + str(e))
     else:
         stderr("Pulling " + str(directory) + "From Github Failed: Not a Valid Directory.")
