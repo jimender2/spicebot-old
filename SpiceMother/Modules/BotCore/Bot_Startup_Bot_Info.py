@@ -28,7 +28,7 @@ This runs at startup to mark time of bootup
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def bot_startup_main(bot, trigger):
+def bot_startup_botinf(bot, trigger):
 
     bot.memory["uptime"] = time.time()
 
@@ -58,6 +58,7 @@ def bot_startup_main(bot, trigger):
 
     bot.memory["botdict"]["tempvals"]["bot_info"]['config_dir'] = str("/home/spicebot/.sopel/" + str(bot.nick) + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
     bot.memory["botdict"]["tempvals"]["bot_info"]['config_file'] = str(bot.memory["botdict"]["tempvals"]["bot_info"]['config_dir'] + str(bot.nick) + ".cfg")
+    bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]["bot_info"]['config_file']))
 
     bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_config'] = dict()
 

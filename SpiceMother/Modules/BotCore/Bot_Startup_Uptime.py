@@ -28,7 +28,7 @@ This runs at startup to mark time of bootup
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def bot_startup_main(bot, trigger):
+def bot_startup_uptime(bot, trigger):
 
     bot.memory["uptime"] = time.time()
 
