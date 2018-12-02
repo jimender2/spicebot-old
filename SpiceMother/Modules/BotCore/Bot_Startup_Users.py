@@ -41,6 +41,8 @@ def bot_setup_users(bot, trigger):
 
     for channel in bot.privileges.keys():
 
+        bot.msg("#spicemotherdev", str(bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list']))
+
         for checktype in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
             if checktype not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)].keys():
                 bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)][checktype] = []
