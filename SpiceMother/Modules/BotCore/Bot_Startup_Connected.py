@@ -22,6 +22,11 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This Runs at start, waits for the amount of channels to exceed 0, in the case of an IRC bouncer like ZNC
+"""
+
+
 # Start listener on welcome RPL, which should only ever be received once
 @event('001')
 @rule('.*')
@@ -29,7 +34,7 @@ sys.setdefaultencoding('utf-8')
 def watch_server_connection(bot, trigger):
 
     while not len(bot.privileges.keys()) > 0:
-        pass
+        time.sleep(1)
     bot.msg("#spicemotherdev", "here")
 
     bot_startup_requirements_set(bot, "connected")

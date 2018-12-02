@@ -21,8 +21,6 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-This Runs at start, waits for the amount of channels to exceed 0, in the case of an IRC bouncer like ZNC
-
 It then will display information to all channels regarding current boot:
     * Available Commands and how many files those commands are in
         * This includes dictionary commands, as well as python modules
