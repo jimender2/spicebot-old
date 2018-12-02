@@ -4741,6 +4741,7 @@ def osd(bot, target_array, text_type_array, text_array):
         for x in text_type_array:
             texttypearray.append(str(x))
     text_array_common = max(((item, texttypearray.count(item)) for item in set(texttypearray)), key=lambda a: a[1])[0]
+    bot.msg("#spicebottest",  "testing     " + str(text_array_common))
 
     # make sure len() equals
     if len(texttargetarray) > len(texttypearray):
