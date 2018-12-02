@@ -20,20 +20,12 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@nickname_commands('update')
+@nickname_commands('restart')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
     stderr("Recieved Command to update.")
-    osd(bot, bot.privileges.keys(), 'say', "Received command from " + trigger.nick + " to update from Github and restart. Be Back Soon!")
-
-    # Directory Permissions
-    os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
-
-    # Pull directory from github
-    stderr("Pulling From Github.")
-    g = git.cmd.Git("/home/spicebot/.sopel/" + str(bot.nick))
-    g.pull()
+    osd(bot, bot.privileges.keys(), 'say', "Received command from " + trigger.nick + " to restart systemd service. Be Back Soon!")
 
     # close connection
     # stderr("[API] Closing Connection.")
