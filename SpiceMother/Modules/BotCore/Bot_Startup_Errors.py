@@ -23,7 +23,7 @@ sys.setdefaultencoding('utf-8')
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def real_startup(bot, trigger):
+def bot_startup_errors(bot, trigger):
 
     while not len(bot.privileges.keys()) > 0:
         time.sleep(1)

@@ -23,7 +23,7 @@ sys.setdefaultencoding('utf-8')
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def real_startup(bot, trigger):
+def bot_startup_main(bot, trigger):
 
     while not len(bot.privileges.keys()) > 0:
         time.sleep(1)
@@ -35,7 +35,7 @@ def real_startup(bot, trigger):
 
     availablecomsnum, availablecomsfiles = 0, 0
 
-    startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " modules.")
+    startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
 
     # Announce to chan, then handle some closing stuff
     osd(bot, bot.privileges.keys(), 'notice', startupcomplete)
