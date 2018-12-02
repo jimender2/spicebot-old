@@ -37,4 +37,17 @@ def bot_startup_monologue(bot, trigger):
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["connected"]):
         pass
-    bot.msg("#spicemotherdev", str(bot.memory["bot_startup"]))
+
+    # Startup
+    osd(bot, bot.privileges.keys(), 'action', " is now starting. Please wait while I load my configuration.")
+
+    startupcomplete = [bot.nick + " startup complete"]
+
+    availablecomsnum, availablecomsfiles = 0, 0
+
+    startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
+
+    # Announce to chan, then handle some closing stuff
+    osd(bot, bot.privileges.keys(), 'notice', startupcomplete)
+
+    bot_startup_requirements_set(bot, "monologue")

@@ -154,7 +154,7 @@ Startup Requirements
 
 
 def bot_startup_requirements_met(bot, listreq):
-    bot.msg("#spicemotherdev", str(listreq))
+
     if not isinstance(listreq, list):
         listreq = [str(listreq)]
 
