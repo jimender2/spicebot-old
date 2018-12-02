@@ -52,8 +52,6 @@ def bot_setup_users(bot, trigger):
                 channelident = identchannel
         for user in bot.privileges[channelident].keys():
 
-            bot.msg("#spicemotherdev", str(user))
-
             if str(user) not in bot.memory["botdict"]["users"].keys():
                 bot.memory["botdict"]["users"][str(user)] = dict()
 
