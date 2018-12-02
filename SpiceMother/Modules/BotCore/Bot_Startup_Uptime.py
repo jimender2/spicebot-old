@@ -35,6 +35,8 @@ def bot_startup_uptime(bot, trigger):
     while not bot_startup_requirements_met(bot, ["botdict"]):
         pass
 
+    bot.msg("#spicebottest", str(bot_startup_requirements_met(bot, ["botdict"])))
+
     bot.memory["tempvals"]["uptime"] = bot.memory["uptime"]
 
     bot_startup_requirements_set(bot, "uptime")
