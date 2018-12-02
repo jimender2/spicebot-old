@@ -56,12 +56,12 @@ def bot_startup_botinf(bot, trigger):
     if str(bot.config.core.owner) not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_owners']:
         bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_owners'].append(str(bot.config.core.owner))
 
-    bot.memory["botdict"]["tempvals"]["bot_info"]['config_dir'] = str("/home/spicebot/.sopel/" + str(bot.nick) + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
-    bot.memory["botdict"]["tempvals"]["bot_info"]['config_file'] = str(bot.memory["botdict"]["tempvals"]["bot_info"]['config_dir'] + str(bot.nick) + ".cfg")
+    bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_dir'] = str("/home/spicebot/.sopel/" + str(bot.nick) + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
+    bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_file'] = str(bot.memory["botdict"]["tempvals"]["bot_info"]['config_dir'] + str(bot.nick) + ".cfg")
 
     bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_config'] = dict()
 
     # Read configuration
-    bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['configuration'] = config_file_to_dict(bot, str(bot.memory["botdict"]["tempvals"]["bot_info"]['config_file']))
+    bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['configuration'] = config_file_to_dict(bot, str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_file']))
 
     bot_startup_requirements_set(bot, "bot_info")
