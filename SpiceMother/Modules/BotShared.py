@@ -209,7 +209,7 @@ OS Functions
 
 def gitpull(bot, directory):
     if os.path.isdir(directory):
-        # bot.msg("#spicemotherdev", "here")
+        bot.msg("#spicemotherdev", "here")
         stderr("Pulling " + str(directory) + "From Github.")
         try:
             g = git.cmd.Git(directory)
