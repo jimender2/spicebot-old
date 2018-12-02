@@ -81,6 +81,37 @@ sys.setdefaultencoding('utf-8')
 
 
 """
+Github
+"""
+
+github_dict = {
+                "url_main": "https://github.com/",
+                "url_raw": "https://raw.githubusercontent.com/",
+                "url_path_wiki": "/wiki",
+                "repo_owner": "SpiceBot",
+                "repo_name": "SpiceBot",
+                }
+
+
+"""
+Bot Temp Logging
+"""
+
+
+def bot_logging(bot, logtype, logentry):
+
+    if 'logs' not in bot.memory:
+        bot.memory['logs'] = {}
+
+    if logtype not in bot.memory['logs'].keys():
+        bot.memory['logs'][logtype] = []
+
+    bot.memory['logs'][logtype].append(logentry)
+    if len(bot.memory['logs'][logtype]) > 10:
+        del bot.memory['logs'][logtype][0]
+
+
+"""
 OS Functions
 """
 
