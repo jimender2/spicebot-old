@@ -26,5 +26,4 @@ sys.setdefaultencoding('utf-8')
 def bot_startup_main(bot, trigger):
 
     # os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
-    for line in os.popen("sudo chown -R spicebot:sudo /home/spicebot/.sopel/").read().split('\n'):
-        donothing = 5
+    shutil.chown("/home/spicebot/.sopel/" + str(bot.nick) + "/", "spicebot", "sudo")

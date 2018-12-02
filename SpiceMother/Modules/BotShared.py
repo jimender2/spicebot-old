@@ -14,6 +14,7 @@ from sopel.tools.time import get_timezone, format_time
 import os
 from os.path import exists
 import sys
+import shutil
 
 # additional shared files
 moduledir = os.path.dirname(__file__)
