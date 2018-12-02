@@ -28,17 +28,14 @@ def bot_command_hub(bot, trigger):
     osd(bot, bot.privileges.keys(), 'say', "Received command from " + trigger.nick + " to update from Github and restart. Be Back Soon!")
 
     # Directory Permissions
-    os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
+    chown("/home/spicebot/.sopel/" + str(bot.nick) + "/", "spicebot")
 
     # Pull directory from github
-    stderr("Pulling From Github.")
-    g = git.cmd.Git("/home/spicebot/.sopel/" + str(bot.nick))
-    g.pull()
+    gitpull(bot, "/home/spicebot/.sopel/" + str(bot.nick))
 
     # close connection
     # stderr("[API] Closing Connection.")
     # connection.close()
 
     # restart systemd service
-    stderr("Restarting Service.")
-    os.system("sudo service " + str(bot.nick) + " restart")
+    service_manip(bot, str(bot.nick), "restart")
