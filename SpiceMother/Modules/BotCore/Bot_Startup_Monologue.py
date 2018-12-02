@@ -37,4 +37,3 @@ def bot_startup_monologue(bot, trigger):
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["connected"]):
         pass
-    bot.msg("#spicemotherdev", str(bot.memory["bot_startup"]))
