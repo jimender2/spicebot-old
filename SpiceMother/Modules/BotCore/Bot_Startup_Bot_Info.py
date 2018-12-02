@@ -62,7 +62,6 @@ def bot_startup_botinf(bot, trigger):
     bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_config'] = dict()
 
     # Read configuration
-    bot.memory["botdict"]["tempvals"][str(bot.nick)]["bot_info"]['configuration'] = dict()
-    # config_file_to_dict(bot, str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_file']))
+    bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration'] = config_file_to_dict(bot, str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_file']))
 
     bot_startup_requirements_set(bot, "bot_info")
