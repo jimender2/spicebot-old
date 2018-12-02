@@ -154,7 +154,7 @@ Startup Requirements
 
 
 def bot_startup_requirements_met(bot, listreq):
-    bot.msg("#spicemotherdev", str(listreq))
+    # bot.msg("#spicemotherdev", str(listreq))
 
     if not isinstance(listreq, list):
         listreq = [str(listreq)]
@@ -209,6 +209,7 @@ OS Functions
 
 def gitpull(bot, directory):
     if os.path.isdir(directory):
+        # bot.msg("#spicemotherdev", "here")
         stderr("Pulling " + str(directory) + "From Github.")
         try:
             g = git.cmd.Git(directory)
