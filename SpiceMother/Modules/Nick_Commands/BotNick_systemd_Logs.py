@@ -33,7 +33,7 @@ def bot_command_hub(bot, trigger):
             debuglines.append(str(line))
 
     if len(debuglines) == 0:
-        return osd(bot, trigger.sender, 'say', spicemanip(bot, nobotlogs, 'andlist') + " had no log(s) for some reason")
+        return osd(bot, trigger.sender, 'say', str(bot.nick) + " had no log(s) for some reason")
 
     for line in debuglines:
         osd(bot, trigger.sender, 'say', line)
