@@ -20,6 +20,15 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+@event('001')
+@rule('.*')
+@sopel.module.thread(True)
+def bot_startup_main(bot, trigger):
+
+    if "uptime" not in bot.memory:
+        bot.memory["uptime"] = time.time()
+
+
 @nickname_commands('uptime')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
