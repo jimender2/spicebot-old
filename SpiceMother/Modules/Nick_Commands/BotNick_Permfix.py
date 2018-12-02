@@ -29,5 +29,5 @@ This can be manually run to ensure the permissions of the bot directory are avai
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
-    chown("/home/spicebot/.sopel/" + str(bot.nick) + "/", os_dict["user"])
+    os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/.sopel/" + str(bot.nick) + "/")
     osd(bot, botcom.channel_current, 'say', "Permissions should now set for the " + str(os_dict["user"]) + " linux user.")

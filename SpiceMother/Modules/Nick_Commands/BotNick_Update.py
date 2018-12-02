@@ -33,7 +33,7 @@ def bot_command_hub(bot, trigger):
     osd(bot, bot.privileges.keys(), 'say', "Received command from " + trigger.nick + " to update from Github and restart. Be Back Soon!")
 
     # Directory Permissions
-    chown("/home/spicebot/.sopel/" + str(bot.nick) + "/", os_dict["user"])
+    os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/.sopel/" + str(bot.nick) + "/")
 
     # Pull directory from github
     gitpull(bot, "/home/spicebot/.sopel/" + str(bot.nick))
