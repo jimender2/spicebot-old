@@ -35,6 +35,7 @@ def bot_startup_modules(bot, trigger):
         pass
 
     modulecount = 0
+    bot.memory["botdict"]["tempvals"]['module_commands'] = dict()
     for modules in bot.command_groups.items():
         filename = modules[0]
         if filename not in ["coretasks"]:
