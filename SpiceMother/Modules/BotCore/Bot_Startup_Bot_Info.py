@@ -57,7 +57,7 @@ def bot_startup_botinf(bot, trigger):
         bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_owners'].append(str(bot.config.core.owner))
 
     bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_dir'] = str("/home/spicebot/.sopel/" + str(bot.nick) + "/System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
-    bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_file'] = str(bot.memory["botdict"]["tempvals"]["bot_info"]['config_dir'] + str(bot.nick) + ".cfg")
+    bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_file'] = str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['config_dir'] + str(bot.nick) + ".cfg")
 
     bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_config'] = dict()
 
