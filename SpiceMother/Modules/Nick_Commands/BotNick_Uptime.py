@@ -27,4 +27,4 @@ def bot_command_hub(bot, trigger):
     if "uptime" not in bot.memory:
         bot.memory["uptime"] = time.time()
 
-    osd(bot, trigger.sender, 'say', "I came online " + str(humanized_time(time.time() - bot.memory["uptime"])) + " ago.")
+    osd(bot, trigger.sender, 'say', "I have been running since " + str(humanized_time(time.time() - bot.memory["uptime"])) + " ago.")
