@@ -26,7 +26,7 @@ sys.setdefaultencoding('utf-8')
 def watch_all_hub(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
+    while not bot_startup_requirements_met(bot, ["connected", "botdict", "server", "channels", "users"]):
         pass
 
     # botcom dynamic Class
