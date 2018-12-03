@@ -152,6 +152,20 @@ def merge_botdict(a, b, path=None):
     return a
 
 
+# This is how the dict is saved to the database
+def botdict_save(bot):
+    savedict = copy.deepcopy(bot.memory["botdict"])
+
+    # Values to not save to database
+    savedict_del = ['tempvals', 'static']
+    for dontsave in savedict_del:
+        if dontsave in savedict.keys():
+            del savedict[dontsave]
+
+    # save to database
+    set_database_value(bot, bot.nick, 'bot_dict', savedict)
+
+
 """
 Startup Requirements
 """

@@ -42,6 +42,9 @@ def bot_startup_errors(bot, trigger):
         if "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
             searchphrase = str(line).split("]:", -1)[1].replace(" modules failed to load", "")
             searchphrasefound.append(str(searchphrase) + " module(s) failed")
+        elif "dict files failed to load" in str(line) and "0 dict files failed to load" not in str(line):
+            searchphrase = str(line).split("]:", -1)[1].replace(" dict files failed to load", "")
+            searchphrasefound.append(str(searchphrase) + " dict file(s) failed")
 
     if searchphrasefound != []:
         searchphrasefound.insert(0, "Notice to Bot Admins: ")
