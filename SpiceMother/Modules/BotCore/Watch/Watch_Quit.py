@@ -47,6 +47,7 @@ def botcom_player_leave(bot, trigger):
 
     # server
     botcom.server = bot.memory["botdict"]["tempvals"]['server']
+    bot.msg("#spicemotherdev", str(botcom.server))
 
     # channel
     botcom.channel_current = str(trigger.sender)
