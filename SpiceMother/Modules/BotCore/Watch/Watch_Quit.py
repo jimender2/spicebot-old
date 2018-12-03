@@ -56,7 +56,7 @@ def botcom_player_leave(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         if not botcom.channel_priv:
             privstring = str("chan" + privtype.lower() + "s")
-            evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
+            evalstring = str("bot.memory['botdict']['tempvals']['servers_list'][" + str(botcom.server) + "]['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
             grouplist = eval(evalstring)
         else:
             grouplist = []
