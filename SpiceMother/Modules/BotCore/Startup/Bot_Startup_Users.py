@@ -41,14 +41,13 @@ def bot_setup_users(bot, trigger):
     if "users" not in bot.memory["botdict"].keys():
         bot.memory["botdict"]["users"] = dict()
 
+    bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['all_current_users'] = []
+
     for channel in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'].keys():
 
         for checktype in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
             if checktype not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)].keys():
                 bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)][checktype] = []
-
-        if 'all_current_users' not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)].keys():
-            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)]['all_current_users'] = []
 
         userprivdict = dict()
         channelident = channel
@@ -60,8 +59,8 @@ def bot_setup_users(bot, trigger):
             if str(user) not in bot.memory["botdict"]["users"].keys():
                 bot.memory["botdict"]["users"][str(user)] = dict()
 
-            if str(user) not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)]['all_current_users']:
-                bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)]['all_current_users'].append(str(user))
+            if str(user) not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['all_current_users']:
+                bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['all_current_users'].append(str(user))
 
             if str(user) not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)]['current_users']:
                 bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)]['current_users'].append(str(user))
