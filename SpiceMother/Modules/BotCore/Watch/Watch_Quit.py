@@ -50,22 +50,7 @@ def botcom_player_leave(bot, trigger):
 
     # channel
     botcom.channel_current = str(trigger.sender)
-    bot.msg("#spicemotherdev", str(botcom.channel_current))
     botcom.channel_priv = trigger.is_privmsg
-
-    # channel creds
-    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
-        if not botcom.channel_priv:
-            privstring = str("chan" + privtype.lower() + "s")
-            evalstring = str("bot.memory['botdict']['tempvals']['servers_list'][" + str(botcom.server) + "]['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-            grouplist = eval(evalstring)
-        else:
-            grouplist = []
-        if botcom.instigator in grouplist:
-            createuserdict = str("botcom." + privtype + " = True")
-        else:
-            createuserdict = str("botcom." + privtype + " = False")
-        exec(createuserdict)
 
     # database entry for user
     if botcom.instigator not in bot.memory["botdict"]["users"].keys():
