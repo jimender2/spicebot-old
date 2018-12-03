@@ -44,6 +44,8 @@ def dict_command_configs(bot):
 
     dictcount, dictopenfail = 0, 0
     filescan = []
+    bot.memory["botdict"]["tempvals"]['dict_commands'] = dict()
+
     # quick_coms_path = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/Dictionary_replies/" + str(bot.nick) + "/"
     quick_coms_path = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/SpiceMother/Dictionary_replies/" + str(bot.nick) + "/"
     if os.path.exists(quick_coms_path) and os.path.isdir(quick_coms_path):
