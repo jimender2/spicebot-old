@@ -107,6 +107,18 @@ github_dict = {
                 }
 
 
+mode_dict_alias = {
+                    "+o": "OP", "-o": "deOP",
+                    "+v": "VOICE", "-v": "deVOICE",
+                    "+h": "HOP", "-h": "deHOP",
+                    "+a": "ADMIN", "-a": "deADMIN",
+                    "+q": "OWNER", "-q": "deOWNER",
+                    "+b": "BAN", "-b": "unBAN",
+                    "+c": "noCOLOR", "-c": "COLOR",
+                    #  TODO add more user/channel modes
+                    }
+
+
 valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate", "responses"]
 
 

@@ -20,10 +20,10 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@event('QUIT')
+@event('KICK')
 @rule('.*')
 @sopel.module.thread(True)
-def botcom_player_leave(bot, trigger):
+def botcom_player_return(bot, trigger):
 
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["connected", "botdict", "server", "channels", "users"]):
@@ -56,19 +56,34 @@ def botcom_player_leave(bot, trigger):
     if not bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
 
+    # target user
+    botcom.target = str(trigger.args[1])
+
     # database entry for user
-    if botcom.instigator not in bot.memory["botdict"]["users"].keys():
-        bot.memory["botdict"]["users"][botcom.instigator] = dict()
+    if botcom.target not in bot.memory["botdict"]["users"].keys():
+        bot.memory["botdict"]["users"][botcom.target] = dict()
 
     # channel list
+    if botcom.target in bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][botcom.channel_current]['current_users']:
+        bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][botcom.channel_current]['current_users'].remove(botcom.target)
+
+    # status
+    for status in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
+        if botcom.target in bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][botcom.channel_current][status]:
+            bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][botcom.channel_current][status].remove(botcom.target)
+
+    online = False
+    onlineconsensus = []
     for channel in bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'].keys():
         if botcom.instigator in bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][channel]['current_users']:
-            bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][channel]['current_users'].remove(botcom.instigator)
+            onlineconsensus.append("True")
+        else:
+            onlineconsensus.append("False")
 
-        # status
-        for status in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
-            if botcom.instigator in bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][channel][status]:
-                bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][channel][status].remove(botcom.instigator)
+    if 'True' not in onlineconsensus:
+        online = False
 
-    if botcom.instigator in bot.memory["botdict"]["tempvals"]["servers_list"][str(botcom.server)]['all_current_users']:
-        bot.memory["botdict"]["tempvals"]["servers_list"][str(botcom.server)]['all_current_users'].remove(botcom.instigator)
+    if not online:
+
+        if botcom.instigator in bot.memory["botdict"]["tempvals"]["servers_list"][str(botcom.server)]['all_current_users']:
+            bot.memory["botdict"]["tempvals"]["servers_list"][str(botcom.server)]['all_current_users'].remove(botcom.instigator)
