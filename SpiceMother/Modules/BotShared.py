@@ -223,6 +223,30 @@ def bot_logging(bot, logtype, logentry):
 
 
 """
+Target Checking
+"""
+
+
+def bot_check_inlist(bot, searchterm, searchlist):
+
+    # verify we are searching a list
+    if not isinstance(searchlist, list):
+        searchlist = [searchlist]
+    rebuildlist = []
+    for searchitem in searchlist:
+        rebuildlist.append(str(searchitem))
+
+    searchterm = str(searchterm)
+
+    if searchterm in rebuildlist:
+        return True
+    elif searchterm.lower() in [searching.lower() for searching in rebuildlist]:
+        return True
+    else:
+        return False
+
+
+"""
 OS Functions
 """
 

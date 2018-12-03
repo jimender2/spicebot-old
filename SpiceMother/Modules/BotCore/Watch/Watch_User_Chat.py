@@ -53,7 +53,7 @@ def watch_all_hub(bot, trigger):
     botcom.channel_priv = trigger.is_privmsg
 
     # Bots block
-    if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+    if not bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
 
     # channel creds
