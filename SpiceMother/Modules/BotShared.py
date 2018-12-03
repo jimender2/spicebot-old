@@ -107,6 +107,9 @@ github_dict = {
                 }
 
 
+valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate", "responses"]
+
+
 """
 Botdict
 """
