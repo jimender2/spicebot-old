@@ -11,7 +11,7 @@ import sys
 
 # imports based on THIS file
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
@@ -21,14 +21,14 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-This runs at startup to mark time of bootup
+This Cycles through all of the dictionary commands
 """
 
 
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def bot_startup_modules(bot, trigger):
+def bot_startup_dict_coms(bot, trigger):
 
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["botdict", "bot_info"]):

@@ -9,34 +9,31 @@ import sopel.module
 import os
 import sys
 
+
 # imports based on THIS file
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
+
 
 # Ensure Encoding
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+
 """
-At bot startup, open botdict
+This Runs at start, waits for the amount of channels to exceed 0, in the case of an IRC bouncer like ZNC
 """
 
 
+# Start listener on welcome RPL, which should only ever be received once
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def bot_startup_botdict_open(bot, trigger):
+def watch_server_connection(bot, trigger):
 
-    # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["connected"]):
+    while not len(bot.privileges.keys()) > 0:
         pass
 
-    # Open Botdict
-    botdict_setup_open(bot)
-
-    # Tempvals section
-    bot.memory["botdict"]["tempvals"] = dict()
-
-    bot_startup_requirements_set(bot, "botdict")
+    bot_startup_requirements_set(bot, "connected")

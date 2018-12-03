@@ -12,7 +12,7 @@ import sys
 
 # imports based on THIS file
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
@@ -20,6 +20,11 @@ from BotShared import *
 # Ensure Encoding
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
+
+"""
+This collects all of the channel info
+"""
 
 
 # Start listener on welcome RPL, which should only ever be received once

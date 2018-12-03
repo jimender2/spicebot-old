@@ -11,7 +11,7 @@ import sys
 
 # imports based on THIS file
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
@@ -28,15 +28,13 @@ This runs at startup to mark time of bootup
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def bot_startup_ext_conf(bot, trigger):
+def bot_startup_uptime(bot, trigger):
 
-    # don't run jobs if not ready
+    bot.memory["uptime"] = time.time()
+
     while not bot_startup_requirements_met(bot, ["botdict"]):
         pass
 
-    if "tempvals" not in bot.memory:
-        bot.memory["tempvals"] = dict()
+    bot.memory["botdict"]["tempvals"]["uptime"] = bot.memory["uptime"]
 
-    bot.memory["tempvals"]["ext_conf"] = config_file_to_dict(bot, "/home/" + str(os_dict["user"]) + "/" + str(os_dict["ext_conf"]))
-
-    bot_startup_requirements_set(bot, "ext_conf")
+    bot_startup_requirements_set(bot, "uptime")

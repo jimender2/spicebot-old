@@ -12,7 +12,7 @@ import sys
 
 # imports based on THIS file
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
@@ -22,11 +22,16 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+This gains info about the current server
+"""
+
+
 # Start listener on welcome RPL, which should only ever be received once
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def watch_server_connection(bot, trigger):
+def bot_setup_server(bot, trigger):
 
     while not bot_startup_requirements_met(bot, ["botdict"]):
         pass

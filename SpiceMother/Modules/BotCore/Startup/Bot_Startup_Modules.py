@@ -11,7 +11,7 @@ import sys
 
 # imports based on THIS file
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
@@ -21,7 +21,7 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-This runs at startup to mark time of bootup
+This counts the python modules
 """
 
 
