@@ -220,6 +220,8 @@ def botcom_nick(bot, trigger):
     botcom.triggerargsarray = spicemanip(bot, trigger, '3+', 'list')
     bot.msg("#spicemotherdev", str(botcom.triggerargsarray))
 
+    return botcom
+
 
 """
 Startup Requirements
