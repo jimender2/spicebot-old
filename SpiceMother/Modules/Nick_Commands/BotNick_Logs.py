@@ -31,6 +31,10 @@ def bot_command_hub(bot, trigger):
 
     botcom = botcom_nick(bot, trigger)
 
+    # Bots block
+    if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
+        return
+
     triggerargsarray = spicemanip(bot, trigger, 'create')
     logtype = spicemanip(bot, triggerargsarray, 1) or None
     if not logtype or not bot_check_inlist(bot, logtype, bot.memory['logs'].keys()):

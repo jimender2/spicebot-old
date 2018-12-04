@@ -31,6 +31,10 @@ def bot_command_hub(bot, trigger):
 
     botcom = botcom_nick(bot, trigger)
 
+    # Bots block
+    if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
+        return
+
     triggerargsarray = spicemanip(bot, trigger, 'create')
     pipcoms = ['install', 'remove']
     subcom = spicemanip(bot, [x for x in triggerargsarray if x in pipcoms], 1) or None

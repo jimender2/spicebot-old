@@ -216,10 +216,6 @@ def botcom_nick(bot, trigger):
     botcom.channel_current = str(trigger.sender)
     botcom.channel_priv = trigger.is_privmsg
 
-    # Bots block
-    if not bot_check_inlist(bot, botcom.instigator, [bot.nick]):
-        return
-
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, '3+', 'list')
     bot.msg("#spicemotherdev", str(botcom.triggerargsarray))

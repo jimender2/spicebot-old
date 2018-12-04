@@ -31,6 +31,10 @@ def bot_command_hub(bot, trigger):
 
     botcom = botcom_nick(bot, trigger)
 
+    # Bots block
+    if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
+        return
+
     osd(bot, trigger.sender, 'action', "Is Examining systemd Log(s).")
 
     debuglines = []

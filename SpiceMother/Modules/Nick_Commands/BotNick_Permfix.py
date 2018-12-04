@@ -31,5 +31,9 @@ def bot_command_hub(bot, trigger):
 
     botcom = botcom_nick(bot, trigger)
 
+    # Bots block
+    if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
+        return
+
     os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/.sopel/" + str(bot.nick) + "/")
     osd(bot, botcom.channel_current, 'say', "Permissions should now set for the " + str(os_dict["user"]) + " linux user.")

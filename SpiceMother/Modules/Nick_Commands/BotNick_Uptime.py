@@ -29,4 +29,8 @@ def bot_command_hub(bot, trigger):
 
     botcom = botcom_nick(bot, trigger)
 
+    # Bots block
+    if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
+        return
+
     osd(bot, trigger.sender, 'say', "I have been running since " + str(humanized_time(time.time() - bot.memory["uptime"])) + " ago.")

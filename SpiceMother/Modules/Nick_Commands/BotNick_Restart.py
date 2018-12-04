@@ -31,6 +31,10 @@ def bot_command_hub(bot, trigger):
 
     botcom = botcom_nick(bot, trigger)
 
+    # Bots block
+    if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
+        return
+
     stderr("Recieved Command to update.")
     osd(bot, bot.privileges.keys(), 'say', "Received command from " + trigger.nick + " to restart systemd service. Be Back Soon!")
 

@@ -53,7 +53,7 @@ def botcom_player_return(bot, trigger):
     botcom.channel_priv = trigger.is_privmsg
 
     # Bots block
-    if not bot_check_inlist(bot, botcom.instigator, [bot.nick]):
+    if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
 
     # target user
