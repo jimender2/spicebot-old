@@ -649,6 +649,7 @@ def botdict_setup_bot_info(bot):
 
 # create listing for channels the bot is in
 def botdict_setup_chan_users(bot):
+    return
 
     if "botdict" not in bot.memory:
         botdict_setup_open(bot)
