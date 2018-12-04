@@ -222,7 +222,7 @@ def botcom_nick(bot, trigger):
 
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, '3+', 'list')
-    bot.say(str(botcom.triggerargsarray))
+    bot.msg("#spicemotherdev", str(botcom.triggerargsarray))
 
 
 """
