@@ -106,37 +106,6 @@ def mainfunctionuse(bot, trigger):
         execute_main(bot, trigger, triggerargsarray, command_type)
 
 
-# Misspellings
-@sopel.module.commands('dual')
-@sopel.module.thread(True)
-def dual_clone(bot, trigger):
-    triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
-    target = spicemanip(bot, triggerargsarray, 1)
-    if not target:
-        osd(bot, trigger.sender, 'say', "Who do you want to clone?")
-    elif target.lower() not in [u.lower() for u in bot.users]:
-        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
-    else:
-        osd(bot, trigger.sender, 'say', "I think one " + target + " is enough for this world.")
-
-
-@module.rule('^(?:dual)\s+?.*')
-@module.rule('^(?:!dual)\s+?.*')
-@module.rule('^(?:,dual)\s+?.*')
-@module.rule('^(?:duals)\s+?.*')
-@module.rule('^(?:!duals)\s+?.*')
-@module.rule('^(?:,duals)\s+?.*')
-def dual_cloneb(bot, trigger):
-    triggerargsarray = spicemanip(bot, trigger.group(0), 'create')
-    triggerargsarray = spicemanip(bot, triggerargsarray, '2+')
-    triggerargsarray = spicemanip(bot, triggerargsarray, 'create')
-    target = spicemanip(bot, triggerargsarray, 1)
-    if target.lower() not in [u.lower() for u in bot.users]:
-        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
-    else:
-        osd(bot, trigger.sender, 'say', "I think one " + target + " is enough for this world.")
-
-
 """
 
 starting map is 100x100
