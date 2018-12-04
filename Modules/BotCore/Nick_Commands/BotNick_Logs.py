@@ -38,12 +38,13 @@ def bot_command_hub(bot, trigger):
     if not bot_nickcom_run_check(bot, botcom):
         return osd(bot, botcom.instigator, 'notice', "I was unable to process this Bot Nick command due to privilege issues.")
 
-    if not botcom.command_main or not bot_check_inlist(bot, botcom.command_main, bot.memory['logs'].keys()):
+    logtype = spicemanip(bot, botcom.triggerargsarray, 1) or None
+    if not logtype or not bot_check_inlist(bot, logtype, bot.memory['logs'].keys()):
         return osd(bot, botcom.channel_current, 'action', "Current valid log(s) include: " + spicemanip(bot, bot.memory['logs'].keys(), 'andlist'))
 
-    if len(bot.memory['logs'][botcom.command_main]) == 0:
-        return osd(bot, botcom.channel_current, 'action', "No logs found for " + str(botcom.command_main) + ".")
-    osd(bot, botcom.channel_current, 'action', "Is Examining " + str(botcom.command_main) + " log(s).")
+    if len(bot.memory['logs'][logtype]) == 0:
+        return osd(bot, botcom.channel_current, 'action', "No logs found for " + str(logtype) + ".")
+    osd(bot, botcom.channel_current, 'action', "Is Examining " + str(logtype) + " log(s).")
 
-    for line in bot.memory['logs'][botcom.command_main]:
+    for line in bot.memory['logs'][logtype]:
         osd(bot, botcom.channel_current, 'action', str(line))
