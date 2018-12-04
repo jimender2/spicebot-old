@@ -48,20 +48,20 @@ def bot_setup_channels(bot, trigger):
     for channel in bot.privileges.keys():
 
         # permanent listing of the channel
-        if str(channel) not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"].keys():
-            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel)] = dict()
+        if str(channel).lower() not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()] = dict()
 
         # temp listing of channel
-        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)] = dict()
+        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel).lower()] = dict()
 
         # disabled commands per channel
-        if "disabled_commands" not in bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel)].keys():
-            bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel)]["disabled_commands"] = {}
+        if "disabled_commands" not in bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel).lower()].keys():
+            bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel).lower()]["disabled_commands"] = {}
 
         # authorized user groups for channels
-        if "auth_block" not in bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel)].keys():
-            bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel)]["auth_block"] = []
-        if bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel)]["auth_block"] == []:
-            bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel)]["auth_block"].append("all")
+        if "auth_block" not in bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel).lower()].keys():
+            bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel).lower()]["auth_block"] = []
+        if bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel).lower()]["auth_block"] == []:
+            bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel).lower()]["auth_block"].append("all")
 
     bot_startup_requirements_set(bot, "channels")

@@ -46,13 +46,13 @@ def bot_setup_users(bot, trigger):
     for channel in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'].keys():
 
         for checktype in ['chanops', 'chanhalfops', 'chanvoices', 'chanowners', 'chanadmins', 'current_users']:
-            if checktype not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)].keys():
-                bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)][checktype] = []
+            if checktype not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel).lower()].keys():
+                bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel).lower()][checktype] = []
 
         userprivdict = dict()
         channelident = channel
         for identchannel in bot.privileges.keys():
-            if str(identchannel) == str(channel):
+            if str(identchannel).lower() == str(channel).lower():
                 channelident = identchannel
         for user in bot.privileges[channelident].keys():
 
@@ -62,24 +62,24 @@ def bot_setup_users(bot, trigger):
             if str(user) not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['all_current_users']:
                 bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['all_current_users'].append(str(user))
 
-            if str(user) not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)]['current_users']:
-                bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)]['current_users'].append(str(user))
+            if str(user) not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel).lower()]['current_users']:
+                bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel).lower()]['current_users'].append(str(user))
 
             try:
-                userprivdict[str(user)] = bot.privileges[channel][user] or 0
+                userprivdict[str(user)] = bot.privileges[channelident][user] or 0
             except KeyError:
                 userprivdict[str(user)] = 0
 
             for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
                 privstring = str("chan" + privtype.lower() + "s")
                 if userprivdict[str(user)] == eval(privtype):
-                    if str(user) not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)][privstring]:
-                        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)][privstring].append(str(user))
+                    if str(user) not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel).lower()][privstring]:
+                        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel).lower()][privstring].append(str(user))
                 elif userprivdict[str(user)] >= eval(privtype) and privtype == 'OWNER':
                     if str(user) not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)][privstring]:
-                        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)][privstring].append(str(user))
+                        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel).lower()][privstring].append(str(user))
                 else:
-                    if str(user) in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)][privstring]:
-                        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel)][privstring].remove(str(user))
+                    if str(user) in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel).lower()][privstring]:
+                        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['channels_list'][str(channel).lower()][privstring].remove(str(user))
 
     bot_startup_requirements_set(bot, "users")

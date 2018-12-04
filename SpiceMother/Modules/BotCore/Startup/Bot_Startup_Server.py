@@ -43,9 +43,9 @@ def bot_setup_server(bot, trigger):
     if "servers_list" not in bot.memory["botdict"].keys():
         bot.memory["botdict"]['servers_list'] = dict()
 
-    bot.memory["botdict"]["tempvals"]['server'] = str(trigger.sender)
+    bot.memory["botdict"]["tempvals"]['server'] = str(trigger.sender).lower()
 
-    serverparts = str(trigger.sender).split(".")
+    serverparts = str(trigger.sender).lower().split(".")
     del serverparts[-1]
     servername = serverparts[-1]
     if servername == 'spicebot':
@@ -57,11 +57,11 @@ def bot_setup_server(bot, trigger):
     bot.memory["botdict"]["tempvals"]['servername'] = servername
 
     # Temp listing for server
-    if str(trigger.sender) not in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
-        bot.memory["botdict"]["tempvals"]["servers_list"][str(trigger.sender)] = dict()
+    if str(trigger.sender).lower() not in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
+        bot.memory["botdict"]["tempvals"]["servers_list"][str(trigger.sender).lower()] = dict()
 
     # permanent listing of the server
-    if str(trigger.sender) not in bot.memory["botdict"]['servers_list'].keys():
-        bot.memory["botdict"]['servers_list'][str(trigger.sender)] = dict()
+    if str(trigger.sender).lower() not in bot.memory["botdict"]['servers_list'].keys():
+        bot.memory["botdict"]['servers_list'][str(trigger.sender).lower()] = dict()
 
     bot_startup_requirements_set(bot, "server")
