@@ -45,8 +45,10 @@ def bot_command_hub(bot, trigger):
     gitpull(bot, "/home/spicebot/.sopel/" + str(bot.nick))
 
     # close connection
-    # stderr("[API] Closing Connection.")
-    # connection.close()
+    if 'sock' in bot.memory:
+        if bot.memory['sock']:
+            stderr("[API] Closing Connection.")
+            bot.memory['sock'].close()
 
     # restart systemd service
     service_manip(bot, str(bot.nick), "restart")

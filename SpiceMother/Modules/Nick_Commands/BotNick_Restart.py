@@ -39,8 +39,10 @@ def bot_command_hub(bot, trigger):
     osd(bot, bot.privileges.keys(), 'say', "Received command from " + botcom.instigator + " to restart systemd service. Be Back Soon!")
 
     # close connection
-    # stderr("[API] Closing Connection.")
-    # connection.close()
+    if 'sock' in bot.memory:
+        if bot.memory['sock']:
+            stderr("[API] Closing Connection.")
+            bot.memory['sock'].close()
 
     # restart systemd service
     service_manip(bot, str(bot.nick), "restart")
