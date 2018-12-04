@@ -300,7 +300,7 @@ def botcom_nick(bot, trigger):
     botcom.channel_priv = trigger.is_privmsg
 
     # create arg list
-    botcom.triggerargsarray = spicemanip(bot, trigger, '3+', 'list')
+    botcom.triggerargsarray = spicemanip(bot, trigger, '2+', 'list')
 
     botcom.command_main = spicemanip(bot, botcom.triggerargsarray, 1)
 
