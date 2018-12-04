@@ -68,6 +68,8 @@ def bot_startup_monologue(bot, trigger):
         pass
     if bot.memory['sock_port']:
         startupcomplete.append("API Port set to " + str(bot.memory['sock_port']))
+    else:
+        startupcomplete.append("API Port not set.")
 
     # Announce to chan, then handle some closing stuff
     osd(bot, bot.privileges.keys(), 'notice', startupcomplete)
