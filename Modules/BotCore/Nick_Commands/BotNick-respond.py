@@ -36,6 +36,7 @@ def bot_nickcom_hub(bot, trigger):
         return
 
     if not botcom.command_main:
+        bot.say("here")
         return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do!")
 
     if botcom.command_main.lower() not in valid_botnick_commands.keys():
