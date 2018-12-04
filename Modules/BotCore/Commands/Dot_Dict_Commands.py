@@ -142,7 +142,7 @@ def bot_dictcom_process(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
 
         commandrunconsensus, commandrun = [], True
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
@@ -175,7 +175,7 @@ def bot_dictcom_process(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
 
         commandrunconsensus, commandrun = [], True
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
