@@ -220,7 +220,7 @@ def botcom_nick(bot, trigger):
     for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
         if not botcom.channel_priv:
             privstring = str("chan" + privtype.lower() + "s")
-            evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
+            evalstring = str("bot.memory['botdict']['tempvals']['servers_list']['" + botcom.server + "']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
             grouplist = eval(evalstring)
         else:
             grouplist = []
@@ -341,7 +341,7 @@ def bot_random_valid_target(bot, botcom, outputtype):
     if botcom.channel_priv:
         validtargs.extend([str(bot.nick), botcom.instigator])
     else:
-        for user in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
+        for user in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['current_users']:
             targetchecking = bot_target_check(bot, botcom, user, [])
             if targetchecking["targetgood"]:
                 validtargs.append(user)

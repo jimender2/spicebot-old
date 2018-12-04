@@ -165,7 +165,7 @@ def api_socket_run(bot, sock):
                             failedtargets = []
                             goodtargets = []
                             for target in listtargets:
-                                if not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"][str(bot.memory["botdict"]["tempvals"]['server'])]['channels_list'].keys()) and not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"][str(bot.memory["botdict"]["tempvals"]['server'])]['all_current_users']) and target not in ["all_chan", "all_user"]:
+                                if not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]["servers_list"][str(bot.memory["botdict"]["tempvals"]['server'])]['channels_list'].keys()) and not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"][str(bot.memory["botdict"]["tempvals"]['server'])]['all_current_users']) and target not in ["all_chan", "all_user"]:
                                     failedtargets.append(target)
                                 else:
                                     goodtargets.append(target)
