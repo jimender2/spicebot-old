@@ -19,14 +19,24 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+"""
+At bot startup, open botdict
+"""
 
+
+@event('001')
 @rule('.*')
 @sopel.module.thread(True)
-@sopel.module.interval(1800)
-def watch_all_hub(bot, trigger):
+def bot_startup_botdict_open(bot, trigger):
 
     # don't run jobs if not ready
-    while "botdict_loaded" not in bot.memory:
+    while not bot_startup_requirements_met(bot, ["connected"]):
         pass
 
-    bot_watch_all_run(bot, trigger)
+    # Open Botdict
+    botdict_setup_open(bot)
+
+    # Tempvals section
+    bot.memory["botdict"]["tempvals"] = dict()
+
+    bot_startup_requirements_set(bot, "botdict")

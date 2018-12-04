@@ -20,13 +20,13 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@event('KICK')
-@rule('.*')
+# save dictionary every half hour
+@sopel.module.interval(1800)
 @sopel.module.thread(True)
-def botcom_player_return(bot, trigger):
+def savingitall(bot):
 
     # don't run jobs if not ready
-    while "botdict_loaded" not in bot.memory:
+    while not bot_startup_requirements_met(bot, ["botdict"]):
         pass
 
-    bot_watch_kick_run(bot, trigger)
+    botdict_save(bot)

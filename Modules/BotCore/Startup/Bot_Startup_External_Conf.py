@@ -5,14 +5,13 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel.module
 
-
 # imports for system and OS access, directories
 import os
 import sys
 
 # imports based on THIS file
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
@@ -22,19 +21,22 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-bot.nick do this
+This reads the external config
 """
 
-# TODO make sure restart and update save database
 
-
-@nickname_commands('(.*)')
+@event('001')
+@rule('.*')
 @sopel.module.thread(True)
-def bot_nickcom_hub(bot, trigger):
+def bot_startup_ext_conf(bot, trigger):
 
     # don't run jobs if not ready
-    while "botdict_loaded" not in bot.memory:
+    while not bot_startup_requirements_met(bot, ["botdict"]):
         pass
 
-    bot_nickcom_run(bot, trigger)
-    botdict_save(bot)
+    if "tempvals" not in bot.memory:
+        bot.memory["tempvals"] = dict()
+
+    bot.memory["tempvals"]["ext_conf"] = config_file_to_dict(bot, "/home/" + str(os_dict["user"]) + "/" + str(os_dict["ext_conf"]))
+
+    bot_startup_requirements_set(bot, "ext_conf")

@@ -11,7 +11,7 @@ import sys
 
 # imports based on THIS file
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
@@ -20,13 +20,16 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-# save dictionary every half hour
-@sopel.module.interval(1800)
+"""
+This runs at startup to ensure the permissions of the bot directory are available to the bot user
+"""
+
+
+@event('001')
+@rule('.*')
 @sopel.module.thread(True)
-def savingitall(bot):
+def bot_startup_permissions(bot, trigger):
 
-    # don't run jobs if not ready
-    while "botdict_loaded" not in bot.memory:
-        pass
+    os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/.sopel/" + str(bot.nick) + "/")
 
-    botdict_save(bot)
+    bot_startup_requirements_set(bot, "permissions")

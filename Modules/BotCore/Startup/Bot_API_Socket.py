@@ -28,6 +28,10 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def api_socket_hub(bot, trigger):
 
+    # don't run jobs if not ready
+    while not bot_startup_requirements_met(bot, ["botdict", "server", "channels", "users"]):
+        pass
+
     # Create a TCP/IP socket
     bot.memory['sock'] = None
     bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
@@ -49,6 +53,8 @@ def api_socket_hub(bot, trigger):
             bot.memory['sock'].listen(10)
         except socket.error as msg:
             stderr("Error loading socket on port %s: %s (%s)" % (currentport, str(msg[0]), str(msg[1])))
+            bot.memory['sock_port'] = None
+            bot_startup_requirements_set(bot, "bot_api")
             return
     sock = bot.memory['sock']
 
@@ -56,6 +62,8 @@ def api_socket_hub(bot, trigger):
         bot.memory["sock_dict"] = dict()
     if "sock_bot_list" not in bot.memory:
         bot.memory["sock_bot_list"] = []
+
+    bot_startup_requirements_set(bot, "bot_api")
 
     # If Connection Closes, this should reopen it forever
     while True:
@@ -78,11 +86,6 @@ def api_socket_run(bot, sock):
                 data = connection.recv(2048)
                 bot_logging(bot, "API", "[API] Received data.")
                 if data:
-
-                    # verify bot is reasdy to recieve a message
-                    if "botdict_loaded" not in bot.memory:
-                        bot_logging(bot, "API", "[API] Not ready to process requests.")
-                        break
 
                     # Sending Botdict out
                     if spicemanip(bot, str(data), 1) == "GET":
@@ -162,10 +165,12 @@ def api_socket_run(bot, sock):
                             failedtargets = []
                             goodtargets = []
                             for target in listtargets:
-                                if not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['channels_list'].keys()) and not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']) and target not in ["all_chan", "all_user"]:
-                                    failedtargets.append(target)
-                                else:
+                                if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]["servers_list"][str(bot.memory["botdict"]["tempvals"]['server'])]['channels_list'].keys()):
+                                    goodtargets.append(target.lower())
+                                elif bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"][str(bot.memory["botdict"]["tempvals"]['server'])]['all_current_users']) and target not in ["all_chan", "all_user"]:
                                     goodtargets.append(target)
+                                else:
+                                    failedtargets.append(target)
 
                             if failedtargets != []:
                                 bot_logging(bot, "API", "[API] " + str(spicemanip(bot, failedtargets, 'andlist')) + " is/are not current channel(s) or user(s).")
@@ -178,9 +183,9 @@ def api_socket_run(bot, sock):
 
                                 if target in ["all_chan", "all_user"]:
                                     if target == "all_chan":
-                                        targets = bot.memory["botdict"]["tempvals"]['channels_list'].keys()
+                                        targets = bot.memory["botdict"]["tempvals"][str(bot.memory["botdict"]["tempvals"]['server'])]['channels_list'].keys()
                                     if target == "all_user":
-                                        targets = bot.memory["botdict"]["tempvals"]['all_current_users']
+                                        targets = bot.memory["botdict"]["tempvals"][str(bot.memory["botdict"]["tempvals"]['server'])]['all_current_users']
                                 else:
                                     targets = [target]
 
@@ -196,80 +201,7 @@ def api_socket_run(bot, sock):
                                 bot_logging(bot, "API", "[API] No command included.")
                                 break
 
-                            if jsondict["command"] == 'register_give':
-
-                                # must be a bot included
-                                if "bot" not in jsondict.keys():
-                                    bot_logging(bot, "API", "[API] No bot included.")
-                                    break
-
-                                # must be a host included
-                                if "host" not in jsondict.keys():
-                                    bot_logging(bot, "API", "[API] No host included.")
-                                    break
-
-                                # must be a port included
-                                if "port" not in jsondict.keys():
-                                    bot_logging(bot, "API", "[API] No port included.")
-                                    break
-
-                                # successful recieving
-                                bot_logging(bot, "API", "[API] Recieved API registration from " + str(jsondict["bot"]) + " on " + str(jsondict["host"]) + ":" + str(jsondict["port"]))
-
-                                # make sure this info is current
-                                registerdict = {
-                                                "type": "command",
-                                                "command": "register_give",
-                                                "bot": str(bot.nick),
-                                                "host": str(socket.gethostbyname(socket.gethostname())),
-                                                "port": str(bot.memory['sock_port']),
-                                                }
-                                if registerdict["host"] == jsondict["host"] and registerdict["port"] == jsondict["port"] and registerdict["bot"] == jsondict["bot"]:
-                                    break
-
-                                # bot memory of the hosts for keys
-                                if str(registerdict["host"]) not in bot.memory["sock_dict"].keys():
-                                    bot.memory["sock_dict"][str(registerdict["host"])] = dict()
-                                if str(jsondict["host"]) not in bot.memory["sock_dict"].keys():
-                                    bot.memory["sock_dict"][str(jsondict["host"])] = dict()
-
-                                # add bot to keys
-                                if str(bot.nick) not in bot.memory["sock_dict"][str(registerdict["host"])].keys():
-                                    bot.memory["sock_dict"][str(registerdict["host"])][str(bot.nick)] = dict()
-                                if str(jsondict["bot"]) not in bot.memory["sock_dict"][str(jsondict["host"])].keys():
-                                    bot.memory["sock_dict"][str(jsondict["host"])][str(jsondict["bot"])] = dict()
-
-                                # register host
-                                bot.memory["sock_dict"][str(registerdict["host"])][str(bot.nick)]["host"] = registerdict["host"]
-                                bot.memory["sock_dict"][str(jsondict["host"])][str(jsondict["bot"])]["host"] = jsondict["host"]
-
-                                # register port
-                                bot.memory["sock_dict"][str(registerdict["host"])][str(bot.nick)]["port"] = registerdict["port"]
-                                bot.memory["sock_dict"][str(jsondict["host"])][str(jsondict["bot"])]["port"] = jsondict["port"]
-
-                                # add to otherbotslist
-                                bot.memory["botdict"]["tempvals"]['bots_list']
-                                if str(jsondict["bot"]) not in bot.memory["sock_bot_list"]:
-                                    bot.memory["sock_bot_list"].append(str(jsondict["bot"]))
-
-                                break
-
-                            elif jsondict["command"] == 'register_request':
-
-                                # make sure this info is current
-                                registerdict = {
-                                                "type": "command",
-                                                "command": "register_give",
-                                                "bot": str(bot.nick),
-                                                "host": str(socket.gethostbyname(socket.gethostname())),
-                                                "port": str(bot.memory['sock_port']),
-                                                }
-                                if registerdict["host"] == jsondict["host"] and registerdict["port"] == jsondict["port"] and registerdict["bot"] == jsondict["bot"]:
-                                    break
-
-                                bot_register_handler_single(bot, jsondict["host"], jsondict["port"], registerdict)
-
-                            elif jsondict["command"] == 'update':
+                            if jsondict["command"] == 'update':
                                 stderr("[API] Recieved Command to update.")
                                 for channel in bot.channels:
                                     if sender != "API":
@@ -277,18 +209,18 @@ def api_socket_run(bot, sock):
                                     else:
                                         osd(bot, channel, 'say', "Recived API command to update from Github and restart. Be Back Soon!")
 
+                                # Directory Permissions
+                                os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/.sopel/" + str(bot.nick) + "/")
+
                                 # Pull directory from github
-                                bot_logging(bot, "API", "[API] Pulling From Github.")
-                                g = git.cmd.Git(bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)]['directory'])
-                                g.pull()
+                                gitpull(bot, "/home/spicebot/.sopel/" + str(bot.nick))
 
                                 # close connection
                                 stderr("[API] Closing Connection.")
                                 connection.close()
 
                                 # restart systemd service
-                                stderr("[API] Restarting Service.")
-                                os.system("sudo service " + str(bot.nick) + " restart")
+                                service_manip(bot, str(bot.nick), "restart")
 
                                 # Pointless, but breaks the loop if needbe
                                 break
@@ -306,8 +238,7 @@ def api_socket_run(bot, sock):
                                 connection.close()
 
                                 # restart systemd service
-                                stderr("[API] Restarting Service.")
-                                os.system("sudo service " + str(bot.nick) + " restart")
+                                service_manip(bot, str(bot.nick), "restart")
 
                                 # Pointless, but breaks the loop if needbe
                                 break

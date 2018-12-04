@@ -11,7 +11,7 @@ import sys
 
 # imports based on THIS file
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
@@ -20,12 +20,21 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@sopel.module.interval(1800)
-@sopel.module.thread(True)
-def savingitall(bot):
+"""
+This runs at startup to mark time of bootup
+"""
 
-    # don't run jobs if not ready
-    while "botdict_loaded" not in bot.memory:
+
+@event('001')
+@rule('.*')
+@sopel.module.thread(True)
+def bot_startup_uptime(bot, trigger):
+
+    bot.memory["uptime"] = time.time()
+
+    while not bot_startup_requirements_met(bot, ["botdict"]):
         pass
 
-    bot_register_handler_startup(bot)
+    bot.memory["botdict"]["tempvals"]["uptime"] = bot.memory["uptime"]
+
+    bot_startup_requirements_set(bot, "uptime")

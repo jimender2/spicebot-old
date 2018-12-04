@@ -20,12 +20,17 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@sopel.module.interval(30)
+@nickname_commands('uptime')
 @sopel.module.thread(True)
-def run_saved_jobs(bot):
+def bot_command_hub(bot, trigger):
 
-    # don't run jobs if not ready
-    while "botdict_loaded" not in bot.memory:
-        pass
+    if not bot_startup_requirements_met(bot, ["botdict"]):
+        bot.memory["uptime"] = time.time()
 
-    bot_saved_jobs_run(bot)
+    botcom = botcom_nick(bot, trigger)
+
+    # Bots block
+    if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
+        return
+
+    osd(bot, botcom.channel_current, 'say', "I have been running since " + str(humanized_time(time.time() - bot.memory["uptime"])) + " ago.")

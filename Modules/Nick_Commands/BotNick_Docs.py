@@ -20,13 +20,19 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@event('NICK')
-@rule('.*')
+"""
+This will display a link to the online wiki for the bot
+"""
+
+
+@nickname_commands('help', 'docs')
 @sopel.module.thread(True)
-def botcom_player_return(bot, trigger):
+def bot_command_hub(bot, trigger):
 
-    # don't run jobs if not ready
-    while "botdict_loaded" not in bot.memory:
-        pass
+    botcom = botcom_nick(bot, trigger)
 
-    bot_watch_nick_run(bot, trigger)
+    # Bots block
+    if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
+        return
+
+    osd(bot, botcom.channel_current, 'say', ["IRC Modules Repository", str(github_dict["url_main"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + github_dict["url_path_wiki"])])
