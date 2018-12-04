@@ -323,7 +323,7 @@ def humanized_time(countdownseconds):
     minute = time // 60
     time %= 60
     second = time
-    displaymsg = ''
+    displaymsg = None
     timearray = ['year', 'day', 'hour', 'minute', 'second']
     for x in timearray:
         currenttimevar = eval(x)
@@ -331,7 +331,10 @@ def humanized_time(countdownseconds):
             timetype = x
             if currenttimevar > 1:
                 timetype = str(x+"s")
-            displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype)
+            if displaymsg:
+                displaymsg = str(displaymsg + " " + str(int(currenttimevar)) + " " + timetype)
+            else:
+                displaymsg = str(str(int(currenttimevar)) + " " + timetype)
     return displaymsg
 
 
