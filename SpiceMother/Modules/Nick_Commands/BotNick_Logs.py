@@ -29,7 +29,7 @@ This is an internal logging system for the bot
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
-    triggerargsarray = spicemanip(bot, trigger, 'create')
+    triggerargsarray = spicemanip(bot, trigger.group(0), 'create')
     logtype = spicemanip(bot, triggerargsarray, 1)
     bot.say(str(logtype))
     if not logtype or logtype not in bot.memory['logs'].keys():
