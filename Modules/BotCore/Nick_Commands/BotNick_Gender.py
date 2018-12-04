@@ -21,11 +21,11 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-This can be manually run to ensure the permissions of the bot directory are available to the bot user
+This will display a link to the online wiki for the bot
 """
 
 
-@nickname_commands('debug')
+@nickname_commands('gender')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
@@ -38,5 +38,4 @@ def bot_command_hub(bot, trigger):
     if not bot_nickcom_run_check(bot, botcom):
         return osd(bot, botcom.instigator, 'notice', "I was unable to process this Bot Nick command due to privilege issues.")
 
-    os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/.sopel/" + str(bot.nick) + "/")
-    osd(bot, botcom.channel_current, 'say', "Permissions should now set for the " + str(os_dict["user"]) + " linux user.")
+    osd(bot, botcom.channel_current, 'say', ["IRC Modules Repository", str(github_dict["url_main"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + github_dict["url_path_wiki"])])

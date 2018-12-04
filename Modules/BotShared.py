@@ -136,6 +136,80 @@ gif_dontuseextensions = ['.jpg', '.png']
 valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate", "responses"]
 
 
+# valid commands that the bot will reply to by name
+valid_botnick_commands = {
+                            "github": {
+                                        'privs': [],
+                                        },
+                            "docs": {
+                                        'privs': [],
+                                        },
+                            "help": {
+                                        'privs': [],
+                                        },
+                            "uptime": {
+                                        'privs': [],
+                                        },
+                            "canyouseeme": {
+                                        'privs': [],
+                                        },
+                            "gender": {
+                                        'privs': [],
+                                        },
+                            "owner": {
+                                        'privs': [],
+                                        },
+                            "admins": {
+                                        'privs': [],
+                                        },
+                            "channel": {
+                                        'privs': [],
+                                        },
+                            "msg": {
+                                    'privs': ['admin', 'OP'],
+                                    },
+                            "action": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "notice": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "debug": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "logs": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "update": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "restart": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "permfix": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "pip": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "cd": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "dir": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "gitpull": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "auth": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            "sweep": {
+                                        'privs': ['admin', 'OP'],
+                                        },
+                            }
+
+
 """
 Botdict
 """
@@ -260,6 +334,78 @@ def botcom_symbol_trigger(bot, trigger):
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
 
     return botcom
+
+
+"""
+Core Bot Permissions
+"""
+
+
+def bot_nickcom_run_check(bot, botcom):
+    global valid_botnick_commands
+    commandrun = True
+
+    if 'privs' in valid_botnick_commands[botcom.command_main.lower()].keys():
+        commandrunconsensus = []
+
+        if 'admin' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+            if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']:
+                commandrunconsensus.append('False')
+            else:
+                commandrunconsensus.append('True')
+
+        if 'OP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+            if not botcom.channel_priv:
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']:
+                    commandrunconsensus.append('False')
+                else:
+                    commandrunconsensus.append('True')
+            else:
+                commandrunconsensus.append('False')
+
+        if 'HOP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+            if not botcom.channel_priv:
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanhalfops']:
+                    commandrunconsensus.append('False')
+                else:
+                    commandrunconsensus.append('True')
+            else:
+                commandrunconsensus.append('False')
+
+        if 'VOICE' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+            if not botcom.channel_priv:
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanvoices']:
+                    commandrunconsensus.append('False')
+                else:
+                    commandrunconsensus.append('True')
+            else:
+                commandrunconsensus.append('False')
+
+        if 'OWNER' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+            if not botcom.channel_priv:
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']:
+                    commandrunconsensus.append('False')
+                else:
+                    commandrunconsensus.append('True')
+            else:
+                commandrunconsensus.append('False')
+
+        if 'ADMIN' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+            if not botcom.channel_priv:
+                if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']:
+                    commandrunconsensus.append('False')
+                else:
+                    commandrunconsensus.append('True')
+            else:
+                commandrunconsensus.append('False')
+
+        if valid_botnick_commands[botcom.command_main.lower()]['privs'] == []:
+            commandrunconsensus.append('True')
+
+        if 'True' not in commandrunconsensus:
+            commandrun = False
+
+    return commandrun
 
 
 """
