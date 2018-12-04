@@ -222,6 +222,37 @@ def botcom_nick(bot, trigger):
     return botcom
 
 
+def botcom_symbol_trigger(bot, trigger):
+
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # what time was this triggered
+    botcom.timestart = time.time()
+
+    # instigator
+    botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
+
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
+
+    # channel
+    botcom.channel_current = str(trigger.sender).lower()
+    botcom.channel_priv = trigger.is_privmsg
+
+    # create arg list
+    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+
+    return botcom
+
+
 """
 Startup Requirements
 """
