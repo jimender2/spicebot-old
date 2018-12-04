@@ -36,7 +36,7 @@ def bot_command_hub(bot, trigger):
         return
 
     stderr("Recieved Command to update.")
-    osd(bot, bot.privileges.keys(), 'say', "Received command from " + trigger.nick + " to update from Github and restart. Be Back Soon!")
+    osd(bot, bot.privileges.keys(), 'say', "Received command from " + botcom.instigator + " to update from Github and restart. Be Back Soon!")
 
     # Directory Permissions
     os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/.sopel/" + str(bot.nick) + "/")

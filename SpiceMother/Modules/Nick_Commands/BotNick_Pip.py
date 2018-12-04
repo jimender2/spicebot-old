@@ -35,18 +35,17 @@ def bot_command_hub(bot, trigger):
     if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
 
-    triggerargsarray = spicemanip(bot, trigger, 'create')
     pipcoms = ['install', 'remove']
-    subcom = spicemanip(bot, [x for x in triggerargsarray if x in pipcoms], 1) or None
+    subcom = spicemanip(bot, [x for x in botcom.triggerargsarray if x in pipcoms], 1) or None
     if not subcom:
-        return osd(bot, trigger.sender, 'say', "pip requires a subcommand. Valid options: " + spicemanip(bot, pipcoms, 'andlist'))
+        return osd(bot, botcom.channel_current, 'say', "pip requires a subcommand. Valid options: " + spicemanip(bot, pipcoms, 'andlist'))
 
-    if subcom in triggerargsarray:
-        triggerargsarray.remove(subcom)
+    if subcom in botcom.triggerargsarray:
+        botcom.triggerargsarray.remove(subcom)
 
-    pippackage = spicemanip(bot, triggerargsarray, 0)
+    pippackage = spicemanip(bot, botcom.triggerargsarray, 0)
     if not pippackage:
-        return osd(bot, trigger.sender, 'say', "You must specify a pip package.")
+        return osd(bot, botcom.channel_current, 'say', "You must specify a pip package.")
 
     installines = []
     previouslysatisfied = []
@@ -63,8 +62,8 @@ def bot_command_hub(bot, trigger):
         installines.insert(0, "The following required packages have already been satisfied: " + previouslysatisfiedall)
 
     if installines == []:
-        return osd(bot, trigger.sender, 'action', "has no install log for some reason.")
+        return osd(bot, botcom.channel_current, 'action', "has no install log for some reason.")
 
     for line in installines:
-        osd(bot, trigger.sender, 'say', line)
-    osd(bot, trigger.sender, 'say', "Possibly done.")
+        osd(bot, botcom.channel_current, 'say', line)
+    osd(bot, botcom.channel_current, 'say', "Possibly done.")

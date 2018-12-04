@@ -36,7 +36,7 @@ def bot_command_hub(bot, trigger):
         return
 
     stderr("Recieved Command to update.")
-    osd(bot, bot.privileges.keys(), 'say', "Received command from " + trigger.nick + " to restart systemd service. Be Back Soon!")
+    osd(bot, bot.privileges.keys(), 'say', "Received command from " + botcom.instigator + " to restart systemd service. Be Back Soon!")
 
     # close connection
     # stderr("[API] Closing Connection.")

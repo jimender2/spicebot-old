@@ -35,14 +35,13 @@ def bot_command_hub(bot, trigger):
     if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
 
-    triggerargsarray = spicemanip(bot, trigger, 'create')
-    logtype = spicemanip(bot, triggerargsarray, 1) or None
+    logtype = spicemanip(bot, botcom.triggerargsarray, 1) or None
     if not logtype or not bot_check_inlist(bot, logtype, bot.memory['logs'].keys()):
-        return osd(bot, trigger.sender, 'action', "Current valid log(s) include: " + spicemanip(bot, bot.memory['logs'].keys(), 'andlist'))
+        return osd(bot, botcom.channel_current, 'action', "Current valid log(s) include: " + spicemanip(bot, bot.memory['logs'].keys(), 'andlist'))
 
     if len(bot.memory['logs'][logtype]) == 0:
-        return osd(bot, trigger.sender, 'action', "No logs found for " + str(logtype) + ".")
-    osd(bot, trigger.sender, 'action', "Is Examining " + str(logtype) + " log(s).")
+        return osd(bot, botcom.channel_current, 'action', "No logs found for " + str(logtype) + ".")
+    osd(bot, botcom.channel_current, 'action', "Is Examining " + str(logtype) + " log(s).")
 
     for line in bot.memory['logs'][logtype]:
-        osd(bot, trigger.sender, 'action', str(line))
+        osd(bot, botcom.channel_current, 'action', str(line))

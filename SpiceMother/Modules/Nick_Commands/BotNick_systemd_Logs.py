@@ -35,7 +35,7 @@ def bot_command_hub(bot, trigger):
     if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
 
-    osd(bot, trigger.sender, 'action', "Is Examining systemd Log(s).")
+    osd(bot, botcom.channel_current, 'action', "Is Examining systemd Log(s).")
 
     debuglines = []
     ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)", "COMMAND=/bin/chown", "Docs: http://sopel.chat/", "Main PID:", "systemctl status", "sudo service"]
@@ -44,7 +44,7 @@ def bot_command_hub(bot, trigger):
             debuglines.append(str(line))
 
     if len(debuglines) == 0:
-        return osd(bot, trigger.sender, 'say', str(bot.nick) + " had no log(s) for some reason")
+        return osd(bot, botcom.channel_current, 'say', str(bot.nick) + " had no log(s) for some reason")
 
     for line in debuglines:
-        osd(bot, trigger.sender, 'say', line)
+        osd(bot, botcom.channel_current, 'say', line)
