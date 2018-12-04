@@ -124,6 +124,15 @@ mode_dict_alias = {
                     }
 
 
+gif_dontusesites = [
+                        "http://forgifs.com", "http://a.dilcdn.com", "http://www.bestgifever.com",
+                        "http://s3-ec.buzzfed.com", "http://i.minus.com", "http://fap.to", "http://prafulla.net",
+                        "http://3.bp.blogspot.com"
+                        ]
+
+gif_dontuseextensions = ['.jpg', '.png']
+
+
 valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate", "responses"]
 
 

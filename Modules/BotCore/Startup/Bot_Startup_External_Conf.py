@@ -34,9 +34,6 @@ def bot_startup_ext_conf(bot, trigger):
     while not bot_startup_requirements_met(bot, ["botdict"]):
         pass
 
-    if "tempvals" not in bot.memory:
-        bot.memory["tempvals"] = dict()
-
     bot.memory["tempvals"]["ext_conf"] = config_file_to_dict(bot, "/home/" + str(os_dict["user"]) + "/" + str(os_dict["ext_conf"]))
 
     bot_startup_requirements_set(bot, "ext_conf")
