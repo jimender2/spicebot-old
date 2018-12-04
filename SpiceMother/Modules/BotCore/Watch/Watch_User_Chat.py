@@ -65,8 +65,9 @@ def watch_all_hub(bot, trigger):
     botcom.timestart = time.time()
 
     spoken = spicemanip(bot, botcom.triggerargsarray, 0)
+    bot.msg("#spicemotherdev", str(bot.memory["botdict"]['servers_list'][botcom.server]['channels_list']))
     if 'all' not in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["auth_block"]:
-        spoken = "***********"
+        spoken = "<REDACTED>"
 
     usertalkdict = {
                     "server": str(bot.memory["botdict"]["tempvals"]['servername']),
