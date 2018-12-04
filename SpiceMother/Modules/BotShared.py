@@ -216,26 +216,9 @@ def botcom_nick(bot, trigger):
     botcom.channel_current = str(trigger.sender)
     botcom.channel_priv = trigger.is_privmsg
 
-    # channel creds
-    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
-        if not botcom.channel_priv:
-            privstring = str("chan" + privtype.lower() + "s")
-            evalstring = str("bot.memory['botdict']['tempvals']['servers_list']['" + botcom.server + "']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-            grouplist = eval(evalstring)
-        else:
-            grouplist = []
-        if botcom.instigator in grouplist:
-            createuserdict = str("botcom." + privtype + " = True")
-        else:
-            createuserdict = str("botcom." + privtype + " = False")
-        exec(createuserdict)
-
-    # Bots can't run commands
-    if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+    # Bots block
+    if not bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
-
-    # valid commands
-    global valid_botnick_commands
 
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, '2+', 'list')
