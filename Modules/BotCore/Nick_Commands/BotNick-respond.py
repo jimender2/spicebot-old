@@ -36,7 +36,7 @@ def bot_nickcom_hub(bot, trigger):
         return
 
     if not botcom.command_main:
-        return osd(bot, botcom.instigator, 'notice', "I don't know what you are asking me to do!")
+        return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do!")
 
     if botcom.command_main.lower() not in valid_botnick_commands.keys():
         sim_com, sim_num = [], []
@@ -54,6 +54,6 @@ def bot_nickcom_hub(bot, trigger):
                     relist.append(str(item))
                 listnumb += 1
             closestmatches = spicemanip(bot, relist, "andlist")
-            return osd(bot, botcom.instigator, 'notice', "I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")
+            return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")
         else:
-            return osd(bot, botcom.instigator, 'notice', "I don't know what you are asking me to do!")
+            return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do!")
