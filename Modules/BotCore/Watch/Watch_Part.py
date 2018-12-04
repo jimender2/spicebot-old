@@ -82,5 +82,5 @@ def botcom_player_leave(bot, trigger):
 
     if not online:
 
-        if botcom.instigator in bot.memory["botdict"]["servers_list"][str(botcom.server)]["tempvals"]['all_current_users']:
+        if botcom.instigator in bot.memory["botdict"]["tempvals"]["servers_list"][str(botcom.server)]['all_current_users']:
             bot.memory["botdict"]["tempvals"]["servers_list"][str(botcom.server)]['all_current_users'].remove(botcom.instigator)
