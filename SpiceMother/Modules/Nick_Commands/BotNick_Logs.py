@@ -31,6 +31,7 @@ def bot_command_hub(bot, trigger):
 
     triggerargsarray = spicemanip(bot, trigger, 'create')
     logtype = spicemanip(bot, triggerargsarray, 1)
+    bot.say(str(logtype))
     if not logtype or logtype not in bot.memory['logs'].keys():
         return osd(bot, trigger.sender, 'action', "Current valid log(s) include: " + spicemanip(bot, bot.memory['logs'].keys(), 'andlist'))
 
