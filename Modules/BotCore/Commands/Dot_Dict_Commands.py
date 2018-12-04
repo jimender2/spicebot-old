@@ -142,19 +142,19 @@ def bot_dictcom_process(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
 
         commandrunconsensus, commandrun = [], True
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']:
+        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']):
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']:
+        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']):
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']:
+        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']):
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']:
+        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']):
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
@@ -175,19 +175,19 @@ def bot_dictcom_process(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
 
         commandrunconsensus, commandrun = [], True
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']:
+        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']):
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']:
+        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']):
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']:
+        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']):
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']:
+        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']):
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
