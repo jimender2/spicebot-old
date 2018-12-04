@@ -12,6 +12,6 @@
               },
 "anthem": {
             "type": "simple",
-            "responses": ["This is the New Zealand National Anthem: https://www.youtube.com/watch?v=PZuHAsf6qO0"],
+            "responses": ["This is the New Zealand National Anthem: https://www.youtube.com/watch?v=PZuHAsf6qO0",],
             },
 }
