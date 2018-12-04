@@ -63,9 +63,11 @@ def bot_startup_monologue(bot, trigger):
 
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
 
-    # while 'sock_port' not in bot.memory:
-    #    pass
-    # startupcomplete.append("API Port set to " + str(bot.memory['sock_port']))
+    # API port
+    while not bot_startup_requirements_met(bot, ["bot_api"]):
+        pass
+    if bot.memory['sock_port']:
+        startupcomplete.append("API Port set to " + str(bot.memory['sock_port']))
 
     # Announce to chan, then handle some closing stuff
     osd(bot, bot.privileges.keys(), 'notice', startupcomplete)

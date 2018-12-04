@@ -98,6 +98,11 @@ bot_dict = {
             }
 
 
+api_dict = {
+            "addresses": [],
+            }
+
+
 github_dict = {
                 "url_main": "https://github.com/",
                 "url_raw": "https://raw.githubusercontent.com/",
@@ -258,6 +263,173 @@ def bot_check_inlist(bot, searchterm, searchlist):
         return False
 
 
+
+def nick_actual(bot, nick, altlist=None):
+    nick_actual = nick
+    if "botdict_loaded" not in bot.memory:
+        for u in bot.users:
+            if u.lower() == str(nick).lower():
+                nick_actual = u
+        return nick_actual
+    if not altlist:
+        searchuserlist = bot.memory["botdict"]["users"].keys()
+    else:
+        searchuserlist = altlist
+    for u in searchuserlist:
+        if u.lower() == str(nick).lower():
+            nick_actual = u
+    return nick_actual
+
+
+def bot_random_valid_target(bot, botcom, outputtype):
+    validtargs = []
+    if botcom.channel_priv:
+        validtargs.extend([str(bot.nick), botcom.instigator])
+    else:
+        for user in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['current_users']:
+            targetchecking = bot_target_check(bot, botcom, user, [])
+            if targetchecking["targetgood"]:
+                validtargs.append(user)
+    if outputtype == 'list':
+        return validtargs
+    elif outputtype == 'random':
+        return spicemanip(bot, validtargs, 'random')
+
+def bot_target_check(bot, botcom, target, targetbypass=[]):
+    targetgood = {"targetgood": True, "error": "None", "reason": None}
+
+    # Different Bot
+    otherbots = bot_api_get_users(bot)
+    otherbotmatch = []
+    otherbotmatchcur = []
+    otherbotnickmatch = []
+    for host in otherbots.keys():
+        for bots in otherbots[host].keys():
+            if bot_check_inlist(bot, target, otherbots[host][bots]['users'].keys()):
+                matchmade = {"bot": bots, "servername": otherbots[host][bots]["servername"]}
+                if bot_check_inlist(bot, target, otherbots[host][bots]['all_current_users']):
+                    otherbotmatchcur.append(matchmade)
+                otherbotnickmatch.append(nick_actual(bot, target, otherbots[host][bots]['users'].keys()))
+                otherbotmatch.append(matchmade)
+
+    if not isinstance(targetbypass, list):
+        targetbypass = [targetbypass]
+
+    if "notarget" not in targetbypass:
+        if not target or target == '':
+            return {"targetgood": False, "error": "No target Given.", "reason": "notarget", "otherbots": otherbots}
+
+    # Optional don't allow self-target
+    if "self" not in targetbypass:
+        if bot_check_inlist(bot, target, botcom.instigator):
+            return {"targetgood": False, "error": "This command does not allow you to target yourself.", "reason": "self", "otherbots": otherbots}
+
+    # cannot target bots
+    if "bot" not in targetbypass:
+        if bot_check_inlist(bot, target, bot.nick):
+            return {"targetgood": False, "error": "I am a bot and cannot be targeted.", "reason": "bot", "otherbots": otherbots}
+    if "bots" not in targetbypass:
+        if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['bots_list'].keys()):
+            return {"targetgood": False, "error": nick_actual(bot, target) + " is a bot and cannot be targeted.", "reason": "bots", "otherbots": otherbots}
+        if bot_check_inlist(bot, target, bot.memory["sock_bot_list"]):
+            return {"targetgood": False, "error": nick_actual(bot, target, bot.memory["sock_bot_list"]) + " is a bot and cannot be targeted.", "reason": "bots", "otherbots": otherbots}
+
+    # Not a valid user
+    if "unknown" not in targetbypass:
+        if not bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
+            if otherbotmatch != [] and "diffbot" not in targetbypass:
+                if otherbotmatchcur != []:
+                    if otherbotmatchcur[0]["servername"] != bot.memory["botdict"]["tempvals"]['servername']:
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged onto " + str(otherbotmatchcur[0]["servername"]) + " right now!", "reason": "diffbot", "otherbots": otherbots}
+                    else:
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged on right now!", "reason": "diffbot", "otherbots": otherbots}
+                else:
+                    if otherbotmatchcur[0]["servername"] != bot.memory["botdict"]["tempvals"]['servername']:
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatch[0]["bot"]) + " has a listing for " + nick_actual(bot, target, otherbotnickmatch) + " on " + str(otherbotmatch[0]["servername"]) + ", but they are offline at the moment!", "reason": "diffbot", "otherbots": otherbots}
+                    else:
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatch[0]["bot"]) + " has a listing for " + nick_actual(bot, target, otherbotnickmatch) + ", but they are offline at the moment!", "reason": "diffbot", "otherbots": otherbots}
+            else:
+                sim_user, sim_num = [], []
+                for user in bot.memory["botdict"]["users"].keys():
+                    similarlevel = similar(str(target).lower(), user.lower())
+                    if similarlevel >= .75:
+                        sim_user.append(user)
+                        sim_num.append(similarlevel)
+                if sim_user != [] and sim_num != []:
+                    sim_num, sim_user = array_arrangesort(bot, sim_num, sim_user)
+                    closestmatch = spicemanip(bot, sim_user, 'reverse', "list")
+                    listnumb, relist = 1, []
+                    for item in closestmatch:
+                        if listnumb <= 3:
+                            relist.append(str(item))
+                        listnumb += 1
+                    closestmatches = spicemanip(bot, relist, "andlist")
+                    targetgooderror = "It looks like you're trying to target someone! Did you mean: " + str(closestmatches) + "?"
+                else:
+                    targetgooderror = "I am not sure who that is."
+                return {"targetgood": False, "error": targetgooderror, "reason": "unknown", "otherbots": otherbots}
+
+    # User offline
+    if "offline" not in targetbypass:
+        if not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
+            if otherbotmatch != [] and "diffbot" not in targetbypass:
+                if otherbotmatchcur != []:
+                    if otherbotmatchcur[0]["servername"] != bot.memory["botdict"]["tempvals"]['servername']:
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged onto " + str(otherbotmatchcur[0]["servername"]) + " right now!", "reason": "diffbot", "otherbots": otherbots}
+                    else:
+                        return {"targetgood": False, "error": "It looks like " + str(otherbotmatchcur[0]["bot"]) + " can see " + nick_actual(bot, target, otherbotnickmatch) + " logged on right now!", "reason": "diffbot", "otherbots": otherbots}
+            else:
+                return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is offline right now!", "reason": "offline", "otherbots": otherbots}
+
+    # Private Message
+    if "privmsg" not in targetbypass:
+        if botcom.channel_priv and not bot_check_inlist(bot, target, botcom.instigator):
+            return {"targetgood": False, "error": "Leave " + nick_actual(bot, target) + " out of this private conversation!", "reason": "privmsg", "otherbots": otherbots}
+
+    # not in the same channel
+    if "diffchannel" not in targetbypass:
+        if not botcom.channel_priv and bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['all_current_users']):
+            if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['channels_list'][str(botcom.channel_current)]['current_users']]:
+                return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.", "reason": "diffchannel", "otherbots": otherbots}
+
+    return targetgood
+
+
+"""
+Networking
+"""
+
+
+def ipv4detect(bot, hostIP):
+    pat = re.compile("\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}")
+    test = pat.match(hostIP)
+    return test
+
+
+def find_used_port_in_range(bot, rangestart, rangeend, host):
+    returnlist = []
+    for i in range(rangestart, rangeend + 1):
+        if is_port_in_use(i, host):
+            returnlist.append(i)
+    return returnlist
+
+
+def find_unused_port_in_range(bot, rangestart, rangeend, host):
+    for i in range(rangestart, rangeend + 1):
+        if not is_port_in_use(i, host):
+            return i
+
+
+def is_port_in_use(port, host):
+    checkport = str(len(subprocess.Popen("netstat -lant | awk '{print $4}' | grep " + str(host) + ":" + str(port), shell=True, stdout=subprocess.PIPE).stdout.read()) > 0)
+    if checkport == "True":
+        return True
+    elif checkport == "False":
+        return False
+    else:
+        return False
+
+
 """
 OS Functions
 """
@@ -336,6 +508,212 @@ def humanized_time(countdownseconds):
             else:
                 displaymsg = str(str(int(currenttimevar)) + " " + timetype)
     return displaymsg
+
+
+"""
+Text Processing
+"""
+
+
+def bot_translate_process(bot, totranslate, translationtypes):
+
+    # just in case
+    if not isinstance(translationtypes, list):
+        translationtypes = [translationtypes]
+
+    for translationtype in translationtypes:
+
+        if translationtype == "hyphen":
+            totranslate = spicemanip(bot, totranslate, 0).replace(' ', '-')
+
+        elif translationtype == "underscore":
+            totranslate = spicemanip(bot, totranslate, 0).replace(' ', '_')
+
+        elif translationtype == "ermahgerd":
+            totranslate = trernslert(bot, totranslate)
+
+        elif translationtype == "obscure":
+            totranslate = text_obscure(bot, totranslate)
+
+        elif translationtype == "piglatin":
+            totranslate = text_piglatin(bot, totranslate)
+
+        elif translationtype == "binaryinvert":
+            totranslate = text_binary_swap(bot, totranslate)
+
+        elif translationtype == "onetozero":
+            totranslate = text_one_to_zero_swap(bot, totranslate)
+
+        elif translationtype == "upper":
+            totranslate = spicemanip(bot, totranslate, 0).upper()
+
+        elif translationtype == "lower":
+            totranslate = spicemanip(bot, totranslate, 0).lower()
+
+    return totranslate
+
+
+def text_obscure(bot, words):
+    amountofletters = len(words)
+    mystring = "*" * amountofletters
+    return mystring
+
+
+def text_piglatin(bot, words):
+    if not isinstance(words, list):
+        words = [words]
+    rebuildarray = []
+    for word in words:
+        word = word.lower()
+        first = word[:1]
+        if first in ['a', 'e', 'i', 'o', 'u']:
+            new_word = word + 'ay'
+        else:
+            new_word = word[1:] + first + 'ay'
+        rebuildarray.append(new_word)
+    words = spicemanip(bot, rebuildarray, 0)
+    return words
+
+
+def trernslert(bot, werds):
+    terkerns = werds.split()
+    er = ''
+    for terk in terkerns:
+
+        if terk.endswith(','):
+            terk = re.sub(r"[,]+", '', terk)
+            cermmer = 'true'
+        else:
+            cermmer = 'false'
+
+        if terk.startswith('('):
+            terk = re.sub(r"[(]+", '', terk)
+            lerftperernthersers = 'true'
+        else:
+            lerftperernthersers = 'false'
+
+        if terk.endswith(')'):
+            terk = re.sub(r"[)]+", '', terk)
+            rerghtperernthersers = 'true'
+        else:
+            rerghtperernthersers = 'false'
+
+        if terk.endswith('%'):
+            terk = re.sub(r"[%]+", '', terk)
+            percernt = 'true'
+        else:
+            percernt = 'false'
+
+        werd = ermergerd(terk)
+
+        if lerftperernthersers == 'true':
+            werd = str('(' + werd)
+
+        if percernt == 'true':
+            werd = str(werd + ' PERCERNT')
+
+        if rerghtperernthersers == 'true':
+            werd = str(werd + ')')
+
+        if cermmer == 'true':
+            werd = str(werd + ',')
+        cermmer
+
+        er = er + ' ' + werd
+    return er
+
+
+def ermergerd(w):
+    w = w.strip().lower()
+    derctshernerer = {'me': 'meh', 'you': 'u', 'are': 'er', "you're": "yer", "i'm": "erm", "i've": "erv", "my": "mah", "the": "da", "omg": "ermahgerd"}
+    if w in derctshernerer:
+        return derctshernerer[w].upper()
+    else:
+        w = re.sub(r"[\.,/;:!@#$%^&*\?)(]+", '', w)
+        if w[0].isdigit():
+            w = num2words(int(w))
+        w = re.sub(r"tion", "shun", w)
+        pat = r"[aeiouy]+"
+        er = re.sub(pat, "er", w)
+        if w.startswith('y'):
+            er = 'y' + re.sub(pat, "er", w[1:])
+        if w.endswith('e') and not w.endswith('ee') and len(w) > 3:
+            er = re.sub(pat, "er", w[:-1])
+        if w.endswith('ing'):
+            er = re.sub(pat, "er", w[:-3]) + 'in'
+        er = er[0] + er[1:].replace('y', 'er')
+        er = er.replace('rr', 'r')
+        return er.upper()
+
+
+def text_one_to_zero_swap(bot, words):
+    if not words or words == []:
+        return "No input provided"
+    if not isinstance(words, list):
+        words = [words]
+    words = spicemanip(bot, words, 0).split(" ")
+    outputarray = []
+    for word in words:
+        if not isitbinary(word):
+            word = text_binary_swap(bot, word)
+        word = str(word).replace('1', '2')
+        word = str(word).replace('0', '1')
+        word = str(word).replace('2', '0')
+        outputarray.append(str(word))
+    outputarray = spicemanip(bot, outputarray, 0)
+    return outputarray
+
+
+def text_binary_swap(bot, words):
+    if not words or words == []:
+        return "No input provided"
+    if not isinstance(words, list):
+        words = [words]
+    words = spicemanip(bot, words, 0).split(" ")
+    outputarray = []
+    for word in words:
+        if isitbinary(word):
+            word = bits2string(word) or 'error'
+        else:
+            word = string2bits(word) or 1
+            word = spicemanip(bot, word, 0)
+        outputarray.append(str(word))
+    outputarray = spicemanip(bot, outputarray, 0)
+    return outputarray
+
+
+"""
+Small Functions
+"""
+
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
+
+def countX(lst, x):
+    count = 0
+    for ele in lst:
+        if (ele == x):
+            count = count + 1
+    return count
+
+
+def isitbinary(string):
+    p = set(string)
+    s = {'0', '1'}
+    if s == p or p == {'0'} or p == {'1'}:
+        return True
+    else:
+        return False
+
+
+def string2bits(s=''):
+    return [bin(ord(x))[2:].zfill(8) for x in s]
+
+
+def bits2string(b=None):
+    return ''.join(chr(int(b[i*8:i*8+8], 2)) for i in range(len(b)//8))
 
 
 """
