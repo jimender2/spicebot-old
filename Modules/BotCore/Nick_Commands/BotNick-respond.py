@@ -41,7 +41,7 @@ def bot_nickcom_hub(bot, trigger):
     if botcom.command_main.lower() not in valid_botnick_commands.keys():
         sim_com, sim_num = [], []
         for comm in valid_botnick_commands.keys():
-            similarlevel = similar(str(target).lower(), comm.lower())
+            similarlevel = similar(str(botcom.command_main).lower(), comm.lower())
             if similarlevel >= .75:
                 sim_com.append(comm)
                 sim_num.append(similarlevel)
@@ -54,6 +54,6 @@ def bot_nickcom_hub(bot, trigger):
                     relist.append(str(item))
                 listnumb += 1
             closestmatches = spicemanip(bot, relist, "andlist")
-            return osd(bot, botcom.instigator, 'notice', "It looks like you're trying to target someone! Did you mean: " + str(closestmatches) + "?")
+            return osd(bot, botcom.instigator, 'notice', "I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")
         else:
             return osd(bot, botcom.instigator, 'notice', "I don't know what you are asking me to do!")
