@@ -1,4 +1,5 @@
 {
+"validcoms": ['nike', 'justdoit', 'doit'],
 "?default": {
               "type": "gif",
               "responses": "Just do it",
