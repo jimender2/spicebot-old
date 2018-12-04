@@ -382,7 +382,7 @@ def bot_target_check(bot, botcom, target, targetbypass):
         if bot_check_inlist(bot, target, bot.nick):
             return {"targetgood": False, "error": "I am a bot and cannot be targeted.", "reason": "bot"}
     if "bots" not in targetbypass:
-        if bot_check_inlist(bot, target, [str(bot.nick)]):
+        if bot_check_inlist(bot, target, bot.nick):
             return {"targetgood": False, "error": nick_actual(bot, target) + " is a bot and cannot be targeted.", "reason": "bots"}
 
     # Not a valid user
@@ -415,12 +415,12 @@ def bot_target_check(bot, botcom, target, targetbypass):
 
     # Private Message
     if "privmsg" not in targetbypass:
-        if not str(botcom.channel_current).startswith('#') and not bot_check_inlist(bot, target, botcom.instigator):
+        if botcom.channel_priv and not bot_check_inlist(bot, target, botcom.instigator):
             return {"targetgood": False, "error": "Leave " + nick_actual(bot, target) + " out of this private conversation!", "reason": "privmsg"}
 
     # not in the same channel
     if "diffchannel" not in targetbypass:
-        if str(botcom.channel_current).startswith('#') and bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['all_current_users']):
+        if not botcom.channel_priv and bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['all_current_users']):
             if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]['current_users']]:
                 return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.", "reason": "diffchannel"}
 
