@@ -29,6 +29,8 @@ This allows the viewing of systemd logs from within IRC
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
+    botcom = botcom_nick(bot, trigger)
+
     osd(bot, trigger.sender, 'action', "Is Examining systemd Log(s).")
 
     debuglines = []

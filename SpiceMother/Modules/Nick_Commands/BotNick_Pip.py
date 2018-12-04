@@ -29,6 +29,8 @@ This can be utilized to install/remove python pip packages from within IRC
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
+    botcom = botcom_nick(bot, trigger)
+
     triggerargsarray = spicemanip(bot, trigger, 'create')
     pipcoms = ['install', 'remove']
     subcom = spicemanip(bot, [x for x in triggerargsarray if x in pipcoms], 1) or None

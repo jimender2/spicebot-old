@@ -187,6 +187,62 @@ def botdict_save(bot):
 
 
 """
+Botdict
+"""
+
+
+def botcom_nick(bot, trigger):
+
+    # botcom dynamic Class
+    botcom = class_create('botcom')
+    botcom.default = 'botcom'
+
+    # what time was this triggered
+    botcom.timestart = time.time()
+
+    # instigator
+    botcom.instigator = str(trigger.nick)
+    botcom.instigator_hostmask = str(trigger.hostmask)
+    botcom.instigator_user = str(trigger.user)
+
+    # bot credentials
+    botcom.admin = trigger.admin
+    botcom.owner = trigger.owner
+
+    # server
+    botcom.server = bot.memory["botdict"]["tempvals"]['server']
+
+    # channel
+    botcom.channel_current = str(trigger.sender)
+    botcom.channel_priv = trigger.is_privmsg
+
+    # channel creds
+    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
+        if not botcom.channel_priv:
+            privstring = str("chan" + privtype.lower() + "s")
+            evalstring = str("bot.memory['botdict']['tempvals']['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
+            grouplist = eval(evalstring)
+        else:
+            grouplist = []
+        if botcom.instigator in grouplist:
+            createuserdict = str("botcom." + privtype + " = True")
+        else:
+            createuserdict = str("botcom." + privtype + " = False")
+        exec(createuserdict)
+
+    # Bots can't run commands
+    if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+        return
+
+    # valid commands
+    global valid_botnick_commands
+
+    # create arg list
+    botcom.triggerargsarray = spicemanip(bot, trigger, '2+', 'list')
+    bot.say(str(botcom.triggerargsarray))
+
+
+"""
 Startup Requirements
 """
 
@@ -263,7 +319,6 @@ def bot_check_inlist(bot, searchterm, searchlist):
         return False
 
 
-
 def nick_actual(bot, nick, altlist=None):
     nick_actual = nick
     if "botdict_loaded" not in bot.memory:
@@ -294,6 +349,7 @@ def bot_random_valid_target(bot, botcom, outputtype):
         return validtargs
     elif outputtype == 'random':
         return spicemanip(bot, validtargs, 'random')
+
 
 def bot_target_check(bot, botcom, target, targetbypass=[]):
     targetgood = {"targetgood": True, "error": "None", "reason": None}

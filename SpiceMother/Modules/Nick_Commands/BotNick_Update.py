@@ -29,6 +29,8 @@ This will pull files fropm Github and restart the bots service
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
+    botcom = botcom_nick(bot, trigger)
+
     stderr("Recieved Command to update.")
     osd(bot, bot.privileges.keys(), 'say', "Received command from " + trigger.nick + " to update from Github and restart. Be Back Soon!")
 

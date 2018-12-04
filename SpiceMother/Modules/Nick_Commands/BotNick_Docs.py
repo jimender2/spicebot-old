@@ -29,4 +29,6 @@ This will display a link to the online wiki for the bot
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
+    botcom = botcom_nick(bot, trigger)
+
     osd(bot, trigger.nick, 'say', ["IRC Modules Repository", str(github_dict["url_main"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + github_dict["url_path_wiki"])])

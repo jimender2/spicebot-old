@@ -27,4 +27,6 @@ def bot_command_hub(bot, trigger):
     if not bot_startup_requirements_met(bot, ["botdict"]):
         bot.memory["uptime"] = time.time()
 
+    botcom = botcom_nick(bot, trigger)
+
     osd(bot, trigger.sender, 'say', "I have been running since " + str(humanized_time(time.time() - bot.memory["uptime"])) + " ago.")

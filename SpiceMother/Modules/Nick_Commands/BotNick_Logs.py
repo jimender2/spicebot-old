@@ -29,6 +29,8 @@ This is an internal logging system for the bot
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
+    botcom = botcom_nick(bot, trigger)
+
     triggerargsarray = spicemanip(bot, trigger, 'create')
     bot.say(str(triggerargsarray))
     logtype = spicemanip(bot, triggerargsarray, 1) or None

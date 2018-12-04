@@ -29,6 +29,8 @@ This will restart the bots service
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
+    botcom = botcom_nick(bot, trigger)
+
     stderr("Recieved Command to update.")
     osd(bot, bot.privileges.keys(), 'say', "Received command from " + trigger.nick + " to restart systemd service. Be Back Soon!")
 
