@@ -31,9 +31,9 @@ This reads the external config
 def bot_startup_ext_conf(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict", "server"]):
+    while not bot_startup_requirements_met(bot, ["botdict"]):
         pass
 
-    bot.memory["tempvals"]["ext_conf"] = config_file_to_dict(bot, "/home/" + str(os_dict["user"]) + "/" + str(os_dict["ext_conf"]))
+    bot.memory["botdict"]["tempvals"]["ext_conf"] = config_file_to_dict(bot, "/home/" + str(os_dict["user"]) + "/" + str(os_dict["ext_conf"]))
 
     bot_startup_requirements_set(bot, "ext_conf")
