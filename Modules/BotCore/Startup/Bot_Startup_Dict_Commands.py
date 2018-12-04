@@ -31,7 +31,7 @@ This Cycles through all of the dictionary commands
 def bot_startup_dict_coms(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict", "bot_info"]):
+    while not bot_startup_requirements_met(bot, ["botdict", "bot_info", "txt_files"]):
         pass
 
     dict_command_configs(bot)
