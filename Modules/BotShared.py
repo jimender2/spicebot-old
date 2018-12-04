@@ -430,7 +430,7 @@ def bot_target_check(bot, botcom, target, targetbypass):
     # not in the same channel
     if "diffchannel" not in targetbypass:
         if not botcom.channel_priv and bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['all_current_users']):
-            if str(target).lower() not in [u.lower() for u in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]['current_users']]:
+            if not bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]['current_users']):
                 return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.", "reason": "diffchannel"}
 
     return targetgood
