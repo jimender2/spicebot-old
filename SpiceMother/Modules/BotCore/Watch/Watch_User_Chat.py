@@ -56,20 +56,6 @@ def watch_all_hub(bot, trigger):
     if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
 
-    # channel creds
-    for privtype in ['VOICE', 'HALFOP', 'OP', 'ADMIN', 'OWNER']:
-        if not botcom.channel_priv:
-            privstring = str("chan" + privtype.lower() + "s")
-            evalstring = str("bot.memory['botdict']['tempvals']['servers_list'][" + str(botcom.server) + "]['channels_list']['" + botcom.channel_current + "']['" + privstring + "']")
-            grouplist = eval(evalstring)
-        else:
-            grouplist = []
-        if botcom.instigator in grouplist:
-            createuserdict = str("botcom." + privtype + " = True")
-        else:
-            createuserdict = str("botcom." + privtype + " = False")
-        exec(createuserdict)
-
     # what they said
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
 
