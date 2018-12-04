@@ -29,10 +29,10 @@ This is an internal logging system for the bot
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
-    triggerargsarray = spicemanip(bot, trigger.args[-1], 'create')
-    logtype = spicemanip(bot, triggerargsarray, 1)
+    triggerargsarray = spicemanip(bot, trigger, 'create')
     bot.say(str(triggerargsarray))
-    if not logtype or logtype not in bot.memory['logs'].keys():
+    logtype = spicemanip(bot, triggerargsarray, 1) or None
+    if not logtype or not bot_check_inlist(bot, logtype, bot.memory['logs'].keys()):
         return osd(bot, trigger.sender, 'action', "Current valid log(s) include: " + spicemanip(bot, bot.memory['logs'].keys(), 'andlist'))
 
     if len(bot.memory['logs'][logtype]) == 0:
