@@ -213,7 +213,7 @@ def botcom_nick(bot, trigger):
     botcom.server = bot.memory["botdict"]["tempvals"]['server']
 
     # channel
-    botcom.channel_current = str(trigger.sender)
+    botcom.channel_current = str(trigger.sender).lower()
     botcom.channel_priv = trigger.is_privmsg
 
     # create arg list
