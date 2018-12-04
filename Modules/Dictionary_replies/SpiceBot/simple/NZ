@@ -15,24 +15,3 @@
             "responses": ["This is the New Zealand National Anthem: https://www.youtube.com/watch?v=PZuHAsf6qO0"],
             },
 }
-
-
-{
-
-"?default": {
-              "type": "simple",
-              "responses": ["Which free meraki device would you like? Options are: $specialoptions."],
-              },
-"mx": {
-              "type": "simple",
-              "responses": ['MX: https://meraki.cisco.com/tc/freemx'],
-              },
-"switch": {
-              "type": "simple",
-              "responses": ['Switch: https://meraki.cisco.com/tc/freeswitch'],
-              },
-"ap": {
-              "type": "simple",
-              "responses": ['AP: https://meraki.cisco.com/tc/freeap'],
-              },
-}
