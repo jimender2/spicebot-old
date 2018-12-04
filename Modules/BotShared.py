@@ -437,6 +437,117 @@ def bot_target_check(bot, botcom, target, targetbypass):
 
 
 """
+Gif Searching
+"""
+
+
+def getGif(bot, searchdict):
+
+    # list of defaults
+    query_defaults = {
+                    "query": None,
+                    "searchnum": 'random',
+                    "gifsearch": bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys(),
+                    "gifsearchremove": ['gifme'],
+                    "searchlimit": 'default',
+                    "nsfw": False,
+                    }
+
+    # set defaults if they don't exist
+    for key in query_defaults:
+        if key not in searchdict.keys():
+            searchdict[key] = query_defaults[key]
+            if key == "gifsearch":
+                for remx in query_defaults["gifsearchremove"]:
+                    searchdict["gifsearch"].remove(remx)
+
+    # Replace spaces in search query
+    if not searchdict["query"]:
+        return {"error": 'No Query to Search'}
+    searchdict["searchquery"] = searchdict["query"].replace(' ', '%20')
+
+    # set api usage
+    if not isinstance(searchdict['gifsearch'], list):
+        if str(searchdict['gifsearch']) in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
+            searchdict['gifsearch'] = [searchdict['gifsearch']]
+        else:
+            searchdict['gifsearch'] = bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys()
+    else:
+        for apis in searchdict['gifsearch']:
+            if apis not in bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'].keys():
+                searchdict['gifsearch'].remove(apis)
+
+    # Verify search limit
+    if searchdict['searchlimit'] == 'default' or not isinstance(searchdict['searchlimit'], int):
+        searchdict['searchlimit'] = 50
+
+    # Random handling for searchnum
+    if searchdict["searchnum"] == 'random':
+        searchdict["searchnum"] = randint(0, searchdict['searchlimit'])
+
+    # Make sure there is a valid input of query and search number
+    if not searchdict["query"]:
+        return {"error": 'No Query to Search'}
+
+    if not str(searchdict["searchnum"]).isdigit():
+        return {"error": 'No Search Number or Random Specified'}
+
+    gifapiresults = []
+    for currentapi in searchdict['gifsearch']:
+
+        # url base
+        url = str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['url'])
+        # query
+        url += str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['query']) + str(searchdict["searchquery"])
+        # limit
+        url += str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['limit']) + str(searchdict["searchlimit"])
+        # nsfw search?
+        if searchdict['nsfw']:
+            url += str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['nsfw'])
+        else:
+            url += str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['sfw'])
+        # api key
+        url += str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['key']) + str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['apikey'])
+
+        page = requests.get(url, headers=None)
+        if page.status_code != 500 and page.status_code != 503:
+
+            data = json.loads(urllib2.urlopen(url).read())
+
+            results = data[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['results']]
+            resultsarray = []
+            for result in results:
+                cururl = result[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['cururl']]
+                if not str(cururl).startswith(tuple(gif_dontusesites)) and not str(cururl).endswith(tuple(gif_dontuseextensions)):
+                    resultsarray.append(cururl)
+
+            # make sure there are results
+            resultsamount = len(resultsarray)
+            if resultsarray != []:
+
+                # Create Temp dict for every result
+                tempresultnum = 0
+                for tempresult in resultsarray:
+                    tempresultnum += 1
+                    tempdict = dict()
+                    tempdict["returnnum"] = tempresultnum
+                    tempdict["returnurl"] = tempresult
+                    tempdict["gifapi"] = currentapi
+                    gifapiresults.append(tempdict)
+
+    if gifapiresults == []:
+        return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}
+
+    random.shuffle(gifapiresults)
+    random.shuffle(gifapiresults)
+    gifdict = spicemanip(bot, gifapiresults, "random")
+
+    # return dict
+    gifdict['error'] = None
+    return gifdict
+
+
+"""
 Networking
 """
 
