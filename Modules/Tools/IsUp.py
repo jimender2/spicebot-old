@@ -16,8 +16,6 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-baseurl = 'https://down.com/?q='
-
 
 @sopel.module.commands('isup')
 def execute_main(bot, trigger):
