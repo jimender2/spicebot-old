@@ -23,7 +23,7 @@ sys.setdefaultencoding('utf-8')
 # author deathbybandaid
 
 
-@sopel.module.commands('reddit')
+@commands('reddit')
 def execute_main(bot, trigger):
     botcom = bot_module_prerun(bot, trigger, "reddit")
     if not botcom.modulerun:
