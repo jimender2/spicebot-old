@@ -96,7 +96,27 @@ def setup(self):
 @commands('tell', 'ask')
 @nickname_commands('tell', 'ask')
 @example('$nickname, tell Embolalia he broke something again.')
-def execute_main(bot, trigger):
+def mainfunctionnobeguine(bot, trigger):
+
+    botcom = bot_module_prerun(bot, trigger)
+    if not botcom.modulerun:
+        return
+
+    if not botcom.multiruns:
+        execute_main(bot, trigger, botcom)
+    else:
+        # IF "&&" is in the full input, it is treated as multiple commands, and is split
+        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        if commands_array == []:
+            commands_array = [[]]
+        for command_split_partial in commands_array:
+            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            execute_main(bot, trigger, botcom)
+
+    botdict_save(bot)
+
+
+def execute_main(bot, trigger, botcom):
     """Give someone a message the next time they're seen"""
     teller = trigger.nick
     verb = trigger.group(1)

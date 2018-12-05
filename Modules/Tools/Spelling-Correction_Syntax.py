@@ -84,7 +84,18 @@ def collectlines(bot, trigger):
           (?:/(\S+))?       # Optional slash, followed by group 4 (flags)
           """)
 @priority('high')
-def findandreplace(bot, trigger):
+def mainfunctionnobeguine(bot, trigger):
+
+    botcom = bot_module_prerun(bot, trigger, "spellingcorrection")
+    if not botcom.modulerun:
+        return
+
+    execute_main(bot, trigger, botcom)
+
+    botdict_save(bot)
+
+
+def execute_main(bot, trigger, botcom):
     # Don't bother in PM
     if trigger.is_privmsg:
         return

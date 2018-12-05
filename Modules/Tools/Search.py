@@ -22,24 +22,32 @@ sys.setdefaultencoding('utf-8')
 
 
 @commands('google', 'search', 'lookup')
-def mainfunction(bot, trigger):
-    """Check to see if module is enabled."""
-    triggerargsarray = spicemanip(bot, trigger, "create")
-    # IF "&&" is in the full input, it is treated as multiple commands, and is split
-    commands_array = spicemanip(bot, triggerargsarray, "split_&&")
-    if commands_array == []:
-        commands_array = [[]]
-    for command_split_partial in commands_array:
-        triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
-        execute_main(bot, trigger, triggerargsarray_part)
+def mainfunctionnobeguine(bot, trigger):
+
+    botcom = bot_module_prerun(bot, trigger)
+    if not botcom.modulerun:
+        return
+
+    if not botcom.multiruns:
+        execute_main(bot, trigger, botcom)
+    else:
+        # IF "&&" is in the full input, it is treated as multiple commands, and is split
+        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        if commands_array == []:
+            commands_array = [[]]
+        for command_split_partial in commands_array:
+            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            execute_main(bot, trigger, botcom)
+
+    botdict_save(bot)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, botcom):
     """Carry out relevant search."""
-    if len(triggerargsarray) >= 1:
-        mysite = spicemanip(bot, triggerargsarray, 1).lower()
-        searchterm = spicemanip(bot, triggerargsarray, '1+')
-        querystring = spicemanip(bot, triggerargsarray, '2+')
+    if len(botcom.triggerargsarray) >= 1:
+        mysite = spicemanip(bot, botcom.triggerargsarray, 1).lower()
+        searchterm = spicemanip(bot, botcom.triggerargsarray, '1+')
+        querystring = spicemanip(bot, botcom.triggerargsarray, '2+')
         if (mysite == 'video' or mysite == 'youtube'):
             data = querystring.replace(' ', '+')
             site = '+site%3Ayoutube.com'
@@ -48,13 +56,13 @@ def execute_main(bot, trigger, triggerargsarray):
             searchterm = data+site
             query = searchfor(bot, searchterm)
             if not query:
-                osd(bot, trigger.sender, 'say', 'I cannot find anything about that')
+                osd(bot, botcom.channel_current, 'say', 'I cannot find anything about that')
             else:
                 if(str(query).startswith(url) or str(query).startswith(url2)):
-                    osd(bot, trigger.sender, 'say', query)
+                    osd(bot, botcom.channel_current, 'say', query)
                 else:
-                    osd(bot, trigger.sender, 'say', query)
-                    osd(bot, trigger.sender, 'say', 'Valid website not found')
+                    osd(bot, botcom.channel_current, 'say', query)
+                    osd(bot, botcom.channel_current, 'say', 'Valid website not found')
 
         elif mysite == 'meme':
             data = querystring.replace(' ', '+')
@@ -64,12 +72,12 @@ def execute_main(bot, trigger, triggerargsarray):
             searchterm = data+site
             query = searchfor(bot, searchterm)
             if not query:
-                osd(bot, trigger.sender, 'say', 'I cannot find anything about that')
+                osd(bot, botcom.channel_current, 'say', 'I cannot find anything about that')
             else:
                 if(str(query).startswith(url) or str(query).startswith(url2)):
-                    osd(bot, trigger.sender, 'say', query)
+                    osd(bot, botcom.channel_current, 'say', query)
                 else:
-                    osd(bot, trigger.sender, 'say', 'I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+                    osd(bot, botcom.channel_current, 'say', 'I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
         elif mysite == 'walmart':
             data = querystring.replace(' ', '+')
@@ -79,28 +87,28 @@ def execute_main(bot, trigger, triggerargsarray):
             searchterm = data+site
             query = searchfor(bot, searchterm)
             if not query:
-                osd(bot, trigger.sender, 'say', 'https://goo.gl/SsAhv')
+                osd(bot, botcom.channel_current, 'say', 'https://goo.gl/SsAhv')
             else:
                 if(str(query).startswith(url) or str(query).startswith(url2)):
-                    osd(bot, trigger.sender, 'say', query)
+                    osd(bot, botcom.channel_current, 'say', query)
                 else:
-                    osd(bot, trigger.sender, 'say', 'I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+                    osd(bot, botcom.channel_current, 'say', 'I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
         elif mysite == 'urban':
             query = urbansearch(bot, querystring)
-            osd(bot, trigger.sender, 'say', query)
+            osd(bot, botcom.channel_current, 'say', query)
 
         elif mysite == 'imdb' or mysite == 'movie':
             query = moviesearch(bot, querystring)
-            osd(bot, trigger.sender, 'say', query)
+            osd(bot, botcom.channel_current, 'say', query)
 
         else:
             data = searchterm.replace(' ', '+')
             query = searchfor(bot, data)
             if not query:
-                osd(bot, trigger.sender, 'say', 'I cannot find anything about that')
+                osd(bot, botcom.channel_current, 'say', 'I cannot find anything about that')
             else:
-                osd(bot, trigger.sender, 'say', query)
+                osd(bot, botcom.channel_current, 'say', query)
 
 
 def searchfor(bot, data):
@@ -117,7 +125,7 @@ def urbansearch(bot, searchterm):
         data = web.get("http://api.urbandictionary.com/v0/define?term={0}".format(web.quote(searchterm)))
         data = json.loads(data)
     except:
-        return osd(bot, trigger.sender, 'say', "Error connecting to urban dictionary")
+        return osd(bot, botcom.channel_current, 'say', "Error connecting to urban dictionary")
     if data['result_type'] == 'no_results':
         return "No results found for {0}".format(searchterm)
     result = data['list'][0]

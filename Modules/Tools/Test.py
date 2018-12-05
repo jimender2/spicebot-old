@@ -24,13 +24,27 @@ sys.setdefaultencoding('utf-8')
 
 
 @sopel.module.commands('test')
-def mainfunction(bot, trigger):
-    """Check to see if module is enabled."""
+def mainfunctionnobeguine(bot, trigger):
 
-    execute_main(bot, trigger)
+    botcom = bot_module_prerun(bot, trigger)
+    if not botcom.modulerun:
+        return
+
+    if not botcom.multiruns:
+        execute_main(bot, trigger, botcom)
+    else:
+        # IF "&&" is in the full input, it is treated as multiple commands, and is split
+        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        if commands_array == []:
+            commands_array = [[]]
+        for command_split_partial in commands_array:
+            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            execute_main(bot, trigger, botcom)
+
+    botdict_save(bot)
 
 
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, botcom):
     """Run requested command with all possible triggers."""
     commandtotest = spicemanip(bot, triggerargsarray, 1)  # This is the module being tested, entered in chat.
     randomnumber = random.randint(1, 27)

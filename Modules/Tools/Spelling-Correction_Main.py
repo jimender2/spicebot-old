@@ -20,9 +20,10 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+# author deathbybandaid
 
-@sopel.module.require_admin
-@sopel.module.commands('speedtest')
+
+@sopel.module.commands('spellingcorrection')
 def mainfunctionnobeguine(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
@@ -44,14 +45,5 @@ def mainfunctionnobeguine(bot, trigger):
 
 
 def execute_main(bot, trigger, botcom):
-    osd(bot, trigger.sender, 'say', "Starting Speedtest...")
 
-    servers = []
-    s = speedtest.Speedtest()
-    s.get_servers(servers)
-    s.get_best_server()
-    s.download()
-    s.upload()
-    s.results.share()
-    results_dict = s.results.dict()
-    osd(bot, trigger.sender, 'say', str(results_dict['share']))
+    osd(bot, botcom.channel_current, 'say', "Spelling Correction is utilized with s/this/that")
