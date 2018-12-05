@@ -42,7 +42,7 @@ def bot_startup_monologue(bot, trigger):
     osd(bot, bot.privileges.keys(), 'action', " is now starting. Please wait while I load my configuration.")
 
     # these are requirements to be considered "ready"
-    while not bot_startup_requirements_met(bot, ["botdict", "uptime", "bot_info", "ext_conf", "server", "channels", "users", "txt_files"]):
+    while not bot_startup_requirements_met(bot, ["botdict", "uptime", "bot_info", "ext_conf", "server", "channels", "users", "txt_files", "reddit"]):
         pass
 
     startupcomplete = [bot.nick + " startup complete"]

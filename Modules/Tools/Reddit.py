@@ -20,22 +20,9 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-# user agent and header
-ua = UserAgent()
-header = {'User-Agent': str(ua.chrome)}
-
 # author deathbybandaid
+
 redditurl = "https://www.reddit.com/"
-
-# Creds
-config = ConfigParser.ConfigParser()
-config.read("/home/spicebot/spicebot.conf")
-CLIENTID = config.get("reddit", "clientid")
-SECRET = config.get("reddit", "secret")
-
-reddit = praw.Reddit(client_id=CLIENTID,
-                     client_secret=SECRET,
-                     user_agent='spicebot:net.example.myredditapp:v1.2.3 (by /u/SpiceBot-dbb)')
 
 
 @rule(r"""(?:)r/
@@ -50,23 +37,30 @@ reddit = praw.Reddit(client_id=CLIENTID,
           """)
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
-    triggerargsarray = spicemanip(bot, trigger.group(0), 'lower', 'list')
-    execute_main(bot, trigger, triggerargsarray)
+    botcom = bot_module_prerun(bot, trigger, "reddit")
+    if not botcom.modulerun:
+        return
+    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'lower', 'list')
+    bot.say(str(botcom.triggerargsarray))
+    execute_main(bot, trigger, botcom)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, botcom):
+
+    if not bot.memory["botdict"]["tempvals"]['reddit']:
+        return osd(bot, botcom.channel_current, 'say', "Reddit Functionality is not oporational at the moment.")
 
     rclass = class_create('reddit')
 
     rclass.channel_current = trigger.sender
 
-    rclass.urlinput = spicemanip(bot, triggerargsarray, 1)
+    rclass.urlinput = spicemanip(bot, botcom.triggerargsarray, 1)
     if rclass.urlinput.endswith("/"):
-        searchterm = spicemanip(bot, triggerargsarray, 2)
+        searchterm = spicemanip(bot, botcom.triggerargsarray, 2)
         rclass.urlinput = str(rclass.urlinput + searchterm)
-        triggerargsarray.remove(triggerargsarray[0])
-        triggerargsarray.remove(triggerargsarray[0])
-        triggerargsarray.insert(0, rclass.urlinput)
+        botcom.triggerargsarray.remove(botcom.triggerargsarray[0])
+        botcom.triggerargsarray.remove(botcom.triggerargsarray[0])
+        botcom.triggerargsarray.insert(0, rclass.urlinput)
 
     urlsplit = rclass.urlinput.split("/", 1)
     rclass.urltype = spicemanip(bot, urlsplit, 1)
@@ -79,7 +73,7 @@ def execute_main(bot, trigger, triggerargsarray):
         osd(bot, rclass.channel_current, 'say', "An error has occured.")
         return
 
-    triggerargsarray.remove(triggerargsarray[0])
+    botcom.triggerargsarray.remove(botcom.triggerargsarray[0])
 
     page = requests.get(redditurl, headers=header)
     tree = html.fromstring(page.content)
@@ -88,14 +82,14 @@ def execute_main(bot, trigger, triggerargsarray):
         return
 
     # Run the command's function
-    command_function_run = str('reddit_' + rclass.urltype.lower() + '(bot, triggerargsarray, rclass)')
+    command_function_run = str('reddit_' + rclass.urltype.lower() + '(bot, botcom.triggerargsarray, rclass)')
     eval(command_function_run)
 
 
-def reddit_u(bot, triggerargsarray, rclass):
+def reddit_u(bot, botcom.triggerargsarray, rclass):
 
     subcommand_valid = ['check']
-    subcommand = spicemanip(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
+    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in subcommand_valid], 1) or 'check'
 
     userreal = user_exists(bot, rclass, rclass.urlsearch)
     if not userreal:
@@ -106,10 +100,10 @@ def reddit_u(bot, triggerargsarray, rclass):
         return
 
 
-def reddit_r(bot, triggerargsarray, rclass):
+def reddit_r(bot, botcom.triggerargsarray, rclass):
 
     subcommand_valid = ['check', 'hot', 'new', 'top', 'random', 'controversial', 'gilded', 'rising', 'best']
-    subcommand = spicemanip(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
+    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in subcommand_valid], 1) or 'check'
 
     rclass.fullrurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
 
@@ -133,9 +127,9 @@ def reddit_r(bot, triggerargsarray, rclass):
         return
 
     if subcommand == 'random':
-        targnum = spicemanip(bot, [x for x in triggerargsarray if str(x).isdigit()], 1) or 500
+        targnum = spicemanip(bot, [x for x in botcom.triggerargsarray if str(x).isdigit()], 1) or 500
     else:
-        targnum = spicemanip(bot, [x for x in triggerargsarray if str(x).isdigit()], 1) or 1
+        targnum = spicemanip(bot, [x for x in botcom.triggerargsarray if str(x).isdigit()], 1) or 1
     targnum = int(targnum)
 
     if subcommand == 'new':
