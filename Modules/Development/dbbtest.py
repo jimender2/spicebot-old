@@ -84,7 +84,7 @@ def execute_main(bot, trigger, botcom):
                 if str(line).startswith(tuple(["commands", "module.commands", "sopel.module.commands"])):
                     line = str(line).split("commands(")[-1]
                     line = str("(" + line)
-                    curr_commands = list(eval(str(line)))
+                    curr_commands = eval(str(line))
                     bot.say(str(curr_commands))
 
     return
