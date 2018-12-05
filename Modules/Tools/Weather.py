@@ -135,6 +135,7 @@ def get_wind(parsed):
 @commands('weather', 'wea')
 @example('.weather London')
 def weather(bot, trigger):
+
     triggerargsarray = spicemanip(bot, trigger, "create")
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     commands_array = spicemanip(bot, triggerargsarray, "split_&&")
@@ -142,10 +143,10 @@ def weather(bot, trigger):
         commands_array = [[]]
     for command_split_partial in commands_array:
         triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
-        execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
+        execute_main(bot, trigger, triggerargsarray_part)
 
 
-def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+def execute_main(bot, trigger, triggerargsarray):
     botusersarray = bot.users or []
     success = 1
     location = spicemanip(bot, triggerargsarray, 1) or 'nolocation'
