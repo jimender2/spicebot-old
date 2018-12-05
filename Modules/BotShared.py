@@ -68,6 +68,7 @@ import inspect
 import pickle
 from bson import json_util
 import textwrap
+import httplib
 
 
 # user agent and header
