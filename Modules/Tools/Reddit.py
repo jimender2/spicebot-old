@@ -23,15 +23,6 @@ sys.setdefaultencoding('utf-8')
 # author deathbybandaid
 
 
-@commands('reddit')
-def execute_main(bot, trigger):
-    botcom = bot_module_prerun(bot, trigger, "reddit")
-    if not botcom.modulerun:
-        return
-
-    osd(bot, botcom.channel_current, 'say', "Reddit commands start with a r/ or a u/")
-
-
 @rule(r"""(?:)r/
           (
             (?:\\/ | [^/])+
@@ -49,6 +40,15 @@ def mainfunctionnobeguine(bot, trigger):
         return
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'lower', 'list')
     execute_main(bot, trigger, botcom)
+
+
+@sopel.module.commands('reddit')
+def execute_main(bot, trigger):
+    botcom = bot_module_prerun(bot, trigger, "reddit")
+    if not botcom.modulerun:
+        return
+
+    osd(bot, botcom.channel_current, 'say', "Reddit commands start with a r/ or a u/")
 
 
 def execute_main(bot, trigger, botcom):
