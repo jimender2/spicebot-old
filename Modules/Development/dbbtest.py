@@ -55,5 +55,4 @@ def execute_main(bot, trigger, botcom):
         for path in os.listdir(directory):
             path = os.path.join(directory, path)
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
-                if path in filenameslist:
-                    bot.say(str(path))
+                bot.say(str(path))
