@@ -157,12 +157,12 @@ def mainfunctionnobeguine(bot, trigger):
 def execute_main(bot, trigger, botcom):
     botusersarray = bot.users or []
     success = 1
-    location = spicemanip(bot, triggerargsarray, 1) or 'nolocation'
+    location = spicemanip(bot, botcom.triggerargsarray, 1) or 'nolocation'
 
 # set trigger.nick location
     if location == 'setlocation':
         success = 0
-        mylocation = spicemanip(bot, triggerargsarray, '2+') or 'nolocation'
+        mylocation = spicemanip(bot, botcom.triggerargsarray, '2+') or 'nolocation'
         if mylocation == 'nolocation':
             osd(bot, trigger.sender, 'say', "Enter a location to wish to set to")
         else:
@@ -171,11 +171,11 @@ def execute_main(bot, trigger, botcom):
 # display target location
     elif location == 'getlocation' or location == 'checklocation':
         success = 0
-        target = spicemanip(bot, triggerargsarray, 2) or 'notarget'
+        target = spicemanip(bot, botcom.triggerargsarray, 2) or 'notarget'
         if target == 'notarget':
             target = trigger.nick
         if target not in botusersarray:
-            osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + triggerargsarray[1] + " is.")
+            osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + botcom.triggerargsarray[1] + " is.")
         else:
             woeid = bot.db.get_nick_value(target, 'woeid') or 0
             if woeid == 0:
@@ -195,7 +195,7 @@ def execute_main(bot, trigger, botcom):
             if location.lower() in [u.lower() for u in bot.users]:
                 woeid = bot.db.get_nick_value(location, 'woeid')
             else:
-                location = spicemanip(bot, triggerargsarray, 0)
+                location = spicemanip(bot, botcom.triggerargsarray, 0)
                 woeid = bot.db.get_nick_value(location, 'woeid')
 
             if woeid is None:
