@@ -44,7 +44,7 @@ def bot_command_hub(bot, trigger):
     servicestarttime = str(parser.parse(str(servicestarttime))).split("+")[0]
 
     alldebuglines = []
-    for line in os.popen("journalctl -u " + str(bot.nick) + " .service --since '" + str(servicestarttime) + "'").read().split('\n'):
+    for line in os.popen("sudo journalctl -q -u " + str(bot.nick) + " .service --since '" + str(servicestarttime) + "'").read().split('\n'):
         alldebuglines.append(str(line))
         bot.say(str(line))
 
