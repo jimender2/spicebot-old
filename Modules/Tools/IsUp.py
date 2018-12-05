@@ -39,7 +39,8 @@ def mainfunctionnobeguine(bot, trigger):
             commands_array = [[]]
         for command_split_partial in commands_array:
             botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
-            execute_main(bot, trigger, botcom)
+            bot.msg("#spicebottest", str(botcom.triggerargsarray))
+            # execute_main(bot, trigger, botcom)
 
     botdict_save(bot)
 
