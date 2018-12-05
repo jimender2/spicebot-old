@@ -38,7 +38,7 @@ def bot_startup_errors(bot, trigger):
 
     # Check for python module errors during this startup
     searchphrasefound = []
-    for line in os.popen("service " + bot.nick + " status").read().split('\n'):
+    for line in os.popen("service " + str(bot.nick) + " status").read().split('\n'):
         if "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
             searchphrase = str(line).split("]:", -1)[1].replace(" modules failed to load", "")
             searchphrasefound.append(str(searchphrase) + " module(s) failed")

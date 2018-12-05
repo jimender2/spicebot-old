@@ -82,11 +82,11 @@ def execute_main(bot, trigger, botcom):
         return
 
     # Run the command's function
-    command_function_run = str('reddit_' + rclass.urltype.lower() + '(bot, botcom.triggerargsarray, rclass)')
+    command_function_run = str('reddit_' + rclass.urltype.lower() + '(bot, botcom, rclass)')
     eval(command_function_run)
 
 
-def reddit_u(bot, botcom.triggerargsarray, rclass):
+def reddit_u(bot, botcom, rclass):
 
     subcommand_valid = ['check']
     subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in subcommand_valid], 1) or 'check'
