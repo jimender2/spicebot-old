@@ -39,6 +39,10 @@ def bot_command_hub(bot, trigger):
         return osd(bot, botcom.instigator, 'notice', "I was unable to process this Bot Nick command due to privilege issues.")
 
     osd(bot, botcom.channel_current, 'action', "Is Examining systemd Log(s).")
+    servicepid = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
+    bot.say(str(servicepid))
+
+    return
 
     servicestarttime = str(os.popen("systemctl show " + str(bot.nick) + " --property=ActiveEnterTimestamp").read()).split("=")[-1]
     servicestarttime = str(parser.parse(str(servicestarttime))).split("+")[0]
