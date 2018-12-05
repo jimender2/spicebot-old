@@ -76,6 +76,8 @@ def bot_dictcom_handle(bot, botcom):
 
     # allow && splitting
     botcom.multiruns = True
+    if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
+        botcom.multiruns = False
 
     if not botcom.multiruns:
         bot_dictcom_process(bot, botcom)
