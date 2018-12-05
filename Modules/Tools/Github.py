@@ -127,7 +127,7 @@ def execute_main(bot, trigger):
     make_github_issue(bot, reqrepdict, botcom.instigator)
 
 
-def make_github_issue(bot, issue, botcom.instigator):
+def make_github_issue(bot, issue, botcom):
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
     session = requests.Session()
     session.auth = (USERNAME, PASSWORD)
