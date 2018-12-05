@@ -483,8 +483,9 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         botcom.maincom = bypasscom.lower()
 
     # command aliases
-    if "aliasfor" in bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom].keys():
-        botcom.maincom = bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom]["aliasfor"]
+    if botcom.maincom in bot.memory["botdict"]["tempvals"]['module_commands'].keys():
+        if "aliasfor" in bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom].keys():
+            botcom.maincom = bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom]["aliasfor"]
 
     # allow && splitting
     botcom.multiruns = True
