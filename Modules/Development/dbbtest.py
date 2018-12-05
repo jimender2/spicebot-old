@@ -57,15 +57,16 @@ def execute_main(bot, trigger, botcom):
         filename = modules[0]
         if filename not in ["coretasks"]:
             filenameslist.append(filename + ".py")
+    bot.say(str(filenameslist))
 
     filepathlist = []
     for directory in bot.config.core.extra:
         for pathname in os.listdir(directory):
-            pathname = str(pathname)
-            if pathname.endswith('.py') and pathname in filenameslist:
-                filepathlist.apppend(str(directory) + str(pathname))
+            path = os.path.join(directory, pathname)
+            if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
+                if pathname in filenameslist:
+                    filepathlist.append(str(path))
 
-    return
     for module in filepathlist:
         # modulecount += 1
         module_file_lines = []
