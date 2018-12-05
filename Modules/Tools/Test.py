@@ -20,8 +20,7 @@ from BotShared import *
 def mainfunction(bot, trigger):
     """Check to see if module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'test')
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+    execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):

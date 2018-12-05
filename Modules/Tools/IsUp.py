@@ -23,31 +23,8 @@ baseurl = 'https://down.com/?q='
 def execute_main(bot, trigger):
     checksite = trigger.group(2)
     if not checksite:
-        osd(bot, trigger.sender, 'say', "please enter a site")
-    else:
-        url = str(baseurl + checksite)
-        page = requests.get(url, headers=None)
-        if page.status_code == 200:
-            dispmsg = []
-            upornot = isupparse(bot, url)
-            if upornot:
-                osd(bot, trigger.sender, 'say', "Looks like " + checksite + " appears to be online.")
-            else:
-                osd(bot, trigger.sender, 'say', "Looks like " + checksite + " appears to be offline.")
+        return osd(bot, trigger.sender, 'say', "please enter a site")
 
-
-def isupparse(bot, url):
-    upornot = 0
-    tree = gettree(bot, url)
-    isuptext = str(tree.xpath('//*[@id="content"]/div/div/center[2]/p/strong/text()'))
-    isuptext = isuptext.replace('"]', "")
-    isuptext = isuptext.replace('["', "")
-    if str(isuptext) == "It's you!":
-        upornot = 1
-    return upornot
-
-
-def gettree(bot, url):
-    page = requests.get(url, headers=None)
+    page = requests.get(checksite, headers=header)
     tree = html.fromstring(page.content)
-    return tree
+    osd(bot, trigger.sender, 'say', "I am getting a " + str(page.status_code) + " status code for " + str(checksite))
