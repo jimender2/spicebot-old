@@ -34,22 +34,16 @@ def mainfunctionnobeguine(bot, trigger):
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
         fullcomstring = spicemanip(bot, botcom.triggerargsarray, 0)
         commands_array = spicemanip(bot, fullcomstring, "split_&&")
-        bot.msg("#spicebottest", str(commands_array))
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
             botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
-            bot.msg("#spicebottest", str(botcom.triggerargsarray))
-            # execute_main(bot, trigger, botcom)
+            execute_main(bot, trigger, botcom)
 
     botdict_save(bot)
 
 
 def execute_main(bot, trigger, botcom):
-
-    botcom = bot_module_prerun(bot, trigger)
-    if not botcom.modulerun:
-        return
 
     if botcom.triggerargsarray == []:
         return osd(bot, trigger.sender, 'say', "please enter a site")
