@@ -40,6 +40,11 @@ def bot_command_hub(bot, trigger):
 
     osd(bot, botcom.channel_current, 'action', "Is Examining systemd Log(s).")
 
+    servicestarttime = os.popen("systemctl show " + str(bot.nick) + " --property=ActiveEnterTimestamp").read()
+    bot.say(str(servicestarttime))
+
+    return
+
     debuglines = []
     ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)", "COMMAND=/bin/chown", "Docs: http://sopel.chat/", "Main PID:", "systemctl status", "sudo service"]
     for line in os.popen("sudo service " + str(bot.nick) + " status").read().split('\n'):
