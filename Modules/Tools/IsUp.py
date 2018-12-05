@@ -34,5 +34,5 @@ def execute_main(bot, trigger):
         page = requests.get("http://" + checksite, headers=header)
         tree = html.fromstring(page.content)
         osd(bot, trigger.sender, 'say', "I am getting a " + str(page.status_code) + " status code for " + str(checksite))
-    except ConnectionError:
+    except Exception as e:
         osd(bot, trigger.sender, 'say', "I am unable to get a status code for " + str(checksite))
