@@ -490,7 +490,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         botcom.maincom = bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom]["aliasfor"]
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ["enable", "disable"]
+    validspecifides = ["enable", "disable", "multiruns"]
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
