@@ -474,14 +474,14 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
 
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
-    bot.msg("#spicebottest", str(botcom.triggerargsarray))
+    bot.msg("#spicebottest", str(botcom.tags))
 
     # the command that was run
     if not bypasscom:
         botcom.maincom = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', "list")
     else:
         botcom.maincom = bypasscom.lower()
+    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', "list")
 
     # command aliases
     if botcom.maincom in bot.memory["botdict"]["tempvals"]['module_commands'].keys():

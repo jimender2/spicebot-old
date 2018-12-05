@@ -50,7 +50,7 @@ def execute_main(bot, trigger, botcom):
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'lower', 'list')
 
     if not bot.memory["botdict"]["tempvals"]['reddit']:
-        return osd(bot, botcom.channel_current, 'say', "Reddit Functionality is not oporational at the moment.")
+        return osd(bot, botcom.channel_current, 'say', "Reddit Functionality is not operational at the moment.")
 
     rclass = class_create('reddit')
 
