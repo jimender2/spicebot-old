@@ -52,7 +52,6 @@ def bot_startup_errors(bot, trigger):
     # Check for python module errors during this startup
     searchphrasefound = []
     for line in debuglines:
-        bot.msg("#spicebottest", str(line))
         if "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
             searchphrase = str(line).replace(" modules failed to load", "")
             searchphrasefound.append(str(searchphrase) + " module(s) failed")
