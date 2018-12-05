@@ -41,31 +41,11 @@ def bot_command_hub(bot, trigger):
     osd(bot, botcom.channel_current, 'action', "Is Examining systemd Log(s).")
 
     servicepid = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
-    alldebuglines = []
+    debuglines = []
     for line in os.popen(str("sudo journalctl _PID=" + str(servicepid))).read().split('\n'):
         line = str(line).split("Spicebot-sopel-SpiceBot ")[-1]
         if not str(line).startswith("sudo"):
-            alldebuglines.append(str(line))
-            bot.say(str(line))
-
-    return
-
-    servicestarttime = str(os.popen("systemctl show " + str(bot.nick) + " --property=ActiveEnterTimestamp").read()).split("=")[-1]
-    servicestarttime = str(parser.parse(str(servicestarttime))).split("+")[0]
-
-    alldebuglines = []
-    for line in os.popen(str("sudo journalctl -u " + str(bot.nick) + '.service --since "' + str(servicestarttime) + '"')).read().split('\n'):
-        line = str(line).split("Spicebot-sopel-SpiceBot ")[-1]
-        if not str(line).startswith("sudo"):
-            alldebuglines.append(str(line))
-            bot.say(str(line))
-
-    return
-
-    debuglines = []
-    ignorearray = ["COMMAND=/usr/sbin/service", "pam_unix(sudo:session)", "COMMAND=/bin/chown", "Docs: http://sopel.chat/", "Main PID:", "systemctl status", "sudo service"]
-    for line in os.popen("sudo service " + str(bot.nick) + " status").read().split('\n'):
-        if not any(x in str(line) for x in ignorearray):
+            line = str(line).split("sopel[" + str(servicepid) + "]")[-1]
             debuglines.append(str(line))
 
     if len(debuglines) == 0:
