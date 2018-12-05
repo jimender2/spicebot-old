@@ -36,13 +36,82 @@ def bot_startup_modules(bot, trigger):
 
     modulecount = 0
     bot.memory["botdict"]["tempvals"]['module_commands'] = dict()
+
+    filenameslist = []
     for modules in bot.command_groups.items():
         filename = modules[0]
         if filename not in ["coretasks"]:
-            modulecount += 1
-            validcoms = modules[1]
-            for com in validcoms:
-                bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
+            filenameslist.append(filename + ".py")
+    bot.say(str(filenameslist))
+
+    filepathlist = []
+    for directory in bot.config.core.extra:
+        for pathname in os.listdir(directory):
+            path = os.path.join(directory, pathname)
+            if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
+                if pathname in filenameslist:
+                    filepathlist.append(str(path))
+
+    for module in filepathlist:
+        modulecount += 1
+        module_file_lines = []
+        module_file = open(module, 'r')
+        lines = module_file.readlines()
+        for line in lines:
+            module_file_lines.append(line)
+        module_file.close()
+
+        for line in module_file_lines:
+            if str(line).startswith("@"):
+                line = str(line)[1:]
+
+                # Commands
+                if str(line).startswith(tuple(["commands", "module.commands", "sopel.module.commands"])):
+                    line = str(line).split("commands(")[-1]
+                    line = str("(" + line)
+                    curr_commands = eval(str(line))
+                    if isinstance(curr_commands, tuple):
+                        curr_commands = list(curr_commands)
+                    else:
+                        curr_commands = [curr_commands]
+                    maincom = None
+                    if curr_commands != []:
+                        currdict = dict()
+
+                        # current file path
+                        if "filepath" not in currdict.keys():
+                            currdict["filepath"] = str(module)
+
+                        # default command to filename
+                        if "validcoms" not in currdict.keys():
+                            currdict["validcoms"] = curr_commands
+
+                        maincom = currdict["validcoms"][0]
+                        if len(currdict["validcoms"]) > 1:
+                            comaliases = spicemanip(bot, currdict["validcoms"], '2+', 'list')
+                        else:
+                            comaliases = []
+
+                        # the command must have an author
+                        if "author" not in currdict.keys():
+                            currdict["author"] = "deathbybandaid"
+
+                        if "contributors" not in currdict.keys():
+                            currdict["contributors"] = []
+                        if "deathbybandaid" not in currdict["contributors"]:
+                            currdict["contributors"].append("deathbybandaid")
+                        if currdict["author"] not in currdict["contributors"]:
+                            currdict["contributors"].append(currdict["author"])
+
+                        if "hardcoded_channel_block" not in currdict.keys():
+                            currdict["hardcoded_channel_block"] = []
+
+                        bot.memory["botdict"]["tempvals"]['module_commands'][maincom] = dict_from_file
+                        for comalias in comaliases:
+                            if comalias not in bot.memory["botdict"]["tempvals"]['module_commands'].keys():
+                                bot.memory["botdict"]["tempvals"]['module_commands'][comalias] = {"aliasfor": maincom}
+                        bot.memory["botdict"]["tempvals"]['module_commands'][com] = currdict
+
     bot.memory["botdict"]["tempvals"]['module_count'] = modulecount
 
     # Command Nicks neet to be registered

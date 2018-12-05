@@ -48,14 +48,12 @@ def dict_command_configs(bot):
     bot.memory["botdict"]["tempvals"]['dict_commands_loaded'] = []
 
     quick_coms_path = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/Dictionary_replies/" + str(bot.nick) + "/"
-    # quick_coms_path = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/SpiceMother/Dictionary_replies/" + str(bot.nick) + "/"
     if os.path.exists(quick_coms_path) and os.path.isdir(quick_coms_path):
         if not os.path.isfile(quick_coms_path) and len(os.listdir(quick_coms_path)) > 0:
             filescan.append(quick_coms_path)
 
     if str(bot.nick).endswith("dev"):
         quick_coms_path_alt = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/Dictionary_replies/" + str(str(bot.nick).replace("dev", "")) + "/"
-        # quick_coms_path_alt = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/SpiceMother/Dictionary_replies/" + str(str(bot.nick).replace("dev", "")) + "/"
         if os.path.exists(quick_coms_path_alt) and os.path.isdir(quick_coms_path_alt):
             if not os.path.isfile(quick_coms_path_alt) and len(os.listdir(quick_coms_path_alt)) > 0:
                 filescan.append(quick_coms_path_alt)
