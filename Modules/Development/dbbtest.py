@@ -44,5 +44,12 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
+    filenameslist = []
+    for modules in bot.command_groups.items():
+        filename = modules[0]
+        if filename not in ["coretasks"]:
+            filenameslist.append(filename)
+    bot.say(str(filenameslist))
+
     for directory in bot.config.core.extra:
         bot.say(str(directory))
