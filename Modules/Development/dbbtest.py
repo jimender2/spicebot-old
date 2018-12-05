@@ -85,6 +85,10 @@ def execute_main(bot, trigger, botcom):
                     line = str(line).split("commands(")[-1]
                     line = str("(" + line)
                     curr_commands = eval(str(line))
+                    if isinstance(curr_commands, tuple):
+                        curr_commands = list(curr_commands)
+                    else:
+                        curr_commands = [curr_commands]
                     bot.say(str(curr_commands))
 
     return
