@@ -25,7 +25,7 @@ sys.setdefaultencoding('utf-8')
 
 @sopel.module.commands('reddit')
 def execute_main(bot, trigger):
-    botcom = bot_module_prerun(bot, trigger, "reddit")
+    botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:
         return
 
