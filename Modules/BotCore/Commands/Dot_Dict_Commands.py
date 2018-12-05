@@ -190,7 +190,7 @@ def bot_dictcom_process(bot, botcom):
             else:
                 del bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"][botcom.maincom]
                 osd(bot, botcom.channel_current, 'say', botcom.maincom + " now has multicom usage " + botcom.specified + " in " + str(botcom.channel_current))
-        if onoff == 'off':
+        elif onoff == 'off':
             if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
                 osd(bot, botcom.channel_current, 'say', botcom.maincom + " already has multicom usage " + botcom.specified + " in " + str(botcom.channel_current))
             else:
