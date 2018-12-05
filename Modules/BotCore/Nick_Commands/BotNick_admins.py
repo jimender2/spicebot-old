@@ -21,11 +21,11 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-This will display a link to the online wiki for the bot
+This will display bot admins
 """
 
 
-@nickname_commands('msg')
+@nickname_commands('admins')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 

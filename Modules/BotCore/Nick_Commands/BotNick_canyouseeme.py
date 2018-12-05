@@ -21,11 +21,11 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-This will display a link to the online wiki for the bot
+This will show that the bot is running
 """
 
 
-@nickname_commands('cd')
+@nickname_commands('canyouseeme')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 

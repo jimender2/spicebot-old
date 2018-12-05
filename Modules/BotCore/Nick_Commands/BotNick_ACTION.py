@@ -21,7 +21,7 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-This will display a link to the online wiki for the bot
+This lets you make the bot do a /me action
 """
 
 

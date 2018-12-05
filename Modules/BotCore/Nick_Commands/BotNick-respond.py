@@ -21,7 +21,7 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-This will display a link to the online wiki for the bot
+This will respond to all other invalid coms
 """
 
 
@@ -37,6 +37,13 @@ def bot_nickcom_hub(bot, trigger):
 
     if not botcom.command_main:
         return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do!")
+
+    if spicemanip(bot, botcom.triggerargsarry, 0).lower().startswith("what is"):
+        searchterm = spicemanip(bot, botcom.triggerargsarry, "3+") or None
+        if searchterm:
+            osd(bot, botcom.channel_current, 'say', "What is " + searchterm)
+            osd(bot, botcom.channel_current, 'say', "Do you think this is Jeopardy?")
+            return
 
     if botcom.command_main.lower() not in valid_botnick_commands.keys():
         sim_com, sim_num = [], []

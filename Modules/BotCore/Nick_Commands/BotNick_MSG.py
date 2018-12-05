@@ -21,7 +21,7 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-This will display a link to the online wiki for the bot
+This lets you msg a channel or a user
 """
 
 

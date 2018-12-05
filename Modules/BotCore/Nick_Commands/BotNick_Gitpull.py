@@ -21,7 +21,7 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-This will display a link to the online wiki for the bot
+This will pull a directory from github
 """
 
 

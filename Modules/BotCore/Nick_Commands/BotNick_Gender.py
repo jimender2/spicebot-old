@@ -21,7 +21,7 @@ sys.setdefaultencoding('utf-8')
 
 
 """
-This will display a link to the online wiki for the bot
+This will display the bots gender
 """
 
 
@@ -38,4 +38,4 @@ def bot_command_hub(bot, trigger):
     if not bot_nickcom_run_check(bot, botcom):
         return osd(bot, botcom.instigator, 'notice', "I was unable to process this Bot Nick command due to privilege issues.")
 
-    osd(bot, botcom.channel_current, 'say', ["IRC Modules Repository", str(github_dict["url_main"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + github_dict["url_path_wiki"])])
+    osd(bot, botcom.channel_current, 'say', "My gender is Female")
