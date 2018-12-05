@@ -79,12 +79,13 @@ def execute_main(bot, trigger, botcom):
         for line in module_file_lines:
             if str(line).startswith("@"):
                 line = str(line)[1:]
+
+                # Commands
                 if str(line).startswith(tuple(["commands", "module.commands", "sopel.module.commands"])):
                     line = str(line).split("commands(")[-1]
                     line = str("(" + line)
-                    bot.say(str(line))
-
-                # Commands
+                    curr_commands = list(eval(str(line)))
+                    bot.say(str(curr_commands))
 
     return
     bot.memory["botdict"]["tempvals"]['module_count'] = modulecount
