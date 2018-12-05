@@ -149,26 +149,7 @@ def bot_dictcom_process(bot, botcom):
         if botcom.maincom not in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
             return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
 
-        commandrunconsensus, commandrun = [], True
-        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']):
-            commandrunconsensus.append('False')
-        else:
-            commandrunconsensus.append('True')
-        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']):
-            commandrunconsensus.append('False')
-        else:
-            commandrunconsensus.append('True')
-        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']):
-            commandrunconsensus.append('False')
-        else:
-            commandrunconsensus.append('True')
-        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']):
-            commandrunconsensus.append('False')
-        else:
-            commandrunconsensus.append('True')
-        if 'True' not in commandrunconsensus:
-            commandrun = False
-        if not commandrun:
+        if not bot_command_modding_auth(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
 
         del bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom]
@@ -184,26 +165,7 @@ def bot_dictcom_process(bot, botcom):
         if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
             return osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
 
-        commandrunconsensus, commandrun = [], True
-        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']):
-            commandrunconsensus.append('False')
-        else:
-            commandrunconsensus.append('True')
-        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']):
-            commandrunconsensus.append('False')
-        else:
-            commandrunconsensus.append('True')
-        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']):
-            commandrunconsensus.append('False')
-        else:
-            commandrunconsensus.append('True')
-        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']):
-            commandrunconsensus.append('False')
-        else:
-            commandrunconsensus.append('True')
-        if 'True' not in commandrunconsensus:
-            commandrun = False
-        if not commandrun:
+        if not bot_command_modding_auth(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
 
         trailingmessage = spicemanip(bot, botcom.triggerargsarray, 0) or "No reason given."
@@ -218,26 +180,7 @@ def bot_dictcom_process(bot, botcom):
         if botcom.channel_priv:
             return osd(bot, botcom.instigator, 'notice', "This command must be run in the channel you which to " + botcom.specified + " it in.")
 
-        commandrunconsensus, commandrun = [], True
-        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']):
-            commandrunconsensus.append('False')
-        else:
-            commandrunconsensus.append('True')
-        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']):
-            commandrunconsensus.append('False')
-        else:
-            commandrunconsensus.append('True')
-        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']):
-            commandrunconsensus.append('False')
-        else:
-            commandrunconsensus.append('True')
-        if not bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']):
-            commandrunconsensus.append('False')
-        else:
-            commandrunconsensus.append('True')
-        if 'True' not in commandrunconsensus:
-            commandrun = False
-        if not commandrun:
+        if not bot_command_modding_auth(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
 
         onoff = spicemanip(bot, botcom.triggerargsarray, 1)
