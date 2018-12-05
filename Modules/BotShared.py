@@ -474,6 +474,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
 
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+    bot.msg("#spicebottest", str(botcom.triggerargsarray))
 
     # the command that was run
     if not bypasscom:
