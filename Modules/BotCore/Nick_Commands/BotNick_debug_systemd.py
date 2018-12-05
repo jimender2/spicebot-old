@@ -43,12 +43,13 @@ def bot_command_hub(bot, trigger):
     servicepid = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
     debuglines = []
     for line in os.popen(str("sudo journalctl _PID=" + str(servicepid))).read().split('\n'):
-        line = str(line).split("Spicebot-sopel-SpiceBot ")[-1]
-        if not str(line).startswith("sudo"):
-            lineparts = str(line).split(":")
-            del lineparts[0]
-            line = spicemanip(bot, lineparts, 0)
-            debuglines.append(str(line))
+        if not str(line).startswith("-- Logs begin at"):
+            line = str(line).split("Spicebot-sopel-SpiceBot ")[-1]
+            if not str(line).startswith("sudo"):
+                lineparts = str(line).split(": ")
+                del lineparts[0]
+                line = spicemanip(bot, lineparts, 0)
+                debuglines.append(str(line))
 
     if len(debuglines) == 0:
         return osd(bot, botcom.channel_current, 'say', str(bot.nick) + " had no log(s) for some reason")
