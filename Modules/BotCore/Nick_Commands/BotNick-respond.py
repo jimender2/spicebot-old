@@ -41,9 +41,10 @@ def bot_nickcom_hub(bot, trigger):
 
     if not botcom.command_main:
         return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do!")
+    if botcom.command_main.lower() in valid_botnick_commands.keys():
+        return
 
     specialcomposs = spicemanip(bot, botcom.triggerargsarray, 0).lower()
-    bot.say(str(specialcomposs))
     if specialcomposs.startswith("what is"):
         searchterm = spicemanip(bot, botcom.triggerargsarray, "3+") or None
         if searchterm:
