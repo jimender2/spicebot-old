@@ -116,20 +116,17 @@ def bot_dictcom_process(bot, botcom):
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
         if str(argone[2:]).isdigit():
-            botcom.specified = argone[2:]
+            botcom.specified = int(argone[2:])
         elif bot_check_inlist(bot, str(argone[2:]), validspecifides):
             botcom.specified = str(argone[2:]).lower()
         else:
             try:
                 botcom.specified = w2n.word_to_num(str(argone[1:]))
+                botcom.specified = int(botcom.specified)
             except ValueError:
                 botcom.specified = None
         if botcom.specified:
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-
-    if botcom.specified:
-        if str(botcom.specified).isdigit():
-            botcom.specified = int(botcom.specified)
 
     # commands that can be updated
     if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"]:

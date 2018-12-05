@@ -491,13 +491,15 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
         botcom.multiruns = False
 
+    bot.msg("#spicebottest", str(botcom.triggerargsarray))
+
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ["enable", "disable", "multiruns"]
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
         if str(argone[2:]).isdigit():
-            botcom.specified = argone[2:]
+            botcom.specified = int(argone[2:])
         elif bot_check_inlist(bot, str(argone[2:]), validspecifides):
             botcom.specified = str(argone[2:]).lower()
         else:
@@ -508,9 +510,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         if botcom.specified:
             botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
 
-    if botcom.specified:
-        if str(botcom.specified).isdigit():
-            botcom.specified = int(botcom.specified)
+    bot.msg("#spicebottest", str(botcom.triggerargsarray))
 
     # Hardcoded commands Below
     if botcom.specified == 'enable':
