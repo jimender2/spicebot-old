@@ -1,5 +1,26 @@
 #!/usr/bin/env python
 # coding=utf-8
+from __future__ import unicode_literals, absolute_import, print_function, division
+
+# sopel imports
+import sopel.module
+
+
+# imports for system and OS access, directories
+import os
+import sys
+
+# imports based on THIS file
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(shareddir)
+from BotShared import *
+
+# Ensure Encoding
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+
 """Sopel Spelling correction module
 
 This module will fix spelling errors if someone corrects them
@@ -9,19 +30,6 @@ using the sed notation (s///) commonly found in vi/vim.
 # Copyright 2013, Elsie Powell, embolalia.com
 # Licensed under the Eiffel Forum License 2.
 # Contributions from: Matt Meinwald and Morgan Goose
-from __future__ import unicode_literals, absolute_import, print_function, division
-
-import re
-from sopel.tools import Identifier, SopelMemory
-from sopel.module import rule, priority
-from sopel.formatting import bold
-
-import os
-import sys
-moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
-sys.path.append(shareddir)
-from BotShared import *
 
 
 def setup(bot):

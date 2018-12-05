@@ -1,21 +1,24 @@
 #!/usr/bin/env python
 # coding=utf-8
-# Based on the module by Sean B. Palmer, inamidst.com and Elsie Powell, embolalia.com
-# Licensed under the Eiffel Forum License 2.
 from __future__ import unicode_literals, absolute_import, print_function, division
 
-from sopel.module import commands, example, NOLIMIT
-# import sopel.module
-import sys
-import os
+# sopel imports
+import sopel.module
 
+
+# imports for system and OS access, directories
+import os
+import sys
+
+# imports based on THIS file
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-import requests
-import xmltodict
+# Ensure Encoding
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 def woeid_search(query):

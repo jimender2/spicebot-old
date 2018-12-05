@@ -1,25 +1,24 @@
 #!/usr/bin/env python
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
+
+# sopel imports
 import sopel.module
-from sopel.module import commands, example, NOLIMIT
-import random
-import sys
+
+
+# imports for system and OS access, directories
 import os
-import requests
-import re
-import urllib2
-import sopel.web as web
-import json
+import sys
+
+# imports based on THIS file
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
-from sopel.logger import get_logger
 
-from BotShared import *
-
-LOGGER = get_logger(__name__)
+# Ensure Encoding
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 @commands('google', 'search', 'lookup')

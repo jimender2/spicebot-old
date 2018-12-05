@@ -1,5 +1,26 @@
 #!/usr/bin/env python
 # coding=utf-8
+from __future__ import unicode_literals, absolute_import, print_function, division
+
+# sopel imports
+import sopel.module
+
+
+# imports for system and OS access, directories
+import os
+import sys
+
+# imports based on THIS file
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(shareddir)
+from BotShared import *
+
+# Ensure Encoding
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+
 """
 tell.py - Sopel Tell and Ask Module
 Copyright 2008, Sean B. Palmer, inamidst.com
@@ -7,24 +28,6 @@ Licensed under the Eiffel Forum License 2.
 
 http://sopel.chat
 """
-
-#  Small adjustments made to conform to other SpiceBot modules (opt-in)
-
-from __future__ import unicode_literals, absolute_import, print_function, division
-
-import os
-import time
-import threading
-import sys
-from sopel.tools import Identifier, iterkeys
-from sopel.tools.time import get_timezone, format_time
-from sopel.module import commands, nickname_commands, rule, priority, example
-import sopel.module
-
-moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
-sys.path.append(shareddir)
-from BotShared import *
 
 maximum = 4
 

@@ -5,9 +5,10 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 from sopel import module, tools
 import sopel.module
-from sopel.module import commands, nickname_commands, event, rule, OP, ADMIN, VOICE, HALFOP, OWNER, thread, priority, example
-from sopel.tools import Identifier, stderr
+from sopel.module import commands, nickname_commands, event, rule, OP, ADMIN, VOICE, HALFOP, OWNER, thread, priority, example, NOLIMIT
+from sopel.tools import Identifier, stderr, SopelMemory, iterkeys
 from sopel.tools.time import get_timezone, format_time
+from sopel.formatting import *
 
 
 # imports for system and OS access, directories
@@ -45,6 +46,7 @@ import pytz
 from dateutil import tz
 from xml.dom import minidom
 import json
+import xmltodict
 from fake_useragent import UserAgent
 import praw
 from prawcore import NotFound
@@ -69,6 +71,10 @@ import pickle
 from bson import json_util
 import textwrap
 import httplib
+import speedtest
+
+from sopel.logger import get_logger
+LOGGER = get_logger(__name__)
 
 
 # user agent and header
