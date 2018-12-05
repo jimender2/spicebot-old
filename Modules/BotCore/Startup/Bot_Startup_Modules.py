@@ -49,7 +49,7 @@ def bot_startup_modules(bot, trigger):
     for nickcom in valid_botnick_commands.keys():
         bot.memory["botdict"]["tempvals"]['module_commands'][str(bot.nick) + " " + nickcom] = dict()
     nickcomdir = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/BotCore/Nick_Commands/"
-    nickcomfiles = len(os.listdir(nickcomdir))
+    nickcomfiles = len(fnmatch.filter(os.listdir(nickcomdir), '*.py'))
     bot.memory["botdict"]["tempvals"]['module_count'] += int(nickcomfiles)
 
     bot_startup_requirements_set(bot, "modules")
