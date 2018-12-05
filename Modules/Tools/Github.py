@@ -30,7 +30,7 @@ valid_colabs = ['zsutton92', 'josh-cunning', 'Berserkir-Wolf', 'deathbybandaid',
 @sopel.module.commands('feature', 'feetcher', 'fr', 'bug', 'br', 'borked', 'issue', 'wiki')
 def mainfunctionnobeguine(bot, trigger):
 
-    botcom = bot_module_prerun(bot, trigger, "issue")
+    botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:
         return
 
