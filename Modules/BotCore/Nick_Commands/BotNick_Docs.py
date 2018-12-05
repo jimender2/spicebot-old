@@ -25,7 +25,7 @@ This will display a link to the online wiki for the bot
 """
 
 
-@nickname_commands('help', 'docs')
+@nickname_commands('help', 'docs', 'wiki')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 

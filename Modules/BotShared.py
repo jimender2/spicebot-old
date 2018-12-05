@@ -112,8 +112,10 @@ api_dict = {
 
 github_dict = {
                 "url_main": "https://github.com/",
+                "url_api": "https://api.github.com/repos/",
                 "url_raw": "https://raw.githubusercontent.com/",
                 "url_path_wiki": "/wiki",
+                "url_path_issues": "/issues",
                 "repo_owner": "SpiceBot",
                 "repo_name": "SpiceBot",
                 }
@@ -149,6 +151,9 @@ valid_botnick_commands = {
                                         'privs': [],
                                         },
                             "docs": {
+                                        'privs': [],
+                                        },
+                            "wiki": {
                                         'privs': [],
                                         },
                             "help": {

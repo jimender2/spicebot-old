@@ -23,9 +23,15 @@ sys.setdefaultencoding('utf-8')
 
 @sopel.module.commands('isup')
 def execute_main(bot, trigger):
-    checksite = trigger.group(2)
-    if not checksite:
+
+    botcom = bot_module_prerun(bot, trigger)
+    if not botcom.modulerun:
+        return
+
+    if botcom.triggerargsarray == []:
         return osd(bot, trigger.sender, 'say', "please enter a site")
+
+    checksite = spicemanip(bot, botcom.triggerargsarray, 0)
 
     if str(checksite).startswith("https://"):
         checksite = checksite.replace("https://", "")
@@ -36,6 +42,6 @@ def execute_main(bot, trigger):
         page = requests.get("http://" + checksite, headers=header)
         tree = html.fromstring(page.content)
         statusrefurl = str("https://httpstatuses.com/" + str(page.status_code))
-        osd(bot, trigger.sender, 'say', ["I am getting a " + str(page.status_code) + " status code for " + str(checksite), " For details, see:", statusrefurl])
+        osd(bot, botcom.channel_current, 'say', ["I am getting a " + str(page.status_code) + " status code for " + str(checksite), " For details, see:", statusrefurl])
     except Exception as e:
-        osd(bot, trigger.sender, 'say', "I am unable to get a status code for " + str(checksite))
+        osd(bot, botcom.channel_current, 'say', "I am unable to get a status code for " + str(checksite))

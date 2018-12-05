@@ -21,12 +21,6 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-# Creds
-config = ConfigParser.ConfigParser()
-config.read("/home/spicebot/spicebot.conf")
-USERNAME = config.get("github", "username")
-PASSWORD = config.get("github", "password")
-
 # Repo
 REPO_OWNER = 'SpiceBot'
 REPO_NAME = 'SpiceBot'
@@ -117,12 +111,18 @@ def execute_main(bot, trigger):
 
 
 def make_github_issue(bot, issue, botcom):
-    url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
+
+    url = str(github_dict["url_api"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + github_dict["url_path_issues"])
     session = requests.Session()
-    session.auth = (USERNAME, PASSWORD)
+
+    try:
+        session.auth = (bot.memory["botdict"]["tempvals"]['ext_conf']["github"]["username"], bot.memory["botdict"]["tempvals"]['ext_conf']["github"]["password"])
+    except Exception as e:
+        return osd(bot, botcom.channel_current, 'priv', "Error Using Github Credentials.")
+
     r = session.post(url, json.dumps(issue))
     if r.status_code == 201:
-        osd(bot, botcom.instigator, 'priv', "Successfully created " + issue['title'])
+        osd(bot, botcom.channel_current, 'priv', "Successfully created " + issue['title'])
     else:
-        osd(bot, botcom.instigator, 'priv', "Could not create " + issue['title'])
-        osd(bot, botcom.instigator, 'priv', str('Response:' + r.content))
+        osd(bot, botcom.channel_current, 'priv', "Could not create " + issue['title'])
+        osd(bot, botcom.channel_current, 'priv', str('Response:' + r.content))
