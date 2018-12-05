@@ -51,6 +51,8 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
+    bot.msg("#spicebottest", str(botcom.triggerargsarray))
+
     # determine that there is a request/report
     if botcom.triggerargsarray == []:
         return osd(bot, trigger.sender, 'say', "What feature/issue do you want to post?")
