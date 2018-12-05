@@ -52,7 +52,8 @@ def execute_main(bot, trigger, botcom):
     bot.say(str(filenameslist))
 
     for directory in bot.config.core.extra:
-        for path in os.listdir(directory):
-            path = os.path.join(directory, path)
+        for pathname in os.listdir(directory):
+            path = os.path.join(directory, pathname)
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
-                bot.say(str(path))
+                if pathname in filenameslist:
+                    bot.say(str(path))
