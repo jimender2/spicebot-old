@@ -38,14 +38,14 @@ def bot_nickcom_hub(bot, trigger):
     if not botcom.command_main:
         return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do!")
 
-    if spicemanip(bot, botcom.triggerargsarry, 0).lower().startswith("what is"):
-        searchterm = spicemanip(bot, botcom.triggerargsarry, "3+") or None
+    if spicemanip(bot, botcom.triggerargsarray, 0).lower().startswith("what is"):
+        searchterm = spicemanip(bot, botcom.triggerargsarray, "3+") or None
         if searchterm:
             osd(bot, botcom.channel_current, 'say', "What is " + searchterm)
             osd(bot, botcom.channel_current, 'say', "Do you think this is Jeopardy?")
             return
-    elif spicemanip(bot, botcom.triggerargsarry, 0).lower().startswith("make me a"):
-        makemea = spicemanip(bot, botcom.triggerargsarry, "4+") or None
+    elif spicemanip(bot, botcom.triggerargsarray, 0).lower().startswith("make me a"):
+        makemea = spicemanip(bot, botcom.triggerargsarray, "4+") or None
         if makemea:
             osd(bot, botcom.channel_current, 'action', " beams " + botcom.instigator + " a " + makemea)
         return
