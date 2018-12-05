@@ -40,9 +40,8 @@ def bot_command_hub(bot, trigger):
 
     osd(bot, botcom.channel_current, 'action', "Is Examining systemd Log(s).")
 
-    servicestarttime = os.popen("systemctl show " + str(bot.nick) + " --property=ActiveEnterTimestamp").read()
-    exec(str(servicestarttime))
-    bot.say(str(ActiveEnterTimestamp))
+    servicestarttime = str(os.popen("systemctl show " + str(bot.nick) + " --property=ActiveEnterTimestamp").read()).split('=')
+    bot.say(str(servicestarttime[-1]))
 
     return
 
