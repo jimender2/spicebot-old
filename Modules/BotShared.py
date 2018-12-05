@@ -344,7 +344,7 @@ Core Bot Permissions
 
 
 def bot_nickcom_run_check(bot, botcom):
-    global valid_botnick_commands
+
     commandrun = True
 
     if 'privs' in valid_botnick_commands[botcom.command_main.lower()].keys():

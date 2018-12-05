@@ -35,5 +35,6 @@ def watch_server_connection(bot, trigger):
 
     while not len(bot.privileges.keys()) > 0:
         pass
+    time.sleep(1)
 
     bot_startup_requirements_set(bot, "connected")
