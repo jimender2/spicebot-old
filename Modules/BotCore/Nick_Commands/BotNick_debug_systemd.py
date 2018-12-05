@@ -42,7 +42,11 @@ def bot_command_hub(bot, trigger):
 
     servicestarttime = str(os.popen("systemctl show " + str(bot.nick) + " --property=ActiveEnterTimestamp").read()).split("=")[-1]
     servicestarttime = str(parser.parse(str(servicestarttime))).split("+")[0]
-    bot.say(str(servicestarttime))
+
+    alldebuglines = []
+    for line in os.popen("journalctl -u " + str(bot.nick) + " .service --since '" + str(servicestarttime) + "'").read().split('\n'):
+        alldebuglines.append(str(line))
+        bot.say(str(line))
 
     return
 
