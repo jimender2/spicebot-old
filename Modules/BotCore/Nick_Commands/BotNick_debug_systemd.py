@@ -50,6 +50,8 @@ def bot_command_hub(bot, trigger):
                 del lineparts[0]
                 line = spicemanip(bot, lineparts, 0)
                 debuglines.append(str(line))
+        else:
+            debuglines.append(str(line))
 
     if len(debuglines) == 0:
         return osd(bot, botcom.channel_current, 'say', str(bot.nick) + " had no log(s) for some reason")
