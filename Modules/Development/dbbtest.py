@@ -62,6 +62,7 @@ def execute_main(bot, trigger, botcom):
     for directory in bot.config.core.extra:
         for pathname in os.listdir(directory):
             pathname = str(pathname)
+            bot.say(str(pathname))
             path = os.path.join(directory, pathname)
             if path.endswith('.py') and pathname in filenameslist:
                 filepathlist.apppend(str(path))
