@@ -178,26 +178,28 @@ def bot_dictcom_process(bot, botcom):
     elif botcom.specified == 'multiruns':
 
         if botcom.channel_priv:
-            return osd(bot, botcom.instigator, 'notice', "This command must be run in the channel you which to " + botcom.specified + " it in.")
+            osd(bot, botcom.instigator, 'notice', "This argument must be run in channel.")
+            return
 
         if not bot_command_modding_auth(bot, botcom):
-            return osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
+            osd(bot, botcom.channel_current, 'say', "You are not authorized to turn " + botcom.specified + " multicom usage in " + str(botcom.channel_current))
+            return
 
         onoff = spicemanip(bot, botcom.triggerargsarray, 1)
         if onoff == 'on':
             if botcom.maincom not in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
-                osd(bot, botcom.channel_current, 'say', botcom.maincom + " already has multicom usage " + botcom.specified + " in " + str(botcom.channel_current))
+                osd(bot, botcom.channel_current, 'say', botcom.maincom + " already has multicom usage " + onoff + " in " + str(botcom.channel_current))
             else:
                 del bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"][botcom.maincom]
-                osd(bot, botcom.channel_current, 'say', botcom.maincom + " now has multicom usage " + botcom.specified + " in " + str(botcom.channel_current))
+                osd(bot, botcom.channel_current, 'say', botcom.maincom + " now has multicom usage " + onoff + " in " + str(botcom.channel_current))
         elif onoff == 'off':
             if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
-                osd(bot, botcom.channel_current, 'say', botcom.maincom + " already has multicom usage " + botcom.specified + " in " + str(botcom.channel_current))
+                osd(bot, botcom.channel_current, 'say', botcom.maincom + " already has multicom usage " + onoff + " in " + str(botcom.channel_current))
             else:
                 trailingmessage = spicemanip(bot, botcom.triggerargsarray, "2+") or "No reason given."
                 timestamp = str(datetime.datetime.utcnow())
                 bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"][botcom.maincom] = {"reason": trailingmessage, "timestamp": timestamp, "multi_disabledby": botcom.instigator}
-                osd(bot, botcom.channel_current, 'say', botcom.maincom + " now has multicom usage " + botcom.specified + " in " + str(botcom.channel_current))
+                osd(bot, botcom.channel_current, 'say', botcom.maincom + " now has multicom usage " + onoff + " in " + str(botcom.channel_current))
         else:
             if botcom.maincom not in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
                 osd(bot, botcom.channel_current, 'say', botcom.maincom + " allows multicom use in " + str(botcom.channel_current))
