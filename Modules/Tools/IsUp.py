@@ -28,6 +28,9 @@ def execute_main(bot, trigger):
     if not str(checksite).startswith(tuple(["http://", "https://"])):
         checksite = str("http://" + checksite)
 
-    page = requests.get(checksite, headers=header)
-    tree = html.fromstring(page.content)
-    osd(bot, trigger.sender, 'say', "I am getting a " + str(page.status_code) + " status code for " + str(checksite))
+    try:
+        page = requests.get(checksite, headers=header)
+        tree = html.fromstring(page.content)
+        osd(bot, trigger.sender, 'say', "I am getting a " + str(page.status_code) + " status code for " + str(checksite))
+    except ConnectionError:
+        osd(bot, trigger.sender, 'say', "I am unable to get a status code for " + str(checksite))
