@@ -124,7 +124,7 @@ def execute_main(bot, trigger):
     reqrepdict['body'] = botcom.instigator + " " + reqrepdict['body'] + ": " + inputtext
 
     # make it happen
-    make_github_issue(bot, reqrepdict, botcom.instigator)
+    make_github_issue(bot, reqrepdict, botcom)
 
 
 def make_github_issue(bot, issue, botcom):
