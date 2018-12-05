@@ -39,8 +39,14 @@ def bot_command_hub(bot, trigger):
         return osd(bot, botcom.instigator, 'notice', "I was unable to process this Bot Nick command due to privilege issues.")
 
     osd(bot, botcom.channel_current, 'action', "Is Examining systemd Log(s).")
+
     servicepid = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
-    bot.say(str(servicepid))
+    alldebuglines = []
+    for line in os.popen(str("sudo journalctl _PID=" + str(servicepid))).read().split('\n'):
+        line = str(line).split("Spicebot-sopel-SpiceBot ")[-1]
+        if not str(line).startswith("sudo"):
+            alldebuglines.append(str(line))
+            bot.say(str(line))
 
     return
 
