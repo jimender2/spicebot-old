@@ -24,6 +24,7 @@ sys.setdefaultencoding('utf-8')
 @commands('google', 'search', 'lookup')
 def mainfunction(bot, trigger):
     """Check to see if module is enabled."""
+    triggerargsarray = spicemanip(bot, trigger, "create")
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     commands_array = spicemanip(bot, triggerargsarray, "split_&&")
     if commands_array == []:

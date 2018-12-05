@@ -135,7 +135,7 @@ def get_wind(parsed):
 @commands('weather', 'wea')
 @example('.weather London')
 def weather(bot, trigger):
-
+    triggerargsarray = spicemanip(bot, trigger, "create")
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     commands_array = spicemanip(bot, triggerargsarray, "split_&&")
     if commands_array == []:
