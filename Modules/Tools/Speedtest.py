@@ -24,11 +24,10 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.require_admin
 @sopel.module.commands('speedtest')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
-    execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+    execute_main(bot, trigger)
 
 
-def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+def execute_main(bot, trigger):
     osd(bot, trigger.sender, 'say', "Starting Speedtest...")
 
     servers = []

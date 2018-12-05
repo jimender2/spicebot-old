@@ -135,7 +135,7 @@ def get_wind(parsed):
 @commands('weather', 'wea')
 @example('.weather London')
 def weather(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     commands_array = spicemanip(bot, triggerargsarray, "split_&&")
     if commands_array == []:

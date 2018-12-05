@@ -26,11 +26,11 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.commands('test')
 def mainfunction(bot, trigger):
     """Check to see if module is enabled."""
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'test')
-    execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+
+    execute_main(bot, trigger)
 
 
-def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+def execute_main(bot, trigger):
     """Run requested command with all possible triggers."""
     commandtotest = spicemanip(bot, triggerargsarray, 1)  # This is the module being tested, entered in chat.
     randomnumber = random.randint(1, 27)
