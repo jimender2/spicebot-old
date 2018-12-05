@@ -113,7 +113,7 @@ def bot_dictcom_process(bot, botcom):
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
-        if str(argone[2:]).isdigit() or bot_check_inlist(bot, str(argone[2:]), validspecifides):
+        if str(argone[2:]).isdigit() or str(argone[2:]).lower() in validspecifides:
             if str(argone[2:]).isdigit():
                 botcom.specified = argone[2:]
             else:
