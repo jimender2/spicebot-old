@@ -304,8 +304,6 @@ def botcom_nick(bot, trigger):
 
     botcom.command_main = spicemanip(bot, botcom.triggerargsarray, 1)
 
-    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
-
     return botcom
 
 
