@@ -45,4 +45,7 @@ def bot_startup_modules(bot, trigger):
                 bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
     bot.memory["botdict"]["tempvals"]['module_count'] = modulecount
 
+    for nickcom in valid_botnick_commands.keys():
+        bot.memory["botdict"]["tempvals"]['module_commands'][nickcom] = dict()
+
     bot_startup_requirements_set(bot, "modules")
