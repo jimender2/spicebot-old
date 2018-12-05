@@ -40,37 +40,47 @@ def execute_main(bot, trigger):
 
 
 def get_link_status(url):
+
     """
     Gets the HTTP status of the url or returns an error associated with it.  Always returns a string.
     """
+
     https = False
+
     url = re.sub(r'(.*)#.*$', r'\1', url)
     url = url.split('/', 3)
+
     if len(url) > 3:
         path = '/'+url[3]
     else:
         path = '/'
+
     if url[0] == 'http:':
         port = 80
     elif url[0] == 'https:':
         port = 443
         https = True
+
     if ':' in url[2]:
         host = url[2].split(':')[0]
         port = url[2].split(':')[1]
     else:
         host = url[2]
+
     try:
         headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:26.0) Gecko/20100101 Firefox/26.0', 'Host': host}
-    if https:
-        conn = httplib.HTTPSConnection(host=host, port=port, timeout=10)
-    else:
-        conn = httplib.HTTPConnection(host=host, port=port, timeout=10)
-        conn.request(method="HEAD", url=path, headers=headers)
-        response = str(conn.getresponse().status)
-        conn.close()
+
+        if https:
+            conn = httplib.HTTPSConnection(host=host, port=port, timeout=10)
+        else:
+            conn = httplib.HTTPConnection(host=host, port=port, timeout=10)
+            conn.request(method="HEAD", url=path, headers=headers)
+            response = str(conn.getresponse().status)
+            conn.close()
+
     except socket.gaierror, e:
         response = "Socket Error (%d): %s" % (e[0], e[1])
+
     except StandardError, e:
         if hasattr(e, 'getcode') and len(e.getcode()) > 0:
             response = str(e.getcode())
