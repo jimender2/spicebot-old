@@ -535,6 +535,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         if not commandrun:
             osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
             return botcom
+        bot.msg("#spicebottest", "here")
 
         del bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom]
         osd(bot, botcom.channel_current, 'say', botcom.maincom + " is now " + botcom.specified + "d in " + str(botcom.channel_current))
