@@ -25,11 +25,13 @@ def execute_main(bot, trigger):
     if not checksite:
         return osd(bot, trigger.sender, 'say', "please enter a site")
 
-    if not str(checksite).startswith(tuple(["http://", "https://"])):
-        checksite = str("http://" + checksite)
+    if str(checksite).startswith("https://"):
+        checksite = checksite.replace("https://", "")
+    elif str(checksite).startswith("http://"):
+        checksite = checksite.replace("http://", "")
 
     try:
-        page = requests.get(checksite, headers=header)
+        page = requests.get("http://" + checksite, headers=header)
         tree = html.fromstring(page.content)
         osd(bot, trigger.sender, 'say', "I am getting a " + str(page.status_code) + " status code for " + str(checksite))
     except ConnectionError:
