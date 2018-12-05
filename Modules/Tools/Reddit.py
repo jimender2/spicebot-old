@@ -100,7 +100,7 @@ def reddit_u(bot, botcom, rclass):
         return
 
 
-def reddit_r(bot, botcom.triggerargsarray, rclass):
+def reddit_r(bot, botcom, rclass):
 
     subcommand_valid = ['check', 'hot', 'new', 'top', 'random', 'controversial', 'gilded', 'rising', 'best']
     subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in subcommand_valid], 1) or 'check'
