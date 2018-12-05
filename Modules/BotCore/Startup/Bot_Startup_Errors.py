@@ -36,9 +36,22 @@ def bot_startup_errors(bot, trigger):
     while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
         pass
 
+    servicepid = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
+    debuglines = []
+    for line in os.popen(str("sudo journalctl _PID=" + str(servicepid))).read().split('\n'):
+        if not str(line).startswith("-- Logs begin at"):
+            line = str(line).split("Spicebot-sopel-SpiceBot ")[-1]
+            if not str(line).startswith("sudo"):
+                lineparts = str(line).split(": ")
+                del lineparts[0]
+                line = spicemanip(bot, lineparts, 0)
+                debuglines.append(str(line))
+        else:
+            debuglines.append(str(line))
+
     # Check for python module errors during this startup
     searchphrasefound = []
-    for line in os.popen("service " + str(bot.nick) + " status").read().split('\n'):
+    for line in debuglines:
         if "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
             searchphrase = str(line).split("]:", -1)[1].replace(" modules failed to load", "")
             searchphrasefound.append(str(searchphrase) + " module(s) failed")
