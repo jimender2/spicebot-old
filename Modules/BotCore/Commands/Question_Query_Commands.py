@@ -29,10 +29,6 @@ def bot_dictcom_hub(bot, trigger):
     if not str(trigger).startswith(tuple(['?'])):
         return
 
-    # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
-        pass
-
     botcom = botcom_symbol_trigger(bot, trigger)
 
     # Bots block

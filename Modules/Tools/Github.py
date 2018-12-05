@@ -39,6 +39,10 @@ dontaskforthese = ['instakill', 'instant kill', 'random kill', 'random deaths', 
 @sopel.module.commands('feature', 'feetcher', 'fr', 'bug', 'br', 'borked', 'issue', 'wiki')
 def execute_main(bot, trigger):
 
+    botcom = bot_module_prerun(bot, trigger)
+    if not botcom.modulerun:
+        return
+
     github_types = {
                     "feature": {
                                 "labels": ['Feature Request'],
@@ -61,20 +65,19 @@ def execute_main(bot, trigger):
     }
 
     maincommand = trigger.group(1)
-    instigator = trigger.nick
+    bot.say(str(botcom.triggerargsarray))
 
     # some users are not allowed to request code changes from within chat, due to abuse
     banneduserarray = get_database_value(bot, bot.nick, 'users_blocked_github') or []  # Banned Users
-    if instigator.lower() in [x.lower() for x in banneduserarray]:
-        return osd(bot, trigger.sender, 'say', "Due to abusing this module you have been banned from using it, %s" % instigator)
+    if bot_check_inlist(bot, botcom.instigator, banneduserarray):
+        return osd(bot, trigger.sender, 'say', "Due to abusing this module you have been banned from using it, %s" % botcom.instigator)
 
     # create array for input, determine that there is a request/report
-    triggerargsarray = spicemanip(bot, trigger.group(2), 'create')
-    if triggerargsarray == []:
+    if botcom.triggerargsarray == []:
         return osd(bot, trigger.sender, 'say', "What feature/issue do you want to post?")
 
     # block request for rejected features
-    for inputpart in triggerargsarray:
+    for inputpart in botcom.triggerargsarray:
         if inputpart.lower() in [x.lower() for x in dontaskforthese]:
             return osd(bot, trigger.sender, 'say', "That feature has already been rejected by the dev team.")
 
@@ -89,7 +92,7 @@ def execute_main(bot, trigger):
     reqrepdict = github_types[reqreptype]
 
     # Special Handling for modules
-    subtype = spicemanip(bot, triggerargsarray, 1)
+    subtype = spicemanip(bot, botcom.triggerargsarray, 1)
 
     # Duel/RPG
     if subtype in ["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"]:
@@ -107,30 +110,30 @@ def execute_main(bot, trigger):
 
     # manual assigning
     if not reqrepdict['assignee']:
-        assignee = spicemanip(bot, [x for x in triggerargsarray if x.startswith("@")], 1) or None
+        assignee = spicemanip(bot, [x for x in botcom.triggerargsarray if x.startswith("@")], 1) or None
         if assignee:
             assignee = str(assignee).replace("@", "")
             if assignee in valid_colabs:
                 reqrepdict['assignee'] = assignee
-                triggerargsarray.remove("@" + assignee)
+                botcom.triggerargsarray.remove("@" + assignee)
         else:
             del reqrepdict['assignee']
 
     # Body text
-    inputtext = spicemanip(bot, triggerargsarray, 0)
-    reqrepdict['body'] = instigator + " " + reqrepdict['body'] + ": " + inputtext
+    inputtext = spicemanip(bot, botcom.triggerargsarray, 0)
+    reqrepdict['body'] = botcom.instigator + " " + reqrepdict['body'] + ": " + inputtext
 
     # make it happen
-    make_github_issue(bot, reqrepdict, instigator)
+    make_github_issue(bot, reqrepdict, botcom.instigator)
 
 
-def make_github_issue(bot, issue, instigator):
+def make_github_issue(bot, issue, botcom.instigator):
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
     session = requests.Session()
     session.auth = (USERNAME, PASSWORD)
     r = session.post(url, json.dumps(issue))
     if r.status_code == 201:
-        osd(bot, instigator, 'priv', "Successfully created " + issue['title'])
+        osd(bot, botcom.instigator, 'priv', "Successfully created " + issue['title'])
     else:
-        osd(bot, instigator, 'priv', "Could not create " + issue['title'])
-        osd(bot, instigator, 'priv', str('Response:' + r.content))
+        osd(bot, botcom.instigator, 'priv', "Could not create " + issue['title'])
+        osd(bot, botcom.instigator, 'priv', str('Response:' + r.content))

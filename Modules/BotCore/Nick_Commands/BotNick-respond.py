@@ -29,10 +29,6 @@ This will respond to all other invalid coms
 @sopel.module.thread(True)
 def bot_nickcom_hub(bot, trigger):
 
-    # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
-        pass
-
     botcom = botcom_nick(bot, trigger)
 
     # Bots block

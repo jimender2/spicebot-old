@@ -29,10 +29,6 @@ This will display the bots owner
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
-    # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
-        pass
-
     botcom = botcom_nick(bot, trigger)
 
     # Bots block
