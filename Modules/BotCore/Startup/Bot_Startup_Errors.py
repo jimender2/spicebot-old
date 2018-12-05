@@ -35,7 +35,6 @@ def bot_startup_errors(bot, trigger):
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
         pass
-    bot.msg("#spicebottest", "here")
 
     servicepid = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
     debuglines = []
@@ -53,6 +52,7 @@ def bot_startup_errors(bot, trigger):
     # Check for python module errors during this startup
     searchphrasefound = []
     for line in debuglines:
+        bot.msg("#spicebottest", str(line))
         if "modules failed to load" in str(line) and "0 modules failed to load" not in str(line):
             searchphrase = str(line).split("]:", -1)[1].replace(" modules failed to load", "")
             searchphrasefound.append(str(searchphrase) + " module(s) failed")
