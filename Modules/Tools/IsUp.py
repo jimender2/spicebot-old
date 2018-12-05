@@ -35,6 +35,7 @@ def execute_main(bot, trigger):
     try:
         page = requests.get("http://" + checksite, headers=header)
         tree = html.fromstring(page.content)
-        osd(bot, trigger.sender, 'say', "I am getting a " + str(page.status_code) + " status code for " + str(checksite))
+        statusrefurl = str("https://httpstatuses.com/" + str(page.status_code))
+        osd(bot, trigger.sender, 'say', ["I am getting a " + str(page.status_code) + " status code for " + str(checksite), " For details, see:", statusrefurl])
     except Exception as e:
         osd(bot, trigger.sender, 'say', "I am unable to get a status code for " + str(checksite))

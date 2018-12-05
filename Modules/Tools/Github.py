@@ -32,9 +32,6 @@ REPO_OWNER = 'SpiceBot'
 REPO_NAME = 'SpiceBot'
 valid_colabs = ['zsutton92', 'josh-cunning', 'Berserkir-Wolf', 'deathbybandaid', 'thetechnerd', 'SniperClif', 'jimender2']
 
-# Invalid Requests
-dontaskforthese = ['instakill', 'instant kill', 'random kill', 'random deaths', 'butterfingers', 'bad grenade', 'grenade failure', 'suicide', 'go off in', 'dud grenade']
-
 
 @sopel.module.commands('feature', 'feetcher', 'fr', 'bug', 'br', 'borked', 'issue', 'wiki')
 def execute_main(bot, trigger):
@@ -42,6 +39,10 @@ def execute_main(bot, trigger):
     botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:
         return
+
+    # determine that there is a request/report
+    if botcom.triggerargsarray == []:
+        return osd(bot, trigger.sender, 'say', "What feature/issue do you want to post?")
 
     github_types = {
                     "feature": {
@@ -64,29 +65,17 @@ def execute_main(bot, trigger):
                                 }
     }
 
-    maincommand = trigger.group(1)
-    bot.say(str(botcom.triggerargsarray))
-
     # some users are not allowed to request code changes from within chat, due to abuse
-    banneduserarray = get_database_value(bot, bot.nick, 'users_blocked_github') or []  # Banned Users
-    if bot_check_inlist(bot, botcom.instigator, banneduserarray):
-        return osd(bot, trigger.sender, 'say', "Due to abusing this module you have been banned from using it, %s" % botcom.instigator)
-
-    # create array for input, determine that there is a request/report
-    if botcom.triggerargsarray == []:
-        return osd(bot, trigger.sender, 'say', "What feature/issue do you want to post?")
-
-    # block request for rejected features
-    for inputpart in botcom.triggerargsarray:
-        if inputpart.lower() in [x.lower() for x in dontaskforthese]:
-            return osd(bot, trigger.sender, 'say', "That feature has already been rejected by the dev team.")
+    # banneduserarray = get_database_value(bot, bot.nick, 'users_blocked_github') or []  # Banned Users
+    # if bot_check_inlist(bot, botcom.instigator, banneduserarray):
+    #    return osd(bot, trigger.sender, 'say', "Due to abusing this module you have been banned from using it, %s" % botcom.instigator)
 
     # what type of request/report
-    if maincommand in ['feature', 'fr', 'feetcher']:
+    if botcom.maincom in ['feature', 'fr', 'feetcher']:
         reqreptype = 'feature'
-    elif maincommand in ['issue', 'bug', 'br', 'borked']:
+    elif botcom.maincom in ['issue', 'bug', 'br', 'borked']:
         reqreptype = 'issue'
-    elif maincommand in ['wiki']:
+    elif botcom.maincom in ['wiki']:
         reqreptype = 'wiki'
 
     reqrepdict = github_types[reqreptype]
@@ -95,12 +84,12 @@ def execute_main(bot, trigger):
     subtype = spicemanip(bot, botcom.triggerargsarray, 1)
 
     # Duel/RPG
-    if subtype in ["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"]:
+    if subtype.lower() in ["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"]:
         reqrepdict['title'] = "DUELS/RPG: " + reqrepdict['title']
         reqrepdict['assignee'] = "deathbybandaid"
 
     # Casino
-    elif subtype in ["gamble", ".gamble", "casino", ".casino"]:
+    elif subtype.lower() in ["gamble", ".gamble", "casino", ".casino"]:
         reqrepdict['title'] = "CASINO: " + reqrepdict['title']
         reqrepdict['assignee'] = "josh-cunning"
 
