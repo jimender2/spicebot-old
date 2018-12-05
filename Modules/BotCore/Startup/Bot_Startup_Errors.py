@@ -35,6 +35,7 @@ def bot_startup_errors(bot, trigger):
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
         pass
+    bot.msg("#spicebottest", "here")
 
     servicepid = str(os.popen("systemctl show " + str(bot.nick) + " --property=MainPID").read()).split("=")[-1]
     debuglines = []
