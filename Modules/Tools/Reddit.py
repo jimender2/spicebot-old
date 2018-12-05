@@ -22,8 +22,6 @@ sys.setdefaultencoding('utf-8')
 
 # author deathbybandaid
 
-redditurl = "https://www.reddit.com/"
-
 
 @rule(r"""(?:)r/
           (
@@ -75,7 +73,7 @@ def execute_main(bot, trigger, botcom):
 
     botcom.triggerargsarray.remove(botcom.triggerargsarray[0])
 
-    page = requests.get(redditurl, headers=header)
+    page = requests.get("https://www.reddit.com/", headers=header)
     tree = html.fromstring(page.content)
     if page.status_code != 200:
         osd(bot, rclass.channel_current, 'say', "Reddit appears to be down right now.")
@@ -94,7 +92,7 @@ def reddit_u(bot, botcom, rclass):
     userreal = user_exists(bot, rclass, rclass.urlsearch)
     if not userreal:
         return
-    fulluurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
+    fulluurul = str("https://www.reddit.com/" + rclass.urltype + "/" + rclass.urlsearch)
     if subcommand == 'check':
         osd(bot, rclass.channel_current, 'say', [rclass.urlsearch + " appears to be a valid reddit " + rclass.urltypetxt + "!", fulluurul])
         return
@@ -105,7 +103,7 @@ def reddit_r(bot, botcom, rclass):
     subcommand_valid = ['check', 'hot', 'new', 'top', 'random', 'controversial', 'gilded', 'rising', 'best']
     subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in subcommand_valid], 1) or 'check'
 
-    rclass.fullrurul = str(redditurl + rclass.urltype + "/" + rclass.urlsearch)
+    rclass.fullrurul = str("https://www.reddit.com/" + rclass.urltype + "/" + rclass.urlsearch)
 
     subreal = sub_exists(bot, rclass, rclass.urlsearch)
     if not subreal:
@@ -115,7 +113,7 @@ def reddit_r(bot, botcom, rclass):
     if not subpass:
         return
 
-    subreddit = reddit.subreddit(rclass.urlsearch)
+    subreddit = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(rclass.urlsearch)
     if subcommand == 'check':
         dispmsg = []
         dispmsg.append("[Reddit " + rclass.urltype + "/" + rclass.urlsearch + "]")
@@ -177,7 +175,7 @@ def reddit_r(bot, botcom, rclass):
 def sub_exists(bot, rclass, sub):
     exists = True
     try:
-        reddit.subreddits.search_by_name(sub, exact=True)
+        bot.memory["botdict"]["tempvals"]['reddit'].subreddits.search_by_name(sub, exact=True)
     except NotFound:
         osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
         exists = False
@@ -187,7 +185,7 @@ def sub_exists(bot, rclass, sub):
 def sub_banned_private(bot, rclass, sub):
     proceed = True
     try:
-        rclass.subtype = reddit.subreddit(sub).subreddit_type
+        rclass.subtype = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(sub).subreddit_type
     except Exception as e:
         proceed = False
         if str(e) == "received 403 HTTP response":
@@ -200,7 +198,7 @@ def sub_banned_private(bot, rclass, sub):
 def user_exists(bot, rclass, user):
     exists = True
     try:
-        reddit.redditor(user).fullname
+        bot.memory["botdict"]["tempvals"]['reddit'].redditor(user).fullname
     except NotFound:
         osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid reddit " + rclass.urltypetxt + "!")
         exists = False
