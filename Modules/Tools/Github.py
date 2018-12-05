@@ -28,11 +28,27 @@ valid_colabs = ['zsutton92', 'josh-cunning', 'Berserkir-Wolf', 'deathbybandaid',
 
 
 @sopel.module.commands('feature', 'feetcher', 'fr', 'bug', 'br', 'borked', 'issue', 'wiki')
-def execute_main(bot, trigger):
+def mainfunctionnobeguine(bot, trigger):
 
-    botcom = bot_module_prerun(bot, trigger)
+    botcom = bot_module_prerun(bot, trigger, "issue")
     if not botcom.modulerun:
         return
+
+    if not botcom.multiruns:
+        execute_main(bot, trigger, botcom)
+    else:
+        # IF "&&" is in the full input, it is treated as multiple commands, and is split
+        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        if commands_array == []:
+            commands_array = [[]]
+        for command_split_partial in commands_array:
+            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            execute_main(bot, trigger, botcom)
+
+    botdict_save(bot)
+
+
+def execute_main(bot, trigger, botcom):
 
     # determine that there is a request/report
     if botcom.triggerargsarray == []:
@@ -58,11 +74,6 @@ def execute_main(bot, trigger):
                                 "assignee": "Berserkir-Wolf"
                                 }
     }
-
-    # some users are not allowed to request code changes from within chat, due to abuse
-    # banneduserarray = get_database_value(bot, bot.nick, 'users_blocked_github') or []  # Banned Users
-    # if bot_check_inlist(bot, botcom.instigator, banneduserarray):
-    #    return osd(bot, trigger.sender, 'say', "Due to abusing this module you have been banned from using it, %s" % botcom.instigator)
 
     # what type of request/report
     if botcom.maincom in ['feature', 'fr', 'feetcher']:

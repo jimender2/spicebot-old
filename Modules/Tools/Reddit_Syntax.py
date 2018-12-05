@@ -35,14 +35,19 @@ sys.setdefaultencoding('utf-8')
           """)
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
+
     botcom = bot_module_prerun(bot, trigger, "reddit")
     if not botcom.modulerun:
         return
-    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'lower', 'list')
+
     execute_main(bot, trigger, botcom)
+
+    botdict_save(bot)
 
 
 def execute_main(bot, trigger, botcom):
+
+    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'lower', 'list')
 
     if not bot.memory["botdict"]["tempvals"]['reddit']:
         return osd(bot, botcom.channel_current, 'say', "Reddit Functionality is not oporational at the moment.")

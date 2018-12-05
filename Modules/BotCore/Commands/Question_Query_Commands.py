@@ -23,7 +23,7 @@ sys.setdefaultencoding('utf-8')
 
 @rule('(.*)')
 @sopel.module.thread(True)
-def bot_dictcom_hub(bot, trigger):
+def mainfunctionnobeguine(bot, trigger):
 
     # command must start with
     if not str(trigger).startswith(tuple(['?'])):
@@ -34,6 +34,12 @@ def bot_dictcom_hub(bot, trigger):
     # Bots block
     if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
+
+    execute_main(bot, trigger, botcom)
+    botdict_save(bot)
+
+
+def execute_main(bot, trigger, botcom):
 
     commands_list = dict()
     for commandstype in ['dict_commands', 'module_commands']:

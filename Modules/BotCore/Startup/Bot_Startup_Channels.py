@@ -58,6 +58,9 @@ def bot_setup_channels(bot, trigger):
         if "disabled_commands" not in bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel).lower()].keys():
             bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel).lower()]["disabled_commands"] = {}
 
+        if "multirun_disabled_commands" not in bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel).lower()].keys():
+            bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel).lower()]["multirun_disabled_commands"] = {}
+
         # authorized user groups for channels
         if "auth_block" not in bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel).lower()].keys():
             bot.memory["botdict"]["servers_list"][currentservername]['channels_list'][str(channel).lower()]["auth_block"] = []

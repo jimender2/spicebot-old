@@ -22,7 +22,18 @@ sys.setdefaultencoding('utf-8')
 
 
 @sopel.module.commands('isup')
-def execute_main(bot, trigger):
+def mainfunctionnobeguine(bot, trigger):
+
+    botcom = bot_module_prerun(bot, trigger)
+    if not botcom.modulerun:
+        return
+
+    execute_main(bot, trigger, botcom)
+
+    botdict_save(bot)
+
+
+def execute_main(bot, trigger, botcom):
 
     botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:

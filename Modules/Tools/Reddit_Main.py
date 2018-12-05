@@ -24,9 +24,17 @@ sys.setdefaultencoding('utf-8')
 
 
 @sopel.module.commands('reddit')
-def execute_main(bot, trigger):
-    botcom = bot_module_prerun(bot, trigger)
+def mainfunctionnobeguine(bot, trigger):
+
+    botcom = bot_module_prerun(bot, trigger, "reddit")
     if not botcom.modulerun:
         return
+
+    execute_main(bot, trigger, botcom)
+
+    botdict_save(bot)
+
+
+def execute_main(bot, trigger, botcom):
 
     osd(bot, botcom.channel_current, 'say', "Reddit commands start with r/ or u/")
