@@ -61,7 +61,14 @@ def bot_startup_modules(bot, trigger):
             module_file_lines.append(line)
         module_file.close()
 
+        dict_from_file = False
+        filelinelist = []
+
         for line in module_file_lines:
+
+            if str(line).startswith("comdict") and not dict_from_file:
+                dict_from_file = str(line)
+
             if str(line).startswith("@"):
                 line = str(line)[1:]
 
@@ -69,47 +76,53 @@ def bot_startup_modules(bot, trigger):
                 if str(line).startswith(tuple(["commands", "module.commands", "sopel.module.commands"])):
                     line = str(line).split("commands(")[-1]
                     line = str("(" + line)
-                    curr_commands = eval(str(line))
-                    if isinstance(curr_commands, tuple):
-                        curr_commands = list(curr_commands)
+                    validcoms = eval(str(line))
+                    if isinstance(validcoms, tuple):
+                        validcoms = list(validcoms)
                     else:
-                        curr_commands = [curr_commands]
-                    maincom = None
-                    if curr_commands != []:
-                        currdict = dict()
+                        validcoms = [validcoms]
+                    filelinelist.append(validcoms)
 
-                        # current file path
-                        if "filepath" not in currdict.keys():
-                            currdict["filepath"] = str(module)
+        if not dict_from_file:
+            dict_from_file = dict()
+        else:
+            try:
+                dict_from_file = eval(dict_from_file)
+            except Exception as e:
+                dict_from_file = dict()
 
-                        # default command to filename
-                        if "validcoms" not in currdict.keys():
-                            currdict["validcoms"] = curr_commands
+        # current file path
+        if "filepath" not in dict_from_file.keys():
+            dict_from_file["filepath"] = str(module)
 
-                        maincom = currdict["validcoms"][0]
-                        if len(currdict["validcoms"]) > 1:
-                            comaliases = spicemanip(bot, currdict["validcoms"], '2+', 'list')
-                        else:
-                            comaliases = []
+        # default command to filename
+        if "validcoms" not in dict_from_file.keys():
+            dict_from_file["validcoms"] = validcoms
 
-                        # the command must have an author
-                        if "author" not in currdict.keys():
-                            currdict["author"] = "deathbybandaid"
+        maincom = dict_from_file["validcoms"][0]
+        if len(dict_from_file["validcoms"]) > 1:
+            comaliases = spicemanip(bot, dict_from_file["validcoms"], '2+', 'list')
+        else:
+            comaliases = []
 
-                        if "contributors" not in currdict.keys():
-                            currdict["contributors"] = []
-                        if "deathbybandaid" not in currdict["contributors"]:
-                            currdict["contributors"].append("deathbybandaid")
-                        if currdict["author"] not in currdict["contributors"]:
-                            currdict["contributors"].append(currdict["author"])
+        # the command must have an author
+        if "author" not in dict_from_file.keys():
+            dict_from_file["author"] = "deathbybandaid"
 
-                        if "hardcoded_channel_block" not in currdict.keys():
-                            currdict["hardcoded_channel_block"] = []
+        if "contributors" not in dict_from_file.keys():
+            dict_from_file["contributors"] = []
+        if "deathbybandaid" not in dict_from_file["contributors"]:
+            dict_from_file["contributors"].append("deathbybandaid")
+        if dict_from_file["author"] not in dict_from_file["contributors"]:
+            dict_from_file["contributors"].append(dict_from_file["author"])
 
-                        bot.memory["botdict"]["tempvals"]['module_commands'][maincom] = currdict
-                        for comalias in comaliases:
-                            if comalias not in bot.memory["botdict"]["tempvals"]['module_commands'].keys():
-                                bot.memory["botdict"]["tempvals"]['module_commands'][comalias] = {"aliasfor": maincom}
+        if "hardcoded_channel_block" not in dict_from_file.keys():
+            dict_from_file["hardcoded_channel_block"] = []
+
+        bot.memory["botdict"]["tempvals"]['module_commands'][maincom] = dict_from_file
+        for comalias in comaliases:
+            if comalias not in bot.memory["botdict"]["tempvals"]['module_commands'].keys():
+                bot.memory["botdict"]["tempvals"]['module_commands'][comalias] = {"aliasfor": maincom}
 
     bot.memory["botdict"]["tempvals"]['module_count'] = modulecount
 
