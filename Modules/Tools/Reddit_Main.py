@@ -26,11 +26,20 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.commands('reddit')
 def mainfunctionnobeguine(bot, trigger):
 
-    botcom = bot_module_prerun(bot, trigger, "reddit")
+    botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:
         return
 
-    execute_main(bot, trigger, botcom)
+    if not botcom.multiruns:
+        execute_main(bot, trigger, botcom)
+    else:
+        # IF "&&" is in the full input, it is treated as multiple commands, and is split
+        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        if commands_array == []:
+            commands_array = [[]]
+        for command_split_partial in commands_array:
+            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            execute_main(bot, trigger, botcom)
 
     botdict_save(bot)
 
