@@ -31,7 +31,7 @@ This counts the python modules
 def bot_startup_modules(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict"]):
+    while not bot_startup_requirements_met(bot, ["botdict", "bot_info"]):
         pass
 
     modulecount = 0
