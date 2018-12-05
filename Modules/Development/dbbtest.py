@@ -63,9 +63,8 @@ def execute_main(bot, trigger, botcom):
     for directory in bot.config.core.extra:
         for pathname in os.listdir(directory):
             path = os.path.join(directory, pathname)
-            if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
-                if pathname in filenameslist:
-                    filepathlist.apppend(str(path))
+            if path.endswith('.py') and pathname in filenameslist:
+                filepathlist.apppend(str(path))
 
     for module in filepathlist:
         # modulecount += 1
@@ -83,7 +82,6 @@ def execute_main(bot, trigger, botcom):
                     line = str(line).split("commands(")[-1]
                     line = str("(" + line)
                     bot.say(str(line))
-
 
                 # Commands
 
