@@ -552,7 +552,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
             return botcom
 
         commandrunconsensus, commandrun = [], True
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]["bot_info"][str(bot.nick)]['bot_admins']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
