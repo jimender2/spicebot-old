@@ -45,7 +45,9 @@ def bot_command_hub(bot, trigger):
     for line in os.popen(str("sudo journalctl _PID=" + str(servicepid))).read().split('\n'):
         line = str(line).split("Spicebot-sopel-SpiceBot ")[-1]
         if not str(line).startswith("sudo"):
-            line = str(line).split(":")[-1]
+            lineparts = str(line).split(":")
+            del lineparts[0]
+            line = spicemanip(bot, lineparts, 0)
             debuglines.append(str(line))
 
     if len(debuglines) == 0:
