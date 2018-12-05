@@ -24,6 +24,10 @@ sys.setdefaultencoding('utf-8')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
+    # don't run jobs if not ready
+    while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
+        pass
+
     if not bot_startup_requirements_met(bot, ["botdict"]):
         bot.memory["uptime"] = time.time()
 
