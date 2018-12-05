@@ -25,7 +25,7 @@ This can be manually run to ensure the permissions of the bot directory are avai
 """
 
 
-@nickname_commands('debug')
+@nickname_commands('permfix')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
