@@ -451,11 +451,6 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     # default if module will run
     botcom.modulerun = True
 
-    # allow && splitting
-    botcom.multiruns = True
-    if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
-        botcom.multiruns = False
-
     # instigator
     botcom.instigator = str(trigger.nick)
     botcom.instigator_hostmask = str(trigger.hostmask)
@@ -490,6 +485,11 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     # command aliases
     if "aliasfor" in bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom].keys():
         botcom.maincom = bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom]["aliasfor"]
+
+    # allow && splitting
+    botcom.multiruns = True
+    if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
+        botcom.multiruns = False
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ["enable", "disable", "multiruns"]
