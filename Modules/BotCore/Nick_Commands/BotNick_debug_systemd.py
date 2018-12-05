@@ -45,9 +45,10 @@ def bot_command_hub(bot, trigger):
 
     alldebuglines = []
     for line in os.popen(str("sudo journalctl -u " + str(bot.nick) + '.service --since "' + str(servicestarttime) + '"')).read().split('\n'):
-        line = str(line).split("Spicebot-sopel-SpiceBot")[-1]
-        alldebuglines.append(str(line))
-        bot.say(str(line))
+        line = str(line).split("Spicebot-sopel-SpiceBot ")[-1]
+        if not str(line).startswith("sudo"):
+            alldebuglines.append(str(line))
+            bot.say(str(line))
 
     return
 
