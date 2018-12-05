@@ -501,7 +501,7 @@ def bot_module_prerun(bot, trigger):
             osd(bot, botcom.instigator, 'notice', "This command must be run in the channel you which to " + botcom.specified + " it in.")
             return botcom
 
-        if botcom.maincom not in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
+        if botcom.maincom not in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
             osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
             return botcom
 
@@ -510,15 +510,15 @@ def bot_module_prerun(bot, trigger):
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanops']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanowners']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanadmins']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
@@ -528,7 +528,7 @@ def bot_module_prerun(bot, trigger):
             osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
             return botcom
 
-        del bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom]
+        del bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom]
         osd(bot, botcom.channel_current, 'say', botcom.maincom + " is now " + botcom.specified + "d in " + str(botcom.channel_current))
         return botcom
 
@@ -539,24 +539,24 @@ def bot_module_prerun(bot, trigger):
             osd(bot, botcom.instigator, 'notice', "This command must be run in the channel you which to " + botcom.specified + " it in.")
             return botcom
 
-        if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
+        if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
             osd(bot, botcom.channel_current, 'say', botcom.maincom + " is already " + botcom.specified + "d in " + str(botcom.channel_current))
             return botcom
 
         commandrunconsensus, commandrun = [], True
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"]['bot_admins']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]["bot_info"]['bot_admins']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanops']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanowners']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
-        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['channels_list'][botcom.channel_current]['chanadmins']:
+        if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']:
             commandrunconsensus.append('False')
         else:
             commandrunconsensus.append('True')
@@ -567,11 +567,11 @@ def bot_module_prerun(bot, trigger):
             return botcom
 
     if not botcom.channel_priv:
-        if botcom.maincom in bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
+        if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
             botcom.modulerun = False
-            reason = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]
-            timestamp = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["timestamp"]
-            bywhom = bot.memory["botdict"]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["disabledby"]
+            reason = bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]
+            timestamp = bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["timestamp"]
+            bywhom = bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["disabledby"]
             osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " command was disabled by " + bywhom + " in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + str(reason))
             return botcom
 
