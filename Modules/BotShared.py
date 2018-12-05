@@ -453,6 +453,8 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
 
     # allow && splitting
     botcom.multiruns = True
+    if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
+        botcom.multiruns = False
 
     # instigator
     botcom.instigator = str(trigger.nick)
