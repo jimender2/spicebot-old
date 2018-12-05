@@ -44,6 +44,11 @@ def bot_nickcom_hub(bot, trigger):
             osd(bot, botcom.channel_current, 'say', "What is " + searchterm)
             osd(bot, botcom.channel_current, 'say', "Do you think this is Jeopardy?")
             return
+    elif spicemanip(bot, botcom.triggerargsarry, 0).lower().startswith("make me a"):
+        makemea = spicemanip(bot, botcom.triggerargsarry, "4+") or None
+        if makemea:
+            osd(bot, botcom.channel_current, 'action', " beams " + botcom.instigator + " a " + makemea)
+        return
 
     if botcom.command_main.lower() not in valid_botnick_commands.keys():
         sim_com, sim_num = [], []
