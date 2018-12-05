@@ -106,11 +106,10 @@ def bot_startup_modules(bot, trigger):
                         if "hardcoded_channel_block" not in currdict.keys():
                             currdict["hardcoded_channel_block"] = []
 
-                        bot.memory["botdict"]["tempvals"]['module_commands'][maincom] = dict_from_file
+                        bot.memory["botdict"]["tempvals"]['module_commands'][maincom] = currdict
                         for comalias in comaliases:
                             if comalias not in bot.memory["botdict"]["tempvals"]['module_commands'].keys():
                                 bot.memory["botdict"]["tempvals"]['module_commands'][comalias] = {"aliasfor": maincom}
-                        bot.memory["botdict"]["tempvals"]['module_commands'][com] = currdict
 
     bot.memory["botdict"]["tempvals"]['module_count'] = modulecount
 
