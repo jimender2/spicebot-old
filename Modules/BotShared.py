@@ -492,6 +492,8 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
         botcom.multiruns = False
 
+    botcom.dotcommand_dict = copy.deepcopy(bot.memory["botdict"]["tempvals"]['module_commands'][botcom.dotcommand])
+
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ["enable", "disable", "multiruns"]
     botcom.specified = None
@@ -584,6 +586,43 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
             else:
                 osd(bot, botcom.channel_current, 'say', botcom.maincom + " does not allow multicom use in " + str(botcom.channel_current))
         botdict_save(bot)
+        return botcom
+
+    elif botcom.specified == 'special':
+
+        osd(bot, botcom.channel_current, 'say', "The " + botcom.specified + " argument is not available for module commands.")
+        return botcom
+
+    elif botcom.specified == 'count':
+
+        osd(bot, botcom.channel_current, 'say', "The " + botcom.specified + " argument is not available for module commands.")
+        return botcom
+
+    elif botcom.specified == 'filepath':
+        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " file is located at " + str(botcom.dotcommand_dict["filepath"]))
+
+    elif botcom.specified == 'author':
+        return osd(bot, botcom.channel_current, 'say', "The author of the " + str(botcom.maincom) + " command is " + botcom.dotcommand_dict["author"] + ".")
+
+    elif botcom.specified in ['contrib', "contributors"]:
+        return osd(bot, botcom.channel_current, 'say', "The contributors of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["contributors"], "andlist") + ".")
+
+    elif botcom.specified == 'alias':
+        return osd(bot, botcom.channel_current, 'say', "The alaises of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["validcoms"], "andlist") + ".")
+
+    elif botcom.specified == 'view':
+
+        osd(bot, botcom.channel_current, 'say', "The " + botcom.specified + " argument is not available for module commands.")
+        return botcom
+
+    elif botcom.specified == 'add':
+
+        osd(bot, botcom.channel_current, 'say', "The " + botcom.specified + " argument is not available for module commands.")
+        return botcom
+
+    elif botcom.specified in ['del', 'remove']:
+
+        osd(bot, botcom.channel_current, 'say', "The " + botcom.specified + " argument is not available for module commands.")
         return botcom
 
     if not botcom.channel_priv:
