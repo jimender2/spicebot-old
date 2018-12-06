@@ -154,7 +154,8 @@ def get_github_issue(bot, issue):
         # bot.msg("#spicebottest", str(data[0]["title"]))
         # bot.msg("#spicebottest", str(data[0]["body"]))
         for i in range(0, 6):
-            bot.msg("#spicebottest", str(i))
+            if str(data[i]["title"]) == str(issue['title']) and str(data[i]["body"]) == str(issue['body']):
+                bot.msg("#spicebottest", str(i))
         #    if not issuelink:
         #        if str(data[i]["title"]) == str(issue['title']) and str(data[i]["body"]) == str(issue['body']):
         #            issuelink = str(data[i]["html_url"])
