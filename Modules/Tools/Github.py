@@ -152,7 +152,7 @@ def get_github_issue(bot, issue):
 
         data = json.loads(urllib2.urlopen(url).read())
         for i in range(0, 6):
-            if not issuelink and str(data[0]["title"]) == str(issue['title']) and str(data[0]["body"]) == str(issue['body']):
+            if not issuelink and str(data[i]["title"]) == str(issue['title']) and str(data[i]["body"]) == str(issue['body']):
                 issuelink = str(data[i]["html_url"])
 
     if not issuelink:
