@@ -110,6 +110,11 @@ def bot_dictcom_process(bot, botcom):
         botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
     botcom.commandtype = botcom.dotcommand_dict[botcom.responsekey]["type"]
 
+    botcom.nonstockoptions = []
+    for command in botcom.dotcommand_dict.keys():
+        if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block"]:
+            botcom.nonstockoptions.append(command)
+
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns"]
     botcom.specified = None
@@ -119,6 +124,9 @@ def bot_dictcom_process(bot, botcom):
             botcom.specified = int(argone[2:])
         elif bot_check_inlist(bot, str(argone[2:]), validspecifides):
             botcom.specified = str(argone[2:]).lower()
+        elif bot_check_inlist(bot, str(argone[2:]), botcom.nonstockoptions):
+            botcom.specified = str(argone[2:]).lower()
+            botcom.responsekey = botcom.specified
         else:
             try:
                 botcom.specified = w2n.word_to_num(str(argone[1:]))
