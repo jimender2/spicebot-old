@@ -50,14 +50,6 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
-    url = str(github_dict["url_api"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + github_dict["url_path_issues"])
-    page = requests.get(url, headers=None)
-    if page.status_code != 500 and page.status_code != 503:
-
-        data = json.loads(urllib2.urlopen(url).read())
-        bot.msg("#spicebottest", str(data[0]["html_url"]))
-    return
-
     # determine that there is a request/report
     if botcom.triggerargsarray == []:
         return osd(bot, trigger.sender, 'say', "What feature/issue do you want to post?")
@@ -90,6 +82,8 @@ def execute_main(bot, trigger, botcom):
         reqreptype = 'issue'
     elif botcom.maincom in ['wiki']:
         reqreptype = 'wiki'
+    elif botcom.maincom in ['github']:
+        return github_handler(bot, botcom)
 
     reqrepdict = github_types[reqreptype]
 
@@ -148,14 +142,21 @@ def make_github_issue(bot, issue, botcom):
         osd(bot, botcom.channel_current, 'priv', str('Response:' + r.content))
 
 
-def get_github_issue(bot, url):
+def get_github_issue(bot, issue):
 
-    issuelink = ''
+    issuelink = None
 
+    url = str(github_dict["url_api"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + github_dict["url_path_issues"])
     page = requests.get(url, headers=None)
     if page.status_code != 500 and page.status_code != 503:
 
         data = json.loads(urllib2.urlopen(url).read())
-        bot.msg("#spicebottest", str(data[0]))
+        for i in range(0, 5):
+            if not issuelink:
+                if str(data[i]["title"]) == str(issue['title']) and str(data[i]["body"]) == str(issue['body']):
+                    issuelink = str(data[i]["html_url"])
+
+    if not issuelink:
+        return ''
 
     return issuelink

@@ -68,7 +68,7 @@ def botcom_player_return(bot, trigger):
     for channel in bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'].keys():
         if botcom.instigator in bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][channel]['current_users']:
             bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][channel]['current_users'].remove(botcom.instigator)
-            if botcom.target not in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
+            if not bot_check_inlist(bot, botcom.target, [bot.nick]):
                 bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][channel]['current_users'].append(botcom.target)
 
         # status
