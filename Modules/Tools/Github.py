@@ -50,6 +50,13 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
+    page = requests.get(url, headers=None)
+    if page.status_code != 500 and page.status_code != 503:
+
+        data = json.loads(urllib2.urlopen(url).read())
+        bot.msg("#spicebottest", str(data[0]))
+    return
+
     # determine that there is a request/report
     if botcom.triggerargsarray == []:
         return osd(bot, trigger.sender, 'say', "What feature/issue do you want to post?")
