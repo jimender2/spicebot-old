@@ -492,7 +492,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
         botcom.multiruns = False
 
-    botcom.dotcommand_dict = copy.deepcopy(bot.memory["botdict"]["tempvals"]['module_commands'][botcom.dotcommand])
+    botcom.dotcommand_dict = copy.deepcopy(bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom])
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns"]
