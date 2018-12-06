@@ -495,7 +495,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     botcom.dotcommand_dict = copy.deepcopy(bot.memory["botdict"]["tempvals"]['module_commands'][botcom.dotcommand])
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ["enable", "disable", "multiruns"]
+    validspecifides = ['last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns"]
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
@@ -589,38 +589,51 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         return botcom
 
     elif botcom.specified == 'special':
+        botcom.modulerun = False
 
         osd(bot, botcom.channel_current, 'say', "The " + botcom.specified + " argument is not available for module commands.")
         return botcom
 
     elif botcom.specified == 'count':
+        botcom.modulerun = False
 
         osd(bot, botcom.channel_current, 'say', "The " + botcom.specified + " argument is not available for module commands.")
         return botcom
 
     elif botcom.specified == 'filepath':
+        botcom.modulerun = False
+
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " file is located at " + str(botcom.dotcommand_dict["filepath"]))
 
     elif botcom.specified == 'author':
+        botcom.modulerun = False
+
         return osd(bot, botcom.channel_current, 'say', "The author of the " + str(botcom.maincom) + " command is " + botcom.dotcommand_dict["author"] + ".")
 
     elif botcom.specified in ['contrib', "contributors"]:
+        botcom.modulerun = False
+
         return osd(bot, botcom.channel_current, 'say', "The contributors of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["contributors"], "andlist") + ".")
 
     elif botcom.specified == 'alias':
+        botcom.modulerun = False
+
         return osd(bot, botcom.channel_current, 'say', "The alaises of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["validcoms"], "andlist") + ".")
 
     elif botcom.specified == 'view':
+        botcom.modulerun = False
 
         osd(bot, botcom.channel_current, 'say', "The " + botcom.specified + " argument is not available for module commands.")
         return botcom
 
     elif botcom.specified == 'add':
+        botcom.modulerun = False
 
         osd(bot, botcom.channel_current, 'say', "The " + botcom.specified + " argument is not available for module commands.")
         return botcom
 
     elif botcom.specified in ['del', 'remove']:
+        botcom.modulerun = False
 
         osd(bot, botcom.channel_current, 'say', "The " + botcom.specified + " argument is not available for module commands.")
         return botcom
