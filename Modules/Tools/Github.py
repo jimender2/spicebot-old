@@ -136,7 +136,7 @@ def make_github_issue(bot, issue, botcom):
     r = session.post(url, json.dumps(issue))
     if r.status_code == 201:
         issuelink = get_github_issue(bot, issue)
-        osd(bot, botcom.channel_current, 'priv', "Successfully created " + issue['title'])
+        osd(bot, botcom.channel_current, 'priv', ["Successfully created " + issue['title'], issuelink])
     else:
         osd(bot, botcom.channel_current, 'priv', "Could not create " + issue['title'])
         osd(bot, botcom.channel_current, 'priv', str('Response:' + r.content))
