@@ -55,8 +55,7 @@ def execute_main(bot, trigger, botcom):
     if page.status_code != 500 and page.status_code != 503:
 
         data = json.loads(urllib2.urlopen(url).read())
-        del data[0]["labels"]
-        bot.msg("#spicebottest", str(data[0]))
+        bot.msg("#spicebottest", str(data[0]["html_url"]))
     return
 
     # determine that there is a request/report
