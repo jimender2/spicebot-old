@@ -50,6 +50,7 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
+    url = str(github_dict["url_api"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + github_dict["url_path_issues"])
     page = requests.get(url, headers=None)
     if page.status_code != 500 and page.status_code != 503:
 
