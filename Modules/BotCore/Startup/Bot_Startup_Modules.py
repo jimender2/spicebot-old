@@ -110,6 +110,8 @@ def bot_startup_modules(bot, trigger):
 
         if "contributors" not in dict_from_file.keys():
             dict_from_file["contributors"] = []
+        if not isinstance(dict_from_file["contributors"], list):
+            dict_from_file["contributors"] = [dict_from_file["contributors"]]
         if "deathbybandaid" not in dict_from_file["contributors"]:
             dict_from_file["contributors"].append("deathbybandaid")
         if dict_from_file["author"] not in dict_from_file["contributors"]:
