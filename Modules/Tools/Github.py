@@ -135,7 +135,7 @@ def make_github_issue(bot, issue, botcom):
 
     r = session.post(url, json.dumps(issue))
     if r.status_code == 201:
-        issuelink = get_github_issue(bot, url)
+        issuelink = get_github_issue(bot, issue)
         osd(bot, botcom.channel_current, 'priv', "Successfully created " + issue['title'])
     else:
         osd(bot, botcom.channel_current, 'priv', "Could not create " + issue['title'])
@@ -151,17 +151,9 @@ def get_github_issue(bot, issue):
     if page.status_code != 500 and page.status_code != 503:
 
         data = json.loads(urllib2.urlopen(url).read())
-        bot.msg("#spicebottest", str(issue))
-        # bot.msg("#spicebottest", str(data[0]["title"]))
-        # bot.msg("#spicebottest", str(data[0]["body"]))
-        # if str(data[0]["title"]) == str(issue['title']):  # and str(data[0]["body"]) == str(issue['body']):
-        #    bot.msg("#spicebottest", str(0))
-        # for i in range(0, 6):
-        #    if str(data[0]["title"]) == str(issue['title']) and str(data[0]["body"]) == str(issue['body']):
-        #        bot.msg("#spicebottest", str(i))
-        #    if not issuelink:
-        #        if str(data[i]["title"]) == str(issue['title']) and str(data[i]["body"]) == str(issue['body']):
-        #            issuelink = str(data[i]["html_url"])
+        for i in range(0, 6):
+            if not issuelink and str(data[0]["title"]) == str(issue['title']) and str(data[0]["body"]) == str(issue['body']):
+                issuelink = str(data[i]["html_url"])
 
     if not issuelink:
         return ''
