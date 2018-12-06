@@ -66,7 +66,7 @@ def bot_startup_modules(bot, trigger):
         for line in module_file_lines:
 
             if str(line).startswith("comdict") and not dict_from_file:
-                dict_from_file = str(line)
+                dict_from_file = str(line).replace("comdict = ", "")
 
             if str(line).startswith("@"):
                 line = str(line)[1:]
