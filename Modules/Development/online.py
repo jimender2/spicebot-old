@@ -20,6 +20,9 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+# Creator details
+comdict = {"author": "deathbybandaid", "contributors": ["dysonparkes"]}
+
 
 @sopel.module.commands('online')
 def mainfunctionnobeguine(bot, trigger):
