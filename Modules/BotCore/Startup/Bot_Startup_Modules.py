@@ -42,7 +42,6 @@ def bot_startup_modules(bot, trigger):
         filename = modules[0]
         if filename not in ["coretasks"]:
             filenameslist.append(filename + ".py")
-    bot.say(str(filenameslist))
 
     filepathlist = []
     for directory in bot.config.core.extra:

@@ -20,6 +20,9 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+# comdict
+comdict = {"author": "dyson's mom"}
+
 
 @sopel.module.commands('isup')
 def mainfunctionnobeguine(bot, trigger):
