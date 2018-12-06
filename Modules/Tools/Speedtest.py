@@ -46,7 +46,7 @@ def mainfunctionnobeguine(bot, trigger):
 def execute_main(bot, trigger, botcom):
     osd(bot, trigger.sender, 'say', "Starting Speedtest...")
 
-    servers = [14084]
+    servers = []
     s = speedtest.Speedtest()
     s.get_servers(servers)
     s.get_best_server()
