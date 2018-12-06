@@ -209,7 +209,7 @@ def bot_dictcom_process(bot, botcom):
     elif botcom.specified == 'special':
         nonstockoptions = []
         for command in botcom.dotcommand_dict.keys():
-            if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath"]:
+            if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block"]:
                 nonstockoptions.append(command)
         nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
         return osd(bot, botcom.channel_current, 'say', "The special options for " + str(botcom.maincom) + " command include: " + str(nonstockoptions) + ".")
@@ -480,7 +480,7 @@ def bot_dictcom_reply_shared(bot, botcom):
             if "$specialoptions" in rply:
                 nonstockoptions = []
                 for command in botcom.dotcommand_dict.keys():
-                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath"]:
+                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block"]:
                         nonstockoptions.append(command)
                 nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
                 rply = rply.replace("$specialoptions", nonstockoptions)
