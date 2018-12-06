@@ -132,9 +132,22 @@ def make_github_issue(bot, issue, botcom):
         return osd(bot, botcom.channel_current, 'priv', "Error Using Github Credentials.")
 
     r = session.post(url, json.dumps(issue))
-    bot.msg("#spicebottest", str(r))
     if r.status_code == 201:
+        issuelink = get_github_issue(bot, url)
         osd(bot, botcom.channel_current, 'priv', "Successfully created " + issue['title'])
     else:
         osd(bot, botcom.channel_current, 'priv', "Could not create " + issue['title'])
         osd(bot, botcom.channel_current, 'priv', str('Response:' + r.content))
+
+
+def get_github_issue(bot, url):
+
+    issuelink = ''
+
+    page = requests.get(url, headers=None)
+    if page.status_code != 500 and page.status_code != 503:
+
+        data = json.loads(urllib2.urlopen(url).read())
+        bot.msg("#spicebottest", str(data[0]))
+
+    return issuelink
