@@ -151,10 +151,11 @@ def get_github_issue(bot, issue):
     if page.status_code != 500 and page.status_code != 503:
 
         data = json.loads(urllib2.urlopen(url).read())
+        bot.msg("#spicebottest", str(issue))
         # bot.msg("#spicebottest", str(data[0]["title"]))
         # bot.msg("#spicebottest", str(data[0]["body"]))
-        if str(data[0]["title"]) == str(issue['title']):  # and str(data[0]["body"]) == str(issue['body']):
-            bot.msg("#spicebottest", str(0))
+        # if str(data[0]["title"]) == str(issue['title']):  # and str(data[0]["body"]) == str(issue['body']):
+        #    bot.msg("#spicebottest", str(0))
         # for i in range(0, 6):
         #    if str(data[0]["title"]) == str(issue['title']) and str(data[0]["body"]) == str(issue['body']):
         #        bot.msg("#spicebottest", str(i))
