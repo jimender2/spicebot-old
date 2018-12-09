@@ -88,7 +88,8 @@ def execute_main(bot, trigger, botcom):
     howlongago = humanized_time(time.time() - lastseenwinner["time"])
 
     posscom = spicemanip(bot, str(lastseenwinner["spoken"]), 1)
-    bot.msg("#spicebottest", posscom)
+    if str(posscom).startswith("."):
+        bot.msg("#spicebottest", posscom)
 
     intent = 'saying'
     if "intent" in lastseenwinner.keys():
