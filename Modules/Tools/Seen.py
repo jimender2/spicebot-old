@@ -93,6 +93,7 @@ def execute_main(bot, trigger, botcom):
             if lastseenwinner["intent"]:
                 intent = "doing /me"
     elif str(lastseenwinner["spoken"]).startswith("."):
+        bot.msg("#spicebottest", " here")
         posscom = spicemanip(bot, str(lastseenwinner["spoken"]), 1).lower()[1:]
         if posscom in tuple(bot.memory["botdict"]["tempvals"]['all_coms']):
             intent = "running"
