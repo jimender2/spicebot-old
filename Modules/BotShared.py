@@ -25,6 +25,7 @@ import socket
 import threading
 import subprocess
 from threading import Thread
+import netifaces
 
 # Additional imports
 import ConfigParser
