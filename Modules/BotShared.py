@@ -24,6 +24,7 @@ sys.path.append(moduledir)
 import socket
 import threading
 import subprocess
+from threading import Thread
 
 # Additional imports
 import ConfigParser
