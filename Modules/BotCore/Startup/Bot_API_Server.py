@@ -26,7 +26,7 @@ sys.setdefaultencoding('utf-8')
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def api_socket_hub(bot, trigger):
+def api_socket_server(bot, trigger):
 
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["botdict", "server", "channels", "users"]):

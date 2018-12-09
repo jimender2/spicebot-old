@@ -93,6 +93,11 @@ Dictionaries
 """
 
 
+hardcode_dict = {
+                "bot_ap_addresses": ["192.168.5.100", "192.168.5.101"],
+                }
+
+
 os_dict = {
             "user": "spicebot",
             "ext_conf": "spicebot.conf",
@@ -717,6 +722,22 @@ def bot_startup_requirements_set(bot, addonreq):
 """
 API
 """
+
+
+def bot_api_port_test(bot, host, port):
+    returnval = False
+
+    # Create a TCP/IP socket
+    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        # Bind the socket to the port
+        server_address = (str(host), int(port))
+        tempsock.connect(server_address)
+        tempsock.close()
+        returnval = True
+    except Exception as e:
+        tempsock.close()
+    return returnval
 
 
 def bot_api_fetch(bot, botport, host):
