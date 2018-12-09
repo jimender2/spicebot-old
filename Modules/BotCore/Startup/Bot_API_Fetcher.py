@@ -58,4 +58,4 @@ def hostsprocessor(bot):
                     if apiquery != {}:
                         datapopulate = True
                         querytest = str(apiquery["tempvals"]["bot_info"])
-                        bot.msg("#spicebottest", querytest)
+                        # bot.msg("#spicebottest", querytest)
