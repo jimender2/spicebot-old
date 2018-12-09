@@ -38,6 +38,8 @@ def bot_command_hub(bot, trigger):
     if not bot_nickcom_run_check(bot, botcom):
         return osd(bot, botcom.instigator, 'notice', "I was unable to process this Bot Nick command due to privilege issues.")
 
+    dispmsg = []
+
     currentbotsadmins = spicemanip(bot, bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins'], 'andlist')
     dispmsg.append(targetbot + " is owned by " + currentbotsowner)
     osd(bot, botcom.channel_current, 'say', spicemanip(bot, dispmsg, 'andlist'))
