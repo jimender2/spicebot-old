@@ -50,6 +50,7 @@ def execute_main(bot, trigger, botcom):
 
 
 def func1(bot):
+    time.sleep(6)
     bot.msg("#spicebottest", "func1")
 
 
