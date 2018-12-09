@@ -52,8 +52,6 @@ def execute_main(bot, trigger, botcom):
         return osd(bot, botcom.channel_current, 'say', ".seen <nick> - Reports when <nick> was last seen.")
     elif bot_check_inlist(bot, posstarget, [str(bot.nick)]):
         return osd(bot, botcom.channel_current, 'say', "I'm right here!")
-    # elif bot_check_inlist(bot, posstarget, bot.memory["botdict"]["tempvals"]['bots_list'][str(bot.nick)].keys()) or bot_check_inlist(bot, posstarget, bot.memory["sock_bot_list"]):
-    #    return osd(bot, botcom.channel_current, 'say', "I don't spy on the other bots!")
     elif bot_check_inlist(bot, posstarget, [str(botcom.instigator)]):
         return osd(bot, botcom.channel_current, 'say', "You're right there!")
 
@@ -68,7 +66,6 @@ def execute_main(bot, trigger, botcom):
                     lastseen.append(lastseenrecord[-1])
 
     if lastseen == []:
-        # return osd(bot, botcom.channel_current, 'say', "Sorry, the network of SpiceBots have never seen " + str(posstarget) + " around.")
         return osd(bot, botcom.channel_current, 'say', "Sorry, I have never seen " + str(posstarget) + " around.")
 
     seentime = None
@@ -96,7 +93,7 @@ def execute_main(bot, trigger, botcom):
             if lastseenwinner["intent"]:
                 intent = "doing /me"
 
-    if bot_check_inlist(bot, posstarget, bot.memory["botdict"]["tempvals"]["servers_list"][botcom.server]['all_current_users']):  # or bot_check_inlist(bot, posstarget, otherbotmatchcur):
+    if bot_check_inlist(bot, posstarget, bot.memory["botdict"]["tempvals"]["servers_list"][botcom.server]['all_current_users']):
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen " + str(howlongago).strip() + " ago by " + str(lastseenwinner["bot_eyes"]) + " on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " " + intent + " " + str(lastseenwinner["spoken"]))
     else:
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " was last seen " + str(howlongago).strip() + " ago on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " by " + str(lastseenwinner["bot_eyes"]) + " " + intent + " " + str(lastseenwinner["spoken"]))

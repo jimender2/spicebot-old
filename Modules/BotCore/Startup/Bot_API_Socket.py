@@ -99,6 +99,8 @@ def api_socket_run(bot, sock):
                         if "tempvals" in savedict:
                             if 'sock' in savedict["tempvals"]:
                                 del savedict["tempvals"]['sock']
+                            if 'reddit' in savedict["tempvals"]:
+                                del savedict["tempvals"]['reddit']
 
                         # convert to json
                         msg = json.dumps(savedict, default=json_util.default).encode('utf-8')
