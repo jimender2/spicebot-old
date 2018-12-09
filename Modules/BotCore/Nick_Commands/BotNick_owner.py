@@ -41,5 +41,5 @@ def bot_command_hub(bot, trigger):
     dispmsg = []
 
     currentbotsadmins = spicemanip(bot, bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins'], 'andlist')
-    dispmsg.append(targetbot + " is owned by " + currentbotsowner)
+    dispmsg.append(str(bot.nick) + " is owned by " + currentbotsowner)
     osd(bot, botcom.channel_current, 'say', spicemanip(bot, dispmsg, 'andlist'))
