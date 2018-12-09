@@ -53,7 +53,7 @@ def hostsprocessor(bot):
                     hostsprocess.append(hostdict)
 
     # this is where we will process the info from the other bots
-    bot.msg("#spicebottest", str(hostsprocess.shuffle()))
+    bot.msg("#spicebottest", str(hostsprocess))
     for host in hostsprocess:
         try:
             apiquery = bot_api_fetch(bot, hostdict["port"], hostdict["host"])
