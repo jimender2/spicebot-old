@@ -109,6 +109,7 @@ def execute_main(bot, trigger, botcom):
         message = str(message + " in here,")
 
     intent = 'saying'
+    spoken = str(lastseenwinner["spoken"])
     posscom = spicemanip(bot, str(lastseenwinner["spoken"]), 1)
     if str(posscom).startswith("."):
         posscom = posscom.lower()[1:]
@@ -119,6 +120,6 @@ def execute_main(bot, trigger, botcom):
         if lastseenwinner["intent"]:
             if lastseenwinner["intent"]:
                 intent = "doing /me"
-    message = str(message + " " + intent + " " + str(lastseenwinner["spoken"]))
+    message = str(message + " " + intent + " " + str(spoken))
 
     osd(bot, botcom.channel_current, 'say', message)
