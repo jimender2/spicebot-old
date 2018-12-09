@@ -119,10 +119,6 @@ def execute_main(bot, trigger, botcom):
         if lastseenwinner["intent"]:
             if lastseenwinner["intent"]:
                 intent = "doing /me"
-
     message = str(message + " " + intent + " " + str(lastseenwinner["spoken"]))
 
-    if bot_check_inlist(bot, posstarget, bot.memory["botdict"]["tempvals"]["servers_list"][botcom.server]['all_current_users']):
-        osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen " + str(howlongago) + " ago by " + str(lastseenwinner["bot_eyes"]) + " on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " " + intent + " " + str(lastseenwinner["spoken"]))
-    else:
-        osd(bot, botcom.channel_current, 'say', str(posstarget) + " was last seen " + str(howlongago) + " ago on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " by " + str(lastseenwinner["bot_eyes"]) + " " + intent + " " + str(lastseenwinner["spoken"]))
+    osd(bot, botcom.channel_current, 'say', message)
