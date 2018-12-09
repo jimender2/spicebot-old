@@ -93,7 +93,6 @@ def execute_main(bot, trigger, botcom):
     if str(posscom).startswith("."):
         posscom = posscom.lower()[1:]
         if posscom in bot.memory["botdict"]["tempvals"]['all_coms']:
-            # bot.msg("#spicebottest", posscom)
             intent = "running"
             spoken = str(posscom)
     elif "intent" in lastseenwinner.keys():
