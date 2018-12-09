@@ -87,21 +87,19 @@ def execute_main(bot, trigger, botcom):
 
     howlongago = humanized_time(time.time() - lastseenwinner["time"])
 
+    intent = 'saying'
+
     posscom = spicemanip(bot, str(lastseenwinner["spoken"]), 1)
     if str(posscom).startswith("."):
-        bot.msg("#spicebottest", posscom)
-
-    intent = 'saying'
-    if "intent" in lastseenwinner.keys():
+        posscom = posscom.lower()[1:]
+        if posscom in bot.memory["botdict"]["tempvals"]['all_coms']:
+            # bot.msg("#spicebottest", posscom)
+            intent = "running"
+            spoken = str(posscom)
+    elif "intent" in lastseenwinner.keys():
         if lastseenwinner["intent"]:
             if lastseenwinner["intent"]:
                 intent = "doing /me"
-    elif str(lastseenwinner["spoken"]).startswith("."):
-        bot.msg("#spicebottest", " here")
-        posscom = spicemanip(bot, str(lastseenwinner["spoken"]), 1).lower()[1:]
-        if posscom in tuple(bot.memory["botdict"]["tempvals"]['all_coms']):
-            intent = "running"
-            spoken = str(posscom)
 
     if bot_check_inlist(bot, posstarget, bot.memory["botdict"]["tempvals"]["servers_list"][botcom.server]['all_current_users']):
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " is online right now and was last seen " + str(howlongago).strip() + " ago by " + str(lastseenwinner["bot_eyes"]) + " on " + str(lastseenwinner["server"]) + " in " + str(lastseenwinner["channel"]) + " " + intent + " " + str(lastseenwinner["spoken"]))
