@@ -57,4 +57,5 @@ def hostsprocessor(bot):
                         apiquery = dict()
                     if apiquery != {}:
                         datapopulate = True
-                        # bot.msg("#spicebottest", "populating data from " + str(host) + ":" + str(i))
+                        querytest = str(apiquery["tempvals"]["bot_info"])
+                        bot.msg("#spicebottest", querytest)
