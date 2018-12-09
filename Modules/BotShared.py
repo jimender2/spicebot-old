@@ -718,79 +718,6 @@ API
 """
 
 
-def bot_api_response_headers(bot, msg):
-    # response_headers
-    response_headers = {
-                        'Content-Type': 'text/html; encoding=utf8',
-                        'Content-Length': len(msg),
-                        'Connection': 'close',
-                        }
-    response_headers_raw = ''.join('%s: %s\r\n' % (k, v) for k, v in response_headers.items())
-    r = '%s %s %s\r\n' % ('HTTP/1.1', '200', 'OK')
-    return response_headers_raw, r
-
-
-def bot_register_handler_startup(bot):
-
-    registerdict = {
-                    "type": "command",
-                    "command": "register_give",
-                    "bot": str(bot.nick),
-                    "host": str(socket.gethostbyname(socket.gethostname())),
-                    "port": str(bot.memory['sock_port']),
-                    }
-
-    # This is for my custom use, hardcoded hosts
-    bot_logging(bot, "API", "[API] Creating list of Bots To Query")
-    hostslist = ["192.168.5.100", "192.168.5.101"]
-    hostsprocess = []
-    for host in hostslist:
-        for i in range(8000, 8051):
-            if bot_api_port_test(bot, host, i):
-                hostsprocess.append({"host": host, "port": i})
-    if hostsprocess == []:
-        bot_logging(bot, "API", "[API] No Bots To Query")
-    else:
-
-        bot_logging(bot, "API", "[API] Sending API registration to other bots")
-        for bots in hostsprocess:
-            bot_register_handler_single(bot, bots["host"], bots["port"], registerdict)
-        bot_logging(bot, "API", "[API] Sent API registration to other bots")
-
-        registerdict["command"] = "register_request"
-        bot_logging(bot, "API", "[API] Requesting API registration from other bots")
-        for bots in hostsprocess:
-            bot_register_handler_single(bot, bots["host"], bots["port"], registerdict)
-        bot_logging(bot, "API", "[API] Requesting API registration from other bots: Complete")
-
-
-def bot_register_handler_single(bot, host, port, dictsend):
-
-    # Create a TCP/IP socket
-    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # Bind the socket to the port
-    server_address = (str(host), int(port))
-    try:
-        tempsock.connect(server_address)
-    except Exception as e:
-        bot_logging(bot, "API", "[API] Error connecting to " + str(host) + ":" + str(port) + " (" + str(e) + ")")
-        tempsock.close()
-        return
-
-    # convert to json
-    msg = json.dumps(dictsend, default=json_util.default).encode('utf-8')
-
-    # sending all this stuff
-    try:
-        bot_logging(bot, "API", "[API] Sending Registration data to " + str(host) + ":" + str(port))
-        tempsock.send(msg.encode(encoding="utf-8"))
-    except Exception as e:
-        bot_logging(bot, "API", "[API] Error Sending Data to " + str(host) + ":" + str(port) + " (" + str(e) + ")")
-        tempsock.close()
-    return
-
-
 def bot_api_fetch(bot, botport, host):
     botdict_return = None
 
@@ -808,22 +735,6 @@ def bot_api_fetch(bot, botport, host):
     botdict_return = json.loads(result, object_hook=json_util.object_hook)
 
     return botdict_return
-
-
-def bot_api_port_test(bot, host, port):
-    returnval = False
-
-    # Create a TCP/IP socket
-    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        # Bind the socket to the port
-        server_address = (str(host), int(port))
-        tempsock.connect(server_address)
-        tempsock.close()
-        returnval = True
-    except Exception as e:
-        tempsock.close()
-    return returnval
 
 
 def bot_api_send(bot, botport, messagedict, host):
@@ -844,7 +755,8 @@ def bot_api_send(bot, botport, messagedict, host):
         tempsock.send(msg.encode(encoding="utf-8"))
     except Exception as e:
         bot_logging(bot, "API", "[API] Error Sending Data: (%s)" % (e))
-        tempsock.close()
+
+    tempsock.close()
 
     return
 
@@ -859,27 +771,6 @@ def bot_api_response_headers(bot, msg):
     response_headers_raw = ''.join('%s: %s\r\n' % (k, v) for k, v in response_headers.items())
     r = '%s %s %s\r\n' % ('HTTP/1.1', '200', 'OK')
     return response_headers_raw, r
-
-
-def bot_api_get_users(bot):
-    returninfo = {}
-    if "sock_dict" in bot.memory:
-        for host in bot.memory["sock_dict"].keys():
-            if host not in returninfo.keys():
-                returninfo[host] = dict()
-            for bots in bot.memory["sock_dict"][host].keys():
-                if bots not in returninfo[host].keys():
-                    returninfo[host][bots] = dict()
-                returnedinfo = bot_api_fetch(bot, int(bot.memory["sock_dict"][host][bots]["port"]), str(bot.memory["sock_dict"][host][bots]["host"]))
-                if returnedinfo:
-                    returninfo[host][bots]['all_current_users'] = returnedinfo["tempvals"]['all_current_users']
-                    returninfo[host][bots]['users'] = returnedinfo['users']
-                    returninfo[host][bots]['servername'] = returnedinfo["tempvals"]['servername']
-                else:
-                    returninfo[host][bots]['all_current_users'] = []
-                    returninfo[host][bots]['users'] = dict()
-                    returninfo[host][bots]['servername'] = ''
-    return returninfo
 
 
 """
