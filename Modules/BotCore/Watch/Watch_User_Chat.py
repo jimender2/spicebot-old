@@ -69,7 +69,7 @@ def watch_all_hub(bot, trigger):
         spoken = "<REDACTED>"
 
     usertalkdict = {
-                    "server": str(bot.memory["botdict"]["tempvals"]['servername']),
+                    "server": str(bot.memory["botdict"]["tempvals"]['server']),
                     "channel": botcom.channel_current,
                     "spoken": spoken,
                     "time": botcom.timestart,
