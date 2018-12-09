@@ -95,7 +95,7 @@ def execute_main(bot, trigger, botcom):
         nada = 5
         # this is where we will check if user is active on another server
 
-    message = str(message + " was last seen " + str(howlongago) + ",")
+    message = str(message + " was last seen " + str(howlongago) + " ago,")
 
     if str(lastseenwinner["bot_eyes"]) != str(bot.nick):
         message = str(message + " by " + str(lastseenwinner["bot_eyes"]) + ",")
