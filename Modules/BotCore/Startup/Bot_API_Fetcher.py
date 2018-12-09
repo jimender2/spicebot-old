@@ -55,7 +55,11 @@ def hostsprocessor(bot):
                         apiquery = bot_api_fetch(bot, i, host)
                     except Exception as e:
                         apiquery = dict()
-                    if apiquery != {}:
-                        datapopulate = True
-                        querytest = str(apiquery["tempvals"]["bot_info"])
-                        # bot.msg("#spicebottest", querytest)
+                    if len(apiquery.keys) > 0:
+
+                        if "tempvals" not in apiquery.keys():
+                            pass
+
+                        if "bot_info" in apiquery["tempvals"].keys():
+                            querytest = str(apiquery["tempvals"]["bot_info"].keys())
+                            bot.msg("#spicebottest", querytest)
