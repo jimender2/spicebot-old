@@ -115,7 +115,7 @@ def execute_main(bot, trigger, botcom):
         posscom = posscom.lower()[1:]
         if posscom in bot.memory["botdict"]["tempvals"]['all_coms']:
             intent = "running"
-            spoken = str(posscom)
+            spoken = str("." + posscom)
     elif "intent" in lastseenwinner.keys():
         if lastseenwinner["intent"]:
             if lastseenwinner["intent"]:
