@@ -71,6 +71,9 @@ def bot_startup_monologue(bot, trigger):
     else:
         startupcomplete.append("API Port not set.")
 
+    while not bot_startup_requirements_met(bot, ["all_coms"]):
+        pass
+
     # Announce to chan, then handle some closing stuff
     osd(bot, bot.privileges.keys(), 'notice', startupcomplete)
 
