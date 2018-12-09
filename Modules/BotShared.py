@@ -95,7 +95,7 @@ Dictionaries
 
 
 hardcode_dict = {
-                "bot_ap_addresses": ["192.168.5.100", "192.168.5.101"],
+                "bot_ip_addresses": ["192.168.5.100", "192.168.5.101"],
                 }
 
 

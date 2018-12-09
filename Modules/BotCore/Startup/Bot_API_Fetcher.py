@@ -40,16 +40,21 @@ def api_socket_client(bot, trigger):
 
 
 def hostsprocessor(bot):
-    hostslist = hardcode_dict["bot_ap_addresses"]
+    hostslist = hardcode_dict["bot_ip_addresses"]
     hostsprocess = []
     for host in hostslist:
         for i in range(8000, 8051):
-            if bot_api_port_test(bot, host, i):
 
-                # this is where we will process the info from the other bots
-                try:
-                    apiquery = bot_api_fetch(bot, i, host)
-                except Exception as e:
-                    apiquery = dict()
-                if apiquery != {}:
-                    datapopulate = True
+            # don't process current bot
+            if host != bot.memory["botdict"]["tempvals"]['networking']['ip_addresses'] and str(i) != str(bot.memory['sock_port']):
+
+                if bot_api_port_test(bot, host, i):
+
+                    # this is where we will process the info from the other bots
+                    try:
+                        apiquery = bot_api_fetch(bot, i, host)
+                    except Exception as e:
+                        apiquery = dict()
+                    if apiquery != {}:
+                        datapopulate = True
+                        bot.msg("#spicebottest", "populating data from " + str(host) + ":" + str(i))

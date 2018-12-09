@@ -36,13 +36,14 @@ def bot_startup_ip_addr(bot, trigger):
 
     bot.memory["botdict"]["tempvals"]['networking']['interfaces'] = netifaces.interfaces()
 
+    bot.memory["botdict"]["tempvals"]['networking']['ip_addresses'] = []
+
     for i in bot.memory["botdict"]["tempvals"]['networking']['interfaces']:
         if i == 'lo':
             continue
         iface = netifaces.ifaddresses(i).get(netifaces.AF_INET)
         if iface:
             for j in iface:
-                bot.msg("#spicebottest", str(j))
-                bot.msg("#spicebottest", str(j['addr']))
+                bot.memory["botdict"]["tempvals"]['networking']['ip_addresses'].append(str(j['addr']))
 
     bot_startup_requirements_set(bot, "ip_address")
