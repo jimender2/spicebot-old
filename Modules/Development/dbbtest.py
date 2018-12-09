@@ -45,13 +45,13 @@ def mainfunctionnobeguine(bot, trigger):
 def execute_main(bot, trigger, botcom):
     bot.say("DBB Testing")
 
-    Thread(target=func1).start()
-    Thread(target=func2).start()
+    Thread(target=func1, args=(bot)).start()
+    Thread(target=func2, args=(bot)).start()
 
 
-def func1():
+def func1(bot):
     bot.msg("#spicebottest", "func1")
 
 
-def func2():
+def func2(bot):
     bot.msg("#spicebottest", "func2")
