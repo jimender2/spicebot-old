@@ -87,6 +87,8 @@ def execute_main(bot, trigger, botcom):
 
     howlongago = humanized_time(time.time() - lastseenwinner["time"])
 
+    bot.msg("#spicebottest", str(lastseenwinner["spoken"])
+
     intent = 'saying'
     if "intent" in lastseenwinner.keys():
         if lastseenwinner["intent"]:
