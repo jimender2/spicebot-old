@@ -60,8 +60,11 @@ def dict_command_configs(bot):
 
     if "dictcoms" in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration'].keys():
         if "extra" in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["dictcoms"].keys():
-            bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["core"]["extra"]))
-            # bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["dictcoms"]))
+            if "," not in str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["dictcoms"]["extra"]):
+                extradirs = [str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["dictcoms"]["extra"])]
+            else:
+                extradirs = str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["dictcoms"]["extra"]).split(",")
+            bot.msg("#spicebottest", str(extradirs))
             """
             quick_coms_path_extra = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/Dictionary_replies/" + str(str(bot.nick).replace("dev", "")) + "/"
             if os.path.exists(quick_coms_path_extra) and os.path.isdir(quick_coms_path_extra):
