@@ -55,7 +55,7 @@ def hostsprocessor(bot):
                         apiquery = bot_api_fetch(bot, i, host)
                     except Exception as e:
                         apiquery = dict()
-                    if len(apiquery.keys) > 0:
+                    if apiquery != {}:
 
                         if "tempvals" not in apiquery.keys():
                             pass
