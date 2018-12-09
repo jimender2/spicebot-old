@@ -67,3 +67,4 @@ def hostsprocessor(bot):
 
             if "bot_info" in apiquery["tempvals"].keys():
                 querytest = str(apiquery["tempvals"]["bot_info"].keys())
+                bot.msg("#spicebottest", querytest)
