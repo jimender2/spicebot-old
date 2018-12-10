@@ -336,10 +336,11 @@ def bot_dictcom_process(bot, botcom):
 
     botcom.target = False
 
+    currentblocks = get_nick_value(bot, botcom.instigator, "long", 'commands', "unallowed") or []
+    if botcom.maincom in currentblocks:
+        return osd(bot, botcom.channel_current, 'say', "You appear to have been blocked by a bot admin from using the " + botcom.maincom + " command.")
+
     if not botcom.channel_priv:
-        currentblocks = get_nick_value(bot, botcom.instigator, "long", 'commands', "unallowed") or []
-        if botcom.maincom in currentblocks:
-            return osd(bot, botcom.channel_current, 'say', "You appear to have been blocked by a bot admin from using the " + botcom.maincom + " command.")
 
         if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
             reason = bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]

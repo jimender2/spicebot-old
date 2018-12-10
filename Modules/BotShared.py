@@ -693,11 +693,13 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         osd(bot, botcom.channel_current, 'say', "The " + botcom.specified + " argument is not available for module commands.")
         return botcom
 
+    currentblocks = get_nick_value(bot, botcom.instigator, "long", 'commands', "unallowed") or []
+    if botcom.maincom in currentblocks:
+        botcom.modulerun = False
+        osd(bot, botcom.channel_current, 'say', "You appear to have been blocked by a bot admin from using the " + botcom.maincom + " command.")
+        return botcom
+
     if not botcom.channel_priv:
-        currentblocks = get_nick_value(bot, botcom.instigator, "long", 'commands', "unallowed") or []
-        if botcom.maincom in currentblocks:
-            osd(bot, botcom.channel_current, 'say', "You appear to have been blocked by a bot admin from using the " + botcom.maincom + " command.")
-            return botcom
 
         if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
             botcom.modulerun = False
