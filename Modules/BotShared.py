@@ -828,7 +828,9 @@ def bot_api_fetch(bot, TCP_PORT, TCP_IP):
         s.connect((TCP_IP, TCP_PORT))
         s.send("GET")
         data = s.recv(2048)
-        bot.msg("#spicebottest", str(data))
+        datasplit = data.split('\r\n')
+        for party in datasplit:
+            bot.msg("#spicebottest", str(party))
         s.close()
         botdict_return = json.loads(data, object_hook=json_util.object_hook)
         bot.msg("#spicebottest", str(botdict_return["tempvals"]["botname"]))
