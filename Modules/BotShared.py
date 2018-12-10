@@ -826,8 +826,8 @@ def bot_api_fetch(bot, TCP_PORT, TCP_IP):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
-        s.send("GET")
-        data = s.recv()
+        s.send("GET APIFETCH")
+        data = s.recv(2048)
         bot.msg("#spicebottest", str(data))
         s.close()
         botdict_return = json.loads(data, object_hook=json_util.object_hook)
