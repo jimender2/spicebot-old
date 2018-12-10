@@ -87,34 +87,7 @@ def api_socket_run(bot, sock):
                 bot_logging(bot, "API", "[API] Received data.")
                 if data:
 
-                    # Sending Botdict out
-                    if spicemanip(bot, str(data), 1) == "APIFETCH":
-
-                        # Possibly add a api key
-
-                        # copy dict to not overwrite
-                        savedict = copy.deepcopy(bot.memory["botdict"])
-
-                        # don't include this
-                        if "tempvals" in savedict:
-                            if 'sock' in savedict["tempvals"]:
-                                del savedict["tempvals"]['sock']
-                            if 'reddit' in savedict["tempvals"]:
-                                del savedict["tempvals"]['reddit']
-
-                        # convert to json
-                        msg = json.dumps(savedict, default=json_util.default).encode('utf-8')
-
-                        # sending all this stuff
-                        try:
-                            bot_logging(bot, "API", "[API] Sending data back to the client.")
-                            connection.send(msg.encode(encoding="utf-8"))
-                            break
-                        except Exception as e:
-                            bot_logging(bot, "API", "[API] Error Sending Data: (%s)" % (e))
-                            break
-
-                    elif spicemanip(bot, str(data), 1) == "GET":
+                    if spicemanip(bot, str(data), 1) == "GET":
 
                         # Possibly add a api key
 
