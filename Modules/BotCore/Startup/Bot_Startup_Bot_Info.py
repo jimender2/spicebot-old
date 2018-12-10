@@ -34,6 +34,8 @@ def bot_startup_botinf(bot, trigger):
     while not bot_startup_requirements_met(bot, ["botdict", "server"]):
         pass
 
+    bot.memory["botdict"]["tempvals"]["botname"] = str(bot.nick)
+
     bot.memory["botdict"]["tempvals"]["bot_info"] = dict()
 
     bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)] = dict()
