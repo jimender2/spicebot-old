@@ -38,5 +38,6 @@ def bot_startup_botdict_open(bot, trigger):
 
     # Tempvals section
     bot.memory["botdict"]["tempvals"] = dict()
+    bot.memory["botdict"]["tempvals"]["uservals"] = dict()
 
     bot_startup_requirements_set(bot, "botdict")
