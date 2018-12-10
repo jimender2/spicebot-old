@@ -217,6 +217,9 @@ def bot_dictcom_process(bot, botcom):
     elif botcom.specified == 'block':
         botcom.modulerun = False
 
+        if not bot_command_modding_auth(bot, botcom):
+            return osd(bot, botcom.channel_current, 'say', "You are not authorized to enable/disable command usage.")
+
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
         if not posstarget:
             return osd(bot, botcom.channel_current, 'say', "Who am I blocking from " + str(botcom.maincom) + " usage?")
@@ -235,6 +238,9 @@ def bot_dictcom_process(bot, botcom):
 
     elif botcom.specified == 'unblock':
         botcom.modulerun = False
+
+        if not bot_command_modding_auth(bot, botcom):
+            return osd(bot, botcom.channel_current, 'say', "You are not authorized to enable/disable command usage.")
 
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
         if not posstarget:
