@@ -1677,16 +1677,17 @@ def get_nick_value(bot, nick, longevity, sortingkey, usekey):
             bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["timestamp"] = 0
         returnvals.append(bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey])
 
-    for botname in bot.memory["altbots"].keys():
-        try:
-            if longevity == 'long':
-                botvaltime = bot.memory["altbots"][botname]["users"][nick][sortingkey][usekey]
-            elif longevity == 'temp':
-                botvaltime = bot.memory["altbots"][botname]["tempvals"]["uservals"][nick][sortingkey][usekey]
-        except Exception as e:
-            botvaltime = None
-        if botvaltime:
-            returnvals.append(botvaltime)
+    if "altbots" in bot.memory:
+        for botname in bot.memory["altbots"].keys():
+            try:
+                if longevity == 'long':
+                    botvaltime = bot.memory["altbots"][botname]["users"][nick][sortingkey][usekey]
+                elif longevity == 'temp':
+                    botvaltime = bot.memory["altbots"][botname]["tempvals"]["uservals"][nick][sortingkey][usekey]
+            except Exception as e:
+                botvaltime = None
+            if botvaltime:
+                returnvals.append(botvaltime)
 
     values, times = [], []
     for storedval in returnvals:
