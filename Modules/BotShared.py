@@ -826,7 +826,7 @@ def bot_api_fetch(bot, TCP_PORT, TCP_IP):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
-        s.send("GET")
+        s.send("GET APIFETCH")
         data = s.recv(2048)
         datasplit = data.split("\n")
         for datapart in datasplit:
