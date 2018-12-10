@@ -56,7 +56,7 @@ def execute_main(bot, trigger, botcom):
 
     # current bot
     if str(posstarget) in bot.memory["botdict"]["users"].keys():
-        lastseenrecord = get_nick_value(bot, nick, 'long', 'user_activity', 'list') or []
+        lastseenrecord = get_nick_value(bot, str(posstarget), 'long', 'user_activity', 'list') or []
         if lastseenrecord != []:
             lastseen.append(lastseenrecord[-1])
 
