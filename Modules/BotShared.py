@@ -1217,6 +1217,24 @@ def config_file_to_dict(bot, filetoread):
 
 
 """
+dir listing
+"""
+
+
+def bot_list_directory(bot, botcom):
+    botcom.directory_listing = []
+    botcom.filefoldertype = []
+    for filename in os.listdir(botcom.directory):
+        botcom.directory_listing.append(filename)
+        joindpath = os.path.join(botcom.directory, filename)
+        if os.path.isfile(joindpath):
+            botcom.filefoldertype.append("file")
+        else:
+            botcom.filefoldertype.append("folder")
+    return botcom
+
+
+"""
 Time
 """
 
