@@ -69,6 +69,7 @@ def hostsprocessor(bot):
                 if "bot_info" in apiquery["tempvals"].keys():
                     querytest = str(apiquery["tempvals"]["bot_info"].keys())
 
+            """
             if "users" in apiquery.keys():
 
                 for user in apiquery["users"]:
@@ -100,3 +101,4 @@ def hostsprocessor(bot):
 
                             if apiquery["users"][user][sortingkey][usekey]["timestamp"] > bot.memory["botdict"]["users"][nick][sortingkey][usekey]["timestamp"]:
                                 set_nick_value(bot, user, "long", sortingkey, usekey, apiquery["users"][user][sortingkey][usekey]["value"])
+                                """
