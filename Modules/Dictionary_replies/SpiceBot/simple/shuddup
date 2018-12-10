@@ -9,7 +9,7 @@
                                   "shuddup",
                                   ],
               "responses": [
-                            ["$instigator says ", "$replyvariation"],
+                            ["$instigator says $replyvariation"],
                             ],
               },
 
