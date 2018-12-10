@@ -1719,7 +1719,7 @@ def get_nick_value(bot, nick, longevity, sortingkey, usekey):
 
 def adjust_nick_value(bot, nick, longevity, sortingkey, usekey, value, apishare=True):
     oldvalue = get_nick_value(bot, nick, longevity, sortingkey, usekey) or 0
-    set_nick_value(bot, nick, longevity, sortingkey, usekey, int(oldvalue) + int(value))
+    set_nick_value(bot, nick, longevity, sortingkey, usekey, int(oldvalue) + int(value), apishare)
 
 
 # set nick value in bot.memory
@@ -1861,7 +1861,7 @@ def adjust_nick_array(bot, nick, longevity, sortingkey, usekey, values, directio
                 if value in oldvalues:
                     oldvalues.remove(value)
 
-    set_nick_value(bot, nick, longevity, sortingkey, usekey, oldvalues)
+    set_nick_value(bot, nick, longevity, sortingkey, usekey, oldvalues, apishare)
 
 
 """
