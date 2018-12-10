@@ -612,7 +612,8 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
             osd(bot, botcom.channel_current, 'say', str(posstarget) + " is already blocked from using " + botcom.maincom + ".")
             return botcom
 
-        adjust_nick_array(bot, posstarget, "long", 'commands', "unallowed", [botcom.maincom], 'del')
+        adjust_nick_array(bot, posstarget, "long", 'commands', "unallowed", [botcom.maincom], 'add')
+        botdict_save(bot)
 
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " has been blocked from using " + botcom.maincom + ".")
         return botcom
@@ -635,6 +636,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
             return botcom
 
         adjust_nick_array(bot, posstarget, "long", 'commands', "unallowed", [botcom.maincom], 'del')
+        botdict_save(bot)
 
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " has been unblocked from using " + botcom.maincom + ".")
         return botcom

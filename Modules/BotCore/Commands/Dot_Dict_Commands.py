@@ -228,7 +228,8 @@ def bot_dictcom_process(bot, botcom):
         if botcom.maincom in currentblocks:
             return osd(bot, botcom.channel_current, 'say', str(posstarget) + " is already blocked from using " + botcom.maincom + ".")
 
-        adjust_nick_array(bot, posstarget, "long", 'commands', "unallowed", [botcom.maincom], 'del')
+        adjust_nick_array(bot, posstarget, "long", 'commands', "unallowed", [botcom.maincom], 'add')
+        botdict_save(bot)
 
         return osd(bot, botcom.channel_current, 'say', str(posstarget) + " has been blocked from using " + botcom.maincom + ".")
 
@@ -247,6 +248,7 @@ def bot_dictcom_process(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', str(posstarget) + " is already not blocked from using " + botcom.maincom + ".")
 
         adjust_nick_array(bot, posstarget, "long", 'commands', "unallowed", [botcom.maincom], 'del')
+        botdict_save(bot)
 
         return osd(bot, botcom.channel_current, 'say', str(posstarget) + " has been unblocked from using " + botcom.maincom + ".")
 
