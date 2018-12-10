@@ -826,13 +826,9 @@ def bot_api_fetch(bot, TCP_PORT, TCP_IP):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
-        s.send("GET APIFETCH")
+        s.send("GET")
         data = s.recv(2048)
-        datasplit = data.split("\n")
-        for datapart in datasplit:
-            if datapart.startswith("{"):
-                data = datapart
-            bot.msg("#spicebottest", str(datapart))
+        osd(bot, "#spicebottest", 'say', str(data))
         s.close()
         botdict_return = json.loads(data, object_hook=json_util.object_hook)
         bot.msg("#spicebottest", str(botdict_return["tempvals"]["botname"]))
