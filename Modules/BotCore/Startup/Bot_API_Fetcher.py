@@ -57,7 +57,7 @@ def hostsprocessor(bot):
 
     # this is where we will process the info from the other bots
     bot.msg("#spicebottest", str(hostsprocess))
-    for host in hostsprocess:
+    for hostdict in hostsprocess:
         try:
             apiquery = bot_api_fetch(bot, hostdict["port"], hostdict["host"])
         except Exception as e:
