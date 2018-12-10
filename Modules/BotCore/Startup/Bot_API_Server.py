@@ -196,6 +196,43 @@ def api_socket_run(bot, sock):
                             bot_logging(bot, "API", "[API] Success: Sendto=" + str(jsondict["targets"]) + " message='" + str(jsondict["message"]) + "'")
                             break
 
+                        elif jsondict["type"] == "databaseentry":
+
+                            if "processtype" not in jsondict.keys():
+                                bot_logging(bot, "API", "[API] Data Entry processtype missing.")
+                                break
+
+                            if "longevity" not in jsondict.keys():
+                                bot_logging(bot, "API", "[API] Data Entry longevity missing.")
+                                break
+
+                            if "sortingkey" not in jsondict.keys():
+                                bot_logging(bot, "API", "[API] Data Entry sortingkey missing.")
+                                break
+
+                            if "usekey" not in jsondict.keys():
+                                bot_logging(bot, "API", "[API] Data Entry usekey missing.")
+                                break
+
+                            if "timestamp" not in jsondict.keys():
+                                bot_logging(bot, "API", "[API] Data Entry timestamp missing.")
+                                break
+
+                            if jsondict["processtype"] == 'set' and "value" not in jsondict.keys():
+                                bot_logging(bot, "API", "[API] Data Entry value missing.")
+                                break
+
+                            currentvaluetime = get_nick_value_time(bot, jsondict["nick"], jsondict["longevity"], jsondict["sortingkey"], jsondict["usekey"])
+                            if currentvaluetime >= jsondict["timestamp"]:
+                                bot_logging(bot, "API", "[API] Data Entry timestamp not newer.")
+                                break
+
+                            if jsondict["processtype"] == 'set':
+                                set_nick_value(bot, jsondict["nick"], jsondict["longevity"], jsondict["sortingkey"], jsondict["usekey"], jsondict["value"])
+
+                            elif jsondict["processtype"] == 'reset':
+                                reset_nick_value(bot, jsondict["nick"], jsondict["longevity"], jsondict["sortingkey"], jsondict["usekey"])
+
                         elif jsondict["type"] == "command":
 
                             # must be a message included
@@ -205,11 +242,10 @@ def api_socket_run(bot, sock):
 
                             if jsondict["command"] == 'update':
                                 stderr("[API] Recieved Command to update.")
-                                for channel in bot.channels:
-                                    if sender != "API":
-                                        osd(bot, channel, 'say', "Recived API command from " + sender + " to update from Github and restart. Be Back Soon!")
-                                    else:
-                                        osd(bot, channel, 'say', "Recived API command to update from Github and restart. Be Back Soon!")
+                                if sender != "API":
+                                    osd(bot, bot.privileges.keys(), 'say', "Recived API command from " + sender + " to update from Github and restart. Be Back Soon!")
+                                else:
+                                    osd(bot, bot.privileges.keys(), 'say', "Recived API command to update from Github and restart. Be Back Soon!")
 
                                 # Directory Permissions
                                 os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/.sopel/" + str(bot.nick) + "/")
@@ -229,11 +265,10 @@ def api_socket_run(bot, sock):
 
                             elif jsondict["command"] == 'restart':
                                 stderr("[API] Recieved Command to restart.")
-                                for channel in bot.channels:
-                                    if sender != "API":
-                                        osd(bot, channel, 'say', "Recived API command from " + sender + " to restart. Be Back Soon!")
-                                    else:
-                                        osd(bot, channel, 'say', "Recived API command to restart. Be Back Soon!")
+                                if sender != "API":
+                                    osd(bot, bot.privileges.keys(), 'say', "Recived API command from " + sender + " to restart. Be Back Soon!")
+                                else:
+                                    osd(bot, bot.privileges.keys(), 'say', "Recived API command to restart. Be Back Soon!")
 
                                 # close connection
                                 stderr("[API] Closing Connection.")

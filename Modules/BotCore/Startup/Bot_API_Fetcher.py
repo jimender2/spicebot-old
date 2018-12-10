@@ -56,7 +56,6 @@ def hostsprocessor(bot):
                     hostsprocess.append(hostdict)
 
     # this is where we will process the info from the other bots
-    bot.msg("#spicebottest", str(hostsprocess))
     for hostdict in hostsprocess:
         try:
             apiquery = bot_api_fetch(bot, hostdict["port"], hostdict["host"])
@@ -65,34 +64,39 @@ def hostsprocessor(bot):
 
         if apiquery != {}:
 
-            if "tempvals" not in apiquery.keys():
-                pass
-
-            if "bot_info" in apiquery["tempvals"].keys():
-                querytest = str(apiquery["tempvals"]["bot_info"].keys())
-                bot.msg("#spicebottest", querytest)
-
-
-def hostsprocessor_new(bot):
-    hostslist = hardcode_dict["bot_ip_addresses"]
-    for host in hostslist:
-        for i in range(8000, 8051):
-
-            # don't process current bot
-            if host in bot.memory["botdict"]["tempvals"]['networking']['ip_addresses'] and str(i) == str(bot.memory['sock_port']):
-                pass
-
-            try:
-                apiquery = bot_api_fetch(bot, i, host)
-            except Exception as e:
-                apiquery = dict()
-
-            if apiquery != {}:
-                bot.msg("#spicebottest", str(host) + ":" + str(i))
-
-                if "tempvals" not in apiquery.keys():
-                    pass
+            if "tempvals" in apiquery.keys():
 
                 if "bot_info" in apiquery["tempvals"].keys():
                     querytest = str(apiquery["tempvals"]["bot_info"].keys())
-                    bot.msg("#spicebottest", querytest)
+
+            if "users" in apiquery.keys():
+
+                for user in apiquery["users"]:
+                    if user not in bot.memory["botdict"]["users"]:
+                        bot.memory["botdict"]["users"][user] = dict()
+
+                    for sortingkey in apiquery["users"][user].keys():
+                        if sortingkey not in bot.memory["botdict"]["users"][user].keys():
+                            bot.memory["botdict"]["users"][user][sortingkey] = dict()
+
+                        for usekey in apiquery["users"][user][sortingkey].keys():
+                            if usekey not in bot.memory["botdict"]["users"][user][sortingkey].keys():
+                                bot.memory["botdict"]["users"][user][sortingkey][usekey] = dict()
+
+                            if not isinstance(bot.memory["botdict"]["users"][nick][sortingkey][usekey], dict):
+                                oldvalue = bot.memory["botdict"]["users"][nick][sortingkey][usekey]
+                                bot.memory["botdict"]["users"][nick][sortingkey][usekey] = dict()
+                                bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"] = oldvalue
+
+                            if "value" not in bot.memory["botdict"]["users"][user][sortingkey][usekey].keys():
+                                bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"] = None
+                            if "timestamp" not in bot.memory["botdict"]["users"][nick][sortingkey][usekey].keys():
+                                bot.memory["botdict"]["users"][nick][sortingkey][usekey]["timestamp"] = 0
+
+                            if not isinstance(apiquery["users"][user][sortingkey][usekey], dict):
+                                oldapivalue = apiquery["users"][user][sortingkey][usekey]
+                                apiquery["users"][user][sortingkey][usekey]["value"] = oldapivalue
+                                apiquery["users"][user][sortingkey][usekey]["timestamp"] = 0
+
+                            if apiquery["users"][user][sortingkey][usekey]["timestamp"] > bot.memory["botdict"]["users"][nick][sortingkey][usekey]["timestamp"]:
+                                set_nick_value(bot, user, "long", sortingkey, usekey, apiquery["users"][user][sortingkey][usekey]["value"])

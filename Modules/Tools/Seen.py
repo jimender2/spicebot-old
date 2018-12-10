@@ -44,9 +44,6 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
-    # if "sock_bot_list" not in bot.memory:
-    #    bot.memory["sock_bot_list"] = []
-
     posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
     if not posstarget:
         return osd(bot, botcom.channel_current, 'say', ".seen <nick> - Reports when <nick> was last seen.")
