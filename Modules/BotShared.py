@@ -810,6 +810,7 @@ def bot_api_fetch(bot, TCP_PORT, TCP_IP):
         botdict_return = json.loads(data, object_hook=json_util.object_hook)
         bot.msg("#spicebottest", str(botdict_return["tempvals"]["botname"]))
     except Exception as e:
+        bot.msg("#spicebottest", str(e))
         return None
 
     return botdict_return
