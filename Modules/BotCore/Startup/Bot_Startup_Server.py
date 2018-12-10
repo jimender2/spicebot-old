@@ -46,6 +46,7 @@ def bot_setup_server(bot, trigger):
     bot.memory["botdict"]["tempvals"]['server'] = str(trigger.sender).lower()
 
     serverparts = str(trigger.sender).lower().split(".")
+    servertld = serverparts[-1]
     del serverparts[-1]
     servername = serverparts[-1]
     if servername == 'spicebot':
@@ -55,6 +56,7 @@ def bot_setup_server(bot, trigger):
     else:
         servername = servername.title
     bot.memory["botdict"]["tempvals"]['servername'] = servername
+    bot.memory["botdict"]["tempvals"]['server'] = str("irc." + servername + "." + servertld).lower()
 
     # Temp listing for server
     if str(trigger.sender).lower() not in bot.memory["botdict"]["tempvals"]["servers_list"].keys():
