@@ -228,10 +228,10 @@ def api_socket_run(bot, sock):
                                 break
 
                             if jsondict["processtype"] == 'set':
-                                set_nick_value(bot, jsondict["nick"], jsondict["longevity"], jsondict["sortingkey"], jsondict["usekey"], jsondict["value"])
+                                set_nick_value(bot, jsondict["nick"], jsondict["longevity"], jsondict["sortingkey"], jsondict["usekey"], jsondict["value"], False)
 
                             elif jsondict["processtype"] == 'reset':
-                                reset_nick_value(bot, jsondict["nick"], jsondict["longevity"], jsondict["sortingkey"], jsondict["usekey"])
+                                reset_nick_value(bot, jsondict["nick"], jsondict["longevity"], jsondict["sortingkey"], jsondict["usekey"], False)
 
                         elif jsondict["type"] == "command":
 

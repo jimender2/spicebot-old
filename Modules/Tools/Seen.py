@@ -56,11 +56,9 @@ def execute_main(bot, trigger, botcom):
 
     # current bot
     if str(posstarget) in bot.memory["botdict"]["users"].keys():
-        if 'user_activity' in bot.memory["botdict"]["users"][str(posstarget)].keys():
-            if 'list' in bot.memory["botdict"]["users"][str(posstarget)]['user_activity'].keys():
-                lastseenrecord = bot.memory["botdict"]["users"][str(posstarget)]['user_activity']['list']
-                if lastseenrecord != []:
-                    lastseen.append(lastseenrecord[-1])
+        lastseenrecord = get_nick_value(bot, nick, 'long', 'user_activity', 'list') or []
+        if lastseenrecord != []:
+            lastseen.append(lastseenrecord[-1])
 
     if lastseen == []:
         return osd(bot, botcom.channel_current, 'say', "Sorry, I have never seen " + str(posstarget) + " around.")

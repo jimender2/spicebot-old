@@ -1717,13 +1717,13 @@ def get_nick_value(bot, nick, longevity, sortingkey, usekey):
     return newestvalue
 
 
-def adjust_nick_value(bot, nick, longevity, sortingkey, usekey, value):
+def adjust_nick_value(bot, nick, longevity, sortingkey, usekey, value, apishare=True):
     oldvalue = get_nick_value(bot, nick, longevity, sortingkey, usekey) or 0
     set_nick_value(bot, nick, longevity, sortingkey, usekey, int(oldvalue) + int(value))
 
 
 # set nick value in bot.memory
-def set_nick_value(bot, nick, longevity, sortingkey, usekey, value):
+def set_nick_value(bot, nick, longevity, sortingkey, usekey, value, apishare=True):
 
     # verify nick dict exists
     if longevity == 'long':
@@ -1758,16 +1758,20 @@ def set_nick_value(bot, nick, longevity, sortingkey, usekey, value):
             bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = oldvalue
 
     # Se the value
+    currtime = time.time()
     if longevity == 'long':
         bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"] = value
-        bot.memory["botdict"]["users"][nick][sortingkey][usekey]["timestamp"] = time.time()
+        bot.memory["botdict"]["users"][nick][sortingkey][usekey]["timestamp"] = currtime
     elif longevity == 'temp':
         bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = value
-        bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["timestamp"] = time.time()
+        bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["timestamp"] = currtime
+
+    if apishare:
+        bot_api_send_all(bot, nick, "set", longevity, sortingkey, usekey, value, currtime)
 
 
 # set nick value in bot.memory
-def reset_nick_value(bot, nick, longevity, sortingkey, usekey):
+def reset_nick_value(bot, nick, longevity, sortingkey, usekey, apishare=True):
 
     # verify nick dict exists
     if longevity == 'long':
@@ -1802,15 +1806,19 @@ def reset_nick_value(bot, nick, longevity, sortingkey, usekey):
             bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = oldvalue
 
     # Reset the value
+    currtime = time.time()
     if longevity == 'long':
         bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"] = None
-        bot.memory["botdict"]["users"][nick][sortingkey][usekey]["timestamp"] = time.time()
+        bot.memory["botdict"]["users"][nick][sortingkey][usekey]["timestamp"] = currtime
     elif longevity == 'temp':
         bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = None
-        bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["timestamp"] = time.time()
+        bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["timestamp"] = currtime
+
+    if apishare:
+        bot_api_send_all(bot, nick, "reset", longevity, sortingkey, usekey, value, currtime)
 
 
-def adjust_nick_array(bot, nick, longevity, sortingkey, usekey, values, direction):
+def adjust_nick_array(bot, nick, longevity, sortingkey, usekey, values, direction, apishare=True):
 
     if not isinstance(values, list):
         values = [values]
