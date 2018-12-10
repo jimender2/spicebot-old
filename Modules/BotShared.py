@@ -1265,6 +1265,8 @@ def humanized_time(countdownseconds):
                 displaymsg = str(displaymsg + " " + str(int(currenttimevar)) + " " + timetype)
             else:
                 displaymsg = str(str(int(currenttimevar)) + " " + timetype)
+    if not displaymsg:
+        return "just now"
     return displaymsg
 
 
