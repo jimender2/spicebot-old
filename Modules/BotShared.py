@@ -1696,14 +1696,13 @@ def get_nick_value(bot, nick, longevity, sortingkey, usekey):
             bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"] = None
         if "timestamp" not in bot.memory["botdict"]["users"][nick][sortingkey][usekey].keys():
             bot.memory["botdict"]["users"][nick][sortingkey][usekey]["timestamp"] = 0
-        returnval = bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"]
-        return bot.memory["botdict"]["users"][nick][sortingkey][usekey]
+        return bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"]
     elif longevity == 'temp':
         if "value" not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].keys():
             bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = None
         if "timestamp" not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].keys():
             bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["timestamp"] = 0
-        return bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]
+        return bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"]
 
 
 def adjust_nick_value(bot, nick, longevity, sortingkey, usekey, value):
