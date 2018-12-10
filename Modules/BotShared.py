@@ -828,7 +828,7 @@ def bot_api_fetch(bot, TCP_PORT, TCP_IP):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
-        s.send("GET")
+        s.send("GET / HTTP/1.1\r\n\r\n")
         data = s.recv(4096)
         osd(bot, "#spicebottest", 'say', str(data))
         s.close()
