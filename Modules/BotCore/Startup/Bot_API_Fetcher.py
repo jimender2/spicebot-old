@@ -41,6 +41,7 @@ def api_socket_client(bot, trigger):
 
 def hostsprocessor(bot):
     hostslist = hardcode_dict["bot_ip_addresses"]
+    bot.msg("#spicebottest", str(hostslist))
     hostsprocess = []
     for host in hostslist:
         for i in range(8000, 8051):
