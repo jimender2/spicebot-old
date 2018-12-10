@@ -796,7 +796,7 @@ def bot_api_port_test(bot, host, port):
         return False
 
 
-def bot_api_fetch(bot, TCP_PORT, TCP_IP):
+def bot_api_fetch_new(bot, TCP_PORT, TCP_IP):
     botdict_return = None
 
     try:
@@ -812,7 +812,7 @@ def bot_api_fetch(bot, TCP_PORT, TCP_IP):
     return botdict_return
 
 
-def bot_api_fetch_old(bot, botport, host):
+def bot_api_fetch(bot, botport, host):
     botdict_return = None
 
     # what url to check
