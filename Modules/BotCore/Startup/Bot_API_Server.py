@@ -88,6 +88,7 @@ def api_socket_run(bot, sock):
                 if data:
 
                     if spicemanip(bot, str(data), 1) == "GET":
+                        bot.msg("#spicebottest" + str(spicemanip(bot, str(data), 0)))
 
                         # Possibly add a api key
 
