@@ -36,7 +36,7 @@ def api_socket_client(bot, trigger):
 
     # If Connection Closes, this should reopen it forever
     # while True:
-        # hostsprocessor(bot)
+    #    hostsprocessor(bot)
     hostsprocessor(bot)
 
 

@@ -726,6 +726,16 @@ API
 
 
 def bot_api_port_test(bot, host, port):
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    result = sock.connect_ex((str(host), int(port)))
+    if result == 0:
+        return True
+    else:
+        return False
+
+
+def bot_api_port_test_old(bot, host, port):
     returnval = False
 
     # Create a TCP/IP socket
