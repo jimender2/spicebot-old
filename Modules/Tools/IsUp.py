@@ -49,15 +49,18 @@ def execute_main(bot, trigger, botcom):
 
     checksite = spicemanip(bot, botcom.triggerargsarray, 0)
 
-    if str(checksite).startswith("https://"):
-        checksite = checksite.replace("https://", "")
-    elif str(checksite).startswith("http://"):
-        checksite = checksite.replace("http://", "")
+    if checksite == 'spicebot':
+        osd(bot, botcom.channel_current, 'say', "for you baby? I'm always up (in more ways than one)")
+    else:
+        if str(checksite).startswith("https://"):
+            checksite = checksite.replace("https://", "")
+        elif str(checksite).startswith("http://"):
+            checksite = checksite.replace("http://", "")
 
-    try:
-        page = requests.get("http://" + checksite, headers=header)
-        tree = html.fromstring(page.content)
-        statusrefurl = str("https://httpstatuses.com/" + str(page.status_code))
-        osd(bot, botcom.channel_current, 'say', ["I am getting a " + str(page.status_code) + " status code for " + str(checksite), " For details, see:", statusrefurl])
-    except Exception as e:
-        osd(bot, botcom.channel_current, 'say', "I am unable to get a status code for " + str(checksite))
+        try:
+            page = requests.get("http://" + checksite, headers=header)
+            tree = html.fromstring(page.content)
+            statusrefurl = str("https://httpstatuses.com/" + str(page.status_code))
+            osd(bot, botcom.channel_current, 'say', ["I am getting a " + str(page.status_code) + " status code for " + str(checksite), " For details, see:", statusrefurl])
+        except Exception as e:
+            osd(bot, botcom.channel_current, 'say', "I am unable to get a status code for " + str(checksite))
