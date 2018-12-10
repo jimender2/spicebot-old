@@ -598,6 +598,10 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     elif botcom.specified == 'block':
         botcom.modulerun = False
 
+        if not bot_command_modding_auth(bot, botcom):
+            osd(bot, botcom.channel_current, 'say', "You are not authorized to enable/disable command usage.")
+            return botcom
+
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
         if not posstarget:
             osd(bot, botcom.channel_current, 'say', "Who am I blocking from " + str(botcom.maincom) + " usage?")
@@ -612,13 +616,18 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
             osd(bot, botcom.channel_current, 'say', str(posstarget) + " is already blocked from using " + botcom.maincom + ".")
             return botcom
 
-        adjust_nick_array(bot, posstarget, "long", 'commands', "unallowed", [botcom.maincom], 'del')
+        adjust_nick_array(bot, posstarget, "long", 'commands', "unallowed", [botcom.maincom], 'add')
+        botdict_save(bot)
 
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " has been blocked from using " + botcom.maincom + ".")
         return botcom
 
     elif botcom.specified == 'unblock':
         botcom.modulerun = False
+
+        if not bot_command_modding_auth(bot, botcom):
+            osd(bot, botcom.channel_current, 'say', "You are not authorized to enable/disable command usage.")
+            return botcom
 
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
         if not posstarget:
@@ -635,6 +644,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
             return botcom
 
         adjust_nick_array(bot, posstarget, "long", 'commands', "unallowed", [botcom.maincom], 'del')
+        botdict_save(bot)
 
         osd(bot, botcom.channel_current, 'say', str(posstarget) + " has been unblocked from using " + botcom.maincom + ".")
         return botcom
@@ -693,11 +703,13 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         osd(bot, botcom.channel_current, 'say', "The " + botcom.specified + " argument is not available for module commands.")
         return botcom
 
+    currentblocks = get_nick_value(bot, botcom.instigator, "long", 'commands', "unallowed") or []
+    if botcom.maincom in currentblocks:
+        botcom.modulerun = False
+        osd(bot, botcom.channel_current, 'say', "You appear to have been blocked by a bot admin from using the " + botcom.maincom + " command.")
+        return botcom
+
     if not botcom.channel_priv:
-        currentblocks = get_nick_value(bot, botcom.instigator, "long", 'commands', "unallowed") or []
-        if botcom.maincom in currentblocks:
-            osd(bot, botcom.channel_current, 'say', "You appear to have been blocked by a bot admin from using the " + botcom.maincom + " command.")
-            return botcom
 
         if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
             botcom.modulerun = False
