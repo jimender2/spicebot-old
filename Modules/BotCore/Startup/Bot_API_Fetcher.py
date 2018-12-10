@@ -42,31 +42,23 @@ def api_socket_client(bot, trigger):
 
 def hostsprocessor(bot):
     hostslist = hardcode_dict["bot_ip_addresses"]
-    bot.msg("#spicebottest", str(hostslist))
-    hostsprocess = []
     for host in hostslist:
         for i in range(8000, 8051):
 
             # don't process current bot
             if host != bot.memory["botdict"]["tempvals"]['networking']['ip_addresses'] and str(i) != str(bot.memory['sock_port']):
 
-                if bot_api_port_test(bot, host, i):
-                    hostdict = {"host": host, "port": i}
-                    hostsprocess.append(hostdict)
+                try:
+                    apiquery = bot_api_fetch(bot, i, host)
+                except Exception as e:
+                    apiquery = dict()
 
-    # this is where we will process the info from the other bots
-    bot.msg("#spicebottest", str(hostsprocess))
-    for host in hostsprocess:
-        try:
-            apiquery = bot_api_fetch(bot, hostdict["port"], hostdict["host"])
-        except Exception as e:
-            apiquery = dict()
+                if apiquery != {}:
+                    bot.msg("#spicebottest", str(host) + ":" + str(i))
 
-        if apiquery != {}:
+                    if "tempvals" not in apiquery.keys():
+                        pass
 
-            if "tempvals" not in apiquery.keys():
-                pass
-
-            if "bot_info" in apiquery["tempvals"].keys():
-                querytest = str(apiquery["tempvals"]["bot_info"].keys())
-                bot.msg("#spicebottest", querytest)
+                    if "bot_info" in apiquery["tempvals"].keys():
+                        querytest = str(apiquery["tempvals"]["bot_info"].keys())
+                        bot.msg("#spicebottest", querytest)
