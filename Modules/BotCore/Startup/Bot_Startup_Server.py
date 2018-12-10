@@ -64,6 +64,6 @@ def bot_setup_server(bot, trigger):
 
     # permanent listing of the server
     if str(trigger.sender).lower() not in bot.memory["botdict"]['servers_list'].keys():
-        bot.memory["botdict"]['servers_list'][str(trigger.sender).lower()] = dict()
+        bot.memory["botdict"]['servers_list'][str(bot.memory["botdict"]["tempvals"]['server']).lower()] = dict()
 
     bot_startup_requirements_set(bot, "server")
