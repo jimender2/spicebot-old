@@ -1646,6 +1646,9 @@ def adjust_user_dict_array(bot, dynamic_class, nick, dictkey, entries, adjustmen
 # get nick value from bot.memory
 def get_nick_value(bot, nick, longevity, sortingkey, usekey):
 
+    # if str(bot.nick).endswith("dev"):
+    #    usekey = usekey + "_dev"
+
     returnvals = []
 
     # verify nick dict exists
@@ -1725,6 +1728,9 @@ def adjust_nick_value(bot, nick, longevity, sortingkey, usekey, value, apishare=
 # set nick value in bot.memory
 def set_nick_value(bot, nick, longevity, sortingkey, usekey, value, apishare=True):
 
+    # if str(bot.nick).endswith("dev"):
+    #    usekey = usekey + "_dev"
+
     # verify nick dict exists
     if longevity == 'long':
         if nick not in bot.memory["botdict"]["users"].keys():
@@ -1772,6 +1778,9 @@ def set_nick_value(bot, nick, longevity, sortingkey, usekey, value, apishare=Tru
 
 # set nick value in bot.memory
 def reset_nick_value(bot, nick, longevity, sortingkey, usekey, apishare=True):
+
+    # if str(bot.nick).endswith("dev"):
+    #    usekey = usekey + "_dev"
 
     # verify nick dict exists
     if longevity == 'long':
