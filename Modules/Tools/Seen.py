@@ -60,6 +60,13 @@ def execute_main(bot, trigger, botcom):
         if lastseenrecord != []:
             lastseen.append(lastseenrecord[-1])
 
+    # other bots
+    if "altbots" in bot.memory:
+        for botname in bot.memory["altbots"].keys():
+            lastseenrecord = get_nick_value_api(bot, botname, str(posstarget), 'long', 'user_activity', 'list') or []
+            if lastseenrecord != []:
+                lastseen.append(lastseenrecord[-1])
+
     if lastseen == []:
         return osd(bot, botcom.channel_current, 'say', "Sorry, I have never seen " + str(posstarget) + " around.")
 

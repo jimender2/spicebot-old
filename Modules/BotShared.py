@@ -1643,13 +1643,20 @@ def adjust_user_dict_array(bot, dynamic_class, nick, dictkey, entries, adjustmen
     nickdict[dictkey] = oldvalue
 
 
+# get values from other bots
+def get_nick_value_api(bot, botname, nick, longevity, sortingkey, usekey):
+    try:
+        if longevity == 'long':
+            botvaltime = bot.memory["altbots"][botname]["users"][nick][sortingkey][usekey]
+        elif longevity == 'temp':
+            botvaltime = bot.memory["altbots"][botname]["tempvals"]["uservals"][nick][sortingkey][usekey]
+    except Exception as e:
+        botvaltime = None
+    return botvaltime
+
+
 # get nick value from bot.memory
 def get_nick_value(bot, nick, longevity, sortingkey, usekey):
-
-    # if str(bot.nick).endswith("dev"):
-    #    usekey = usekey + "_dev"
-
-    returnvals = []
 
     # verify nick dict exists
     if longevity == 'long':
@@ -1690,46 +1697,22 @@ def get_nick_value(bot, nick, longevity, sortingkey, usekey):
         if "timestamp" not in bot.memory["botdict"]["users"][nick][sortingkey][usekey].keys():
             bot.memory["botdict"]["users"][nick][sortingkey][usekey]["timestamp"] = 0
         returnval = bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"]
-        returnvals.append(bot.memory["botdict"]["users"][nick][sortingkey][usekey])
+        return bot.memory["botdict"]["users"][nick][sortingkey][usekey]
     elif longevity == 'temp':
         if "value" not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].keys():
             bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = None
         if "timestamp" not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].keys():
             bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["timestamp"] = 0
-        returnvals.append(bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey])
-
-    if "altbots" in bot.memory:
-        for botname in bot.memory["altbots"].keys():
-            try:
-                if longevity == 'long':
-                    botvaltime = bot.memory["altbots"][botname]["users"][nick][sortingkey][usekey]
-                elif longevity == 'temp':
-                    botvaltime = bot.memory["altbots"][botname]["tempvals"]["uservals"][nick][sortingkey][usekey]
-            except Exception as e:
-                botvaltime = None
-            if botvaltime:
-                returnvals.append(botvaltime)
-
-    values, times = [], []
-    for storedval in returnvals:
-        values.append(storedval["value"])
-        times.append(storedval["timestamp"])
-    times, values = array_arrangesort(bot, times, values)
-    newestvalue = spicemanip(bot, values, 'reverse', "list")[-1]
-
-    return newestvalue
+        return bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]
 
 
-def adjust_nick_value(bot, nick, longevity, sortingkey, usekey, value, apishare=True):
+def adjust_nick_value(bot, nick, longevity, sortingkey, usekey, value):
     oldvalue = get_nick_value(bot, nick, longevity, sortingkey, usekey) or 0
-    set_nick_value(bot, nick, longevity, sortingkey, usekey, int(oldvalue) + int(value), apishare)
+    set_nick_value(bot, nick, longevity, sortingkey, usekey, int(oldvalue) + int(value))
 
 
 # set nick value in bot.memory
-def set_nick_value(bot, nick, longevity, sortingkey, usekey, value, apishare=True):
-
-    # if str(bot.nick).endswith("dev"):
-    #    usekey = usekey + "_dev"
+def set_nick_value(bot, nick, longevity, sortingkey, usekey, value):
 
     # verify nick dict exists
     if longevity == 'long':
@@ -1772,12 +1755,9 @@ def set_nick_value(bot, nick, longevity, sortingkey, usekey, value, apishare=Tru
         bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = value
         bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["timestamp"] = currtime
 
-    if apishare:
-        bot_api_send_all(bot, nick, "set", longevity, sortingkey, usekey, value, currtime)
-
 
 # set nick value in bot.memory
-def reset_nick_value(bot, nick, longevity, sortingkey, usekey, apishare=True):
+def reset_nick_value(bot, nick, longevity, sortingkey, usekey):
 
     # if str(bot.nick).endswith("dev"):
     #    usekey = usekey + "_dev"
@@ -1823,11 +1803,8 @@ def reset_nick_value(bot, nick, longevity, sortingkey, usekey, apishare=True):
         bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = None
         bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["timestamp"] = currtime
 
-    if apishare:
-        bot_api_send_all(bot, nick, "reset", longevity, sortingkey, usekey, value, currtime)
 
-
-def adjust_nick_array(bot, nick, longevity, sortingkey, usekey, values, direction, apishare=True):
+def adjust_nick_array(bot, nick, longevity, sortingkey, usekey, values, direction):
 
     if not isinstance(values, list):
         values = [values]
@@ -1870,7 +1847,7 @@ def adjust_nick_array(bot, nick, longevity, sortingkey, usekey, values, directio
                 if value in oldvalues:
                     oldvalues.remove(value)
 
-    set_nick_value(bot, nick, longevity, sortingkey, usekey, oldvalues, apishare)
+    set_nick_value(bot, nick, longevity, sortingkey, usekey, oldvalues)
 
 
 """
