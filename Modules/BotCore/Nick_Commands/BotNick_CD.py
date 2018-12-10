@@ -40,7 +40,6 @@ def bot_command_hub(bot, trigger):
 
     validfolderoptions = ['..', 'reset']
     botcom.directory = get_nick_value(bot, botcom.instigator, 'temp', 'unsorted', 'current_admin_dir') or bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"]
-    get_nick_value(bot, botcom.instigator, longevity, sortingkey, usekey)
     botcom = bot_list_directory(bot, botcom)
 
     for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):

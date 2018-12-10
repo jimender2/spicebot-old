@@ -39,7 +39,6 @@ def bot_command_hub(bot, trigger):
         return osd(bot, botcom.instigator, 'notice', "I was unable to process this Bot Nick command due to privilege issues.")
 
     botcom.directory = get_nick_value(bot, botcom.instigator, 'temp', 'unsorted', 'current_admin_dir') or bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"]
-    get_nick_value(bot, botcom.instigator, longevity, sortingkey, usekey)
     botcom = bot_list_directory(bot, botcom)
     if botcom.directory == []:
         osd(bot, botcom.channel_current, 'say', "It appears this directory is empty.")
