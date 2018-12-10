@@ -830,6 +830,8 @@ def bot_api_fetch(bot, TCP_PORT, TCP_IP):
         data = s.recv(2048)
         datasplit = data.split("\n")
         for datapart in datasplit:
+            if datapart.startswith("{"):
+                data = datapart
             bot.msg("#spicebottest", str(datapart))
         s.close()
         botdict_return = json.loads(data, object_hook=json_util.object_hook)
