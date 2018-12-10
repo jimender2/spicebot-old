@@ -65,8 +65,6 @@ def execute_main(bot, trigger, botcom):
         for botname in bot.memory["altbots"].keys():
             lastseenrecord = get_nick_value_api(bot, botname, str(posstarget), 'long', 'user_activity', 'list') or []
             if lastseenrecord != []:
-                bot.msg("#spicebottest", str(botname))
-                bot.msg("#spicebottest", str(lastseenrecord))
                 lastseen.append(lastseenrecord[-1])
 
     if lastseen == []:
