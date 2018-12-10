@@ -823,12 +823,10 @@ def bot_api_fetch_fart(bot, botport, host):
 def bot_api_fetch(bot, TCP_PORT, TCP_IP):
     botdict_return = None
 
-    MESSAGE = "GET"
-
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
-        s.send(MESSAGE)
+        s.send("APIFETCH")
         data = s.recv(2048)
         bot.msg("#spicebottest", str(data))
         s.close()
