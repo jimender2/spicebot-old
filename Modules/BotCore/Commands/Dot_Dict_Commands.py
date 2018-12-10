@@ -214,6 +214,42 @@ def bot_dictcom_process(bot, botcom):
         botdict_save(bot)
         return
 
+    elif botcom.specified == 'block':
+        botcom.modulerun = False
+
+        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
+        if not posstarget:
+            return osd(bot, botcom.channel_current, 'say', "Who am I blocking from " + str(botcom.maincom) + " usage?")
+
+        if posstarget not in bot.memory["botdict"]["users"].keys():
+            return osd(bot, botcom.channel_current, 'say', "I don't know who " + str(posstarget) + " is.")
+
+        currentblocks = get_nick_value(bot, posstarget, "long", 'commands', "unallowed") or []
+        if botcom.maincom in currentblocks:
+            return osd(bot, botcom.channel_current, 'say', str(posstarget) + " is already blocked from using " + botcom.maincom + ".")
+
+        adjust_nick_array(bot, posstarget, "long", 'commands', "unallowed", [botcom.maincom], 'del')
+
+        return osd(bot, botcom.channel_current, 'say', str(posstarget) + " has been blocked from using " + botcom.maincom + ".")
+
+    elif botcom.specified == 'unblock':
+        botcom.modulerun = False
+
+        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
+        if not posstarget:
+            return osd(bot, botcom.channel_current, 'say', "Who am I unblocking from " + str(botcom.maincom) + " usage?")
+
+        if posstarget not in bot.memory["botdict"]["users"].keys():
+            return osd(bot, botcom.channel_current, 'say', "I don't know who " + str(posstarget) + " is.")
+
+        currentblocks = get_nick_value(bot, posstarget, "long", 'commands', "unallowed") or []
+        if botcom.maincom not in currentblocks:
+            return osd(bot, botcom.channel_current, 'say', str(posstarget) + " is already not blocked from using " + botcom.maincom + ".")
+
+        adjust_nick_array(bot, posstarget, "long", 'commands', "unallowed", [botcom.maincom], 'del')
+
+        return osd(bot, botcom.channel_current, 'say', str(posstarget) + " has been unblocked from using " + botcom.maincom + ".")
+
     elif botcom.specified == 'special':
         nonstockoptions = []
         for command in botcom.dotcommand_dict.keys():
@@ -301,6 +337,10 @@ def bot_dictcom_process(bot, botcom):
     botcom.target = False
 
     if not botcom.channel_priv:
+        currentblocks = get_nick_value(bot, botcom.instigator, "long", 'commands', "unallowed") or []
+        if botcom.maincom in currentblocks:
+            return osd(bot, botcom.channel_current, 'say', "You appear to have been blocked by a bot admin from using the " + botcom.maincom + " command.")
+
         if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"].keys():
             reason = bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["reason"]
             timestamp = bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"][str(botcom.maincom)]["timestamp"]
