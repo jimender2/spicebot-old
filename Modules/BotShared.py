@@ -796,10 +796,34 @@ def bot_api_port_test(bot, host, port):
         return False
 
 
+def bot_api_fetch_fart(bot, botport, host):
+
+    # Create a TCP/IP socket
+    tempsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Bind the socket to the port
+    server_address = (str(host), int(botport))
+    tempsock.connect(server_address)
+
+    # convert to json
+    msg = json.dumps(messagedict, default=json_util.default).encode('utf-8')
+
+    # sending all this stuff
+    try:
+        bot_logging(bot, "API", "[API] Sending data.")
+        tempsock.send(msg.encode(encoding="utf-8"))
+    except Exception as e:
+        bot_logging(bot, "API", "[API] Error Sending Data: (%s)" % (e))
+
+    tempsock.close()
+
+    return
+
+
 def bot_api_fetch(bot, TCP_PORT, TCP_IP):
     botdict_return = None
 
-    MESSAGE = "Hello, World!"
+    MESSAGE = "GET"
 
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
