@@ -1647,9 +1647,9 @@ def adjust_user_dict_array(bot, dynamic_class, nick, dictkey, entries, adjustmen
 def get_nick_value_api(bot, botname, nick, longevity, sortingkey, usekey):
     try:
         if longevity == 'long':
-            botvaltime = bot.memory["altbots"][botname]["users"][nick][sortingkey][usekey]
+            botvaltime = bot.memory["altbots"][botname]["users"][nick][sortingkey][usekey]["value"]
         elif longevity == 'temp':
-            botvaltime = bot.memory["altbots"][botname]["tempvals"]["uservals"][nick][sortingkey][usekey]
+            botvaltime = bot.memory["altbots"][botname]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"]
     except Exception as e:
         botvaltime = None
     return botvaltime
