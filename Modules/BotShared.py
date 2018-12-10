@@ -598,6 +598,10 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     elif botcom.specified == 'block':
         botcom.modulerun = False
 
+        if not bot_command_modding_auth(bot, botcom):
+            osd(bot, botcom.channel_current, 'say', "You are not authorized to enable/disable command usage.")
+            return botcom
+
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
         if not posstarget:
             osd(bot, botcom.channel_current, 'say', "Who am I blocking from " + str(botcom.maincom) + " usage?")
@@ -620,6 +624,10 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
 
     elif botcom.specified == 'unblock':
         botcom.modulerun = False
+
+        if not bot_command_modding_auth(bot, botcom):
+            osd(bot, botcom.channel_current, 'say', "You are not authorized to enable/disable command usage.")
+            return botcom
 
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
         if not posstarget:
