@@ -24,5 +24,14 @@
                                   "Collared Carpetshark", "Naked-back Knifefish",
                                 ],
               },
+"everyone": {
+                "type": "targetplusreason",
+                "responses": ["$instigator slaps everyone $replyvariation $blank"],
+                "blank_required": False,
+                "blank_phrasehandle": ["because", "for"],
+                "replyvariation": [
+                                    "on the back","on the butt","on the face","on the stomach",
+                                  ],
+                },
 
 }
