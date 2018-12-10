@@ -46,19 +46,20 @@ def hostsprocessor(bot):
         for i in range(8000, 8051):
 
             # don't process current bot
-            if host != bot.memory["botdict"]["tempvals"]['networking']['ip_addresses'] and str(i) != str(bot.memory['sock_port']):
+            if host in bot.memory["botdict"]["tempvals"]['networking']['ip_addresses'] and str(i) == str(bot.memory['sock_port']):
+                pass
 
-                try:
-                    apiquery = bot_api_fetch(bot, i, host)
-                except Exception as e:
-                    apiquery = dict()
+            try:
+                apiquery = bot_api_fetch(bot, i, host)
+            except Exception as e:
+                apiquery = dict()
 
-                if apiquery != {}:
-                    bot.msg("#spicebottest", str(host) + ":" + str(i))
+            if apiquery != {}:
+                bot.msg("#spicebottest", str(host) + ":" + str(i))
 
-                    if "tempvals" not in apiquery.keys():
-                        pass
+                if "tempvals" not in apiquery.keys():
+                    pass
 
-                    if "bot_info" in apiquery["tempvals"].keys():
-                        querytest = str(apiquery["tempvals"]["bot_info"].keys())
-                        bot.msg("#spicebottest", querytest)
+                if "bot_info" in apiquery["tempvals"].keys():
+                    querytest = str(apiquery["tempvals"]["bot_info"].keys())
+                    bot.msg("#spicebottest", querytest)
