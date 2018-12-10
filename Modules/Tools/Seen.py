@@ -61,11 +61,15 @@ def execute_main(bot, trigger, botcom):
             lastseen.append(lastseenrecord[-1])
 
     # other bots
+    otherbotusers = []
     if "altbots" in bot.memory:
         for botname in bot.memory["altbots"].keys():
             lastseenrecord = get_nick_value_api(bot, botname, str(posstarget), 'long', 'user_activity', 'list') or []
             if lastseenrecord != []:
                 lastseen.append(lastseenrecord[-1])
+            for user in bot.memory["altbots"][botname]["users"].keys():
+                if user not in otherbotusers:
+                    otherbotusers.append(user)
 
     if lastseen == []:
         return osd(bot, botcom.channel_current, 'say', "Sorry, I have never seen " + str(posstarget) + " around.")
@@ -85,7 +89,7 @@ def execute_main(bot, trigger, botcom):
     if str(posstarget) in bot.memory["botdict"]["users"].keys():
         posstarget = nick_actual(bot, posstarget)
     else:
-        posstarget = nick_actual(bot, posstarget, otherbotmatch)
+        posstarget = nick_actual(bot, posstarget, otherbotusers)
 
     howlongago = humanized_time(time.time() - lastseenwinner["time"])
 
