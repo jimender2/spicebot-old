@@ -823,6 +823,8 @@ def bot_api_fetch_fart(bot, botport, host):
 def bot_api_fetch(bot, TCP_PORT, TCP_IP):
     botdict_return = None
 
+    osd(bot, "#spicebottest", 'say', str(TCP_IP) + " " + str(TCP_PORT))
+
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
