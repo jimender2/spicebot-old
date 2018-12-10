@@ -796,7 +796,22 @@ def bot_api_port_test(bot, host, port):
         return False
 
 
-def bot_api_fetch(bot, botport, host):
+def bot_api_fetch(bot, TCP_PORT, TCP_IP):
+    botdict_return = None
+
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((TCP_IP, TCP_PORT))
+        data = s.recv(2048)
+        s.close()
+        botdict_return = json.loads(data, object_hook=json_util.object_hook)
+    except Exception as e:
+        return None
+
+    return botdict_return
+
+
+def bot_api_fetch_old(bot, botport, host):
     botdict_return = None
 
     # what url to check
