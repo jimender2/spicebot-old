@@ -1,5 +1,5 @@
 {
-"validcoms": ['crazy','cray'],
+"validcoms": ['crazy', 'cray', 'craycray'],
 "?default": {
               "type": "simple",
               "responses": ["That's just crazy enough it might work!"],
