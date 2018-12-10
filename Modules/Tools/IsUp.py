@@ -49,7 +49,7 @@ def execute_main(bot, trigger, botcom):
 
     checksite = spicemanip(bot, botcom.triggerargsarray, 0)
 
-    if checksite == 'spicebot':
+    if checksite == str(bot.nick):
         osd(bot, botcom.channel_current, 'say', "for you baby? I'm always up (in more ways than one)")
     else:
         if str(checksite).startswith("https://"):
