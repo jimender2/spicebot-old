@@ -65,6 +65,7 @@ def feed_configs(bot):
                         filescan.append(quick_coms_path_extra)
 
     # proceed with file iteration
+    bot.msg("#spicebottest", str(len(filescan)))
     for directory in filescan:
 
         # iterate over organizational folder
@@ -77,6 +78,7 @@ def feed_configs(bot):
                     comconf_file_path = os.path.join(coms_type_file_path, comconf)
 
                     if os.path.isfile(comconf_file_path):
+                        bot.msg("#spicebottest", str(comconf))
 
                         # check if command file is already in the list
                         if comconf not in bot.memory["botdict"]["tempvals"]['feeds_loaded']:
