@@ -265,6 +265,10 @@ def api_socket_run(bot, sock):
                                 stderr("[API] Closing Connection.")
                                 connection.close()
 
+                                # save botdict
+                                stderr("[API] Saving Botdict.")
+                                botdict_save(bot)
+
                                 # restart systemd service
                                 service_manip(bot, str(bot.nick), "restart")
 
@@ -281,6 +285,9 @@ def api_socket_run(bot, sock):
                                 # close connection
                                 stderr("[API] Closing Connection.")
                                 connection.close()
+
+                                stderr("[API] Saving Botdict.")
+                                botdict_save(bot)
 
                                 # restart systemd service
                                 service_manip(bot, str(bot.nick), "restart")

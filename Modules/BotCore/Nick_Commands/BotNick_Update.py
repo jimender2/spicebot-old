@@ -57,5 +57,8 @@ def bot_command_hub(bot, trigger):
             stderr("[API] Closing Connection.")
             bot.memory['sock'].close()
 
+    stderr("Saving Botdict.")
+    botdict_save(bot)
+
     # restart systemd service
     service_manip(bot, str(bot.nick), "restart")
