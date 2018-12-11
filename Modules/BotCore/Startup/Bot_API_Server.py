@@ -34,6 +34,7 @@ def api_socket_server(bot, trigger):
 
     # Create a TCP/IP socket
     bot.memory['sock'] = None
+    bot.memory['sock_port'] = None
 
     api_socket_setup(bot)
 
@@ -48,7 +49,6 @@ def api_socket_server(bot, trigger):
 
 def api_socket_setup(bot):
 
-    bot.memory['sock_port'] = None
     portignorelist = []
 
     bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
