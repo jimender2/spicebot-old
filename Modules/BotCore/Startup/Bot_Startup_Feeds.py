@@ -47,7 +47,7 @@ def feed_configs(bot):
     bot.memory["botdict"]["tempvals"]['feeds'] = dict()
     bot.memory["botdict"]["tempvals"]['feeds_loaded'] = []
 
-    quick_coms_path = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/Feeds/" + str(bot.nick) + "/"
+    quick_coms_path = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "Modules/Feeds/" + str(bot.nick) + "/"
     if os.path.exists(quick_coms_path) and os.path.isdir(quick_coms_path):
         if not os.path.isfile(quick_coms_path) and len(os.listdir(quick_coms_path)) > 0:
             filescan.append(quick_coms_path)
@@ -59,7 +59,7 @@ def feed_configs(bot):
             else:
                 extradirs = str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["feeds"]["extra"]).split(",")
             for extra in extradirs:
-                quick_coms_path_extra = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/Feeds/" + str(extra) + "/"
+                quick_coms_path_extra = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "Modules/Feeds/" + str(extra) + "/"
                 if os.path.exists(quick_coms_path_extra) and os.path.isdir(quick_coms_path_extra):
                     if not os.path.isfile(quick_coms_path_extra) and len(os.listdir(quick_coms_path_extra)) > 0:
                         filescan.append(quick_coms_path_extra)
@@ -67,11 +67,12 @@ def feed_configs(bot):
     # proceed with file iteration
     bot.msg("#spicebottest", str(len(filescan)))
     for directory in filescan:
+        bot.msg("#spicebottest", str(directory))
 
         # iterate over organizational folder
         for quick_coms_type in os.listdir(directory):
             coms_type_file_path = os.path.join(directory, quick_coms_type)
-            bot.msg("#spicebottest", str(coms_type_file_path))
+            # bot.msg("#spicebottest", str(coms_type_file_path))
             if os.path.exists(coms_type_file_path) and not os.path.isfile(coms_type_file_path) and len(os.listdir(coms_type_file_path)) > 0:
                 bot.msg("#spicebottest", str(quick_coms_type))
 
