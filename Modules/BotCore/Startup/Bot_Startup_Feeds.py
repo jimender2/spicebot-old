@@ -34,7 +34,7 @@ def bot_startup_feeds(bot, trigger):
     while not bot_startup_requirements_met(bot, ["botdict", "bot_info", "txt_files"]):
         pass
 
-    # feed_configs(bot)
+    feed_configs(bot)
 
     bot_startup_requirements_set(bot, "feeds")
 
