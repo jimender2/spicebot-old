@@ -65,7 +65,6 @@ def feed_configs(bot):
                         filescan.append(quick_coms_path_extra)
 
     # proceed with file iteration
-    bot.msg("#spicebottest", str(len(filescan)))
     for directory in filescan:
 
         # iterate over organizational folder
@@ -95,6 +94,8 @@ def feed_configs(bot):
                                 dict_from_file = dict()
                             # Close File
                             inf.close()
+
+                            bot.msg("#spicebottest", str(dict_from_file))
 
                             if filereadgood and isinstance(dict_from_file, dict):
 
