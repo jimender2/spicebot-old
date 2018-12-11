@@ -597,5 +597,5 @@ def bot_dictcom_gif(bot, botcom):
     bot_dictcom_reply_shared(bot, botcom)
 
 
-def bot_dictcom_gif(bot, botcom):
+def bot_dictcom_feeds(bot, botcom):
     bot.say("here")
