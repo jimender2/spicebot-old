@@ -72,7 +72,6 @@ def feed_configs(bot):
             comconf_file_path = os.path.join(directory, comconf)
 
             if os.path.isfile(comconf_file_path):
-                bot.msg("#spicebottest", str(comconf))
 
                 # check if command file is already in the list
                 if comconf not in bot.memory["botdict"]["tempvals"]['feeds_loaded']:
@@ -90,8 +89,6 @@ def feed_configs(bot):
                         dict_from_file = dict()
                     # Close File
                     inf.close()
-
-                    bot.msg("#spicebottest", str(dict_from_file))
 
                     if filereadgood and isinstance(dict_from_file, dict):
 
