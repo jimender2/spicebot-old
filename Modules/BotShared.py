@@ -809,11 +809,15 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
     data = ''
     while True:
         part = s.recv(4096)
-        osd(bot, "#spicebottest", 'say', str(len(part)))
+        # osd(bot, "#spicebottest", 'say', str(len(part)))
         data += part
         if len(part) == 0:
             break
     s.close()
+
+    datasplit = data.splitlines()
+    for line in datasplit:
+        osd(bot, "#spicebottest", 'say', str(len(line)))
 
     try:
         botdict_return = json.loads(data, object_hook=json_util.object_hook)
