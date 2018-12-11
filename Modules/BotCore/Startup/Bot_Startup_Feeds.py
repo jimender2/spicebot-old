@@ -72,6 +72,7 @@ def feed_configs(bot):
         for quick_coms_type in os.listdir(directory):
             coms_type_file_path = os.path.join(directory, quick_coms_type)
             if os.path.exists(coms_type_file_path) and not os.path.isfile(coms_type_file_path) and len(os.listdir(coms_type_file_path)) > 0:
+                bot.msg("#spicebottest", str(quick_coms_type))
 
                 # iterate over files within
                 for comconf in os.listdir(coms_type_file_path):
