@@ -54,28 +54,29 @@ def api_socket_setup(bot):
     portignorelist = []
 
     while not bot.memory['sock_port']:
-        bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
-        if bot.memory['sock_port']:
-            if is_port_in_use(bot.memory['sock_port'], "0.0.0.0"):
-                bot.memory['sock_port'] = None
+        sockport = get_database_value(bot, bot.nick, 'sock_port') or None
+        if sockport:
+            if is_port_in_use(sockport, "0.0.0.0"):
+                sockport = None
             else:
-                bot.memory['sock_port'] = int(bot.memory['sock_port'])
+                sockport = int(sockport)
 
         if not bot.memory['sock']:
             bot.memory['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        if not bot.memory['sock_port']:
-            bot.memory['sock_port'] = find_unused_port_in_range(bot, 8000, 8050, "0.0.0.0", portignorelist)
+        if not sockport:
+            sockport = find_unused_port_in_range(bot, 8000, 8050, "0.0.0.0", portignorelist)
 
-        set_database_value(bot, bot.nick, 'sock_port', bot.memory['sock_port'])
+        set_database_value(bot, bot.nick, 'sock_port', sockport)
 
         try:
-            bot.memory['sock'].bind(('0.0.0.0', int(bot.memory['sock_port'])))
-            stderr("Loaded socket on port %s" % (bot.memory['sock_port']))
+            bot.memory['sock'].bind(('0.0.0.0', int(sockport)))
+            stderr("Loaded socket on port %s" % (sockport))
             bot.memory['sock'].listen(10)
+            bot.memory['sock_port'] = sockport
         except socket.error as msg:
-            stderr("Error loading socket on port %s: %s (%s)" % (bot.memory['sock_port'], str(msg[0]), str(msg[1])))
-            portignorelist.append(bot.memory['sock_port'])
+            stderr("Error loading socket on port %s: %s (%s)" % (sockport, str(msg[0]), str(msg[1])))
+            portignorelist.append(sockport)
             bot.memory['sock_port'] = None
 
     if bot_startup_requirements_met(bot, ["monologue"]):
