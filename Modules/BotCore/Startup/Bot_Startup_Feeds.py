@@ -52,9 +52,8 @@ def feed_configs(bot):
         if not os.path.isfile(quick_coms_path) and len(os.listdir(quick_coms_path)) > 0:
             filescan.append(quick_coms_path)
 
-    if "Feeds" in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration'].keys():
+    if "feeds" in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration'].keys():
         if "extra" in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["Feeds"].keys():
-            bot.msg("#spicebottest", "here")
             if "," not in str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["Feeds"]["extra"]):
                 extradirs = [str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["Feeds"]["extra"])]
             else:
