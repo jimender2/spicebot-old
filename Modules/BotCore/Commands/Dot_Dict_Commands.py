@@ -598,4 +598,4 @@ def bot_dictcom_gif(bot, botcom):
 
 
 def bot_dictcom_feeds(bot, botcom):
-    bot.say("here")
+    bot.say(str(botcom.dotcommand_dict))
