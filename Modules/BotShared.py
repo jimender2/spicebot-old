@@ -817,7 +817,8 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
 
     datasplit = data.splitlines()
     for line in datasplit:
-        osd(bot, "#spicebottest", 'say', str(len(line)))
+        if len(line) > 100:
+            data = line
 
     try:
         botdict_return = json.loads(data, object_hook=json_util.object_hook)
