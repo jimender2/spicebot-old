@@ -808,12 +808,11 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
 
         s.send("GET")
 
-        data = recvall(s)
         data = ""
         botdict_return = None
         while True:
             try:
-                data = conn.recv(4096)
+                data = s.recv(4096)
                 botdict_return = json.loads(data, object_hook=json_util.object_hook)
                 break
             except ValueError:
@@ -830,18 +829,8 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
     return botdict_return
 
 
-def recvall(conn):
-    data = ""
-    while True:
-        try:
-            data = conn.recv(4096)
-            return json.loads(data, object_hook=json_util.object_hook)
-        except ValueError:
-            continue
-    return data
 
-
-def bot_api_fetch(bot, botport, host):
+def bot_api_fetch_web(bot, botport, host):
     botdict_return = None
 
     # what url to check
