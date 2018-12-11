@@ -77,13 +77,13 @@ def api_socket_setup(bot):
             bot.memory['sock_port'] = None
 
 
-def api_socket_run(bot, sock):
+def api_socket_run(bot):
 
     while True:
 
         # Wait for a connection
         bot_logging(bot, "API", "[API] Waiting for a connection.")
-        connection, client_address = sock.accept()
+        connection, client_address = bot.memory['sock'].accept()
 
         try:
             bot_logging(bot, "API", "[API] Connection from " + str(client_address))
@@ -103,8 +103,6 @@ def api_socket_run(bot, sock):
 
                         # don't include this
                         if "tempvals" in savedict:
-                            if 'sock' in savedict["tempvals"]:
-                                del savedict["tempvals"]['sock']
                             if 'reddit' in savedict["tempvals"]:
                                 del savedict["tempvals"]['reddit']
 
