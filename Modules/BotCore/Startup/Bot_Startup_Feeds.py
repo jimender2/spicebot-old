@@ -66,76 +66,87 @@ def feed_configs(bot):
 
     # proceed with file iteration
     for directory in filescan:
+        bot.msg("#spicebottest", str(directory))
 
         # iterate over organizational folder
-        for comconf in os.listdir(directory):
-            comconf_file_path = os.path.join(directory, comconf)
+        for quick_coms_type in os.listdir(directory):
+            coms_type_file_path = os.path.join(directory, quick_coms_type)
+            bot.msg("#spicebottest", str(coms_type_file_path))
+            if os.path.exists(coms_type_file_path) and not os.path.isfile(coms_type_file_path) and len(os.listdir(coms_type_file_path)) > 0:
+                bot.msg("#spicebottest", str(quick_coms_type))
 
-            if os.path.isfile(comconf_file_path):
+                # iterate over files within
+                for comconf in os.listdir(coms_type_file_path):
+                    comconf_file_path = os.path.join(coms_type_file_path, comconf)
 
-                # check if command file is already in the list
-                if comconf not in bot.memory["botdict"]["tempvals"]['feeds_loaded']:
-                    bot.memory["botdict"]["tempvals"]['feeds_loaded'].append(comconf)
+                    if os.path.isfile(comconf_file_path):
+                        bot.msg("#spicebottest", str(comconf))
 
-                    # Read dictionary from file, if not, enable an empty dict
-                    filereadgood = True
-                    inf = codecs.open(comconf_file_path, "r", encoding='utf-8')
-                    infread = inf.read()
-                    try:
-                        dict_from_file = eval(infread)
-                    except Exception as e:
-                        filereadgood = False
-                        stderr("Error loading feed %s: %s (%s)" % (comconf, e, comconf_file_path))
-                        dict_from_file = dict()
-                    # Close File
-                    inf.close()
+                        # check if command file is already in the list
+                        if comconf not in bot.memory["botdict"]["tempvals"]['feeds_loaded']:
+                            bot.memory["botdict"]["tempvals"]['feeds_loaded'].append(comconf)
 
-                    if filereadgood and isinstance(dict_from_file, dict):
+                            # Read dictionary from file, if not, enable an empty dict
+                            filereadgood = True
+                            inf = codecs.open(os.path.join(coms_type_file_path, comconf), "r", encoding='utf-8')
+                            infread = inf.read()
+                            try:
+                                dict_from_file = eval(infread)
+                            except Exception as e:
+                                filereadgood = False
+                                stderr("Error loading feed %s: %s (%s)" % (comconf, e, comconf_file_path))
+                                dict_from_file = dict()
+                            # Close File
+                            inf.close()
 
-                        feedcount += 1
+                            bot.msg("#spicebottest", str(dict_from_file))
 
-                        if "feedtype" not in dict_from_file.keys():
-                            dict_from_file["feedtype"] = "rss"
+                            if filereadgood and isinstance(dict_from_file, dict):
 
-                        if "displayname" not in dict_from_file.keys():
-                            dict_from_file["displayname"] = None
+                                feedcount += 1
 
-                        if "url" not in dict_from_file.keys():
-                            dict_from_file["url"] = None
+                                if "feedtype" not in dict_from_file.keys():
+                                    dict_from_file["feedtype"] = "rss"
 
-                        if dict_from_file["feedtype"] == "github":
+                                if "displayname" not in dict_from_file.keys():
+                                    dict_from_file["displayname"] = None
 
-                            if "lastbuildtype" not in dict_from_file.keys():
-                                dict_from_file["lastbuildtype"] = "updated"
+                                if "url" not in dict_from_file.keys():
+                                    dict_from_file["url"] = None
 
-                            if "lastbuildparent" not in dict_from_file.keys():
-                                dict_from_file["lastbuildparent"] = 1
+                                if dict_from_file["feedtype"] == "github":
 
-                            if "lastbuildchild" not in dict_from_file.keys():
-                                dict_from_file["lastbuildchild"] = 0
+                                    if "lastbuildtype" not in dict_from_file.keys():
+                                        dict_from_file["lastbuildtype"] = "updated"
 
-                            if "titletype" not in dict_from_file.keys():
-                                dict_from_file["titletype"] = "title"
+                                    if "lastbuildparent" not in dict_from_file.keys():
+                                        dict_from_file["lastbuildparent"] = 1
 
-                            if "titleparent" not in dict_from_file.keys():
-                                dict_from_file["titleparent"] = 1
+                                    if "lastbuildchild" not in dict_from_file.keys():
+                                        dict_from_file["lastbuildchild"] = 0
 
-                            if "titlechild" not in dict_from_file.keys():
-                                dict_from_file["titlechild"] = 0
+                                    if "titletype" not in dict_from_file.keys():
+                                        dict_from_file["titletype"] = "title"
 
-                            if "linktype" not in dict_from_file.keys():
-                                dict_from_file["linktype"] = "link"
+                                    if "titleparent" not in dict_from_file.keys():
+                                        dict_from_file["titleparent"] = 1
 
-                            if "linkparent" not in dict_from_file.keys():
-                                dict_from_file["linkparent"] = 2
+                                    if "titlechild" not in dict_from_file.keys():
+                                        dict_from_file["titlechild"] = 0
 
-                            if "linkchild" not in dict_from_file.keys():
-                                dict_from_file["linkchild"] = "href"
+                                    if "linktype" not in dict_from_file.keys():
+                                        dict_from_file["linktype"] = "link"
 
-                        if comconf not in bot.memory["botdict"]["tempvals"]['feeds'].keys():
-                            bot.memory["botdict"]["tempvals"]['feeds'][comconf] = dict_from_file
-                    else:
-                        feedopenfail += 1
+                                    if "linkparent" not in dict_from_file.keys():
+                                        dict_from_file["linkparent"] = 2
+
+                                    if "linkchild" not in dict_from_file.keys():
+                                        dict_from_file["linkchild"] = "href"
+
+                                if comconf not in bot.memory["botdict"]["tempvals"]['feeds'].keys():
+                                    bot.memory["botdict"]["tempvals"]['feeds'][comconf] = dict_from_file
+                            else:
+                                feedopenfail += 1
     if feedcount > 1:
         stderr('\n\nRegistered %d feed files,' % (feedcount))
         stderr('%d feed files failed to load\n\n' % feedopenfail)
