@@ -814,10 +814,10 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
             try:
                 data = s.recv(4096)
                 botdict_return = json.loads(data, object_hook=json_util.object_hook)
-                break
             except Exception as e:
                 bot.msg("#spicebottest", str(e))
                 continue
+            break
 
         s.close()
 
