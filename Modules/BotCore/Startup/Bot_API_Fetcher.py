@@ -64,5 +64,5 @@ def hostsprocessor(bot):
         if apiquery != {}:
             if "tempvals" in apiquery.keys():
                 if "botname" in apiquery["tempvals"].keys():
-                    bot.msg("#spicebottest", str(apiquery["tempvals"]["botname"]))
+                    # bot.msg("#spicebottest", str(apiquery["tempvals"]["botname"]))
                     bot.memory["altbots"][str(apiquery["tempvals"]["botname"])] = apiquery
