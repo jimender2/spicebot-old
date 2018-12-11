@@ -809,10 +809,19 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
         s.send("GET")
 
         data = recvall(s)
+        data = ""
+        botdict_return = None
+        while True:
+            try:
+                data = conn.recv(4096)
+                botdict_return = json.loads(data, object_hook=json_util.object_hook)
+                break
+            except ValueError:
+                continue
 
         s.close()
 
-        bot.msg("#spicebottest", str(data["tempvals"]["botname"]))
+        bot.msg("#spicebottest", str(botdict_return["tempvals"]["botname"]))
 
     except Exception as e:
         bot.msg("#spicebottest", str(e))
