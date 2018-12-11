@@ -53,7 +53,9 @@ def api_socket_setup(bot):
 
     portignorelist = []
 
-    while not bot.memory['sock_port']:
+    sockport = none
+
+    while not sockport:
         sockport = get_database_value(bot, bot.nick, 'sock_port') or None
         if sockport:
             if is_port_in_use(sockport, "0.0.0.0"):
@@ -73,11 +75,12 @@ def api_socket_setup(bot):
             bot.memory['sock'].bind(('0.0.0.0', int(sockport)))
             stderr("Loaded socket on port %s" % (sockport))
             bot.memory['sock'].listen(10)
-            bot.memory['sock_port'] = sockport
         except socket.error as msg:
             stderr("Error loading socket on port %s: %s (%s)" % (sockport, str(msg[0]), str(msg[1])))
             portignorelist.append(sockport)
-            bot.memory['sock_port'] = None
+            sockport = None
+
+    bot.memory['sock_port'] = sockport
 
     if bot_startup_requirements_met(bot, ["monologue"]):
         osd(bot, bot.privileges.keys(), 'notice', "API Port set to " + str(bot.memory['sock_port']))
