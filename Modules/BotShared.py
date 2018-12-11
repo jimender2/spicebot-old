@@ -914,6 +914,16 @@ def bot_api_send_all(bot, nick, processtype, longevity, sortingkey, usekey, valu
             apiquery = dict()
 
 
+def bot_api_send_self_command(bot, botcom, commandsent):
+
+    if commandsent not in ["update", "restart"]:
+        return
+
+    databasedict = {"type": "command", "command": commandsent, "sender": str(botcom.instigator)}
+    bot_api_send(bot, bot.memory['sock_port'], databasedict, 'localhost')
+
+
+
 """
 Bot Temp Logging
 """
