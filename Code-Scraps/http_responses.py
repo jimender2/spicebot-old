@@ -2,18 +2,19 @@
             "100": "Continue",
             "101": "Switching Protocols",
             "102": "Processing",
+            "200": "OK",
+            "201": "Created",
+            "202": "Accepted",
+            "203": "Non-authoritative Information",
+            "204": "No Content",
+            "205": "Reset Content",
+            "206": "Partial Content",
+            "207": "Multi-Status",
+            "208": "Already Reported",
+            "226": "IM Used",
               },
 
-200 OK
-201 Created
-202 Accepted
-203 Non-authoritative Information
-204 No Content
-205 Reset Content
-206 Partial Content
-207 Multi-Status
-208 Already Reported
-226 IM Used
+
 
 300 Multiple Choices
 301 Moved Permanently
