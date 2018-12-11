@@ -31,7 +31,7 @@ This reads the external config for gif api
 def bot_startup_altbots(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict", "server", "channels", "users", "bot_api"]):
+    while not bot_startup_requirements_met(bot, ["botdict", "server", "channels", "users"]):
         pass
 
     bot.memory["altbots"] = dict()
