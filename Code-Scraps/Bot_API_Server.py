@@ -35,6 +35,20 @@ def api_socket_server(bot, trigger):
     # Create a TCP/IP socket
     bot.memory['sock'] = None
     bot.memory['sock_port'] = None
+
+    sock = api_socket_setup(bot)
+
+    bot_startup_requirements_set(bot, "bot_api")
+
+    # If Connection Closes, this should reopen it forever
+    while True:
+        if not bot.memory['sock_port'] or not bot.memory['sock']:
+            sock = api_socket_setup(bot)
+        api_socket_run(bot, sock)
+
+
+def api_socket_setup(bot):
+
     portignorelist = []
 
     bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
@@ -63,12 +77,7 @@ def api_socket_server(bot, trigger):
             bot.memory['sock_port'] = None
 
     sock = bot.memory['sock']
-
-    bot_startup_requirements_set(bot, "bot_api")
-
-    # If Connection Closes, this should reopen it forever
-    while True:
-        api_socket_run(bot, sock)
+    return sock
 
 
 def api_socket_run(bot, sock):
@@ -97,8 +106,6 @@ def api_socket_run(bot, sock):
 
                         # don't include this
                         if "tempvals" in savedict:
-                            if 'sock' in savedict["tempvals"]:
-                                del savedict["tempvals"]['sock']
                             if 'reddit' in savedict["tempvals"]:
                                 del savedict["tempvals"]['reddit']
 
@@ -300,3 +307,5 @@ def api_socket_run(bot, sock):
             # Clean up the connection
             bot_logging(bot, "API", "[API] Closing Connection.")
             connection.close()
+            bot.memory['sock_port'] = None
+            bot.memory['sock'] = None
