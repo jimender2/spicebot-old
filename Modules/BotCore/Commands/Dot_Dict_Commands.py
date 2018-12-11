@@ -734,6 +734,6 @@ def bot_dictcom_dict_defaults(bot, botcom):
                 botcom.dotcommand_dict[botcom.responsekey]["linkparent"] = 2
 
             if "linkchild" not in botcom.dotcommand_dict[botcom.responsekey].keys():
-                botcom.dotcommand_dict[botcom.responsekey]["linktype"] = "href"
+                botcom.dotcommand_dict[botcom.responsekey]["linkchild"] = "href"
 
     return botcom
