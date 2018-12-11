@@ -34,19 +34,24 @@ def api_socket_server(bot, trigger):
 
     # Create a TCP/IP socket
     bot.memory['sock'] = None
-    bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
-    if bot.memory['sock_port'] or bot.memory['sock_port'] == 'None':
-        bot.memory['sock_port'] = int(bot.memory['sock_port'])
-    if not bot.memory['sock'] or not bot.memory['sock_port']:
-        bot.memory['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # port number to use, try previous port, if able
-        currentport = None
+    bot.memory['sock_port'] = None
+
+    while not bot.memory['sock_port']:
+        bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
         if bot.memory['sock_port']:
-            if not is_port_in_use(bot.memory['sock_port'], "0.0.0.0"):
-                currentport = bot.memory['sock_port']
-        if not currentport:
-            currentport = find_unused_port_in_range(bot, 8000, 8050, "0.0.0.0")
-        set_database_value(bot, bot.nick, 'sock_port', currentport)
+            if is_port_in_use(bot.memory['sock_port'], "0.0.0.0"):
+                bot.memory['sock_port'] = None
+            else:
+                bot.memory['sock_port'] = int(bot.memory['sock_port'])
+
+        if not bot.memory['sock']:
+            bot.memory['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        if not bot.memory['sock_port']:
+            bot.memory['sock_port'] = find_unused_port_in_range(bot, 8000, 8050, "0.0.0.0")
+
+        set_database_value(bot, bot.nick, 'sock_port', bot.memory['sock_port'])
+
         try:
             bot.memory['sock'].bind(('0.0.0.0', int(currentport)))
             stderr("Loaded socket on port %s" % (currentport))
@@ -54,14 +59,8 @@ def api_socket_server(bot, trigger):
         except socket.error as msg:
             stderr("Error loading socket on port %s: %s (%s)" % (currentport, str(msg[0]), str(msg[1])))
             bot.memory['sock_port'] = None
-            bot_startup_requirements_set(bot, "bot_api")
-            return
-    sock = bot.memory['sock']
 
-    if "sock_dict" not in bot.memory:
-        bot.memory["sock_dict"] = dict()
-    if "sock_bot_list" not in bot.memory:
-        bot.memory["sock_bot_list"] = []
+    sock = bot.memory['sock']
 
     bot_startup_requirements_set(bot, "bot_api")
 
