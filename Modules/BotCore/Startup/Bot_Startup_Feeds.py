@@ -80,7 +80,7 @@ def feed_configs(bot):
 
                     # Read dictionary from file, if not, enable an empty dict
                     filereadgood = True
-                    inf = codecs.open(os.path.join(coms_type_file_path, comconf), "r", encoding='utf-8')
+                    inf = codecs.open(comconf_file_path, "r", encoding='utf-8')
                     infread = inf.read()
                     try:
                         dict_from_file = eval(infread)
