@@ -919,9 +919,12 @@ def bot_api_send_self_command(bot, botcom, commandsent):
     if commandsent not in ["update", "restart"]:
         return
 
-    databasedict = {"type": "command", "command": commandsent, "sender": str(botcom.instigator)}
-    bot_api_send(bot, bot.memory['sock_port'], databasedict, 'localhost')
+    if 'sock_port' not in bot.memory:
+        return
+    portnum = int(bot.memory['sock_port'])
 
+    databasedict = {"type": "command", "command": commandsent, "sender": str(botcom.instigator)}
+    bot_api_send(bot, portnum, databasedict, 'localhost')
 
 
 """
