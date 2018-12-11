@@ -812,8 +812,10 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
         osd(bot, "#spicebottest", 'say', str(len(data)))
         if not data:
             data = part
+            continue
         else:
             data += part
+            continue
         if len(part) < 4096:
             # either 0 or end of data
             break
