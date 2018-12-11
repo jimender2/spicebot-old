@@ -35,6 +35,7 @@ def api_socket_server(bot, trigger):
     # Create a TCP/IP socket
     bot.memory['sock'] = None
     bot.memory['sock_port'] = None
+    portignorelist = []
 
     while not bot.memory['sock_port']:
         bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
@@ -48,7 +49,7 @@ def api_socket_server(bot, trigger):
             bot.memory['sock'] = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         if not bot.memory['sock_port']:
-            bot.memory['sock_port'] = find_unused_port_in_range(bot, 8000, 8050, "0.0.0.0")
+            bot.memory['sock_port'] = find_unused_port_in_range(bot, 8000, 8050, "0.0.0.0", portignorelist)
 
         set_database_value(bot, bot.nick, 'sock_port', bot.memory['sock_port'])
 
@@ -58,6 +59,7 @@ def api_socket_server(bot, trigger):
             bot.memory['sock'].listen(10)
         except socket.error as msg:
             stderr("Error loading socket on port %s: %s (%s)" % (bot.memory['sock_port'], str(msg[0]), str(msg[1])))
+            portignorelist.append(bot.memory['sock_port'])
             bot.memory['sock_port'] = None
 
     sock = bot.memory['sock']

@@ -1196,10 +1196,11 @@ def find_used_port_in_range(bot, rangestart, rangeend, host):
     return returnlist
 
 
-def find_unused_port_in_range(bot, rangestart, rangeend, host):
+def find_unused_port_in_range(bot, rangestart, rangeend, host, ignorelist=[]):
     for i in range(rangestart, rangeend + 1):
-        if not is_port_in_use(i, host):
-            return i
+        if i not in ignorelist:
+            if not is_port_in_use(i, host):
+                return i
 
 
 def is_port_in_use(port, host):
