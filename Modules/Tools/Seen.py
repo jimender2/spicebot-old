@@ -72,7 +72,10 @@ def execute_main(bot, trigger, botcom):
                     otherbotusers.append(user)
 
     if lastseen == []:
-        return osd(bot, botcom.channel_current, 'say', "Sorry, I have never seen " + str(posstarget) + " around.")
+        message = str("Sorry, the network of SpiceBots have never seen " + str(posstarget) + " speaking.")
+        if str(posstarget) in otherbotusers or str(posstarget) in bot.memory["botdict"]["users"].keys():
+            message = str(message + " However, they have been seen connected to one of the servers.")
+        return osd(bot, botcom.channel_current, 'say', message)
 
     seentime = None
     entrynumber, winningentry = 0, 0
