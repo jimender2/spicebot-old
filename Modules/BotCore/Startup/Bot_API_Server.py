@@ -35,6 +35,22 @@ def api_socket_server(bot, trigger):
     # Create a TCP/IP socket
     bot.memory['sock'] = None
     bot.memory['sock_port'] = None
+
+    api_socket_setup(bot)
+
+    sock = bot.memory['sock']
+
+    bot_startup_requirements_set(bot, "bot_api")
+
+    # If Connection Closes, this should reopen it forever
+    while True:
+        if not bot.memory['sock_port'] or not bot.memory['sock']:
+            api_socket_setup(bot)
+        api_socket_run(bot, sock)
+
+
+def api_socket_setup(bot):
+
     portignorelist = []
 
     while not bot.memory['sock_port']:
@@ -61,14 +77,6 @@ def api_socket_server(bot, trigger):
             stderr("Error loading socket on port %s: %s (%s)" % (bot.memory['sock_port'], str(msg[0]), str(msg[1])))
             portignorelist.append(bot.memory['sock_port'])
             bot.memory['sock_port'] = None
-
-    sock = bot.memory['sock']
-
-    bot_startup_requirements_set(bot, "bot_api")
-
-    # If Connection Closes, this should reopen it forever
-    while True:
-        api_socket_run(bot, sock)
 
 
 def api_socket_run(bot, sock):
