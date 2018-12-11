@@ -115,7 +115,9 @@ def bot_dictcom_process(bot, botcom):
         if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block"]:
             botcom.nonstockoptions.append(command)
 
+    bot.say(str(len(botcom.dotcommand_dict[botcom.responsekey].keys())))
     botcom = bot_dictcom_dict_defaults(bot, botcom)
+    bot.say(str(len(botcom.dotcommand_dict[botcom.responsekey].keys())))
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns"]
