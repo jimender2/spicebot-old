@@ -809,11 +809,10 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
         s.send("GET")
 
         # Look for the response
-        amount_received = 999999999999999
+        recieve_data = True
 
-        while amount_received > 0:
+        while recieve_data:
             data = s.recv(2048)
-            amount_received = len(data)
             osd(bot, "#spicebottest", 'say', str(data))
 
         s.close()
