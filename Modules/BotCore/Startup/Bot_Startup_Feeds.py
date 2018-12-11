@@ -54,6 +54,7 @@ def feed_configs(bot):
 
     if "Feeds" in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration'].keys():
         if "extra" in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["Feeds"].keys():
+            bot.msg("#spicebottest", "here")
             if "," not in str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["Feeds"]["extra"]):
                 extradirs = [str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["Feeds"]["extra"])]
             else:
