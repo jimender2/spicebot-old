@@ -78,6 +78,9 @@ def api_socket_setup(bot):
             portignorelist.append(bot.memory['sock_port'])
             bot.memory['sock_port'] = None
 
+    if bot_startup_requirements_met(bot, ["monologue"]):
+        osd(bot, bot.privileges.keys(), 'notice', "API Port set to " + str(bot.memory['sock_port']))
+
 
 def api_socket_run(bot, sock):
 

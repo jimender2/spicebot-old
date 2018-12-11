@@ -64,12 +64,9 @@ def bot_startup_monologue(bot, trigger):
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
 
     # API port
-    while not bot_startup_requirements_met(bot, ["bot_api"]):
-        pass
-    if bot.memory['sock_port']:
-        startupcomplete.append("API Port set to " + str(bot.memory['sock_port']))
-    else:
-        startupcomplete.append("API Port not set.")
+    if 'sock_port' in bot.memory:
+        if bot.memory['sock_port']:
+            startupcomplete.append("API Port set to " + str(bot.memory['sock_port']))
 
     while not bot_startup_requirements_met(bot, ["all_coms", "altbots"]):
         pass
