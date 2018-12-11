@@ -697,7 +697,6 @@ def bot_dictcom_feeds_handler(bot, botcom, displayifnotnew=True):
 def bot_dictcom_dict_defaults(bot, botcom):
 
     if botcom.dotcommand_dict[botcom.responsekey]["type"] == "feeds":
-        bot.say("here a")
 
         if "feedtype" not in botcom.dotcommand_dict[botcom.responsekey].keys():
             botcom.dotcommand_dict[botcom.responsekey]["feedtype"] = "rss"
@@ -709,7 +708,6 @@ def bot_dictcom_dict_defaults(bot, botcom):
             botcom.dotcommand_dict[botcom.responsekey]["url"] = None
 
         if botcom.dotcommand_dict[botcom.responsekey]["feedtype"] == "github":
-            bot.say("here b")
 
             if "lastbuildtype" not in botcom.dotcommand_dict[botcom.responsekey].keys():
                 botcom.dotcommand_dict[botcom.responsekey]["lastbuildtype"] = "updated"
@@ -733,7 +731,7 @@ def bot_dictcom_dict_defaults(bot, botcom):
                 botcom.dotcommand_dict[botcom.responsekey]["linktype"] = "link"
 
             if "linkparent" not in botcom.dotcommand_dict[botcom.responsekey].keys():
-                botcom.dotcommand_dict[botcom.responsekey]["linktype"] = 2
+                botcom.dotcommand_dict[botcom.responsekey]["linkparent"] = 2
 
             if "linkchild" not in botcom.dotcommand_dict[botcom.responsekey].keys():
                 botcom.dotcommand_dict[botcom.responsekey]["linktype"] = "href"
