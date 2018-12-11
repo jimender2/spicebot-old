@@ -696,7 +696,7 @@ def bot_dictcom_feeds_handler(bot, botcom, displayifnotnew=True):
 
 def bot_dictcom_dict_defaults(bot, botcom):
 
-    if botcom.dotcommand_dict[botcom.responsekey]["feedtype"] == "feed":
+    if botcom.dotcommand_dict[botcom.responsekey]["type"] == "feeds":
         bot.say("here a")
 
         if "feedtype" not in botcom.dotcommand_dict[botcom.responsekey].keys():
