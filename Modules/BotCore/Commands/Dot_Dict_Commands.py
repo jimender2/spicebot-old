@@ -611,7 +611,7 @@ def bot_dictcom_feeds(bot, botcom):
 def bot_dictcom_feeds_handler(bot, botcom, displayifnotnew=True):
 
     dispmsg = []
-    titleappend = 0
+    titleappend = False
 
     url = botcom.dotcommand_dict[botcom.responsekey]["url"]
     if not url:
@@ -652,7 +652,7 @@ def bot_dictcom_feeds_handler(bot, botcom, displayifnotnew=True):
 
             if displayifnotnew or lastBuildXML > lastbuildcurrent:
 
-                titleappend = 1
+                titleappend = True
 
                 titletype = botcom.dotcommand_dict[botcom.responsekey]["titletype"]
 
@@ -690,6 +690,9 @@ def bot_dictcom_feeds_handler(bot, botcom, displayifnotnew=True):
 
                 if not displayifnotnew:
                     set_nick_value(bot, str(bot.nick), 'long', 'feeds', botcom.maincom + '_lastbuildcurrent', str(lastBuildXML))
+
+    if titleappend:
+        dispmsg.insert(0, "[" + displayname + "]")
 
     return dispmsg
 
