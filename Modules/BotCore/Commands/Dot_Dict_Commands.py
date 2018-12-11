@@ -616,4 +616,4 @@ def bot_dictcom_feeds(bot, botcom):
         feed_type = botcom.dotcommand_dict[botcom.responsekey]["feedtype"]
 
         if feed_type in ['rss', 'youtube', 'github']:
-            bot.say(str(botcom.dotcommand_dict["displayname"]))
+            bot.say(str(displayname))
