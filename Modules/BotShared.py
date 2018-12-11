@@ -799,8 +799,6 @@ def bot_api_port_test(bot, host, port):
 def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
     botdict_return = None
 
-    osd(bot, "#spicebottest", 'say', str(TCP_IP) + " " + str(TCP_PORT))
-
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((TCP_IP, TCP_PORT))
 
@@ -809,7 +807,6 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
     data = ''
     while True:
         part = s.recv(4096)
-        # osd(bot, "#spicebottest", 'say', str(len(part)))
         data += part
         if len(part) == 0:
             break
@@ -823,9 +820,7 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
     try:
         botdict_return = json.loads(data, object_hook=json_util.object_hook)
     except Exception as e:
-        bot.msg("#spicebottest", str(e))
-
-    bot.msg("#spicebottest", str(botdict_return["tempvals"]["botname"]))
+        return None
 
     return botdict_return
 
