@@ -58,7 +58,7 @@ def execute_main(bot, trigger, botcom):
     if str(posstarget) in bot.memory["botdict"]["users"].keys():
         lastseenrecord = get_nick_value(bot, str(posstarget), 'long', 'user_activity', 'list') or []
         if lastseenrecord != []:
-            lastseen.append(lastseenrecord[-1])
+            lastseen.extend(lastseenrecord)
 
     # other bots
     otherbotusers = []
@@ -66,7 +66,7 @@ def execute_main(bot, trigger, botcom):
         for botname in bot.memory["altbots"].keys():
             lastseenrecord = get_nick_value_api(bot, botname, str(posstarget), 'long', 'user_activity', 'list') or []
             if lastseenrecord != []:
-                lastseen.append(lastseenrecord[-1])
+                lastseen.extend(lastseenrecord)
             for user in bot.memory["altbots"][botname]["users"].keys():
                 if user not in otherbotusers:
                     otherbotusers.append(user)
