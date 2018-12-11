@@ -632,7 +632,7 @@ def bot_dictcom_feeds_handler(bot, botcom, displayifnotnew=True):
 
         if feed_type in ['rss', 'youtube', 'github']:
 
-            lastbuildcurrent = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildcurrent = get_nick_value(bot, str(bot.nick), 'long', 'feeds', botcom.maincom + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
             xml = page.text
@@ -689,7 +689,7 @@ def bot_dictcom_feeds_handler(bot, botcom, displayifnotnew=True):
                 dispmsg.append(link)
 
                 if not displayifnotnew:
-                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent', str(lastBuildXML))
+                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', botcom.maincom + '_lastbuildcurrent', str(lastBuildXML))
 
 
 def bot_dictcom_dict_defaults(bot, botcom):
