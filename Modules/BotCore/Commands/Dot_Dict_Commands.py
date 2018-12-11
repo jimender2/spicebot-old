@@ -601,10 +601,23 @@ def bot_dictcom_gif(bot, botcom):
 
 def bot_dictcom_feeds(bot, botcom):
 
+    dispmsg = bot_dictcom_feeds_handler(bot, botcom, True)
+    if dispmsg == []:
+        osd(bot, botcom.channel_current, 'say', botcom.maincom + " appears to have had an unknown error.")
+    else:
+        osd(bot, botcom.channel_current, 'say', dispmsg)
+
+
+def bot_dictcom_feeds_handler(bot, botcom, displayifnotnew=True):
+
     dispmsg = []
     titleappend = 0
 
     url = botcom.dotcommand_dict[botcom.responsekey]["url"]
+    if not url:
+        dispmsg.append("URL missing.")
+        return dispmsg
+
     page = requests.get(url, headers=header)
     tree = html.fromstring(page.content)
 
@@ -618,7 +631,65 @@ def bot_dictcom_feeds(bot, botcom):
         feed_type = botcom.dotcommand_dict[botcom.responsekey]["feedtype"]
 
         if feed_type in ['rss', 'youtube', 'github']:
-            bot.say(str(displayname))
+
+            lastbuildcurrent = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildcurrent = parser.parse(str(lastbuildcurrent))
+
+            xml = page.text
+            xml = xml.encode('ascii', 'ignore').decode('ascii')
+            xmldoc = minidom.parseString(xml)
+
+            lastbuildtype = botcom.dotcommand_dict[botcom.responsekey]["lastbuildtype"]
+
+            lastBuildXML = xmldoc.getElementsByTagName(lastbuildtype)
+
+            lastbuildparent = int(botcom.dotcommand_dict[botcom.responsekey]["lastbuildparent"])
+
+            lastbuildchild = int(botcom.dotcommand_dict[botcom.responsekey]["lastbuildchild"])
+
+            lastBuildXML = lastBuildXML[lastbuildparent].childNodes[lastbuildchild].nodeValue
+            lastBuildXML = parser.parse(str(lastBuildXML))
+
+            if displayifnotnew or lastBuildXML > lastbuildcurrent:
+
+                titleappend = 1
+
+                titletype = botcom.dotcommand_dict[botcom.responsekey]["titletype"]
+
+                titles = xmldoc.getElementsByTagName(titletype)
+
+                titleparent = botcom.dotcommand_dict[botcom.responsekey]["titleparent"]
+
+                titlechild = int(botcom.dotcommand_dict[botcom.responsekey]["titlechild"])
+
+                title = titles[titleparent].childNodes[titlechild].nodeValue
+
+                if feed_type == 'github':
+                    authors = xmldoc.getElementsByTagName('name')
+                    author = authors[0].childNodes[0].nodeValue
+                    dispmsg.append(author + " committed")
+
+                title = unicode_string_cleanup(title)
+
+                dispmsg.append(title)
+
+                linktype = botcom.dotcommand_dict[botcom.responsekey]["linktype"]
+
+                links = xmldoc.getElementsByTagName(linktype)
+
+                linkparent = botcom.dotcommand_dict[botcom.responsekey]["linkparent"]
+
+                linkchild = botcom.dotcommand_dict[botcom.responsekey]["linkchild"]
+
+                if str(linkchild).isdigit():
+                    linkchild = int(linkchild)
+                    link = links[linkparent].childNodes[linkchild].nodeValue.split("?")[0]
+                else:
+                    link = links[linkparent].getAttribute(linkchild)
+                dispmsg.append(link)
+
+                if not displayifnotnew:
+                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent', str(lastBuildXML))
 
 
 def bot_dictcom_dict_defaults(bot, botcom):

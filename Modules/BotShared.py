@@ -1487,6 +1487,12 @@ def text_binary_swap(bot, words):
     return outputarray
 
 
+def unicode_string_cleanup(string):
+    for r in (("\u2013", "-"), ("\u2019", "'"), ("\u2026", "...")):
+        string = string.replace(*r)
+    return string
+
+
 """
 Small Functions
 """
