@@ -815,7 +815,8 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
                 data = s.recv(4096)
                 botdict_return = json.loads(data, object_hook=json_util.object_hook)
                 break
-            except ValueError:
+            except Exception as e:
+                bot.msg("#spicebottest", str(e))
                 continue
 
         s.close()
@@ -827,7 +828,6 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
         return None
 
     return botdict_return
-
 
 
 def bot_api_fetch_web(bot, botport, host):
