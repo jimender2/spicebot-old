@@ -806,16 +806,11 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
 
     s.send("GET")
 
-    data = None
+    data = ''
     while True:
         part = s.recv(4096)
-        osd(bot, "#spicebottest", 'say', str(len(data)))
-        if not data:
-            data = part
-            continue
-        else:
-            data += part
-            continue
+        osd(bot, "#spicebottest", 'say', str(len(part)))
+        data += part
         if len(part) < 4096:
             # either 0 or end of data
             break
