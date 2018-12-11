@@ -66,21 +66,17 @@ def feed_configs(bot):
 
     # proceed with file iteration
     for directory in filescan:
-        bot.msg("#spicebottest", str(directory))
 
         # iterate over organizational folder
         for quick_coms_type in os.listdir(directory):
             coms_type_file_path = os.path.join(directory, quick_coms_type)
-            bot.msg("#spicebottest", str(coms_type_file_path))
             if os.path.exists(coms_type_file_path) and not os.path.isfile(coms_type_file_path) and len(os.listdir(coms_type_file_path)) > 0:
-                bot.msg("#spicebottest", str(quick_coms_type))
 
                 # iterate over files within
                 for comconf in os.listdir(coms_type_file_path):
                     comconf_file_path = os.path.join(coms_type_file_path, comconf)
 
                     if os.path.isfile(comconf_file_path):
-                        bot.msg("#spicebottest", str(comconf))
 
                         # check if command file is already in the list
                         if comconf not in bot.memory["botdict"]["tempvals"]['feeds_loaded']:
@@ -98,8 +94,6 @@ def feed_configs(bot):
                                 dict_from_file = dict()
                             # Close File
                             inf.close()
-
-                            bot.msg("#spicebottest", str(dict_from_file))
 
                             if filereadgood and isinstance(dict_from_file, dict):
 
