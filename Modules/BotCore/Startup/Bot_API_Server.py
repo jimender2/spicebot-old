@@ -43,7 +43,7 @@ def api_socket_server(bot, trigger):
     while True:
         if not bot.memory['sock_port'] or not bot.memory['sock']:
             api_socket_setup(bot)
-        api_socket_run(bot, bot.memory['sock'])
+        api_socket_run(bot)
 
 
 def api_socket_setup(bot):
