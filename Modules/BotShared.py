@@ -811,8 +811,10 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
         # Look for the response
         recieve_data = True
 
+        maxrecieve = sys.maxsize
+
         while recieve_data:
-            data = s.recv(99999999999999999999)
+            data = s.recv(maxrecieve)
             if len(data) == 0:
                 recieve_data = False
             osd(bot, "#spicebottest", 'say', str(len(data)))
