@@ -37,8 +37,9 @@ def api_socket_server(bot, trigger):
     bot.memory['sock_port'] = None
     portignorelist = []
 
+    bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
+
     while not bot.memory['sock_port']:
-        bot.memory['sock_port'] = get_database_value(bot, bot.nick, 'sock_port') or None
         if bot.memory['sock_port']:
             if is_port_in_use(bot.memory['sock_port'], "0.0.0.0"):
                 bot.memory['sock_port'] = None
