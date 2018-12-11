@@ -808,7 +808,7 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
 
     data = None
     while True:
-        part = sock.recv(4096)
+        part = s.recv(4096)
         osd(bot, "#spicebottest", 'say', str(len(data)))
         if not data:
             data = part
