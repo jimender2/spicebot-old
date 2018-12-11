@@ -53,11 +53,11 @@ def api_socket_server(bot, trigger):
         set_database_value(bot, bot.nick, 'sock_port', bot.memory['sock_port'])
 
         try:
-            bot.memory['sock'].bind(('0.0.0.0', int(currentport)))
-            stderr("Loaded socket on port %s" % (currentport))
+            bot.memory['sock'].bind(('0.0.0.0', int(bot.memory['sock_port'])))
+            stderr("Loaded socket on port %s" % (bot.memory['sock_port']))
             bot.memory['sock'].listen(10)
         except socket.error as msg:
-            stderr("Error loading socket on port %s: %s (%s)" % (currentport, str(msg[0]), str(msg[1])))
+            stderr("Error loading socket on port %s: %s (%s)" % (bot.memory['sock_port'], str(msg[0]), str(msg[1])))
             bot.memory['sock_port'] = None
 
     sock = bot.memory['sock']
