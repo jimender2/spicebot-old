@@ -251,9 +251,9 @@ def api_socket_run(bot, sock):
                             if jsondict["command"] == 'update':
                                 stderr("[API] Recieved Command to update.")
                                 if sender != "API":
-                                    osd(bot, bot.privileges.keys(), 'say', "Recived API command from " + sender + " to update from Github and restart. Be Back Soon!")
+                                    osd(bot, bot.privileges.keys(), 'say', "Received API command from " + sender + " to update from Github and restart. Be Back Soon!")
                                 else:
-                                    osd(bot, bot.privileges.keys(), 'say', "Recived API command to update from Github and restart. Be Back Soon!")
+                                    osd(bot, bot.privileges.keys(), 'say', "Received API command to update from Github and restart. Be Back Soon!")
 
                                 # Directory Permissions
                                 os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/.sopel/" + str(bot.nick) + "/")
@@ -274,9 +274,9 @@ def api_socket_run(bot, sock):
                             elif jsondict["command"] == 'restart':
                                 stderr("[API] Recieved Command to restart.")
                                 if sender != "API":
-                                    osd(bot, bot.privileges.keys(), 'say', "Recived API command from " + sender + " to restart. Be Back Soon!")
+                                    osd(bot, bot.privileges.keys(), 'say', "Received API command from " + sender + " to restart. Be Back Soon!")
                                 else:
-                                    osd(bot, bot.privileges.keys(), 'say', "Recived API command to restart. Be Back Soon!")
+                                    osd(bot, bot.privileges.keys(), 'say', "Received API command to restart. Be Back Soon!")
 
                                 # close connection
                                 stderr("[API] Closing Connection.")
