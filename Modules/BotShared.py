@@ -806,18 +806,20 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
 
     s.send("GET")
 
-    data = ""
-    botdict_return = None
+    data = None
     while True:
-        try:
-            data = s.recv(4096)
-            botdict_return = json.loads(data, object_hook=json_util.object_hook)
-        except Exception as e:
-            bot.msg("#spicebottest", str(e))
-            continue
-        break
-
+        part = sock.recv(4096)
+        osd(bot, "#spicebottest", 'say', str(len(data)))
+        if not data:
+            data = part
+        else:
+            data += part
+        if len(part) < 4096:
+            # either 0 or end of data
+            break
     s.close()
+
+    botdict_return = json.loads(data, object_hook=json_util.object_hook)
 
     bot.msg("#spicebottest", str(botdict_return["tempvals"]["botname"]))
 
