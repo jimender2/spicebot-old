@@ -47,7 +47,7 @@ def dict_command_configs(bot):
     bot.memory["botdict"]["tempvals"]['dict_commands'] = dict()
     bot.memory["botdict"]["tempvals"]['dict_commands_loaded'] = []
 
-    quick_coms_path = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/Dictionary_replies/" + str(bot.nick) + "/"
+    quick_coms_path = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "Modules/Dictionary_replies/" + str(bot.nick) + "/"
     if os.path.exists(quick_coms_path) and os.path.isdir(quick_coms_path):
         if not os.path.isfile(quick_coms_path) and len(os.listdir(quick_coms_path)) > 0:
             filescan.append(quick_coms_path)
@@ -59,7 +59,7 @@ def dict_command_configs(bot):
             else:
                 extradirs = str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["dictcoms"]["extra"]).split(",")
             for extra in extradirs:
-                quick_coms_path_extra = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/Dictionary_replies/" + str(extra) + "/"
+                quick_coms_path_extra = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "Modules/Dictionary_replies/" + str(extra) + "/"
                 if os.path.exists(quick_coms_path_extra) and os.path.isdir(quick_coms_path_extra):
                     if not os.path.isfile(quick_coms_path_extra) and len(os.listdir(quick_coms_path_extra)) > 0:
                         filescan.append(quick_coms_path_extra)

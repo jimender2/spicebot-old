@@ -65,7 +65,6 @@ def feed_configs(bot):
                         filescan.append(quick_coms_path_extra)
 
     # proceed with file iteration
-    bot.msg("#spicebottest", str(len(filescan)))
     for directory in filescan:
         bot.msg("#spicebottest", str(directory))
 
