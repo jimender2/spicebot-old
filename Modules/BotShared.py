@@ -811,13 +811,18 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
         # Look for the response
         recieve_data = True
 
-        maxrecieve = sys.maxsize
-
-        while recieve_data:
-            data = s.recv(maxrecieve)
-            if len(data) == 0:
-                recieve_data = False
-            osd(bot, "#spicebottest", 'say', str(len(data)))
+        BUFF_SIZE = 4096  # 4 KiB
+        data = None
+        while True:
+            part = sock.recv(4096)
+            osd(bot, "#spicebottest", 'say', str(len(part)))
+            if not data:
+                data = part
+            else:
+                data += part
+            if len(part) < 4096:
+                # either 0 or end of data
+                break
 
         s.close()
 
