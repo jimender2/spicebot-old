@@ -36,15 +36,15 @@ def api_socket_server(bot, trigger):
     bot.memory['sock'] = None
     bot.memory['sock_port'] = None
 
-    api_socket_setup(bot)
+    sock = api_socket_setup(bot)
 
     bot_startup_requirements_set(bot, "bot_api")
 
     # If Connection Closes, this should reopen it forever
     while True:
         if not bot.memory['sock_port'] or not bot.memory['sock']:
-            api_socket_setup(bot)
-        api_socket_run(bot)
+            sock = api_socket_setup(bot)
+        api_socket_run(bot, sock)
 
 
 def api_socket_setup(bot):
@@ -76,14 +76,17 @@ def api_socket_setup(bot):
             portignorelist.append(bot.memory['sock_port'])
             bot.memory['sock_port'] = None
 
+    sock = bot.memory['sock']
+    return sock
 
-def api_socket_run(bot):
+
+def api_socket_run(bot, sock):
 
     while True:
 
         # Wait for a connection
         bot_logging(bot, "API", "[API] Waiting for a connection.")
-        connection, client_address = bot.memory['sock'].accept()
+        connection, client_address = sock.accept()
 
         try:
             bot_logging(bot, "API", "[API] Connection from " + str(client_address))
