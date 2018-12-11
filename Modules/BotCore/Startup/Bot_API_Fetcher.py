@@ -37,7 +37,6 @@ def api_socket_client(bot, trigger):
     # If Connection Closes, this should reopen it forever
     while True:
         hostsprocessor(bot)
-    # hostsprocessor(bot)
 
 
 def hostsprocessor(bot):
@@ -64,5 +63,4 @@ def hostsprocessor(bot):
         if apiquery != {}:
             if "tempvals" in apiquery.keys():
                 if "botname" in apiquery["tempvals"].keys():
-                    # bot.msg("#spicebottest", str(apiquery["tempvals"]["botname"]))
                     bot.memory["altbots"][str(apiquery["tempvals"]["botname"])] = apiquery

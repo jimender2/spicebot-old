@@ -76,7 +76,7 @@ def api_socket_setup(bot):
             stderr("Loaded socket on port %s" % (sockport))
             bot.memory['sock'].listen(10)
         except socket.error as msg:
-            stderr("Error loading socket on port %s: %s (%s)" % (sockport, str(msg[0]), str(msg[1])))
+            bot_logging(bot, "API", "[API] Error loading socket on port %s: %s (%s)" % (sockport, str(msg[0]), str(msg[1])))
             portignorelist.append(sockport)
             sockport = None
 
