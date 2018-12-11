@@ -58,7 +58,7 @@ def hostsprocessor(bot):
     # this is where we will pull the info from the other bots
     for hostdict in hostsprocess:
         try:
-            apiquery = bot_api_fetch(bot, hostdict["port"], hostdict["host"])
+            apiquery = bot_api_fetch_tcp(bot, hostdict["port"], hostdict["host"])
         except Exception as e:
             apiquery = dict()
         if apiquery != {}:
