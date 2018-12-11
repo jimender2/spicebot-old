@@ -53,7 +53,7 @@ def api_socket_setup(bot):
 
     portignorelist = []
 
-    sockport = none
+    sockport = None
 
     while not sockport:
         sockport = get_database_value(bot, bot.nick, 'sock_port') or None
