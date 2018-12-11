@@ -808,21 +808,7 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
 
         s.send("GET")
 
-        # Look for the response
-        recieve_data = True
-
-        BUFF_SIZE = 4096  # 4 KiB
-        data = None
-        while True:
-            part = sock.recv(4096)
-            osd(bot, "#spicebottest", 'say', str(len(part)))
-            if not data:
-                data = part
-            else:
-                data += part
-            if len(part) < 4096:
-                # either 0 or end of data
-                break
+        data = recvall(s)
 
         s.close()
 
@@ -834,6 +820,16 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
         return None
 
     return botdict_return
+
+
+def recvall(conn):
+    data = ""
+    while True:
+        try:
+            data = conn.recv(4096)
+            return json.loads(data, object_hook=json_util.object_hook)
+        except ValueError:
+            continue
 
 
 def bot_api_fetch(bot, botport, host):
