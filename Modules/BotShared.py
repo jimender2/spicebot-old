@@ -801,31 +801,25 @@ def bot_api_fetch_tcp(bot, TCP_PORT, TCP_IP):
 
     osd(bot, "#spicebottest", 'say', str(TCP_IP) + " " + str(TCP_PORT))
 
-    try:
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((TCP_IP, TCP_PORT))
 
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((TCP_IP, TCP_PORT))
+    s.send("GET")
 
-        s.send("GET")
+    data = ""
+    botdict_return = None
+    while True:
+        try:
+            data = s.recv(4096)
+            botdict_return = json.loads(data, object_hook=json_util.object_hook)
+        except Exception as e:
+            bot.msg("#spicebottest", str(e))
+            continue
+        break
 
-        data = ""
-        botdict_return = None
-        while True:
-            try:
-                data = s.recv(4096)
-                botdict_return = json.loads(data, object_hook=json_util.object_hook)
-            except Exception as e:
-                bot.msg("#spicebottest", str(e))
-                continue
-            break
+    s.close()
 
-        s.close()
-
-        bot.msg("#spicebottest", str(botdict_return["tempvals"]["botname"]))
-
-    except Exception as e:
-        bot.msg("#spicebottest", str(e))
-        return None
+    bot.msg("#spicebottest", str(botdict_return["tempvals"]["botname"]))
 
     return botdict_return
 
