@@ -47,19 +47,19 @@ def feed_configs(bot):
     bot.memory["botdict"]["tempvals"]['feeds'] = dict()
     bot.memory["botdict"]["tempvals"]['feeds_loaded'] = []
 
-    quick_coms_path = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/Feeds/" + str(bot.nick) + "/"
+    quick_coms_path = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/feeds/" + str(bot.nick) + "/"
     if os.path.exists(quick_coms_path) and os.path.isdir(quick_coms_path):
         if not os.path.isfile(quick_coms_path) and len(os.listdir(quick_coms_path)) > 0:
             filescan.append(quick_coms_path)
 
     if "feeds" in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration'].keys():
-        if "extra" in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["Feeds"].keys():
-            if "," not in str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["Feeds"]["extra"]):
-                extradirs = [str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["Feeds"]["extra"])]
+        if "extra" in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["feeds"].keys():
+            if "," not in str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["feeds"]["extra"]):
+                extradirs = [str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["feeds"]["extra"])]
             else:
-                extradirs = str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["Feeds"]["extra"]).split(",")
+                extradirs = str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["feeds"]["extra"]).split(",")
             for extra in extradirs:
-                quick_coms_path_extra = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/Feeds/" + str(extra) + "/"
+                quick_coms_path_extra = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/feeds/" + str(extra) + "/"
                 if os.path.exists(quick_coms_path_extra) and os.path.isdir(quick_coms_path_extra):
                     if not os.path.isfile(quick_coms_path_extra) and len(os.listdir(quick_coms_path_extra)) > 0:
                         filescan.append(quick_coms_path_extra)
