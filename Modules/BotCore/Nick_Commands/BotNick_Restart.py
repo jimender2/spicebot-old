@@ -39,8 +39,9 @@ def bot_command_hub(bot, trigger):
         return osd(bot, botcom.instigator, 'notice', "I was unable to process this Bot Nick command due to privilege issues.")
 
     if 'sock_port' in bot.memory:
-        bot_api_send_self_command(bot, botcom, "restart")
-        return
+        if bot.memory['sock_port']:
+            bot_api_send_self_command(bot, botcom, "restart")
+            return
 
     stderr("Recieved Command to update.")
     osd(bot, bot.privileges.keys(), 'say', "Received command from " + botcom.instigator + " to restart systemd service. Be Back Soon!")
