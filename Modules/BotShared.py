@@ -829,6 +829,7 @@ def recvall(conn):
             return json.loads(data, object_hook=json_util.object_hook)
         except ValueError:
             continue
+    return data
 
 
 def bot_api_fetch(bot, botport, host):
