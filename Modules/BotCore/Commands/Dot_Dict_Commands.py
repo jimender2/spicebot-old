@@ -115,6 +115,8 @@ def bot_dictcom_process(bot, botcom):
         if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block"]:
             botcom.nonstockoptions.append(command)
 
+    botcom = bot_dictcom_dict_defaults(bot, botcom)
+
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns"]
     botcom.specified = None
@@ -617,3 +619,48 @@ def bot_dictcom_feeds(bot, botcom):
 
         if feed_type in ['rss', 'youtube', 'github']:
             bot.say(str(displayname))
+
+
+def bot_dictcom_dict_defaults(bot, botcom):
+
+    if botcom.dotcommand_dict[botcom.responsekey]["feedtype"] == "feed":
+
+        if "feedtype" not in botcom.dotcommand_dict[botcom.responsekey].keys():
+            botcom.dotcommand_dict[botcom.responsekey]["feedtype"] = "rss"
+
+        if "displayname" not in botcom.dotcommand_dict[botcom.responsekey].keys():
+            botcom.dotcommand_dict[botcom.responsekey]["displayname"] = botcom.maincom
+
+        if "url" not in botcom.dotcommand_dict[botcom.responsekey].keys():
+            botcom.dotcommand_dict[botcom.responsekey]["url"] = None
+
+        if botcom.dotcommand_dict[botcom.responsekey]["feedtype"] == "github":
+
+            if "lastbuildtype" not in botcom.dotcommand_dict[botcom.responsekey].keys():
+                botcom.dotcommand_dict[botcom.responsekey]["lastbuildtype"] = "updated"
+
+            if "lastbuildparent" not in botcom.dotcommand_dict[botcom.responsekey].keys():
+                botcom.dotcommand_dict[botcom.responsekey]["lastbuildparent"] = 1
+
+            if "lastbuildchild" not in botcom.dotcommand_dict[botcom.responsekey].keys():
+                botcom.dotcommand_dict[botcom.responsekey]["lastbuildchild"] = 0
+
+            if "titletype" not in botcom.dotcommand_dict[botcom.responsekey].keys():
+                botcom.dotcommand_dict[botcom.responsekey]["titletype"] = "title"
+
+            if "titleparent" not in botcom.dotcommand_dict[botcom.responsekey].keys():
+                botcom.dotcommand_dict[botcom.responsekey]["titleparent"] = 1
+
+            if "titlechild" not in botcom.dotcommand_dict[botcom.responsekey].keys():
+                botcom.dotcommand_dict[botcom.responsekey]["titlechild"] = 0
+
+            if "linktype" not in botcom.dotcommand_dict[botcom.responsekey].keys():
+                botcom.dotcommand_dict[botcom.responsekey]["linktype"] = "link"
+
+            if "linkparent" not in botcom.dotcommand_dict[botcom.responsekey].keys():
+                botcom.dotcommand_dict[botcom.responsekey]["linktype"] = 2
+
+            if "linkchild" not in botcom.dotcommand_dict[botcom.responsekey].keys():
+                botcom.dotcommand_dict[botcom.responsekey]["linktype"] = "href"
+
+    return botcom
