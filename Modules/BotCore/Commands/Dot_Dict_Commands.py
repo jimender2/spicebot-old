@@ -598,4 +598,22 @@ def bot_dictcom_gif(bot, botcom):
 
 
 def bot_dictcom_feeds(bot, botcom):
-    bot.say(str(botcom.dotcommand_dict))
+
+    dispmsg = []
+    titleappend = 0
+
+    url = botcom.dotcommand_dict[botcom.responsekey]["url"]
+    page = requests.get(url, headers=header)
+    tree = html.fromstring(page.content)
+
+    if page.status_code == 200:
+
+        now = datetime.datetime.utcnow()
+        now = now.replace(tzinfo=pytz.UTC)
+
+        displayname = botcom.dotcommand_dict[botcom.responsekey]["displayname"]
+
+        feed_type = botcom.dotcommand_dict[botcom.responsekey]["feedtype"]
+
+        if feed_type in ['rss', 'youtube', 'github']:
+            bot.say(str(botcom.dotcommand_dict["displayname"]))
