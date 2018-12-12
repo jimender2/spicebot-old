@@ -201,34 +201,14 @@ def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
                 titleappend = True
 
                 title = feedjson.entries[0].title
-
-                # if feed_type == 'github':
-                    # authors = xmldoc.getElementsByTagName('name')
-                    # author = authors[0].childNodes[0].nodeValue
-                    # author = feedjson.entries[0]['name']
-                    # dispmsg.append(author + " committed")
-
                 title = unicode_string_cleanup(title)
-
                 dispmsg.append(title)
 
-                linktype = feed_dict["linktype"]
-
-                links = xmldoc.getElementsByTagName(linktype)
-
-                linkparent = feed_dict["linkparent"]
-
-                linkchild = feed_dict["linkchild"]
-
-                if str(linkchild).isdigit():
-                    linkchild = int(linkchild)
-                    link = links[linkparent].childNodes[linkchild].nodeValue.split("?")[0]
-                else:
-                    link = links[linkparent].getAttribute(linkchild)
+                link = feedjson.entries[0].link
                 dispmsg.append(link)
 
                 if not displayifnotnew:
-                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent', str(lastBuildXML))
+                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent', str(rssentrytime))
 
     if titleappend and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
