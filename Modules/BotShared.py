@@ -1269,7 +1269,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             # calendar = service.calendars().get(calendarId='primary').execute()
 
-            events_result = service.events().list(calendarId=currentcalendar, maxResults=10, singleEvents=True, orderBy='startTime', timeMin=now).execute()
+            events_result = service.events().list(calendarId=currentcalendar, maxResults=10, singleEvents=True, orderBy='startTime').execute()
             events = events_result.get('items', [])
 
             # try:
