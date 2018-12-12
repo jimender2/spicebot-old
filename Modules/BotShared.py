@@ -1089,6 +1089,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             submission = listarray[0]
 
             entrytime = submission.created
+            entrytime = datetime.datetime.fromtimestamp(entrytime).replace(tzinfo=pytz.UTC)
             entrytime = parser.parse(str(entrytime))
 
             try:
