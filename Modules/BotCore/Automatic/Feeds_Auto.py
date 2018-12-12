@@ -38,7 +38,7 @@ def auto_feeds(bot, trigger):
                         feed_enabled = get_nick_value(bot, str(channel), "long", "feeds", "enabled") or []
                         if feed in feed_enabled:
                             osd(bot, str(channel), 'say', dispmsg)
-                for user in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['all_current_users']:
+                for user in bot.memory["botdict"]["tempvals"]["servers_list"][str(bot.memory["botdict"]["tempvals"]['server'])]['all_current_users']:
                     feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
                     if feed in feed_enabled:
                         osd(bot, user, 'priv', dispmsg)
