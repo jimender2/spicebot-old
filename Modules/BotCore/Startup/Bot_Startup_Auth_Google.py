@@ -37,12 +37,17 @@ def bot_startup_twitter(bot, trigger):
     try:
 
         store = Storage('/home/spicebot/gcal.json',)
-        bot.memory["botdict"]["tempvals"]['google'] = store.get()
+        credentials = store.get()
 
     except Exception as e:
-        bot.memory["botdict"]["tempvals"]['google'] = None
+        credentials = None
         stderr("Error loading google calendar auth")
         stderr(e)
+
+    if not credentials:
+        bot.memory["botdict"]["tempvals"]['google'] = None
+    else:
+        bot.memory["botdict"]["tempvals"]['google'] = credentials
 
     bot_startup_requirements_set(bot, "auth_google")
 
