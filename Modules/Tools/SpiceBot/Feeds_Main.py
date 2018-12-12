@@ -100,7 +100,7 @@ def execute_main(bot, trigger, botcom):
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
 
-    if botcom.instigator not in botcom.opadmin:
+    if not bot_nickcom_run_check(bot, botcom, ['admin', 'owner', 'OWNER', 'OP', 'ADMIN']):
         osd(bot, botcom.channel_current, 'say', "Only Bot Admins and Channel Operators are able to adjust Feed settings.")
         return
 
