@@ -1267,10 +1267,10 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
-            calendar = service.calendars().get(calendarId='primary').execute()
+            # calendar = service.calendars().get(calendarId='primary').execute()
 
-            # events_result = service.events().list(calendarId='primary', maxResults=10).execute()
-            # events = events_result.get('items', [])
+            events_result = service.events().list(calendarId='primary', maxResults=10).execute()
+            events = events_result.get('items', [])
 
             # try:
             # events_result = service.events().list(calendarId=currentcalendar, timeMin=now,
@@ -1283,7 +1283,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             #    else:
             #        return []
 
-            bot.msg("#spicebottest", str(calendar))
+            bot.msg("#spicebottest", str(events))
             return []
 
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
