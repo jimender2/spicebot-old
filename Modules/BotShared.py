@@ -1087,7 +1087,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             for submission in submissions:
                 listarray.append(submission)
             submission = listarray[0]
-            bot.msg("#spicebottest", str(submission))
+            bot.msg("#spicebottest", str(submission.created))
             return ["done testing"]
 
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
