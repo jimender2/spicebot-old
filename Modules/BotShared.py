@@ -1029,7 +1029,10 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             feedjson = feedparser.parse(url)
 
-            entrytime = feedjson.entries[0].updated
+            try:
+                entrytime = feedjson.entries[0].updated
+            except Exception as e:
+                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             entrytime = parser.parse(str(entrytime))
 
             lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
@@ -1064,11 +1067,10 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
 
-        # reddit handling if rss didn't work
-        elif feed_type in ['redditapi']:
+        elif feed_type == 'redditapi':
 
-            url = feed_dict["path"]
-            if not url:
+            path = feed_dict["path"]
+            if not path:
                 return ["reddit Path missing."]
 
             currentsubreddit = feed_dict["path"]
@@ -1088,8 +1090,11 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 listarray.append(submission)
             submission = listarray[0]
 
-            entrytime = submission.created
-            entrytime = datetime.datetime.fromtimestamp(entrytime).replace(tzinfo=pytz.UTC)
+            try:
+                entrytime = submission.created
+                entrytime = datetime.datetime.fromtimestamp(entrytime).replace(tzinfo=pytz.UTC)
+            except Exception as e:
+                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             entrytime = parser.parse(str(entrytime))
 
             try:
@@ -1109,6 +1114,121 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
             try:
                 title = submission.title
+                title = unicode_string_cleanup(title)
+            except Exception as e:
+                title = None
+            if title:
+                dispmsg.append(title)
+
+            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
+            try:
+                link = submission.permalink
+            except Exception as e:
+                link = None
+            if link:
+                dispmsg.append(str(feed_dict["url"] + link))
+
+            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
+                displayname = feed_dict["displayname"]
+                if not displayname:
+                    try:
+                        displayname = feedjson['feed']['title']
+                    except Exception as e:
+                        displayname = None
+            else:
+                dispmsg = []
+
+            if not displayifnotnew:
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
+
+
+        elif feed_type == 'twitter':
+
+            handle = feed_dict["handle"]
+            if not path:
+                return ["twitter handle missing."]
+
+            currenttweetat = feed_dict["handle"]
+
+            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildtime = parser.parse(str(lastbuildtime))
+
+            submissions = bot.memory["botdict"]["tempvals"]['twitter'].statuses.user_timeline(screen_name=currenttweetat, count=1)
+            listarray = []
+            for submission in submissions:
+                listarray.append(submission)
+            submission = listarray[0]
+            bot.msg("#spicebottest", str(submission))
+            return []
+
+            try:
+                entrytime = submission.created_at
+                entrytime = entrytime.replace(tzinfo=pytz.UTC)
+            except Exception as e:
+                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            entrytime = parser.parse(str(entrytime))
+
+            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
+            try:
+                title = submission.text
+                title = unicode_string_cleanup(title)
+            except Exception as e:
+                title = None
+            if title:
+                dispmsg.append(title)
+
+            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
+            try:
+                link = submission.permalink
+            except Exception as e:
+                link = None
+            if link:
+                dispmsg.append(str(feed_dict["url"] + link))
+
+            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
+                displayname = feed_dict["displayname"]
+                if not displayname:
+                    try:
+                        displayname = feedjson['feed']['title']
+                    except Exception as e:
+                        displayname = None
+            else:
+                dispmsg = []
+
+            if not displayifnotnew:
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
+
+        elif feed_type == 'twitterold':
+
+            handle = feed_dict["handle"]
+            if not path:
+                return ["twitter handle missing."]
+
+            currenttweetat = feed_dict["handle"]
+
+            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildtime = parser.parse(str(lastbuildtime))
+
+            submissions = bot.memory["botdict"]["tempvals"]['twitter'].GetUserTimeline(screen_name=currenttweetat, count=1)
+            listarray = []
+            for submission in submissions:
+                listarray.append(submission)
+            submission = listarray[0]
+
+            try:
+                entrytime = submission.created_at
+                entrytime = entrytime.replace(tzinfo=pytz.UTC)
+            except Exception as e:
+                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            entrytime = parser.parse(str(entrytime))
+
+            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
+            try:
+                title = submission.text
                 title = unicode_string_cleanup(title)
             except Exception as e:
                 title = None
@@ -1163,6 +1283,7 @@ def reddit_subreddit_check(bot, sub):
     try:
         bot.memory["botdict"]["tempvals"]['reddit'].subreddits.search_by_name(sub, exact=True)
     except NotFound:
+        returndict["error"] = str(sub + " appears to not exist!")
         returndict["exists"] = False
         return returndict
 
@@ -1183,55 +1304,15 @@ def reddit_subreddit_check(bot, sub):
     return returndict
 
 
-def reddit_sub_exists_simple(bot, sub):
-    exists = True
-    try:
-        bot.memory["botdict"]["tempvals"]['reddit'].subreddits.search_by_name(sub, exact=True)
-    except NotFound:
-        exists = False
-    return exists
-
-
-def reddit_sub_banned_private_simple(bot, sub):
-    proceed = True
-    try:
-        subtype = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(sub).subreddit_type
-    except Exception as e:
-        proceed = False
-    return proceed
-
-
-def reddit_sub_exists(bot, rclass, sub):
-    exists = True
-    try:
-        bot.memory["botdict"]["tempvals"]['reddit'].subreddits.search_by_name(sub, exact=True)
-    except NotFound:
-        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
-        exists = False
-    return exists
-
-
-def reddit_banned_private(bot, rclass, sub):
-    proceed = True
-    try:
-        rclass.subtype = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(sub).subreddit_type
-    except Exception as e:
-        proceed = False
-        if str(e) == "received 403 HTTP response":
-            osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an private " + rclass.urltypetxt + "!    " + rclass.fullrurul)
-        elif str(e) == "received 404 HTTP response":
-            osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an banned " + rclass.urltypetxt + "!")
-    return proceed
-
-
-def reddit_user_exists(bot, rclass, user):
-    exists = True
+def reddit_user_exists(bot, user):
+    returndict = {"exists": True, "error": None}
     try:
         bot.memory["botdict"]["tempvals"]['reddit'].redditor(user).fullname
     except NotFound:
-        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid reddit " + rclass.urltypetxt + "!")
-        exists = False
-    return exists
+        returndict["exists"] = False
+        returndict["error"] = str(user + " appears to not exist!")
+        return returndict
+    return returndict
 
 
 """

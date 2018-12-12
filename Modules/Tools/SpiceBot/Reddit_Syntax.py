@@ -93,9 +93,10 @@ def reddit_u(bot, botcom, rclass):
     subcommand_valid = ['check']
     subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in subcommand_valid], 1) or 'check'
 
-    userreal = reddit_user_exists(bot, rclass, rclass.urlsearch)
-    if not userreal:
-        return
+    userreal = reddit_user_exists(bot, user)
+    if not userreal["exists"]:
+        return osd(bot, rclass.channel_current, 'say', subredditcheck["error"])
+
     fulluurul = str("https://www.reddit.com/" + rclass.urltype + "/" + rclass.urlsearch)
     if subcommand == 'check':
         osd(bot, rclass.channel_current, 'say', [rclass.urlsearch + " appears to be a valid reddit " + rclass.urltypetxt + "!", fulluurul])
@@ -109,13 +110,9 @@ def reddit_r(bot, botcom, rclass):
 
     rclass.fullrurul = str("https://www.reddit.com/" + rclass.urltype + "/" + rclass.urlsearch)
 
-    subreal = reddit_sub_exists(bot, rclass, rclass.urlsearch)
-    if not subreal:
-        return
-
-    subpass = reddit_banned_private(bot, rclass, rclass.urlsearch)
-    if not subpass:
-        return
+    subredditcheck = reddit_subreddit_check(bot, currentsubreddit)
+    if not subredditcheck["exists"]:
+        return osd(bot, rclass.channel_current, 'say', subredditcheck["error"])
 
     subreddit = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(rclass.urlsearch)
     if subcommand == 'check':

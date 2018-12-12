@@ -116,6 +116,14 @@ def feed_configs(bot):
                                     if not dict_from_file["url"]:
                                         dict_from_file["url"] = "https://www.reddit.com"
 
+                                if dict_from_file["type"] == "twitter":
+
+                                    if "handle" not in dict_from_file.keys():
+                                        dict_from_file["handle"] = None
+
+                                    if not dict_from_file["url"]:
+                                        dict_from_file["url"] = "https://twitter.com"
+
                                 if comconf not in bot.memory["botdict"]["tempvals"]['feeds'].keys():
                                     bot.memory["botdict"]["tempvals"]['feeds'][comconf] = dict_from_file
                             else:
