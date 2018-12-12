@@ -181,6 +181,21 @@ def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
             rssentrytime = feedjson.entries[0].published
             rssentrytime = parser.parse(str(rssentrytime))
 
+            xml = page.text
+            xml = xml.encode('ascii', 'ignore').decode('ascii')
+            xmldoc = minidom.parseString(xml)
+
+            lastbuildtype = feed_dict["lastbuildtype"]
+
+            lastBuildXML = xmldoc.getElementsByTagName(lastbuildtype)
+
+            lastbuildparent = int(feed_dict["lastbuildparent"])
+
+            lastbuildchild = int(feed_dict["lastbuildchild"])
+
+            lastBuildXML = lastBuildXML[lastbuildparent].childNodes[lastbuildchild].nodeValue
+            lastBuildXML = parser.parse(str(lastBuildXML))
+
             if displayifnotnew or rssentrytime > lastbuildcurrent:
 
                 titleappend = True
