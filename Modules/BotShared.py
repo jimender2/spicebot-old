@@ -1224,7 +1224,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             except Exception as e:
                 link = None
             if link:
-                dispmsg.append(str(feed_dict["url"] + link))
+                dispmsg.append(str(feed_dict["url"] + "/" + link))
 
             if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
                 displayname = feed_dict["displayname"]
