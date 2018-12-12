@@ -52,7 +52,7 @@ def execute_main(bot, trigger, botcom):
     d = feedparser.parse('https://www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw')
     # bot.say(str(d.entries[0].published))
 
-    bot.say(str(d['feed']['title']))
+    # bot.say(str(d['feed']['title']))
     # bot.say(str(d['feed']['link']))
     # bot.say(str(d['feed']['subtitle']))
     # bot.say(str(len(d['entries'])))
