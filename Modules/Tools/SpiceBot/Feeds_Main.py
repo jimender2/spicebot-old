@@ -121,7 +121,7 @@ def execute_main(bot, trigger, botcom):
     channelselect = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot.privileges.keys()], 1) or botcom.channel_current
 
     if command == 'enable':
-        instigatormodulesarray = get_nick_value(bot, channelselect, "long", "feeds", "enabled") or []
+        channelmodulesarray = get_nick_value(bot, channelselect, "long", "feeds", "enabled") or []
         newlist = []
         for feed in current_feed_list:
             if feed not in channelmodulesarray:
@@ -134,7 +134,7 @@ def execute_main(bot, trigger, botcom):
         return
 
     if command == 'disable':
-        instigatormodulesarray = get_nick_value(bot, channelselect, "long", "feeds", "enabled") or []
+        channelmodulesarray = get_nick_value(bot, channelselect, "long", "feeds", "enabled") or []
         newlist = []
         for feed in current_feed_list:
             if feed in channelmodulesarray:
