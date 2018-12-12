@@ -1292,7 +1292,8 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             #    else:
             #        return []
 
-            bot.msg("#spicebottest", str(events))
+            # bot.msg("#spicebottest", str(events))
+            osd(bot, "#spicebottest", 'say', str(events[0]))
             return []
 
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
