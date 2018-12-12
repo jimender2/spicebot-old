@@ -30,6 +30,7 @@ def savingitall(bot):
         pass
 
     while True:
+        bot.msg("#spicebottest", "45 second loop start")
         for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
             dispmsg = bot_dictcom_feeds_handler(bot, botcom, feed, False)
             if dispmsg != []:
