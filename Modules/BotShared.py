@@ -1029,8 +1029,8 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             feedjson = feedparser.parse(url)
 
-            rssentrytime = feedjson.entries[0].updated
-            rssentrytime = parser.parse(str(rssentrytime))
+            entrytime = feedjson.entries[0].updated
+            entrytime = parser.parse(str(entrytime))
 
             lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
             try:
@@ -1049,7 +1049,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             if link:
                 dispmsg.append(link)
 
-            if (rssentrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
+            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
                 displayname = feed_dict["displayname"]
                 if not displayname:
                     try:
@@ -1060,7 +1060,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 dispmsg = []
 
             if not displayifnotnew:
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(rssentrytime))
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
 
@@ -1087,28 +1087,55 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             for submission in submissions:
                 listarray.append(submission)
             submission = listarray[0]
-            bot.msg("#spicebottest", str(submission.created))
-            return ["done testing"]
 
-            lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
-            if displayifnotnew or (str(submission.permalink) != str(lastbuildcurrent)):
+            entrytime = submission.created
+            entrytime = parser.parse(str(entrytime))
 
-                titleappend = 1
+            try:
+                submissionscore = str(submission.score)
+            except Exception as e:
+                submissionscore = None
+            if submissionscore:
+                dispmsg.append("{" + str(submissionscore) + "}")
 
-                if subreddit.over18:
-                    dispmsg.append("<NSFW>")
+            try:
+                nsfw = subreddit.over18
+            except Exception as e:
+                nsfw = False
+            if nsfw:
+                dispmsg.append("<NSFW>")
 
-                if not displayifnotnew:
-                    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(submission.permalink))
+            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
+            try:
+                title = submission.title
+                title = unicode_string_cleanup(title)
+            except Exception as e:
+                title = None
+            if title:
+                dispmsg.append(title)
 
-                dispmsg.append("{" + str(submission.score) + "}")
-                dispmsg.append(submission.title)
-                dispmsg.append(url + submission.permalink)
+            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
+            try:
+                link = submission.permalink
+            except Exception as e:
+                link = None
+            if link:
+                dispmsg.append(link)
 
-            # if not displayifnotnew:
-            #    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(rssentrytime))
-            #    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
-            #    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
+            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
+                displayname = feed_dict["displayname"]
+                if not displayname:
+                    try:
+                        displayname = feedjson['feed']['title']
+                    except Exception as e:
+                        displayname = None
+            else:
+                dispmsg = []
+
+            if not displayifnotnew:
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
 
     if displayname and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
