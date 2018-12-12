@@ -1030,7 +1030,13 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildtime = parser.parse(str(lastbuildtime))
 
-            feedjson = feedparser.parse(url)
+            try:
+                feedjson = feedparser.parse(url)
+            except Exception as e:
+                if displayifnotnew:
+                    return ["No Content Usable."]
+                else:
+                    return []
 
             try:
                 entrytime = feedjson.entries[0].updated
@@ -1094,16 +1100,28 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 else:
                     return []
 
-            subreddit = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(currentsubreddit)
+            try:
+                subreddit = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(currentsubreddit)
+            except Exception as e:
+                if displayifnotnew:
+                    return ["No Content Usable."]
+                else:
+                    return []
 
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildtime = parser.parse(str(lastbuildtime))
 
-            submissions = subreddit.new(limit=1)
-            listarray = []
-            for submission in submissions:
-                listarray.append(submission)
-            submission = listarray[0]
+            try:
+                submissions = subreddit.new(limit=1)
+                listarray = []
+                for submission in submissions:
+                    listarray.append(submission)
+                submission = listarray[0]
+            except Exception as e:
+                if displayifnotnew:
+                    return ["No Content Usable."]
+                else:
+                    return []
 
             try:
                 entrytime = submission.created
@@ -1178,16 +1196,20 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildtime = parser.parse(str(lastbuildtime))
 
-            submissions = bot.memory["botdict"]["tempvals"]['twitter'].GetUserTimeline(screen_name=currenttweetat, count=1, exclude_replies=True, include_rts=False)
-            bot.msg("#spicebottest", str(submissions))
+            try:
+                submissions = bot.memory["botdict"]["tempvals"]['twitter'].GetUserTimeline(screen_name=currenttweetat, count=1, exclude_replies=True, include_rts=False)
+                submission = submissions[0]
+            except Exception as e:
+                if displayifnotnew:
+                    return ["No Content Usable."]
+                else:
+                    return []
+            bot.msg("#spicebottest", str(submission))
             return []
-            submissions = bot.memory["botdict"]["tempvals"]['twitter'].GetUserTimeline(screen_name=currenttweetat, count=1, exclude_replies=True, include_rts=False)
-            listarray = []
-            for submission in submissions:
-                listarray.append(submission)
-            submission = listarray[0]
-            # bot.msg("#spicebottest", str(submission))
-            return []
+
+            """
+            [Status(ID=1072618070580125697, ScreenName=PicardTips, Created=Tue Dec 11 22:24:10 +0000 2018, Text=u"Picard management tip: If you're unhappy with a crew member's behavior, tell them straight out in private. Don't be passive aggressive.")]
+            """
 
             try:
                 entrytime = submission.created_at
