@@ -1265,7 +1265,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             currentcalendar = feed_dict["calendar"]
 
             http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
-            service = discovery.build('calendar', 'v3', http=http)
+            service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
             events_result = service.events().list(calendarId='primary', maxResults=10).execute()
             events = events_result.get('items', [])
