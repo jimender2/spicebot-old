@@ -55,19 +55,19 @@ def bot_startup_twitter(bot, trigger):
         f.write(textwrite)
         f.close()
 
-    # check that auth program is there
     for line in os.popen(str("sudo python /home/spicebot/quickstart.py --noauth_local_webserver")):
         stderr(line)
+    os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/token.json")
 
     try:
-        os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/gcal.json")
+        os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/token.json")
     except Exception as e:
         stderr("Error loading permissions on auth file")
 
     try:
 
         SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-        gcaljsonpath = '/home/spicebot/gcal.json'
+        gcaljsonpath = '/home/spicebot/token.json'
         gcalstore = file.Storage(gcaljsonpath)
         gcalcreds = gcalstore.get()
 

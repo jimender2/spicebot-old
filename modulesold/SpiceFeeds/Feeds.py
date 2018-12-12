@@ -479,8 +479,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 return
             event = events[0]
 
-            bot.say(str(event))
-
         elif feed_type == 'twitter':
 
             currenttweetat = eval("feeds." + feed + ".tweetat")
