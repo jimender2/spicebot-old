@@ -1268,8 +1268,11 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
             # calendar = service.calendars().get(calendarId='primary').execute()
+            d = datetime.datetime.utcnow()
+            d_with_timezone = d.replace(tzinfo=pytz.UTC)
+            d_with_timezone.isoformat()
 
-            events_result = service.events().list(calendarId=currentcalendar, maxResults=10, timeMin=datetime.datetime.now().isoformat('T')).execute()
+            events_result = service.events().list(calendarId=currentcalendar, maxResults=10, timeMin=d_with_timezone).execute()
             events = events_result.get('items', [])
 
             # try:
