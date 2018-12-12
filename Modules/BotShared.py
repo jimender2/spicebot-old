@@ -1205,7 +1205,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 else:
                     return []
 
-            for dkey in submission.keys():
+            for dkey in submission:
                 bot.msg("#spicebottest", str(dkey))
             return []
 
