@@ -1267,32 +1267,13 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
-            # calendar = service.calendars().get(calendarId='primary').execute()
+            nowtime = datetime.datetime.now()
+            nowtime = nowtime.strftime('%Y-%m-%d %H:%M:%S:%fZ')
+            # '2008-03-07T17:06:02.000Z'
 
-            events_result = service.events().list(calendarId=currentcalendar, maxResults=10, singleEvents=True, orderBy='startTime', timeMin='2008-03-07T17:06:02.000Z').execute()
+            events_result = service.events().list(calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=nowtime).execute()
             events = events_result.get('items', [])
 
-            # try:
-            # events_result = service.events().list(calendarId=currentcalendar).execute()
-            # events = events_result.get('items', [])
-            # except Exception as e:
-            #    if displayifnotnew:
-            #        return ["No Content Usable."]
-            #    else:
-            #        return []
-
-            # try:
-            #    events_result = service.events().list(calendarId=currentcalendar, timeMin=now,
-            #                                          maxResults=1, singleEvents=True,
-            #                                          orderBy='startTime').execute()
-            #    events = events_result.get('items', [])
-            # except Exception as e:
-            #    if displayifnotnew:
-            #        return ["No Content Usable."]
-            #    else:
-            #        return []
-
-            # bot.msg("#spicebottest", str(events))
             osd(bot, "#spicebottest", 'say', str(events[0]))
             return []
 
