@@ -1269,8 +1269,8 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             # calendar = service.calendars().get(calendarId='primary').execute()
 
-            events_result = service.events().list(calendarId=currentcalendar, maxResults=10).execute()
-            events = events_result.get('items', [])
+            # events_result = service.events().list(calendarId=currentcalendar, maxResults=10).execute()
+            # events = events_result.get('items', [])
 
             # try:
             # events_result = service.events().list(calendarId=currentcalendar).execute()
@@ -1281,16 +1281,16 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             #    else:
             #        return []
 
-            # try:
-            # events_result = service.events().list(calendarId=currentcalendar, timeMin=now,
-            #                                      maxResults=1, singleEvents=True,
-            #                                      orderBy='startTime').execute()
-            # events = events_result.get('items', [])
-            # except Exception as e:
-            #    if displayifnotnew:
-            #        return ["No Content Usable."]
-            #    else:
-            #        return []
+            try:
+            events_result = service.events().list(calendarId=currentcalendar, timeMin=now,
+                                                  maxResults=1, singleEvents=True,
+                                                  orderBy='startTime').execute()
+            events = events_result.get('items', [])
+            except Exception as e:
+                if displayifnotnew:
+                    return ["No Content Usable."]
+                else:
+                    return []
 
             bot.msg("#spicebottest", str(events))
             return []
