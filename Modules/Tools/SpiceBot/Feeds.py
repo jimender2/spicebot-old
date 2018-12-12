@@ -49,8 +49,6 @@ def execute_main(bot, trigger, botcom):
     if command in botcom.triggerargsarray:
         botcom.triggerargsarray.remove(command)
 
-    feeds = feeds_configs(bot, feeds)
-
     feed_select = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot.memory["botdict"]["tempvals"]['feeds'].keys() or x == 'all'], 1) or 'nofeed'
     if feed_select == 'nofeed':
         feed_list = spicemanip(bot, bot.memory["botdict"]["tempvals"]['feeds'].keys(), 'list')
