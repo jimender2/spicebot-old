@@ -28,6 +28,7 @@ from threading import Thread
 import netifaces
 
 # Additional imports
+import feedparser
 import ConfigParser
 import copy
 import datetime
