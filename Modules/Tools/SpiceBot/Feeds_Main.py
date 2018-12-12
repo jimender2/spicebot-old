@@ -118,7 +118,7 @@ def execute_main(bot, trigger, botcom):
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
 
-    channelselect = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.channel_list], 1) or botcom.channel_current
+    channelselect = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot.privileges.keys()], 1) or botcom.channel_current
 
     if command == 'enable':
         instigatormodulesarray = get_nick_value(bot, channelselect, "long", "feeds", "enabled") or []
