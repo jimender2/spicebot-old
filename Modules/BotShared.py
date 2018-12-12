@@ -1244,9 +1244,9 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
         elif feed_type == 'googlecalendar':
             return []
 
-            if not bot.memory["botdict"]["tempvals"]['twitter']:
+            if not bot.memory["botdict"]["tempvals"]['google']:
                 if displayifnotnew:
-                    return ["twitter api unavailable."]
+                    return ["google api unavailable."]
                 else:
                     return []
 
