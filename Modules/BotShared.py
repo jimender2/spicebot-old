@@ -1205,6 +1205,10 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 else:
                     return []
 
+            for dkey in submission.keys():
+                bot.msg("#spicebottest", str(dkey))
+            return []
+
             try:
                 entrytime = submission['created_at']
                 entrytime = entrytime.replace(tzinfo=pytz.UTC)
