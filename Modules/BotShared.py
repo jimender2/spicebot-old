@@ -1050,7 +1050,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             if link:
                 dispmsg.append(link)
 
-            if (rssentrytime > lastbuildcurrent and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
+            if (rssentrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
                 displayname = feed_dict["displayname"]
             else:
                 dispmsg = []
