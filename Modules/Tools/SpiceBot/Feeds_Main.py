@@ -108,7 +108,7 @@ def execute_main(bot, trigger, botcom):
     if command == 'reset':
         newlist = []
         for feed in current_feed_list:
-            feed_type = eval("feeds." + feed + ".type")
+            feed_type = bot.memory["botdict"]["tempvals"]['feeds'][feed]["type"]
             if feed_type in ['rss', 'youtube', 'scrape', 'json']:
                 newlist.append(feed)
         if newlist != []:
