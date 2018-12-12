@@ -35,7 +35,7 @@ def auto_feeds(bot, trigger):
             Thread(target=feeds_thread, args=(bot, feed,)).start()
 
 
-def feeds_thread(bot):
+def feeds_thread(bot, feed):
     bot.msg("#spicebottest", str(feed))
     dispmsg = bot_dictcom_feeds_handler(bot, feed, False)
     if dispmsg != []:
