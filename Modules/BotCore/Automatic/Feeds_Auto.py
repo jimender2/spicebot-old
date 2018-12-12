@@ -30,16 +30,21 @@ def auto_feeds(bot, trigger):
         pass
 
     while True:
-        for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
-            dispmsg = bot_dictcom_feeds_handler(bot, feed, False)
-            if dispmsg != []:
-                for channel in bot.privileges.keys():
-                    if 'feed' not in bot.memory["botdict"]['servers_list'][str(bot.memory["botdict"]["tempvals"]['server'])]['channels_list'][str(channel)]["disabled_commands"]:
-                        feed_enabled = get_nick_value(bot, str(channel), "long", "feeds", "enabled") or []
-                        if feed in feed_enabled:
-                            osd(bot, str(channel), 'say', dispmsg)
-                for user in bot.memory["botdict"]["tempvals"]["servers_list"][str(bot.memory["botdict"]["tempvals"]['server'])]['all_current_users']:
-                    feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
-                    if feed in feed_enabled:
-                        osd(bot, user, 'priv', dispmsg)
         time.sleep(45)
+        for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
+            Thread(target=feeds_thread, args=(bot, feed,)).start()
+
+
+def feeds_thread(bot):
+    bot.msg("#spicebottest", str(feed))
+    dispmsg = bot_dictcom_feeds_handler(bot, feed, False)
+    if dispmsg != []:
+        for channel in bot.privileges.keys():
+            if 'feed' not in bot.memory["botdict"]['servers_list'][str(bot.memory["botdict"]["tempvals"]['server'])]['channels_list'][str(channel)]["disabled_commands"]:
+                feed_enabled = get_nick_value(bot, str(channel), "long", "feeds", "enabled") or []
+                if feed in feed_enabled:
+                    osd(bot, str(channel), 'say', dispmsg)
+        for user in bot.memory["botdict"]["tempvals"]["servers_list"][str(bot.memory["botdict"]["tempvals"]['server'])]['all_current_users']:
+            feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
+            if feed in feed_enabled:
+                osd(bot, user, 'priv', dispmsg)

@@ -1068,6 +1068,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
     if displayname and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
 
+    botdict_save(bot)
     return dispmsg
 
 
