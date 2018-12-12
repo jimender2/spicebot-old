@@ -31,8 +31,17 @@ This reads the external config for gif api
 def bot_startup_twitter(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["ext_conf"]):
+    while not bot_startup_requirements_met(bot, ["ext_conf", "bot_info"]):
         pass
+
+    if not os.path.exists("/home/spicebot/quickstart.py"):
+        stderr("Auth Program Missing, Copying")
+        os.system("sudo cp " + str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"]) + "External/quickstart.py /home/spicebot/quickstart.py")
+        os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/quickstart.py")
+
+    # check that auth program is there
+    for line in os.popen(str("sudo python /home/spicebot/quickstart.py")):
+        stderr(line)
 
     try:
         os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/gcal.json")
