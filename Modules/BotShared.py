@@ -1258,18 +1258,18 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             currentcalendar = feed_dict["calendar"]
 
-            try:
-                events_result = bot.memory["botdict"]["tempvals"]['google'].events().list(calendarId=currentcalendar, timeMin=now,
-                                                                                          maxResults=1, singleEvents=True,
-                                                                                          orderBy='startTime').execute()
-                # events = events_result.get('items', [])
-            except Exception as e:
-                if displayifnotnew:
-                    return ["No Content Usable."]
-                else:
-                    return []
+            # try:
+            events_result = bot.memory["botdict"]["tempvals"]['google'].events().list(calendarId=currentcalendar, timeMin=now,
+                                                                                      maxResults=1, singleEvents=True,
+                                                                                      orderBy='startTime').execute()
+            events = events_result.get('items', [])
+            # except Exception as e:
+            #    if displayifnotnew:
+            #        return ["No Content Usable."]
+            #    else:
+            #        return []
 
-            bot.msg("#spicebottest", str(events_result))
+            bot.msg("#spicebottest", str(events))
             return []
 
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
