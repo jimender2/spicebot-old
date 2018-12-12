@@ -45,18 +45,18 @@ def mainfunctionnobeguine(bot, trigger):
 def execute_main(bot, trigger, botcom):
     bot.say("DBB Testing")
 
-    for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
+    # for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
 
-        url = bot.memory["botdict"]["tempvals"]['feeds'][feed]["url"]
+    #    url = bot.memory["botdict"]["tempvals"]['feeds'][feed]["url"]
 
-        d = feedparser.parse(url)
-        bot.say(str(d['feed']['title']) + " " + str(d['entries'][0]))
+    d = feedparser.parse('https://github.com/SpiceBot/SpiceBot/commits/dev.atom')
+    bot.say(str(d['feed']['title']) + " " + str(d['feed']))
 
-        # bot.say(str(d['feed']['title']))
-        # bot.say(str(d['feed']['link']))
-        # bot.say(str(d['feed']['subtitle']))
-        # bot.say(str(len(d['entries'])))
-        # bot.say(str(d['entries'][0]['title']))
-        # bot.say(str(d['entries'][0]['link']))
-        # for post in d['entries']:
-        #    bot.say(str(post.title + ": " + post.link))
+    # bot.say(str(d['feed']['title']))
+    # bot.say(str(d['feed']['link']))
+    # bot.say(str(d['feed']['subtitle']))
+    # bot.say(str(len(d['entries'])))
+    # bot.say(str(d['entries'][0]['title']))
+    # bot.say(str(d['entries'][0]['link']))
+    # for post in d['entries']:
+    #    bot.say(str(post.title + ": " + post.link))
