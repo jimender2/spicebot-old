@@ -24,8 +24,8 @@ sys.setdefaultencoding('utf-8')
 comdict = {"author": "deathbybandaid", "contributors": ["dysonparkes"]}
 
 
-@sopel.module.commands('online')
-def mainfunctionnobeguine(bot, trigger):
+@sopel.module.commands('time')
+def mainfunction(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:
