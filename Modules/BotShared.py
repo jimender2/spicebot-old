@@ -1204,19 +1204,23 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                     return ["No Content Usable."]
                 else:
                     return []
-            bot.msg("#spicebottest", str(submission))
+
+            try:
+                entrytime = submission['created_at']
+                entrytime = entrytime.replace(tzinfo=pytz.UTC)
+            except Exception as e:
+                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            entrytime = parser.parse(str(entrytime))
+
+            bot.msg("#spicebottest", str(entrytime))
             return []
+
 
             """
             [Status(ID=1072618070580125697, ScreenName=PicardTips, Created=Tue Dec 11 22:24:10 +0000 2018, Text=u"Picard management tip: If you're unhappy with a crew member's behavior, tell them straight out in private. Don't be passive aggressive.")]
             """
 
-            try:
-                entrytime = submission.created_at
-                entrytime = entrytime.replace(tzinfo=pytz.UTC)
-            except Exception as e:
-                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            entrytime = parser.parse(str(entrytime))
+
 
             lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
             try:
