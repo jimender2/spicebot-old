@@ -54,7 +54,6 @@ from fake_useragent import UserAgent
 import praw
 from prawcore import NotFound
 import twitter
-from twitter import *
 from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
@@ -1155,14 +1154,13 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildtime = parser.parse(str(lastbuildtime))
 
-            submissions = bot.memory["botdict"]["tempvals"]['twitter'].statuses.home_timeline()
-            submissions[0]
-            bot.msg("#spicebottest", str(submission))
-            return []
+            submissions = bot.memory["botdict"]["tempvals"]['twitter'].GetUserTimeline(screen_name=currenttweetat, count=1)
             listarray = []
             for submission in submissions:
                 listarray.append(submission)
             submission = listarray[0]
+            bot.msg("#spicebottest", str(submission))
+            return []
 
             try:
                 entrytime = submission.created_at

@@ -41,11 +41,10 @@ def bot_startup_twitter(bot, trigger):
         TTOKEN = bot.memory["botdict"]["tempvals"]['ext_conf']["twitter"]["accesstoken"]
         TTOKENSECRET = bot.memory["botdict"]["tempvals"]['ext_conf']["twitter"]["tokenaccesssecret"]
 
-        # bot.memory["botdict"]["tempvals"]['twitter'] = twitter.Api(consumer_key=TKEY,
-        #                                                           consumer_secret=TSECRET,
-        #                                                           access_token_key=TTOKEN,
-        #                                                           access_token_secret=TTOKENSECRET)
-        bot.memory["botdict"]["tempvals"]['twitter'] = Twitter(auth=OAuth(TTOKEN, TTOKENSECRET, TKEY, TSECRET))
+        bot.memory["botdict"]["tempvals"]['twitter'] = twitter.Api(consumer_key=TKEY,
+                                                                   consumer_secret=TSECRET,
+                                                                   access_token_key=TTOKEN,
+                                                                   access_token_secret=TTOKENSECRET)
 
     except Exception as e:
         bot.memory["botdict"]["tempvals"]['twitter'] = None
