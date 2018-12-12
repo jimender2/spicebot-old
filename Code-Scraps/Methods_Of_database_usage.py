@@ -185,6 +185,18 @@ Current Method all users, kept in bot.memory
 """
 
 
+# get values from other bots
+def get_nick_value_api(bot, botname, nick, longevity, sortingkey, usekey):
+    try:
+        if longevity == 'long':
+            botvaltime = bot.memory["altbots"][botname]["users"][nick][sortingkey][usekey]["value"]
+        elif longevity == 'temp':
+            botvaltime = bot.memory["altbots"][botname]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"]
+    except Exception as e:
+        botvaltime = None
+    return botvaltime
+
+
 # get nick value from bot.memory
 def get_nick_value(bot, nick, longevity, sortingkey, usekey):
 
@@ -207,17 +219,34 @@ def get_nick_value(bot, nick, longevity, sortingkey, usekey):
     # Verify usekey exists
     if longevity == 'long':
         if usekey not in bot.memory["botdict"]["users"][nick][sortingkey].keys():
-            return None
-        else:
-            return bot.memory["botdict"]["users"][nick][sortingkey][usekey]
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey] = dict()
+        if not isinstance(bot.memory["botdict"]["users"][nick][sortingkey][usekey], dict):
+            oldvalue = bot.memory["botdict"]["users"][nick][sortingkey][usekey]
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey] = dict()
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"] = oldvalue
     elif longevity == 'temp':
         if usekey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey].keys():
-            return None
-        else:
-            return bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] = dict()
+        if not isinstance(bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey], dict):
+            oldvalue = bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] = dict()
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = oldvalue
+
+    # Get the value
+    if longevity == 'long':
+        if "value" not in bot.memory["botdict"]["users"][nick][sortingkey][usekey].keys():
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"] = None
+        if "timestamp" not in bot.memory["botdict"]["users"][nick][sortingkey][usekey].keys():
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey]["timestamp"] = 0
+        return bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"]
+    elif longevity == 'temp':
+        if "value" not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = None
+        if "timestamp" not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["timestamp"] = 0
+        return bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"]
 
 
-# use this for math
 def adjust_nick_value(bot, nick, longevity, sortingkey, usekey, value):
     oldvalue = get_nick_value(bot, nick, longevity, sortingkey, usekey) or 0
     set_nick_value(bot, nick, longevity, sortingkey, usekey, int(oldvalue) + int(value))
@@ -242,16 +271,38 @@ def set_nick_value(bot, nick, longevity, sortingkey, usekey, value):
         if sortingkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
             bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey] = dict()
 
-    # set
+    # Verify usekey exists
     if longevity == 'long':
-        bot.memory["botdict"]["users"][nick][sortingkey][usekey] = value
+        if usekey not in bot.memory["botdict"]["users"][nick][sortingkey].keys():
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey] = dict()
+        if not isinstance(bot.memory["botdict"]["users"][nick][sortingkey][usekey], dict):
+            oldvalue = bot.memory["botdict"]["users"][nick][sortingkey][usekey]
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey] = dict()
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"] = oldvalue
     elif longevity == 'temp':
-        bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] = value
+        if usekey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] = dict()
+        if not isinstance(bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey], dict):
+            oldvalue = bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] = dict()
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = oldvalue
+
+    # Se the value
+    currtime = time.time()
+    if longevity == 'long':
+        bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"] = value
+        bot.memory["botdict"]["users"][nick][sortingkey][usekey]["timestamp"] = currtime
+    elif longevity == 'temp':
+        bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = value
+        bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["timestamp"] = currtime
 
 
 # set nick value in bot.memory
 def reset_nick_value(bot, nick, longevity, sortingkey, usekey):
 
+    # if str(bot.nick).endswith("dev"):
+    #    usekey = usekey + "_dev"
+
     # verify nick dict exists
     if longevity == 'long':
         if nick not in bot.memory["botdict"]["users"].keys():
@@ -268,53 +319,48 @@ def reset_nick_value(bot, nick, longevity, sortingkey, usekey):
         if sortingkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
             bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey] = dict()
 
-    # reset
+    # Verify usekey exists
     if longevity == 'long':
-        if usekey in bot.memory["botdict"]["users"][nick][sortingkey].keys():
-            del bot.memory["botdict"]["users"][nick][sortingkey][usekey]
+        if usekey not in bot.memory["botdict"]["users"][nick][sortingkey].keys():
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey] = dict()
+        if not isinstance(bot.memory["botdict"]["users"][nick][sortingkey][usekey], dict):
+            oldvalue = bot.memory["botdict"]["users"][nick][sortingkey][usekey]
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey] = dict()
+            bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"] = oldvalue
     elif longevity == 'temp':
-        if usekey in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey].keys():
-            del bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]
+        if usekey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey].keys():
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] = dict()
+        if not isinstance(bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey], dict):
+            oldvalue = bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] = dict()
+            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = oldvalue
+
+    # Reset the value
+    currtime = time.time()
+    if longevity == 'long':
+        bot.memory["botdict"]["users"][nick][sortingkey][usekey]["value"] = None
+        bot.memory["botdict"]["users"][nick][sortingkey][usekey]["timestamp"] = currtime
+    elif longevity == 'temp':
+        bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["value"] = None
+        bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]["timestamp"] = currtime
 
 
-# adjust a list of entries in bot.memory
 def adjust_nick_array(bot, nick, longevity, sortingkey, usekey, values, direction):
+
     if not isinstance(values, list):
         values = [values]
 
-    # verify nick dict exists
-    if longevity == 'long':
-        if nick not in bot.memory["botdict"]["users"].keys():
-            bot.memory["botdict"]["users"][nick] = dict()
-    elif longevity == 'temp':
-        if nick not in bot.memory["botdict"]["tempvals"]["uservals"].keys():
-            bot.memory["botdict"]["tempvals"]["uservals"][nick] = dict()
-
-    # Verify sortingkey exists
-    if longevity == 'long':
-        if sortingkey not in bot.memory["botdict"]["users"][nick].keys():
-            bot.memory["botdict"]["users"][nick][sortingkey] = dict()
-    elif longevity == 'temp':
-        if sortingkey not in bot.memory["botdict"]["tempvals"]["uservals"][nick].keys():
-            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey] = dict()
-
-    # verify array exists
-    if longevity == 'long':
-        if usekey not in bot.memory["botdict"]["users"][nick][sortingkey]:
-            bot.memory["botdict"]["users"][nick][sortingkey][usekey] = []
-    elif longevity == 'temp':
-        if usekey not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey]:
-            bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] = []
+    oldvalues = get_nick_value(bot, nick, longevity, sortingkey, usekey) or []
 
     # startup entries
     if direction == 'startup':
         if longevity == 'long':
-            if bot.memory["botdict"]["users"][nick][sortingkey][usekey] == []:
+            if oldvalues == []:
                 direction == 'add'
             else:
                 return
         elif longevity == 'temp':
-            if bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey] == []:
+            if oldvalues == []:
                 direction == 'add'
             else:
                 return
@@ -323,21 +369,23 @@ def adjust_nick_array(bot, nick, longevity, sortingkey, usekey, values, directio
     for value in values:
         if longevity == 'long':
             if direction == 'add':
-                if value not in bot.memory["botdict"]["users"][nick][sortingkey][usekey]:
-                    bot.memory["botdict"]["users"][nick][sortingkey][usekey].append(value)
+                if value not in oldvalues:
+                    oldvalues.append(value)
             elif direction == 'startup':
-                if value not in bot.memory["botdict"]["users"][nick][sortingkey][usekey]:
-                    bot.memory["botdict"]["users"][nick][sortingkey][usekey].append(value)
+                if value not in oldvalues:
+                    oldvalues.append(value)
             elif direction in ['del', 'remove']:
-                if value in bot.memory["botdict"]["users"][nick][sortingkey][usekey]:
-                    bot.memory["botdict"]["users"][nick][sortingkey][usekey].remove(value)
+                if value in oldvalues:
+                    oldvalues.remove(value)
         elif longevity == 'temp':
             if direction == 'add':
-                if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]:
-                    bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].append(value)
+                if value not in oldvalues:
+                    oldvalues.append(value)
             elif direction == 'startup':
-                if value not in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]:
-                    bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].append(value)
+                if value not in oldvalues:
+                    oldvalues.append(value)
             elif direction in ['del', 'remove']:
-                if value in bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey]:
-                    bot.memory["botdict"]["tempvals"]["uservals"][nick][sortingkey][usekey].remove(value)
+                if value in oldvalues:
+                    oldvalues.remove(value)
+
+    set_nick_value(bot, nick, longevity, sortingkey, usekey, oldvalues)
