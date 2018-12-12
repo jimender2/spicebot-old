@@ -169,7 +169,7 @@ def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
 
         displayname = feed_dict["displayname"]
 
-        feed_type = feed_dict["feedtype"]
+        feed_type = feed_dict["type"]
 
         if feed_type in ['rss', 'youtube', 'github']:
 

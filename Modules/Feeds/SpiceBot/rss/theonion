@@ -1,0 +1,16 @@
+{
+
+"type": "rss",
+"displayname": "The Onion",
+"url": "https://www.theonion.com/rss",
+"lastbuildtype": "pubDate",
+"lastbuildparent": 0,
+"lastbuildchild": 0,
+"titletype": "title",
+"titleparent": 1,
+"titlechild": 0,
+"linktype": "link",
+"linkparent": 1,
+"linkchild": 0,
+
+}

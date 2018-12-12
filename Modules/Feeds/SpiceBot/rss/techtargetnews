@@ -1,0 +1,16 @@
+{
+
+"type": "rss",
+"displayname": "TechTarget News",
+"url": "http://whatis.techtarget.com/rss/Enterprise-IT-news-roundup.xml",
+"lastbuildtype": "pubDate",
+"lastbuildparent": 0,
+"lastbuildchild": 0,
+"titletype": "title",
+"titleparent": 0,
+"titlechild": 0,
+"linktype": "link",
+"linkparent": 1,
+"linkchild": 0,
+
+}

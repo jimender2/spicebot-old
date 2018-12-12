@@ -99,8 +99,8 @@ def feed_configs(bot):
 
                                 feedcount += 1
 
-                                if "feedtype" not in dict_from_file.keys():
-                                    dict_from_file["feedtype"] = quick_coms_type
+                                if "type" not in dict_from_file.keys():
+                                    dict_from_file["type"] = quick_coms_type
 
                                 if "displayname" not in dict_from_file.keys():
                                     dict_from_file["displayname"] = comconf
@@ -108,7 +108,7 @@ def feed_configs(bot):
                                 if "url" not in dict_from_file.keys():
                                     dict_from_file["url"] = None
 
-                                if dict_from_file["feedtype"] == "github":
+                                if dict_from_file["type"] == "github":
 
                                     if "lastbuildtype" not in dict_from_file.keys():
                                         dict_from_file["lastbuildtype"] = "updated"
@@ -136,6 +136,64 @@ def feed_configs(bot):
 
                                     if "linkchild" not in dict_from_file.keys():
                                         dict_from_file["linkchild"] = "href"
+
+                                if dict_from_file["type"] == "youtube":
+
+                                    if "lastbuildtype" not in dict_from_file.keys():
+                                        dict_from_file["lastbuildtype"] = "published"
+
+                                    if "lastbuildparent" not in dict_from_file.keys():
+                                        dict_from_file["lastbuildparent"] = 0
+
+                                    if "lastbuildchild" not in dict_from_file.keys():
+                                        dict_from_file["lastbuildchild"] = 0
+
+                                    if "titletype" not in dict_from_file.keys():
+                                        dict_from_file["titletype"] = "title"
+
+                                    if "titleparent" not in dict_from_file.keys():
+                                        dict_from_file["titleparent"] = 1
+
+                                    if "titlechild" not in dict_from_file.keys():
+                                        dict_from_file["titlechild"] = 0
+
+                                    if "linktype" not in dict_from_file.keys():
+                                        dict_from_file["linktype"] = "link"
+
+                                    if "linkparent" not in dict_from_file.keys():
+                                        dict_from_file["linkparent"] = 2
+
+                                    if "linkchild" not in dict_from_file.keys():
+                                        dict_from_file["linkchild"] = "href"
+
+                                if dict_from_file["type"] == "rss":
+
+                                    if "lastbuildtype" not in dict_from_file.keys():
+                                        dict_from_file["lastbuildtype"] = "published"
+
+                                    if "lastbuildparent" not in dict_from_file.keys():
+                                        dict_from_file["lastbuildparent"] = 0
+
+                                    if "lastbuildchild" not in dict_from_file.keys():
+                                        dict_from_file["lastbuildchild"] = 0
+
+                                    if "titletype" not in dict_from_file.keys():
+                                        dict_from_file["titletype"] = "title"
+
+                                    if "titleparent" not in dict_from_file.keys():
+                                        dict_from_file["titleparent"] = 0
+
+                                    if "titlechild" not in dict_from_file.keys():
+                                        dict_from_file["titlechild"] = 0
+
+                                    if "linktype" not in dict_from_file.keys():
+                                        dict_from_file["linktype"] = "link"
+
+                                    if "linkparent" not in dict_from_file.keys():
+                                        dict_from_file["linkparent"] = 0
+
+                                    if "linkchild" not in dict_from_file.keys():
+                                        dict_from_file["linkchild"] = 0
 
                                 if comconf not in bot.memory["botdict"]["tempvals"]['feeds'].keys():
                                     bot.memory["botdict"]["tempvals"]['feeds'][comconf] = dict_from_file

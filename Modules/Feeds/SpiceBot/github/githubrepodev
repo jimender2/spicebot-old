@@ -1,7 +1,6 @@
 {
 
-"type": "feeds",
-"feedtype": "github",
+"type": "github",
 "displayname": "SpiceBot Github",
 "url": "https://github.com/SpiceBot/SpiceBot/commits/dev.atom",
 
