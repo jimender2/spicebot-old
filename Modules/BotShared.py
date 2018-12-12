@@ -1010,7 +1010,10 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
     url = feed_dict["url"]
     if not url:
-        return ["URL missing."]
+        if displayifnotnew:
+            return ["URL missing."]
+        else:
+            return []
 
     page = requests.get(url, headers=header)
     # tree = html.fromstring(page.content)
@@ -1071,13 +1074,19 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             path = feed_dict["path"]
             if not path:
-                return ["reddit Path missing."]
+                if displayifnotnew:
+                    return ["reddit Path missing."]
+                else:
+                    return []
 
             currentsubreddit = feed_dict["path"]
 
             subredditcheck = reddit_subreddit_check(bot, currentsubreddit)
             if not subredditcheck["exists"]:
-                return [subredditcheck["error"]]
+                if displayifnotnew:
+                    return [subredditcheck["error"]]
+                else:
+                    return []
 
             subreddit = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(currentsubreddit)
 
@@ -1145,9 +1154,18 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
         elif feed_type == 'twitter':
 
+            if not bot.memory["botdict"]["tempvals"]['twitter']:
+                if displayifnotnew:
+                    return ["twitter api unavailable."]
+                else:
+                    return []
+
             handle = feed_dict["handle"]
             if not handle:
-                return ["twitter handle missing."]
+                if displayifnotnew:
+                    return ["twitter handle missing."]
+                else:
+                    return []
 
             currenttweetat = feed_dict["handle"]
 
@@ -1161,62 +1179,6 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             submission = listarray[0]
             bot.msg("#spicebottest", str(submission))
             return []
-
-            try:
-                entrytime = submission.created_at
-                entrytime = entrytime.replace(tzinfo=pytz.UTC)
-            except Exception as e:
-                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            entrytime = parser.parse(str(entrytime))
-
-            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
-            try:
-                title = submission.text
-                title = unicode_string_cleanup(title)
-            except Exception as e:
-                title = None
-            if title:
-                dispmsg.append(title)
-
-            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
-            try:
-                link = submission.permalink
-            except Exception as e:
-                link = None
-            if link:
-                dispmsg.append(str(feed_dict["url"] + link))
-
-            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
-                displayname = feed_dict["displayname"]
-                if not displayname:
-                    try:
-                        displayname = feedjson['feed']['title']
-                    except Exception as e:
-                        displayname = None
-            else:
-                dispmsg = []
-
-            if not displayifnotnew:
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
-
-        elif feed_type == 'twitterold':
-
-            handle = feed_dict["handle"]
-            if not path:
-                return ["twitter handle missing."]
-
-            currenttweetat = feed_dict["handle"]
-
-            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            lastbuildtime = parser.parse(str(lastbuildtime))
-
-            submissions = bot.memory["botdict"]["tempvals"]['twitter'].GetUserTimeline(screen_name=currenttweetat, count=1)
-            listarray = []
-            for submission in submissions:
-                listarray.append(submission)
-            submission = listarray[0]
 
             try:
                 entrytime = submission.created_at
