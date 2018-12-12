@@ -45,15 +45,18 @@ def mainfunctionnobeguine(bot, trigger):
 def execute_main(bot, trigger, botcom):
     bot.say("DBB Testing")
 
-    # for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
+    for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
 
-    d = feedparser.parse("https://github.com/SpiceBot/SpiceBot/commits/dev.atom")
+        url = bot.memory["botdict"]["tempvals"]['feeds'][feed]["url"]
 
-    bot.say(str(d['feed']['title']))
-    bot.say(str(d['feed']['link']))
-    # bot.say(str(d['feed']['subtitle']))
-    bot.say(str(len(d['entries'])))
-    bot.say(str(d['entries'][0]['title']))
-    bot.say(str(d['entries'][0]['link']))
-    for post in d['entries']:
-        bot.say(str(post.title + ": " + post.link))
+        d = feedparser.parse(url)
+        bot.say(str(d['feed']['title']) + " " + str(len(d['entries'])))
+
+        # bot.say(str(d['feed']['title']))
+        # bot.say(str(d['feed']['link']))
+        # bot.say(str(d['feed']['subtitle']))
+        # bot.say(str(len(d['entries'])))
+        # bot.say(str(d['entries'][0]['title']))
+        # bot.say(str(d['entries'][0]['link']))
+        # for post in d['entries']:
+        #    bot.say(str(post.title + ": " + post.link))
