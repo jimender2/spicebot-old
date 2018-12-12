@@ -37,11 +37,7 @@ def bot_startup_twitter(bot, trigger):
     try:
 
         scopes = 'https://www.googleapis.com/auth/calendar.readonly'
-        credentials = ServiceAccountCredentials.from_json_keyfile_name('/home/spicebot/gcal.json', scopes=scopes)
-        # delegated_credentials = credentials.create_delegated('spicebot@deathbybandaid.net')
-        http_auth = credentials.authorize(Http())
-
-        bot.memory["botdict"]["tempvals"]['google'] = build('calendar', 'v3', http=http_auth, cache_discovery=False)
+        bot.memory["botdict"]["tempvals"]['google'] = ServiceAccountCredentials.from_json_keyfile_name('/home/spicebot/gcal.json', scopes=scopes)
 
     except Exception as e:
         bot.memory["botdict"]["tempvals"]['google'] = None
