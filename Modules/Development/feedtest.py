@@ -51,9 +51,9 @@ def execute_main(bot, trigger, botcom):
 
     bot.say(str(d['feed']['title']))
     bot.say(str(d['feed']['link']))
-    bot.say(str(d.feed.subtitle))
+    bot.say(str(d['feed']['subtitle']))
     bot.say(str(len(d['entries'])))
     bot.say(str(d['entries'][0]['title']))
-    bot.say(str(d.entries[0]['link']))
-    for post in d.entries:
+    bot.say(str(d['entries'][0]['link']))
+    for post in d['entries']:
         bot.say(str(post.title + ": " + post.link))
