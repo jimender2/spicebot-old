@@ -39,6 +39,23 @@ def bot_startup_twitter(bot, trigger):
         os.system("sudo cp " + str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"]) + "External/quickstart.py /home/spicebot/quickstart.py")
         os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/quickstart.py")
 
+    if not os.path.exists("/home/spicebot/credentials.json"):
+        stderr("Credentials File Missing, Copying")
+        try:
+            CLIENTID = bot.memory["botdict"]["tempvals"]['ext_conf']["google"]["clientid"]
+            SECRET = bot.memory["botdict"]["tempvals"]['ext_conf']["google"]["secret"]
+        except Exception as e:
+            bot.memory["botdict"]["tempvals"]['google'] = None
+            stderr("Error loading google calendar auth")
+            bot_startup_requirements_set(bot, "auth_google")
+
+        f = open("/home/spicebot/credentials.json", "w+")
+        textwrite = str('{"installed":{"client_id":"CLIENTIDGOESHERE","project_id":"spicebot-1536234792000","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://www.googleapis.com/oauth2/v3/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"CLIENTSECRETGOESHERE","redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}}')
+        textwrite.replace("CLIENTIDGOESHERE", CLIENTID)
+        textwrite.replace("CLIENTSECRETGOESHERE", SECRET)
+        f.write()
+        f.close()
+
     # check that auth program is there
     for line in os.popen(str("sudo python /home/spicebot/quickstart.py")):
         stderr(line)
