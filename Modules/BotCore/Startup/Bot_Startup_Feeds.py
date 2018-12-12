@@ -119,3 +119,4 @@ def feed_configs(bot):
         stderr("Warning: Couldn't load any feed files")
 
     bot.memory["botdict"]["tempvals"]['feed_count'] = feedcount
+    bot_startup_requirements_set(bot, "feeds")

@@ -20,8 +20,8 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-# save dictionary every half hour
-@sopel.module.interval(1800)
+@event('001')
+@rule('.*')
 @sopel.module.thread(True)
 def savingitall(bot):
 
@@ -29,4 +29,6 @@ def savingitall(bot):
     while not bot_startup_requirements_met(bot, ["botdict"]):
         pass
 
-    botdict_save(bot)
+    while True:
+        botdict_save(bot)
+        time.sleep(1800)

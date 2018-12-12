@@ -20,18 +20,26 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-# Automatic Run
-@sopel.module.interval(60)
-def autofeeds(bot):
-    for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
-        dispmsg = bot_dictcom_feeds_handler(bot, botcom, feed, False)
-        if dispmsg != []:
-            for channel in bot.privileges.keys():
-                if 'feed' not in bot.memory["botdict"]['servers_list'][str(bot.memory["botdict"]["tempvals"]['server'])]['channels_list'][str(channel)]["disabled_commands"]:
-                    feed_enabled = get_nick_value(bot, channel, "long", "feeds", "enabled") or []
+@event('001')
+@rule('.*')
+@sopel.module.thread(True)
+def savingitall(bot):
+
+    # don't run jobs if not ready
+    while not bot_startup_requirements_met(bot, ["botdict", "feeds", "monologue"]):
+        pass
+
+    while True:
+        for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
+            dispmsg = bot_dictcom_feeds_handler(bot, botcom, feed, False)
+            if dispmsg != []:
+                for channel in bot.privileges.keys():
+                    if 'feed' not in bot.memory["botdict"]['servers_list'][str(bot.memory["botdict"]["tempvals"]['server'])]['channels_list'][str(channel)]["disabled_commands"]:
+                        feed_enabled = get_nick_value(bot, channel, "long", "feeds", "enabled") or []
+                        if feed in feed_enabled:
+                            osd(bot, channel, 'say', dispmsg)
+                for user in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['all_current_users']:
+                    feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
                     if feed in feed_enabled:
-                        osd(bot, channel, 'say', dispmsg)
-            for user in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['all_current_users']:
-                feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
-                if feed in feed_enabled:
-                    osd(bot, user, 'priv', dispmsg)
+                        osd(bot, user, 'priv', dispmsg)
+        time.sleep(45)
