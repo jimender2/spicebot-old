@@ -203,8 +203,9 @@ def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
                 title = feedjson.entries[0].title
 
                 if feed_type == 'github':
-                    authors = xmldoc.getElementsByTagName('name')
-                    author = authors[0].childNodes[0].nodeValue
+                    # authors = xmldoc.getElementsByTagName('name')
+                    # author = authors[0].childNodes[0].nodeValue
+                    author = feedjson.entries[0]['name']
                     dispmsg.append(author + " committed")
 
                 title = unicode_string_cleanup(title)
