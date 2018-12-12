@@ -1073,7 +1073,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             currentsubreddit = feed_dict["path"]
 
-            subredditcheck = reddit_subreddit_check(bot, sub)
+            subredditcheck = reddit_subreddit_check(bot, currentsubreddit)
             if not subredditcheck["exists"]:
                 return [subredditcheck["error"]]
 
