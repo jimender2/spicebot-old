@@ -1267,8 +1267,19 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
-            events_result = service.events().list(calendarId='primary', maxResults=10).execute()
-            events = events_result.get('items', [])
+            page_token = None
+            calendar_ids = []
+            while True:
+                calendar_list = service.calendarList().list(pageToken=page_token).execute()
+                for calendar_list_entry in calendar_list['items']:
+                    if '@qxf2.com' in calendar_list_entry['id']:
+                        calendar_ids.append(calendar_list_entry['id'])
+                page_token = calendar_list.get('nextPageToken')
+                if not page_token:
+                    break
+
+            # events_result = service.events().list(calendarId='primary', maxResults=10).execute()
+            # events = events_result.get('items', [])
 
             # try:
             # events_result = service.events().list(calendarId=currentcalendar, timeMin=now,
@@ -1281,7 +1292,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             #    else:
             #        return []
 
-            bot.msg("#spicebottest", str(events))
+            bot.msg("#spicebottest", str(calendar_ids))
             return []
 
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
