@@ -1143,11 +1143,10 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
 
-
         elif feed_type == 'twitter':
 
             handle = feed_dict["handle"]
-            if not path:
+            if not handle:
                 return ["twitter handle missing."]
 
             currenttweetat = feed_dict["handle"]
