@@ -26,9 +26,9 @@ sys.setdefaultencoding('utf-8')
 def savingitall(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict"]):
+    while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
         pass
 
     while True:
-        botdict_save(bot)
         time.sleep(1800)
+        botdict_save(bot)

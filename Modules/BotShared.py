@@ -1023,7 +1023,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
         feed_type = feed_dict["type"]
 
-        if feed_type in ['rss', 'youtube', 'github']:
+        if feed_type in ['rss', 'youtube', 'github', 'reddit']:
 
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildtime = parser.parse(str(lastbuildtime))
@@ -1052,6 +1052,11 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             if (rssentrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
                 displayname = feed_dict["displayname"]
+                if not displayname:
+                    try:
+                        displayname = feedjson['feed']['title']
+                    except Exception as e:
+                        displayname = None
             else:
                 dispmsg = []
 
