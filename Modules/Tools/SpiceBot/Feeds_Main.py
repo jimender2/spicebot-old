@@ -65,7 +65,7 @@ def execute_main(bot, trigger, botcom):
 
     if command == 'run':
         for feed in current_feed_list:
-            dispmsg = bot_dictcom_feeds_handler(bot, botcom, feed, True)
+            dispmsg = bot_dictcom_feeds_handler(bot, feed, True)
             if dispmsg == []:
                 osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
             else:

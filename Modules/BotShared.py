@@ -1001,7 +1001,7 @@ Feeds
 """
 
 
-def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
+def bot_dictcom_feeds_handler(bot, feed, displayifnotnew=True):
 
     feed_dict = bot.memory["botdict"]["tempvals"]['feeds'][feed]
 

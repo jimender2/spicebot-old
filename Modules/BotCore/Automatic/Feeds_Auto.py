@@ -28,12 +28,10 @@ def auto_feeds(bot, trigger):
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
         pass
-    bot.msg("#spicebottest", "module start")
 
     while True:
-        bot.msg("#spicebottest", "45 second loop start")
         for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
-            dispmsg = bot_dictcom_feeds_handler(bot, botcom, feed, False)
+            dispmsg = bot_dictcom_feeds_handler(bot, feed, False)
             if dispmsg != []:
                 for channel in bot.privileges.keys():
                     if 'feed' not in bot.memory["botdict"]['servers_list'][str(bot.memory["botdict"]["tempvals"]['server'])]['channels_list'][str(channel)]["disabled_commands"]:
