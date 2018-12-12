@@ -45,13 +45,13 @@ def mainfunctionnobeguine(bot, trigger):
 def execute_main(bot, trigger, botcom):
 
     valid_commands = ['enable', 'disable', 'reset', 'run', 'subscribe', 'unsubscribe']
-    command = spicemanip(bot, [x for x in triggerargsarray if x in valid_commands], 1) or 'run'
-    if command in triggerargsarray:
-        triggerargsarray.remove(command)
+    command = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_commands], 1) or 'run'
+    if command in botcom.triggerargsarray:
+        botcom.triggerargsarray.remove(command)
 
     feeds = feeds_configs(bot, feeds)
 
-    feed_select = spicemanip(bot, [x for x in triggerargsarray if x in bot.memory["botdict"]["tempvals"]['feeds'].keys() or x == 'all'], 1) or 'nofeed'
+    feed_select = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot.memory["botdict"]["tempvals"]['feeds'].keys() or x == 'all'], 1) or 'nofeed'
     if feed_select == 'nofeed':
         feed_list = spicemanip(bot, bot.memory["botdict"]["tempvals"]['feeds'].keys(), 'list')
         osd(bot, botcom.channel_current, 'say', "Valid Feeds are " + feed_list)
@@ -60,7 +60,7 @@ def execute_main(bot, trigger, botcom):
         current_feed_list = bot.memory["botdict"]["tempvals"]['feeds'].keys()
     else:
         current_feed_list = []
-        for word in triggerargsarray:
+        for word in botcom.triggerargsarray:
             if word in bot.memory["botdict"]["tempvals"]['feeds'].keys():
                 current_feed_list.append(word)
 
@@ -120,7 +120,7 @@ def execute_main(bot, trigger, botcom):
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
 
-    channelselect = spicemanip(bot, [x for x in triggerargsarray if x in botcom.channel_list], 1) or botcom.channel_current
+    channelselect = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.channel_list], 1) or botcom.channel_current
 
     if command == 'enable':
         instigatormodulesarray = get_nick_value(bot, channelselect, "long", "feeds", "enabled") or []
@@ -147,20 +147,6 @@ def execute_main(bot, trigger, botcom):
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
-
-    feedoption = spicemanip(bot, botcom.triggerargsarray, 1) or None
-    if not feedoption:
-        return osd(bot, botcom.channel_current, 'say', ".seen <nick> - Reports when <nick> was last seen.")
-
-    if not bot_check_inlist(bot, feedoption, bot.memory["botdict"]["tempvals"]['feeds'].keys()):
-        feedslist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['feeds'].keys(), 'andlist')
-        return osd(bot, botcom.channel_current, 'say', ["Please Select a valid feed. Options include:", feedslist])
-
-    dispmsg = bot_dictcom_feeds_handler(bot, botcom, "githubrepomaster", True)
-    if dispmsg == []:
-        osd(bot, botcom.channel_current, 'say', feed + " appears to have had an unknown error.")
-    else:
-        osd(bot, botcom.channel_current, 'say', dispmsg)
 
 
 def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
