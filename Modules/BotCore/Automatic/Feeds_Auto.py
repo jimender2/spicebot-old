@@ -23,8 +23,6 @@ sys.setdefaultencoding('utf-8')
 # Automatic Run
 @sopel.module.interval(60)
 def autofeeds(bot):
-    # feeds dynamic Class
-    feeds = class_create('feeds')
     for feed in feeds.list:
         dispmsg = bot_dictcom_feeds_handler(bot, botcom, feed, False)
         if dispmsg != []:
