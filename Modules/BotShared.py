@@ -1072,6 +1072,12 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
         elif feed_type == 'redditapi':
 
+            if not bot.memory["botdict"]["tempvals"]['reddit']:
+                if displayifnotnew:
+                    return ["reddit api unavailable."]
+                else:
+                    return []
+
             path = feed_dict["path"]
             if not path:
                 if displayifnotnew:
