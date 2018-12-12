@@ -1272,8 +1272,8 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             while True:
                 calendar_list = service.calendarList().list(pageToken=page_token).execute()
                 for calendar_list_entry in calendar_list['items']:
-                    if '@qxf2.com' in calendar_list_entry['id']:
-                        calendar_ids.append(calendar_list_entry['id'])
+                    # if '@qxf2.com' in calendar_list_entry['id']:
+                    calendar_ids.append(calendar_list_entry['id'])
                 page_token = calendar_list.get('nextPageToken')
                 if not page_token:
                     break
