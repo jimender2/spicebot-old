@@ -36,10 +36,6 @@ def bot_startup_twitter(bot, trigger):
 
     try:
 
-        SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-        CLIENT_SECRET_FILE = 'client_secret_google_calendar.json'
-        APPLICATION_NAME = 'Google Calendar - Raw Python'
-
         store = Storage('/home/spicebot/gcal.json',)
         bot.memory["botdict"]["tempvals"]['google'] = store.get()
 
