@@ -35,13 +35,16 @@ def bot_startup_twitter(bot, trigger):
         pass
 
     try:
+        os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/gcal.json")
+    except Exception as e:
+        stderr("Error loading permissions on auth file")
+
+    try:
 
         SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
         gcaljsonpath = '/home/spicebot/gcal.json'
         gcalstore = file.Storage(gcaljsonpath)
         gcalcreds = gcalstore.get()
-
-        # bot.memory["botdict"]["tempvals"]['google'] = gcalcreds
 
         bot.memory["botdict"]["tempvals"]['google'] = build('calendar', 'v3', http=gcalcreds.authorize(Http()))
 
