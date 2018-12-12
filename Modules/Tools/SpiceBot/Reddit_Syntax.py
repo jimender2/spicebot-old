@@ -93,7 +93,7 @@ def reddit_u(bot, botcom, rclass):
     subcommand_valid = ['check']
     subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in subcommand_valid], 1) or 'check'
 
-    userreal = user_exists(bot, rclass, rclass.urlsearch)
+    userreal = reddit_user_exists(bot, rclass, rclass.urlsearch)
     if not userreal:
         return
     fulluurul = str("https://www.reddit.com/" + rclass.urltype + "/" + rclass.urlsearch)
@@ -109,11 +109,11 @@ def reddit_r(bot, botcom, rclass):
 
     rclass.fullrurul = str("https://www.reddit.com/" + rclass.urltype + "/" + rclass.urlsearch)
 
-    subreal = sub_exists(bot, rclass, rclass.urlsearch)
+    subreal = reddit_sub_exists(bot, rclass, rclass.urlsearch)
     if not subreal:
         return
 
-    subpass = sub_banned_private(bot, rclass, rclass.urlsearch)
+    subpass = reddit_banned_private(bot, rclass, rclass.urlsearch)
     if not subpass:
         return
 
@@ -176,7 +176,7 @@ def reddit_r(bot, botcom, rclass):
     osd(bot, rclass.channel_current, 'say', dispmsg)
 
 
-def sub_exists(bot, rclass, sub):
+def reddit_sub_exists(bot, rclass, sub):
     exists = True
     try:
         bot.memory["botdict"]["tempvals"]['reddit'].subreddits.search_by_name(sub, exact=True)
@@ -186,7 +186,7 @@ def sub_exists(bot, rclass, sub):
     return exists
 
 
-def sub_banned_private(bot, rclass, sub):
+def reddit_banned_private(bot, rclass, sub):
     proceed = True
     try:
         rclass.subtype = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(sub).subreddit_type
@@ -199,7 +199,7 @@ def sub_banned_private(bot, rclass, sub):
     return proceed
 
 
-def user_exists(bot, rclass, user):
+def reddit_user_exists(bot, rclass, user):
     exists = True
     try:
         bot.memory["botdict"]["tempvals"]['reddit'].redditor(user).fullname
