@@ -1073,11 +1073,9 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             currentsubreddit = feed_dict["path"]
 
-            if not reddit_sub_exists_simple(bot, currentsubreddit):
-                return ["subreddit does not exist."]
-
-            if not reddit_banned_private_simple(bot, currentsubreddit):
-                return ["subreddit is either banned or private."]
+            subredditcheck = reddit_subreddit_check(bot, sub)
+            if not subredditcheck["exists"]:
+                return [subredditcheck["error"]]
 
             subreddit = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(currentsubreddit)
 
@@ -1129,6 +1127,31 @@ def hashave(mylist):
 """
 Reddit
 """
+
+
+def reddit_subreddit_check(bot, sub):
+    returndict = {"exists": True, "error": None}
+    try:
+        bot.memory["botdict"]["tempvals"]['reddit'].subreddits.search_by_name(sub, exact=True)
+    except NotFound:
+        returndict["exists"] = False
+        return returndict
+
+    try:
+        subtype = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(sub).subreddit_type
+    except Exception as e:
+        returndict["exists"] = False
+        if str(e) == "received 403 HTTP response":
+            returndict["error"] = str(sub + " appears to be an private subreddit!")
+            return returndict
+        elif str(e) == "received 404 HTTP response":
+            returndict["error"] = str(sub + " appears to be an banned subreddit!")
+            return returndict
+        else:
+            returndict["error"] = str(sub + " appears to not have a type")
+            return returndict
+
+    return returndict
 
 
 def reddit_sub_exists_simple(bot, sub):
