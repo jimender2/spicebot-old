@@ -1268,7 +1268,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
             nowtime = datetime.datetime.now()
-            nowtime = nowtime.strftime('%Y-%m-%d %H:%M:%S:%fZ')
+            nowtime = str(nowtime.strftime('%Y-%m-%d %H:%M:%S:%fZ'))
             # '2008-03-07T17:06:02.000Z'
 
             events_result = service.events().list(calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=nowtime).execute()
