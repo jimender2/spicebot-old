@@ -56,7 +56,7 @@ def bot_startup_twitter(bot, trigger):
         f.close()
 
     # check that auth program is there
-    for line in os.popen(str("sudo python /home/spicebot/quickstart.py")):
+    for line in os.popen(str("sudo python /home/spicebot/quickstart.py --noauth_local_webserver")):
         stderr(line)
 
     try:
