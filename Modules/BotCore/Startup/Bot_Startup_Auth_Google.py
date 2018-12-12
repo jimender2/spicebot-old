@@ -79,5 +79,6 @@ def bot_startup_twitter(bot, trigger):
     except Exception as e:
         bot.memory["botdict"]["tempvals"]['google'] = None
         stderr("Error loading google calendar auth")
+        stderr(e)
 
     bot_startup_requirements_set(bot, "auth_google")
