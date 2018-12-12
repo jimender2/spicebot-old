@@ -1155,13 +1155,14 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildtime = parser.parse(str(lastbuildtime))
 
-            submissions = bot.memory["botdict"]["tempvals"]['twitter'].statuses.user_timeline(screen_name=currenttweetat, count=1)
+            submissions = bot.memory["botdict"]["tempvals"]['twitter'].statuses.home_timeline()
+            submissions[0]
+            bot.msg("#spicebottest", str(submission))
+            return []
             listarray = []
             for submission in submissions:
                 listarray.append(submission)
             submission = listarray[0]
-            bot.msg("#spicebottest", str(submission))
-            return []
 
             try:
                 entrytime = submission.created_at
