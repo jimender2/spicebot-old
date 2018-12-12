@@ -44,12 +44,14 @@ def hostsprocessor(bot):
     hostsprocess = []
     for host in hostslist:
         for i in range(8000, 8051):
+            donothing = False
 
             # don't process current bot
-            if host in bot.memory["botdict"]["tempvals"]['networking']['ip_addresses'] and str(i) == str(bot.memory['sock_port']):
-                donothing = True
-            else:
+            if 'sock_port' in bot.memory:
+                if host in bot.memory["botdict"]["tempvals"]['networking']['ip_addresses'] and str(i) == str(bot.memory['sock_port']):
+                    donothing = True
 
+            if not donothing:
                 if bot_api_port_test(bot, host, i):
                     hostdict = {"host": host, "port": i}
                     hostsprocess.append(hostdict)
