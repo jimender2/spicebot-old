@@ -931,6 +931,63 @@ def bot_api_send_self_command(bot, botcom, commandsent):
 
 
 """
+Feeds
+"""
+
+
+def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
+
+    feed_dict = bot.memory["botdict"]["tempvals"]['feeds'][feed]
+
+    dispmsg = []
+    displayname = False
+
+    url = feed_dict["url"]
+    if not url:
+        dispmsg.append("URL missing.")
+        return dispmsg
+
+    page = requests.get(url, headers=header)
+    tree = html.fromstring(page.content)
+
+    if page.status_code == 200:
+
+        now = datetime.datetime.utcnow()
+        now = now.replace(tzinfo=pytz.UTC)
+
+        feed_type = feed_dict["type"]
+
+        if feed_type in ['rss', 'youtube', 'github']:
+
+            lastbuildcurrent = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildcurrent = parser.parse(str(lastbuildcurrent))
+
+            feedjson = feedparser.parse(url)
+
+            rssentrytime = feedjson.entries[0].updated
+            rssentrytime = parser.parse(str(rssentrytime))
+
+            if displayifnotnew or rssentrytime > lastbuildcurrent:
+
+                displayname = feed_dict["displayname"]
+
+                title = feedjson.entries[0].title
+                title = unicode_string_cleanup(title)
+                dispmsg.append(title)
+
+                link = feedjson.entries[0].link
+                dispmsg.append(link)
+
+                if not displayifnotnew:
+                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent', str(rssentrytime))
+
+    if displayname and feed_dict["displayname"]:
+        dispmsg.insert(0, "[" + displayname + "]")
+
+    return dispmsg
+
+
+"""
 Bot Temp Logging
 """
 
