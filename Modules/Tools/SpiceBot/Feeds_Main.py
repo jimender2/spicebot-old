@@ -200,7 +200,7 @@ def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
 
                 titleappend = True
 
-                title = feedjson.entries[0].published
+                title = feedjson.entries[0].title
 
                 if feed_type == 'github':
                     authors = xmldoc.getElementsByTagName('name')
