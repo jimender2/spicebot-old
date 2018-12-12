@@ -176,6 +176,99 @@ def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
             lastbuildcurrent = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
+            feedjson = feedparser.parse(url)
+
+            xml = page.text
+            xml = xml.encode('ascii', 'ignore').decode('ascii')
+            xmldoc = minidom.parseString(xml)
+
+            lastbuildtype = feed_dict["lastbuildtype"]
+
+            lastBuildXML = xmldoc.getElementsByTagName(lastbuildtype)
+
+            lastbuildparent = int(feed_dict["lastbuildparent"])
+
+            lastbuildchild = int(feed_dict["lastbuildchild"])
+
+            lastBuildXML = lastBuildXML[lastbuildparent].childNodes[lastbuildchild].nodeValue
+            lastBuildXML = parser.parse(str(lastBuildXML))
+
+            if displayifnotnew or lastBuildXML > lastbuildcurrent:
+
+                titleappend = True
+
+                titletype = feed_dict["titletype"]
+
+                titles = xmldoc.getElementsByTagName(titletype)
+
+                titleparent = feed_dict["titleparent"]
+
+                titlechild = int(feed_dict["titlechild"])
+
+                title = titles[titleparent].childNodes[titlechild].nodeValue
+
+                if feed_type == 'github':
+                    authors = xmldoc.getElementsByTagName('name')
+                    author = authors[0].childNodes[0].nodeValue
+                    dispmsg.append(author + " committed")
+
+                title = unicode_string_cleanup(title)
+
+                dispmsg.append(title)
+
+                linktype = feed_dict["linktype"]
+
+                links = xmldoc.getElementsByTagName(linktype)
+
+                linkparent = feed_dict["linkparent"]
+
+                linkchild = feed_dict["linkchild"]
+
+                if str(linkchild).isdigit():
+                    linkchild = int(linkchild)
+                    link = links[linkparent].childNodes[linkchild].nodeValue.split("?")[0]
+                else:
+                    link = links[linkparent].getAttribute(linkchild)
+                dispmsg.append(link)
+
+                if not displayifnotnew:
+                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent', str(lastBuildXML))
+
+    if titleappend and feed_dict["displayname"]:
+        dispmsg.insert(0, "[" + displayname + "]")
+
+    return dispmsg
+
+
+def bot_dictcom_feeds_handler_good(bot, botcom, feed, displayifnotnew=True):
+
+    feed_dict = bot.memory["botdict"]["tempvals"]['feeds'][feed]
+
+    dispmsg = []
+    titleappend = False
+
+    url = feed_dict["url"]
+    if not url:
+        dispmsg.append("URL missing.")
+        return dispmsg
+
+    page = requests.get(url, headers=header)
+    tree = html.fromstring(page.content)
+
+    if page.status_code == 200:
+
+        now = datetime.datetime.utcnow()
+        now = now.replace(tzinfo=pytz.UTC)
+
+        displayname = feed_dict["displayname"]
+
+        feed_type = feed_dict["type"]
+
+        if feed_type in ['rss', 'youtube', 'github']:
+
+            lastbuildcurrent = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildcurrent = parser.parse(str(lastbuildcurrent))
+
             xml = page.text
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)

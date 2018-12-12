@@ -50,7 +50,7 @@ def execute_main(bot, trigger, botcom):
         url = bot.memory["botdict"]["tempvals"]['feeds'][feed]["url"]
 
         d = feedparser.parse(url)
-        bot.say(str(d['feed']['title']) + " " + str(d['entries'][0]['title']))
+        bot.say(str(d['feed']['title']) + " " + str(d['entries'][0]))
 
         # bot.say(str(d['feed']['title']))
         # bot.say(str(d['feed']['link']))
