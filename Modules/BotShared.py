@@ -1053,6 +1053,32 @@ def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
     return dispmsg
 
 
+def hashave(mylist):
+    if len(mylist) > 1:
+        hashave = 'have'
+    else:
+        hashave = 'has'
+    return hashave
+
+
+def sub_exists(bot, sub):
+    exists = True
+    try:
+        reddit.subreddits.search_by_name(sub, exact=True)
+    except NotFound:
+        exists = False
+    return exists
+
+
+def sub_banned_private(bot, sub):
+    proceed = True
+    try:
+        subtype = reddit.subreddit(sub).subreddit_type
+    except Exception as e:
+        proceed = False
+    return proceed
+
+
 """
 Bot Temp Logging
 """
