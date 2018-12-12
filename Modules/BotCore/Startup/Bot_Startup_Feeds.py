@@ -114,7 +114,7 @@ def feed_configs(bot):
                                         dict_from_file["path"] = None
 
                                     if not dict_from_file["url"]:
-                                        dict_from_file["url"] = "https://www.reddit.com/"
+                                        dict_from_file["url"] = "https://www.reddit.com"
 
                                 if comconf not in bot.memory["botdict"]["tempvals"]['feeds'].keys():
                                     bot.memory["botdict"]["tempvals"]['feeds'][comconf] = dict_from_file
