@@ -56,7 +56,8 @@ from prawcore import NotFound
 import twitter
 from googleapiclient.discovery import build
 from httplib2 import Http
-from oauth2client import file, client, tools, ServiceAccountCredentials
+from oauth2client import file, client, tools
+from oauth2client.service_account import ServiceAccountCredentials
 from word2number import w2n
 import codecs
 import urllib2
