@@ -1282,10 +1282,10 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             #        return []
 
             try:
-            events_result = service.events().list(calendarId=currentcalendar, timeMin=now,
-                                                  maxResults=1, singleEvents=True,
-                                                  orderBy='startTime').execute()
-            events = events_result.get('items', [])
+                events_result = service.events().list(calendarId=currentcalendar, timeMin=now,
+                                                      maxResults=1, singleEvents=True,
+                                                      orderBy='startTime').execute()
+                events = events_result.get('items', [])
             except Exception as e:
                 if displayifnotnew:
                     return ["No Content Usable."]
