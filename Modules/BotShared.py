@@ -1013,7 +1013,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
         return ["URL missing."]
 
     page = requests.get(url, headers=header)
-    tree = html.fromstring(page.content)
+    # tree = html.fromstring(page.content)
 
     if page.status_code == 200:
 
