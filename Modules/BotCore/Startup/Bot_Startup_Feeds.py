@@ -103,7 +103,7 @@ def feed_configs(bot):
                                     dict_from_file["type"] = quick_coms_type
 
                                 if "displayname" not in dict_from_file.keys():
-                                    dict_from_file["displayname"] = comconf
+                                    dict_from_file["displayname"] = None
 
                                 if "url" not in dict_from_file.keys():
                                     dict_from_file["url"] = None
