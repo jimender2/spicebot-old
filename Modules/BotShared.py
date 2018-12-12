@@ -1268,9 +1268,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
             # try:
-            events_result = service.events().list(calendarId=currentcalendar, timeMin=now,
-                                                  maxResults=10, singleEvents=True,
-                                                  orderBy='startTime').execute()
+            events_result = service.events().list(calendarId=currentcalendar, maxResults=10, singleEvents=True, orderBy='startTime').execute()
             events = events_result.get('items', [])
             # except Exception as e:
             #    if displayifnotnew:
