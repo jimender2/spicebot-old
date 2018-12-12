@@ -50,7 +50,7 @@ def execute_main(bot, trigger, botcom):
     #    url = bot.memory["botdict"]["tempvals"]['feeds'][feed]["url"]
 
     d = feedparser.parse('https://github.com/SpiceBot/SpiceBot/commits/dev.atom')
-    bot.say(str(d['entries'][0]['published']))
+    bot.say(str(d['entries'][0].published))
 
     # bot.say(str(d['feed']['title']))
     # bot.say(str(d['feed']['link']))
