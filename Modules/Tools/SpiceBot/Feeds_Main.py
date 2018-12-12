@@ -178,34 +178,14 @@ def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
 
             feedjson = feedparser.parse(url)
 
-            xml = page.text
-            xml = xml.encode('ascii', 'ignore').decode('ascii')
-            xmldoc = minidom.parseString(xml)
+            rssentrytime = feedjson.entries[0].published
+            rssentrytime = parser.parse(str(rssentrytime))
 
-            lastbuildtype = feed_dict["lastbuildtype"]
-
-            lastBuildXML = xmldoc.getElementsByTagName(lastbuildtype)
-
-            lastbuildparent = int(feed_dict["lastbuildparent"])
-
-            lastbuildchild = int(feed_dict["lastbuildchild"])
-
-            lastBuildXML = lastBuildXML[lastbuildparent].childNodes[lastbuildchild].nodeValue
-            lastBuildXML = parser.parse(str(lastBuildXML))
-
-            if displayifnotnew or lastBuildXML > lastbuildcurrent:
+            if displayifnotnew or rssentrytime > lastbuildcurrent:
 
                 titleappend = True
 
-                titletype = feed_dict["titletype"]
-
-                titles = xmldoc.getElementsByTagName(titletype)
-
-                titleparent = feed_dict["titleparent"]
-
-                titlechild = int(feed_dict["titlechild"])
-
-                title = titles[titleparent].childNodes[titlechild].nodeValue
+                title = feedjson.entries[0].published
 
                 if feed_type == 'github':
                     authors = xmldoc.getElementsByTagName('name')
