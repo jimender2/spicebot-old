@@ -50,8 +50,7 @@ def execute_main(bot, trigger, botcom):
     #    url = bot.memory["botdict"]["tempvals"]['feeds'][feed]["url"]
 
     d = feedparser.parse('https://www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw')
-    for entry in d.entries:
-        bot.say(str(entry.published))
+    bot.say(str(d.entries[0].published))
 
     # bot.say(str(d['feed']['title']))
     # bot.say(str(d['feed']['link']))
