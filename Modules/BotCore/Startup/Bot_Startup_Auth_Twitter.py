@@ -48,5 +48,6 @@ def bot_startup_twitter(bot, trigger):
 
     except Exception as e:
         bot.memory["botdict"]["tempvals"]['twitter'] = None
+        stderr("Error loading twitter auth")
 
-    bot_startup_requirements_set(bot, "twitter")
+    bot_startup_requirements_set(bot, "auth_twitter")

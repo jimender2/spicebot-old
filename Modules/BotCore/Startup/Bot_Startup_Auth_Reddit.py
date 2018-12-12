@@ -47,5 +47,6 @@ def bot_startup_reddit(bot, trigger):
 
     except Exception as e:
         bot.memory["botdict"]["tempvals"]['reddit'] = None
+        stderr("Error loading reddit auth")
 
-    bot_startup_requirements_set(bot, "reddit")
+    bot_startup_requirements_set(bot, "auth_reddit")
