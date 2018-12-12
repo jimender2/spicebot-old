@@ -51,9 +51,7 @@ def bot_startup_twitter(bot, trigger):
             return
 
         f = open("/home/spicebot/credentials.json", "w+")
-        textwrite = str('{"installed":{"client_id":"CLIENTIDGOESHERE","project_id":"spicebot-1536234792000","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://www.googleapis.com/oauth2/v3/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"CLIENTSECRETGOESHERE","redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}}')
-        textwrite.replace("CLIENTIDGOESHERE", CLIENTID)
-        textwrite.replace("CLIENTSECRETGOESHERE", SECRET)
+        textwrite = str('{"installed":{"client_id":"' + CLIENTID + '","project_id":"spicebot-1536234792000","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://www.googleapis.com/oauth2/v3/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"' + SECRET + '","redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}}')
         f.write(textwrite)
         f.close()
 
