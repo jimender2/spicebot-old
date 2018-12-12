@@ -1076,7 +1076,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             if not reddit_sub_exists_simple(bot, currentsubreddit):
                 return ["subreddit does not exist."]
 
-            if not reddit_banned_private(bot, currentsubreddit):
+            if not reddit_banned_private_simple(bot, currentsubreddit):
                 return ["subreddit is either banned or private."]
 
             subreddit = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(currentsubreddit)
