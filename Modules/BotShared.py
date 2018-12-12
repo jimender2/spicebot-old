@@ -378,13 +378,13 @@ def bot_nickcom_run_check(bot, botcom):
     if 'privs' in valid_botnick_commands[botcom.command_main.lower()].keys():
         commandrunconsensus = []
 
-        if 'admin' in valid_botnick_commands[botcom.command_main.lower()].keys():
+        if 'admin' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
             if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']:
                 commandrunconsensus.append('False')
             else:
                 commandrunconsensus.append('True')
 
-        if 'OP' in valid_botnick_commands[botcom.command_main.lower()].keys():
+        if 'OP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']:
                     commandrunconsensus.append('False')
@@ -393,7 +393,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'HOP' in valid_botnick_commands[botcom.command_main.lower()].keys():
+        if 'HOP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanhalfops']:
                     commandrunconsensus.append('False')
@@ -402,7 +402,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'VOICE' in valid_botnick_commands[botcom.command_main.lower()].keys():
+        if 'VOICE' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanvoices']:
                     commandrunconsensus.append('False')
@@ -411,7 +411,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'OWNER' in valid_botnick_commands[botcom.command_main.lower()].keys():
+        if 'OWNER' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']:
                     commandrunconsensus.append('False')
@@ -420,7 +420,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'ADMIN' in valid_botnick_commands[botcom.command_main.lower()].keys():
+        if 'ADMIN' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']:
                     commandrunconsensus.append('False')
@@ -429,7 +429,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if valid_botnick_commands[botcom.command_main.lower()].keys() == []:
+        if valid_botnick_commands[botcom.command_main.lower()]['privs'] == []:
             commandrunconsensus.append('True')
 
         if 'True' not in commandrunconsensus:
