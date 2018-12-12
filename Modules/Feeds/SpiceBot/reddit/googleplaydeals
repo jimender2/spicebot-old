@@ -1,6 +1,7 @@
 {
 
 "type": "reddit",
+"displayname": "Reddit r/googleplaydeals",
 "url": "https://www.reddit.com/r/googleplaydeals.rss",
 
 }
