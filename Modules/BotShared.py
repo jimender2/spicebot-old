@@ -1064,52 +1064,52 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
 
-    # reddit handling if rss didn't work
-    elif feed_type in ['redditapi']:
+        # reddit handling if rss didn't work
+        elif feed_type in ['redditapi']:
 
-        url = feed_dict["path"]
-        if not url:
-            return ["reddit Path missing."]
+            url = feed_dict["path"]
+            if not url:
+                return ["reddit Path missing."]
 
-        currentsubreddit = feed_dict["path"]
+            currentsubreddit = feed_dict["path"]
 
-        if not reddit_sub_exists_simple(bot, currentsubreddit):
-            return ["subreddit does not exist."]
+            if not reddit_sub_exists_simple(bot, currentsubreddit):
+                return ["subreddit does not exist."]
 
-        if not reddit_banned_private(bot, currentsubreddit):
-            return ["subreddit is either banned or private."]
+            if not reddit_banned_private(bot, currentsubreddit):
+                return ["subreddit is either banned or private."]
 
-        subreddit = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(currentsubreddit)
+            subreddit = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(currentsubreddit)
 
-        lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-        lastbuildtime = parser.parse(str(lastbuildtime))
+            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildtime = parser.parse(str(lastbuildtime))
 
-        submissions = subreddit.new(limit=1)
-        listarray = []
-        for submission in submissions:
-            listarray.append(submission)
-        submission = listarray[0]
-        bot.msg("#spicebottest", str(submission))
+            submissions = subreddit.new(limit=1)
+            listarray = []
+            for submission in submissions:
+                listarray.append(submission)
+            submission = listarray[0]
+            bot.msg("#spicebottest", str(submission))
 
-        lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
-        if displayifnotnew or (str(submission.permalink) != str(lastbuildcurrent)):
+            lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
+            if displayifnotnew or (str(submission.permalink) != str(lastbuildcurrent)):
 
-            titleappend = 1
+                titleappend = 1
 
-            if subreddit.over18:
-                dispmsg.append("<NSFW>")
+                if subreddit.over18:
+                    dispmsg.append("<NSFW>")
 
-            if not displayifnotnew:
-                set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(submission.permalink))
+                if not displayifnotnew:
+                    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(submission.permalink))
 
-            dispmsg.append("{" + str(submission.score) + "}")
-            dispmsg.append(submission.title)
-            dispmsg.append(url + submission.permalink)
+                dispmsg.append("{" + str(submission.score) + "}")
+                dispmsg.append(submission.title)
+                dispmsg.append(url + submission.permalink)
 
-        # if not displayifnotnew:
-        #    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(rssentrytime))
-        #    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
-        #    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
+            # if not displayifnotnew:
+            #    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(rssentrytime))
+            #    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
+            #    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
 
     if displayname and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
@@ -1147,6 +1147,39 @@ def reddit_sub_banned_private_simple(bot, sub):
     except Exception as e:
         proceed = False
     return proceed
+
+
+def reddit_sub_exists(bot, rclass, sub):
+    exists = True
+    try:
+        bot.memory["botdict"]["tempvals"]['reddit'].subreddits.search_by_name(sub, exact=True)
+    except NotFound:
+        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
+        exists = False
+    return exists
+
+
+def reddit_banned_private(bot, rclass, sub):
+    proceed = True
+    try:
+        rclass.subtype = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(sub).subreddit_type
+    except Exception as e:
+        proceed = False
+        if str(e) == "received 403 HTTP response":
+            osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an private " + rclass.urltypetxt + "!    " + rclass.fullrurul)
+        elif str(e) == "received 404 HTTP response":
+            osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an banned " + rclass.urltypetxt + "!")
+    return proceed
+
+
+def reddit_user_exists(bot, rclass, user):
+    exists = True
+    try:
+        bot.memory["botdict"]["tempvals"]['reddit'].redditor(user).fullname
+    except NotFound:
+        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid reddit " + rclass.urltypetxt + "!")
+        exists = False
+    return exists
 
 
 """

@@ -174,36 +174,3 @@ def reddit_r(bot, botcom, rclass):
     else:
         dispmsg.append("No Content Found.")
     osd(bot, rclass.channel_current, 'say', dispmsg)
-
-
-def reddit_sub_exists(bot, rclass, sub):
-    exists = True
-    try:
-        bot.memory["botdict"]["tempvals"]['reddit'].subreddits.search_by_name(sub, exact=True)
-    except NotFound:
-        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid " + rclass.urltypetxt + "!")
-        exists = False
-    return exists
-
-
-def reddit_banned_private(bot, rclass, sub):
-    proceed = True
-    try:
-        rclass.subtype = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(sub).subreddit_type
-    except Exception as e:
-        proceed = False
-        if str(e) == "received 403 HTTP response":
-            osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an private " + rclass.urltypetxt + "!    " + rclass.fullrurul)
-        elif str(e) == "received 404 HTTP response":
-            osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an banned " + rclass.urltypetxt + "!")
-    return proceed
-
-
-def reddit_user_exists(bot, rclass, user):
-    exists = True
-    try:
-        bot.memory["botdict"]["tempvals"]['reddit'].redditor(user).fullname
-    except NotFound:
-        osd(bot, rclass.channel_current, 'say', rclass.urlsearch + " appears to be an invalid reddit " + rclass.urltypetxt + "!")
-        exists = False
-    return exists
