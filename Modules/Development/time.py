@@ -21,7 +21,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # Creator details
-comdict = {"author": "deathbybandaid", "contributors": ["dysonparkes"]}
+comdict = {"author": "dysonparkes", "contributors": ["dysonparkes alone"]}
 
 
 @sopel.module.commands('time')
