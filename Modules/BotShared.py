@@ -1220,7 +1220,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
             try:
-                link = str("https://twitter.com/" + currenttweetat + "/status/" + str(submission.id))
+                link = str(currenttweetat + "/status/" + str(submission.id))
             except Exception as e:
                 link = None
             if link:
