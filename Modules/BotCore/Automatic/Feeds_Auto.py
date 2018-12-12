@@ -23,11 +23,12 @@ sys.setdefaultencoding('utf-8')
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def savingitall(bot):
+def auto_feeds(bot):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict", "feeds", "monologue"]):
+    while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
         pass
+    bot.msg("#spicebottest", "module start")
 
     while True:
         bot.msg("#spicebottest", "45 second loop start")
