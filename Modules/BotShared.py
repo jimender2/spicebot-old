@@ -1205,12 +1205,12 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 else:
                     return []
 
-            for dkey in submission:
-                bot.msg("#spicebottest", str(dkey))
+            entrytime = submission.created_at
+            bot.msg("#spicebottest", str(entrytime))
             return []
 
             try:
-                entrytime = submission['created_at']
+                entrytime = submission.created_at
                 entrytime = entrytime.replace(tzinfo=pytz.UTC)
             except Exception as e:
                 entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
