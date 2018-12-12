@@ -58,7 +58,6 @@ def execute_main(bot, trigger, botcom):
     if feed_select == 'all':
         current_feed_list = bot.memory["botdict"]["tempvals"]['feeds'].keys()
     else:
-        bot.say("here")
         current_feed_list = []
         for word in botcom.triggerargsarray:
             if word in bot.memory["botdict"]["tempvals"]['feeds'].keys():

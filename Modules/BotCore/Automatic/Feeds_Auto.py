@@ -35,9 +35,9 @@ def savingitall(bot):
             if dispmsg != []:
                 for channel in bot.privileges.keys():
                     if 'feed' not in bot.memory["botdict"]['servers_list'][str(bot.memory["botdict"]["tempvals"]['server'])]['channels_list'][str(channel)]["disabled_commands"]:
-                        feed_enabled = get_nick_value(bot, channel, "long", "feeds", "enabled") or []
+                        feed_enabled = get_nick_value(bot, str(channel), "long", "feeds", "enabled") or []
                         if feed in feed_enabled:
-                            osd(bot, channel, 'say', dispmsg)
+                            osd(bot, str(channel), 'say', dispmsg)
                 for user in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]['all_current_users']:
                     feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
                     if feed in feed_enabled:
