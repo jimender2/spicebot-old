@@ -1265,13 +1265,13 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(Http())
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
-            events_result = service.events().list(calendarId='primary')
+            events_result = service.events().list(calendarId='primary').execute()
 
             # try:
             # events_result = service.events().list(calendarId=currentcalendar, timeMin=now,
             #                                      maxResults=1, singleEvents=True,
             #                                      orderBy='startTime').execute()
-            #events = events_result.get('items', [])
+            # events = events_result.get('items', [])
             # except Exception as e:
             #    if displayifnotnew:
             #        return ["No Content Usable."]
