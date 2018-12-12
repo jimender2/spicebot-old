@@ -23,7 +23,7 @@ sys.setdefaultencoding('utf-8')
 # Automatic Run
 @sopel.module.interval(60)
 def autofeeds(bot):
-    for feed in feeds.list:
+    for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
         dispmsg = bot_dictcom_feeds_handler(bot, botcom, feed, False)
         if dispmsg != []:
             for channel in bot.privileges.keys():
