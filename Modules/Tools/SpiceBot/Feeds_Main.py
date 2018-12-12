@@ -49,14 +49,16 @@ def execute_main(bot, trigger, botcom):
     if command in botcom.triggerargsarray:
         botcom.triggerargsarray.remove(command)
 
-    feed_select = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot.memory["botdict"]["tempvals"]['feeds'].keys() or x == 'all'], 1) or 'nofeed'
-    if feed_select == 'nofeed':
+    feed_select = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot.memory["botdict"]["tempvals"]['feeds'].keys() or x == 'all'], 1) or None
+    if not feed_select:
         feed_list = spicemanip(bot, bot.memory["botdict"]["tempvals"]['feeds'].keys(), 'list')
         osd(bot, botcom.channel_current, 'say', "Valid Feeds are " + feed_list)
         return
+
     if feed_select == 'all':
         current_feed_list = bot.memory["botdict"]["tempvals"]['feeds'].keys()
     else:
+        bot.say("here")
         current_feed_list = []
         for word in botcom.triggerargsarray:
             if word in bot.memory["botdict"]["tempvals"]['feeds'].keys():
