@@ -69,9 +69,10 @@ def bot_startup_twitter(bot, trigger):
 
     try:
 
-        scopes = ['https://www.googleapis.com/auth/calendar.readonly']
+        scopes = 'https://www.googleapis.com/auth/calendar.readonly'
         credentials = ServiceAccountCredentials.from_json_keyfile_name('/home/spicebot/token.json', scopes=scopes)
-        http_auth = credentials.authorize(Http())
+        delegated_credentials = credentials.create_delegated('spicebot@deathbybandaid.net')
+        http_auth = delegated_credentials.authorize(Http())
 
         bot.memory["botdict"]["tempvals"]['google'] = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
