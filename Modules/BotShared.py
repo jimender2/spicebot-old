@@ -1025,27 +1025,40 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
         if feed_type in ['rss', 'youtube', 'github']:
 
-            lastbuildcurrent = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            lastbuildcurrent = parser.parse(str(lastbuildcurrent))
+            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildtime = parser.parse(str(lastbuildtime))
 
             feedjson = feedparser.parse(url)
 
             rssentrytime = feedjson.entries[0].updated
             rssentrytime = parser.parse(str(rssentrytime))
 
-            if displayifnotnew or rssentrytime > lastbuildcurrent:
-
-                displayname = feed_dict["displayname"]
-
+            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
+            try:
                 title = feedjson.entries[0].title
                 title = unicode_string_cleanup(title)
+            except Exception as e:
+                title = None
+            if title:
                 dispmsg.append(title)
 
+            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
+            try:
                 link = feedjson.entries[0].link
+            except Exception as e:
+                link = None
+            if link:
                 dispmsg.append(link)
 
-                if not displayifnotnew:
-                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent', str(rssentrytime))
+            if (rssentrytime > lastbuildcurrent and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
+                displayname = feed_dict["displayname"]
+            else:
+                dispmsg = []
+
+            if not displayifnotnew:
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(rssentrytime))
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
 
     if displayname and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
