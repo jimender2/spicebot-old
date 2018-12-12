@@ -124,6 +124,14 @@ def feed_configs(bot):
                                     if not dict_from_file["url"]:
                                         dict_from_file["url"] = "https://twitter.com"
 
+                                if dict_from_file["type"] == "googlecalendar":
+
+                                    if "calendar" not in dict_from_file.keys():
+                                        dict_from_file["calendar"] = None
+
+                                    if not dict_from_file["url"]:
+                                        dict_from_file["url"] = "https://google.com"
+
                                 if comconf not in bot.memory["botdict"]["tempvals"]['feeds'].keys():
                                     bot.memory["botdict"]["tempvals"]['feeds'][comconf] = dict_from_file
                             else:

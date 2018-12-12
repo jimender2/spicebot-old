@@ -41,7 +41,9 @@ def bot_startup_twitter(bot, trigger):
         gcalstore = file.Storage(gcaljsonpath)
         gcalcreds = gcalstore.get()
 
-        bot.memory["botdict"]["tempvals"]['google'] = gcalcreds
+        # bot.memory["botdict"]["tempvals"]['google'] = gcalcreds
+
+        bot.memory["botdict"]["tempvals"]['google'] = build('calendar', 'v3', http=gcalcreds.authorize(Http()))
 
     except Exception as e:
         bot.memory["botdict"]["tempvals"]['google'] = None

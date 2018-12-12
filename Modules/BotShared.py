@@ -1241,6 +1241,78 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
 
+        elif feed_type == 'googlecalendar':
+
+            if not bot.memory["botdict"]["tempvals"]['twitter']:
+                if displayifnotnew:
+                    return ["twitter api unavailable."]
+                else:
+                    return []
+
+            calendar = feed_dict["calendar"]
+            if not calendar:
+                if displayifnotnew:
+                    return ["google calendar missing."]
+                else:
+                    return []
+
+            currentcalendar = feed_dict["calendar"]
+
+            try:
+                events_result = bot.memory["botdict"]["tempvals"]['google'].events().list(calendarId=currentcalendar, timeMin=now,
+                                                                                          maxResults=1, singleEvents=True,
+                                                                                          orderBy='startTime').execute()
+                events = events_result.get('items', [])
+            except Exception as e:
+                if displayifnotnew:
+                    return ["No Content Usable."]
+                else:
+                    return []
+
+            bot.msg("#spicebottest", str(events))
+            return []
+
+            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildtime = parser.parse(str(lastbuildtime))
+            try:
+                entrytime = submission.created_at
+                entrytime = entrytime.replace(tzinfo=pytz.UTC)
+            except Exception as e:
+                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            entrytime = parser.parse(str(entrytime))
+
+            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
+            try:
+                title = submission.text
+                title = unicode_string_cleanup(title)
+            except Exception as e:
+                title = None
+            if title:
+                dispmsg.append(title)
+
+            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
+            try:
+                link = str(currenttweetat + "/status/" + str(submission.id))
+            except Exception as e:
+                link = None
+            if link:
+                dispmsg.append(str(feed_dict["url"] + "/" + link))
+
+            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
+                displayname = feed_dict["displayname"]
+                if not displayname:
+                    try:
+                        displayname = feedjson['feed']['title']
+                    except Exception as e:
+                        displayname = None
+            else:
+                dispmsg = []
+
+            if not displayifnotnew:
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
+                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
+
     if displayname and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
 
