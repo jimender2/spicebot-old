@@ -54,6 +54,7 @@ from fake_useragent import UserAgent
 import praw
 from prawcore import NotFound
 import twitter
+from twitter import *
 from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
