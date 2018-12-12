@@ -178,7 +178,7 @@ def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
 
             feedjson = feedparser.parse(url)
 
-            rssentrytime = feedjson.entries[0].pubdate
+            rssentrytime = feedjson.entries[0].published
             rssentrytime = parser.parse(str(rssentrytime))
 
             xml = page.text
