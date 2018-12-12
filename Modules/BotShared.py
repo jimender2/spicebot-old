@@ -1088,6 +1088,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 listarray.append(submission)
             submission = listarray[0]
             bot.msg("#spicebottest", str(submission))
+            return ["done testing"]
 
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
             if displayifnotnew or (str(submission.permalink) != str(lastbuildcurrent)):
