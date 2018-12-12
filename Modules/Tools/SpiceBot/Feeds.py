@@ -44,9 +44,121 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
+    valid_commands = ['enable', 'disable', 'reset', 'run', 'subscribe', 'unsubscribe']
+    command = spicemanip(bot, [x for x in triggerargsarray if x in valid_commands], 1) or 'run'
+    if command in triggerargsarray:
+        triggerargsarray.remove(command)
+
+    feeds = feeds_configs(bot, feeds)
+
+    feed_select = spicemanip(bot, [x for x in triggerargsarray if x in bot.memory["botdict"]["tempvals"]['feeds'].keys() or x == 'all'], 1) or 'nofeed'
+    if feed_select == 'nofeed':
+        feed_list = spicemanip(bot, bot.memory["botdict"]["tempvals"]['feeds'].keys(), 'list')
+        osd(bot, botcom.channel_current, 'say', "Valid Feeds are " + feed_list)
+        return
+    if feed_select == 'all':
+        current_feed_list = bot.memory["botdict"]["tempvals"]['feeds'].keys()
+    else:
+        current_feed_list = []
+        for word in triggerargsarray:
+            if word in bot.memory["botdict"]["tempvals"]['feeds'].keys():
+                current_feed_list.append(word)
+
+    if command == 'run':
+        for feed in current_feed_list:
+            dispmsg = bot_dictcom_feeds_handler(bot, botcom, feed, True)
+            if dispmsg == []:
+                osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
+            else:
+                if feed_select == 'all':
+                    osd(bot, botcom.instigator, 'priv', dispmsg)
+                else:
+                    osd(bot, botcom.channel_current, 'say', dispmsg)
+        return
+
+    if command == 'subscribe':
+        instigatormodulesarray = get_nick_value(bot, botcom.instigator, "long", "feeds", "enabled") or []
+        newlist = []
+        for feed in current_feed_list:
+            if feed not in instigatormodulesarray:
+                newlist.append(feed)
+        if newlist != []:
+            adjust_nick_array(bot, botcom.instigator, "long", "feeds", "enabled", newlist, "add")
+            osd(bot, botcom.channel_current, 'say', "You are now " + command + "d to " + spicemanip(bot, newlist, 'list'))
+        else:
+            osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
+        return
+
+    if command == 'unsubscribe':
+        instigatormodulesarray = get_nick_value(bot, botcom.instigator, "long", "feeds", "enabled") or []
+        newlist = []
+        for feed in current_feed_list:
+            if feed in instigatormodulesarray:
+                newlist.append(feed)
+        if newlist != []:
+            adjust_nick_array(bot, botcom.instigator, "long", "feeds", "enabled", newlist, "del")
+            osd(bot, botcom.channel_current, 'say', "You are now " + command + "d from " + spicemanip(bot, newlist, 'list'))
+        else:
+            osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
+        return
+
+    if botcom.instigator not in botcom.opadmin:
+        osd(bot, botcom.channel_current, 'say', "Only Bot Admins and Channel Operators are able to adjust Feed settings.")
+        return
+
+    if command == 'reset':
+        newlist = []
+        for feed in current_feed_list:
+            feed_type = eval("feeds." + feed + ".type")
+            if feed_type in ['rss', 'youtube', 'scrape', 'json']:
+                newlist.append(feed)
+        if newlist != []:
+            for feed in newlist:
+                reset_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent')
+            osd(bot, botcom.channel_current, 'say', spicemanip(bot, newlist, 'list') + " " + hashave(newlist) + " been " + command + ".")
+        else:
+            osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
+        return
+
+    channelselect = spicemanip(bot, [x for x in triggerargsarray if x in botcom.channel_list], 1) or botcom.channel_current
+
+    if command == 'enable':
+        instigatormodulesarray = get_nick_value(bot, channelselect, "long", "feeds", "enabled") or []
+        newlist = []
+        for feed in current_feed_list:
+            if feed not in channelmodulesarray:
+                newlist.append(feed)
+        if newlist != []:
+            adjust_nick_array(bot, channelselect, "long", "feeds", "enabled", newlist, "add")
+            osd(bot, botcom.channel_current, 'say', spicemanip(bot, newlist, 'list') + " " + hashave(newlist) + " been " + command + "d for " + str(channelselect) + ".")
+        else:
+            osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
+        return
+
+    if command == 'disable':
+        instigatormodulesarray = get_nick_value(bot, channelselect, "long", "feeds", "enabled") or []
+        newlist = []
+        for feed in current_feed_list:
+            if feed in channelmodulesarray:
+                newlist.append(feed)
+        if newlist != []:
+            adjust_nick_array(bot, channelselect, "long", "feeds", "enabled", newlist, "del")
+            osd(bot, botcom.channel_current, 'say', spicemanip(bot, newlist, 'list') + " " + hashave(newlist) + " been " + command + "d for " + str(channelselect) + ".")
+        else:
+            osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
+        return
+
+    feedoption = spicemanip(bot, botcom.triggerargsarray, 1) or None
+    if not feedoption:
+        return osd(bot, botcom.channel_current, 'say', ".seen <nick> - Reports when <nick> was last seen.")
+
+    if not bot_check_inlist(bot, feedoption, bot.memory["botdict"]["tempvals"]['feeds'].keys()):
+        feedslist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['feeds'].keys(), 'andlist')
+        return osd(bot, botcom.channel_current, 'say', ["Please Select a valid feed. Options include:", feedslist])
+
     dispmsg = bot_dictcom_feeds_handler(bot, botcom, "githubrepomaster", True)
     if dispmsg == []:
-        osd(bot, botcom.channel_current, 'say', botcom.maincom + " appears to have had an unknown error.")
+        osd(bot, botcom.channel_current, 'say', feed + " appears to have had an unknown error.")
     else:
         osd(bot, botcom.channel_current, 'say', dispmsg)
 
@@ -77,7 +189,7 @@ def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
 
         if feed_type in ['rss', 'youtube', 'github']:
 
-            lastbuildcurrent = get_nick_value(bot, str(bot.nick), 'long', 'feeds', botcom.maincom + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildcurrent = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
             xml = page.text
@@ -134,7 +246,7 @@ def bot_dictcom_feeds_handler(bot, botcom, feed, displayifnotnew=True):
                 dispmsg.append(link)
 
                 if not displayifnotnew:
-                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', botcom.maincom + '_lastbuildcurrent', str(lastBuildXML))
+                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent', str(lastBuildXML))
 
     if titleappend and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
