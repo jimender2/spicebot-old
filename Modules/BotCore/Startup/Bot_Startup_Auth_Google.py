@@ -55,8 +55,12 @@ def bot_startup_twitter(bot, trigger):
         f.write(textwrite)
         f.close()
 
+    sayline = True
     for line in os.popen(str("sudo python /home/spicebot/quickstart.py --noauth_local_webserver")):
-        stderr(line)
+        if line.startswith("Traceback"):
+            sayline = False
+        if sayline:
+            stderr(line)
     os.system("sudo chown -R " + str(os_dict["user"]) + ":sudo /home/spicebot/token.json")
 
     try:
