@@ -1027,9 +1027,6 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
         if feed_type in ['rss', 'youtube', 'github', 'redditrss']:
 
-            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            lastbuildtime = parser.parse(str(lastbuildtime))
-
             try:
                 feedjson = feedparser.parse(url)
             except Exception as e:
@@ -1038,6 +1035,8 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 else:
                     return []
 
+            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildtime = parser.parse(str(lastbuildtime))
             try:
                 entrytime = feedjson.entries[0].updated
             except Exception as e:
@@ -1108,9 +1107,6 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 else:
                     return []
 
-            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            lastbuildtime = parser.parse(str(lastbuildtime))
-
             try:
                 submissions = subreddit.new(limit=1)
                 listarray = []
@@ -1123,6 +1119,8 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 else:
                     return []
 
+            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildtime = parser.parse(str(lastbuildtime))
             try:
                 entrytime = submission.created
                 entrytime = datetime.datetime.fromtimestamp(entrytime).replace(tzinfo=pytz.UTC)
@@ -1193,9 +1191,6 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             currenttweetat = feed_dict["handle"]
 
-            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            lastbuildtime = parser.parse(str(lastbuildtime))
-
             try:
                 submissions = bot.memory["botdict"]["tempvals"]['twitter'].GetUserTimeline(screen_name=currenttweetat, count=1, exclude_replies=True, include_rts=False)
                 submission = submissions[0]
@@ -1205,26 +1200,14 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 else:
                     return []
 
-            entrytime = submission.created_at
-            bot.msg("#spicebottest", str(entrytime))
-            return []
-
+            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildtime = parser.parse(str(lastbuildtime))
             try:
                 entrytime = submission.created_at
                 entrytime = entrytime.replace(tzinfo=pytz.UTC)
             except Exception as e:
                 entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             entrytime = parser.parse(str(entrytime))
-
-            bot.msg("#spicebottest", str(entrytime))
-            return []
-
-
-            """
-            [Status(ID=1072618070580125697, ScreenName=PicardTips, Created=Tue Dec 11 22:24:10 +0000 2018, Text=u"Picard management tip: If you're unhappy with a crew member's behavior, tell them straight out in private. Don't be passive aggressive.")]
-            """
-
-
 
             lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
             try:
@@ -1237,7 +1220,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
             try:
-                link = submission.permalink
+                link = str("https://twitter.com/" + currenttweetat + "/status/" + str(submission.id))
             except Exception as e:
                 link = None
             if link:
