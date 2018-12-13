@@ -1315,12 +1315,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if link:
                 dispmsg.append(link)
 
-            if (int(timeuntil) <= 900 and link != lastbuildlink and title != lastbuildtitle and entrytime != lastbuildtime) or forcedisplay:
-
-                if not forcedisplay:
-                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
-                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
-                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
+            if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
 
                 displayname = feed_dict["displayname"]
                 if not displayname:
