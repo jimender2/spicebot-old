@@ -1332,7 +1332,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                     entrytime = entrytime.replace(*r)
             except Exception as e:
                 entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            bot.msg("#spicebottest", str(entrytime[0]))
+            bot.msg("#spicebottest", str(entrytime))
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
 
             return []
