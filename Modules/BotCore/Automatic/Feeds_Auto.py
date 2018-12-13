@@ -32,11 +32,12 @@ def auto_feeds(bot, trigger):
     while True:
         time.sleep(60)
         for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
-            Thread(target=feeds_thread, args=(bot, feed,)).start()
+            # Thread(target=feeds_thread, args=(bot, feed,)).start()
+            feeds_thread(bot, feed)
 
 
 def feeds_thread(bot, feed):
-    dispmsg = bot_dictcom_feeds_handler(bot, feed, False)
+    # dispmsg = bot_dictcom_feeds_handler(bot, feed, False)
     osd(bot, "#spicebottest", 'say', dispmsg)
     if dispmsg != []:
         for channel in bot.privileges.keys():
