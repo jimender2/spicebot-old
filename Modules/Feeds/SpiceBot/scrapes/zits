@@ -1,0 +1,11 @@
+{
+
+"type": "scrapes",
+"displayname": "Zits Comic",
+"url": "http://zitscomics.com/",
+"scrapetime": '//*[@id="js_comics"]/div[1]/div[1]/div/section/h1/a/span[2]/text()',
+"scrapetitle": '//*[@id="comic-date"]/text()',
+"scrapelink": None,
+"scrapetimezone": "UTC",
+
+}

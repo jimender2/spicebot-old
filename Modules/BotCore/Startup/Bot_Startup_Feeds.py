@@ -140,11 +140,28 @@ def feed_configs(bot):
                                     if "scrapetitle" not in dict_from_file.keys():
                                         dict_from_file["scrapetitle"] = None
 
-                                    if "scrapetitle" not in dict_from_file.keys():
+                                    if "scrapehour" not in dict_from_file.keys():
                                         dict_from_file["scrapehour"] = 1
 
-                                    if "scrapelink" not in dict_from_file.keys():
+                                    if "scrapeminute" not in dict_from_file.keys():
                                         dict_from_file["scrapeminute"] = 1
+
+                                    if "scrapetimezone" not in dict_from_file.keys():
+                                        dict_from_file["scrapetimezone"] = "UTC"
+
+                                    if "scrapelink" not in dict_from_file.keys():
+                                        dict_from_file["scrapelink"] = None
+
+                                    if "linkprecede" not in dict_from_file.keys():
+                                        dict_from_file["linkprecede"] = None
+
+                                if dict_from_file["type"] == "scrapes":
+
+                                    if "scrapetitle" not in dict_from_file.keys():
+                                        dict_from_file["scrapetitle"] = None
+
+                                    if "scrapetime" not in dict_from_file.keys():
+                                        dict_from_file["scrapetime"] = None
 
                                     if "scrapetimezone" not in dict_from_file.keys():
                                         dict_from_file["scrapetimezone"] = "UTC"
