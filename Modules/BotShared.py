@@ -1350,7 +1350,10 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                     return []
 
             timeuntil = (entrytime - now).total_seconds()
-            timeuntilb = humanized_time(timeuntil)
+            if timeuntil > 0:
+                timeuntilb = humanized_time((entrytime - now).total_seconds())
+            else:
+                timeuntilb = humanized_time((now - entrytime).total_seconds())
             bot.msg("#spicebottest", str(timeuntilb))
             timecompare = arrow_time(now, entrytime)
             dispmsg.append(timecompare)
