@@ -1295,7 +1295,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if link:
                 dispmsg.append(link)
 
-            if (int(timeuntil) < 900 and int(timeuntil) > 840):  # or forcedisplay:
+            if (int(timeuntil) <= 900 and int(timeuntil) >= 840) or forcedisplay:
 
                 displayname = feed_dict["displayname"]
                 if not displayname:
