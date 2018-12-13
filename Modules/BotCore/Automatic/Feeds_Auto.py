@@ -30,7 +30,6 @@ def auto_feeds(bot, trigger):
         pass
 
     while True:
-        osd(bot, "#spicebottest", 'say', "running list")
         time.sleep(60)
         for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
             Thread(target=feeds_thread, args=(bot, feed,)).start()
@@ -38,6 +37,7 @@ def auto_feeds(bot, trigger):
 
 def feeds_thread(bot, feed):
     dispmsg = bot_dictcom_feeds_handler(bot, feed, False)
+    osd(bot, "#spicebottest", 'say', dispmsg)
     if dispmsg != []:
         for channel in bot.privileges.keys():
             if 'feed' not in bot.memory["botdict"]['servers_list'][str(bot.memory["botdict"]["tempvals"]['server'])]['channels_list'][str(channel)]["disabled_commands"]:
