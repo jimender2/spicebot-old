@@ -1328,28 +1328,20 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             scrapetime = feed_dict["scrapetime"]
             scrapetimezone = feed_dict["scrapetimezone"]
 
-            entrytime = tree.xpath(scrapetime)[0]
-            entrytime = str(entrytime)
-            # bot.msg("#spicebottest", str(entrytime))
-
-            for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
-                entrytime = entrytime.replace(*r)
-            entrytime = parser.parse(entrytime).replace(tzinfo=None)
-            # bot.msg("#spicebottest", str(entrytime))
-
-            feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
-            entrytime = feedtimezone.localize(entrytime)
-            # bot.msg("#spicebottest", str(entrytime))
-
-            # bot.msg("#spicebottest", str(tz_aware(entrytime)))
+            try:
+                entrytime = tree.xpath(scrapetime)[0]
+                entrytime = str(entrytime)
+                for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
+                    entrytime = entrytime.replace(*r)
+                entrytime = parser.parse(entrytime)
+                if not tz_aware(entrytime):
+                    entrytime = parser.parse(entrytime).replace(tzinfo=None)
+                    feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
+                    entrytime = feedtimezone.localize(entrytime)
+            except Exception as e:
 
             timeuntil = (entrytime - now).total_seconds()
             timecompare = arrow_time(now, entrytime)
-            bot.msg("#spicebottest", str(timeuntil))
-            bot.msg("#spicebottest", str(timecompare))
-
-            # entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
-            # bot.msg("#spicebottest", str(entrytime))
 
             # try:
             #    entrytime = tree.xpath(scrapetime)[0]
