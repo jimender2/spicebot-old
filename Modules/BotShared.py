@@ -1422,6 +1422,106 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             else:
                 dispmsg = []
 
+        elif feed_type == 'dailyscrapes':
+            if not forcedisplay:
+                return []
+
+            tree = html.fromstring(page.content)
+
+            tomorrow = now + datetime.timedelta(days=1)
+            dailytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(timehour), int(timeminute), 0, 0).replace(tzinfo=None)
+
+            bot.msg("#spicebottest", str(dailytime))
+
+            return dispmsg
+
+            scrapetime = feed_dict["scrapetime"]
+            scrapetimezone = feed_dict["scrapetimezone"]
+
+            try:
+                entrytime = tree.xpath(scrapetime)
+                if isinstance(entrytime, list):
+                    entrytime = entrytime[0]
+                entrytime = str(entrytime)
+                for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
+                    entrytime = entrytime.replace(*r)
+                entrytime = parser.parse(entrytime)
+                if not tz_aware(entrytime):
+                    feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
+                    entrytime = feedtimezone.localize(entrytime)
+            except Exception as e:
+                if forcedisplay:
+                    return ["Timestamp Error"]
+                else:
+                    return []
+
+            timeuntil = (entrytime - now).total_seconds()
+            if timeuntil > 0:
+                timecompare = humanized_time((entrytime - now).total_seconds())
+                timecompare = str(timecompare + " from now")
+            else:
+                timecompare = humanized_time((now - entrytime).total_seconds())
+                timecompare = str(timecompare + " ago")
+            # timecompare = arrow_time(now, entrytime)
+            dispmsg.append(timecompare)
+
+            scrapetitle = feed_dict["scrapetitle"]
+            if scrapetitle:
+                try:
+                    title = tree.xpath(scrapetitle)
+                    if isinstance(title, list):
+                        title = title[0]
+                    title = str(title)
+                    for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+                        title = title.replace(*r)
+                    title = unicode_string_cleanup(title)
+                except Exception as e:
+                    title = None
+                if title:
+                    dispmsg.append(title)
+
+            scrapelink = feed_dict["scrapelink"]
+            if scrapelink:
+                try:
+                    link = tree.xpath(scrapelink)
+                    if isinstance(link, list):
+                        link = link[0]
+                    link = str(link)
+                    for r in (("['", ""), ("']", "")):
+                        link = link.replace(*r)
+                    if feed_dict["linkprecede"]:
+                        link = str(feed_dict["linkprecede"] + link)
+                except Exception as e:
+                    link = None
+                if link:
+                    dispmsg.append(link)
+
+            scrapebonus = feed_dict["scrapebonus"]
+            if scrapebonus:
+                try:
+                    bonus = tree.xpath(scrapebonus)
+                    if isinstance(bonus, list):
+                        bonus = bonus[0]
+                    bonus = str(bonus)
+                    scrapebonussplit = feed_dict["scrapebonussplit"]
+                    if scrapebonussplit:
+                        bonus = str(bonus.split(feed_dict["scrapebonussplit"])[-1])
+                    for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", ""), ("[", "")):
+                        bonus = bonus.replace(*r)
+                    bonus = unicode_string_cleanup(bonus)
+                except Exception as e:
+                    bonus = None
+                if bonus:
+                    dispmsg.append(bonus)
+
+            if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
+
+                displayname = feed_dict["displayname"]
+                if not displayname:
+                    displayname = None
+            else:
+                dispmsg = []
+
     if displayname and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
 

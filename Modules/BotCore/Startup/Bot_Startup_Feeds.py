@@ -135,6 +135,20 @@ def feed_configs(bot):
                                     if not dict_from_file["url"]:
                                         dict_from_file["url"] = "https://google.com"
 
+                                if dict_from_file["type"] == "dailyscrapes":
+
+                                    if "scrapetitle" not in dict_from_file.keys():
+                                        dict_from_file["scrapetitle"] = None
+
+                                    if "scrapetitle" not in dict_from_file.keys():
+                                        dict_from_file["scrapehour"] = 1
+
+                                    if "scrapelink" not in dict_from_file.keys():
+                                        dict_from_file["scrapeminute"] = 1
+
+                                    if "scrapetimezone" not in dict_from_file.keys():
+                                        dict_from_file["scrapetimezone"] = "UTC"
+
                                 if dict_from_file["type"] == "webinarscrapes":
 
                                     if "scrapetime" not in dict_from_file.keys():
