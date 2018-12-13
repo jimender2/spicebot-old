@@ -1334,7 +1334,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
             for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
                 entrytime = entrytime.replace(*r)
-            entrytime = parser.parse(entrytime)
+            entrytime = parser.parse(entrytime).replace(tzinfo=None)
             bot.msg("#spicebottest", str(entrytime))
 
             feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
