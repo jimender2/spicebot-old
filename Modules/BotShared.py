@@ -1280,7 +1280,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
             osd(bot, "#spicebottest", 'say', str(entrytime))
 
-            timecompare = arrow_time(nowtime, entrytime)
+            timecompare = arrow_time(now, entrytime)
             return []
 
             """
