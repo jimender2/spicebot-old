@@ -1335,6 +1335,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 entrytime = entrytime.replace(*r)
             bot.msg("#spicebottest", str(entrytime))
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
+            bot.msg("#spicebottest", str(entrytime))
 
             return []
 
