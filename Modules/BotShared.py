@@ -1398,10 +1398,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                     displayname = None
             else:
                 dispmsg = []
-                """
 
-
-            """
             scrapetime = eval("feeds." + feed + ".time")
             scrapetimezone = eval("feeds." + feed + ".timezone")
 
