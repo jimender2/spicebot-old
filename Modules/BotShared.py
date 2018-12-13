@@ -1275,6 +1275,8 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             events_result = service.events().list(calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=nowtime).execute()
             events = events_result.get('items', [])
+            if events == []:
+                return ["No upcoming events on this calendar"]
 
             osd(bot, "#spicebottest", 'say', str(events[0]))
             return []
