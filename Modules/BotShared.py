@@ -1298,7 +1298,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             if link:
                 dispmsg.append(link)
 
-            if "timestamp" in bot.memory["timestamp"]:
+            if "timestamp" in bot.memory:
                 timesincelast = (datetime.datetime.utcnow() - bot.memory["timestamp"]).total_seconds()
                 osd(bot, "#spicebottest", 'say', str(timesincelast))
             bot.memory["timestamp"] = datetime.datetime.utcnow()
