@@ -1269,7 +1269,10 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             try:
                 entrytime = nextevent["start"]["dateTime"]
             except Exception as e:
-                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+                if forcedisplay:
+                    return ["Timestamp Error"]
+                else:
+                    return []
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
 
             timeuntil = (entrytime - now).total_seconds()
@@ -1343,7 +1346,10 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                     feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
                     entrytime = feedtimezone.localize(entrytime)
             except Exception as e:
-                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+                if forcedisplay:
+                    return ["Timestamp Error"]
+                else:
+                    return []
 
             timeuntil = (entrytime - now).total_seconds()
             timecompare = arrow_time(now, entrytime)
