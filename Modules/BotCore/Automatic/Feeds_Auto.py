@@ -26,9 +26,9 @@ sys.setdefaultencoding('utf-8')
 def auto_feeds(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
+    while not bot_startup_requirements_met(bot, ["botdict", "monologue", "feeds"]):
         pass
-
+    bot.msg("#spicebottest", str(len(bot.memory["botdict"]["tempvals"]['feeds'].keys())))
     for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
         Thread(target=feeds_thread, args=(bot, feed,)).start()
 
