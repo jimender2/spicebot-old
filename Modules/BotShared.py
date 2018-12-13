@@ -1327,7 +1327,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             scrapetimezone = feed_dict["scrapetimezone"]
 
             try:
-                entrytime = tree.xpath(scrapetime)[0]
+                entrytime = str(tree.xpath(scrapetime)[0])
                 for r in (("@ ", "")):
                     entrytime = entrytime.replace(*r)
             except Exception as e:
