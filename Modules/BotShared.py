@@ -1330,7 +1330,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
         elif feed_type == 'webinarscrapes':
 
-
             currentcalendar = feed_dict["calendar"]
 
             http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
