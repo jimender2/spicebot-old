@@ -110,7 +110,7 @@ def reddit_r(bot, botcom, rclass):
 
     rclass.fullrurul = str("https://www.reddit.com/" + rclass.urltype + "/" + rclass.urlsearch)
 
-    subredditcheck = reddit_subreddit_check(bot, currentsubreddit)
+    subredditcheck = reddit_subreddit_check(bot, rclass.urlsearch)
     if not subredditcheck["exists"]:
         return osd(bot, rclass.channel_current, 'say', subredditcheck["error"])
 
