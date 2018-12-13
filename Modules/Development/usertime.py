@@ -5,7 +5,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel.module
 
-
 # imports for system and OS access, directories
 import os
 import sys
@@ -16,14 +15,24 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+# imports specific to this file
+import datetime
+import pytz
+from tzlocal import get_localzone
+
 # Ensure Encoding
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+User_locale = {
+                        "dysonparkes": "+12",
+                        "deathbybandaid": "-5"
+}
+
 
 @sopel.module.commands('time')
 def mainfunctionnobeguine(bot, trigger):
-
+    """Confirm module is enabled."""
     botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:
         return
@@ -43,4 +52,8 @@ def mainfunctionnobeguine(bot, trigger):
 
 
 def execute_main(bot, trigger, botcom):
-    bot.say("WIP")
+    """Do the thing."""
+    tz = get_localzone()
+    local_dt = tz.localize(datetime(2010, 4, 27, 12, 0, 0, 0), is_dst=None)
+    utc_dt = local_dt.astimezone(pytz.utc)  # NOTE: utc.normalize() is unnecessary here
+    bot.say(str(utc_dt))
