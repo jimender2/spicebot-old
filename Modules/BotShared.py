@@ -1328,7 +1328,9 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             else:
                 dispmsg = []
 
+        """
         elif feed_type == 'webinarscrapes':
+            return []
 
             currentcalendar = feed_dict["calendar"]
 
@@ -1404,6 +1406,66 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                     displayname = None
             else:
                 dispmsg = []
+                """
+
+
+            """
+            scrapetime = eval("feeds." + feed + ".time")
+            scrapetimezone = eval("feeds." + feed + ".timezone")
+
+            webbytime = str(tree.xpath(scrapetime))
+            for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
+                webbytime = webbytime.replace(*r)
+
+            if feed == 'spiceworkswebby':
+                webbytime = str(webbytime.split("+", 1)[0])
+
+            webbytz = pytz.timezone(scrapetimezone)
+            webbytime = parser.parse(webbytime)
+            webbytime = webbytz.localize(webbytime)
+
+            timeuntil = (webbytime - now).total_seconds()
+
+            if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
+
+                titleappend = 1
+
+                timecompare = get_timeuntil(now, webbytime)
+                dispmsg.append("{" + timecompare + "}")
+
+                scrapetitle = eval("feeds." + feed + ".title")
+                webbytitle = str(tree.xpath(scrapetitle))
+                for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+                    webbytitle = webbytitle.replace(*r)
+                webbytitle = unicode_string_cleanup(webbytitle)
+                dispmsg.append(webbytitle)
+
+                scrapelink = eval("feeds." + feed + ".link")
+                webbylink = str(tree.xpath(scrapelink))
+                for r in (("['", ""), ("']", "")):
+                    webbylink = webbylink.replace(*r)
+                if feed == 'actualtechwebby':
+                    webbylink = str(url + webbylink.split("&", 1)[0])
+                webbylinkprecede = eval("feeds." + feed + ".linkprecede")
+                if webbylinkprecede != 'noprecede':
+                    webbylink = str(webbylinkprecede + webbylink)
+                dispmsg.append(webbylink)
+
+                scrapebonus = eval("feeds." + feed + ".bonus")
+                if scrapebonus != 'nobonus':
+                    webbybonus = ''
+                    try:
+                        webbybonus = str(tree.xpath(scrapebonus))
+                        if feed == 'spiceworkswebby':
+                            webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
+                        for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", ""), ("[", "")):
+                            webbybonus = webbybonus.replace(*r)
+                        webbybonus = unicode_string_cleanup(webbybonus)
+                    except IndexError:
+                        webbybonus = ''
+                    if webbybonus != '':
+                        dispmsg.append('BONUS: ' + webbybonus)
+                        """
 
     if displayname and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
