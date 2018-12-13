@@ -109,11 +109,13 @@ def execute_main(bot, trigger, botcom):
         newlist = []
         for feed in current_feed_list:
             feed_type = bot.memory["botdict"]["tempvals"]['feeds'][feed]["type"]
-            if feed_type in ['rss', 'youtube', 'scrape', 'json']:
+            if feed_type in ['rss', 'youtube', 'github', 'redditrss', 'redditapi', 'twitter']:
                 newlist.append(feed)
         if newlist != []:
             for feed in newlist:
-                reset_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildcurrent')
+                reset_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime')
+                reset_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle')
+                reset_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink')
             osd(bot, botcom.channel_current, 'say', spicemanip(bot, newlist, 'list') + " " + hashave(newlist) + " been " + command + ".")
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")

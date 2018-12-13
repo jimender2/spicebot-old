@@ -1004,7 +1004,7 @@ Feeds
 """
 
 
-def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
+def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
     feed_dict = bot.memory["botdict"]["tempvals"]['feeds'][feed]
 
@@ -1013,7 +1013,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
     url = feed_dict["url"]
     if not url:
-        if displayifnotnew:
+        if forcedisplay:
             return ["URL missing."]
         else:
             return []
@@ -1033,7 +1033,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             try:
                 feedjson = feedparser.parse(url)
             except Exception as e:
-                if displayifnotnew:
+                if forcedisplay:
                     return ["No Content Usable."]
                 else:
                     return []
@@ -1063,7 +1063,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             if link:
                 dispmsg.append(link)
 
-            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
+            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or forcedisplay:
                 displayname = feed_dict["displayname"]
                 if not displayname:
                     try:
@@ -1073,7 +1073,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             else:
                 dispmsg = []
 
-            if not displayifnotnew:
+            if not forcedisplay:
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
@@ -1081,14 +1081,14 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
         elif feed_type == 'redditapi':
 
             if not bot.memory["botdict"]["tempvals"]['reddit']:
-                if displayifnotnew:
+                if forcedisplay:
                     return ["reddit api unavailable."]
                 else:
                     return []
 
             path = feed_dict["path"]
             if not path:
-                if displayifnotnew:
+                if forcedisplay:
                     return ["reddit Path missing."]
                 else:
                     return []
@@ -1097,7 +1097,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             subredditcheck = reddit_subreddit_check(bot, currentsubreddit)
             if not subredditcheck["exists"]:
-                if displayifnotnew:
+                if forcedisplay:
                     return [subredditcheck["error"]]
                 else:
                     return []
@@ -1105,7 +1105,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             try:
                 subreddit = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(currentsubreddit)
             except Exception as e:
-                if displayifnotnew:
+                if forcedisplay:
                     return ["No Content Usable."]
                 else:
                     return []
@@ -1117,7 +1117,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                     listarray.append(submission)
                 submission = listarray[0]
             except Exception as e:
-                if displayifnotnew:
+                if forcedisplay:
                     return ["No Content Usable."]
                 else:
                     return []
@@ -1162,14 +1162,14 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             if link:
                 dispmsg.append(str(feed_dict["url"] + link))
 
-            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
+            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or forcedisplay:
                 displayname = feed_dict["displayname"]
                 if not displayname:
                     displayname = None
             else:
                 dispmsg = []
 
-            if not displayifnotnew:
+            if not forcedisplay:
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
@@ -1177,14 +1177,14 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
         elif feed_type == 'twitter':
 
             if not bot.memory["botdict"]["tempvals"]['twitter']:
-                if displayifnotnew:
+                if forcedisplay:
                     return ["twitter api unavailable."]
                 else:
                     return []
 
             handle = feed_dict["handle"]
             if not handle:
-                if displayifnotnew:
+                if forcedisplay:
                     return ["twitter handle missing."]
                 else:
                     return []
@@ -1195,7 +1195,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 submissions = bot.memory["botdict"]["tempvals"]['twitter'].GetUserTimeline(screen_name=currenttweetat, count=1, exclude_replies=True, include_rts=False)
                 submission = submissions[0]
             except Exception as e:
-                if displayifnotnew:
+                if forcedisplay:
                     return ["No Content Usable."]
                 else:
                     return []
@@ -1226,32 +1226,32 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             if link:
                 dispmsg.append(str(feed_dict["url"] + "/" + link))
 
-            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
+            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or forcedisplay:
                 displayname = feed_dict["displayname"]
                 if not displayname:
                     displayname = None
             else:
                 dispmsg = []
 
-            if not displayifnotnew:
+            if not forcedisplay:
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
                 set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
 
         elif feed_type == 'googlecalendar':
 
-            if not displayifnotnew:
+            if not forcedisplay:
                 return []
 
             if not bot.memory["botdict"]["tempvals"]['google']:
-                if displayifnotnew:
+                if forcedisplay:
                     return ["google api unavailable."]
                 else:
                     return []
 
             calendar = feed_dict["calendar"]
             if not calendar:
-                if displayifnotnew:
+                if forcedisplay:
                     return ["google calendar missing."]
                 else:
                     return []
@@ -1302,7 +1302,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 timesincelast = (datetime.datetime.utcnow() - bot.memory["timestamp"]).total_seconds()
                 osd(bot, "#spicebottest", 'say', str(timesincelast))
             bot.memory["timestamp"] = datetime.datetime.utcnow()
-            if (int(timeuntil) < 900 and int(timeuntil) > 840) or displayifnotnew:
+            if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
 
                 displayname = feed_dict["displayname"]
                 if not displayname:
