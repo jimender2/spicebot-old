@@ -1278,9 +1278,13 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             except Exception as e:
                 entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
-            osd(bot, "#spicebottest", 'say', str(entrytime))
 
             timecompare = arrow_time(now, entrytime)
+
+            timeuntil = (entrytime - now).total_seconds()
+            osd(bot, "#spicebottest", 'say', str(timeuntil))
+
+            if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
             return []
 
             """
