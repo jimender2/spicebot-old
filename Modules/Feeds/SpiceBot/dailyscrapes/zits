@@ -1,6 +1,6 @@
 {
 
-"type": "scrapes",
+"type": "dailyscrapes",
 "displayname": "Zits Comic",
 "url": "http://zitscomics.com/",
 "scrapetitle": '//*[@id="comic-date"]/text()',
