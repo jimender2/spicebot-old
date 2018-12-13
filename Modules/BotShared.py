@@ -1291,8 +1291,8 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if not feed_dict["link"]:
                 try:
                     link = str(nextevent["description"])
-                    bot.msg("#spicebottest", str(link))
-                    url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', link) or None
+                    url = Find(link)
+                    bot.msg("#spicebottest", str(url))
                     if url:
                         link = url
                     else:
@@ -1327,6 +1327,13 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
     botdict_save(bot)
     return dispmsg
+
+
+def Find(string):
+    # findall() has been used
+    # with valid conditions for urls in string
+    url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', string)
+    return url
 
 
 def hashave(mylist):
