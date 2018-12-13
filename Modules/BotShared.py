@@ -1290,9 +1290,19 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
             if not feed_dict["link"]:
                 try:
-                    link = str(nextevent["htmlLink"])
+                    link = str(nextevent["description"])
+                    url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', link) or None
+                    if url:
+                        link = url
+                    else:
+                        link = None
                 except Exception as e:
                     link = None
+                if link:
+                    try:
+                        link = str(nextevent["htmlLink"])
+                    except Exception as e:
+                        link = None
             else:
                 link = feed_dict["link"]
             if link:
