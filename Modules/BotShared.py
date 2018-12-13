@@ -1345,6 +1345,8 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
             timeuntil = (entrytime - now).total_seconds()
             timecompare = arrow_time(now, entrytime)
+            bot.msg("#spicebottest", str(timeuntil))
+            bot.msg("#spicebottest", str(timecompare))
 
             # try:
             #    entrytime = tree.xpath(scrapetime)[0]
