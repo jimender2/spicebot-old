@@ -1348,24 +1348,11 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             dispmsg.append(timecompare)
 
             scrapetitle = feed_dict["scrapetitle"]
-            title = tree.xpath(scrapetitle)
-            bot.msg("#spicebottest", str(title))
-
-            if isinstance(title, list):
-                title = title[0]
-            title = str(title)
-            bot.msg("#spicebottest", str(title))
-
-            for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
-                title = title.replace(*r)
-            title = unicode_string_cleanup(title)
-            bot.msg("#spicebottest", str(title))
-
-            return dispmsg
-
             try:
-                scrapetitle = feed_dict["scrapetitle"]
-                title = str(tree.xpath(scrapetitle))
+                title = tree.xpath(scrapetitle)
+                if isinstance(title, list):
+                    title = title[0]
+                title = str(title)
                 for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
                     title = title.replace(*r)
                 title = unicode_string_cleanup(title)
@@ -1374,60 +1361,49 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if title:
                 dispmsg.append(title)
 
+            scrapelink = feed_dict["scrapelink"]
+            link = tree.xpath(scrapelink)
+            if isinstance(link, list):
+                link = link[0]
+            link = str(link)
+            for r in (("['", ""), ("']", "")):
+                link = link.replace(*r)
+
+            if feed_dict["linkprecede"]:
+                link = str(feed_dict["linkprecede"] + link)
+
+            bot.msg("#spicebottest", str(link))
+            return dispmsg
+
             """
             dragons here be
             """
 
-            webbytime = str(tree.xpath(scrapetime))
-            for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
-                webbytime = webbytime.replace(*r)
+            scrapelink = feed_dict["scrapelink"]
+            webbylink = str(tree.xpath(scrapelink))
+            for r in (("['", ""), ("']", "")):
+                webbylink = webbylink.replace(*r)
+            if feed == 'actualtechwebby':
+                webbylink = str(url + webbylink.split("&", 1)[0])
+            webbylinkprecede = feed_dict["linkprecede"]
+            if webbylinkprecede:
+                webbylink = str(webbylinkprecede + webbylink)
+            dispmsg.append(webbylink)
 
-            if feed == 'spiceworkswebby':
-                webbytime = str(webbytime.split("+", 1)[0])
-
-            webbytz = pytz.timezone(scrapetimezone)
-            webbytime = parser.parse(webbytime)
-            webbytime = webbytz.localize(webbytime)
-
-            timeuntil = (webbytime - now).total_seconds()
-
-            if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
-
-                timecompare = get_timeuntil(now, webbytime)
-                dispmsg.append("{" + timecompare + "}")
-
-                scrapetitle = feed_dict["scrapetitle"]
-                webbytitle = str(tree.xpath(scrapetitle))
-                for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
-                    webbytitle = webbytitle.replace(*r)
-                webbytitle = unicode_string_cleanup(webbytitle)
-                dispmsg.append(webbytitle)
-
-                scrapelink = feed_dict["scrapelink"]
-                webbylink = str(tree.xpath(scrapelink))
-                for r in (("['", ""), ("']", "")):
-                    webbylink = webbylink.replace(*r)
-                if feed == 'actualtechwebby':
-                    webbylink = str(url + webbylink.split("&", 1)[0])
-                webbylinkprecede = feed_dict["linkprecede"]
-                if webbylinkprecede:
-                    webbylink = str(webbylinkprecede + webbylink)
-                dispmsg.append(webbylink)
-
-                scrapebonus = feed_dict["scrapebonus"]
-                if scrapebonus != 'nobonus':
+            scrapebonus = feed_dict["scrapebonus"]
+            if scrapebonus != 'nobonus':
+                webbybonus = ''
+                try:
+                    webbybonus = str(tree.xpath(scrapebonus))
+                    if feed == 'spiceworkswebby':
+                        webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
+                    for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", ""), ("[", "")):
+                        webbybonus = webbybonus.replace(*r)
+                    webbybonus = unicode_string_cleanup(webbybonus)
+                except IndexError:
                     webbybonus = ''
-                    try:
-                        webbybonus = str(tree.xpath(scrapebonus))
-                        if feed == 'spiceworkswebby':
-                            webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
-                        for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", ""), ("[", "")):
-                            webbybonus = webbybonus.replace(*r)
-                        webbybonus = unicode_string_cleanup(webbybonus)
-                    except IndexError:
-                        webbybonus = ''
-                    if webbybonus != '':
-                        dispmsg.append('BONUS: ' + webbybonus)
+                if webbybonus != '':
+                    dispmsg.append('BONUS: ' + webbybonus)
 
             """
 
