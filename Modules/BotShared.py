@@ -1329,14 +1329,20 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             scrapetimezone = feed_dict["scrapetimezone"]
 
             entrytime = tree.xpath(scrapetime)[0]
-            bot.msg("#spicebottest", str(entrytime))
             entrytime = str(entrytime)
+            bot.msg("#spicebottest", str(entrytime))
+
             for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
                 entrytime = entrytime.replace(*r)
             entrytime = parser.parse(entrytime)
             bot.msg("#spicebottest", str(entrytime))
-            bot.msg("#spicebottest", str(tz_aware(entrytime)))
+
+            feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
+            entrytime = feedtimezone.localize(entrytime)
             bot.msg("#spicebottest", str(entrytime))
+
+            bot.msg("#spicebottest", str(tz_aware(entrytime)))
+
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
             bot.msg("#spicebottest", str(entrytime))
 
