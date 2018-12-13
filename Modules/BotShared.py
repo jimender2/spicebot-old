@@ -1277,8 +1277,9 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             events = events_result.get('items', [])
             if events == []:
                 return ["No upcoming events on this calendar"]
+            nextevent = events[0]
 
-            osd(bot, "#spicebottest", 'say', str(events[0]))
+            osd(bot, "#spicebottest", 'say', str(nextevent["summary"]))
             return []
 
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
