@@ -1291,6 +1291,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if not feed_dict["link"]:
                 try:
                     link = str(nextevent["description"])
+                    bot.msg("#spicebottest", str(link))
                     url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', link) or None
                     if url:
                         link = url
@@ -1308,7 +1309,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if link:
                 dispmsg.append(link)
 
-            bot.msg("#spicebottest", str(int(timeuntil)))
             if (int(timeuntil) <= 900 and link != lastbuildlink and title != lastbuildtitle and entrytime != lastbuildtime) or forcedisplay:
 
                 if not forcedisplay:
