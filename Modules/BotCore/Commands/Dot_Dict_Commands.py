@@ -595,3 +595,14 @@ def bot_dictcom_gif(bot, botcom):
 
     botcom.specified = False
     bot_dictcom_reply_shared(bot, botcom)
+
+
+def bot_dictcom_feeds(bot, botcom):
+
+    feed = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random')
+
+    dispmsg = bot_dictcom_feeds_handler(bot, feed, True)
+    if dispmsg == []:
+        osd(bot, botcom.channel_current, 'say', feed + " appears to have had an unknown error.")
+    else:
+        osd(bot, botcom.channel_current, 'say', dispmsg)
