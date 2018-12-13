@@ -1267,20 +1267,52 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
-            nowtime = datetime.datetime.now()
-            nowtime = str(str(nowtime.year) + "-" + str(nowtime.month) + "-" + str(nowtime.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")
-
-            events_result = service.events().list(calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=nowtime).execute()
+            events_result = service.events().list(calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=str(str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")).execute()
             events = events_result.get('items', [])
             if events == []:
                 return ["No upcoming events on this calendar"]
             nextevent = events[0]
 
-            entrytime = nextevent["start"]["dateTime"]
-            # entrytime = entrytime.replace(tzinfo=pytz.UTC)
-            entrytime = parser.parse(str(entrytime))
+            try:
+                entrytime = nextevent["start"]["dateTime"]
+            except Exception as e:
+                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
             osd(bot, "#spicebottest", 'say', str(entrytime))
+
+            timecompare = arrow_time(nowtime, entrytime)
             return []
+
+            """
+            timehour = eval("feeds." + feed + ".hour")
+            timeminute = eval("feeds." + feed + ".minute")
+            scrapetimezone = eval("feeds." + feed + ".timezone")
+
+            dailytz = pytz.timezone(scrapetimezone)
+            nowtime = datetime.datetime.now(dailytz)
+            tomorrow = nowtime + datetime.timedelta(days=1)
+            dailytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(timehour), int(timeminute), 0, 0)
+            dailytime = dailytz.localize(dailytime)
+            timeuntil = (dailytime - nowtime).total_seconds()
+
+            if displayifnotnew or (nowtime.hour == int(timehour) and nowtime.minute == int(timeminute)):
+
+                scrapetitle = eval("feeds." + feed + ".title")
+                title = str(tree.xpath(scrapetitle))
+                for r in (("\\t", ""), ("\\n", ""), ("['", ""), ("']", ""), ("]", "")):
+                    title = title.replace(*r)
+                if title == "[]" or title == '':
+                    title = "No Book Today"
+                title = unicode_string_cleanup(title)
+                dispmsg.append(title)
+
+                titleappend = 1
+
+                timecompare = arrow_time(now, dailytime)
+                dispmsg.append("{Next " + timecompare + "}")
+
+                dispmsg.append("URL: " + url)
+                """
 
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildtime = parser.parse(str(lastbuildtime))
@@ -1764,6 +1796,13 @@ def humanized_time(countdownseconds):
     if not displaymsg:
         return "just now"
     return displaymsg
+
+
+def arrow_time(now, futuretime):
+    a = arrow.get(now)
+    b = arrow.get(futuretime)
+    timecompare = (b.humanize(a, granularity='auto'))
+    return timecompare
 
 
 """
