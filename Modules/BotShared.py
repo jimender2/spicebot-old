@@ -1429,9 +1429,12 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             tree = html.fromstring(page.content)
 
             tomorrow = now + datetime.timedelta(days=1)
-            dailytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
+            entrytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
+            entrytime = parser.parse(entrytime)
+            feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
+            entrytime = feedtimezone.localize(entrytime)
 
-            bot.msg("#spicebottest", str(dailytime))
+            bot.msg("#spicebottest", str(entrytime))
 
             return dispmsg
 
