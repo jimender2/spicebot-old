@@ -20,6 +20,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
 @sopel.module.interval(1800)
 @sopel.module.thread(True)
 def autosave(bot):
@@ -28,9 +29,9 @@ def autosave(bot):
         return
 
     botdict_save(bot)
+    """
 
 
-"""
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
@@ -43,4 +44,3 @@ def savingitall(bot, trigger):
     while True:
         time.sleep(1800)
         botdict_save(bot)
-"""
