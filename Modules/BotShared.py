@@ -1428,48 +1428,18 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
             tree = html.fromstring(page.content)
 
-            entrytime = datetime.datetime(now.year, now.month, now.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
-            entrytime = str(entrytime)
-            entrytime = parser.parse(entrytime)
-            feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
-            entrytime = feedtimezone.localize(entrytime)
-
-            timeuntil = (entrytime - now).total_seconds()
-            if timeuntil < 0:
-
-                tomorrow = now + datetime.timedelta(days=1)
-                entrytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
+            try:
+                entrytime = datetime.datetime(now.year, now.month, now.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
                 entrytime = str(entrytime)
                 entrytime = parser.parse(entrytime)
                 feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
                 entrytime = feedtimezone.localize(entrytime)
-
-            timeuntil = (entrytime - now).total_seconds()
-            if timeuntil > 0:
-                timecompare = humanized_time((entrytime - now).total_seconds())
-                timecompare = str(timecompare + " from now")
-            else:
-                timecompare = humanized_time((now - entrytime).total_seconds())
-                timecompare = str(timecompare + " ago")
-            # timecompare = arrow_time(now, entrytime)
-            dispmsg.append(timecompare)
-
-            # bot.msg("#spicebottest", str(entrytime))
-
-            return dispmsg
-
-            scrapetime = feed_dict["scrapetime"]
-            scrapetimezone = feed_dict["scrapetimezone"]
-
-            try:
-                entrytime = tree.xpath(scrapetime)
-                if isinstance(entrytime, list):
-                    entrytime = entrytime[0]
-                entrytime = str(entrytime)
-                for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
-                    entrytime = entrytime.replace(*r)
-                entrytime = parser.parse(entrytime)
-                if not tz_aware(entrytime):
+                timeuntil = (entrytime - now).total_seconds()
+                if timeuntil < 0:
+                    tomorrow = now + datetime.timedelta(days=1)
+                    entrytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
+                    entrytime = str(entrytime)
+                    entrytime = parser.parse(entrytime)
                     feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
                     entrytime = feedtimezone.localize(entrytime)
             except Exception as e:
@@ -1487,6 +1457,23 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 timecompare = str(timecompare + " ago")
             # timecompare = arrow_time(now, entrytime)
             dispmsg.append(timecompare)
+
+            scrapetitle = feed_dict["scrapetitle"]
+            if scrapetitle:
+                try:
+                    title = tree.xpath(scrapetitle)
+                    if isinstance(title, list):
+                        title = title[0]
+                    title = str(title)
+                    for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+                        title = title.replace(*r)
+                    title = unicode_string_cleanup(title)
+                except Exception as e:
+                    title = None
+                if title:
+                    dispmsg.append(title)
+
+            return dispmsg
 
             scrapetitle = feed_dict["scrapetitle"]
             if scrapetitle:
