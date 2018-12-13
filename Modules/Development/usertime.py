@@ -25,8 +25,8 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 User_locale = {
-                        "dysonparkes": "+12",
-                        "deathbybandaid": "-5"
+                        "dysonparkes": "Pacific/Auckland",
+                        "deathbybandaid": "US/Pacific"  # UTC -5
 }
 
 
@@ -55,6 +55,6 @@ def execute_main(bot, trigger, botcom):
     """Do the thing."""
     date_str = "2018-12-13 22:28:15"
     datetime_obj_naive = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
-    datetime_obj_pacific = timezone('US/Pacific').localize(datetime_obj_naive)
-    datedisplaystring = str(datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z"))
+    datetime_obj_pacific = timezone('Pacific/Auckland').localize(datetime_obj_naive)
+    datedisplaystring = datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z")
     bot.say(datedisplaystring)
