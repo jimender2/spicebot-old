@@ -20,6 +20,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
 @sopel.module.interval(60)
 @sopel.module.thread(True)
 def autofeeds(bot):
@@ -39,9 +40,9 @@ def autofeeds(bot):
                 feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
                 if feed in feed_enabled:
                     osd(bot, user, 'priv', dispmsg)
+                    """
 
 
-"""
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
@@ -69,4 +70,3 @@ def feeds_thread(bot, feed):
                 feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
                 if feed in feed_enabled:
                     osd(bot, user, 'priv', dispmsg)
-"""

@@ -599,7 +599,9 @@ def bot_dictcom_gif(bot, botcom):
 
 def bot_dictcom_feeds(bot, botcom):
 
-    feed = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random')
+    feed = botcom.dotcommand_dict[botcom.responsekey]["responses"][0]
+    if feed not in bot.memory["botdict"]["tempvals"]['feeds'].keys():
+        return osd(bot, botcom.channel_current, 'say', feed + " does not appear to be a valid feed.")
 
     dispmsg = bot_dictcom_feeds_handler(bot, feed, True)
     if dispmsg == []:
