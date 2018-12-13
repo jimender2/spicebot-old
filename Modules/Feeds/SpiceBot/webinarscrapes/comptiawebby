@@ -7,7 +7,7 @@
 "scrapetitle": '//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[2]/a/text()',
 "scrapelink": '//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/h4/text()',
 "linkprecede": "https://www.comptia.org",
-"scrapebonus": None
+"scrapebonus": None,
 "scrapetimezone": "US/Eastern",
 
 }
