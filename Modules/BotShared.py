@@ -1398,56 +1398,13 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 if bonus:
                     dispmsg.append(bonus)
 
-            return dispmsg
-
-            """
-
-            try:
-                title = nextevent["summary"]
-                title = unicode_string_cleanup(title)
-            except Exception as e:
-                title = None
-            if title:
-                dispmsg.append(title)
-
-            if not feed_dict["link"]:
-                try:
-                    link = str(nextevent["location"])
-                    url = findurlsinstring(link)
-                    if url != []:
-                        link = url[0]
-                    else:
-                        link = None
-                except Exception as e:
-                    link = None
-                if not link:
-                    try:
-                        link = str(nextevent["description"])
-                        url = findurlsinstring(link)
-                        if url != []:
-                            link = url[0]
-                        else:
-                            link = None
-                    except Exception as e:
-                        link = None
-                if not link:
-                    try:
-                        link = str(nextevent["htmlLink"])
-                    except Exception as e:
-                        link = None
-            else:
-                link = feed_dict["link"]
-            if link:
-                dispmsg.append(link)
-
-            if (int(timeuntil) <= 900 and link != lastbuildlink and title != lastbuildtitle and entrytime != lastbuildtime) or forcedisplay:
+            if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
 
                 displayname = feed_dict["displayname"]
                 if not displayname:
                     displayname = None
             else:
                 dispmsg = []
-                """
 
     if displayname and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
