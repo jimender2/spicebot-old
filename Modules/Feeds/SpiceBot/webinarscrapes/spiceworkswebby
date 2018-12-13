@@ -8,6 +8,6 @@
 "scrapelink": "//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[2]/a/@href",
 "linkprecede": "https://community.spiceworks.com",
 "scrapebonus": "//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[4]/div[1]/p[1]/text()",
-"timezone": "UTC",
+"scrapetimezone": "UTC",
 
 }

@@ -152,8 +152,8 @@ def feed_configs(bot):
                                     if "scrapebonus" not in dict_from_file.keys():
                                         dict_from_file["scrapebonus"] = None
 
-                                    if "timezone" not in dict_from_file.keys():
-                                        dict_from_file["timezone"] = "UTC"
+                                    if "scrapetimezone" not in dict_from_file.keys():
+                                        dict_from_file["scrapetimezone"] = "UTC"
 
                                 if comconf not in bot.memory["botdict"]["tempvals"]['feeds'].keys():
                                     bot.memory["botdict"]["tempvals"]['feeds'][comconf] = dict_from_file

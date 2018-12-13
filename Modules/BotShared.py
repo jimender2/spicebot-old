@@ -1019,7 +1019,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             return []
 
     page = requests.get(url, headers=header)
-    # tree = html.fromstring(page.content)
 
     if page.status_code == 200:
 
@@ -1320,22 +1319,79 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             else:
                 dispmsg = []
 
-        """
         elif feed_type == 'webinarscrapes':
+
+            tree = html.fromstring(page.content)
+
+            scrapetime = feed_dict["scrapetime"]
+            scrapetimezone = feed_dict["scrapetimezone"]
+
+            try:
+                entrytime = str(tree.xpath(scrapetime))
+            except Exception as e:
+                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            bot.msg("#spicebottest", str(entrytime))
+            entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
+
             return []
 
+            webbytime = str(tree.xpath(scrapetime))
+            for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
+                webbytime = webbytime.replace(*r)
+
+            if feed == 'spiceworkswebby':
+                webbytime = str(webbytime.split("+", 1)[0])
+
+            webbytz = pytz.timezone(scrapetimezone)
+            webbytime = parser.parse(webbytime)
+            webbytime = webbytz.localize(webbytime)
+
+            timeuntil = (webbytime - now).total_seconds()
+
+            if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
+
+                timecompare = get_timeuntil(now, webbytime)
+                dispmsg.append("{" + timecompare + "}")
+
+                scrapetitle = feed_dict["scrapetitle"]
+                webbytitle = str(tree.xpath(scrapetitle))
+                for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+                    webbytitle = webbytitle.replace(*r)
+                webbytitle = unicode_string_cleanup(webbytitle)
+                dispmsg.append(webbytitle)
+
+                scrapelink = feed_dict["scrapelink"]
+                webbylink = str(tree.xpath(scrapelink))
+                for r in (("['", ""), ("']", "")):
+                    webbylink = webbylink.replace(*r)
+                if feed == 'actualtechwebby':
+                    webbylink = str(url + webbylink.split("&", 1)[0])
+                webbylinkprecede = feed_dict["linkprecede"]
+                if webbylinkprecede:
+                    webbylink = str(webbylinkprecede + webbylink)
+                dispmsg.append(webbylink)
+
+                scrapebonus = feed_dict["scrapebonus"]
+                if scrapebonus != 'nobonus':
+                    webbybonus = ''
+                    try:
+                        webbybonus = str(tree.xpath(scrapebonus))
+                        if feed == 'spiceworkswebby':
+                            webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
+                        for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", ""), ("[", "")):
+                            webbybonus = webbybonus.replace(*r)
+                        webbybonus = unicode_string_cleanup(webbybonus)
+                    except IndexError:
+                        webbybonus = ''
+                    if webbybonus != '':
+                        dispmsg.append('BONUS: ' + webbybonus)
+
+            """
             currentcalendar = feed_dict["calendar"]
 
             http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
-            events_result = service.events().list(timeZone='UTC', calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=str(str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")).execute()
-            events = events_result.get('items', [])
-            if events == []:
-                return ["No upcoming events on this calendar"]
-            nextevent = events[0]
-
-            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             try:
                 entrytime = nextevent["start"]["dateTime"]
             except Exception as e:
@@ -1346,7 +1402,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             timecompare = arrow_time(now, entrytime)
             dispmsg.append(timecompare)
 
-            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
             try:
                 title = nextevent["summary"]
                 title = unicode_string_cleanup(title)
@@ -1355,7 +1410,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if title:
                 dispmsg.append(title)
 
-            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
             if not feed_dict["link"]:
                 try:
                     link = str(nextevent["location"])
@@ -1388,73 +1442,12 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
             if (int(timeuntil) <= 900 and link != lastbuildlink and title != lastbuildtitle and entrytime != lastbuildtime) or forcedisplay:
 
-                if not forcedisplay:
-                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
-                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
-                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
-
                 displayname = feed_dict["displayname"]
                 if not displayname:
                     displayname = None
             else:
                 dispmsg = []
-
-            scrapetime = eval("feeds." + feed + ".time")
-            scrapetimezone = eval("feeds." + feed + ".timezone")
-
-            webbytime = str(tree.xpath(scrapetime))
-            for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
-                webbytime = webbytime.replace(*r)
-
-            if feed == 'spiceworkswebby':
-                webbytime = str(webbytime.split("+", 1)[0])
-
-            webbytz = pytz.timezone(scrapetimezone)
-            webbytime = parser.parse(webbytime)
-            webbytime = webbytz.localize(webbytime)
-
-            timeuntil = (webbytime - now).total_seconds()
-
-            if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
-
-                titleappend = 1
-
-                timecompare = get_timeuntil(now, webbytime)
-                dispmsg.append("{" + timecompare + "}")
-
-                scrapetitle = eval("feeds." + feed + ".title")
-                webbytitle = str(tree.xpath(scrapetitle))
-                for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
-                    webbytitle = webbytitle.replace(*r)
-                webbytitle = unicode_string_cleanup(webbytitle)
-                dispmsg.append(webbytitle)
-
-                scrapelink = eval("feeds." + feed + ".link")
-                webbylink = str(tree.xpath(scrapelink))
-                for r in (("['", ""), ("']", "")):
-                    webbylink = webbylink.replace(*r)
-                if feed == 'actualtechwebby':
-                    webbylink = str(url + webbylink.split("&", 1)[0])
-                webbylinkprecede = eval("feeds." + feed + ".linkprecede")
-                if webbylinkprecede != 'noprecede':
-                    webbylink = str(webbylinkprecede + webbylink)
-                dispmsg.append(webbylink)
-
-                scrapebonus = eval("feeds." + feed + ".bonus")
-                if scrapebonus != 'nobonus':
-                    webbybonus = ''
-                    try:
-                        webbybonus = str(tree.xpath(scrapebonus))
-                        if feed == 'spiceworkswebby':
-                            webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
-                        for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", ""), ("[", "")):
-                            webbybonus = webbybonus.replace(*r)
-                        webbybonus = unicode_string_cleanup(webbybonus)
-                    except IndexError:
-                        webbybonus = ''
-                    if webbybonus != '':
-                        dispmsg.append('BONUS: ' + webbybonus)
-                        """
+                """
 
     if displayname and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
