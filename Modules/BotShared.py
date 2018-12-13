@@ -1269,8 +1269,8 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
 
             # nowtime = '2008-03-07T17:06:02.000Z'
             nowtime = '2018-12-11T00:00:00.000Z'
-            #nowtime = datetime.datetime.now()
-            #nowtime = str(str(nowtime.year) + "-" + str(nowtime.month) + "-" + str(nowtime.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")
+            # nowtime = datetime.datetime.now()
+            # nowtime = str(str(nowtime.year) + "-" + str(nowtime.month) + "-" + str(nowtime.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")
             # bot.msg("#spicebottest", str(str(now.year) + " " + str(now.month) + " " + str(now.day) + " " + str(now.hour) + " " + str(now.minute) + " " + str(now.second)))
 
             events_result = service.events().list(calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=nowtime).execute()
