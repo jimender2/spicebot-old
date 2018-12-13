@@ -1444,7 +1444,17 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
                 entrytime = feedtimezone.localize(entrytime)
 
-            bot.msg("#spicebottest", str(entrytime))
+            timeuntil = (entrytime - now).total_seconds()
+            if timeuntil > 0:
+                timecompare = humanized_time((entrytime - now).total_seconds())
+                timecompare = str(timecompare + " from now")
+            else:
+                timecompare = humanized_time((now - entrytime).total_seconds())
+                timecompare = str(timecompare + " ago")
+            # timecompare = arrow_time(now, entrytime)
+            dispmsg.append(timecompare)
+
+            # bot.msg("#spicebottest", str(entrytime))
 
             return dispmsg
 
