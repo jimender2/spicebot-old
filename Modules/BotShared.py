@@ -1331,6 +1331,19 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             scrapetime = feed_dict["scrapetime"]
             scrapetimezone = feed_dict["scrapetimezone"]
 
+            entrytime = tree.xpath(scrapetime)
+            if isinstance(entrytime, list):
+                entrytime = entrytime[0]
+            entrytime = str(entrytime)
+            for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
+                entrytime = entrytime.replace(*r)
+            if not tz_aware(entrytime):
+                entrytime = parser.parse(entrytime)
+                entrytime = parser.parse(entrytime).replace(tzinfo=None)
+                feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
+                entrytime = feedtimezone.localize(entrytime)
+
+            """
             try:
                 entrytime = tree.xpath(scrapetime)
                 if isinstance(entrytime, list):
@@ -1338,12 +1351,14 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 entrytime = str(entrytime)
                 for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
                     entrytime = entrytime.replace(*r)
-                entrytime = parser.parse(entrytime)
-                entrytime = parser.parse(entrytime).replace(tzinfo=None)
-                feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
-                entrytime = feedtimezone.localize(entrytime)
+                if not tz_aware(entrytime):
+                    entrytime = parser.parse(entrytime)
+                    entrytime = parser.parse(entrytime).replace(tzinfo=None)
+                    feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
+                    entrytime = feedtimezone.localize(entrytime)
             except Exception as e:
                 entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+                """
 
             timeuntil = (entrytime - now).total_seconds()
             timecompare = arrow_time(now, entrytime)
