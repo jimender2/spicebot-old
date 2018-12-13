@@ -1320,6 +1320,8 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 dispmsg = []
 
         elif feed_type == 'webinarscrapes':
+            if not forcedisplay:
+                return []
 
             tree = html.fromstring(page.content)
 
