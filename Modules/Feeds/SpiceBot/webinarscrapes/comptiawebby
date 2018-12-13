@@ -4,7 +4,7 @@
 "displayname": "COMPTIA Webinar",
 "url": "https://www.comptia.org/events/webinars",
 "scrapetime": '//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/h5/text()',
-"scrapetitle": '//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[2]/a/text()',
+"scrapetitle": '//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/h4/text()',
 "scrapelink": '//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/div/div/div/a[1]/@href',
 "linkprecede": "https://www.comptia.org",
 "scrapebonus": None,
