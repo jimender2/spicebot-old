@@ -1240,9 +1240,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
         elif feed_type == 'googlecalendar':
 
-            if not forcedisplay:
-                return []
-
             if not bot.memory["botdict"]["tempvals"]['google']:
                 if forcedisplay:
                     return ["google api unavailable."]
@@ -1255,6 +1252,84 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                     return ["google calendar missing."]
                 else:
                     return []
+
+            currentcalendar = feed_dict["calendar"]
+
+            http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
+            service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
+
+            events_result = service.events().list(timeZone='UTC', calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=str(str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")).execute()
+            events = events_result.get('items', [])
+            if events == []:
+                return ["No upcoming events on this calendar"]
+            nextevent = events[0]
+
+            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            try:
+                entrytime = nextevent["start"]["dateTime"]
+            except Exception as e:
+                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
+
+            timeuntil = (entrytime - now).total_seconds()
+            timecompare = arrow_time(now, entrytime)
+            dispmsg.append(timecompare)
+
+            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
+            try:
+                title = nextevent["summary"]
+                title = unicode_string_cleanup(title)
+            except Exception as e:
+                title = None
+            if title:
+                dispmsg.append(title)
+
+            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
+            if not feed_dict["link"]:
+                try:
+                    link = str(nextevent["location"])
+                    url = findurlsinstring(link)
+                    if url != []:
+                        link = url[0]
+                    else:
+                        link = None
+                except Exception as e:
+                    link = None
+                if not link:
+                    try:
+                        link = str(nextevent["description"])
+                        url = findurlsinstring(link)
+                        if url != []:
+                            link = url[0]
+                        else:
+                            link = None
+                    except Exception as e:
+                        link = None
+                if not link:
+                    try:
+                        link = str(nextevent["htmlLink"])
+                    except Exception as e:
+                        link = None
+            else:
+                link = feed_dict["link"]
+            if link:
+                dispmsg.append(link)
+
+            if (int(timeuntil) <= 900 and link != lastbuildlink and title != lastbuildtitle and entrytime != lastbuildtime) or forcedisplay:
+
+                if not forcedisplay:
+                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
+                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
+                    set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
+
+                displayname = feed_dict["displayname"]
+                if not displayname:
+                    displayname = None
+            else:
+                dispmsg = []
+
+        elif feed_type == 'webinarscrapes':
+
 
             currentcalendar = feed_dict["calendar"]
 

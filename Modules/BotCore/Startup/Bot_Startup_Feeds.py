@@ -135,6 +135,26 @@ def feed_configs(bot):
                                     if not dict_from_file["url"]:
                                         dict_from_file["url"] = "https://google.com"
 
+                                if dict_from_file["type"] == "webinarscrapes":
+
+                                    if "scrapetime" not in dict_from_file.keys():
+                                        dict_from_file["scrapetime"] = None
+
+                                    if "scrapetitle" not in dict_from_file.keys():
+                                        dict_from_file["scrapetitle"] = None
+
+                                    if "scrapelink" not in dict_from_file.keys():
+                                        dict_from_file["scrapelink"] = None
+
+                                    if "linkprecede" not in dict_from_file.keys():
+                                        dict_from_file["linkprecede"] = None
+
+                                    if "scrapebonus" not in dict_from_file.keys():
+                                        dict_from_file["scrapebonus"] = None
+
+                                    if "timezone" not in dict_from_file.keys():
+                                        dict_from_file["timezone"] = "UTC"
+
                                 if comconf not in bot.memory["botdict"]["tempvals"]['feeds'].keys():
                                     bot.memory["botdict"]["tempvals"]['feeds'][comconf] = dict_from_file
                             else:
