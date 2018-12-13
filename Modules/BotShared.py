@@ -1345,28 +1345,38 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
             timeuntil = (entrytime - now).total_seconds()
             timecompare = arrow_time(now, entrytime)
-            bot.msg("#spicebottest", str(timeuntil))
-            bot.msg("#spicebottest", str(timecompare))
+            dispmsg.append(timecompare)
 
-            # try:
-            #    entrytime = tree.xpath(scrapetime)[0]
-            # except Exception as e:
-            #    entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            scrapetitle = feed_dict["scrapetitle"]
+            title = tree.xpath(scrapetitle)
+            bot.msg("#spicebottest", str(title))
 
-            # if not tz_aware(entrytime):
-            #    if feed_dict["scrapetimezone"]:
+            if isinstance(title, list):
+                title = title[0]
+            title = str(title)
+            bot.msg("#spicebottest", str(title))
 
-            # if feed_dict["scrapetimezone"]:
-            #    if feed_dict["scrapetimezone"] != "UTC":
-            #        feedtimezone = tz.gettz(feed_dict["scrapetimezone"])
-            #        """
-            #        feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
-            #        entrytime = parser.parse(entrytime)
-            #        entrytime = webbytz.localize(entrytime)
-            #        entrytime = entrytime.astimezone(pytz.utc)
-            #        """
+            for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+                title = title.replace(*r)
+            title = unicode_string_cleanup(title)
+            bot.msg("#spicebottest", str(title))
 
-            return []
+            return dispmsg
+
+            try:
+                scrapetitle = feed_dict["scrapetitle"]
+                title = str(tree.xpath(scrapetitle))
+                for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+                    title = title.replace(*r)
+                title = unicode_string_cleanup(title)
+            except Exception as e:
+                title = None
+            if title:
+                dispmsg.append(title)
+
+            """
+            dragons here be
+            """
 
             webbytime = str(tree.xpath(scrapetime))
             for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
@@ -1420,20 +1430,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                         dispmsg.append('BONUS: ' + webbybonus)
 
             """
-            currentcalendar = feed_dict["calendar"]
-
-            http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
-            service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
-
-            try:
-                entrytime = nextevent["start"]["dateTime"]
-            except Exception as e:
-                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
-
-            timeuntil = (entrytime - now).total_seconds()
-            timecompare = arrow_time(now, entrytime)
-            dispmsg.append(timecompare)
 
             try:
                 title = nextevent["summary"]
