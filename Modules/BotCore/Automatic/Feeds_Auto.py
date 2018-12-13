@@ -30,7 +30,7 @@ def auto_feeds(bot, trigger):
         pass
 
     while True:
-        time.sleep(45)
+        time.sleep(60)
         for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
             Thread(target=feeds_thread, args=(bot, feed,)).start()
 

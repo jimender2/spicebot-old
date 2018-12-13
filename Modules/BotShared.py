@@ -1282,60 +1282,18 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             timecompare = arrow_time(now, entrytime)
 
             timeuntil = (entrytime - now).total_seconds()
-            osd(bot, "#spicebottest", 'say', str(timeuntil))
 
-            # if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
-
-            return []
-
-            """
-            timehour = eval("feeds." + feed + ".hour")
-            timeminute = eval("feeds." + feed + ".minute")
-            scrapetimezone = eval("feeds." + feed + ".timezone")
-
-            dailytz = pytz.timezone(scrapetimezone)
-            nowtime = datetime.datetime.now(dailytz)
-            tomorrow = nowtime + datetime.timedelta(days=1)
-            dailytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(timehour), int(timeminute), 0, 0)
-            dailytime = dailytz.localize(dailytime)
-            timeuntil = (dailytime - nowtime).total_seconds()
-
-            if displayifnotnew or (nowtime.hour == int(timehour) and nowtime.minute == int(timeminute)):
-
-                scrapetitle = eval("feeds." + feed + ".title")
-                title = str(tree.xpath(scrapetitle))
-                for r in (("\\t", ""), ("\\n", ""), ("['", ""), ("']", ""), ("]", "")):
-                    title = title.replace(*r)
-                if title == "[]" or title == '':
-                    title = "No Book Today"
-                title = unicode_string_cleanup(title)
-                dispmsg.append(title)
-
-                titleappend = 1
-
-                timecompare = arrow_time(now, dailytime)
-                dispmsg.append("{Next " + timecompare + "}")
-
-                dispmsg.append("URL: " + url)
-                """
-
-            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            lastbuildtime = parser.parse(str(lastbuildtime))
             try:
-                entrytime = submission.created_at
-                entrytime = entrytime.replace(tzinfo=pytz.UTC)
-            except Exception as e:
-                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            entrytime = parser.parse(str(entrytime))
-
-            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
-            try:
-                title = submission.text
+                title = nextevent["summary"]
                 title = unicode_string_cleanup(title)
             except Exception as e:
                 title = None
             if title:
                 dispmsg.append(title)
+
+            # if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
+
+            return dispmsg
 
             lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
             try:
