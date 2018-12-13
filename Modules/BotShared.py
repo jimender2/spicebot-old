@@ -1468,7 +1468,21 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 if title:
                     dispmsg.append(title)
 
-            link = feed_dict["url"]
+            scrapelink = feed_dict["scrapelink"]
+            if scrapelink:
+                try:
+                    link = tree.xpath(scrapelink)
+                    if isinstance(link, list):
+                        link = link[0]
+                    link = str(link)
+                    for r in (("['", ""), ("']", "")):
+                        link = link.replace(*r)
+                    if feed_dict["linkprecede"]:
+                        link = str(feed_dict["linkprecede"] + link)
+                except Exception as e:
+                    link = None
+            else:
+                link = feed_dict["url"]
             if link:
                 dispmsg.append(link)
 

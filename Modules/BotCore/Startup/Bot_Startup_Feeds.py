@@ -149,6 +149,12 @@ def feed_configs(bot):
                                     if "scrapetimezone" not in dict_from_file.keys():
                                         dict_from_file["scrapetimezone"] = "UTC"
 
+                                    if "scrapelink" not in dict_from_file.keys():
+                                        dict_from_file["scrapelink"] = None
+
+                                    if "linkprecede" not in dict_from_file.keys():
+                                        dict_from_file["linkprecede"] = None
+
                                 if dict_from_file["type"] == "webinarscrapes":
 
                                     if "scrapetime" not in dict_from_file.keys():
