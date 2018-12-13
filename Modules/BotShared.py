@@ -1291,10 +1291,9 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if not feed_dict["link"]:
                 try:
                     link = str(nextevent["description"])
-                    url = Find(link)
-                    bot.msg("#spicebottest", str(url))
-                    if url:
-                        link = url
+                    url = findurlsinstring(link)
+                    if url != []:
+                        link = url[0]
                     else:
                         link = None
                 except Exception as e:
@@ -1329,9 +1328,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
     return dispmsg
 
 
-def Find(string):
-    # findall() has been used
-    # with valid conditions for urls in string
+def findurlsinstring(string):
     url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', string)
     return url
 
