@@ -1292,9 +1292,9 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 dispmsg.append(title)
 
             # if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
-            osd(bot, "#spicebottest", 'say', str(nextevent["description"]))
+            osd(bot, "#spicebottest", 'say', str(nextevent["htmlLink"]))
 
-            return dispmsg
+            return []
 
             lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
             try:
