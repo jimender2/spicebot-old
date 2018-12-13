@@ -1333,6 +1333,12 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             entrytime = str(entrytime)
             for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
                 entrytime = entrytime.replace(*r)
+            if feed_dict["scrapetimezone"]:
+                if feed_dict["scrapetimezone"] != "UTC":
+                    feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
+                    entrytime = parser.parse(entrytime)
+                    entrytime = webbytz.localize(entrytime)
+
             bot.msg("#spicebottest", str(entrytime))
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
             bot.msg("#spicebottest", str(entrytime))
