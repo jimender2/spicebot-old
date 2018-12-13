@@ -1276,7 +1276,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 return ["No upcoming events on this calendar"]
             nextevent = events[0]
 
-            entrytime = nextevent["start"][0]
+            entrytime = nextevent["start"]["dateTime"]
             osd(bot, "#spicebottest", 'say', str(entrytime))
             return []
 
