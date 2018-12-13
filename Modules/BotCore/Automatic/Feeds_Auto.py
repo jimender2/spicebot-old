@@ -37,7 +37,7 @@ def auto_feeds(bot, trigger):
 
 
 def feeds_thread(bot, feed):
-    dispmsg = bot_dictcom_feeds_handler(bot, feed, False)
+    dispmsg = bot_dictcom_feeds_handler(bot, feed, False) or []
     osd(bot, "#spicebottest", 'say', dispmsg)
     if dispmsg != []:
         for channel in bot.privileges.keys():
