@@ -8,6 +8,7 @@
 "scrapelink": '//*[@id="HeaderUpcoming"]/div/div[1]/a/@href',
 "linkprecede": "https://events.actualtechmedia.com",
 "scrapebonus": '//*[@id="HeaderUpcoming"]/div/div[2]/h3/a/strong/strong/text()',
+"scrapebonussplit": None,
 "scrapetimezone": "US/Eastern",
 
 }

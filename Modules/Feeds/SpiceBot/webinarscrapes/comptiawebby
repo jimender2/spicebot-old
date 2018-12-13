@@ -8,6 +8,7 @@
 "scrapelink": '//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/div/div/div/a[1]/@href',
 "linkprecede": "https://www.comptia.org",
 "scrapebonus": None,
+"scrapebonussplit": None,
 "scrapetimezone": "US/Eastern",
 
 }

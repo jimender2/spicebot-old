@@ -1387,6 +1387,9 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                     if isinstance(bonus, list):
                         bonus = bonus[0]
                     bonus = str(bonus)
+                    scrapebonussplit = feed_dict["scrapebonussplit"]
+                    if scrapebonussplit:
+                        bonus = str(bonus.split(feed_dict["scrapebonussplit"])[-1])
                     for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", ""), ("[", "")):
                         bonus = bonus.replace(*r)
                     bonus = unicode_string_cleanup(bonus)

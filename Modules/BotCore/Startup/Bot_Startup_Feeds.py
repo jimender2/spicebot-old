@@ -152,6 +152,9 @@ def feed_configs(bot):
                                     if "scrapebonus" not in dict_from_file.keys():
                                         dict_from_file["scrapebonus"] = None
 
+                                    if "scrapebonussplit" not in dict_from_file.keys():
+                                        dict_from_file["scrapebonussplit"] = None
+
                                     if "scrapetimezone" not in dict_from_file.keys():
                                         dict_from_file["scrapetimezone"] = "UTC"
 
