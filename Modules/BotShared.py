@@ -1267,11 +1267,8 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
-            # nowtime = '2008-03-07T17:06:02.000Z'
-            # nowtime = '2018-12-11T00:00:00.000Z'
             nowtime = datetime.datetime.now()
             nowtime = str(str(nowtime.year) + "-" + str(nowtime.month) + "-" + str(nowtime.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")
-            # bot.msg("#spicebottest", str(str(now.year) + " " + str(now.month) + " " + str(now.day) + " " + str(now.hour) + " " + str(now.minute) + " " + str(now.second)))
 
             events_result = service.events().list(calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=nowtime).execute()
             events = events_result.get('items', [])
@@ -1279,7 +1276,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 return ["No upcoming events on this calendar"]
             nextevent = events[0]
 
-            osd(bot, "#spicebottest", 'say', str(nextevent["summary"]))
+            osd(bot, "#spicebottest", 'say', str(nextevent["start"]))
             return []
 
             lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
