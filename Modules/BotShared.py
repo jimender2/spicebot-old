@@ -1260,7 +1260,10 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             events_result = service.events().list(timeZone='UTC', calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=str(str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")).execute()
             events = events_result.get('items', [])
             if events == []:
-                return ["No upcoming events on this calendar"]
+                if forcedisplay:
+                    return ["No upcoming events on this calendar"]
+                else:
+                    return []
             nextevent = events[0]
 
             try:
@@ -1363,16 +1366,21 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
             scrapelink = feed_dict["scrapelink"]
             link = tree.xpath(scrapelink)
+            bot.msg("#spicebottest", str(link))
+
             if isinstance(link, list):
                 link = link[0]
             link = str(link)
+            bot.msg("#spicebottest", str(link))
+
             for r in (("['", ""), ("']", "")):
                 link = link.replace(*r)
+            bot.msg("#spicebottest", str(link))
 
             if feed_dict["linkprecede"]:
                 link = str(feed_dict["linkprecede"] + link)
-
             bot.msg("#spicebottest", str(link))
+
             return dispmsg
 
             """
