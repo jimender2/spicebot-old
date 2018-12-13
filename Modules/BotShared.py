@@ -1274,10 +1274,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
 
             timeuntil = (entrytime - now).total_seconds()
-            if int(timeuntil) < 900 and int(timeuntil) > 840:
-                timecompare = "Right Now"
-            else:
-                timecompare = arrow_time(now, entrytime)
+            timecompare = arrow_time(now, entrytime)
             dispmsg.append(timecompare)
 
             try:
@@ -1298,7 +1295,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if link:
                 dispmsg.append(link)
 
-            if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
+            if (int(timeuntil) < 900 and int(timeuntil) > 840):  # or forcedisplay:
 
                 displayname = feed_dict["displayname"]
                 if not displayname:
