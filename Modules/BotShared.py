@@ -1276,7 +1276,13 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
 
             timeuntil = (entrytime - now).total_seconds()
-            timecompare = arrow_time(now, entrytime)
+            if timeuntil > 0:
+                timecompare = humanized_time((entrytime - now).total_seconds())
+                timecompare = str(timecompare + " from now")
+            else:
+                timecompare = humanized_time((now - entrytime).total_seconds())
+                timecompare = str(timecompare + " ago")
+            # timecompare = arrow_time(now, entrytime)
             dispmsg.append(timecompare)
 
             try:
@@ -1351,11 +1357,12 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
             timeuntil = (entrytime - now).total_seconds()
             if timeuntil > 0:
-                timeuntilb = humanized_time((entrytime - now).total_seconds())
+                timecompare = humanized_time((entrytime - now).total_seconds())
+                timecompare = str(timecompare + " from now")
             else:
-                timeuntilb = humanized_time((now - entrytime).total_seconds())
-            bot.msg("#spicebottest", str(timeuntilb))
-            timecompare = arrow_time(now, entrytime)
+                timecompare = humanized_time((now - entrytime).total_seconds())
+                timecompare = str(timecompare + " ago")
+            # timecompare = arrow_time(now, entrytime)
             dispmsg.append(timecompare)
 
             scrapetitle = feed_dict["scrapetitle"]
