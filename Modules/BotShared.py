@@ -1344,6 +1344,8 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             #        entrytime = entrytime.astimezone(pytz.utc)
             #        """
 
+            bot.msg("#spicebottest", str(tz_aware(entrytime)))
+
             bot.msg("#spicebottest", str(entrytime))
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
             bot.msg("#spicebottest", str(entrytime))
@@ -1482,6 +1484,13 @@ def hashave(mylist):
     else:
         hashave = 'has'
     return hashave
+
+
+def tz_aware(dt):
+    if dt.tzinfo is None or dt.tzinfo.utcoffset(dt) is None:
+        return False
+    elif dt.tzinfo is not None and dt.tzinfo.utcoffset(dt) is not None:
+        return True
 
 
 """
