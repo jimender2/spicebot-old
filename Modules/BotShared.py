@@ -1327,11 +1327,12 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             scrapetimezone = feed_dict["scrapetimezone"]
 
             try:
-                entrytime = str(tree.xpath(scrapetime)[0])
-                for r in (("@ ", "")):
-                    entrytime = entrytime.replace(*r)
+                entrytime = tree.xpath(scrapetime)[0]
             except Exception as e:
                 entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            entrytime = str(entrytime)
+            for r in (("@ ", "")):
+                entrytime = entrytime.replace(*r)
             bot.msg("#spicebottest", str(entrytime))
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
 
