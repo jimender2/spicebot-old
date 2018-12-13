@@ -1430,6 +1430,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
             tomorrow = now + datetime.timedelta(days=1)
             entrytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
+            entrytime = str(entrytime)
             entrytime = parser.parse(entrytime)
             feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
             entrytime = feedtimezone.localize(entrytime)
