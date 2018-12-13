@@ -1335,6 +1335,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             scrapetimezone = feed_dict["scrapetimezone"]
 
             entrytime = tree.xpath(scrapetime)
+            bot.msg("#spicebottest", str(entrytime))
             if isinstance(entrytime, list):
                 entrytime = entrytime[0]
             entrytime = str(entrytime)
