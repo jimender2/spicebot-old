@@ -1328,16 +1328,22 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             scrapetime = feed_dict["scrapetime"]
             scrapetimezone = feed_dict["scrapetimezone"]
 
-            try:
-                entrytime = tree.xpath(scrapetime)[0]
-            except Exception as e:
-                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-                bot.msg("#spicebottest", str(entrytime))
-                entrytime = parser.parse(entrytime)
+            entrytime = tree.xpath(scrapetime)[0]
             entrytime = str(entrytime)
             for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
                 entrytime = entrytime.replace(*r)
+            entrytime = parser.parse(entrytime)
             bot.msg("#spicebottest", str(entrytime))
+            bot.msg("#spicebottest", str(tz_aware(entrytime)))
+            bot.msg("#spicebottest", str(entrytime))
+            entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
+            bot.msg("#spicebottest", str(entrytime))
+
+            # try:
+            #    entrytime = tree.xpath(scrapetime)[0]
+            # except Exception as e:
+            #    entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+
 
             # if not tz_aware(entrytime):
             #    if feed_dict["scrapetimezone"]:
@@ -1351,12 +1357,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             #        entrytime = webbytz.localize(entrytime)
             #        entrytime = entrytime.astimezone(pytz.utc)
             #        """
-
-            bot.msg("#spicebottest", str(tz_aware(entrytime)))
-
-            bot.msg("#spicebottest", str(entrytime))
-            entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
-            bot.msg("#spicebottest", str(entrytime))
 
             return []
 
