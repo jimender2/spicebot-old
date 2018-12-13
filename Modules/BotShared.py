@@ -1298,6 +1298,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if link:
                 dispmsg.append(link)
 
+            bot.msg("#spicebottest", str(int(timeuntil)))
             if (int(timeuntil) <= 900 and link != lastbuildlink and title != lastbuildtitle and entrytime != lastbuildtime) or forcedisplay:
 
                 if not forcedisplay:
