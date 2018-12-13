@@ -1314,6 +1314,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
         dispmsg.insert(0, "[" + displayname + "]")
 
     botdict_save(bot)
+    osd(bot, "#spicebottest", 'say', dispmsg)
     return dispmsg
 
 
