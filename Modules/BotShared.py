@@ -1261,22 +1261,17 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
-            events_result = service.events().list(calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=str(str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")).execute()
+            events_result = service.events().list(timeZone='UTC', calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=str(str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")).execute()
             events = events_result.get('items', [])
             if events == []:
                 return ["No upcoming events on this calendar"]
             nextevent = events[0]
-
-            osd(bot, "#spicebottest", 'say', str(nextevent))
 
             try:
                 entrytime = nextevent["start"]["dateTime"]
             except Exception as e:
                 entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
-
-            if feed_dict["timezone"]:
-                dailytz = pytz.timezone(feed_dict["timezone"])
 
             timeuntil = (entrytime - now).total_seconds()
             if int(timeuntil) < 900 and int(timeuntil) > 840:
