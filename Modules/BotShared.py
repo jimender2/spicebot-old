@@ -1287,10 +1287,12 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if title:
                 dispmsg.append(title)
 
+            bot.msg("#spicebottest", str(nextevent["location"]))
+
             lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
             if not feed_dict["link"]:
                 try:
-                    link = str(nextevent["description"])
+                    link = str(nextevent["location"])
                     url = findurlsinstring(link)
                     if url != []:
                         link = url[0]
@@ -1298,7 +1300,17 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                         link = None
                 except Exception as e:
                     link = None
-                if link:
+                if not link:
+                    try:
+                        link = str(nextevent["description"])
+                        url = findurlsinstring(link)
+                        if url != []:
+                            link = url[0]
+                        else:
+                            link = None
+                    except Exception as e:
+                        link = None
+                if not link:
                     try:
                         link = str(nextevent["htmlLink"])
                     except Exception as e:
