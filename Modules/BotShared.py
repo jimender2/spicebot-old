@@ -1277,7 +1277,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             nextevent = events[0]
 
             entrytime = nextevent["start"]["dateTime"]
-            entrytime = entrytime.replace(tzinfo=pytz.UTC)
+            # entrytime = entrytime.replace(tzinfo=pytz.UTC)
             entrytime = parser.parse(str(entrytime))
             osd(bot, "#spicebottest", 'say', str(entrytime))
             return []
