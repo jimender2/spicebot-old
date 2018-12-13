@@ -1428,7 +1428,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
             tree = html.fromstring(page.content)
 
-            todaytime = datetime.datetime(now.year, now.month, now.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
+            entrytime = datetime.datetime(now.year, now.month, now.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
             entrytime = str(entrytime)
             entrytime = parser.parse(entrytime)
             feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
