@@ -1298,10 +1298,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if link:
                 dispmsg.append(link)
 
-            if "timestamp" in bot.memory:
-                timesincelast = (datetime.datetime.utcnow() - bot.memory["timestamp"]).total_seconds()
-                osd(bot, "#spicebottest", 'say', str(timesincelast))
-            bot.memory["timestamp"] = datetime.datetime.utcnow()
             if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
 
                 displayname = feed_dict["displayname"]

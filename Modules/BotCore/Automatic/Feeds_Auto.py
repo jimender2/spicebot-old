@@ -35,7 +35,7 @@ def auto_feeds(bot, trigger):
 
 def feeds_thread(bot, feed):
     while True:
-        time.sleep(60)
+        time.sleep(57)
         dispmsg = bot_dictcom_feeds_handler(bot, feed, True)
         if dispmsg != []:
             for channel in bot.privileges.keys():
