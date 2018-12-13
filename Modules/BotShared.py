@@ -1292,7 +1292,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 dispmsg.append(title)
 
             # if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
-            osd(bot, "#spicebottest", 'say', str(nextevent))
+            osd(bot, "#spicebottest", 'say', str(nextevent["description"]))
 
             return dispmsg
 
