@@ -53,7 +53,8 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
     """Do the thing."""
-    tz = get_localzone()
-    local_dt = tz.localize(datetime(2010, 4, 27, 12, 0, 0, 0), is_dst=None)
-    utc_dt = local_dt.astimezone(pytz.utc)  # NOTE: utc.normalize() is unnecessary here
-    bot.say(str(utc_dt))
+    date_str = "2018-12-13 22:28:15"
+    datetime_obj_naive = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+    datetime_obj_pacific = timezone('US/Pacific').localize(datetime_obj_naive)
+    datedisplaystring = str(datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z"))
+    bot.say(datedisplaystring)
