@@ -6,7 +6,7 @@
 "scrapetime": '//*[@id="HeaderUpcoming"]/div/div[1]/cite/time/text()',
 "scrapetitle": '//*[@id="HeaderUpcoming"]/div/div[1]/h2/a/text()',
 "scrapelink": '//*[@id="HeaderUpcoming"]/div/div[1]/a/@href',
-"linkprecede": None,
+"linkprecede": "https://events.actualtechmedia.com",
 "scrapebonus": '//*[@id="HeaderUpcoming"]/div/div[2]/h3/a/strong/strong/text()',
 "scrapetimezone": "US/Eastern",
 
