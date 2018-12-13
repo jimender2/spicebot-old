@@ -1429,7 +1429,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             tree = html.fromstring(page.content)
 
             tomorrow = now + datetime.timedelta(days=1)
-            dailytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(timehour), int(timeminute), 0, 0).replace(tzinfo=None)
+            dailytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
 
             bot.msg("#spicebottest", str(dailytime))
 
