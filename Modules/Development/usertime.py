@@ -56,5 +56,5 @@ def execute_main(bot, trigger, botcom):
     date_str = "2018-12-13 22:28:15"
     datetime_obj_naive = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
     datetime_obj_pacific = timezone('Pacific/Auckland').localize(datetime_obj_naive)
-    datedisplaystring = str(datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z"))
+    datedisplaystring = datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z")
     bot.say(datedisplaystring)
