@@ -3,11 +3,11 @@
 "type": "webinarscrapes",
 "displayname": "Spiceworks Webinar",
 "url": "https://community.spiceworks.com/calendar",
-"scrapetime": "//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span[@title]/@datetime",
-"scrapetitle": "//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[2]/a/text()",
-"scrapelink": "//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[2]/a/@href",
+"scrapetime": '//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span[@title]/@datetime',
+"scrapetitle": '//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[2]/a/text()'',
+"scrapelink": '//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[2]/a/@href',
 "linkprecede": "https://community.spiceworks.com",
-"scrapebonus": "//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[4]/div[1]/p[1]/text()",
+"scrapebonus": '//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[4]/div[1]/p[1]/text()',
 "scrapetimezone": "UTC",
 
 }
