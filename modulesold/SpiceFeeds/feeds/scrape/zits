@@ -1,8 +1,0 @@
-[configuration]
-type = scrape
-displayname =	Zits Comic
-url = http://zitscomics.com/
-time = //*[@id="comic-date"]/text()
-title = //*[@id="comic-date"]/text()
-link = url
-linkprecede = noprecede
