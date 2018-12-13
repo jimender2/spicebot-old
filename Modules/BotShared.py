@@ -1339,6 +1339,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                     feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
                     entrytime = feedtimezone.localize(entrytime)
             except Exception as e:
+                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
 
             timeuntil = (entrytime - now).total_seconds()
             timecompare = arrow_time(now, entrytime)
