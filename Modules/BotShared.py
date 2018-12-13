@@ -1287,8 +1287,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if title:
                 dispmsg.append(title)
 
-            bot.msg("#spicebottest", str(nextevent["location"]))
-
             lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
             if not feed_dict["link"]:
                 try:
