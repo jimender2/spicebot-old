@@ -1337,10 +1337,11 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             entrytime = str(entrytime)
             for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
                 entrytime = entrytime.replace(*r)
-            entrytime = parser.parse(entrytime)
-            entrytime = parser.parse(entrytime).replace(tzinfo=None)
-            feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
-            entrytime = feedtimezone.localize(entrytime)
+                entrytime = parser.parse(entrytime)
+                if not tz_aware(entrytime):
+                    entrytime = parser.parse(entrytime).replace(tzinfo=None)
+                    feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
+                    entrytime = feedtimezone.localize(entrytime)
 
             """
             try:
