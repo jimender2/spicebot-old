@@ -1165,10 +1165,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
                 displayname = feed_dict["displayname"]
                 if not displayname:
-                    try:
-                        displayname = feedjson['feed']['title']
-                    except Exception as e:
-                        displayname = None
+                    displayname = None
             else:
                 dispmsg = []
 
@@ -1232,10 +1229,7 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
                 displayname = feed_dict["displayname"]
                 if not displayname:
-                    try:
-                        displayname = feedjson['feed']['title']
-                    except Exception as e:
-                        displayname = None
+                    displayname = None
             else:
                 dispmsg = []
 
@@ -1279,9 +1273,12 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
 
-            timecompare = arrow_time(now, entrytime)
-
             timeuntil = (entrytime - now).total_seconds()
+            if int(timeuntil) < 900 and int(timeuntil) > 840:
+                timecompare = "Right Now"
+            else:
+                timecompare = arrow_time(now, entrytime)
+            dispmsg.append(timecompare)
 
             try:
                 title = nextevent["summary"]
@@ -1291,33 +1288,20 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             if title:
                 dispmsg.append(title)
 
-            # if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
-            osd(bot, "#spicebottest", 'say', str(nextevent["htmlLink"]))
-
-            return []
-
-            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
             try:
-                link = str(currenttweetat + "/status/" + str(submission.id))
+                link = str(nextevent["htmlLink"])
             except Exception as e:
                 link = None
             if link:
-                dispmsg.append(str(feed_dict["url"] + "/" + link))
+                dispmsg.append(link)
 
-            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or displayifnotnew:
+            if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
+
                 displayname = feed_dict["displayname"]
                 if not displayname:
-                    try:
-                        displayname = feedjson['feed']['title']
-                    except Exception as e:
-                        displayname = None
+                    displayname = None
             else:
                 dispmsg = []
-
-            if not displayifnotnew:
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
 
     if displayname and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
