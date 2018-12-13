@@ -129,6 +129,12 @@ def feed_configs(bot):
                                     if "calendar" not in dict_from_file.keys():
                                         dict_from_file["calendar"] = None
 
+                                    if "link" not in dict_from_file.keys():
+                                        dict_from_file["link"] = None
+
+                                    if "timezone" not in dict_from_file.keys():
+                                        dict_from_file["timezone"] = None
+
                                     if not dict_from_file["url"]:
                                         dict_from_file["url"] = "https://google.com"
 

@@ -1267,11 +1267,16 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
                 return ["No upcoming events on this calendar"]
             nextevent = events[0]
 
+            osd(bot, "#spicebottest", 'say', str(nextevent))
+
             try:
                 entrytime = nextevent["start"]["dateTime"]
             except Exception as e:
                 entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
+
+            if feed_dict["timezone"]:
+                dailytz = pytz.timezone(feed_dict["timezone"])
 
             timeuntil = (entrytime - now).total_seconds()
             if int(timeuntil) < 900 and int(timeuntil) > 840:
@@ -1288,10 +1293,13 @@ def bot_dictcom_feeds_handler(bot, feed, displayifnotnew):
             if title:
                 dispmsg.append(title)
 
-            try:
-                link = str(nextevent["htmlLink"])
-            except Exception as e:
-                link = None
+            if not feed_dict["link"]:
+                try:
+                    link = str(nextevent["htmlLink"])
+                except Exception as e:
+                    link = None
+            else:
+                link = feed_dict["link"]
             if link:
                 dispmsg.append(link)
 
