@@ -1264,7 +1264,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 return ["No upcoming events on this calendar"]
             nextevent = events[0]
 
-            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             try:
                 entrytime = nextevent["start"]["dateTime"]
             except Exception as e:
@@ -1275,7 +1274,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             timecompare = arrow_time(now, entrytime)
             dispmsg.append(timecompare)
 
-            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
             try:
                 title = nextevent["summary"]
                 title = unicode_string_cleanup(title)
@@ -1284,7 +1282,6 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if title:
                 dispmsg.append(title)
 
-            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
             if not feed_dict["link"]:
                 try:
                     link = str(nextevent["location"])
