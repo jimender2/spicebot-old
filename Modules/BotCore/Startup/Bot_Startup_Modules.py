@@ -76,6 +76,9 @@ def bot_startup_modules(bot, trigger):
                 if str(line).endswith("}") and not dict_from_file_complete:
                     dict_from_file_complete = True
 
+        if dict_from_file:
+            bot.msg("#spicebottest" + str(dict_from_file))
+
         for line in module_file_lines:
 
             if str(line).startswith("@"):
