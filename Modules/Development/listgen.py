@@ -50,7 +50,7 @@ def execute_main(bot, trigger, botcom):
     moduleindex = [["dbbtest"], ["tap"], ['update'], []]
     indexcount = len(moduleindex)
     for mtype, mindex in zip(moduletypes, moduleindex):
-        moduleindex -= 1
+        indexcount -= 1
         commandcount = len(mindex)
 
         for command in mindex:
@@ -73,7 +73,7 @@ def execute_main(bot, trigger, botcom):
 
             # and to final
             dispmsg.append(comstring)
-            if (commandcount > 0 and moduleindex > 0) or (moduleindex == 0 and commandcount > 0):
+            if (commandcount > 0 and indexcount > 0) or (indexcount == 0 and commandcount > 0):
                 dispmsg.append(["     "])
 
     for comstring in dispmsg:
