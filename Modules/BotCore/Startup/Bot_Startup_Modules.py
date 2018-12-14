@@ -45,7 +45,9 @@ def bot_startup_modules(bot, trigger):
 
     filepathlist = []
     for directory in bot.config.core.extra:
-        bot.msg("#spicebottest", str(directory))
+        pathsplit = spicemanip(bot, botcom.triggerargsarray, "split_/")
+        lastpart = pathsplit[-1]
+        bot.msg("#spicebottest", str(lastpart))
         for pathname in os.listdir(directory):
             path = os.path.join(directory, pathname)
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
