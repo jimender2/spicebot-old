@@ -79,7 +79,7 @@ def bot_join_hub(bot, trigger):
             if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][botcom.channel_current][privstring]:
                 bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][botcom.channel_current][privstring].append(botcom.instigator)
         elif userprivdict[botcom.instigator] >= eval(privtype) and privtype == 'OWNER':
-            if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][channel][privstring]:
+            if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][botcom.channel_current][privstring]:
                 bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][channelcheck][privstring].append(botcom.instigator)
         else:
             if botcom.instigator in bot.memory["botdict"]["tempvals"]['servers_list'][str(botcom.server)]['channels_list'][botcom.channel_current][privstring]:
