@@ -34,7 +34,7 @@ def bot_startup_modules(bot, trigger):
     while not bot_startup_requirements_met(bot, ["botdict", "bot_info"]):
         pass
 
-    for comtype in ['module', 'nickname', 'other']:
+    for comtype in ['module', 'nickname', 'rule']:
         comtypedict = str(comtype + "_commands")
         comtypecount = str(comtype + "_count")
         bot.memory["botdict"]["tempvals"][comtypedict] = dict()
