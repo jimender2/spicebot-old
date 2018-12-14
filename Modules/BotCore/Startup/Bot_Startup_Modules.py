@@ -68,14 +68,14 @@ def bot_startup_modules(bot, trigger):
         for line in module_file_lines:
 
             if str(line).startswith("comdict") and not dict_from_file:
-                dict_from_file = str(line).split("comdict = ")[-1]
+                dict_from_file = str(line).split("comdict = ")[-1].strip()
                 bot.msg("#spicebottest", str(dict_from_file))
-                if str(dict_from_file).endswith("}"):
+                if str(dict_from_file)[-1] == "}":
                     dict_from_file_complete = True
 
             elif dict_from_file and not dict_from_file_complete:
-                dict_from_file = str(dict_from_file + str(line))
-                if str(dict_from_file).endswith("}"):
+                dict_from_file = str(dict_from_file + str(line).strip())
+                if str(dict_from_file)[-1] == "}":
                     dict_from_file_complete = True
 
         if dict_from_file:
