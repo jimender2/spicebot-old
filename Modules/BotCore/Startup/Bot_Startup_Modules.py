@@ -69,6 +69,8 @@ def bot_startup_modules(bot, trigger):
 
             if str(line).startswith("comdict") and not dict_from_file:
                 dict_from_file = str(line).split("comdict = ")[-1]
+                if str(dict_from_file).endswith("}"):
+                    dict_from_file_complete = True
 
             elif dict_from_file and not dict_from_file_complete:
                 dict_from_file = str(dict_from_file + str(line))
