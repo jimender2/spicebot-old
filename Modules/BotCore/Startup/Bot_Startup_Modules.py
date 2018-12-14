@@ -74,9 +74,8 @@ def bot_startup_modules(bot, trigger):
 
             elif dict_from_file and not dict_from_file_complete:
                 dict_from_file = str(dict_from_file + str(line))
-
-            if str(line).endswith("}"):
-                dict_from_file_complete = True
+                if str(dict_from_file).endswith("}"):
+                    dict_from_file_complete = True
 
         if dict_from_file:
             bot.msg("#spicebottest", str(dict_from_file))
