@@ -59,6 +59,9 @@ def execute_main(bot, trigger, botcom):
             # dotcommand
             comstring.append("." + command)
 
+            # command type
+            comstring.append("(" + mtype + ")")
+
             # and to final
             dispmsg.append(comstring)
 
