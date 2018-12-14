@@ -83,7 +83,8 @@ def bot_startup_modules(bot, trigger):
                         validcoms = list(validcoms)
                     else:
                         validcoms = [validcoms]
-                    filelinelist.append(validcoms)
+                    validcomdict = {"comtype": comtype, "validcoms": validcoms}
+                    filelinelist.append(validcomdict)
                 elif str(line).startswith(tuple(["nickname_commands", "module.nickname_commands", "sopel.module.nickname_commands"])):
                     comtype = "nickname"
                     line = str(line).split("commands(")[-1]
@@ -93,60 +94,60 @@ def bot_startup_modules(bot, trigger):
                         validcoms = list(validcoms)
                     else:
                         validcoms = [validcoms]
-                    filelinelist.append(validcoms)
-                else:
-                    comtype = 'other'
-                    bot.msg("#spicebottest", str(line))
+                    validcomdict = {"comtype": comtype, "validcoms": validcoms}
+                    filelinelist.append(validcomdict)
 
-        if comtype not in ["nickname", "module"]:
-            bot.msg("#spicebottest", str(module))
+        for atlinefound in filelinelist:
 
-        comtypedict = str(comtype + "_commands")
-        comtypecount = str(comtype + "_count")
+            comtype = atlinefound["comtype"]
+            validcoms = atlinefound["validcoms"]
 
-        bot.memory["botdict"]["tempvals"][comtypecount] += 1
+            comtypedict = str(comtype + "_commands")
+            comtypecount = str(comtype + "_count")
 
-        if not dict_from_file:
-            dict_from_file = dict()
-        else:
-            try:
-                dict_from_file = eval(dict_from_file)
-            except Exception as e:
+            bot.memory["botdict"]["tempvals"][comtypecount] += 1
+
+            if not dict_from_file:
                 dict_from_file = dict()
+            else:
+                try:
+                    dict_from_file = eval(dict_from_file)
+                except Exception as e:
+                    dict_from_file = dict()
 
-        # current file path
-        if "filepath" not in dict_from_file.keys():
-            dict_from_file["filepath"] = str(module)
+            # current file path
+            if "filepath" not in dict_from_file.keys():
+                dict_from_file["filepath"] = str(module)
 
-        # default command to filename
-        if "validcoms" not in dict_from_file.keys():
-            dict_from_file["validcoms"] = validcoms
+            # default command to filename
+            if "validcoms" not in dict_from_file.keys():
+                dict_from_file["validcoms"] = validcoms
 
-        maincom = dict_from_file["validcoms"][0]
-        if len(dict_from_file["validcoms"]) > 1:
-            comaliases = spicemanip(bot, dict_from_file["validcoms"], '2+', 'list')
-        else:
-            comaliases = []
+            maincom = dict_from_file["validcoms"][0]
+            if len(dict_from_file["validcoms"]) > 1:
+                comaliases = spicemanip(bot, dict_from_file["validcoms"], '2+', 'list')
+            else:
+                comaliases = []
 
-        # the command must have an author
-        if "author" not in dict_from_file.keys():
-            dict_from_file["author"] = "deathbybandaid"
+            # the command must have an author
+            if "author" not in dict_from_file.keys():
+                dict_from_file["author"] = "deathbybandaid"
 
-        if "contributors" not in dict_from_file.keys():
-            dict_from_file["contributors"] = []
-        if not isinstance(dict_from_file["contributors"], list):
-            dict_from_file["contributors"] = [dict_from_file["contributors"]]
-        if "deathbybandaid" not in dict_from_file["contributors"]:
-            dict_from_file["contributors"].append("deathbybandaid")
-        if dict_from_file["author"] not in dict_from_file["contributors"]:
-            dict_from_file["contributors"].append(dict_from_file["author"])
+            if "contributors" not in dict_from_file.keys():
+                dict_from_file["contributors"] = []
+            if not isinstance(dict_from_file["contributors"], list):
+                dict_from_file["contributors"] = [dict_from_file["contributors"]]
+            if "deathbybandaid" not in dict_from_file["contributors"]:
+                dict_from_file["contributors"].append("deathbybandaid")
+            if dict_from_file["author"] not in dict_from_file["contributors"]:
+                dict_from_file["contributors"].append(dict_from_file["author"])
 
-        if "hardcoded_channel_block" not in dict_from_file.keys():
-            dict_from_file["hardcoded_channel_block"] = []
+            if "hardcoded_channel_block" not in dict_from_file.keys():
+                dict_from_file["hardcoded_channel_block"] = []
 
-        bot.memory["botdict"]["tempvals"][comtypedict][maincom] = dict_from_file
-        for comalias in comaliases:
-            if comalias not in bot.memory["botdict"]["tempvals"][comtypedict].keys():
-                bot.memory["botdict"]["tempvals"][comtypedict][comalias] = {"aliasfor": maincom}
+            bot.memory["botdict"]["tempvals"][comtypedict][maincom] = dict_from_file
+            for comalias in comaliases:
+                if comalias not in bot.memory["botdict"]["tempvals"][comtypedict].keys():
+                    bot.memory["botdict"]["tempvals"][comtypedict][comalias] = {"aliasfor": maincom}
 
     bot_startup_requirements_set(bot, "modules")
