@@ -45,7 +45,7 @@ def bot_startup_modules(bot, trigger):
 
     filepathlist = []
     for directory in bot.config.core.extra:
-        pathsplit = spicemanip(bot, botcom.triggerargsarray, "split_/")
+        pathsplit = spicemanip(bot, directory, "split_/")
         lastpart = pathsplit[-1]
         bot.msg("#spicebottest", str(lastpart))
         for pathname in os.listdir(directory):
