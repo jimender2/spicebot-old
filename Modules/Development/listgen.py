@@ -47,7 +47,7 @@ def execute_main(bot, trigger, botcom):
     for mtype, mindex in zip(moduletypes, moduleindex):
         bot.msg("#spicebottest", mtype + "    " + str(len(mindex)))
 
-    moduleindex = [["dbbtest"], ["tap"]]
+    moduleindex = [["dbbtest"], ["tap"], ['update'], []]
     indexcount = len(moduleindex)
     for mtype, mindex in zip(moduletypes, moduleindex):
         moduleindex -= 1
@@ -57,13 +57,7 @@ def execute_main(bot, trigger, botcom):
             commandcount -= 1
 
             comstring = []
-
-            if command in bot.memory["botdict"]["tempvals"]['module_commands'].keys():
-                dictcomref = 'module_commands'
-            elif command in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-                dictcomref = 'dict_commands'
-            elif command in bot.memory["botdict"]["tempvals"]['nick_commands'].keys():
-                dictcomref = 'nick_commands'
+            dictcomref = mtype
 
             # command dictionary
             dictcom = bot.memory["botdict"]["tempvals"][dictcomref][command]
