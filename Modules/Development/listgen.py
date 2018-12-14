@@ -53,6 +53,8 @@ def execute_main(bot, trigger, botcom):
         indexcount -= 1
         commandcount = len(mindex)
 
+        dispmsg.append([mtype + " commands:"])
+
         for command in mindex:
             commandcount -= 1
 
@@ -73,7 +75,8 @@ def execute_main(bot, trigger, botcom):
 
             # and to final
             dispmsg.append(comstring)
-            dispmsg.append(["     "])
+
+        dispmsg.append(["     "])
 
     for comstring in dispmsg:
         osd(bot, botcom.channel_current, 'say', comstring)
