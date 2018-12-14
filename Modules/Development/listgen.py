@@ -72,20 +72,36 @@ def execute_main(bot, trigger, botcom):
                 else:
                     comstring.append("." + command)
 
+                # description
+                if dict_from_file["description"]:
+                    comstring.append("Description:  " + str(dict_from_file["description"]))
+
                 # author
-                comstring.append("Author:  " + str(dictcom["author"]))
+                if dict_from_file["author"]:
+                    comstring.append("Author:  " + str(dictcom["author"]))
 
                 # contributors
-                comstring.append("Contributors:  " + str(spicemanip(bot, dictcom["contributors"], "andlist")))
+                if dict_from_file["contributors"]:
+                    comstring.append("Contributors:  " + str(spicemanip(bot, dictcom["contributors"], "andlist")))
 
                 # filepath
-                filepath = dictcom["filepath"].split("/home/spicebot/.sopel/" + str(bot.nick))[-1]
-                comstring.append("Filepath:  " + str(filepath))
+                if dict_from_file["filepath"]:
+                    filepath = dictcom["filepath"].split("/home/spicebot/.sopel/" + str(bot.nick))[-1]
+                    comstring.append("Filepath:  " + str(filepath))
 
                 # alternative commands
-                del dictcom["validcoms"][0]
-                if len(dictcom["validcoms"]):
-                    comstring.append("Valid Alternates: " + str(spicemanip(bot, dictcom["validcoms"], "orlist")))
+                if dict_from_file["validcoms"]:
+                    del dictcom["validcoms"][0]
+                    if len(dictcom["validcoms"]):
+                        comstring.append("Valid Alternates: " + str(spicemanip(bot, dictcom["validcoms"], "orlist")))
+
+                # Usage
+                if dict_from_file["example"]:
+                    comstring.append("Example Usage:  " + str(dict_from_file["example"]))
+
+                # Reply
+                if dict_from_file["exampleresponse"]:
+                    comstring.append("Example Reply:  " + str(dict_from_file["exampleresponse"]))
 
                 # and to final
                 dispmsg.append(comstring)

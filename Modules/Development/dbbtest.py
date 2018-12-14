@@ -23,6 +23,7 @@ sys.setdefaultencoding('utf-8')
 comdict = {
             "author": "fartbucket",
             "contributors": ["poophead", "shartmonster"],
+            "description": "deathbybandaid uses this module to test with.",
             }
 
 

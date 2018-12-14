@@ -158,6 +158,15 @@ def dict_command_configs(bot):
                                         dict_from_file["hardcoded_channel_block"] = []
                                     keysprocessed.append("hardcoded_channel_block")
 
+                                    if "example" not in dict_from_file.keys():
+                                        dict_from_file["example"] = str("." + maincom)
+
+                                    if "exampleresponse" not in dict_from_file.keys():
+                                        dict_from_file["exampleresponse"] = None
+
+                                    if "description" not in dict_from_file.keys():
+                                        dict_from_file["description"] = None
+
                                     # handle basic required dict handling
                                     dict_required = ["?default"]
                                     dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, dict_required)
