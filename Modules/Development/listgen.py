@@ -38,10 +38,16 @@ def execute_main(bot, trigger, botcom):
     bot.say("Generating a list of commands...")
 
     dispmsg = []
-    moduletypes = ["py", "dict"]
-    moduleindex = [["dbbtest"], ["tap"]]
-    # moduleindex = [bot.memory["botdict"]["tempvals"]['module_commands'].keys(), bot.memory["botdict"]["tempvals"]['dict_commands'].keys(), valid_botnick_commands.keys()]
+    moduletypes = ['dict', 'module', 'nickname', 'rule']
+    moduleindex = []
+    for comtype in moduletypes:
+        comtypedict = str(comtype + "_commands")
+        moduleindex.append(bot.memory["botdict"]["tempvals"][comtypedict].keys())
 
+    for mtype, mindex in zip(moduletypes, moduleindex):
+        bot.msg("#spicebottest", mtype + "    " + str(len(mindex)))
+
+    moduleindex = [["dbbtest"], ["tap"]]
     for mtype, mindex in zip(moduletypes, moduleindex):
 
         for command in mindex:
