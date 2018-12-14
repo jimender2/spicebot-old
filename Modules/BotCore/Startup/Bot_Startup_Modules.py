@@ -34,8 +34,13 @@ def bot_startup_modules(bot, trigger):
     while not bot_startup_requirements_met(bot, ["botdict", "bot_info"]):
         pass
 
+    ignoredir
+
     modulecount = 0
     bot.memory["botdict"]["tempvals"]['module_commands'] = dict()
+    bot.memory["botdict"]["tempvals"]['module_count'] = 0
+    bot.memory["botdict"]["tempvals"]['nick_commands'] = dict()
+    bot.memory["botdict"]["tempvals"]['nick_count'] = 0
 
     filenameslist = []
     for modules in bot.command_groups.items():
@@ -45,9 +50,6 @@ def bot_startup_modules(bot, trigger):
 
     filepathlist = []
     for directory in bot.config.core.extra:
-        pathsplit = spicemanip(bot, directory, "split_/")
-        lastpart = pathsplit[-1]
-        bot.msg("#spicebottest", str(lastpart))
         for pathname in os.listdir(directory):
             path = os.path.join(directory, pathname)
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
@@ -55,7 +57,6 @@ def bot_startup_modules(bot, trigger):
                     filepathlist.append(str(path))
 
     for module in filepathlist:
-        modulecount += 1
         module_file_lines = []
         module_file = open(module, 'r')
         lines = module_file.readlines()
@@ -76,6 +77,7 @@ def bot_startup_modules(bot, trigger):
 
                 # Commands
                 if str(line).startswith(tuple(["commands", "module.commands", "sopel.module.commands"])):
+                    comtype = "module"
                     line = str(line).split("commands(")[-1]
                     line = str("(" + line)
                     validcoms = eval(str(line))
@@ -84,6 +86,23 @@ def bot_startup_modules(bot, trigger):
                     else:
                         validcoms = [validcoms]
                     filelinelist.append(validcoms)
+                elif str(line).startswith(tuple(["nickname_commands", "module.nickname_commands", "sopel.module.nickname_commands"])):
+                    comtype = "nick"
+                    line = str(line).split("commands(")[-1]
+                    line = str("(" + line)
+                    validcoms = eval(str(line))
+                    if isinstance(validcoms, tuple):
+                        validcoms = list(validcoms)
+                    else:
+                        validcoms = [validcoms]
+                    filelinelist.append(validcoms)
+                else:
+                    comtype = ''
+
+        comtypedict = str(comtype + "_commands")
+        comtypecount = str(comtype + "_count")
+
+        bot.memory["botdict"]["tempvals"][comtypecount] += 1
 
         if not dict_from_file:
             dict_from_file = dict()
@@ -123,18 +142,9 @@ def bot_startup_modules(bot, trigger):
         if "hardcoded_channel_block" not in dict_from_file.keys():
             dict_from_file["hardcoded_channel_block"] = []
 
-        bot.memory["botdict"]["tempvals"]['module_commands'][maincom] = dict_from_file
+        bot.memory["botdict"]["tempvals"][comtypedict][maincom] = dict_from_file
         for comalias in comaliases:
-            if comalias not in bot.memory["botdict"]["tempvals"]['module_commands'].keys():
-                bot.memory["botdict"]["tempvals"]['module_commands'][comalias] = {"aliasfor": maincom}
-
-    bot.memory["botdict"]["tempvals"]['module_count'] = modulecount
-
-    # Command Nicks neet to be registered
-    for nickcom in valid_botnick_commands.keys():
-        bot.memory["botdict"]["tempvals"]['module_commands'][str(bot.nick) + " " + nickcom] = dict()
-    nickcomdir = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/BotCore/Nick_Commands/"
-    nickcomfiles = len(fnmatch.filter(os.listdir(nickcomdir), '*.py'))
-    bot.memory["botdict"]["tempvals"]['module_count'] += int(nickcomfiles)
+            if comalias not in bot.memory["botdict"]["tempvals"][comtypedict].keys():
+                bot.memory["botdict"]["tempvals"][comtypedict][comalias] = {"aliasfor": maincom}
 
     bot_startup_requirements_set(bot, "modules")

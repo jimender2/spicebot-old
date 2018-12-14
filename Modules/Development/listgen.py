@@ -40,7 +40,7 @@ def execute_main(bot, trigger, botcom):
     dispmsg = []
     moduletypes = ["py", "dict"]
     moduleindex = [["dbbtest"], ["tap"]]
-    # moduleindex = [bot.memory["botdict"]["tempvals"]['module_commands'].keys(), bot.memory["botdict"]["tempvals"]['dict_commands'].keys()]
+    # moduleindex = [bot.memory["botdict"]["tempvals"]['module_commands'].keys(), bot.memory["botdict"]["tempvals"]['dict_commands'].keys(), valid_botnick_commands.keys()]
 
     for mtype, mindex in zip(moduletypes, moduleindex):
 
@@ -52,18 +52,24 @@ def execute_main(bot, trigger, botcom):
                 dictcomref = 'module_commands'
             elif command in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
                 dictcomref = 'dict_commands'
+            elif command in bot.memory["botdict"]["tempvals"]['nick_commands'].keys():
+                dictcomref = 'nick_commands'
 
             # command dictionary
             dictcom = bot.memory["botdict"]["tempvals"][dictcomref][command]
 
             # dotcommand
-            comstring.append("." + command)
+            if dictcomref == 'nick_commands':
+                comstring.append(str(bot.nick) + " " + command)
+            else:
+                comstring.append("." + command)
 
             # command type
             comstring.append("(" + mtype + ")")
 
             # and to final
             dispmsg.append(comstring)
+            dispmsg.append(["     "])
 
     for comstring in dispmsg:
         osd(bot, botcom.channel_current, 'say', comstring)
