@@ -170,7 +170,7 @@ def bot_startup_modules(bot, trigger):
                 if comtype == "module":
                     dict_from_file["example"] = str("." + maincom)
                 if comtype == "nickname":
-                    dict_from_file["example"] = str(str(bot.nick) + " " + maincom)
+                    dict_from_file["example"] = str(maincom)
                 else:
                     dict_from_file["example"] = None
 
