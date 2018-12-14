@@ -94,7 +94,6 @@ def bot_startup_modules(bot, trigger):
                         validcoms = list(validcoms)
                     else:
                         validcoms = [validcoms]
-                    bot.msg("#spicebottest", str(validcoms))
                     validcomdict = {"comtype": comtype, "validcoms": validcoms}
                     filelinelist.append(validcomdict)
                 elif str(line).startswith(tuple(["rule", "module.rule", "sopel.module.rule"])):
@@ -108,6 +107,8 @@ def bot_startup_modules(bot, trigger):
                         validcoms = [validcoms]
                     validcomdict = {"comtype": comtype, "validcoms": validcoms}
                     filelinelist.append(validcomdict)
+                else:
+                    bot.msg("#spicebottest", str(line))
 
         for atlinefound in filelinelist:
 
