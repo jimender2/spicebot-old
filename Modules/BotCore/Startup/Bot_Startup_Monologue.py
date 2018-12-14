@@ -60,6 +60,9 @@ def bot_startup_monologue(bot, trigger):
         pass
     availablecomsnum += len(bot.memory["botdict"]["tempvals"]['module_commands'].keys())
     availablecomsfiles += bot.memory["botdict"]["tempvals"]['module_count']
+    # nick commands
+    availablecomsnum += len(bot.memory["botdict"]["tempvals"]['nick_commands'].keys())
+    availablecomsfiles += bot.memory["botdict"]["tempvals"]['nick_count']
 
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
 
