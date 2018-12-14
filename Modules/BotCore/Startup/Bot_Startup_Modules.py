@@ -51,8 +51,7 @@ def bot_startup_modules(bot, trigger):
         for pathname in os.listdir(directory):
             path = os.path.join(directory, pathname)
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
-                if pathname in filenameslist:
-                    filepathlist.append(str(path))
+                filepathlist.append(str(path))
 
     for module in filepathlist:
         module_file_lines = []
@@ -107,8 +106,6 @@ def bot_startup_modules(bot, trigger):
                         validcoms = [validcoms]
                     validcomdict = {"comtype": comtype, "validcoms": validcoms}
                     filelinelist.append(validcomdict)
-                else:
-                    bot.msg("#spicebottest", str(line))
 
         for atlinefound in filelinelist:
 
