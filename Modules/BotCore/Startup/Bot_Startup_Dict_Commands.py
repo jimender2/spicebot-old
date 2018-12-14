@@ -167,6 +167,8 @@ def dict_command_configs(bot):
                                     if "description" not in dict_from_file.keys():
                                         dict_from_file["description"] = None
 
+                                    keysprocessed.extend(["validcoms", "filepath", "description", "exampleresponse", "example"])
+
                                     # handle basic required dict handling
                                     dict_required = ["?default"]
                                     dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, dict_required)

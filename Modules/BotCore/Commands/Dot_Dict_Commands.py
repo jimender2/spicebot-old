@@ -114,11 +114,11 @@ def bot_dictcom_process(bot, botcom):
 
     botcom.nonstockoptions = []
     for command in botcom.dotcommand_dict.keys():
-        if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block"]:
+        if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block", "description", "exampleresponse", "example"]:
             botcom.nonstockoptions.append(command)
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns"]
+    validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage"]
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
@@ -261,15 +261,29 @@ def bot_dictcom_process(bot, botcom):
         return osd(bot, botcom.channel_current, 'say', str(posstarget) + " has been unblocked from using " + botcom.maincom + ".")
 
     elif botcom.specified == 'special':
-        nonstockoptions = []
-        for command in botcom.dotcommand_dict.keys():
-            if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block"]:
-                nonstockoptions.append(command)
-        nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
+        nonstockoptions = spicemanip(bot, botcom.nonstockoptions, "andlist")
         return osd(bot, botcom.channel_current, 'say', "The special options for " + str(botcom.maincom) + " command include: " + str(nonstockoptions) + ".")
 
     elif botcom.specified == 'count':
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " command has " + str(len(botcom.dotcommand_dict[botcom.responsekey]["responses"])) + " entries.")
+
+    elif botcom.specified == 'description':
+        botcom.modulerun = False
+
+        osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + str(botcom.dotcommand_dict["description"]))
+        return
+
+    elif botcom.specified == 'exampleresponse':
+        botcom.modulerun = False
+
+        osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + str(botcom.dotcommand_dict["description"]))
+        return
+
+    elif botcom.specified in ['example', 'usage']:
+        botcom.modulerun = False
+
+        osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + str(botcom.dotcommand_dict["description"]))
+        return
 
     elif botcom.specified == 'filepath':
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " file is located at " + str(botcom.dotcommand_dict["filepath"]))
@@ -539,7 +553,7 @@ def bot_dictcom_reply_shared(bot, botcom):
             if "$specialoptions" in rply:
                 nonstockoptions = []
                 for command in botcom.dotcommand_dict.keys():
-                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block"]:
+                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block", "description", "exampleresponse", "example", "usage"]:
                         nonstockoptions.append(command)
                 nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
                 rply = rply.replace("$specialoptions", nonstockoptions)
