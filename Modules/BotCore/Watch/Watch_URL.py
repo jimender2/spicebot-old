@@ -22,7 +22,7 @@ sys.setdefaultencoding('utf-8')
 
 @module.url('(.*)')
 @sopel.module.thread(True)
-def bot_join_hub(bot, trigger):
+def bot_url_hub(bot, trigger):
 
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["connected", "botdict", "server", "channels", "users"]):
