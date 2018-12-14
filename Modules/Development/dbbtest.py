@@ -21,7 +21,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@sopel.module.commands('dbbtest')
+@sopel.module.commands('dbbtest', 'deathbybandaidtest')
 def mainfunctionnobeguine(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)

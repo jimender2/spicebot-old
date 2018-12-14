@@ -62,7 +62,7 @@ def execute_main(bot, trigger, botcom):
             dictcomref = str(mtype + "_commands")
 
             # command dictionary
-            dictcom = bot.memory["botdict"]["tempvals"][dictcomref][str(command)]
+            dictcom = copy.deepcopy(bot.memory["botdict"]["tempvals"][dictcomref][str(command)])
             if "aliasfor" not in dictcom.keys():
 
                 # dotcommand
@@ -71,7 +71,9 @@ def execute_main(bot, trigger, botcom):
                 else:
                     comstring.append("." + command)
 
-                comstring.append("Valid Alternates: " + str(dictcom["validcoms"]))
+                del dictcom["validcoms"][0]
+                if len(dictcom["validcoms"]):
+                    comstring.append("Valid Alternates: " + str(dictcom["validcoms"]))
 
                 # and to final
                 dispmsg.append(comstring)
