@@ -29,13 +29,21 @@ This counts the python modules
 @rule('.*')
 @sopel.module.thread(True)
 def bot_startup_modules(bot, trigger):
+    return
 
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["botdict", "bot_info"]):
         pass
 
-    modulecount = 0
-    bot.memory["botdict"]["tempvals"]['module_commands'] = dict()
+    nickcomcount = 0
+    bot.memory["botdict"]["tempvals"]['nick_commands'] = dict()
+
+    # Command Nicks neet to be registered
+    for nickcom in valid_botnick_commands.keys():
+        bot.memory["botdict"]["tempvals"]['nick_commands'][str(bot.nick) + " " + nickcom] = dict()
+    nickcomdir = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "/Modules/BotCore/Nick_Commands/"
+    nickcomfiles = len(fnmatch.filter(os.listdir(nickcomdir), '*.py'))
+    bot.memory["botdict"]["tempvals"]['module_count'] += int(nickcomfiles)
 
     filenameslist = []
     for modules in bot.command_groups.items():
@@ -45,7 +53,6 @@ def bot_startup_modules(bot, trigger):
 
     filepathlist = []
     for directory in bot.config.core.extra:
-        bot.msg("#spicebottest", str(directory))
         for pathname in os.listdir(directory):
             path = os.path.join(directory, pathname)
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
@@ -53,7 +60,7 @@ def bot_startup_modules(bot, trigger):
                     filepathlist.append(str(path))
 
     for module in filepathlist:
-        modulecount += 1
+        nickcomcount += 1
         module_file_lines = []
         module_file = open(module, 'r')
         lines = module_file.readlines()
@@ -126,7 +133,7 @@ def bot_startup_modules(bot, trigger):
             if comalias not in bot.memory["botdict"]["tempvals"]['module_commands'].keys():
                 bot.memory["botdict"]["tempvals"]['module_commands'][comalias] = {"aliasfor": maincom}
 
-    bot.memory["botdict"]["tempvals"]['module_count'] = modulecount
+    bot.memory["botdict"]["tempvals"]['nickcom_count'] = nickcomcount
 
     # Command Nicks neet to be registered
     for nickcom in valid_botnick_commands.keys():
@@ -135,4 +142,4 @@ def bot_startup_modules(bot, trigger):
     nickcomfiles = len(fnmatch.filter(os.listdir(nickcomdir), '*.py'))
     bot.memory["botdict"]["tempvals"]['module_count'] += int(nickcomfiles)
 
-    bot_startup_requirements_set(bot, "modules")
+    bot_startup_requirements_set(bot, "nickmodules")
