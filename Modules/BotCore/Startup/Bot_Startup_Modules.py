@@ -95,7 +95,8 @@ def bot_startup_modules(bot, trigger):
                         validcoms = [validcoms]
                     filelinelist.append(validcoms)
                 else:
-                    comtype = ''
+                    comtype = 'other'
+                    bot.msg("#spicebottest", str(line))
 
         if comtype not in ["nickname", "module"]:
             bot.msg("#spicebottest", str(module))
