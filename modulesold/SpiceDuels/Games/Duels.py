@@ -6250,7 +6250,7 @@ def duels_stats_view(bot, duels, target_stats_view, targetbio, customview, actua
                     gethowmany = 'poor'
                 else:
                     statname = x.replace("_", " ")
-                    gethowmanymax = aspicemanip(bot, [x, duels_forge_items, duels_armor_durabilitymax], 'index')
+                    gethowmanymax = spicemanip(bot, [x, duels_forge_items, duels_armor_durabilitymax], 'index')
                     if targetbio.Class == 'blacksmith':
                         gethowmanymax = gethowmanymax + 5
                     gethowmanymax = gethowmanymax * duels.tierscaling
