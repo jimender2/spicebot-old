@@ -78,7 +78,7 @@ def execute_main(bot, trigger, botcom):
                 # contributors
                 comstring.append("Contributors:  " + str(spicemanip(bot, dictcom["contributors"], "andlist")))
 
-                # filepath /home/spicebot/.sopel/SpiceBotdev
+                # filepath
                 filepath = dictcom["filepath"].split("/home/spicebot/.sopel/" + str(bot.nick))[-1]
                 comstring.append("Filepath:  " + str(filepath))
 
