@@ -38,20 +38,29 @@ def execute_main(bot, trigger, botcom):
     bot.say("Generating a list of commands...")
 
     dispmsg = []
+    moduletypes = ["py", "dict"]
+    moduleindex = [["dbbtest"], ["tap"]]
+    # moduleindex = [bot.memory["botdict"]["tempvals"]['module_commands'].keys(), bot.memory["botdict"]["tempvals"]['dict_commands'].keys()]
 
-    # py modules
-    for command in ["dbbtest"]:
-        comstring = []
-        dictcom = bot.memory["botdict"]["tempvals"]['module_commands'][command]
-        comstring.append(command)
-        dispmsg.append(comstring)
+    for mtype, mindex in zip(moduletypes, moduleindex):
 
-    # dict coms
-    for command in ["tap"]:
-        comstring = []
-        dictcom = bot.memory["botdict"]["tempvals"]['dict_commands'][command]
-        comstring.append(command)
-        dispmsg.append(comstring)
+        for command in mindex:
+
+            comstring = []
+
+            if command in bot.memory["botdict"]["tempvals"]['module_commands'].keys():
+                dictcomref = 'module_commands'
+            elif command in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+                dictcomref = 'dict_commands'
+
+            # command dictionary
+            dictcom = bot.memory["botdict"]["tempvals"][dictcomref][command]
+
+            # dotcommand
+            comstring.append("." + command)
+
+            # and to final
+            dispmsg.append(comstring)
 
     for comstring in dispmsg:
         osd(bot, botcom.channel_current, 'say', comstring)
