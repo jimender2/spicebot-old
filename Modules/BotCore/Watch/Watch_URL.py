@@ -19,8 +19,12 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-
+"""
 @module.url('(.*)')
+"""
+
+
+@module.url('https?://twitter.com/([^/]*)(?:/status/(\d+)).*')
 @sopel.module.thread(True)
 def bot_url_hub(bot, trigger):
 
