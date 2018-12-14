@@ -77,7 +77,7 @@ def bot_startup_modules(bot, trigger):
                     dict_from_file_complete = True
 
         if dict_from_file:
-            bot.msg("#spicebottest" + str(dict_from_file))
+            bot.msg("#spicebottest", str(dict_from_file))
 
         for line in module_file_lines:
 
