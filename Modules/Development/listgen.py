@@ -73,7 +73,7 @@ def execute_main(bot, trigger, botcom):
 
                 del dictcom["validcoms"][0]
                 if len(dictcom["validcoms"]):
-                    comstring.append("Valid Alternates: " + str(dictcom["validcoms"]))
+                    comstring.append("Valid Alternates: " + str(spicemanip(bot, dictcom["validcoms"], "orlist")))
 
                 # and to final
                 dispmsg.append(comstring)
