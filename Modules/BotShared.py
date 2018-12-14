@@ -1266,10 +1266,17 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                     return []
             nextevent = events[0]
 
-            bot.msg("#spicebottest", str(nextevent["start"]))
+            # bot.msg("#spicebottest", str(nextevent["start"]))
             try:
                 entrytime = nextevent["start"]["dateTime"]
             except Exception as e:
+                entrytime = None
+            if not entrytime:
+                try:
+                    entrytime = nextevent["start"]["date"]
+                except Exception as e:
+                    entrytime = None
+            if not entrytime:
                 if forcedisplay:
                     return ["Timestamp Error"]
                 else:
