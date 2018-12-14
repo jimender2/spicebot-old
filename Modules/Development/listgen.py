@@ -44,14 +44,14 @@ def execute_main(bot, trigger, botcom):
         comstring = []
         dictcom = bot.memory["botdict"]["tempvals"]['module_commands'][command]
         comstring.append(command)
-        dispmsg.append(str(comstring))
+        dispmsg.append(comstring)
 
     # dict coms
     for command in ["tap"]:
         comstring = []
         dictcom = bot.memory["botdict"]["tempvals"]['dict_commands'][command]
         comstring.append(command)
-        dispmsg.append(str(comstring))
+        dispmsg.append(comstring)
 
     for comstring in dispmsg:
         osd(bot, botcom.channel_current, 'say', comstring)
