@@ -20,7 +20,9 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-comdict = {"author": "fartbucket"}
+comdict = {
+            "author": "fartbucket",
+            }
 
 
 @sopel.module.commands('dbbtest', 'deathbybandaidtest')
