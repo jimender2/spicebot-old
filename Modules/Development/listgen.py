@@ -48,9 +48,13 @@ def execute_main(bot, trigger, botcom):
         bot.msg("#spicebottest", mtype + "    " + str(len(mindex)))
 
     moduleindex = [["dbbtest"], ["tap"]]
+    indexcount = len(moduleindex)
     for mtype, mindex in zip(moduletypes, moduleindex):
+        moduleindex -= 1
+        commandcount = len(mindex)
 
         for command in mindex:
+            commandcount -= 1
 
             comstring = []
 
@@ -75,7 +79,8 @@ def execute_main(bot, trigger, botcom):
 
             # and to final
             dispmsg.append(comstring)
-            dispmsg.append(["     "])
+            if (commandcount > 0 and moduleindex > 0) or (moduleindex == 0 and commandcount > 0):
+                dispmsg.append(["     "])
 
     for comstring in dispmsg:
         osd(bot, botcom.channel_current, 'say', comstring)
