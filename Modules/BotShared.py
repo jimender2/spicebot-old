@@ -1293,7 +1293,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 timecompare = humanized_time((now - entrytime).total_seconds())
                 timecompare = str(timecompare + " ago")
             # timecompare = arrow_time(now, entrytime)
-            dispmsg.append(timecompare)
+            dispmsg.append("{Next: " + timecompare + "}")
 
             try:
                 title = nextevent["summary"]
@@ -1375,7 +1375,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 timecompare = humanized_time((now - entrytime).total_seconds())
                 timecompare = str(timecompare + " ago")
             # timecompare = arrow_time(now, entrytime)
-            dispmsg.append(timecompare)
+            dispmsg.append("{Next: " + timecompare + "}")
 
             scrapetitle = feed_dict["scrapetitle"]
             if scrapetitle:
@@ -1540,7 +1540,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 timecompare = humanized_time((now - entrytime).total_seconds())
                 timecompare = str(timecompare + " ago")
             # timecompare = arrow_time(now, entrytime)
-            dispmsg.append(timecompare)
+            dispmsg.append("{Next: " + timecompare + "}")
 
             scrapetitle = feed_dict["scrapetitle"]
             if scrapetitle:
