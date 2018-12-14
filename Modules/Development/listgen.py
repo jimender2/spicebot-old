@@ -66,7 +66,7 @@ def execute_main(bot, trigger, botcom):
             if "aliasfor" not in dictcom.keys():
 
                 # dotcommand
-                if dictcomref == 'nickname_commands':
+                if dictcomref in ['nickname_commands', 'rule_commands']:
                     comstring.append(command)
                 else:
                     comstring.append("." + command)
