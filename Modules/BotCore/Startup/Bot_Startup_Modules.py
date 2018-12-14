@@ -34,8 +34,6 @@ def bot_startup_modules(bot, trigger):
     while not bot_startup_requirements_met(bot, ["botdict", "bot_info"]):
         pass
 
-    ignoredir
-
     modulecount = 0
     bot.memory["botdict"]["tempvals"]['module_commands'] = dict()
     bot.memory["botdict"]["tempvals"]['module_count'] = 0
