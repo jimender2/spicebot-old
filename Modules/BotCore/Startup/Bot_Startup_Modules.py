@@ -39,6 +39,8 @@ def bot_startup_modules(bot, trigger):
     bot.memory["botdict"]["tempvals"]['module_count'] = 0
     bot.memory["botdict"]["tempvals"]['nickname_commands'] = dict()
     bot.memory["botdict"]["tempvals"]['nickname_count'] = 0
+    bot.memory["botdict"]["tempvals"]['other_commands'] = dict()
+    bot.memory["botdict"]["tempvals"]['other_count'] = 0
 
     filenameslist = []
     for modules in bot.command_groups.items():
