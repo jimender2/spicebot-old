@@ -63,7 +63,7 @@ def execute_main(bot, trigger, botcom):
             dictcom = bot.memory["botdict"]["tempvals"][dictcomref][str(command)]
 
             # dotcommand
-            if dictcomref == 'nick_commands':
+            if dictcomref == 'nickname_commands':
                 comstring.append(str(bot.nick) + " " + command)
             else:
                 comstring.append("." + command)
@@ -73,8 +73,7 @@ def execute_main(bot, trigger, botcom):
 
             # and to final
             dispmsg.append(comstring)
-            if (commandcount > 0 and indexcount > 0) or (indexcount == 0 and commandcount > 0):
-                dispmsg.append(["     "])
+            dispmsg.append(["     "])
 
     for comstring in dispmsg:
         osd(bot, botcom.channel_current, 'say', comstring)
