@@ -1,0 +1,8 @@
+{
+
+"type": "googlecalendar",
+"displayname": "Days Of the year",
+"calendar": "#daynum@group.v.calendar.google.com",
+"link": None,
+
+}
