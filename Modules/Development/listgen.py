@@ -47,15 +47,7 @@ def execute_main(bot, trigger, botcom):
     # for mtype, mindex in zip(moduletypes, moduleindex):
         # bot.msg("#spicebottest", mtype + "    " + str(len(mindex)))
 
-    for mtype, mindex in zip(moduletypes, moduleindex):
-        dictcomref = str(mtype + "_commands")
-        bot.msg("#spicebottest", mtype + "    " + dictcomref)
-        if mtype != 'dict':
-            bot.msg("#spicebottest", str(mindex))
-        else:
-            bot.msg("#spicebottest", str(len(mindex)))
-
-    moduleindex = [["dbbtest"], ["tap"], ['update'], []]
+    moduleindex = [["tap"], ["dbbtest"], ['update'], []]
     indexcount = len(moduleindex)
     for mtype, mindex in zip(moduletypes, moduleindex):
         indexcount -= 1
@@ -68,9 +60,7 @@ def execute_main(bot, trigger, botcom):
             dictcomref = str(mtype + "_commands")
 
             # command dictionary
-            if command not in bot.memory["botdict"]["tempvals"][dictcomref].keys():
-                bot.msg("#spicebottest", "missing com in " + str(dictcomref) + ":   " + str(command))
-            dictcom = bot.memory["botdict"]["tempvals"][dictcomref][command]
+            dictcom = bot.memory["botdict"]["tempvals"][dictcomref][str(command)]
 
             # dotcommand
             if dictcomref == 'nick_commands':
