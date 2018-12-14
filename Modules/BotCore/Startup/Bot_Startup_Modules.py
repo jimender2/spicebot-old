@@ -97,7 +97,7 @@ def bot_startup_modules(bot, trigger):
                 else:
                     comtype = ''
 
-        if comtypenot in ["nickname", "module"]:
+        if comtype not in ["nickname", "module"]:
             bot.msg("#spicebottest", str(module))
 
         comtypedict = str(comtype + "_commands")
