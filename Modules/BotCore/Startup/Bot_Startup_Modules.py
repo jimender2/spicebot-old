@@ -61,7 +61,7 @@ def bot_startup_modules(bot, trigger):
             module_file_lines.append(line)
         module_file.close()
 
-        dict_from_file = False
+        dict_from_file = None
         dict_from_file_complete = False
         filelinelist = []
 
@@ -72,8 +72,6 @@ def bot_startup_modules(bot, trigger):
 
             elif dict_from_file and not dict_from_file_complete:
                 dict_from_file = str(dict_from_file + str(line))
-
-            bot.msg("#spicebottest", str(dict_from_file)[-1])
 
             if str(dict_from_file).endswith("}") and not dict_from_file_complete:
                 dict_from_file_complete = True
