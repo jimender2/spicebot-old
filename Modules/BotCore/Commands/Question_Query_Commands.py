@@ -21,7 +21,13 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+"""
+@rule('^\?(.*)')
 @rule('(.*)')
+"""
+
+
+@rule('^\?(.*)')
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
 

@@ -23,11 +23,13 @@ sys.setdefaultencoding('utf-8')
 
 """
 bot.nick do this
+@rule('^\.(.*)')
+@rule('(.*)')
 """
 
 
 # TODO make sure restart and update save database
-@rule('(.*)')
+@rule('^\.(.*)')
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
 
