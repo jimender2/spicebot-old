@@ -50,22 +50,13 @@ def bot_startup_monologue(bot, trigger):
     availablecomsnum, availablecomsfiles = 0, 0
 
     # dict commands
-    while not bot_startup_requirements_met(bot, ["dict_coms"]):
+    while not bot_startup_requirements_met(bot, ["dict_coms", "modules"]):
         pass
-    availablecomsnum += len(bot.memory["botdict"]["tempvals"]['dict_commands'].keys())
-    availablecomsfiles += bot.memory["botdict"]["tempvals"]['dict_module_count']
-
-    # Module Commands
-    while not bot_startup_requirements_met(bot, ["modules"]):
-        pass
-    availablecomsnum += len(bot.memory["botdict"]["tempvals"]['module_commands'].keys())
-    availablecomsfiles += bot.memory["botdict"]["tempvals"]['module_count']
-    # nick commands
-    availablecomsnum += len(bot.memory["botdict"]["tempvals"]['nickname_commands'].keys())
-    availablecomsfiles += bot.memory["botdict"]["tempvals"]['nickname_count']
-    # other files
-    availablecomsnum += len(bot.memory["botdict"]["tempvals"]['other_commands'].keys())
-    availablecomsfiles += bot.memory["botdict"]["tempvals"]['other_count']
+    for comtype in ['module', 'nickname', 'other']:
+        comtypedict = str(comtype + "_commands")
+        comtypecount = str(comtype + "_count")
+        availablecomsnum += len(bot.memory["botdict"]["tempvals"][comtypedict].keys())
+        availablecomsfiles += bot.memory["botdict"]["tempvals"][comtypecount]
 
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
 

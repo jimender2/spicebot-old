@@ -34,13 +34,11 @@ def bot_startup_modules(bot, trigger):
     while not bot_startup_requirements_met(bot, ["botdict", "bot_info"]):
         pass
 
-    modulecount = 0
-    bot.memory["botdict"]["tempvals"]['module_commands'] = dict()
-    bot.memory["botdict"]["tempvals"]['module_count'] = 0
-    bot.memory["botdict"]["tempvals"]['nickname_commands'] = dict()
-    bot.memory["botdict"]["tempvals"]['nickname_count'] = 0
-    bot.memory["botdict"]["tempvals"]['other_commands'] = dict()
-    bot.memory["botdict"]["tempvals"]['other_count'] = 0
+    for comtype in ['module', 'nickname', 'other']:
+        comtypedict = str(comtype + "_commands")
+        comtypecount = str(comtype + "_count")
+        bot.memory["botdict"]["tempvals"][comtypedict] = dict()
+        bot.memory["botdict"]["tempvals"][comtypecount] = 0
 
     filenameslist = []
     for modules in bot.command_groups.items():
@@ -105,12 +103,6 @@ def bot_startup_modules(bot, trigger):
 
         comtypedict = str(comtype + "_commands")
         comtypecount = str(comtype + "_count")
-
-        if comtypecount not in bot.memory["botdict"]["tempvals"].keys():
-            bot.memory["botdict"]["tempvals"][comtypecount] = 0
-
-        if comtypedict not in bot.memory["botdict"]["tempvals"].keys():
-            bot.memory["botdict"]["tempvals"][comtypedict] = dict()
 
         bot.memory["botdict"]["tempvals"][comtypecount] += 1
 
