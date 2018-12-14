@@ -72,6 +72,16 @@ def execute_main(bot, trigger, botcom):
                 else:
                     comstring.append("." + command)
 
+                # author
+                comstring.append("Author:  " + str(dictcom["author"]))
+
+                # contributors
+                comstring.append("Contributors:  " + str(spicemanip(bot, dictcom["contributors"], "andlist")))
+
+                # filepath
+                comstring.append("Filepath:  " + str(dictcom["filepath"]))
+
+                # alternative commands
                 del dictcom["validcoms"][0]
                 if len(dictcom["validcoms"]):
                     comstring.append("Valid Alternates: " + str(spicemanip(bot, dictcom["validcoms"], "orlist")))
