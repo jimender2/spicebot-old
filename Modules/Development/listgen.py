@@ -50,7 +50,10 @@ def execute_main(bot, trigger, botcom):
     for mtype, mindex in zip(moduletypes, moduleindex):
         dictcomref = str(mtype + "_commands")
         bot.msg("#spicebottest", mtype + "    " + dictcomref)
-        bot.msg("#spicebottest", str(mindex))
+        if mtype != 'dict':
+            bot.msg("#spicebottest", str(mindex))
+        else:
+            bot.msg("#spicebottest", str(len(mindex)))
 
     moduleindex = [["dbbtest"], ["tap"], ['update'], []]
     indexcount = len(moduleindex)
