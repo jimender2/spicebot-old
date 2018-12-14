@@ -71,7 +71,7 @@ def execute_main(bot, trigger, botcom):
                 else:
                     comstring.append("." + command)
 
-                comstring.append("Valid Alternates: " + dictcom["validcoms"])
+                comstring.append("Valid Alternates: " + str(dictcom["validcoms"]))
 
                 # and to final
                 dispmsg.append(comstring)
