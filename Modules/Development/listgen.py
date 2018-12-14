@@ -57,7 +57,7 @@ def execute_main(bot, trigger, botcom):
             commandcount -= 1
 
             comstring = []
-            dictcomref = mtype
+            dictcomref = str(mtype + "_commands")
 
             # command dictionary
             dictcom = bot.memory["botdict"]["tempvals"][dictcomref][command]
