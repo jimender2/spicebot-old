@@ -164,7 +164,7 @@ def bot_startup_modules(bot, trigger):
                 dict_from_file["hardcoded_channel_block"] = []
 
             if "description" not in dict_from_file.keys():
-                dict_from_file["description"] = ""
+                dict_from_file["description"] = None
 
             if "example" not in dict_from_file.keys():
                 if comtype == "module":
