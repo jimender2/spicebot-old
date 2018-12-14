@@ -60,6 +60,8 @@ def execute_main(bot, trigger, botcom):
             dictcomref = str(mtype + "_commands")
 
             # command dictionary
+            if command not in bot.memory["botdict"]["tempvals"][dictcomref].keys():
+                bot.msg("#spicebottest", "missing com in " + str(dictcomref) + ":   " + str(command))
             dictcom = bot.memory["botdict"]["tempvals"][dictcomref][command]
 
             # dotcommand
