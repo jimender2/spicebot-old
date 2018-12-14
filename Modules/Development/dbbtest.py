@@ -22,6 +22,7 @@ sys.setdefaultencoding('utf-8')
 
 comdict = {
             "author": "fartbucket",
+            "contributors": ["poophead", "shartmonster"],
             }
 
 
