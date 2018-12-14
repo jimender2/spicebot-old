@@ -22,11 +22,12 @@ sys.setdefaultencoding('utf-8')
 """
 @sopel.module.url('(.*)')
 @sopel.module.url('https?://twitter.com/([^/]*)(?:/status/(\d+)).*')
+
+@sopel.module.thread(True)
 """
 
 
-@sopel.module.url(r'xkcd.com/(\d+)')
-@sopel.module.thread(True)
+@url(r'xkcd.com/(\d+)')
 def bot_url_hub(bot, trigger):
 
     # don't run jobs if not ready
