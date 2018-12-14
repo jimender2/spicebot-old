@@ -36,8 +36,12 @@ def mainfunctionnobeguine(bot, trigger):
 def execute_main(bot, trigger, botcom):
     bot.say("DBB Testing")
 
+    # py modules
     for command in ["dbbtest"]:
-        bot.say(str(command))
+        dictcom = bot.memory["botdict"]["tempvals"]['module_commands'][command]
+        bot.say(str(dictcom))
 
+    # dict coms
     for command in ["tap"]:
-        bot.say(str(command))
+        dictcom = bot.memory["botdict"]["tempvals"]['dict_commands'][command]
+        bot.say(str(dictcom))
