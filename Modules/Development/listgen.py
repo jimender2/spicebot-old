@@ -66,7 +66,7 @@ def execute_main(bot, trigger, botcom):
 
             # dotcommand
             if dictcomref == 'nickname_commands':
-                comstring.append(str(bot.nick) + " " + command)
+                comstring.append(command)
             else:
                 comstring.append("." + command)
 
