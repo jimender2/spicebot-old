@@ -63,8 +63,8 @@ def execute_main(bot, trigger, botcom):
             dictcomref = str(mtype + "_commands")
 
             # command dictionary
-            dictcom = copy.deepcopy(bot.memory["botdict"]["tempvals"][dictcomref][str(command)])
-            if "aliasfor" not in dictcom.keys():
+            dict_from_file = copy.deepcopy(bot.memory["botdict"]["tempvals"][dictcomref][str(command)])
+            if "aliasfor" not in dict_from_file.keys():
 
                 # dotcommand
                 if dictcomref in ['nickname_commands', 'rule_commands']:
@@ -78,22 +78,22 @@ def execute_main(bot, trigger, botcom):
 
                 # author
                 if dict_from_file["author"]:
-                    comstring.append("Author:  " + str(dictcom["author"]))
+                    comstring.append("Author:  " + str(dict_from_file["author"]))
 
                 # contributors
                 if dict_from_file["contributors"]:
-                    comstring.append("Contributors:  " + str(spicemanip(bot, dictcom["contributors"], "andlist")))
+                    comstring.append("Contributors:  " + str(spicemanip(bot, dict_from_file["contributors"], "andlist")))
 
                 # filepath
                 if dict_from_file["filepath"]:
-                    filepath = dictcom["filepath"].split("/home/spicebot/.sopel/" + str(bot.nick))[-1]
+                    filepath = dict_from_file["filepath"].split("/home/spicebot/.sopel/" + str(bot.nick))[-1]
                     comstring.append("Filepath:  " + str(filepath))
 
                 # alternative commands
                 if dict_from_file["validcoms"]:
-                    del dictcom["validcoms"][0]
-                    if len(dictcom["validcoms"]):
-                        comstring.append("Valid Alternates: " + str(spicemanip(bot, dictcom["validcoms"], "orlist")))
+                    del dict_from_file["validcoms"][0]
+                    if len(dict_from_file["validcoms"]):
+                        comstring.append("Valid Alternates: " + str(spicemanip(bot, dict_from_file["validcoms"], "orlist")))
 
                 # Usage
                 if dict_from_file["example"]:
