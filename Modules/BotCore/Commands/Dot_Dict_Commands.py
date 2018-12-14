@@ -32,7 +32,6 @@ bot.nick do this
 @rule('^\.(.*)')
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
-    bot.msg("#spicebottest", str(trigger))
 
     # command must start with
     if not str(trigger).startswith(tuple(['.'])):
