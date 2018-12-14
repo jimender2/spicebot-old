@@ -34,14 +34,24 @@ def mainfunctionnobeguine(bot, trigger):
 
 
 def execute_main(bot, trigger, botcom):
-    bot.say("DBB Testing")
+
+    bot.say("Generating a list of commands...")
+
+    dispmsg = []
 
     # py modules
     for command in ["dbbtest"]:
+        comstring = []
         dictcom = bot.memory["botdict"]["tempvals"]['module_commands'][command]
-        bot.say(str(dictcom))
+        comstring.append(command)
+        dispmsg.append(str(comstring))
 
     # dict coms
     for command in ["tap"]:
+        comstring = []
         dictcom = bot.memory["botdict"]["tempvals"]['dict_commands'][command]
-        bot.say(str(dictcom))
+        comstring.append(command)
+        dispmsg.append(str(comstring))
+
+    for comstring in dispmsg:
+        osd(bot, botcom.channel_current, 'say', comstring)
