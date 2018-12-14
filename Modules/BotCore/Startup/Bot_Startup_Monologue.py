@@ -52,7 +52,7 @@ def bot_startup_monologue(bot, trigger):
     # dict commands
     while not bot_startup_requirements_met(bot, ["dict_coms", "modules"]):
         pass
-    for comtype in ['dict', 'module', 'nickname', 'other']:
+    for comtype in ['dict', 'module', 'nickname', 'rule']:
         comtypedict = str(comtype + "_commands")
         comtypecount = str(comtype + "_count")
         availablecomsnum += len(bot.memory["botdict"]["tempvals"][comtypedict].keys())

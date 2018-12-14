@@ -97,7 +97,7 @@ def bot_startup_modules(bot, trigger):
                     validcomdict = {"comtype": comtype, "validcoms": validcoms}
                     filelinelist.append(validcomdict)
                 elif str(line).startswith(tuple(["rule", "module.rule", "sopel.module.rule"])):
-                    comtype = "other"
+                    comtype = "rule"
                     line = str(line).split("rule(")[-1]
                     line = str("(" + line)
                     validcoms = eval(str(line))
