@@ -62,12 +62,19 @@ def bot_startup_modules(bot, trigger):
         module_file.close()
 
         dict_from_file = False
+        dict_from_file_complete = False
         filelinelist = []
 
         for line in module_file_lines:
 
             if str(line).startswith("comdict") and not dict_from_file:
                 dict_from_file = str(line).replace("comdict = ", "")
+            if dict_from_file and not dict_from_file_complete:
+                dict_from_file = str(dict_from_file + str(line))
+            if str(line).endswith("}") and not dict_from_file_complete:
+                dict_from_file_complete = True
+
+        for line in module_file_lines:
 
             if str(line).startswith("@"):
                 line = str(line)[1:]
@@ -152,6 +159,20 @@ def bot_startup_modules(bot, trigger):
 
             if "hardcoded_channel_block" not in dict_from_file.keys():
                 dict_from_file["hardcoded_channel_block"] = []
+
+            if "description" not in dict_from_file.keys():
+                dict_from_file["description"] = ""
+
+            if "example" not in dict_from_file.keys():
+                if comtype == "module":
+                    dict_from_file["example"] = str("." + maincom)
+                if comtype == "nickname":
+                    dict_from_file["example"] = str(str(bot.nick) + " " + maincom)
+                else:
+                    dict_from_file["example"] = None
+
+            if "exampleresponse" not in dict_from_file.keys():
+                dict_from_file["exampleresponse"] = None
 
             bot.memory["botdict"]["tempvals"][comtypedict][maincom] = dict_from_file
             for comalias in comaliases:
