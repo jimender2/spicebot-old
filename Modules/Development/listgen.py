@@ -63,15 +63,18 @@ def execute_main(bot, trigger, botcom):
 
             # command dictionary
             dictcom = bot.memory["botdict"]["tempvals"][dictcomref][str(command)]
+            if "aliasfor" not in dictcom.keys():
 
-            # dotcommand
-            if dictcomref == 'nickname_commands':
-                comstring.append(command)
-            else:
-                comstring.append("." + command)
+                # dotcommand
+                if dictcomref == 'nickname_commands':
+                    comstring.append(command)
+                else:
+                    comstring.append("." + command)
 
-            # and to final
-            dispmsg.append(comstring)
+                comstring.append("Valid Alternates: " + dictcom["validcoms"])
+
+                # and to final
+                dispmsg.append(comstring)
 
         dispmsg.append(["     "])
 
