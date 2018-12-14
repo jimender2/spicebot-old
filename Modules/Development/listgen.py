@@ -83,4 +83,7 @@ def execute_main(bot, trigger, botcom):
             dispmsg.append(["     "])
 
     for comstring in dispmsg:
-        osd(bot, botcom.channel_current, 'say', comstring)
+        osd(bot, botcom.channel_current, 'say', comstring[0])
+        del comstring[0]
+        for remstring in comstring:
+            osd(bot, botcom.channel_current, 'say', "  *  " + remstring)
