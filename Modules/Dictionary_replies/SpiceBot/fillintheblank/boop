@@ -1,0 +1,8 @@
+{
+"validcoms": ['wonder', 'wonders'],
+"?default": {
+              "type": "fillintheblank",
+              "responses": ["$botnick boops $instigator softly because $input!"],
+              "response_fail": "$botnick boops $instigator softly!",
+              },
+}
