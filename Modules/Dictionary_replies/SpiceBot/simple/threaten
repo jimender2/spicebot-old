@@ -1,8 +1,8 @@
 {
-"validcoms": ['1job', 'onejob'],
+"validcoms": ['threaten'],
 "?default": {
               "type": "simple",
-              "responses": ["You had ONE job!!!"],
+              "responses": ["$instigator picks $target up by the collar and issues a verbal lashing"],
               },
 
 }
