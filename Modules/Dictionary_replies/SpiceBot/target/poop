@@ -15,7 +15,8 @@
 
 "boss": {
               "type": "target",
-              "responses": ["Boss makes a dollar, $target makes a dime. That's why $target poops on company time."],
+              "responses": ["Boss makes a dollar, $target makes a dime. That's why $target poops on company time.",
+                            "https://media1.tenor.com/images/059c954a23ff4373b00808b08d98325f/tenor.gif?itemid=7404606"],
               "target_backup": "instigator",
               },
 
