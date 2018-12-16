@@ -510,7 +510,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     botcom.dotcommand_dict = copy.deepcopy(bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom])
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage"]
+    validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage", "privs"]
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
@@ -679,6 +679,12 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         botcom.modulerun = False
 
         osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + str(botcom.dotcommand_dict["description"]))
+        return botcom
+
+    elif botcom.specified == 'privs':
+        botcom.modulerun = False
+
+        osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + spicemanip(bot, botcom.dotcommand_dict["privs"], "andlist"))
         return botcom
 
     elif botcom.specified in ['example', 'usage']:

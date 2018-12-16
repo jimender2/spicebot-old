@@ -47,11 +47,27 @@ def bot_nickcom_hub(bot, trigger):
             osd(bot, botcom.channel_current, 'say', "What is " + searchterm)
             osd(bot, botcom.channel_current, 'say', "Do you think this is Jeopardy?")
             return
+
     elif specialcomposs.lower().startswith(tuple(["make me a", "beam me a"])):
         makemea = spicemanip(bot, botcom.triggerargsarray, "4+") or None
         if makemea:
             osd(bot, botcom.channel_current, 'action', " beams " + botcom.instigator + " a " + makemea)
+        else:
+            osd(bot, botcom.channel_current, 'say', botcom.instigator + ", what would you like me to beam you?")
         return
+
+    elif specialcomposs.lower().startswith(tuple(["beam me to"])):
+        location = spicemanip(bot, botcom.triggerargsarray, "4+") or None
+        if location:
+            osd(bot, botcom.channel_current, 'action', " locks onto " + botcom.instigator + "s coordinates and transports them to " + location)
+        else:
+            osd(bot, botcom.channel_current, 'say', botcom.instigator + ", where would you like me to beam you?")
+        return
+
+    elif specialcomposs.lower().startswith(tuple(["beam me up"])):
+        osd(bot, botcom.channel_current, 'action', " locks onto " + botcom.instigator + "s coordinates and transports them to the transporter room.")
+        return
+
     elif specialcomposs.lower().startswith("can you see"):
         target = spicemanip(bot, botcom.triggerargsarray, "4+") or None
         if not target:
