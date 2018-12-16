@@ -1,4 +1,5 @@
 {
+"validcoms": ['uf','uselessfacts'],
 "?default": {
               "type": "simple",
               "updates_enabled": "shared",
