@@ -124,7 +124,7 @@ def urbansearch(bot, searchterm):
     try:
         data = web.get("http://api.urbandictionary.com/v0/define?term={0}".format(web.quote(searchterm)))
         data = json.loads(data)
-    except:
+    except Exception as e:
         return osd(bot, botcom.channel_current, 'say', "Error connecting to urban dictionary")
     if data['result_type'] == 'no_results':
         return "No results found for {0}".format(searchterm)
