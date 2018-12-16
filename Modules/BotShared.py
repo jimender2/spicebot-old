@@ -307,6 +307,7 @@ def bot_permissions_check(bot, botcom):
 
     comtypedict = str(botcom.comtype + "_commands")
     commandslist = bot.memory["botdict"]["tempvals"][comtypedict]
+    bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"][comtypedict].keys()))
 
     commandrun = True
 
