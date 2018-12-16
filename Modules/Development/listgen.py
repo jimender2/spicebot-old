@@ -47,8 +47,7 @@ def execute_main(bot, trigger, botcom):
     # for mtype, mindex in zip(moduletypes, moduleindex):
         # bot.msg("#spicebottest", mtype + "    " + str(len(mindex)))
 
-    # moduleindex = [["tap"], ["dbbtest"], [str(bot.nick) + " " + 'update'], []]
-    moduleindex = [["tap"], bot.memory["botdict"]["tempvals"]["module_commands"].keys(), [str(bot.nick) + " " + 'update'], []]
+    moduleindex = [["tap"], ["dbbtest"], [str(bot.nick) + " " + 'update'], []]
     indexcount = len(moduleindex)
     for mtype, mindex in zip(moduletypes, moduleindex):
         indexcount -= 1
@@ -110,8 +109,29 @@ def execute_main(bot, trigger, botcom):
         if indexcount:
             dispmsg.append(["     "])
 
+    pasteformat = []
     for comstring in dispmsg:
-        osd(bot, botcom.channel_current, 'say', comstring[0])
+        pasteformat.append(comstring[0])
         del comstring[0]
         for remstring in comstring:
-            osd(bot, botcom.channel_current, 'say', "  *  " + remstring)
+            pasteformat.append("  *  " + remstring)
+    url = create_list(bot, '\n\n'.join(pasteformat))
+
+
+def create_list(bot, botcom, msg):
+    msg = 'Command listing for {}@{}\n\n'.format(bot.nick, botcom.server) + msg
+    payload = {"content": msg}
+    headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+
+    try:
+        result = requests.post('https://ptpb.pw/', json=payload, headers=headers)
+    except requests.RequestException:
+        bot.say("Sorry! Something went wrong.")
+        logger.exception("Error posting commands")
+        return
+    result = result.json()
+    if 'url' not in result:
+        bot.say("Sorry! Something went wrong.")
+        logger.error("Invalid result %s", result)
+        return
+    return result['url']
