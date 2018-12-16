@@ -1,5 +1,4 @@
 {
-
 "?default": {
               "type": "fillintheblank",
               "blank_phrasehandle": ["a", "an"],
