@@ -54,7 +54,7 @@ def execute_main(bot, trigger, botcom):
         commandcount = len(mindex)
 
         if commandcount:
-            dispmsg.append([mtype + " commands:"])
+            dispmsg.append(["(" + str(commandcount) + ") " + mtype + " commands:"])
 
         for command in mindex:
             commandcount -= 1
