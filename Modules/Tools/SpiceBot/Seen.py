@@ -73,7 +73,7 @@ def execute_main(bot, trigger, botcom):
 
     if lastseen == []:
         message = str("Sorry, the network of SpiceBots have never seen " + str(posstarget) + " speaking.")
-        if str(posstarget) in otherbotusers or str(posstarget) in bot.memory["botdict"]["users"].keys():
+        if bot_check_inlist(bot, posstarget, otherbotusers) or bot_check_inlist(bot, posstarget, bot.memory["botdict"]["users"].keys()):
             message = str(message + " However, they have been seen connected to one of the servers.")
         return osd(bot, botcom.channel_current, 'say', message)
 

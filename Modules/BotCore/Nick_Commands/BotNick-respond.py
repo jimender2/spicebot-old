@@ -52,10 +52,20 @@ def bot_nickcom_hub(bot, trigger):
         if makemea:
             osd(bot, botcom.channel_current, 'action', " beams " + botcom.instigator + " a " + makemea)
         return
-    elif specialcomposs.lower().startswith("can you see me"):
-        makemea = spicemanip(bot, botcom.triggerargsarray, "4+") or None
-        if makemea:
-            osd(bot, botcom.channel_current, 'action', " beams " + botcom.instigator + " a " + makemea)
+    elif specialcomposs.lower().startswith("can you see"):
+        target = spicemanip(bot, botcom.triggerargsarray, "4+") or None
+        if not target:
+            target = 'me'
+        if target in [botcom.instigator, 'me']:
+            osd(bot, botcom.channel_current, 'say', botcom.instigator + ", I can see you.")
+        else:
+            if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]["servers_list"][botcom.server]['all_current_users']):
+                osd(bot, botcom.channel_current, 'say', botcom.instigator + ", yes. I can see " + nick_actual(bot, target) + " right now!")
+            else:
+                if bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
+                    osd(bot, botcom.channel_current, 'say', botcom.instigator + ", I can't see " + nick_actual(bot, target) + " at the moment.")
+                else:
+                    osd(bot, botcom.channel_current, 'say', "I have never seen " + str(target) + ".")
         return
 
     if str(bot.nick) + " " + botcom.command_main.lower() not in bot.memory["botdict"]["tempvals"]["nickname_commands"].keys():
