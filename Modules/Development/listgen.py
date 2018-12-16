@@ -116,6 +116,7 @@ def execute_main(bot, trigger, botcom):
         for remstring in comstring:
             pasteformat.append("  *  " + remstring)
     url = create_list(bot, '\n\n'.join(pasteformat))
+    osd(bot, botcom.channel_current, 'say', "I've posted a list of my commands at " + str(url))
 
 
 def create_list(bot, botcom, msg):
@@ -126,12 +127,12 @@ def create_list(bot, botcom, msg):
     try:
         result = requests.post('https://ptpb.pw/', json=payload, headers=headers)
     except requests.RequestException:
-        bot.say("Sorry! Something went wrong.")
+        osd(bot, botcom.channel_current, 'say', "Sorry! Something went wrong.")
         logger.exception("Error posting commands")
         return
     result = result.json()
     if 'url' not in result:
-        bot.say("Sorry! Something went wrong.")
+        osd(bot, botcom.channel_current, 'say', "Sorry! Something went wrong.")
         logger.error("Invalid result %s", result)
         return
     return result['url']
