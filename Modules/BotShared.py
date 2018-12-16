@@ -153,7 +153,7 @@ gif_dontusesites = [
 gif_dontuseextensions = ['.jpg', '.png']
 
 
-valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate", "responses", "feeds"]
+valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate", "responses", "feeds", "search"]
 
 
 """
@@ -1751,6 +1751,105 @@ def bot_target_check(bot, botcom, target, targetbypass):
                 return {"targetgood": False, "error": "It looks like " + nick_actual(bot, target) + " is online right now, but in a different channel.", "reason": "diffchannel"}
 
     return targetgood
+
+
+def seen_search(bot, botcom, target):
+
+    if not target:
+        return "Who are you looking for?"
+    elif bot_check_inlist(bot, target, [str(bot.nick)]):
+        return "I'm right here!"
+    elif bot_check_inlist(bot, target, [str(botcom.instigator)]):
+        return "You're right there!"
+
+    lastseen = []
+
+    # current bot
+    if bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
+        lastseenrecord = get_nick_value(bot, str(target), 'long', 'user_activity', 'list') or []
+        if lastseenrecord != []:
+            lastseen.extend(lastseenrecord)
+
+    # other bots
+    otherbotusers = []
+    if "altbots" in bot.memory:
+        for botname in bot.memory["altbots"].keys():
+            lastseenrecord = get_nick_value_api(bot, botname, str(target), 'long', 'user_activity', 'list') or []
+            if lastseenrecord != []:
+                lastseen.extend(lastseenrecord)
+            for user in bot.memory["altbots"][botname]["users"].keys():
+                if user not in otherbotusers:
+                    otherbotusers.append(user)
+
+    if lastseen == []:
+        message = str("Sorry, the network of SpiceBots have never seen " + str(target) + " speaking.")
+        if bot_check_inlist(bot, target, otherbotusers) or bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
+            message = str(message + " However, they have been seen connected to one of the servers.")
+        return message
+
+    seentime = None
+    entrynumber, winningentry = 0, 0
+    for seenrecord in lastseen:
+        if not seentime:
+            seentime = seenrecord["time"]
+            winningentry = entrynumber
+        elif seenrecord["time"] > seentime:
+            seentime = seenrecord["time"]
+            winningentry = entrynumber
+        entrynumber += 1
+    lastseenwinner = lastseen[winningentry]
+
+    if str(target) in bot.memory["botdict"]["users"].keys():
+        target = nick_actual(bot, target)
+    else:
+        target = nick_actual(bot, target, otherbotusers)
+
+    howlongago = humanized_time(time.time() - lastseenwinner["time"])
+
+    message = str(target)
+    if lastseenwinner["server"] == botcom.server:
+        if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]["servers_list"][botcom.server]['all_current_users']):
+            message = str(message + " is online right now,")
+    else:
+        nada = 5
+        # this is where we will check if user is active on another server
+
+    message = str(message + " was last seen " + str(howlongago) + " ago,")
+
+    if str(lastseenwinner["bot_eyes"]) != str(bot.nick):
+        message = str(message + " by " + str(lastseenwinner["bot_eyes"]) + ",")
+
+    if lastseenwinner["server"] != botcom.server:
+        message = str(message + " on " + str(lastseenwinner["server"]) + ",")
+
+    if lastseenwinner["channel"] != botcom.channel_current:
+        message = str(message + " in " + str(lastseenwinner["channel"]) + ",")
+    else:
+        message = str(message + " in here,")
+
+    intent = 'saying'
+    spoken = str(lastseenwinner["spoken"])
+    posscom = spicemanip(bot, str(lastseenwinner["spoken"]), 1)
+    if str(posscom).startswith("."):
+        posscom = posscom.lower()[1:]
+        if posscom in bot.memory["botdict"]["tempvals"]['all_coms']:
+            intent = "running"
+            spoken = str("." + posscom)
+    elif "intent" in lastseenwinner.keys():
+        if lastseenwinner["intent"]:
+            if lastseenwinner["intent"]:
+                intent = "doing /me"
+    message = str(message + " " + intent + " " + str(spoken))
+
+    return message
+
+
+"""
+Web Searching
+"""
+
+
+# insert functions here
 
 
 """

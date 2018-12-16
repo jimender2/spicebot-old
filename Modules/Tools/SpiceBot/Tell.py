@@ -93,8 +93,12 @@ def setup(self):
     self.memory['reminders'] = loadReminders(self.tell_filename, self.memory['tell_lock'])
 
 
-@commands('tell', 'ask')
+"""
 @nickname_commands('tell', 'ask')
+"""
+
+
+@commands('tell', 'ask')
 @example('$nickname, tell Embolalia he broke something again.')
 def mainfunctionnobeguine(bot, trigger):
 
