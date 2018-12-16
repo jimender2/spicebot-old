@@ -45,8 +45,8 @@ def bot_startup_twitter(bot, trigger):
         stderr(e)
 
     if not credentials:
-        bot.memory["botdict"]["tempvals"]['google'] = None
+        bot.memory["botdict"]["tempvals"]['googlecal'] = None
     else:
-        bot.memory["botdict"]["tempvals"]['google'] = credentials
+        bot.memory["botdict"]["tempvals"]['googlecal'] = credentials
 
-    bot_startup_requirements_set(bot, "auth_google")
+    bot_startup_requirements_set(bot, "auth_googlecal")

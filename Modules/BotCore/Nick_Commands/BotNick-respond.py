@@ -57,6 +57,21 @@ def bot_nickcom_hub(bot, trigger):
             osd(bot, botcom.channel_current, 'say', "Do you think this is Jeopardy?")
         return
 
+    elif specialcomposs.lower().startswith("where is"):
+        searchterm = spicemanip(bot, botcom.triggerargsarray, "3+") or None
+        if searchterm:
+            data = searchterm.replace(' ', '+')
+            lookfor = data.replace(':', '%3A')
+            var = requests.get(r'http://www.google.com/maps/' + lookfor)
+            query = str(var.url)
+            if not query:
+                osd(bot, botcom.channel_current, 'say', 'I cannot find anything about that')
+            else:
+                osd(bot, botcom.channel_current, 'say', query)
+        else:
+            osd(bot, botcom.channel_current, 'say', "Not sure what you want me to look for.")
+        return
+
     elif specialcomposs.lower().startswith(tuple(["make me a", "beam me a"])):
         makemea = spicemanip(bot, botcom.triggerargsarray, "4+") or None
         if makemea:

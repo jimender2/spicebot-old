@@ -1201,9 +1201,9 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
         elif feed_type == 'googlecalendar':
 
-            if not bot.memory["botdict"]["tempvals"]['google']:
+            if not bot.memory["botdict"]["tempvals"]['googlecal']:
                 if forcedisplay:
-                    return ["google api unavailable."]
+                    return ["googlecal api unavailable."]
                 else:
                     return []
 
@@ -1216,7 +1216,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
             currentcalendar = feed_dict["calendar"]
 
-            http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
+            http_auth = bot.memory["botdict"]["tempvals"]['googlecal'].authorize(httplib2.Http())
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
             events_result = service.events().list(timeZone='UTC', calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=str(str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")).execute()
