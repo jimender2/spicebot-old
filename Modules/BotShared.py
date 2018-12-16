@@ -150,8 +150,6 @@ gif_dontusesites = [
                         "http://3.bp.blogspot.com"
                         ]
 
-gif_dontuseextensions = ['.jpg', '.png']
-
 
 valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate", "responses", "feeds", "search"]
 
@@ -1933,9 +1931,17 @@ def getGif(bot, searchdict):
             results = data[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['results']]
             resultsarray = []
             for result in results:
+                appendresult = False
                 cururl = result[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['cururl']]
-                if not str(cururl).startswith(tuple(gif_dontusesites)) and not str(cururl).endswith(tuple(gif_dontuseextensions)):
-                    resultsarray.append(cururl)
+                if not str(cururl).startswith(tuple(gif_dontusesites)):
+                    slashsplit = str(cururl).split("/")
+                    fileextension = slashsplit[-1]
+                    if not fileextension:
+                        appendresult = True
+                    elif str(cururl).endswith(".gif"):
+                        appendresult = True
+                    if appendresult:
+                        resultsarray.append(cururl)
 
             # make sure there are results
             resultsamount = len(resultsarray)
