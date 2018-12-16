@@ -37,7 +37,7 @@ def bot_nickcom_hub(bot, trigger):
 
     if not botcom.command_main:
         return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do!")
-    if botcom.command_main.lower() in valid_botnick_commands.keys():
+    if botcom.command_main.lower() in bot.memory["botdict"]["tempvals"]["nickname_commands"].keys():
         return
 
     specialcomposs = spicemanip(bot, botcom.triggerargsarray, 0).lower()
@@ -53,9 +53,9 @@ def bot_nickcom_hub(bot, trigger):
             osd(bot, botcom.channel_current, 'action', " beams " + botcom.instigator + " a " + makemea)
         return
 
-    if botcom.command_main.lower() not in valid_botnick_commands.keys():
+    if botcom.command_main.lower() not in bot.memory["botdict"]["tempvals"]["nickname_commands"].keys():
         sim_com, sim_num = [], []
-        for comm in valid_botnick_commands.keys():
+        for comm in bot.memory["botdict"]["tempvals"]["nickname_commands"].keys():
             similarlevel = similar(str(botcom.command_main).lower(), comm.lower())
             if similarlevel >= .75:
                 sim_com.append(comm)

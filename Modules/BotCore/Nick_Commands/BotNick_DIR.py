@@ -19,6 +19,15 @@ from BotShared import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+comdict = {
+            "author": "deathbybandaid",
+            "contributors": [],
+            "description": "",
+            'privs': ['admin', 'OP'],
+            "example": "",
+            "exampleresponse": "",
+            }
+
 
 """
 This will display files in a directory
@@ -35,7 +44,7 @@ def bot_command_hub(bot, trigger):
     if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
 
-    if not bot_nickcom_run_check(bot, botcom):
+    if not bot_permissions_check(bot, botcom):
         return osd(bot, botcom.instigator, 'notice', "I was unable to process this Bot Nick command due to privilege issues.")
 
     botcom.directory = get_nick_value(bot, botcom.instigator, 'temp', 'unsorted', 'current_admin_dir') or bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"]

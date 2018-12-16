@@ -156,83 +156,6 @@ gif_dontuseextensions = ['.jpg', '.png']
 valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate", "responses", "feeds"]
 
 
-# valid commands that the bot will reply to by name
-valid_botnick_commands = {
-                            "github": {
-                                        'privs': [],
-                                        },
-                            "docs": {
-                                        'privs': [],
-                                        },
-                            "wiki": {
-                                        'privs': [],
-                                        },
-                            "help": {
-                                        'privs': [],
-                                        },
-                            "uptime": {
-                                        'privs': [],
-                                        },
-                            "canyouseeme": {
-                                        'privs': [],
-                                        },
-                            "gender": {
-                                        'privs': [],
-                                        },
-                            "owner": {
-                                        'privs': [],
-                                        },
-                            "admins": {
-                                        'privs': [],
-                                        },
-                            "channel": {
-                                        'privs': [],
-                                        },
-                            "msg": {
-                                    'privs': ['admin', 'OP'],
-                                    },
-                            "action": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "notice": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "debug": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "logs": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "update": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "restart": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "permfix": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "pip": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "cd": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "dir": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "gitpull": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "auth": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "sweep": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            }
-
-
 """
 Botdict
 """
@@ -326,6 +249,9 @@ def botcom_nick(bot, trigger):
     botcom.channel_current = str(trigger.sender).lower()
     botcom.channel_priv = trigger.is_privmsg
 
+    # command type
+    botcom.comtype = 'nickname'
+
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, '2+', 'list')
 
@@ -363,6 +289,9 @@ def botcom_symbol_trigger(bot, trigger):
     botcom.channel_current = str(trigger.sender).lower()
     botcom.channel_priv = trigger.is_privmsg
 
+    # command type
+    botcom.comtype = 'dict'
+
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
 
@@ -374,20 +303,23 @@ Core Bot Permissions
 """
 
 
-def bot_nickcom_run_check(bot, botcom):
+def bot_permissions_check(bot, botcom):
+
+    comtypedict = str(botcom.comtype + "_commands")
+    commandslist = bot.memory["botdict"]["tempvals"][comtypedict].keys()
 
     commandrun = True
 
-    if 'privs' in valid_botnick_commands[botcom.command_main.lower()].keys():
+    if 'privs' in commandslist[botcom.command_main.lower()].keys():
         commandrunconsensus = []
 
-        if 'admin' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+        if 'admin' in commandslist[botcom.command_main.lower()]['privs']:
             if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']:
                 commandrunconsensus.append('False')
             else:
                 commandrunconsensus.append('True')
 
-        if 'OP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+        if 'OP' in commandslist[botcom.command_main.lower()]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']:
                     commandrunconsensus.append('False')
@@ -396,7 +328,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'HOP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+        if 'HOP' in commandslist[botcom.command_main.lower()]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanhalfops']:
                     commandrunconsensus.append('False')
@@ -405,7 +337,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'VOICE' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+        if 'VOICE' in commandslist[botcom.command_main.lower()]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanvoices']:
                     commandrunconsensus.append('False')
@@ -414,7 +346,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'OWNER' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+        if 'OWNER' in commandslist[botcom.command_main.lower()]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']:
                     commandrunconsensus.append('False')
@@ -423,7 +355,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'ADMIN' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+        if 'ADMIN' in commandslist[botcom.command_main.lower()]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']:
                     commandrunconsensus.append('False')
@@ -432,7 +364,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if valid_botnick_commands[botcom.command_main.lower()]['privs'] == []:
+        if commandslist[botcom.command_main.lower()]['privs'] == []:
             commandrunconsensus.append('True')
 
         if 'True' not in commandrunconsensus:
@@ -548,6 +480,9 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     if bot_check_inlist(bot, botcom.instigator, str(bot.nick)):
         botcom.modulerun = False
         return botcom
+
+    # command type
+    botcom.comtype = 'module'
 
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')

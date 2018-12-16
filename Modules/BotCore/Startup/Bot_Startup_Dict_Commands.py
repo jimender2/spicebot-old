@@ -167,6 +167,9 @@ def dict_command_configs(bot):
                                     if "description" not in dict_from_file.keys():
                                         dict_from_file["description"] = None
 
+                                    if "privs" not in dict_from_file.keys():
+                                        dict_from_file["privs"] = []
+
                                     keysprocessed.extend(["validcoms", "filepath", "description", "exampleresponse", "example"])
 
                                     # handle basic required dict handling
@@ -352,5 +355,8 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
 
         if "hardcoded_channel_block" not in dict_from_file[mustbe].keys():
             dict_from_file[mustbe]["hardcoded_channel_block"] = []
+
+        if "privs" not in dict_from_file[mustbe].keys():
+            dict_from_file[mustbe]["privs"] = []
 
     return dict_from_file
