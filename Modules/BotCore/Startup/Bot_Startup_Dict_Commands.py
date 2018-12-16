@@ -170,7 +170,7 @@ def dict_command_configs(bot):
                                     if "privs" not in dict_from_file.keys():
                                         dict_from_file["privs"] = []
 
-                                    keysprocessed.extend(["validcoms", "filepath", "description", "exampleresponse", "example"])
+                                    keysprocessed.extend(["validcoms", "filepath", "description", "exampleresponse", "example", "privs"])
 
                                     # handle basic required dict handling
                                     dict_required = ["?default"]

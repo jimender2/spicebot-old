@@ -70,9 +70,9 @@ def execute_main(bot, trigger, botcom):
                     comstring.append("." + command)
 
                 if 'privs' in dict_from_file.keys():
-                    bot.msg("#spicebottest", str(dict_from_file['privs']))
-                    # if len(dict_from_file['privs']) > 0:
-                    #    comstring.append("Required Permissions: " + str(spicemanip(bot, dict_from_file["privs"], "orlist")))
+                    # bot.msg("#spicebottest", str(dict_from_file['privs']))
+                    if len(dict_from_file['privs']) > 0:
+                        comstring.append("Required Permissions: " + str(spicemanip(bot, dict_from_file["privs"], "orlist")))
 
                 # description
                 if dict_from_file["description"]:
