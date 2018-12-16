@@ -308,7 +308,7 @@ def bot_permissions_check(bot, botcom):
     comtypedict = str(botcom.comtype + "_commands")
     commandslist = bot.memory["botdict"]["tempvals"][comtypedict]
     searchitem = botcom.command_main.lower()
-    if comtypedict == "nickname":
+    if comtypedict == "nickname_commands":
         searchitem = str(bot.nick) + " " + searchitem
 
     commandrun = True
