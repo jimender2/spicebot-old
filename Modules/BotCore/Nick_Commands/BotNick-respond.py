@@ -55,7 +55,7 @@ def bot_nickcom_hub(bot, trigger):
                 osd(bot, botcom.channel_current, 'say', query)
         else:
             osd(bot, botcom.channel_current, 'say', "Do you think this is Jeopardy?")
-            return
+        return
 
     elif specialcomposs.lower().startswith(tuple(["make me a", "beam me a"])):
         makemea = spicemanip(bot, botcom.triggerargsarray, "4+") or None
