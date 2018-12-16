@@ -78,6 +78,12 @@ def bot_nickcom_hub(bot, trigger):
             osd(bot, botcom.channel_current, 'say', "Not sure what you want me to look for.")
         return
 
+    elif specialcomposs.lower().startswith(tuple(["have you seen"])):
+        posstarget = spicemanip(bot, botcom.triggerargsarray, 4) or 0
+        message = seen_search(bot, botcom, posstarget)
+        osd(bot, botcom.channel_current, 'say', message)
+        return
+
     elif specialcomposs.lower().startswith(tuple(["make me a", "beam me a"])):
         makemea = spicemanip(bot, botcom.triggerargsarray, "4+") or None
         if makemea:
