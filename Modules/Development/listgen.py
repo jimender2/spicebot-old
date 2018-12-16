@@ -44,10 +44,7 @@ def execute_main(bot, trigger, botcom):
         comtypedict = str(comtype + "_commands")
         moduleindex.append(bot.memory["botdict"]["tempvals"][comtypedict].keys())
 
-    # for mtype, mindex in zip(moduletypes, moduleindex):
-        # bot.msg("#spicebottest", mtype + "    " + str(len(mindex)))
-
-    moduleindex = [["tap"], ["dbbtest"], [str(bot.nick) + " " + 'update'], []]
+    # moduleindex = [["tap"], ["dbbtest"], [str(bot.nick) + " " + 'update'], []]
     indexcount = len(moduleindex)
     for mtype, mindex in zip(moduletypes, moduleindex):
         indexcount -= 1
