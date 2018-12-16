@@ -125,7 +125,7 @@ def create_list(bot, botcom, msg):
     headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
 
     try:
-        result = requests.post('https://ptpb.pw/', json=payload, headers=headers)
+        result = requests.post('http://ptpb.pw/', json=payload, headers=headers)
     except requests.RequestException:
         osd(bot, botcom.channel_current, 'say', "Sorry! Something went wrong.")
         logger.exception("Error posting commands")
