@@ -5,7 +5,7 @@
 "url": "http://dilbert.com/",
 "scrapetitle": '//*[@id="js_comics"]/div[1]/div[1]/div/section/h1/a/span[2]/text()',
 "scrapelink": '//*[@id="js_comics"]/div[1]/div[1]/div/section/h1/a/@href',
-"scrapetimezone": "UTC",
+"scrapetimezone": "America/New_York",
 "scrapehour": 0,
 "scrapeminute": 0,
 
