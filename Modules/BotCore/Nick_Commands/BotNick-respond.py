@@ -60,9 +60,15 @@ def bot_nickcom_hub(bot, trigger):
     elif specialcomposs.lower().startswith("where is"):
         searchterm = spicemanip(bot, botcom.triggerargsarray, "3+") or None
         if searchterm:
+            if searchterm.lower() == 'waldo':
+                osd(bot, botcom.channel_current, 'say', "He is hiding for a reason?")
+                return
+            elif searchterm.lower() == 'carmen sandiego':
+                osd(bot, botcom.channel_current, 'say', "She is hiding for a reason?")
+                return
             data = searchterm.replace(' ', '+')
             lookfor = data.replace(':', '%3A')
-            var = requests.get(r'http://www.google.com/maps/' + lookfor)
+            var = requests.get(r'http://www.google.com/maps/place/' + lookfor)
             query = str(var.url)
             if not query:
                 osd(bot, botcom.channel_current, 'say', 'I cannot find anything about that')
