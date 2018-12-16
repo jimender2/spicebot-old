@@ -107,6 +107,14 @@
                       ],
             },
 
+"engineer": {
+              "type": "target",
+              "target_backup": "instigator",
+              "responses": [
+                        "$target is not an engineer. Any electrical work or recommendations made by $target should be taken with extreme caution. In the event of electrocution and/or death, the fault remains solely with whosoever listened to $target in the first place.",
+                        ],
+              },
+
 "options": {
               "type": "simple",
               "target_backup": "instigator",
