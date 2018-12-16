@@ -41,10 +41,19 @@ def bot_nickcom_hub(bot, trigger):
         return
 
     specialcomposs = spicemanip(bot, botcom.triggerargsarray, 0).lower()
+
     if specialcomposs.lower().startswith("what is"):
         searchterm = spicemanip(bot, botcom.triggerargsarray, "3+") or None
         if searchterm:
-            osd(bot, botcom.channel_current, 'say', "What is " + searchterm)
+            data = searchterm.replace(' ', '+')
+            lookfor = data.replace(':', '%3A')
+            var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI')
+            query = str(var.url)
+            if not query:
+                osd(bot, botcom.channel_current, 'say', 'I cannot find anything about that')
+            else:
+                osd(bot, botcom.channel_current, 'say', query)
+        else:
             osd(bot, botcom.channel_current, 'say', "Do you think this is Jeopardy?")
             return
 
