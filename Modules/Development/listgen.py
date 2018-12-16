@@ -135,4 +135,5 @@ def create_list(bot, botcom, msg):
         osd(bot, botcom.channel_current, 'say', "Sorry! Something went wrong.")
         logger.error("Invalid result %s", result)
         return
-    return result['url']
+    url = result['url'].replace("https", "http")
+    return url
