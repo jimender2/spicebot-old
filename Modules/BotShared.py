@@ -307,20 +307,22 @@ def bot_permissions_check(bot, botcom):
 
     comtypedict = str(botcom.comtype + "_commands")
     commandslist = bot.memory["botdict"]["tempvals"][comtypedict]
-    bot.msg("#spicebottest", str(bot.memory["botdict"]["tempvals"][comtypedict].keys()))
+    searchitem = botcom.command_main.lower()
+    if comtypedict == "nickname":
+        searchitem = str(bot.nick) + " " + searchitem
 
     commandrun = True
 
-    if 'privs' in commandslist[botcom.command_main.lower()].keys():
+    if 'privs' in commandslist[searchitem].keys():
         commandrunconsensus = []
 
-        if 'admin' in commandslist[botcom.command_main.lower()]['privs']:
+        if 'admin' in commandslist[searchitem]['privs']:
             if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']:
                 commandrunconsensus.append('False')
             else:
                 commandrunconsensus.append('True')
 
-        if 'OP' in commandslist[botcom.command_main.lower()]['privs']:
+        if 'OP' in commandslist[searchitem]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']:
                     commandrunconsensus.append('False')
@@ -329,7 +331,7 @@ def bot_permissions_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'HOP' in commandslist[botcom.command_main.lower()]['privs']:
+        if 'HOP' in commandslist[searchitem]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanhalfops']:
                     commandrunconsensus.append('False')
@@ -338,7 +340,7 @@ def bot_permissions_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'VOICE' in commandslist[botcom.command_main.lower()]['privs']:
+        if 'VOICE' in commandslist[searchitem]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanvoices']:
                     commandrunconsensus.append('False')
@@ -347,7 +349,7 @@ def bot_permissions_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'OWNER' in commandslist[botcom.command_main.lower()]['privs']:
+        if 'OWNER' in commandslist[searchitem]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']:
                     commandrunconsensus.append('False')
@@ -356,7 +358,7 @@ def bot_permissions_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'ADMIN' in commandslist[botcom.command_main.lower()]['privs']:
+        if 'ADMIN' in commandslist[searchitem]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']:
                     commandrunconsensus.append('False')
@@ -365,7 +367,7 @@ def bot_permissions_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if commandslist[botcom.command_main.lower()]['privs'] == []:
+        if commandslist[searchitem]['privs'] == []:
             commandrunconsensus.append('True')
 
         if 'True' not in commandrunconsensus:
