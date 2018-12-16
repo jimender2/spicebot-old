@@ -630,3 +630,7 @@ def bot_dictcom_feeds(bot, botcom):
         osd(bot, botcom.channel_current, 'say', feed + " appears to have had an unknown error.")
     else:
         osd(bot, botcom.channel_current, 'say', dispmsg)
+
+
+def bot_dictcom_search(bot, botcom):
+    bot.say("testing done")

@@ -1,7 +1,7 @@
 {
 "validcoms": ['searchtest'],
 "?default": {
-              "type": "gif",
+              "type": "search",
               "blank_required": True,
               },
 
