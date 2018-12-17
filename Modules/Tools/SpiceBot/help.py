@@ -21,7 +21,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@sopel.module.commands('listgen')
+@sopel.module.commands('help', 'listgen')
 def mainfunctionnobeguine(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
@@ -38,13 +38,26 @@ def execute_main(bot, trigger, botcom):
     bot.say("Generating a list of commands...")
 
     dispmsg = []
+
+    # This is where we will add body text preceding
+    mainbodytext = [
+                    "     ",
+                    "     ",
+                    "Github Repository:     https://github.com/SpiceBot/SpiceBot/",
+                    "Online Documentation:     https://github.com/SpiceBot/SpiceBot/wiki",
+                    "     ",
+                    "     ",
+                    "Lead Developer: deathbybandaid",
+                    "BotDevTeam: " + str(spicemanip(bot, ['zsutton92', 'josh-cunning', 'Berserkir-Wolf', 'thetechnerd', 'SniperClif', 'jimender2'], "andlist")),
+                    ]
+    dispmsg.append(mainbodytext)
+
     moduletypes = ['dict', 'module', 'nickname', 'rule']
     moduleindex = []
     for comtype in moduletypes:
         comtypedict = str(comtype + "_commands")
         moduleindex.append(bot.memory["botdict"]["tempvals"][comtypedict].keys())
 
-    # moduleindex = [["tap"], ["dbbtest"], [str(bot.nick) + " " + 'update'], []]
     indexcount = len(moduleindex)
     for mtype, mindex in zip(moduletypes, moduleindex):
         indexcount -= 1
@@ -106,6 +119,7 @@ def execute_main(bot, trigger, botcom):
 
                 # and to final
                 dispmsg.append(comstring)
+                dispmsg.append(["     "])
 
         if indexcount:
             dispmsg.append(["     "])
