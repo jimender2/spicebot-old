@@ -79,11 +79,11 @@ def execute_main(bot, trigger, botcom):
 
         targetchecking = bot_target_check(bot, botcom, posstarget, [])
         if not targetchecking["targetgood"]:
-            return osd(bot, botcom.instigator, 'say', targetchecking["error"])
+            return osd(bot, botcom.channel_current, 'say', targetchecking["error"])
 
         posstarget = nick_actual(bot, posstarget)
         if not bot_check_inlist(bot, posstarget, [botcom.instigator]) and not botcom.admin:
-            return osd(bot, botcom.instigator, 'say', "You cannot tell how full/empty " + posstarget + "s bladder is!")
+            return osd(bot, botcom.channel_current, 'say', "You cannot tell how full/empty " + posstarget + "s bladder is!")
 
         targetbladder = get_nick_bladder(bot, botcom, posstarget)
         return osd(bot, botcom.channel_current, 'say', [posstarget + "s bladder is currently at " + str(targetbladder.percent) + " capacity.", posstarget + "s character peed " + targetbladder.lastpeedisp])
@@ -99,11 +99,11 @@ def execute_main(bot, trigger, botcom):
                 messagelist.append("You currently own " + spicemanip(bot, claimdict["ownings"], "andlist"))
             if messagelist == []:
                 messagelist.append("It looks like you are niether owned, nor own any others!")
-            return osd(bot, botcom.instigator, 'say', messagelist)
+            return osd(bot, botcom.channel_current, 'say', messagelist)
 
         targetchecking = bot_target_check(bot, botcom, posstarget, [])
         if not targetchecking["targetgood"]:
-            return osd(bot, botcom.instigator, 'say', targetchecking["error"])
+            return osd(bot, botcom.channel_current, 'say', targetchecking["error"])
 
         posstarget = nick_actual(bot, posstarget)
 
