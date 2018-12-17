@@ -41,14 +41,17 @@ def execute_main(bot, trigger, botcom):
 
     # This is where we will add body text preceding
     mainbodytext = [
-                    "     ",
-                    "     ",
                     "Github Repository:     https://github.com/SpiceBot/SpiceBot/",
                     "Online Documentation:     https://github.com/SpiceBot/SpiceBot/wiki",
                     "     ",
                     "     ",
                     "Lead Developer: deathbybandaid",
                     "BotDevTeam: " + str(spicemanip(bot, ['zsutton92', 'josh-cunning', 'Berserkir-Wolf', 'thetechnerd', 'SniperClif', 'jimender2'], "andlist")),
+                    "     ",
+                    "     ",
+                    "The Command list is broken up into " + str(spicemanip(bot, ['dict', 'module', 'nickname', 'rule'], "andlist") + " commands sections."),
+                    "     ",
+                    "     ",
                     ]
     dispmsg.append(mainbodytext)
 
@@ -117,6 +120,10 @@ def execute_main(bot, trigger, botcom):
                 if dict_from_file["exampleresponse"]:
                     comstring.append("Example Reply:  " + str(dict_from_file["exampleresponse"]))
 
+                pasteformat = []
+                for remstring in comstring:
+                    pasteformat.append("*  " + remstring)
+
                 # and to final
                 dispmsg.append(comstring)
                 dispmsg.append(["     "])
@@ -129,7 +136,7 @@ def execute_main(bot, trigger, botcom):
         pasteformat.append(comstring[0])
         del comstring[0]
         for remstring in comstring:
-            pasteformat.append("  *  " + remstring)
+            pasteformat.append("     " + remstring)
     url = create_list(bot, botcom, '\n\n'.join(pasteformat))
     osd(bot, botcom.channel_current, 'say', "I've posted a list of my commands at " + str(url))
 
