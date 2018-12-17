@@ -60,10 +60,12 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
+    bot.say(str(botcom.triggerargsarray))
     posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
     if not posstarget:
         return osd(bot, botcom.channel_current, 'say', "Who do you want to claim?")
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, "2+", 'list')
+    bot.say(str(botcom.triggerargsarray))
 
     if botcom.channel_priv:
         return osd(bot, botcom.channel_current, 'notice', "Claims must be done in channel")
@@ -101,8 +103,7 @@ def execute_main(bot, trigger, botcom):
 
         targetchecking = bot_target_check(bot, botcom, posstarget, [])
         if not targetchecking["targetgood"]:
-            messagelist.append(targetchecking["error"])
-            return osd(bot, botcom.instigator, 'say', messagelist)
+            return osd(bot, botcom.instigator, 'say', targetchecking["error"])
 
         posstarget = nick_actual(bot, posstarget)
 
