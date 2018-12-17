@@ -74,7 +74,7 @@ def execute_main(bot, trigger, botcom):
 
     if posstarget == 'bladder':
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 'self'
-        if bot_check_inlist(bot, botcom.instigator, ['self', botcom.instigator]):
+        if bot_check_inlist(bot, posstarget, ['self', botcom.instigator]):
             return osd(bot, botcom.channel_current, 'say', ["Your bladder is currently at " + str(bladder.percent) + " capacity.", "Your character peed " + bladder.lastpeedisp])
 
         targetchecking = bot_target_check(bot, botcom, posstarget, [])
@@ -91,7 +91,7 @@ def execute_main(bot, trigger, botcom):
     if posstarget == 'check':
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 'self'
         messagelist = []
-        if bot_check_inlist(bot, botcom.instigator, ['self', botcom.instigator]):
+        if bot_check_inlist(bot, posstarget, ['self', botcom.instigator]):
             claimdict = get_nick_claims(bot, botcom, botcom.instigator)
             if claimdict["ownedby"]:
                 messagelist.append("You are currently owned by " + claimdict["ownedby"])
