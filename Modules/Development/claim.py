@@ -66,5 +66,5 @@ def execute_main(bot, trigger, botcom):
 
 
 def get_nick_bladder(bot, botcom, nick):
-    bot.say(str(time.time()))
-    bladderleveltimestamp = get_nick_value(bot, nick, "long", 'claims', "bladder") or 240
+    bladderleveltimestamp = get_nick_value(bot, nick, "long", 'claims', "bladder") or time.time() - 240
+    bot.say(str(bladderleveltimestamp))
