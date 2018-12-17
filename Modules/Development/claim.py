@@ -170,10 +170,11 @@ def execute_main(bot, trigger, botcom):
         osd(bot, botcom.channel_current, 'say', bladdermessage)
 
         # set the claims
-        varianceeffect = randint(claim_gamedict["durationmin"], claim_gamedict["durationmax"])
-        bot.say(str(varianceeffect))
-        # futuretime = time.time() + 240
-        # set_nick_claims(bot, botcom, botcom.instigator, target)
+        duration = randint(claim_gamedict["durationmin"], claim_gamedict["durationmax"])
+        bot.say(str(duration))
+        duration = duration * (bladder.timesince / claim_gamedict["fullbladderseconds"])
+        bot.say(str(duration))
+        # set_nick_claims(bot, botcom, botcom.instigator, target, duration)
 
 
 def set_nick_claims(bot, botcom, nickclaimer, nickclaimee, duration):
@@ -183,7 +184,7 @@ def set_nick_claims(bot, botcom, nickclaimer, nickclaimee, duration):
     claimeedict["ownedby"] = nickclaimer
 
     # calculate duration of claim
-    claimeedict["ownedbytime"] = duration
+    claimeedict["ownedbytime"] = time.time() + duration
 
     claimeedict["ownedbyvalid"] = "valid"
 
