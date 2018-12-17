@@ -30,8 +30,8 @@ comdict = {
             }
 
 claimdict = {
-            "fullbladderseconds": 240,
-            "newbladderseconds": 200,
+            "fullbladderseconds": 144400,
+            "newbladderseconds": 12000,
             }
 
 
@@ -78,6 +78,9 @@ def get_nick_bladder(bot, botcom, nick):
         bladderleveltimestamp = time.time() - claimdict["newbladderseconds"]
         set_nick_value(bot, nick, "long", 'claims', "bladder", bladderleveltimestamp)
 
-    # how long since last bladder expel
+    # how long since last bladder expel, whether voluntary or not, bladder cannot be overful
     timesincebladder = time.time() - bladderleveltimestamp
+    while timesincebladder > claimdict["fullbladderseconds"]:
+        timesincebladder = timesincebladder - claimdict["fullbladderseconds"]
+    set_nick_value(bot, nick, "long", 'claims', "bladder", time.time() - timesincebladder)
     bot.say(str(timesincebladder))
