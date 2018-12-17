@@ -227,6 +227,7 @@ def get_nick_claims(bot, botcom, nick):
     except Exception as e:
         timesinceclaim = 0
     if timesinceclaim <= 0:
+        bot.say(str(timesinceclaim))
         claimdict["ownedbyvalid"] = "expired"
 
     if "ownings" not in claimdict.keys():
@@ -247,28 +248,9 @@ def get_nick_claims(bot, botcom, nick):
         except Exception as e:
             timesinceclaim = 0
         if timesinceclaim <= 0:
+            bot.say(str(timesinceclaim))
             tempcheckdict["ownedbyvalid"] = "expired"
         set_nick_value(bot, claimnick, "long", 'claims', "claimdict", tempcheckdict)
-
-    set_nick_value(bot, nick, "long", 'claims', "claimdict", claimdict)
-
-    return claimdict
-
-
-def remove_nick_claims(bot, botcom, nick, removenick):
-
-    claimdict = get_nick_value(bot, nick, "long", 'claims', "claimdict") or None
-    if not claimdict or not isinstance(claimdict, dict):
-        claimdict = dict()
-        set_nick_value(bot, nick, "long", 'claims', "claimdict", claimdict)
-
-    if "ownings" not in claimdict.keys():
-        claimdict["ownings"] = []
-    if not not isinstance(claimdict["ownings"], list):
-        claimdict["ownings"] = []
-
-    if removenick in claimdict["ownings"]:
-        claimdict["ownings"].remove(removenick)
 
     set_nick_value(bot, nick, "long", 'claims', "claimdict", claimdict)
 
