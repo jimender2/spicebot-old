@@ -102,7 +102,7 @@ def execute_main(bot, trigger, botcom):
                 messagelist.append("It looks like you are niether owned, nor own any others!")
             return osd(bot, botcom.channel_current, 'say', messagelist)
 
-        targetchecking = bot_target_check(bot, posstarget, [])
+        targetchecking = bot_target_check(bot, botcom, posstarget, [])
         if not targetchecking["targetgood"]:
             return osd(bot, botcom.channel_current, 'say', targetchecking["error"])
 
