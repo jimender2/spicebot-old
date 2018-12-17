@@ -79,5 +79,5 @@ def get_nick_bladder(bot, botcom, nick):
         set_nick_value(bot, nick, "long", 'claims', "bladder", bladderleveltimestamp)
 
     # how long since last bladder expel
-    timesincebladder = (time.time() - bladderleveltimestamp).total_seconds()
+    timesincebladder = time.time() - bladderleveltimestamp
     bot.say(str(timesincebladder))
