@@ -132,6 +132,10 @@ def execute_main(bot, trigger, botcom):
             osd(bot, botcom.channel_current, 'say', "Nope. %s has a permanent claim on %s!" % (str(bot.config.core.owner), target))
             return
 
+        if bladder.percentnum < 10:
+            osd(bot, botcom.channel_current, 'say', "You don't have enough pee in your bladder to make a valid claim!")
+            return
+
         if bot_check_inlist(bot, target, [claimerdict["ownedby"]]):
             osd(bot, botcom.channel_current, 'action', "facepalms")
             osd(bot, botcom.channel_current, 'say', "You can't claim " + target + ", " + botcom.instigator + ". They already have a claim on you.")
@@ -268,7 +272,6 @@ def get_nick_bladder(bot, botcom, nick):
     bladder.timesince = time.time() - bladder.lastpee
     bladder.percent = "{0:.0%}".format(bladder.timesince / claim_gamedict["fullbladderseconds"])
     bladder.percentnum = int(str(bladder.percent).split("%")[0])
-    bot.say(str(bladder.percentnum))
     bladder.lastpeedisp = str(str(humanized_time(bladder.timesince) + " ago"))
 
     return bladder
