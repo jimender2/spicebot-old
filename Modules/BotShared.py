@@ -2019,6 +2019,9 @@ def getGif(bot, searchdict):
                     newlist.append(tempdict)
             gifapiresults = newlist
 
+    if gifapiresults == []:
+        return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}
+
     # return dict
     gifdict['error'] = None
     return gifdict
