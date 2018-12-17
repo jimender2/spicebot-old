@@ -223,7 +223,7 @@ def get_nick_claims(bot, botcom, nick):
         claimdict["ownedbytime"] = 0
     timesinceclaim = time.time() - claimdict["ownedbytime"]
     if timesinceclaim <= 0:
-        bot.say(claimnick + " " + str(timesinceclaim))
+        bot.say(nick + " " + str(timesinceclaim))
         claimdict["ownedbyvalid"] = "expired"
 
     if "ownings" not in claimdict.keys():
