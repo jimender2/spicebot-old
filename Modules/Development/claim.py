@@ -54,7 +54,6 @@ def mainfunctionnobeguine(bot, trigger):
 
 
 def execute_main(bot, trigger, botcom):
-    bot.say("Claim Testing")
 
     posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
     if not posstarget:
@@ -62,3 +61,10 @@ def execute_main(bot, trigger, botcom):
 
     if botcom.channel_priv:
         return osd(bot, botcom.instigator, 'notice', "Claims must be done in channel")
+
+    bladderlevel = get_nick_bladder(bot, botcom, botcom.instigator)
+
+
+def get_nick_bladder(bot, botcom, nick):
+    bot.say(str(time.time()))
+    bladderleveltimestamp = get_nick_value(bot, nick, "long", 'claims', "bladder") or 240
