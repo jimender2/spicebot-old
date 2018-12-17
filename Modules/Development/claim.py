@@ -29,6 +29,11 @@ comdict = {
             "exampleresponse": "",
             }
 
+claimdict = {
+            "fullbladderseconds": 240,
+            "newbladderseconds": 200,
+            }
+
 
 @sopel.module.commands('claim')
 def mainfunctionnobeguine(bot, trigger):
@@ -66,5 +71,13 @@ def execute_main(bot, trigger, botcom):
 
 
 def get_nick_bladder(bot, botcom, nick):
-    bladderleveltimestamp = get_nick_value(bot, nick, "long", 'claims', "bladder") or time.time() - 240
-    bot.say(str(bladderleveltimestamp))
+
+    # get the last timestamp of bladder usage
+    bladderleveltimestamp = get_nick_value(bot, nick, "long", 'claims', "bladder") or 0
+    if not bladderleveltimestamp:
+        bladderleveltimestamp = time.time() - claimdict["newbladderseconds"]
+        set_nick_value(bot, nick, "long", 'claims', "bladder", bladderleveltimestamp)
+
+    # how long since last bladder expel
+    timesincebladder = (time.time() - bladderleveltimestamp).total_seconds()
+    bot.say(str(timesincebladder))
