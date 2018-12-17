@@ -121,7 +121,7 @@ def execute_main(bot, trigger, botcom):
 
                 pasteformat = []
                 for remstring in comstring:
-                    pasteformat.append("*  " + remstring)
+                    pasteformat.append("     *  " + remstring)
 
                 # and to final
                 dispmsg.append(comstring)
