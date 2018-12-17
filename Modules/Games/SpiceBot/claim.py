@@ -76,18 +76,24 @@ def execute_main(bot, trigger, botcom):
     if posstarget == 'bladder':
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 'self'
         if bot_check_inlist(bot, posstarget, ['self', botcom.instigator]):
-            return osd(bot, botcom.channel_current, 'say', ["Your bladder is currently at " + str(bladder.percent) + " capacity.", "Your character peed " + bladder.lastpeedisp])
+            dispmsg = []
+            dispmsg.append("Your bladder is currently at " + str(bladder.percent) + " capacity.")
+            dispmsg.append("Your character peed " + bladder.lastpeedisp)
+            dispmsg.append("Current Capacity can claim anywhere from " + str(bladder.min) + " to " + str(bladder.max))
+            return osd(bot, botcom.channel_current, 'say', dispmsg)
 
         targetchecking = bot_target_check(bot, botcom, posstarget, [])
         if not targetchecking["targetgood"]:
             return osd(bot, botcom.channel_current, 'say', targetchecking["error"])
 
         posstarget = nick_actual(bot, posstarget)
-        if not bot_check_inlist(bot, posstarget, [botcom.instigator]) and not botcom.admin:
-            return osd(bot, botcom.channel_current, 'say', "You cannot tell how full/empty " + targetposession(bot, posstarget) + " bladder is!")
 
         targetbladder = get_nick_bladder(bot, posstarget)
-        return osd(bot, botcom.channel_current, 'say', [targetposession(bot, posstarget) + " bladder is currently at " + str(targetbladder.percent) + " capacity.", targetposession(bot, posstarget) + " character peed " + targetbladder.lastpeedisp])
+        dispmsg = []
+        dispmsg.append(targetposession(bot, posstarget) + " bladder is currently at " + str(targetbladder.percent) + " capacity.")
+        dispmsg.append(targetposession(bot, posstarget) + " character peed " + targetbladder.lastpeedisp)
+        dispmsg.append("Current Capacity can claim anywhere from " + str(targetbladder.min) + " to " + str(targetbladder.max))
+        return osd(bot, botcom.channel_current, 'say', dispmsg)
 
     elif posstarget == 'check':
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 'self'
@@ -282,5 +288,7 @@ def get_nick_bladder(bot, nick):
     bladder.percent = "{0:.0%}".format(bladder.timesince / claim_gamedict["fullbladderseconds"])
     bladder.percentnum = int(str(bladder.percent).split("%")[0])
     bladder.lastpeedisp = str(str(humanized_time(bladder.timesince) + " ago"))
+    bladder.min = str(humanized_time(bladder.percentnum * claim_gamedict["durationmin"]))
+    bladder.max = str(humanized_time(bladder.percentnum * claim_gamedict["durationmax"]))
 
     return bladder
