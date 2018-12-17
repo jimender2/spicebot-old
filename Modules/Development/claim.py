@@ -153,10 +153,12 @@ def execute_main(bot, trigger, botcom):
             else:
                 bladdermessage.append("The claim has been renewed!")
         elif not bot_check_inlist(bot, claimeedict["ownedby"], [botcom.instigator]):
-            if claimeedict["ownedbyvalid"] == "valid":
-                return osd(bot, botcom.channel_current, 'say', target + " has already been claimed by " + str(claimeedict["ownedbyvalid"]) + ", so back off!")
+            if not claimeedict["ownedbyvalid"]:
+                bladdermessage.append("Claimed!")
+            elif claimeedict["ownedbyvalid"] == "valid":
+                return osd(bot, botcom.channel_current, 'say', target + " has already been claimed by " + str(claimeedict["ownedby"]) + ", so back off!")
             else:
-                bladdermessage.append("The claim has been stolen from " + claimeedict["ownedbyvalid"] + "!")
+                bladdermessage.append("The claim has been stolen from " + claimeedict["ownedby"] + "!")
         else:
             bladdermessage.append("Claimed!")
 
