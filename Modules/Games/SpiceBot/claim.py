@@ -136,7 +136,7 @@ def execute_main(bot, trigger, botcom):
             osd(bot, botcom.channel_current, 'say', "You don't have enough pee in your bladder to make a valid claim!")
             return
 
-        if bot_check_inlist(bot, target, [claimerdict["ownedby"]]):
+        if bot_check_inlist(bot, target, [claimerdict["ownedby"]]) and claimerdict["ownedbyvalid"] == "valid":
             osd(bot, botcom.channel_current, 'action', "facepalms")
             osd(bot, botcom.channel_current, 'say', "You can't claim " + target + ", " + botcom.instigator + ". They already have a claim on you.")
             return
