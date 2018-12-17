@@ -56,9 +56,9 @@ def mainfunctionnobeguine(bot, trigger):
 def execute_main(bot, trigger, botcom):
     bot.say("Claim Testing")
 
-    posstarget = spicemanip(bot, triggerargsarray, 1)
+    posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
     if not posstarget:
-        return osd(bot, trigger.sender, 'say', "Who do you want to claim?")
+        return osd(bot, botcom.channel_current, 'say', "Who do you want to claim?")
 
     if botcom.channel_priv:
-        return osd(bot, trigger.sender, 'say', "Claims must be done in channel")
+        return osd(bot, botcom.instigator, 'notice', "Claims must be done in channel")
