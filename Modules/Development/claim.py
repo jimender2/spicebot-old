@@ -74,7 +74,7 @@ def execute_main(bot, trigger, botcom):
         return osd(bot, botcom.channel_current, 'say', ["Your bladder is currently at " + str(bladder.percent) + " capacity.", "Your character peed " + bladder.lastpeedisp])
 
     if posstarget == 'check':
-        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or self
+        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 'self'
         messagelist = []
         if bot_check_inlist(bot, botcom.instigator, ['self', botcom.instigator]):
             claimdict = get_nick_claims(bot, botcom, botcom.instigator)
