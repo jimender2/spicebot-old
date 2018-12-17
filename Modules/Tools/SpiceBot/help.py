@@ -41,16 +41,14 @@ def execute_main(bot, trigger, botcom):
 
     # This is where we will add body text preceding
     mainbodytext = [
+                    "     ",
                     "Github Repository:     https://github.com/SpiceBot/SpiceBot/",
                     "Online Documentation:     https://github.com/SpiceBot/SpiceBot/wiki",
-                    "     ",
                     "     ",
                     "Lead Developer: deathbybandaid",
                     "BotDevTeam: " + str(spicemanip(bot, ['zsutton92', 'josh-cunning', 'Berserkir-Wolf', 'thetechnerd', 'SniperClif', 'jimender2'], "andlist")),
                     "     ",
-                    "     ",
                     "The Command list is broken up into " + str(spicemanip(bot, ['dict', 'module', 'nickname', 'rule'], "andlist") + " commands sections."),
-                    "     ",
                     "     ",
                     ]
     dispmsg.append(mainbodytext)
@@ -68,6 +66,7 @@ def execute_main(bot, trigger, botcom):
 
         if commandcount:
             dispmsg.append(["(" + str(commandcount) + ") " + mtype + " commands:"])
+            dispmsg.append(["     "])
 
         for command in mindex:
             commandcount -= 1
