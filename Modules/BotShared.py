@@ -2346,6 +2346,16 @@ Small Functions
 """
 
 
+def targetposession(bot, targetnames):
+    if targetnames.lower() == "your":
+        targetnames = targetnames
+    elif targetnames.endswith("s"):
+        targetnames = targetnames + "'"
+    else:
+        targetnames = targetnames + "s"
+    return targetnames
+
+
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
 

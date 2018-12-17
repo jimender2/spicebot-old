@@ -81,10 +81,10 @@ def execute_main(bot, trigger, botcom):
 
         posstarget = nick_actual(bot, posstarget)
         if not bot_check_inlist(bot, posstarget, [botcom.instigator]) and not botcom.admin:
-            return osd(bot, botcom.channel_current, 'say', "You cannot tell how full/empty " + posstarget + "s bladder is!")
+            return osd(bot, botcom.channel_current, 'say', "You cannot tell how full/empty " + targetposession(bot, posstarget) + " bladder is!")
 
         targetbladder = get_nick_bladder(bot, botcom, posstarget)
-        return osd(bot, botcom.channel_current, 'say', [posstarget + "s bladder is currently at " + str(targetbladder.percent) + " capacity.", posstarget + "s character peed " + targetbladder.lastpeedisp])
+        return osd(bot, botcom.channel_current, 'say', [targetposession(bot, posstarget) + " bladder is currently at " + str(targetbladder.percent) + " capacity.", targetposession(bot, posstarget) + " character peed " + targetbladder.lastpeedisp])
 
     elif posstarget == 'check':
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 'self'
