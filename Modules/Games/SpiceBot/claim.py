@@ -94,6 +94,7 @@ def execute_main(bot, trigger, botcom):
         messagelist = []
         if bot_check_inlist(bot, posstarget, ['self', botcom.instigator]):
             claimdict = get_nick_claims(bot, botcom, botcom.instigator)
+            bot.say(str(claimdict))
             if claimdict["ownedby"]:
                 messagelist.append("You are currently owned by " + claimdict["ownedby"])
             if claimdict["ownings"] != []:
