@@ -132,10 +132,10 @@ def execute_main(bot, trigger, botcom):
 
     pasteformat = []
     for comstring in dispmsg:
-        pasteformat.append(comstring[0])
+        pasteformat.append("     " + comstring[0])
         del comstring[0]
         for remstring in comstring:
-            pasteformat.append("     " + remstring)
+            pasteformat.append("          " + remstring)
     url = create_list(bot, botcom, '\n\n'.join(pasteformat))
     osd(bot, botcom.channel_current, 'say', "I've posted a list of my commands at " + str(url))
 
