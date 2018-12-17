@@ -150,14 +150,18 @@ def execute_main(bot, trigger, botcom):
 
         claimeedict = get_nick_claims(bot, botcom, target)
 
-        if bot_check_inlist(bot, claimeedict["ownedby"], [botcom.instigator]):
-            if claimeedict["ownedbyvalid"] == "valid":
+        if not claimeedict["ownedby"]:
+            bladdermessage.append("Claimed!")
+        elif bot_check_inlist(bot, botcom.instigator, [claimeedict["ownedby"]]):
+            if claimeedict["ownedbyvalid"] == "expired":
+                bladdermessage.append("The claim has been renewed!")
+            elif claimeedict["ownedbyvalid"] == "valid":
                 return osd(bot, botcom.channel_current, 'say', botcom.instigator + ", you already claimed " + target + "!")
             else:
                 bladdermessage.append("The claim has been renewed!")
-        elif not bot_check_inlist(bot, claimeedict["ownedby"], [botcom.instigator]):
-            if not claimeedict["ownedby"]:
-                bladdermessage.append("Claimed!")
+        elif not bot_check_inlist(bot, botcom.instigator, [claimeedict["ownedby"]]):
+            if claimeedict["ownedbyvalid"] == "expired":
+                bladdermessage.append("The claim has been stolen from " + claimeedict["ownedby"] + "!")
             elif claimeedict["ownedbyvalid"] == "valid":
                 return osd(bot, botcom.channel_current, 'say', target + " has already been claimed by " + str(claimeedict["ownedby"]) + ", so back off!")
             else:
