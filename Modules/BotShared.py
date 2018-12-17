@@ -502,8 +502,9 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
 
     # allow && splitting
     botcom.multiruns = True
-    if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
-        botcom.multiruns = False
+    if not botcom.channel_priv:
+        if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
+            botcom.multiruns = False
 
     botcom.dotcommand_dict = copy.deepcopy(bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom])
 
