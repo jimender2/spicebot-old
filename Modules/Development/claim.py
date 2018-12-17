@@ -90,7 +90,8 @@ def get_nick_bladder(bot, botcom, nick):
     set_nick_value(bot, nick, "long", 'claims', "bladder", time.time() - timesincebladder)
 
     bladder.lastpee = get_nick_value(bot, nick, "long", 'claims', "bladder")
-    bladder.percent = "{0:.0%}".format((time.time() - bladder) / claimdict["fullbladderseconds"])
-    bladder.lastpeedisp = str(str(humanized_time(time.time() - bladder.lastpee) + " ago"))
+    bladder.timesince = time.time() - bladder.lastpee
+    bladder.percent = "{0:.0%}".format(bladder.timesince / claimdict["fullbladderseconds"])
+    bladder.lastpeedisp = str(str(humanized_time(bladder.timesince) + " ago"))
 
     return bladder
