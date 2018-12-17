@@ -155,7 +155,11 @@ def get_nick_claims(bot, botcom, nick):
         claimdict["ownedby"] = None
 
     # expired claims
-    if time.time() - claimdict["ownedbytime"] <= 0:
+    try:
+        timesinceclaim = time.time() - claimdict["ownedbytime"]
+    except Exception as e:
+        timesinceclaim = 0
+    if timesinceclaim <= 0:
         remove_nick_claims(bot, botcom, claimdict["ownedby"], nick)
         claimdict["ownedby"] = None
         claimdict["ownedbytime"] = None
@@ -173,7 +177,11 @@ def get_nick_claims(bot, botcom, nick):
             tempcheckdict["ownedbytime"] = None
         if not tempcheckdict["ownedbytime"] and tempcheckdict["ownedby"]:
             tempcheckdict["ownedby"] = None
-        if time.time() - tempcheckdict["ownedbytime"] <= 0:
+        try:
+            timesinceclaim = time.time() - tempcheckdict["ownedbytime"]
+        except Exception as e:
+            timesinceclaim = 0
+        if timesinceclaim <= 0:
             if claimnick in claimdict["ownings"]:
                 claimdict["ownings"].remove(claimnick)
             remove_nick_claims(bot, botcom, tempcheckdict["ownedby"], nick)
