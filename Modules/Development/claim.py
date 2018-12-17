@@ -219,6 +219,8 @@ def get_nick_claims(bot, botcom, nick):
         claimdict["ownedbytime"] = 0
 
     # expired claims
+    if not claimdict["ownedbytime"]:
+        claimdict["ownedbytime"] = 0
     timesinceclaim = time.time() - claimdict["ownedbytime"]
     if timesinceclaim <= 0:
         bot.say(claimnick + " " + str(timesinceclaim))
@@ -234,6 +236,8 @@ def get_nick_claims(bot, botcom, nick):
             tempcheckdict = dict()
             set_nick_value(bot, claimnick, "long", 'claims', "claimdict", tempcheckdict)
         if "ownedbytime" not in tempcheckdict.keys():
+            tempcheckdict["ownedbytime"] = 0
+        if not tempcheckdict["ownedbytime"]:
             tempcheckdict["ownedbytime"] = 0
         timesinceclaim = time.time() - tempcheckdict["ownedbytime"]
         if timesinceclaim <= 0:
