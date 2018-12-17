@@ -262,7 +262,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 bot.db.set_nick_value(target, 'claimed', instigator)
                 bot.db.set_nick_value(target, 'claimdate', storedate)
                 # Pay instigator Spicebucks (stolenclaim)
-                #spicebucks(bot, instigator, 'plus', stolenclaim)
+                # spicebucks(bot, instigator, 'plus', stolenclaim)
             else:
                 osd(bot, trigger.sender, 'say', target + " has already been claimed by " + str(claimedby) + ", so back off!")
     elif not okaytoclaim:

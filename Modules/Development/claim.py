@@ -22,7 +22,7 @@ sys.setdefaultencoding('utf-8')
 
 comdict = {
             "author": "deathbybandaid",
-            "contributors": [],
+            "contributors": ["dysonparkes", "Mace_Whatdo"],
             "description": "",
             'privs': [],
             "example": "",
@@ -30,12 +30,14 @@ comdict = {
             }
 
 
-@sopel.module.commands('dbbtest', 'deathbybandaidtest')
+@sopel.module.commands('claim')
 def mainfunctionnobeguine(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:
         return
+
+    botcom.multiruns = False
 
     if not botcom.multiruns:
         execute_main(bot, trigger, botcom)
@@ -52,16 +54,7 @@ def mainfunctionnobeguine(bot, trigger):
 
 
 def execute_main(bot, trigger, botcom):
-    bot.say("DBB Testing")
+    bot.say("Claim Testing")
 
-    Thread(target=func1, args=(bot,)).start()
-    Thread(target=func2, args=(bot,)).start()
-
-
-def func1(bot):
-    time.sleep(6)
-    bot.msg("#spicebottest", "func1")
-
-
-def func2(bot):
-    bot.msg("#spicebottest", "func2")
+    if botcom.channel_priv:
+        return osd(bot, trigger.sender, 'say', "Claims must be done in channel")

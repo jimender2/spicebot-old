@@ -20,6 +20,16 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+comdict = {
+            "author": "deathbybandaid",
+            "contributors": [],
+            "description": "",
+            'privs': [],
+            "example": "",
+            "exampleresponse": "",
+            }
+
+
 @nickname_commands('uptime')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):

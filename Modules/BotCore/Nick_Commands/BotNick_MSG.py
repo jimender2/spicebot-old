@@ -20,6 +20,17 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+
+comdict = {
+            "author": "deathbybandaid",
+            "contributors": [],
+            "description": "",
+            'privs': [],
+            "example": "",
+            "exampleresponse": "",
+            }
+
+
 """
 This lets you msg a channel or a user
 """

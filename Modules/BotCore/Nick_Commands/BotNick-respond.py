@@ -20,6 +20,16 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+comdict = {
+            "author": "deathbybandaid",
+            "contributors": [],
+            "description": "",
+            'privs': [],
+            "example": "",
+            "exampleresponse": "",
+            }
+
+
 """
 This will respond to all other invalid coms
 """
