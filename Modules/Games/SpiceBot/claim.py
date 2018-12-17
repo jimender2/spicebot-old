@@ -171,6 +171,13 @@ def execute_main(bot, trigger, botcom):
                 return osd(bot, botcom.channel_current, 'say', target + " has already been claimed by " + str(claimeedict["ownedby"]) + ", so back off!")
             else:
                 bladdermessage.append("The claim has been stolen from " + claimeedict["ownedby"] + "!")
+        elif bot_check_inlist(bot, target, [claimerdict["ownedby"]]):
+            if claimeedict["ownedbyvalid"] == "expired":
+                bladdermessage.append("Finally free from " + targetposession(bot, claimerdict["ownedby"]) + " cruel opression!")
+            elif claimeedict["ownedbyvalid"] == "valid":
+                return osd(bot, botcom.channel_current, 'say', "You can't claim " + target + ", " + botcom.instigator + ". They already have a claim on you.")
+            else:
+                bladdermessage.append("Finally free from " + targetposession(bot, claimerdict["ownedby"]) + " cruel opression!")
         else:
             bladdermessage.append("Claimed!")
 
