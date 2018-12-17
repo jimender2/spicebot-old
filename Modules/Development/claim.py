@@ -86,7 +86,7 @@ def execute_main(bot, trigger, botcom):
         targetbladder = get_nick_bladder(bot, botcom, posstarget)
         return osd(bot, botcom.channel_current, 'say', [posstarget + "s bladder is currently at " + str(targetbladder.percent) + " capacity.", posstarget + "s character peed " + targetbladder.lastpeedisp])
 
-    if posstarget == 'check':
+    elif posstarget == 'check':
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 'self'
         messagelist = []
         if bot_check_inlist(bot, posstarget, ['self', botcom.instigator]):
@@ -114,16 +114,71 @@ def execute_main(bot, trigger, botcom):
             messagelist.append("It looks like " + posstarget + " is neither owned, nor owns any others!")
         return osd(bot, botcom.channel_current, 'say', messagelist)
 
+    # actual claiming
+    else:
+        target = posstarget
 
-def set_nick_claims(bot, botcom, nickclaimer, bladder, nickclaimee):
+        claimerdict = get_nick_claims(bot, botcom, botcom.instigator)
+
+        if bot_check_inlist(bot, target, [botcom.instigator]):
+            osd(bot, botcom.channel_current, 'say', "You can't claim yourself!")
+            osd(bot, botcom.channel_current, 'action', 'mutters "moron".')
+            return
+
+        if bot_check_inlist(bot, target, [str(bot.nick)]):
+            osd(bot, botcom.channel_current, 'say', "Nope. %s has a permanent claim on %s!" % (str(bot.config.core.owner), target))
+            return
+
+        if bot_check_inlist(bot, target, [claimerdict["ownedby"]]):
+            osd(bot, botcom.channel_current, 'action', "facepalms")
+            osd(bot, botcom.channel_current, 'say', "You can't claim " + target + ", " + botcom.instigator + ". They already have a claim on you.")
+            return
+
+        if bot_check_inlist(bot, target, ["everyone"]):
+            osd(bot, botcom.channel_current, 'say', botcom.instigator + " couldn't decide where to aim and pisses everywhere!")
+            set_nick_value(bot, nickclaimer, "long", 'claims', "bladder", time.time())
+            return
+
+        targetchecking = bot_target_check(bot, botcom, target, [])
+        if not targetchecking["targetgood"]:
+            return osd(bot, botcom.channel_current, 'say', targetchecking["error"])
+
+        bladdermessage = []
+
+        claimeedict = get_nick_claims(bot, botcom, target)
+
+        if bot_check_inlist(bot, claimeedict["ownedby"], [botcom.instigator]):
+            if claimeedict["ownedbyvalid"] == "valid":
+                return osd(bot, botcom.channel_current, 'say', botcom.instigator + ", you already claimed " + target + "!")
+            else:
+                bladdermessage.append("The claim has been renewed!")
+        elif not bot_check_inlist(bot, claimeedict["ownedby"], [botcom.instigator]):
+            if claimeedict["ownedbyvalid"] == "valid":
+                return osd(bot, botcom.channel_current, 'say', target + " has already been claimed by " + str(claimeedict["ownedbyvalid"]) + ", so back off!")
+            else:
+                bladdermessage.append("The claim has been stolen from " + claimeedict["ownedbyvalid"] + "!")
+        else:
+            bladdermessage.append("Claimed!")
+
+        bladdermessage.insert(0, botcom.instigator + " releases the contents of their bladder on " + target + "!")
+
+        osd(bot, botcom.channel_current, 'say', bladdermessage)
+
+        # set the claims
+        # futuretime = time.time() + 240
+        # set_nick_claims(bot, botcom, botcom.instigator, target)
+
+
+def set_nick_claims(bot, botcom, nickclaimer, nickclaimee, duration):
 
     # set claimer ownership on claimee
     claimeedict = get_nick_claims(bot, botcom, nickclaimee)
     claimeedict["ownedby"] = nickclaimer
 
     # calculate duration of claim
-    futuretime = time.time() + 240
-    claimeedict["ownedbytime"] = futuretime
+    claimeedict["ownedbytime"] = duration
+
+    claimeedict["ownedbyvalid"] = "valid"
 
     set_nick_value(bot, nickclaimee, "long", 'claims', "claimdict", claimeedict)
 
@@ -147,6 +202,9 @@ def get_nick_claims(bot, botcom, nick):
     if "ownedby" not in claimdict.keys():
         claimdict["ownedby"] = None
 
+    if "ownedbyvalid" not in claimdict.keys():
+        claimdict["ownedbyvalid"] = "expired"
+
     if "ownedbytime" not in claimdict.keys():
         claimdict["ownedbytime"] = None
 
@@ -159,9 +217,7 @@ def get_nick_claims(bot, botcom, nick):
     except Exception as e:
         timesinceclaim = 0
     if timesinceclaim <= 0:
-        remove_nick_claims(bot, botcom, claimdict["ownedby"], nick)
-        claimdict["ownedby"] = None
-        claimdict["ownedbytime"] = None
+        claimdict["ownedbyvalid"] = "expired"
 
     if "ownings" not in claimdict.keys():
         claimdict["ownings"] = []
@@ -181,11 +237,7 @@ def get_nick_claims(bot, botcom, nick):
         except Exception as e:
             timesinceclaim = 0
         if timesinceclaim <= 0:
-            if claimnick in claimdict["ownings"]:
-                claimdict["ownings"].remove(claimnick)
-            remove_nick_claims(bot, botcom, tempcheckdict["ownedby"], nick)
-            tempcheckdict["ownedby"] = None
-            tempcheckdict["ownedbytime"] = None
+            tempcheckdict["ownedbyvalid"] = "expired"
         set_nick_value(bot, claimnick, "long", 'claims', "claimdict", tempcheckdict)
 
     set_nick_value(bot, nick, "long", 'claims', "claimdict", claimdict)
