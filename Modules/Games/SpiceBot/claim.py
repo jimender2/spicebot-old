@@ -288,7 +288,7 @@ def get_nick_bladder(bot, nick):
     bladder.percent = "{0:.0%}".format(bladder.timesince / claim_gamedict["fullbladderseconds"])
     bladder.percentnum = int(str(bladder.percent).split("%")[0])
     bladder.lastpeedisp = str(str(humanized_time(bladder.timesince) + " ago"))
-    bladder.min = str(humanized_time(bladder.percentnum * claim_gamedict["durationmin"]))
-    bladder.max = str(humanized_time(bladder.percentnum * claim_gamedict["durationmax"]))
+    bladder.min = str(humanized_time(bladder.timesince * claim_gamedict["durationmin"]))
+    bladder.max = str(humanized_time(bladder.timesince * claim_gamedict["durationmax"]))
 
     return bladder
