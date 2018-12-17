@@ -1936,10 +1936,12 @@ def getGif(bot, searchdict):
                 if not str(cururl).startswith(tuple(gif_dontusesites)):
                     slashsplit = str(cururl).split("/")
                     fileextension = slashsplit[-1]
-                    if not fileextension:
+                    if not fileextension or fileextension == '':
                         appendresult = True
                     elif str(cururl).endswith(".gif"):
                         appendresult = True
+                    # else:
+                    #    bot.msg("#spicebottest", str(fileextension))
                     if appendresult:
                         resultsarray.append(cururl)
 
