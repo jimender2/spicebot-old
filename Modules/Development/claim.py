@@ -71,7 +71,20 @@ def execute_main(bot, trigger, botcom):
     bladder = get_nick_bladder(bot, botcom, botcom.instigator)
 
     if posstarget == 'bladder':
-        return osd(bot, botcom.channel_current, 'say', ["Your bladder is currently at " + str(bladder.percent) + " capacity.", "Your character peed " + bladder.lastpeedisp])
+        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 'self'
+        if bot_check_inlist(bot, botcom.instigator, ['self', botcom.instigator]):
+            return osd(bot, botcom.channel_current, 'say', ["Your bladder is currently at " + str(bladder.percent) + " capacity.", "Your character peed " + bladder.lastpeedisp])
+
+        targetchecking = bot_target_check(bot, botcom, posstarget, [])
+        if not targetchecking["targetgood"]:
+            return osd(bot, botcom.instigator, 'say', targetchecking["error"])
+
+        posstarget = nick_actual(bot, posstarget)
+        if not bot_check_inlist(bot, posstarget, [botcom.instigator]) and not botcom.admin:
+            return osd(bot, botcom.instigator, 'say', "You cannot tell how full/empty " + posstarget + "s bladder is!")
+
+        targetbladder = get_nick_bladder(bot, botcom, posstarget)
+        return osd(bot, botcom.channel_current, 'say', [posstarget + "s bladder is currently at " + str(targetbladder.percent) + " capacity.", posstarget + "s character peed " + targetbladder.lastpeedisp])
 
     if posstarget == 'check':
         posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 'self'
