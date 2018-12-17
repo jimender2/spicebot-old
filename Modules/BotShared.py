@@ -1022,7 +1022,31 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if link:
                 dispmsg.append(link)
 
-            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or forcedisplay:
+            feedconsensus = []
+
+            if entrytime > lastbuildtime:
+                feedconsensus.append('True')
+            else:
+                feedconsensus.append('False')
+
+            if link != lastbuildlink:
+                feedconsensus.append('True')
+            else:
+                feedconsensus.append('False')
+
+            if title != lastbuildtitle:
+                feedconsensus.append('True')
+            else:
+                feedconsensus.append('False')
+
+            if forcedisplay:
+                feedrun = True
+            elif 'False' in feedconsensus:
+                feedrun = False
+            else:
+                feedrun = True
+
+            if feedrun:
                 displayname = feed_dict["displayname"]
                 if not displayname:
                     try:
@@ -1121,7 +1145,31 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if link:
                 dispmsg.append(str(feed_dict["url"] + link))
 
-            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or forcedisplay:
+            feedconsensus = []
+
+            if entrytime > lastbuildtime:
+                feedconsensus.append('True')
+            else:
+                feedconsensus.append('False')
+
+            if link != lastbuildlink:
+                feedconsensus.append('True')
+            else:
+                feedconsensus.append('False')
+
+            if title != lastbuildtitle:
+                feedconsensus.append('True')
+            else:
+                feedconsensus.append('False')
+
+            if forcedisplay:
+                feedrun = True
+            elif 'False' in feedconsensus:
+                feedrun = False
+            else:
+                feedrun = True
+
+            if feedrun:
                 displayname = feed_dict["displayname"]
                 if not displayname:
                     displayname = None
