@@ -143,14 +143,6 @@ mode_dict_alias = {
                     #  TODO add more user/channel modes
                     }
 
-
-gif_dontusesites = [
-                        "http://forgifs.com", "http://a.dilcdn.com", "http://www.bestgifever.com",
-                        "http://s3-ec.buzzfed.com", "http://i.minus.com", "http://fap.to", "http://prafulla.net",
-                        "http://3.bp.blogspot.com"
-                        ]
-
-
 valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate", "responses", "feeds", "search"]
 
 
@@ -1973,7 +1965,7 @@ def getGif(bot, searchdict):
         url += str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['key']) + str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['apikey'])
 
         page = requests.get(url, headers=None)
-        if page.status_code != 500 and page.status_code != 503:
+        if not str(page.status_code).startswith(tuple(["4", "5"])):
 
             data = json.loads(urllib2.urlopen(url).read())
 
@@ -1982,17 +1974,16 @@ def getGif(bot, searchdict):
             for result in results:
                 appendresult = False
                 cururl = result[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['cururl']]
-                if not str(cururl).startswith(tuple(gif_dontusesites)):
-                    slashsplit = str(cururl).split("/")
-                    fileextension = slashsplit[-1]
-                    if not fileextension or fileextension == '':
-                        appendresult = True
-                    elif str(fileextension).endswith(".gif"):
-                        appendresult = True
-                    elif "." not in str(fileextension):
-                        appendresult = True
-                    if appendresult:
-                        resultsarray.append(cururl)
+                slashsplit = str(cururl).split("/")
+                fileextension = slashsplit[-1]
+                if not fileextension or fileextension == '':
+                    appendresult = True
+                elif str(fileextension).endswith(".gif"):
+                    appendresult = True
+                elif "." not in str(fileextension):
+                    appendresult = True
+                if appendresult:
+                    resultsarray.append(cururl)
 
             # make sure there are results
             resultsamount = len(resultsarray)
@@ -2001,19 +1992,32 @@ def getGif(bot, searchdict):
                 # Create Temp dict for every result
                 tempresultnum = 0
                 for tempresult in resultsarray:
-                    tempresultnum += 1
-                    tempdict = dict()
-                    tempdict["returnnum"] = tempresultnum
-                    tempdict["returnurl"] = tempresult
-                    tempdict["gifapi"] = currentapi
-                    gifapiresults.append(tempdict)
+                    if tempresult not in bot.memory["botdict"]["tempvals"]["badgiflinks"]:
+                        tempresultnum += 1
+                        tempdict = dict()
+                        tempdict["returnnum"] = tempresultnum
+                        tempdict["returnurl"] = tempresult
+                        tempdict["gifapi"] = currentapi
+                        gifapiresults.append(tempdict)
 
     if gifapiresults == []:
         return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
     random.shuffle(gifapiresults)
     random.shuffle(gifapiresults)
-    gifdict = spicemanip(bot, gifapiresults, "random")
+    randombad = True
+    while randombad:
+        gifdict = spicemanip(bot, gifapiresults, "random")
+        gifpage = requests.get(gifdict["returnurl"], headers=None)
+        if not str(gifpage.status_code).startswith(tuple(["4", "5"])):
+            randombad = False
+        else:
+            bot.memory["botdict"]["tempvals"]["badgiflinks"].append(tempdict["returnurl"])
+            newlist = []
+            for tempdict in gifapiresults:
+                if tempdict["returnurl"] != gifdict["returnurl"]:
+                    newlist.append(tempdict)
+            gifapiresults = newlist
 
     # return dict
     gifdict['error'] = None

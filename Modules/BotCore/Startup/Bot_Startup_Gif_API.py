@@ -34,6 +34,8 @@ def bot_startup_gif_api(bot, trigger):
     while not bot_startup_requirements_met(bot, ["ext_conf"]):
         pass
 
+    bot.memory["botdict"]["tempvals"]["badgiflinks"] = []
+
     bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'] = dict()
 
     valid_gif_api_dict = {
