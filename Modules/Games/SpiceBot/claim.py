@@ -143,7 +143,7 @@ def execute_main(bot, trigger, botcom):
 
         if bot_check_inlist(bot, target, ["everyone"]):
             osd(bot, botcom.channel_current, 'say', botcom.instigator + " couldn't decide where to aim and pisses everywhere!")
-            set_nick_value(bot, nickclaimer, "long", 'claims', "bladder", time.time())
+            set_nick_value(bot, botcom.instigator, "long", 'claims', "bladder", time.time())
             return
 
         targetchecking = bot_target_check(bot, botcom, target, [])
