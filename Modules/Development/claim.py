@@ -29,9 +29,12 @@ comdict = {
             "exampleresponse": "",
             }
 
+# min and max are pre-varience
 claim_gamedict = {
-            "fullbladderseconds": 144400,
-            "newbladderseconds": 12000,
+            "fullbladderseconds": 14400,
+            "newbladderseconds": 10000,
+            "durationmin": 432000,
+            "durationmax": 777600,
             }
 
 
@@ -167,6 +170,8 @@ def execute_main(bot, trigger, botcom):
         osd(bot, botcom.channel_current, 'say', bladdermessage)
 
         # set the claims
+        varianceeffect = randint(claim_gamedict["durationmin"], claim_gamedict["durationmax"])
+        bot.say(str(varianceeffect))
         # futuretime = time.time() + 240
         # set_nick_claims(bot, botcom, botcom.instigator, target)
 
