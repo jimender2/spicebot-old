@@ -5,7 +5,7 @@
 "url": "http://zitscomics.com/",
 "scrapetitle": '//*[@id="comic-date"]/text()',
 "scrapelink": None,
-"scrapetimezone": "UTC",
+"scrapetimezone": "America/New_York",
 "scrapehour": 0,
 "scrapeminute": 0,
 

@@ -1,0 +1,8 @@
+{
+"validcoms": ['searchtest'],
+"?default": {
+              "type": "search",
+              "blank_required": True,
+              },
+
+}

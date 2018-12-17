@@ -44,17 +44,14 @@ def execute_main(bot, trigger, botcom):
         comtypedict = str(comtype + "_commands")
         moduleindex.append(bot.memory["botdict"]["tempvals"][comtypedict].keys())
 
-    # for mtype, mindex in zip(moduletypes, moduleindex):
-        # bot.msg("#spicebottest", mtype + "    " + str(len(mindex)))
-
-    moduleindex = [["tap"], ["dbbtest"], [str(bot.nick) + " " + 'update'], []]
+    # moduleindex = [["tap"], ["dbbtest"], [str(bot.nick) + " " + 'update'], []]
     indexcount = len(moduleindex)
     for mtype, mindex in zip(moduletypes, moduleindex):
         indexcount -= 1
         commandcount = len(mindex)
 
         if commandcount:
-            dispmsg.append([mtype + " commands:"])
+            dispmsg.append(["(" + str(commandcount) + ") " + mtype + " commands:"])
 
         for command in mindex:
             commandcount -= 1
@@ -71,6 +68,10 @@ def execute_main(bot, trigger, botcom):
                     comstring.append(command)
                 else:
                     comstring.append("." + command)
+
+                if 'privs' in dict_from_file.keys():
+                    if len(dict_from_file['privs']) > 0:
+                        comstring.append("Required Permissions: " + str(spicemanip(bot, dict_from_file["privs"], "orlist")))
 
                 # description
                 if dict_from_file["description"]:
@@ -109,8 +110,31 @@ def execute_main(bot, trigger, botcom):
         if indexcount:
             dispmsg.append(["     "])
 
+    pasteformat = []
     for comstring in dispmsg:
-        osd(bot, botcom.channel_current, 'say', comstring[0])
+        pasteformat.append(comstring[0])
         del comstring[0]
         for remstring in comstring:
-            osd(bot, botcom.channel_current, 'say', "  *  " + remstring)
+            pasteformat.append("  *  " + remstring)
+    url = create_list(bot, botcom, '\n\n'.join(pasteformat))
+    osd(bot, botcom.channel_current, 'say', "I've posted a list of my commands at " + str(url))
+
+
+def create_list(bot, botcom, msg):
+    msg = 'Command listing for {}@{}\n\n'.format(bot.nick, botcom.server) + msg
+    payload = {"content": msg}
+    headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+
+    try:
+        result = requests.post('https://ptpb.pw/', json=payload, headers=headers)
+    except requests.RequestException:
+        osd(bot, botcom.channel_current, 'say', "Sorry! Something went wrong.")
+        logger.exception("Error posting commands")
+        return
+    result = result.json()
+    if 'url' not in result:
+        osd(bot, botcom.channel_current, 'say', "Sorry! Something went wrong.")
+        logger.error("Invalid result %s", result)
+        return
+    url = result['url'].replace("https", "http")
+    return url

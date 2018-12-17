@@ -35,7 +35,7 @@ def bot_command_hub(bot, trigger):
     if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
 
-    if not bot_nickcom_run_check(bot, botcom):
+    if not bot_permissions_check(bot, botcom):
         return osd(bot, botcom.instigator, 'notice', "I was unable to process this Bot Nick command due to privilege issues.")
 
     # SubCommand used

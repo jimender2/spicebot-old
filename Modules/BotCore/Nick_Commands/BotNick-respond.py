@@ -37,26 +37,93 @@ def bot_nickcom_hub(bot, trigger):
 
     if not botcom.command_main:
         return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do!")
-    if botcom.command_main.lower() in valid_botnick_commands.keys():
+    if str(bot.nick) + " " + botcom.command_main.lower() in bot.memory["botdict"]["tempvals"]["nickname_commands"].keys():
         return
 
     specialcomposs = spicemanip(bot, botcom.triggerargsarray, 0).lower()
-    if specialcomposs.startswith("what is"):
+
+    if specialcomposs.lower().startswith("what is"):
         searchterm = spicemanip(bot, botcom.triggerargsarray, "3+") or None
         if searchterm:
-            osd(bot, botcom.channel_current, 'say', "What is " + searchterm)
+            data = searchterm.replace(' ', '+')
+            lookfor = data.replace(':', '%3A')
+            var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI')
+            query = str(var.url)
+            if not query:
+                osd(bot, botcom.channel_current, 'say', 'I cannot find anything about that')
+            else:
+                osd(bot, botcom.channel_current, 'say', query)
+        else:
             osd(bot, botcom.channel_current, 'say', "Do you think this is Jeopardy?")
-            return
-    elif specialcomposs.startswith("make me a"):
-        makemea = spicemanip(bot, botcom.triggerargsarray, "4+") or None
-        if makemea:
-            osd(bot, botcom.channel_current, 'action', " beams " + botcom.instigator + " a " + makemea)
         return
 
-    if botcom.command_main.lower() not in valid_botnick_commands.keys():
+    elif specialcomposs.lower().startswith("where is"):
+        searchterm = spicemanip(bot, botcom.triggerargsarray, "3+") or None
+        if searchterm:
+            if searchterm.lower() == 'waldo':
+                osd(bot, botcom.channel_current, 'say', "He is hiding for a reason?")
+                return
+            elif searchterm.lower() == 'carmen sandiego':
+                osd(bot, botcom.channel_current, 'say', "She is hiding for a reason?")
+                return
+            data = searchterm.replace(' ', '+')
+            lookfor = data.replace(':', '%3A')
+            var = requests.get(r'http://www.google.com/maps/place/' + lookfor)
+            query = str(var.url)
+            if not query:
+                osd(bot, botcom.channel_current, 'say', 'I cannot find anything about that')
+            else:
+                osd(bot, botcom.channel_current, 'say', query)
+        else:
+            osd(bot, botcom.channel_current, 'say', "Not sure what you want me to look for.")
+        return
+
+    elif specialcomposs.lower().startswith(tuple(["have you seen"])):
+        posstarget = spicemanip(bot, botcom.triggerargsarray, 4) or 0
+        message = seen_search(bot, botcom, posstarget)
+        osd(bot, botcom.channel_current, 'say', message)
+        return
+
+    elif specialcomposs.lower().startswith(tuple(["make me a", "beam me a"])):
+        makemea = spicemanip(bot, botcom.triggerargsarray, "4+") or None
+        if makemea:
+            osd(bot, botcom.channel_current, 'action', "beams " + botcom.instigator + " a " + makemea)
+        else:
+            osd(bot, botcom.channel_current, 'say', botcom.instigator + ", what would you like me to beam you?")
+        return
+
+    elif specialcomposs.lower().startswith(tuple(["beam me to"])):
+        location = spicemanip(bot, botcom.triggerargsarray, "4+") or None
+        if location:
+            osd(bot, botcom.channel_current, 'action', "locks onto " + botcom.instigator + "s coordinates and transports them to " + location)
+        else:
+            osd(bot, botcom.channel_current, 'say', botcom.instigator + ", where would you like me to beam you?")
+        return
+
+    elif specialcomposs.lower().startswith(tuple(["beam me up"])):
+        osd(bot, botcom.channel_current, 'action', "locks onto " + botcom.instigator + "s coordinates and transports them to the transporter room.")
+        return
+
+    elif specialcomposs.lower().startswith("can you see"):
+        target = spicemanip(bot, botcom.triggerargsarray, "4+") or None
+        if not target:
+            target = 'me'
+        if target in [botcom.instigator, 'me']:
+            osd(bot, botcom.channel_current, 'say', botcom.instigator + ", I can see you.")
+        else:
+            if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]["servers_list"][botcom.server]['all_current_users']):
+                osd(bot, botcom.channel_current, 'say', botcom.instigator + ", yes. I can see " + nick_actual(bot, target) + " right now!")
+            else:
+                if bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
+                    osd(bot, botcom.channel_current, 'say', botcom.instigator + ", I can't see " + nick_actual(bot, target) + " at the moment.")
+                else:
+                    osd(bot, botcom.channel_current, 'say', "I have never seen " + str(target) + ".")
+        return
+
+    if str(bot.nick) + " " + botcom.command_main.lower() not in bot.memory["botdict"]["tempvals"]["nickname_commands"].keys():
         sim_com, sim_num = [], []
-        for comm in valid_botnick_commands.keys():
-            similarlevel = similar(str(botcom.command_main).lower(), comm.lower())
+        for comm in bot.memory["botdict"]["tempvals"]["nickname_commands"].keys():
+            similarlevel = similar(str(bot.nick) + " " + str(botcom.command_main).lower(), comm.lower())
             if similarlevel >= .75:
                 sim_com.append(comm)
                 sim_num.append(similarlevel)

@@ -1296,7 +1296,7 @@ def bot_nickcom_run(bot, trigger):
 
         if botcom.command_main.lower() in valid_botnick_commands.keys():
 
-            if bot_nickcom_run_check(bot, botcom):
+            if bot_permissions_check(bot, botcom):
 
                 bot_nickcom_function_run = str('bot_nickcom_function_' + botcom.command_main.lower() + '(bot, botcom)')
                 eval(bot_nickcom_function_run)
@@ -1312,7 +1312,7 @@ def bot_nickcom_run(bot, trigger):
 
 
 # most of these nick commands require privilege to run
-def bot_nickcom_run_check(bot, botcom):
+def bot_permissions_check(bot, botcom):
     global valid_botnick_commands
     commandrun = True
 

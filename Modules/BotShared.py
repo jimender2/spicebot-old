@@ -150,87 +150,8 @@ gif_dontusesites = [
                         "http://3.bp.blogspot.com"
                         ]
 
-gif_dontuseextensions = ['.jpg', '.png']
 
-
-valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate", "responses", "feeds"]
-
-
-# valid commands that the bot will reply to by name
-valid_botnick_commands = {
-                            "github": {
-                                        'privs': [],
-                                        },
-                            "docs": {
-                                        'privs': [],
-                                        },
-                            "wiki": {
-                                        'privs': [],
-                                        },
-                            "help": {
-                                        'privs': [],
-                                        },
-                            "uptime": {
-                                        'privs': [],
-                                        },
-                            "canyouseeme": {
-                                        'privs': [],
-                                        },
-                            "gender": {
-                                        'privs': [],
-                                        },
-                            "owner": {
-                                        'privs': [],
-                                        },
-                            "admins": {
-                                        'privs': [],
-                                        },
-                            "channel": {
-                                        'privs': [],
-                                        },
-                            "msg": {
-                                    'privs': ['admin', 'OP'],
-                                    },
-                            "action": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "notice": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "debug": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "logs": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "update": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "restart": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "permfix": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "pip": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "cd": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "dir": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "gitpull": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "auth": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            "sweep": {
-                                        'privs': ['admin', 'OP'],
-                                        },
-                            }
+valid_com_types = ['simple', 'fillintheblank', 'targetplusreason', 'sayings', "readfromfile", "readfromurl", "ascii_art", "gif", "translate", "responses", "feeds", "search"]
 
 
 """
@@ -326,6 +247,9 @@ def botcom_nick(bot, trigger):
     botcom.channel_current = str(trigger.sender).lower()
     botcom.channel_priv = trigger.is_privmsg
 
+    # command type
+    botcom.comtype = 'nickname'
+
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, '2+', 'list')
 
@@ -363,6 +287,9 @@ def botcom_symbol_trigger(bot, trigger):
     botcom.channel_current = str(trigger.sender).lower()
     botcom.channel_priv = trigger.is_privmsg
 
+    # command type
+    botcom.comtype = 'dict'
+
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
 
@@ -374,20 +301,26 @@ Core Bot Permissions
 """
 
 
-def bot_nickcom_run_check(bot, botcom):
+def bot_permissions_check(bot, botcom):
+
+    comtypedict = str(botcom.comtype + "_commands")
+    commandslist = bot.memory["botdict"]["tempvals"][comtypedict]
+    searchitem = botcom.command_main.lower()
+    if comtypedict == "nickname_commands":
+        searchitem = str(bot.nick) + " " + searchitem
 
     commandrun = True
 
-    if 'privs' in valid_botnick_commands[botcom.command_main.lower()].keys():
+    if 'privs' in commandslist[searchitem].keys():
         commandrunconsensus = []
 
-        if 'admin' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+        if 'admin' in commandslist[searchitem]['privs']:
             if botcom.instigator not in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']:
                 commandrunconsensus.append('False')
             else:
                 commandrunconsensus.append('True')
 
-        if 'OP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+        if 'OP' in commandslist[searchitem]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanops']:
                     commandrunconsensus.append('False')
@@ -396,7 +329,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'HOP' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+        if 'HOP' in commandslist[searchitem]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanhalfops']:
                     commandrunconsensus.append('False')
@@ -405,7 +338,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'VOICE' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+        if 'VOICE' in commandslist[searchitem]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanvoices']:
                     commandrunconsensus.append('False')
@@ -414,7 +347,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'OWNER' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+        if 'OWNER' in commandslist[searchitem]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanowners']:
                     commandrunconsensus.append('False')
@@ -423,7 +356,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if 'ADMIN' in valid_botnick_commands[botcom.command_main.lower()]['privs']:
+        if 'ADMIN' in commandslist[searchitem]['privs']:
             if not botcom.channel_priv:
                 if botcom.instigator not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['chanadmins']:
                     commandrunconsensus.append('False')
@@ -432,7 +365,7 @@ def bot_nickcom_run_check(bot, botcom):
             else:
                 commandrunconsensus.append('False')
 
-        if valid_botnick_commands[botcom.command_main.lower()]['privs'] == []:
+        if commandslist[searchitem]['privs'] == []:
             commandrunconsensus.append('True')
 
         if 'True' not in commandrunconsensus:
@@ -549,6 +482,9 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         botcom.modulerun = False
         return botcom
 
+    # command type
+    botcom.comtype = 'module'
+
     # create arg list
     botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
 
@@ -572,7 +508,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     botcom.dotcommand_dict = copy.deepcopy(bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom])
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage"]
+    validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage", "privs"]
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
@@ -741,6 +677,12 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         botcom.modulerun = False
 
         osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + str(botcom.dotcommand_dict["description"]))
+        return botcom
+
+    elif botcom.specified == 'privs':
+        botcom.modulerun = False
+
+        osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + spicemanip(bot, botcom.dotcommand_dict["privs"], "andlist"))
         return botcom
 
     elif botcom.specified in ['example', 'usage']:
@@ -1257,9 +1199,9 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
         elif feed_type == 'googlecalendar':
 
-            if not bot.memory["botdict"]["tempvals"]['google']:
+            if not bot.memory["botdict"]["tempvals"]['googlecal']:
                 if forcedisplay:
-                    return ["google api unavailable."]
+                    return ["googlecal api unavailable."]
                 else:
                     return []
 
@@ -1272,7 +1214,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
             currentcalendar = feed_dict["calendar"]
 
-            http_auth = bot.memory["botdict"]["tempvals"]['google'].authorize(httplib2.Http())
+            http_auth = bot.memory["botdict"]["tempvals"]['googlecal'].authorize(httplib2.Http())
             service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
 
             events_result = service.events().list(timeZone='UTC', calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=str(str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")).execute()
@@ -1514,7 +1456,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if link:
                 dispmsg.append(link)
 
-            if (int(timeuntil) < 80 and int(timeuntil) > 20) or forcedisplay:
+            if (int(timeuntil) < 0 and int(timeuntil) > -60) or forcedisplay:
 
                 displayname = feed_dict["displayname"]
                 if not displayname:
@@ -1593,7 +1535,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             if link:
                 dispmsg.append(link)
 
-            if (int(timeuntil) < 80 and int(timeuntil) > 20) or forcedisplay:
+            if (int(timeuntil) < 0 and int(timeuntil) > -60) or forcedisplay:
 
                 displayname = feed_dict["displayname"]
                 if not displayname:
@@ -1809,6 +1751,105 @@ def bot_target_check(bot, botcom, target, targetbypass):
     return targetgood
 
 
+def seen_search(bot, botcom, target):
+
+    if not target:
+        return "Who are you looking for?"
+    elif bot_check_inlist(bot, target, [str(bot.nick)]):
+        return "I'm right here!"
+    elif bot_check_inlist(bot, target, [str(botcom.instigator)]):
+        return "You're right there!"
+
+    lastseen = []
+
+    # current bot
+    if bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
+        lastseenrecord = get_nick_value(bot, str(target), 'long', 'user_activity', 'list') or []
+        if lastseenrecord != []:
+            lastseen.extend(lastseenrecord)
+
+    # other bots
+    otherbotusers = []
+    if "altbots" in bot.memory:
+        for botname in bot.memory["altbots"].keys():
+            lastseenrecord = get_nick_value_api(bot, botname, str(target), 'long', 'user_activity', 'list') or []
+            if lastseenrecord != []:
+                lastseen.extend(lastseenrecord)
+            for user in bot.memory["altbots"][botname]["users"].keys():
+                if user not in otherbotusers:
+                    otherbotusers.append(user)
+
+    if lastseen == []:
+        message = str("Sorry, the network of SpiceBots have never seen " + str(target) + " speaking.")
+        if bot_check_inlist(bot, target, otherbotusers) or bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
+            message = str(message + " However, they have been seen connected to one of the servers.")
+        return message
+
+    seentime = None
+    entrynumber, winningentry = 0, 0
+    for seenrecord in lastseen:
+        if not seentime:
+            seentime = seenrecord["time"]
+            winningentry = entrynumber
+        elif seenrecord["time"] > seentime:
+            seentime = seenrecord["time"]
+            winningentry = entrynumber
+        entrynumber += 1
+    lastseenwinner = lastseen[winningentry]
+
+    if str(target) in bot.memory["botdict"]["users"].keys():
+        target = nick_actual(bot, target)
+    else:
+        target = nick_actual(bot, target, otherbotusers)
+
+    howlongago = humanized_time(time.time() - lastseenwinner["time"])
+
+    message = str(target)
+    if lastseenwinner["server"] == botcom.server:
+        if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]["servers_list"][botcom.server]['all_current_users']):
+            message = str(message + " is online right now,")
+    else:
+        nada = 5
+        # this is where we will check if user is active on another server
+
+    message = str(message + " was last seen " + str(howlongago) + " ago,")
+
+    if str(lastseenwinner["bot_eyes"]) != str(bot.nick):
+        message = str(message + " by " + str(lastseenwinner["bot_eyes"]) + ",")
+
+    if lastseenwinner["server"] != botcom.server:
+        message = str(message + " on " + str(lastseenwinner["server"]) + ",")
+
+    if lastseenwinner["channel"] != botcom.channel_current:
+        message = str(message + " in " + str(lastseenwinner["channel"]) + ",")
+    else:
+        message = str(message + " in here,")
+
+    intent = 'saying'
+    spoken = str(lastseenwinner["spoken"])
+    posscom = spicemanip(bot, str(lastseenwinner["spoken"]), 1)
+    if str(posscom).startswith("."):
+        posscom = posscom.lower()[1:]
+        if posscom in bot.memory["botdict"]["tempvals"]['all_coms']:
+            intent = "running"
+            spoken = str("." + posscom)
+    elif "intent" in lastseenwinner.keys():
+        if lastseenwinner["intent"]:
+            if lastseenwinner["intent"]:
+                intent = "doing /me"
+    message = str(message + " " + intent + " " + str(spoken))
+
+    return message
+
+
+"""
+Web Searching
+"""
+
+
+# insert functions here
+
+
 """
 Gif Searching
 """
@@ -1890,9 +1931,19 @@ def getGif(bot, searchdict):
             results = data[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['results']]
             resultsarray = []
             for result in results:
+                appendresult = False
                 cururl = result[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['cururl']]
-                if not str(cururl).startswith(tuple(gif_dontusesites)) and not str(cururl).endswith(tuple(gif_dontuseextensions)):
-                    resultsarray.append(cururl)
+                if not str(cururl).startswith(tuple(gif_dontusesites)):
+                    slashsplit = str(cururl).split("/")
+                    fileextension = slashsplit[-1]
+                    if not fileextension or fileextension == '':
+                        appendresult = True
+                    elif str(fileextension).endswith(".gif"):
+                        appendresult = True
+                    elif "." not in str(fileextension):
+                        appendresult = True
+                    if appendresult:
+                        resultsarray.append(cururl)
 
             # make sure there are results
             resultsamount = len(resultsarray)

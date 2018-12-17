@@ -177,6 +177,9 @@ def bot_startup_modules(bot, trigger):
             if "exampleresponse" not in dict_from_file.keys():
                 dict_from_file["exampleresponse"] = None
 
+            if "privs" not in dict_from_file.keys():
+                dict_from_file["privs"] = []
+
             bot.memory["botdict"]["tempvals"][comtypedict][maincom] = dict_from_file
             for comalias in comaliases:
                 if comalias not in bot.memory["botdict"]["tempvals"][comtypedict].keys():

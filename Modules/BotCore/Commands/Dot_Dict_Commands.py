@@ -114,11 +114,11 @@ def bot_dictcom_process(bot, botcom):
 
     botcom.nonstockoptions = []
     for command in botcom.dotcommand_dict.keys():
-        if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block", "description", "exampleresponse", "example"]:
+        if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block", "description", "exampleresponse", "example", "privs"]:
             botcom.nonstockoptions.append(command)
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage"]
+    validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage", "privs"]
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
@@ -277,6 +277,12 @@ def bot_dictcom_process(bot, botcom):
         botcom.modulerun = False
 
         osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + str(botcom.dotcommand_dict["description"]))
+        return
+
+    elif botcom.specified == 'privs':
+        botcom.modulerun = False
+
+        osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + spicemanip(bot, botcom.dotcommand_dict["privs"], "andlist"))
         return
 
     elif botcom.specified in ['example', 'usage']:
@@ -553,7 +559,7 @@ def bot_dictcom_reply_shared(bot, botcom):
             if "$specialoptions" in rply:
                 nonstockoptions = []
                 for command in botcom.dotcommand_dict.keys():
-                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block", "description", "exampleresponse", "example", "usage"]:
+                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block", "description", "exampleresponse", "example", "usage", "privs"]:
                         nonstockoptions.append(command)
                 nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
                 rply = rply.replace("$specialoptions", nonstockoptions)
@@ -624,3 +630,7 @@ def bot_dictcom_feeds(bot, botcom):
         osd(bot, botcom.channel_current, 'say', feed + " appears to have had an unknown error.")
     else:
         osd(bot, botcom.channel_current, 'say', dispmsg)
+
+
+def bot_dictcom_search(bot, botcom):
+    bot.say("testing done")
