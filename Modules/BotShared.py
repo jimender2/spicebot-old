@@ -2559,6 +2559,8 @@ def get_nick_value_api(bot, botname, nick, longevity, sortingkey, usekey):
 # get nick value from bot.memory
 def get_nick_value(bot, nick, longevity, sortingkey, usekey):
 
+    nick = nick_actual(bot, nick)
+
     # verify nick dict exists
     if longevity == 'long':
         if nick not in bot.memory["botdict"]["users"].keys():
@@ -2614,6 +2616,8 @@ def adjust_nick_value(bot, nick, longevity, sortingkey, usekey, value):
 # set nick value in bot.memory
 def set_nick_value(bot, nick, longevity, sortingkey, usekey, value):
 
+    nick = nick_actual(bot, nick)
+
     # verify nick dict exists
     if longevity == 'long':
         if nick not in bot.memory["botdict"]["users"].keys():
@@ -2658,6 +2662,8 @@ def set_nick_value(bot, nick, longevity, sortingkey, usekey, value):
 
 # set nick value in bot.memory
 def reset_nick_value(bot, nick, longevity, sortingkey, usekey):
+
+    nick = nick_actual(bot, nick)
 
     # if str(bot.nick).endswith("dev"):
     #    usekey = usekey + "_dev"
