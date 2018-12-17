@@ -83,4 +83,7 @@ def get_nick_bladder(bot, botcom, nick):
     while timesincebladder > claimdict["fullbladderseconds"]:
         timesincebladder = timesincebladder - claimdict["fullbladderseconds"]
     set_nick_value(bot, nick, "long", 'claims', "bladder", time.time() - timesincebladder)
-    bot.say(str(timesincebladder))
+
+    # bladder percentage
+    bladderpercentage = timesincebladder / claimdict["fullbladderseconds"]
+    bot.say(str(bladderpercentage))
