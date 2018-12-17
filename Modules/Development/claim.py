@@ -70,7 +70,7 @@ def execute_main(bot, trigger, botcom):
     bladder = get_nick_bladder(bot, botcom, botcom.instigator)
 
     if posstarget == 'bladder':
-        return osd(bot, botcom.instigator, 'notice', ["Your bladder is currently at " + str("{0:.0%}".format(bladder / claimdict["fullbladderseconds"])) + " capacity.", "Your character peed " + str(humanized_time(time.time() - bladder) + " ago")])
+        return osd(bot, botcom.channel_current, 'say', ["Your bladder is currently at " + str("{0:.0%}".format((time.time() - bladder) / claimdict["fullbladderseconds"])) + " capacity.", "Your character peed " + str(humanized_time(time.time() - bladder) + " ago")])
 
 
 def get_nick_bladder(bot, botcom, nick):
