@@ -124,7 +124,7 @@ def execute_main(bot, trigger, botcom):
                     pasteformat.append("     *  " + remstring)
 
                 # and to final
-                dispmsg.append(comstring)
+                dispmsg.append(pasteformat)
                 dispmsg.append(["     "])
 
         if indexcount:
