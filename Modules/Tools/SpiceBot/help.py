@@ -120,6 +120,8 @@ def execute_main(bot, trigger, botcom):
                     comstring.append("Example Reply:  " + str(dict_from_file["exampleresponse"]))
 
                 pasteformat = []
+                pasteformat.append("     " + comstring[0])
+                del comstring[0]
                 for remstring in comstring:
                     pasteformat.append("     *  " + remstring)
 
