@@ -80,9 +80,9 @@ def execute_main(bot, trigger, botcom):
 
                 # dotcommand
                 if dictcomref in ['nickname_commands', 'rule_commands']:
-                    comstring.append(command)
+                    comstring.append("     " + command)
                 else:
-                    comstring.append("." + command)
+                    comstring.append("     " + "." + command)
 
                 if 'privs' in dict_from_file.keys():
                     if len(dict_from_file['privs']) > 0:
