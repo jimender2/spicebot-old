@@ -171,10 +171,8 @@ def execute_main(bot, trigger, botcom):
 
         # set the claims
         duration = randint(claim_gamedict["durationmin"], claim_gamedict["durationmax"])
-        bot.say(str(duration))
         duration = duration * (bladder.timesince / claim_gamedict["fullbladderseconds"])
-        bot.say(str(duration))
-        # set_nick_claims(bot, botcom, botcom.instigator, target, duration)
+        set_nick_claims(bot, botcom, botcom.instigator, target, duration)
 
 
 def set_nick_claims(bot, botcom, nickclaimer, nickclaimee, duration):
