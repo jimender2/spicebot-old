@@ -67,7 +67,10 @@ def execute_main(bot, trigger, botcom):
     if botcom.channel_priv:
         return osd(bot, botcom.instigator, 'notice', "Claims must be done in channel")
 
-    bladderlevel = get_nick_bladder(bot, botcom, botcom.instigator)
+    bladder = get_nick_bladder(bot, botcom, botcom.instigator)
+
+    if posstarget == 'bladder':
+        return osd(bot, botcom.instigator, 'notice', ["Your bladder is currently at " + str("{0:.0%}".format(bladder / claimdict["fullbladderseconds"])) + " capacity.", "Your character peed " + str(humanized_time(time.time() - bladder) + " ago")])
 
 
 def get_nick_bladder(bot, botcom, nick):
@@ -84,6 +87,6 @@ def get_nick_bladder(bot, botcom, nick):
         timesincebladder = timesincebladder - claimdict["fullbladderseconds"]
     set_nick_value(bot, nick, "long", 'claims', "bladder", time.time() - timesincebladder)
 
-    # bladder percentage
-    bladderpercentage = timesincebladder / claimdict["fullbladderseconds"]
-    bot.say(str(bladderpercentage))
+    bladder = get_nick_value(bot, nick, "long", 'claims', "bladder")
+
+    return bladder
