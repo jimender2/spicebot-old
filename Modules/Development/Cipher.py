@@ -30,79 +30,6 @@ comdict = {
             }
 
 
-terminatordict = {
-
-                    "story": [
-                                'The machines rose from the ashes of the nuclear fire.',
-                                'Their war to exterminate mankind had raged on for decades.',
-                                'But the final battle will not be fought in the future.',
-                                'It would be fought in our present...tonight.'
-                                ],
-
-                    "modelnumbers": [
-                                    "T-1 SERIES",
-                                    "T-70 SERIES",
-                                    "T-600 SERIES",
-                                    "T-700 SERIES",
-                                    "T-1001 SERIES",
-                                    "T-888 SERIES",
-                                    "TOK715 SERIES",
-                                    "T-X SERIES",
-                                    "T-1000 SERIES",
-                                    "T-800 SERIES, Model 101",
-                                    "T-850 SERIES"
-                                    ],
-
-                    "missiontypes": {
-
-                                    "terminate": {
-                                                    [
-                                                        "Sarah Connor",
-                                                        "John Connor",
-                                                        "Kyle Reese",
-                                                        "Mary Warren",
-                                                        "Marco Cassetti",
-                                                        "Kate Brewster",
-                                                        "Robert Brewster",
-                                                        "Elizabeth Anderson",
-                                                        "William Anderson",
-                                                        "Jose Barrera",
-                                                        "Simon Taylor",
-                                                        "Isaac Hall",
-                                                        "Fritz Roland",
-                                                        "Ted Snavely",
-                                                        "Sharlene Gen",
-                                                        "Vince Forcer"
-                                                        ]
-                                                    },
-
-                                    "protect": {
-                                                    [
-                                                        "PROTECT Sarah Connor",
-                                                        "PROTECT John Connor",
-                                                        "ENSURE THE SURVIVAL OF John Connor AND Katherine Brewster"
-                                                        ]
-                                                },
-
-                                    "skynet": {
-                                                [
-                                                    "ENSURE THE ACTIVATION OF SKYNET",
-                                                    "PRESERVE THE CREATION OF SKYNET",
-                                                    "PRESERVE THE CREATION OF ARTIE",
-                                                    "ENSURE THE CREATION OF GENISYS"
-                                                ]
-                                                },
-
-                                    "spice": {
-                                                [
-                                                    "Protect Technical Angel",
-                                                    "INSTALL MOAR PATCHES"
-                                                    ]
-                                            },
-                                    }
-                    }
-
-
 @sopel.module.commands('cipher', 'terminator', 'ciphertheterminator')
 def mainfunctionnobeguine(bot, trigger):
 
@@ -126,13 +53,87 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
+    terminatordict = {
+
+                        "story": [
+                                    'The machines rose from the ashes of the nuclear fire.',
+                                    'Their war to exterminate mankind had raged on for decades.',
+                                    'But the final battle will not be fought in the future.',
+                                    'It would be fought in our present...tonight.'
+                                    ],
+
+                        "modelnumbers": [
+                                        "T-1 SERIES",
+                                        "T-70 SERIES",
+                                        "T-600 SERIES",
+                                        "T-700 SERIES",
+                                        "T-1001 SERIES",
+                                        "T-888 SERIES",
+                                        "TOK715 SERIES",
+                                        "T-X SERIES",
+                                        "T-1000 SERIES",
+                                        "T-800 SERIES, Model 101",
+                                        "T-850 SERIES"
+                                        ],
+
+                        "missiontypes": {
+
+                                        "terminate": {
+                                                        [
+                                                            "Sarah Connor",
+                                                            "John Connor",
+                                                            "Kyle Reese",
+                                                            "Mary Warren",
+                                                            "Marco Cassetti",
+                                                            "Kate Brewster",
+                                                            "Robert Brewster",
+                                                            "Elizabeth Anderson",
+                                                            "William Anderson",
+                                                            "Jose Barrera",
+                                                            "Simon Taylor",
+                                                            "Isaac Hall",
+                                                            "Fritz Roland",
+                                                            "Ted Snavely",
+                                                            "Sharlene Gen",
+                                                            "Vince Forcer",
+                                                            ]
+                                                        },
+
+                                        "protect": {
+                                                        [
+                                                            "PROTECT Sarah Connor",
+                                                            "PROTECT John Connor",
+                                                            "ENSURE THE SURVIVAL OF John Connor AND Katherine Brewster"
+                                                            ]
+                                                    },
+
+                                        "skynet": {
+                                                    [
+                                                        "ENSURE THE ACTIVATION OF SKYNET",
+                                                        "PRESERVE THE CREATION OF SKYNET",
+                                                        "PRESERVE THE CREATION OF ARTIE",
+                                                        "ENSURE THE CREATION OF GENISYS"
+                                                    ]
+                                                    },
+
+                                        "spice": {
+                                                    [
+                                                        "Protect Technical Angel",
+                                                        "INSTALL MOAR PATCHES"
+                                                        ]
+                                                },
+                                        }
+                        }
+
     target = spicemanip(bot, triggerargsarray, 1) or None
 
     if (bot_check_inlist(bot, botcom.instigator, str('Cipher-0')) and not target) or target == 'Cipher-0':
 
         modelnumber = spicemanip(bot, terminatordict["modelnumbers"], 'random').upper()
 
-        mission = spicemanip(bot, terminatordict["missiontypes"][spicemanip(bot, terminatordict["missiontypes"], 'random')], 'random').upper()
+        missiontype = spicemanip(bot, terminatordict["missiontypes"], 'random')
+
+        mission = spicemanip(bot, terminatordict["missiontypes"][missiontype], 'random').upper()
 
         osd(bot, botcom.channel_current, 'say', 'CYBORG TISSUE GENERATION ' + modelnumber + ' SEQUENCE INITIATED')
 
