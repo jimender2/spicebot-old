@@ -55,7 +55,7 @@ def mainfunctionnobeguine(bot, trigger):
 def execute_main(bot, trigger, botcom):
     """Do the thing."""
     UTC_Date = datetime.datetime.utcnow()
-    datetime_obj_naive = datetime.strptime(UTC_Date, "%Y-%m-%d %H:%M:%S")
+    datetime_obj_naive = datetime.datetime.strptime(UTC_Date, "%Y-%m-%d %H:%M:%S")
     #  datetime_obj_pacific = timezone('Pacific/Auckland').localize(datetime_obj_naive)
     #  datedisplaystring = datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z")
     bot.say(datetime_obj_naive)
