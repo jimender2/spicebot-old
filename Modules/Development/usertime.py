@@ -14,8 +14,10 @@ sys.path.append(shareddir)
 from BotShared import *
 # imports specific to this file
 import datetime
+import time
 import pytz
 from tzlocal import get_localzone
+import tzlocal
 
 # Ensure Encoding
 reload(sys)
@@ -53,8 +55,8 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
     """Do the thing."""
-    date_str = "2018-12-13 22:28:15"
-    datetime_obj_naive = datetime.strftime(date_str, "%Y-%m-%d %H:%M:%S")
-    datetime_obj_pacific = timezone('Pacific/Auckland').localize(datetime_obj_naive)
-    datedisplaystring = datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z")
-    bot.say(datedisplaystring)
+    UTC_Date = datetime.utcnow()
+    datetime_obj_naive = datetime.strptime(UTC_Date, "%Y-%m-%d %H:%M:%S")
+    #  datetime_obj_pacific = timezone('Pacific/Auckland').localize(datetime_obj_naive)
+    #  datedisplaystring = datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z")
+    bot.say(datetime_obj_naive)
