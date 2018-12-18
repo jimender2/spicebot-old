@@ -57,7 +57,7 @@ def execute_main(bot, trigger, botcom):
     Date_Format = "%Y-%m-%d %H:%M"
     UTC_Date = datetime.datetime.utcnow()
     UTC_DateString = str(UTC_Date)
-    datetime_obj_naive = datetime.datetime.strftime(UTC_DateString, Date_Format)
+    datetime_obj_naive = datetime.datetime.strftime(UTC_Date, Date_Format)
     #  datetime_obj_pacific = timezone('Pacific/Auckland').localize(datetime_obj_naive)
     #  datedisplaystring = datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z")
     bot.say("UTC is currently: " + datetime_obj_naive)
