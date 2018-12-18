@@ -54,13 +54,19 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
     """Do the thing."""
-    UTC_Date = datetime.datetime.utcnow()
     instigator = trigger.nick
-    newzone = user_locale.get(instigator)
-    datetime_display = format_date(UTC_Date)
-    #  datetime_obj_pacific = timezone('Pacific/Auckland').localize(datetime_obj_naive)
-    #  datedisplaystring = datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z")
-    bot.say("UTC is currently: " + datetime_display + ". Next we want it in the timezone: " + newzone)
+    posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or instigator
+    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, "2+", 'list')
+    if posstarget not in user_locale.keys:
+        return osd(bot, botcom.channel_current, 'say', "I don't have a timezone for that person.")
+    else:
+        UTC_Date = datetime.datetime.utcnow()
+        usertimezone = user_locale.get(target)
+        UTC_display = format_date(UTC_Date)
+        #  datetime_obj_pacific = timezone('Pacific/Auckland').localize(datetime_obj_naive)
+        #  datedisplaystring = datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z")
+        message = "UTC is currently: " + UTC_display + ". " + target + " is in " + usertimezone + ", where the time is: " +
+    bot.say(message)
 
 
 def format_date(timestamp):
@@ -68,6 +74,7 @@ def format_date(timestamp):
     Date_Format = "%Y-%m-%d %H:%M"
     newdatestring = datetime.datetime.strftime(timestamp, Date_Format)
     return newdatestring
+
 
 def get_localtime(timestamp, newtimezone):
     """Convert datetime to local time."""
