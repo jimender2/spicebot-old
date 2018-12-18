@@ -124,7 +124,7 @@ def execute_main(bot, trigger, botcom):
 
         modelnumber = spicemanip(bot, terminatordict["modelnumbers"], 'random').upper()
 
-        missiontype = spicemanip(bot, terminatordict["missiontypes"], 'random')
+        missiontype = spicemanip(bot, terminatordict["missiontypes"].keys(), 'random')
 
         mission = spicemanip(bot, terminatordict["missiontypes"][missiontype], 'random').upper()
 
