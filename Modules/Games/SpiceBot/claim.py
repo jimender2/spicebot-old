@@ -38,7 +38,7 @@ claim_gamedict = {
             }
 
 
-@sopel.module.commands('claim')
+@sopel.module.commands('claim','goldenshowers')
 def mainfunctionnobeguine(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
