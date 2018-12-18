@@ -62,3 +62,11 @@ def execute_main(bot, trigger, botcom):
             else:
                 osd(bot, botcom.channel_current, 'say', query)
                 osd(bot, botcom.channel_current, 'say', 'Valid website not found')
+
+
+def searchfor(bot, data):
+    """Search Google."""
+    lookfor = data.replace(':', '%3A')
+    var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI')
+    query = str(var.url)
+    return query
