@@ -25,7 +25,7 @@ sys.setdefaultencoding('utf-8')
 # Creator details
 comdict = {"author": "dysonparkes", "contributors": ["dysonparkes alone"]}
 # user_timezone details
-User_locale = {
+user_locale = {
                         "dysonparkes": "Pacific/Auckland",
                         "deathbybandaid": "US/Pacific"  # UTC -5
 }
@@ -54,10 +54,23 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
     """Do the thing."""
-    Date_Format = "%Y-%m-%d %H:%M"
     UTC_Date = datetime.datetime.utcnow()
-    UTC_DateString = str(UTC_Date)
-    datetime_obj_naive = datetime.datetime.strftime(UTC_Date, Date_Format)
+    instigator = trigger.nick
+    newzone = user_locale.get(instigator)
+    datetime_display = manipulate_date(UTC_Date, newzone)
     #  datetime_obj_pacific = timezone('Pacific/Auckland').localize(datetime_obj_naive)
     #  datedisplaystring = datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z")
-    bot.say("UTC is currently: " + datetime_obj_naive)
+    bot.say("UTC is currently: " + datetime_display + ". Next we want it in the timezone: " + newzone)
+
+
+def format_date(timestamp):
+    """Manipulate date to match formatting"""
+    Date_Format = "%Y-%m-%d %H:%M"
+    newdatestring = datetime.datetime.strftime(timestamp, Date_Format)
+    return newdatestring
+
+def get_localtime(timestamp, newtimezone):
+    """Convert datetime to local time."""
+    localstamp = datetime.timezone(newtimezone).localize(timestamp)
+    localtime = format_date(localstamp)
+    return localtime
