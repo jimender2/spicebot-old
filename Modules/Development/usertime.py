@@ -4,17 +4,14 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 # sopel imports
 import sopel.module
-
 # imports for system and OS access, directories
 import os
 import sys
-
 # imports based on THIS file
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
-
 # imports specific to this file
 import datetime
 import pytz
@@ -24,6 +21,9 @@ from tzlocal import get_localzone
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+# Creator details
+comdict = {"author": "dysonparkes", "contributors": ["dysonparkes alone"]}
+# user_timezone details
 User_locale = {
                         "dysonparkes": "Pacific/Auckland",
                         "deathbybandaid": "US/Pacific"  # UTC -5
@@ -54,7 +54,7 @@ def mainfunctionnobeguine(bot, trigger):
 def execute_main(bot, trigger, botcom):
     """Do the thing."""
     date_str = "2018-12-13 22:28:15"
-    datetime_obj_naive = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+    datetime_obj_naive = datetime.strftime(date_str, "%Y-%m-%d %H:%M:%S")
     datetime_obj_pacific = timezone('Pacific/Auckland').localize(datetime_obj_naive)
     datedisplaystring = datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z")
     bot.say(datedisplaystring)
