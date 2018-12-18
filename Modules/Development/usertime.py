@@ -57,14 +57,7 @@ def execute_main(bot, trigger, botcom):
     Date_Format = "%Y-%m-%d %H:%M:%S"
     UTC_Date = datetime.datetime.utcnow()
     UTC_DateString = str(UTC_Date)
-    #datetime_obj_naive = datetime.datetime.strptime(UTC_DateString, Date_Format)
-    datetime_obj_naive = parse_prefix(UTC_Date, Date_Format)
+    #  datetime_obj_naive = datetime.datetime.strptime(UTC_DateString, Date_Format)
     #  datetime_obj_pacific = timezone('Pacific/Auckland').localize(datetime_obj_naive)
     #  datedisplaystring = datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z")
-    bot.say(datetime_obj_naive)
-
-
-def parse_prefix(dateline, fmt):
-    """Make datetime look nice"""
-    cover = len(datetime.datetime.utcnow().strftime(fmt))
-    return datetime.datetime.strptime(dateline[:cover], fmt)
+    bot.say("UTC is currently: " + UTC_DateString)
