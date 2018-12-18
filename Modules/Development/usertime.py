@@ -58,9 +58,10 @@ def execute_main(bot, trigger, botcom):
     instigator = trigger.nick
     newzone = user_locale.get(instigator)
     UTC_display = format_date(UTC_Date)
+    local_time = get_localtime(UTC_Date, newzone)
     #  datetime_obj_pacific = timezone('Pacific/Auckland').localize(datetime_obj_naive)
     #  datedisplaystring = datetime_obj_pacific.strftime("%Y-%m-%d %H:%M:%S %Z%z")
-    message = "UTC is currently: " + UTC_display + ". " + target + " is in " + newzone + ", where the time is: " +
+    message = "UTC is currently: " + UTC_display + ". " + target + " is in " + newzone + ", where the time is: " + local_time
     bot.say(message)
 
 
