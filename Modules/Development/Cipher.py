@@ -120,7 +120,7 @@ def execute_main(bot, trigger, botcom):
 
     target = spicemanip(bot, botcom.triggerargsarray, 1) or None
 
-    if (bot_check_inlist(bot, botcom.instigator, str('Cipher-0')) and not target) or target == 'Cipher-0':
+    if (bot_check_inlist(bot, botcom.instigator, str('Cipher-0')) and not target) or bot_check_inlist(bot, target, str('Cipher-0')):
 
         modelnumber = spicemanip(bot, terminatordict["modelnumbers"], 'random').upper()
 
