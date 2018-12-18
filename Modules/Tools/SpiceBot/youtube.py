@@ -63,6 +63,9 @@ def execute_main(bot, trigger, botcom):
                 osd(bot, botcom.channel_current, 'say', query)
                 osd(bot, botcom.channel_current, 'say', 'Valid website not found')
 
+    else:
+        osd(bot, botcom.channel_current, 'say', "Enter what you want to search for")
+
 
 def searchfor(bot, data):
     """Search Google."""
