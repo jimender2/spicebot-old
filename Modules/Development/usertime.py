@@ -67,4 +67,4 @@ def execute_main(bot, trigger, botcom):
 def parse_prefix(dateline, fmt):
     """Make datetime look nice"""
     cover = len(datetime.datetime.utcnow().strftime(fmt))
-    return datetime.datetime.strptime(line[:cover], fmt)
+    return datetime.datetime.strptime(dateline[:cover], fmt)
