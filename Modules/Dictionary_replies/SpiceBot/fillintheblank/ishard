@@ -1,5 +1,5 @@
 {
-"validcoms": ['ich', 'icanhaz'],
+
 "?default": {
               "type": "fillintheblank",
               "responses": ["$blank IS HAAAAARD!!!"],
