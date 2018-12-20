@@ -68,16 +68,28 @@ def execute_main(bot, trigger, botcom):
 
 
 def getQuote(bot, query):
-    unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;": " "})
-    stripper = (anyOpenTag | anyCloseTag).suppress()
-    urlsuffix = 'http://spice.dussed.com/?'
+
+    quote = None
+
+    url = 'http://spice.dussed.com/?'
+
     if query.isdigit():
-        qNum = query
-        url = urlsuffix + qNum
+        url = url + query
     else:
-        url = urlsuffix + 'do=search&q=' + query
+        url = url + 'do=search&q=' + query
+
     page = urllib2.urlopen(url)
     soup = BeautifulSoup(page)
+
+    links = []
+    for link in soup.findAll('a'):
+        bot.msg("#spicebottest", str(link))
+
+    return quote
+
+    # unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;": " "})
+    # stripper = (anyOpenTag | anyCloseTag).suppress()
+
     links = []
     qlinks = []
     for link in soup.findAll('a'):
