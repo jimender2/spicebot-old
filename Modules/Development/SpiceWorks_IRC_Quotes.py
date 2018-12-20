@@ -88,7 +88,9 @@ def getQuote(bot, query):
         if str(link).startswith("./?"):
             testing = testing - 1
             if testing > 0:
+                link = link.replace(".", "http://spice.dussed.com")
                 bot.msg("#spicebottest", str(link))
+                links.append(link)
 
     return quote
 
