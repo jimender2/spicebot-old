@@ -82,8 +82,11 @@ def getQuote(bot, query):
     soup = BeautifulSoup(page)
 
     links = []
+    testing = 5
     for link in soup.findAll('a'):
-        bot.msg("#spicebottest", str(link))
+        testing = testing -1
+        if testing > 0:
+            bot.msg("#spicebottest", str(link))
 
     return quote
 
