@@ -84,9 +84,10 @@ def getQuote(bot, query):
     links = []
     testing = 5
     for link in soup.findAll('a'):
-        testing = testing -1
-        if testing > 0:
-            bot.msg("#spicebottest", str(link))
+        if str(link).startswith("./?")
+            testing = testing -1
+            if testing > 0:
+                bot.msg("#spicebottest", str(link))
 
     return quote
 
