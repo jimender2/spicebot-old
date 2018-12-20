@@ -91,28 +91,19 @@ def getQuote(bot, query):
                 link = link.replace(".", "http://spice.dussed.com")
                 links.append(link)
     if links == []:
-        return "Invalid quote"
+        if query.isdigit():
+            return "Specified quote number is not valid!"
+        else:
+            return "No Quotes matched " + str(query) + "!"
 
-    bot.msg("#spicebottest", str(links[0]))
-    return links[0]
+    # if number searched, random doesn't really do anything
+    quote = spicemanip(bot, links, 'random')
 
     return quote
 
     # unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;": " "})
     # stripper = (anyOpenTag | anyCloseTag).suppress()
 
-    links = []
-    qlinks = []
-    for link in soup.findAll('a'):
-        links.append(link.get('href'))
-    if links == []:
-        txt = "Invalid quote"
-        return txt
-    for qlink in links:
-        if str(qlink).startswith("./?"):
-            link = qlink.replace(".", "http://spice.dussed.com")
-            qlinks.append(link)
-    url = spicemanip(bot, qlinks, 'random')  # update when replacement happens
     if url == '':
         txt = "Invalid quote"
         return txt
