@@ -103,10 +103,6 @@ def getQuote(bot, query):
 
     # unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;": " "})
     # stripper = (anyOpenTag | anyCloseTag).suppress()
-
-    if url == '':
-        txt = "Invalid quote"
-        return txt
     soup = BeautifulSoup(urllib2.urlopen(url).read())
     txt = soup.find('td', {'class': 'body'}).text
     txt = unescape_xml_entities(stripper.transformString(txt))
