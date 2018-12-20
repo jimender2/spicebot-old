@@ -89,8 +89,12 @@ def getQuote(bot, query):
             testing = testing - 1
             if testing > 0:
                 link = link.replace(".", "http://spice.dussed.com")
-                bot.msg("#spicebottest", str(link))
                 links.append(link)
+    if links == []:
+        return "Invalid quote"
+
+    bot.msg("#spicebottest", str(links[0]))
+    return links[0]
 
     return quote
 
