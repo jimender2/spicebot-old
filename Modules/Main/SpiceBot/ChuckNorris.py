@@ -84,7 +84,7 @@ def execute_main(bot, trigger, botcom):
 
 def getJoke():
 
-    url = 'http://api.icndb.com/jokes/random'
+    url = 'http://api.icndb.com/jokes/'
 
     jokes = []
     try:
