@@ -58,7 +58,7 @@ def execute_main(bot, trigger, botcom):
     if botcom.specified:
         bot.say(str(botcom.specified))
 
-    jokes = getJoke()
+    jokes = getJoke(bot)
 
     if botcom.specified:
         if botcom.specified > len(jokes):
@@ -82,7 +82,7 @@ def execute_main(bot, trigger, botcom):
     osd(bot, trigger.sender, 'say', joke)
 
 
-def getJoke():
+def getJoke(bot):
 
     url = 'http://api.icndb.com/jokes/'
 
