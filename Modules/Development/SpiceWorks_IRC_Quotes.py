@@ -79,14 +79,11 @@ def getQuote(bot, query):
     soup = BeautifulSoup(page)
 
     links = []
-    testing = 5
     for link in soup.findAll('a'):
         link = link.get('href')
         if str(link).startswith("./?"):
-            testing = testing - 1
-            if testing > 0:
-                link = link.replace(".", "http://spice.dussed.com")
-                links.append(link)
+            link = link.replace(".", "http://spice.dussed.com")
+            links.append(link)
     if links == []:
         if query.isdigit():
             return "Specified quote number is not valid!"
