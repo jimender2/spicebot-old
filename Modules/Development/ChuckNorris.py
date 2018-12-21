@@ -61,9 +61,10 @@ def execute_main(bot, trigger, botcom):
         targetchecking = bot_target_check(bot, botcom, target, [])
         if not targetchecking["targetgood"]:
             return osd(bot, botcom.channel_current, 'say', targetchecking["error"])
+    target = nick_actual(bot, target)
 
     if target:
-        for r in (('Chuck Norris', target), ('chuck norris', target), ('Norris', target), ('norris', target), ('Chuck', target), ('chuck', target)):
+        for r in (("Chuck Norris'", targetposession(bot, target)), ("Norris'", targetposession(bot, target)), ('Chuck Norris', target), ('chuck norris', target), ('Norris', target), ('norris', target), ('Chuck', target), ('chuck', target)):
             joke = joke.replace(*r)
 
     osd(bot, trigger.sender, 'say', joke)
