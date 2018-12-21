@@ -56,10 +56,7 @@ def execute_main(bot, trigger, botcom):
     now = datetime.datetime.utcnow()
     now = now.replace(tzinfo=pytz.UTC)
 
-    entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-    entrytime = parser.parse(str(entrytime))
-
-    entrytime = datetime.datetime(now.year, 7, 27, now.hour, now.minute, 0, 0).replace(tzinfo=None)
+    entrytime = datetime.datetime(now.year, 7, 27, now.hour, now.minute, 0, 0).replace(tzinfo=pytz.UTC)
     entrytime = str(entrytime)
     entrytime = parser.parse(entrytime)
 
@@ -76,9 +73,6 @@ def execute_main(bot, trigger, botcom):
     osd(bot, trigger.sender, 'say', timecompare)
 
     return
-
-
-
 
     today = datetime.datetime.now()
     sysadminday = datetime.datetime.strptime('Jul 27 2018', '%b %d %Y')
