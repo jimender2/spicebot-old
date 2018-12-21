@@ -30,7 +30,7 @@ comdict = {
             }
 
 
-@sopel.module.commands('dbbtest', 'deathbybandaidtest')
+@sopel.module.commands('threedtest')
 def mainfunctionnobeguine(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
@@ -52,4 +52,16 @@ def mainfunctionnobeguine(bot, trigger):
 
 
 def execute_main(bot, trigger, botcom):
-    bot.say("DBB Testing")
+    bot.say("thread Testing")
+
+    Thread(target=func1, args=(bot,)).start()
+    Thread(target=func2, args=(bot,)).start()
+
+
+def func1(bot):
+    time.sleep(6)
+    bot.msg("#spicebottest", "func1")
+
+
+def func2(bot):
+    bot.msg("#spicebottest", "func2")

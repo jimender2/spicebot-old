@@ -83,3 +83,6 @@ def watch_all_hub(bot, trigger):
         del currentnickrecord[0]
 
     set_nick_value(bot, botcom.instigator, 'long', 'user_activity', 'list', currentnickrecord)
+
+    # modify a list of the last 10 people that spoke in a channel
+    set_channel_value(bot, botcom.channel_current, 'long', 'user_activity', 'list', currentnickrecord)

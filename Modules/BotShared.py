@@ -2395,7 +2395,7 @@ def bits2string(b=None):
 
 
 """
-Database
+Database Direct
 """
 
 
@@ -2470,6 +2470,11 @@ def database_initialize(bot, nick, array, database):
             inputstring = array[i]
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
             i = i + 1
+
+
+"""
+Database Direct Dicts
+"""
 
 
 # Database Users
@@ -2563,8 +2568,16 @@ def adjust_user_dict_array(bot, dynamic_class, nick, dictkey, entries, adjustmen
     nickdict[dictkey] = oldvalue
 
 
+"""
+Database Bot.memory Users
+"""
+
+
 # get values from other bots
 def get_nick_value_api(bot, botname, nick, longevity, sortingkey, usekey):
+
+    nick = str(nick)
+
     try:
         if longevity == 'long':
             botvaltime = bot.memory["altbots"][botname]["users"][nick][sortingkey][usekey]["value"]
@@ -2770,6 +2783,230 @@ def adjust_nick_array(bot, nick, longevity, sortingkey, usekey, values, directio
                     oldvalues.remove(value)
 
     set_nick_value(bot, nick, longevity, sortingkey, usekey, oldvalues)
+
+
+"""
+Database Bot.memory Channels
+"""
+
+
+# get values from other bots
+def get_channel_value_api(bot, botname, channel, longevity, sortingkey, usekey):
+
+    channel = str(channel)
+
+    try:
+        altbotserver = bot.memory["altbots"][botname]["tempvals"]['server']
+        if longevity == 'long':
+            botvaltime = bot.memory["altbots"][botname]['servers_list'][altbotserver]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"]
+        elif longevity == 'temp':
+            botvaltime = bot.memory["altbots"][botname]["tempvals"]["servers_list"][currentservername]["channels_list"][sortingkey][usekey]["value"]
+    except Exception as e:
+        return None
+    return botvaltime
+
+
+# get channel value from bot.memory
+def get_channel_value(bot, channel, longevity, sortingkey, usekey):
+
+    channel = str(channel)
+
+    currentservername = bot.memory["botdict"]["tempvals"]['server']
+
+    # verify channel dict exists
+    if longevity == 'long':
+        if channel not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()] = dict()
+    elif longevity == 'temp':
+        if channel not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()] = dict()
+
+    # Verify sortingkey exists
+    if longevity == 'long':
+        if sortingkey not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey] = dict()
+    elif longevity == 'temp':
+        if sortingkey not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey] = dict()
+
+    # Verify usekey exists
+    if longevity == 'long':
+        if usekey not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey] = dict()
+        if not isinstance(bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey], dict):
+            oldvalue = bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey] = dict()
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"] = oldvalue
+    elif longevity == 'temp':
+        if usekey not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey] = dict()
+        if not isinstance(bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey], dict):
+            oldvalue = bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey] = dict()
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"] = oldvalue
+
+    # Get the value
+    if longevity == 'long':
+        if "value" not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"] = None
+        if "timestamp" not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["timestamp"] = 0
+        return bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"]
+    elif longevity == 'temp':
+        if "value" not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"] = None
+        if "timestamp" not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["timestamp"] = 0
+        return bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"]
+
+
+def adjust_channel_value(bot, channel, longevity, sortingkey, usekey, value):
+    oldvalue = get_channel_value(bot, channel, longevity, sortingkey, usekey) or 0
+    set_channel_value(bot, channel, longevity, sortingkey, usekey, int(oldvalue) + int(value))
+
+
+# set channel value in bot.memory
+def set_channel_value(bot, channel, longevity, sortingkey, usekey, value):
+
+    channel = str(channel)
+
+    currentservername = bot.memory["botdict"]["tempvals"]['server']
+
+    # verify channel dict exists
+    if longevity == 'long':
+        if channel not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()] = dict()
+    elif longevity == 'temp':
+        if channel not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()] = dict()
+
+    # Verify sortingkey exists
+    if longevity == 'long':
+        if sortingkey not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey] = dict()
+    elif longevity == 'temp':
+        if sortingkey not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey] = dict()
+
+    # Verify usekey exists
+    if longevity == 'long':
+        if usekey not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey] = dict()
+        if not isinstance(bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey], dict):
+            oldvalue = bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey] = dict()
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"] = oldvalue
+    elif longevity == 'temp':
+        if usekey not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey] = dict()
+        if not isinstance(bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey], dict):
+            oldvalue = bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey] = dict()
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"] = oldvalue
+
+    # Se the value
+    currtime = time.time()
+    if longevity == 'long':
+        bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"] = value
+        bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["timestamp"] = currtime
+    elif longevity == 'temp':
+        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"] = value
+        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["timestamp"] = currtime
+
+
+# set channel value in bot.memory
+def reset_channel_value(bot, channel, longevity, sortingkey, usekey):
+
+    channel = str(channel)
+
+    currentservername = bot.memory["botdict"]["tempvals"]['server']
+
+    # verify channel dict exists
+    if longevity == 'long':
+        if channel not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()] = dict()
+    elif longevity == 'temp':
+        if channel not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()] = dict()
+
+    # Verify sortingkey exists
+    if longevity == 'long':
+        if sortingkey not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey] = dict()
+    elif longevity == 'temp':
+        if sortingkey not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey] = dict()
+
+    # Verify usekey exists
+    if longevity == 'long':
+        if usekey not in bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey].keys():
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey] = dict()
+        if not isinstance(bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey], dict):
+            oldvalue = bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey] = dict()
+            bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"] = oldvalue
+    elif longevity == 'temp':
+        if usekey not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey].keys():
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey] = dict()
+        if not isinstance(bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey], dict):
+            oldvalue = bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey] = dict()
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"] = oldvalue
+
+    # Reset the value
+    currtime = time.time()
+    if longevity == 'long':
+        bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"] = None
+        bot.memory["botdict"]['servers_list'][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["timestamp"] = currtime
+    elif longevity == 'temp':
+        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["value"] = None
+        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()][sortingkey][usekey]["timestamp"] = currtime
+
+
+def adjust_channel_array(bot, channel, longevity, sortingkey, usekey, values, direction):
+
+    if not isinstance(values, list):
+        values = [values]
+
+    oldvalues = get_channel_value(bot, channel, longevity, sortingkey, usekey) or []
+
+    # startup entries
+    if direction == 'startup':
+        if longevity == 'long':
+            if oldvalues == []:
+                direction == 'add'
+            else:
+                return
+        elif longevity == 'temp':
+            if oldvalues == []:
+                direction == 'add'
+            else:
+                return
+
+    # adjust
+    for value in values:
+        if longevity == 'long':
+            if direction == 'add':
+                if value not in oldvalues:
+                    oldvalues.append(value)
+            elif direction == 'startup':
+                if value not in oldvalues:
+                    oldvalues.append(value)
+            elif direction in ['del', 'remove']:
+                if value in oldvalues:
+                    oldvalues.remove(value)
+        elif longevity == 'temp':
+            if direction == 'add':
+                if value not in oldvalues:
+                    oldvalues.append(value)
+            elif direction == 'startup':
+                if value not in oldvalues:
+                    oldvalues.append(value)
+            elif direction in ['del', 'remove']:
+                if value in oldvalues:
+                    oldvalues.remove(value)
+
+    set_channel_value(bot, channel, longevity, sortingkey, usekey, oldvalues)
 
 
 """

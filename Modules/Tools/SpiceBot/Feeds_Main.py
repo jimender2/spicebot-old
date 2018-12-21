@@ -124,26 +124,26 @@ def execute_main(bot, trigger, botcom):
     channelselect = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot.privileges.keys()], 1) or botcom.channel_current
 
     if command == 'enable':
-        channelmodulesarray = get_nick_value(bot, channelselect, "long", "feeds", "enabled") or []
+        feeds_enabled = get_channel_value(bot, channel, "long", "feeds", "enabled") or []
         newlist = []
         for feed in current_feed_list:
-            if feed not in channelmodulesarray:
+            if feed not in feeds_enabled:
                 newlist.append(feed)
         if newlist != []:
-            adjust_nick_array(bot, channelselect, "long", "feeds", "enabled", newlist, "add")
+            adjust_channel_array(bot, channelselect, "long", "feeds", "enabled", newlist, "add")
             osd(bot, botcom.channel_current, 'say', spicemanip(bot, newlist, 'list') + " " + hashave(newlist) + " been " + command + "d for " + str(channelselect) + ".")
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
 
     if command == 'disable':
-        channelmodulesarray = get_nick_value(bot, channelselect, "long", "feeds", "enabled") or []
+        feeds_enabled = get_channel_value(bot, channel, "long", "feeds", "enabled") or []
         newlist = []
         for feed in current_feed_list:
-            if feed in channelmodulesarray:
+            if feed in feeds_enabled:
                 newlist.append(feed)
         if newlist != []:
-            adjust_nick_array(bot, channelselect, "long", "feeds", "enabled", newlist, "del")
+            adjust_channel_array(bot, channelselect, "long", "feeds", "enabled", newlist, "del")
             osd(bot, botcom.channel_current, 'say', spicemanip(bot, newlist, 'list') + " " + hashave(newlist) + " been " + command + "d for " + str(channelselect) + ".")
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
