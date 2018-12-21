@@ -467,8 +467,15 @@ def bot_dictcom_reply_shared(bot, botcom):
         else:
             currentspecified = botcom.specified
         botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], currentspecified, 'return')
+        botcom.replynum = currentspecified
     else:
         botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
+        try:
+            botcom.replynum = botcom.dotcommand_dict[botcom.responsekey]["responses"].index(botcom.replies)
+        except Exception as e:
+            botcom.replynum = 0
+        botcom.replynum += 1
+    botcom.totalreplies = len(botcom.dotcommand_dict[botcom.responsekey]["responses"])
 
     # This handles responses in list form
     if not isinstance(botcom.replies, list):
@@ -555,6 +562,10 @@ def bot_dictcom_reply_shared(bot, botcom):
                     rply = rply.replace("$replyvariation", variation)
                 else:
                     rply = rply.replace("$replyvariation", '')
+
+            # smaller variations for the text
+            if "$index" in rply:
+                rply = rply.replace("$index", str(str(botcom.replynum) + "/" + str(botcom.totalreplies)))
 
             # display special options for this command
             if "$specialoptions" in rply:
