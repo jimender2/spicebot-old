@@ -31,7 +31,7 @@ bot.nick do this
 # TODO make sure restart and update save database
 @rule('^\.(.*)')
 @sopel.module.thread(True)
-def mainfunctionnobeguine(bot, trigger):
+def mainfunction(bot, trigger):
 
     # command must start with
     if not str(trigger).startswith(tuple(['.'])):

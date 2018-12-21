@@ -84,7 +84,7 @@ def collectlines(bot, trigger):
           (?:/(\S+))?       # Optional slash, followed by group 4 (flags)
           """)
 @priority('high')
-def mainfunctionnobeguine(bot, trigger):
+def mainfunction(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger, "spellingcorrection")
     if not botcom.modulerun:

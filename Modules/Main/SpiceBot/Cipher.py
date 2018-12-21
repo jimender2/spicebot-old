@@ -96,7 +96,7 @@ terminatordict = {
 
 
 @sopel.module.commands('cipher', 'terminator', 'ciphertheterminator')
-def mainfunctionnobeguine(bot, trigger):
+def mainfunction(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:

@@ -30,7 +30,7 @@ comdict = {
             }
 
 
-@sopel.module.commands('template')
+@sopel.module.commands('tbf')
 def mainfunction(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
@@ -52,4 +52,15 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, botcom):
-    bot.say("template")
+
+    myline = spicemanip(bot, botcom.triggerargsarray, 0)
+    fair = 'f'
+    for letter in ['a', 'i', 'h', 'r']:
+        rand = random.randint(1, 10)
+        letter = str(letter) * rand
+        fair = str(fair + letter)
+    if not myline:
+        message = "To be " + fair + "..."
+    else:
+        message = "To be " + fair + "; " + myline
+    osd(bot, trigger.sender, 'say', message)

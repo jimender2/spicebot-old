@@ -34,7 +34,7 @@ sys.setdefaultencoding('utf-8')
           )
           """)
 @sopel.module.thread(True)
-def mainfunctionnobeguine(bot, trigger):
+def mainfunction(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger, "reddit")
     if not botcom.modulerun:

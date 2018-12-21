@@ -134,7 +134,7 @@ def get_wind(parsed):
 
 @commands('weather', 'wea')
 @example('.weather London')
-def mainfunctionnobeguine(bot, trigger):
+def mainfunction(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:

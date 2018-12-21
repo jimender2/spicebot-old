@@ -32,7 +32,7 @@ user_locale = {
 
 
 @sopel.module.commands('time')
-def mainfunctionnobeguine(bot, trigger):
+def mainfunction(bot, trigger):
     """Confirm module is enabled."""
     botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:

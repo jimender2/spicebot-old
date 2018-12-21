@@ -42,7 +42,7 @@ bemoreofapussy = [
 
 @module.rule('^(?:that)\s+?.*')
 @sopel.module.thread(True)
-def mainfunctionnobeguine(bot, trigger):
+def mainfunction(bot, trigger):
 
     # does not apply to bots
     if trigger.nick.lower() in bot_config_names(bot):

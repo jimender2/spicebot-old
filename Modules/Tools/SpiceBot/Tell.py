@@ -100,7 +100,7 @@ def setup(self):
 
 @commands('tell', 'ask')
 @example('$nickname, tell Embolalia he broke something again.')
-def mainfunctionnobeguine(bot, trigger):
+def mainfunction(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:
