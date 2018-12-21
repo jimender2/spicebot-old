@@ -966,349 +966,403 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
     dispmsg = []
     displayname = False
 
-    url = feed_dict["url"]
-    if not url:
-        if forcedisplay:
-            return ["URL missing."]
+    now = datetime.datetime.utcnow()
+    now = now.replace(tzinfo=pytz.UTC)
+
+    feed_type = feed_dict["type"]
+
+    if feed_type in ['rss', 'youtube', 'github', 'redditrss']:
+
+        url = feed_dict["url"]
+        if not url:
+            if forcedisplay:
+                return ["URL missing."]
+            else:
+                return []
+
+        page = requests.get(url, headers=header)
+        if page.status_code != 200:
+            if forcedisplay:
+                return ["Recieved http code " + str(page.status_code)]
+            else:
+                return []
+
+        try:
+            feedjson = feedparser.parse(url)
+        except Exception as e:
+            if forcedisplay:
+                return ["No Content Usable."]
+            else:
+                return []
+
+        lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+        lastbuildtime = parser.parse(str(lastbuildtime))
+        try:
+            entrytime = feedjson.entries[0].updated
+        except Exception as e:
+            entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+        entrytime = parser.parse(str(entrytime))
+
+        lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
+        try:
+            title = feedjson.entries[0].title
+            title = unicode_string_cleanup(title)
+        except Exception as e:
+            title = None
+        if title:
+            dispmsg.append(title)
+
+        lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
+        try:
+            link = feedjson.entries[0].link
+        except Exception as e:
+            link = None
+        if link:
+            dispmsg.append(link)
+
+        feedconsensus = []
+
+        if entrytime > lastbuildtime:
+            feedconsensus.append('True')
         else:
-            return []
+            feedconsensus.append('False')
 
-    page = requests.get(url, headers=header)
+        if link != lastbuildlink:
+            feedconsensus.append('True')
+        else:
+            feedconsensus.append('False')
 
-    if page.status_code == 200:
+        if title != lastbuildtitle:
+            feedconsensus.append('True')
+        else:
+            feedconsensus.append('False')
 
-        now = datetime.datetime.utcnow()
-        now = now.replace(tzinfo=pytz.UTC)
+        if forcedisplay:
+            feedrun = True
+        elif 'False' in feedconsensus:
+            feedrun = False
+        else:
+            feedrun = True
 
-        feed_type = feed_dict["type"]
-
-        if feed_type in ['rss', 'youtube', 'github', 'redditrss']:
-
-            try:
-                feedjson = feedparser.parse(url)
-            except Exception as e:
-                if forcedisplay:
-                    return ["No Content Usable."]
-                else:
-                    return []
-
-            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            lastbuildtime = parser.parse(str(lastbuildtime))
-            try:
-                entrytime = feedjson.entries[0].updated
-            except Exception as e:
-                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            entrytime = parser.parse(str(entrytime))
-
-            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
-            try:
-                title = feedjson.entries[0].title
-                title = unicode_string_cleanup(title)
-            except Exception as e:
-                title = None
-            if title:
-                dispmsg.append(title)
-
-            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
-            try:
-                link = feedjson.entries[0].link
-            except Exception as e:
-                link = None
-            if link:
-                dispmsg.append(link)
-
-            feedconsensus = []
-
-            if entrytime > lastbuildtime:
-                feedconsensus.append('True')
-            else:
-                feedconsensus.append('False')
-
-            if link != lastbuildlink:
-                feedconsensus.append('True')
-            else:
-                feedconsensus.append('False')
-
-            if title != lastbuildtitle:
-                feedconsensus.append('True')
-            else:
-                feedconsensus.append('False')
-
-            if forcedisplay:
-                feedrun = True
-            elif 'False' in feedconsensus:
-                feedrun = False
-            else:
-                feedrun = True
-
-            if feedrun:
-                displayname = feed_dict["displayname"]
-                if not displayname:
-                    try:
-                        displayname = feedjson['feed']['title']
-                    except Exception as e:
-                        displayname = None
-            else:
-                dispmsg = []
-
-            if not forcedisplay:
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
-
-        elif feed_type == 'redditapi':
-
-            if not bot.memory["botdict"]["tempvals"]['reddit']:
-                if forcedisplay:
-                    return ["reddit api unavailable."]
-                else:
-                    return []
-
-            path = feed_dict["path"]
-            if not path:
-                if forcedisplay:
-                    return ["reddit Path missing."]
-                else:
-                    return []
-
-            currentsubreddit = feed_dict["path"]
-
-            subredditcheck = reddit_subreddit_check(bot, currentsubreddit)
-            if not subredditcheck["exists"]:
-                if forcedisplay:
-                    return [subredditcheck["error"]]
-                else:
-                    return []
-
-            try:
-                subreddit = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(currentsubreddit)
-            except Exception as e:
-                if forcedisplay:
-                    return ["No Content Usable."]
-                else:
-                    return []
-
-            try:
-                submissions = subreddit.new(limit=1)
-                listarray = []
-                for submission in submissions:
-                    listarray.append(submission)
-                submission = listarray[0]
-            except Exception as e:
-                if forcedisplay:
-                    return ["No Content Usable."]
-                else:
-                    return []
-
-            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            lastbuildtime = parser.parse(str(lastbuildtime))
-            try:
-                entrytime = submission.created
-                entrytime = datetime.datetime.fromtimestamp(entrytime).replace(tzinfo=pytz.UTC)
-            except Exception as e:
-                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            entrytime = parser.parse(str(entrytime))
-
-            try:
-                submissionscore = str(submission.score)
-            except Exception as e:
-                submissionscore = None
-            if submissionscore:
-                dispmsg.append("{" + str(submissionscore) + "}")
-
-            try:
-                nsfw = subreddit.over18
-            except Exception as e:
-                nsfw = False
-            if nsfw:
-                dispmsg.append("<NSFW>")
-
-            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
-            try:
-                title = submission.title
-                title = unicode_string_cleanup(title)
-            except Exception as e:
-                title = None
-            if title:
-                dispmsg.append(title)
-
-            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
-            try:
-                link = submission.permalink
-            except Exception as e:
-                link = None
-            if link:
-                dispmsg.append(str(feed_dict["url"] + link))
-
-            feedconsensus = []
-
-            if entrytime > lastbuildtime:
-                feedconsensus.append('True')
-            else:
-                feedconsensus.append('False')
-
-            if link != lastbuildlink:
-                feedconsensus.append('True')
-            else:
-                feedconsensus.append('False')
-
-            if title != lastbuildtitle:
-                feedconsensus.append('True')
-            else:
-                feedconsensus.append('False')
-
-            if forcedisplay:
-                feedrun = True
-            elif 'False' in feedconsensus:
-                feedrun = False
-            else:
-                feedrun = True
-
-            if feedrun:
-                displayname = feed_dict["displayname"]
-                if not displayname:
+        if feedrun:
+            displayname = feed_dict["displayname"]
+            if not displayname:
+                try:
+                    displayname = feedjson['feed']['title']
+                except Exception as e:
                     displayname = None
+        else:
+            dispmsg = []
+
+        if not forcedisplay:
+            set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
+            set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
+            set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
+
+    elif feed_type == 'redditapi':
+
+        url = feed_dict["url"]
+        if not url:
+            if forcedisplay:
+                return ["URL missing."]
             else:
-                dispmsg = []
+                return []
 
-            if not forcedisplay:
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
-
-        elif feed_type == 'twitter':
-
-            if not bot.memory["botdict"]["tempvals"]['twitter']:
-                if forcedisplay:
-                    return ["twitter api unavailable."]
-                else:
-                    return []
-
-            handle = feed_dict["handle"]
-            if not handle:
-                if forcedisplay:
-                    return ["twitter handle missing."]
-                else:
-                    return []
-
-            currenttweetat = feed_dict["handle"]
-
-            try:
-                submissions = bot.memory["botdict"]["tempvals"]['twitter'].GetUserTimeline(screen_name=currenttweetat, count=1, exclude_replies=True, include_rts=False)
-                submission = submissions[0]
-            except Exception as e:
-                if forcedisplay:
-                    return ["No Content Usable."]
-                else:
-                    return []
-
-            lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            lastbuildtime = parser.parse(str(lastbuildtime))
-            try:
-                entrytime = submission.created_at
-                entrytime = entrytime.replace(tzinfo=pytz.UTC)
-            except Exception as e:
-                entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
-            entrytime = parser.parse(str(entrytime))
-
-            lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
-            try:
-                title = submission.text
-                title = unicode_string_cleanup(title)
-            except Exception as e:
-                title = None
-            if title:
-                dispmsg.append(title)
-
-            lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
-            try:
-                link = str(currenttweetat + "/status/" + str(submission.id))
-            except Exception as e:
-                link = None
-            if link:
-                dispmsg.append(str(feed_dict["url"] + "/" + link))
-
-            if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or forcedisplay:
-                displayname = feed_dict["displayname"]
-                if not displayname:
-                    displayname = None
+        page = requests.get(url, headers=header)
+        if page.status_code != 200:
+            if forcedisplay:
+                return ["Recieved http code " + str(page.status_code)]
             else:
-                dispmsg = []
+                return []
 
-            if not forcedisplay:
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
-                set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
+        if not bot.memory["botdict"]["tempvals"]['reddit']:
+            if forcedisplay:
+                return ["reddit api unavailable."]
+            else:
+                return []
 
-        elif feed_type == 'googlecalendar':
+        path = feed_dict["path"]
+        if not path:
+            if forcedisplay:
+                return ["reddit Path missing."]
+            else:
+                return []
 
-            if not bot.memory["botdict"]["tempvals"]['googlecal']:
-                if forcedisplay:
-                    return ["googlecal api unavailable."]
-                else:
-                    return []
+        currentsubreddit = feed_dict["path"]
 
-            calendar = feed_dict["calendar"]
-            if not calendar:
-                if forcedisplay:
-                    return ["google calendar missing."]
-                else:
-                    return []
+        subredditcheck = reddit_subreddit_check(bot, currentsubreddit)
+        if not subredditcheck["exists"]:
+            if forcedisplay:
+                return [subredditcheck["error"]]
+            else:
+                return []
 
-            currentcalendar = feed_dict["calendar"]
+        try:
+            subreddit = bot.memory["botdict"]["tempvals"]['reddit'].subreddit(currentsubreddit)
+        except Exception as e:
+            if forcedisplay:
+                return ["No Content Usable."]
+            else:
+                return []
 
-            http_auth = bot.memory["botdict"]["tempvals"]['googlecal'].authorize(httplib2.Http())
-            service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
+        try:
+            submissions = subreddit.new(limit=1)
+            listarray = []
+            for submission in submissions:
+                listarray.append(submission)
+            submission = listarray[0]
+        except Exception as e:
+            if forcedisplay:
+                return ["No Content Usable."]
+            else:
+                return []
 
-            events_result = service.events().list(timeZone='UTC', calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=str(str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")).execute()
-            events = events_result.get('items', [])
-            if events == []:
-                if forcedisplay:
-                    return ["No upcoming events on this calendar"]
-                else:
-                    return []
-            nextevent = events[0]
+        lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+        lastbuildtime = parser.parse(str(lastbuildtime))
+        try:
+            entrytime = submission.created
+            entrytime = datetime.datetime.fromtimestamp(entrytime).replace(tzinfo=pytz.UTC)
+        except Exception as e:
+            entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+        entrytime = parser.parse(str(entrytime))
 
-            # bot.msg("#spicebottest", str(nextevent["start"]))
+        try:
+            submissionscore = str(submission.score)
+        except Exception as e:
+            submissionscore = None
+        if submissionscore:
+            dispmsg.append("{" + str(submissionscore) + "}")
+
+        try:
+            nsfw = subreddit.over18
+        except Exception as e:
+            nsfw = False
+        if nsfw:
+            dispmsg.append("<NSFW>")
+
+        lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
+        try:
+            title = submission.title
+            title = unicode_string_cleanup(title)
+        except Exception as e:
+            title = None
+        if title:
+            dispmsg.append(title)
+
+        lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
+        try:
+            link = submission.permalink
+        except Exception as e:
+            link = None
+        if link:
+            dispmsg.append(str(feed_dict["url"] + link))
+
+        feedconsensus = []
+
+        if entrytime > lastbuildtime:
+            feedconsensus.append('True')
+        else:
+            feedconsensus.append('False')
+
+        if link != lastbuildlink:
+            feedconsensus.append('True')
+        else:
+            feedconsensus.append('False')
+
+        if title != lastbuildtitle:
+            feedconsensus.append('True')
+        else:
+            feedconsensus.append('False')
+
+        if forcedisplay:
+            feedrun = True
+        elif 'False' in feedconsensus:
+            feedrun = False
+        else:
+            feedrun = True
+
+        if feedrun:
+            displayname = feed_dict["displayname"]
+            if not displayname:
+                displayname = None
+        else:
+            dispmsg = []
+
+        if not forcedisplay:
+            set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
+            set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
+            set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
+
+    elif feed_type == 'twitter':
+
+        url = feed_dict["url"]
+        if not url:
+            if forcedisplay:
+                return ["URL missing."]
+            else:
+                return []
+
+        page = requests.get(url, headers=header)
+        if page.status_code != 200:
+            if forcedisplay:
+                return ["Recieved http code " + str(page.status_code)]
+            else:
+                return []
+
+        if not bot.memory["botdict"]["tempvals"]['twitter']:
+            if forcedisplay:
+                return ["twitter api unavailable."]
+            else:
+                return []
+
+        handle = feed_dict["handle"]
+        if not handle:
+            if forcedisplay:
+                return ["twitter handle missing."]
+            else:
+                return []
+
+        currenttweetat = feed_dict["handle"]
+
+        try:
+            submissions = bot.memory["botdict"]["tempvals"]['twitter'].GetUserTimeline(screen_name=currenttweetat, count=1, exclude_replies=True, include_rts=False)
+            submission = submissions[0]
+        except Exception as e:
+            if forcedisplay:
+                return ["No Content Usable."]
+            else:
+                return []
+
+        lastbuildtime = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+        lastbuildtime = parser.parse(str(lastbuildtime))
+        try:
+            entrytime = submission.created_at
+            entrytime = entrytime.replace(tzinfo=pytz.UTC)
+        except Exception as e:
+            entrytime = datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+        entrytime = parser.parse(str(entrytime))
+
+        lastbuildtitle = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle') or None
+        try:
+            title = submission.text
+            title = unicode_string_cleanup(title)
+        except Exception as e:
+            title = None
+        if title:
+            dispmsg.append(title)
+
+        lastbuildlink = get_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink') or None
+        try:
+            link = str(currenttweetat + "/status/" + str(submission.id))
+        except Exception as e:
+            link = None
+        if link:
+            dispmsg.append(str(feed_dict["url"] + "/" + link))
+
+        if (entrytime > lastbuildtime and link != lastbuildlink and title != lastbuildtitle) or forcedisplay:
+            displayname = feed_dict["displayname"]
+            if not displayname:
+                displayname = None
+        else:
+            dispmsg = []
+
+        if not forcedisplay:
+            set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime', str(entrytime))
+            set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle', str(lastbuildtitle))
+            set_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink', str(lastbuildlink))
+
+    elif feed_type == 'googlecalendar':
+
+        url = feed_dict["url"]
+        if not url:
+            if forcedisplay:
+                return ["URL missing."]
+            else:
+                return []
+
+        page = requests.get(url, headers=header)
+        if page.status_code != 200:
+            if forcedisplay:
+                return ["Recieved http code " + str(page.status_code)]
+            else:
+                return []
+
+        if not bot.memory["botdict"]["tempvals"]['googlecal']:
+            if forcedisplay:
+                return ["googlecal api unavailable."]
+            else:
+                return []
+
+        calendar = feed_dict["calendar"]
+        if not calendar:
+            if forcedisplay:
+                return ["google calendar missing."]
+            else:
+                return []
+
+        currentcalendar = feed_dict["calendar"]
+
+        http_auth = bot.memory["botdict"]["tempvals"]['googlecal'].authorize(httplib2.Http())
+        service = build('calendar', 'v3', http=http_auth, cache_discovery=False)
+
+        events_result = service.events().list(timeZone='UTC', calendarId=currentcalendar, maxResults=1, singleEvents=True, orderBy='startTime', timeMin=str(str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "T" + str(now.hour) + ":" + str(now.minute) + ":00.000Z")).execute()
+        events = events_result.get('items', [])
+        if events == []:
+            if forcedisplay:
+                return ["No upcoming events on this calendar"]
+            else:
+                return []
+        nextevent = events[0]
+
+        try:
+            entrytime = nextevent["start"]["dateTime"]
+        except Exception as e:
+            entrytime = None
+        if not entrytime:
             try:
-                entrytime = nextevent["start"]["dateTime"]
+                entrytime = nextevent["start"]["date"]
             except Exception as e:
                 entrytime = None
-            if not entrytime:
-                try:
-                    entrytime = nextevent["start"]["date"]
-                except Exception as e:
-                    entrytime = None
-            if not entrytime:
-                if forcedisplay:
-                    return ["Timestamp Error"]
-                else:
-                    return []
-            entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
-
-            timeuntil = (entrytime - now).total_seconds()
-            if timeuntil == 0:
-                timecompare = str("Right now")
-            elif timeuntil > 0:
-                timecompare = humanized_time((entrytime - now).total_seconds())
-                timecompare = str(timecompare + " from now")
+        if not entrytime:
+            if forcedisplay:
+                return ["Timestamp Error"]
             else:
-                timecompare = humanized_time((now - entrytime).total_seconds())
-                timecompare = str(timecompare + " ago")
-            # timecompare = arrow_time(now, entrytime)
-            dispmsg.append("{Next: " + timecompare + "}")
+                return []
+        entrytime = parser.parse(str(entrytime)).replace(tzinfo=pytz.UTC)
 
+        timeuntil = (entrytime - now).total_seconds()
+        if timeuntil == 0:
+            timecompare = str("Right now")
+        elif timeuntil > 0:
+            timecompare = humanized_time((entrytime - now).total_seconds())
+            timecompare = str(timecompare + " from now")
+        else:
+            timecompare = humanized_time((now - entrytime).total_seconds())
+            timecompare = str(timecompare + " ago")
+        # timecompare = arrow_time(now, entrytime)
+        dispmsg.append("{Next: " + timecompare + "}")
+
+        try:
+            title = nextevent["summary"]
+            title = unicode_string_cleanup(title)
+        except Exception as e:
+            title = None
+        if title:
+            dispmsg.append(title)
+
+        if not feed_dict["link"]:
             try:
-                title = nextevent["summary"]
-                title = unicode_string_cleanup(title)
+                link = str(nextevent["location"])
+                url = findurlsinstring(link)
+                if url != []:
+                    link = url[0]
+                else:
+                    link = None
             except Exception as e:
-                title = None
-            if title:
-                dispmsg.append(title)
-
-            if not feed_dict["link"]:
+                link = None
+            if not link:
                 try:
-                    link = str(nextevent["location"])
+                    link = str(nextevent["description"])
                     url = findurlsinstring(link)
                     if url != []:
                         link = url[0]
@@ -1316,312 +1370,342 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                         link = None
                 except Exception as e:
                     link = None
-                if not link:
-                    try:
-                        link = str(nextevent["description"])
-                        url = findurlsinstring(link)
-                        if url != []:
-                            link = url[0]
-                        else:
-                            link = None
-                    except Exception as e:
-                        link = None
-                if not link:
-                    try:
-                        link = str(nextevent["htmlLink"])
-                    except Exception as e:
-                        link = None
+            if not link:
+                try:
+                    link = str(nextevent["htmlLink"])
+                except Exception as e:
+                    link = None
+        else:
+            link = feed_dict["link"]
+        if link:
+            dispmsg.append(link)
+
+        if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
+
+            displayname = feed_dict["displayname"]
+            if not displayname:
+                displayname = None
+        else:
+            dispmsg = []
+
+    elif feed_type == 'events':
+
+        now = datetime.datetime.utcnow()
+        now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0, 0).replace(tzinfo=pytz.UTC)
+
+        entrytime = datetime.datetime(now.year, feed_dict["month"], feed_dict["day"], 0, 0, 0, 0).replace(tzinfo=pytz.UTC)
+        entrytime = str(entrytime)
+        entrytime = parser.parse(entrytime)
+
+        timeuntil = (entrytime - now).total_seconds()
+        if timeuntil == 0:
+            nextyear = now + datetime.timedelta(days=365)
+            nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
+            if feed_dict["rightnow"]:
+                timecompare = [feed_dict["rightnow"], "(Next): " + nextime]
             else:
-                link = feed_dict["link"]
+                timecompare = ["Right now", "(Next): " + nextime]
+        elif timeuntil > 0:
+            nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
+            lastyear = now - datetime.timedelta(days=365)
+            previoustime = humanized_time((now - lastyear).total_seconds()) + " ago"
+            timecompare = ["(Previous): " + previoustime, "(Next): " + nextime]
+        else:
+            previoustime = humanized_time((now - entrytime).total_seconds()) + " ago"
+            nextyear = now + datetime.timedelta(days=365)
+            nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
+            timecompare = ["(Previous): " + previoustime, "(Next): " + nextime]
+        dispmsg.extend(timecompare)
+
+        if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
+
+            displayname = feed_dict["displayname"]
+            if not displayname:
+                displayname = None
+        else:
+            dispmsg = []
+
+    elif feed_type == 'webinarscrapes':
+
+        url = feed_dict["url"]
+        if not url:
+            if forcedisplay:
+                return ["URL missing."]
+            else:
+                return []
+
+        page = requests.get(url, headers=header)
+        if page.status_code != 200:
+            if forcedisplay:
+                return ["Recieved http code " + str(page.status_code)]
+            else:
+                return []
+
+        tree = html.fromstring(page.content)
+
+        scrapetime = feed_dict["scrapetime"]
+        scrapetimezone = feed_dict["scrapetimezone"]
+
+        try:
+            entrytime = tree.xpath(scrapetime)
+            if isinstance(entrytime, list):
+                entrytime = entrytime[0]
+            entrytime = str(entrytime)
+            for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
+                entrytime = entrytime.replace(*r)
+            entrytime = parser.parse(entrytime)
+            if not tz_aware(entrytime):
+                feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
+                entrytime = feedtimezone.localize(entrytime)
+        except Exception as e:
+            if forcedisplay:
+                return ["Timestamp Error"]
+            else:
+                return []
+
+        timeuntil = (entrytime - now).total_seconds()
+        if timeuntil == 0:
+            timecompare = str("Right now")
+        elif timeuntil > 0:
+            timecompare = humanized_time((entrytime - now).total_seconds())
+            timecompare = str(timecompare + " from now")
+        else:
+            timecompare = humanized_time((now - entrytime).total_seconds())
+            timecompare = str(timecompare + " ago")
+        # timecompare = arrow_time(now, entrytime)
+        dispmsg.append("{Next: " + timecompare + "}")
+
+        scrapetitle = feed_dict["scrapetitle"]
+        if scrapetitle:
+            try:
+                title = tree.xpath(scrapetitle)
+                if isinstance(title, list):
+                    title = title[0]
+                title = str(title)
+                for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+                    title = title.replace(*r)
+                title = unicode_string_cleanup(title)
+            except Exception as e:
+                title = None
+            if title:
+                dispmsg.append(title)
+
+        scrapelink = feed_dict["scrapelink"]
+        if scrapelink:
+            try:
+                link = tree.xpath(scrapelink)
+                if isinstance(link, list):
+                    link = link[0]
+                link = str(link)
+                for r in (("['", ""), ("']", "")):
+                    link = link.replace(*r)
+                if feed_dict["linkprecede"]:
+                    link = str(feed_dict["linkprecede"] + link)
+            except Exception as e:
+                link = None
             if link:
                 dispmsg.append(link)
 
-            if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
+        scrapebonus = feed_dict["scrapebonus"]
+        if scrapebonus:
+            try:
+                bonus = tree.xpath(scrapebonus)
+                if isinstance(bonus, list):
+                    bonus = bonus[0]
+                bonus = str(bonus)
+                scrapebonussplit = feed_dict["scrapebonussplit"]
+                if scrapebonussplit:
+                    bonus = str(bonus.split(feed_dict["scrapebonussplit"])[-1])
+                for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", ""), ("[", "")):
+                    bonus = bonus.replace(*r)
+                bonus = unicode_string_cleanup(bonus)
+            except Exception as e:
+                bonus = None
+            if bonus:
+                dispmsg.append(bonus)
 
-                displayname = feed_dict["displayname"]
-                if not displayname:
-                    displayname = None
+        if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
+
+            displayname = feed_dict["displayname"]
+            if not displayname:
+                displayname = None
+        else:
+            dispmsg = []
+
+    elif feed_type == 'dailyscrapes':
+
+        url = feed_dict["url"]
+        if not url:
+            if forcedisplay:
+                return ["URL missing."]
             else:
-                dispmsg = []
+                return []
 
-        elif feed_type == 'events':
+        page = requests.get(url, headers=header)
+        if page.status_code != 200:
+            if forcedisplay:
+                return ["Recieved http code " + str(page.status_code)]
+            else:
+                return []
 
-            now = datetime.datetime.utcnow()
-            now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0, 0).replace(tzinfo=pytz.UTC)
+        tree = html.fromstring(page.content)
 
-            entrytime = datetime.datetime(now.year, feed_dict["month"], feed_dict["day"], 0, 0, 0, 0).replace(tzinfo=pytz.UTC)
+        try:
+            entrytime = datetime.datetime(now.year, now.month, now.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
             entrytime = str(entrytime)
             entrytime = parser.parse(entrytime)
-
+            feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
+            entrytime = feedtimezone.localize(entrytime)
             timeuntil = (entrytime - now).total_seconds()
-            if timeuntil == 0:
-                nextyear = now + datetime.timedelta(days=365)
-                nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
-                if feed_dict["rightnow"]:
-                    timecompare = [feed_dict["rightnow"], "(Next): " + nextime]
-                else:
-                    timecompare = ["Right now", "(Next): " + nextime]
-            elif timeuntil > 0:
-                nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
-                lastyear = now - datetime.timedelta(days=365)
-                previoustime = humanized_time((now - lastyear).total_seconds()) + " ago"
-                timecompare = ["(Previous): " + previoustime, "(Next): " + nextime]
-            else:
-                previoustime = humanized_time((now - entrytime).total_seconds()) + " ago"
-                nextyear = now + datetime.timedelta(days=365)
-                nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
-                timecompare = ["(Previous): " + previoustime, "(Next): " + nextime]
-            dispmsg.extend(timecompare)
-
-            if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
-
-                displayname = feed_dict["displayname"]
-                if not displayname:
-                    displayname = None
-            else:
-                dispmsg = []
-
-        elif feed_type == 'webinarscrapes':
-
-            tree = html.fromstring(page.content)
-
-            scrapetime = feed_dict["scrapetime"]
-            scrapetimezone = feed_dict["scrapetimezone"]
-
-            try:
-                entrytime = tree.xpath(scrapetime)
-                if isinstance(entrytime, list):
-                    entrytime = entrytime[0]
-                entrytime = str(entrytime)
-                for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
-                    entrytime = entrytime.replace(*r)
-                entrytime = parser.parse(entrytime)
-                if not tz_aware(entrytime):
-                    feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
-                    entrytime = feedtimezone.localize(entrytime)
-            except Exception as e:
-                if forcedisplay:
-                    return ["Timestamp Error"]
-                else:
-                    return []
-
-            timeuntil = (entrytime - now).total_seconds()
-            if timeuntil == 0:
-                timecompare = str("Right now")
-            elif timeuntil > 0:
-                timecompare = humanized_time((entrytime - now).total_seconds())
-                timecompare = str(timecompare + " from now")
-            else:
-                timecompare = humanized_time((now - entrytime).total_seconds())
-                timecompare = str(timecompare + " ago")
-            # timecompare = arrow_time(now, entrytime)
-            dispmsg.append("{Next: " + timecompare + "}")
-
-            scrapetitle = feed_dict["scrapetitle"]
-            if scrapetitle:
-                try:
-                    title = tree.xpath(scrapetitle)
-                    if isinstance(title, list):
-                        title = title[0]
-                    title = str(title)
-                    for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
-                        title = title.replace(*r)
-                    title = unicode_string_cleanup(title)
-                except Exception as e:
-                    title = None
-                if title:
-                    dispmsg.append(title)
-
-            scrapelink = feed_dict["scrapelink"]
-            if scrapelink:
-                try:
-                    link = tree.xpath(scrapelink)
-                    if isinstance(link, list):
-                        link = link[0]
-                    link = str(link)
-                    for r in (("['", ""), ("']", "")):
-                        link = link.replace(*r)
-                    if feed_dict["linkprecede"]:
-                        link = str(feed_dict["linkprecede"] + link)
-                except Exception as e:
-                    link = None
-                if link:
-                    dispmsg.append(link)
-
-            scrapebonus = feed_dict["scrapebonus"]
-            if scrapebonus:
-                try:
-                    bonus = tree.xpath(scrapebonus)
-                    if isinstance(bonus, list):
-                        bonus = bonus[0]
-                    bonus = str(bonus)
-                    scrapebonussplit = feed_dict["scrapebonussplit"]
-                    if scrapebonussplit:
-                        bonus = str(bonus.split(feed_dict["scrapebonussplit"])[-1])
-                    for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", ""), ("[", "")):
-                        bonus = bonus.replace(*r)
-                    bonus = unicode_string_cleanup(bonus)
-                except Exception as e:
-                    bonus = None
-                if bonus:
-                    dispmsg.append(bonus)
-
-            if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
-
-                displayname = feed_dict["displayname"]
-                if not displayname:
-                    displayname = None
-            else:
-                dispmsg = []
-
-        elif feed_type == 'dailyscrapes':
-
-            tree = html.fromstring(page.content)
-
-            try:
-                entrytime = datetime.datetime(now.year, now.month, now.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
+            if timeuntil < 0:
+                tomorrow = now + datetime.timedelta(days=1)
+                entrytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
                 entrytime = str(entrytime)
                 entrytime = parser.parse(entrytime)
                 feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
                 entrytime = feedtimezone.localize(entrytime)
-                timeuntil = (entrytime - now).total_seconds()
-                if timeuntil < 0:
-                    tomorrow = now + datetime.timedelta(days=1)
-                    entrytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(feed_dict["scrapehour"]), int(feed_dict["scrapeminute"]), 0, 0).replace(tzinfo=None)
-                    entrytime = str(entrytime)
-                    entrytime = parser.parse(entrytime)
-                    feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
-                    entrytime = feedtimezone.localize(entrytime)
-            except Exception as e:
-                if forcedisplay:
-                    return ["Timestamp Error"]
-                else:
-                    return []
-
-            timeuntil = (entrytime - now).total_seconds()
-            timecompare = humanized_time((entrytime - now).total_seconds())
-            timecompare = str(timecompare + " from now")
-            dispmsg.append("{Next: " + timecompare + "}")
-
-            scrapetitle = feed_dict["scrapetitle"]
-            if scrapetitle:
-                try:
-                    title = tree.xpath(scrapetitle)
-                    if isinstance(title, list):
-                        title = title[0]
-                    title = str(title)
-                    for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
-                        title = title.replace(*r)
-                    title = unicode_string_cleanup(title)
-                except Exception as e:
-                    title = None
-                if title:
-                    dispmsg.append(title)
-
-            scrapelink = feed_dict["scrapelink"]
-            if scrapelink:
-                try:
-                    link = tree.xpath(scrapelink)
-                    if isinstance(link, list):
-                        link = link[0]
-                    link = str(link)
-                    for r in (("['", ""), ("']", "")):
-                        link = link.replace(*r)
-                    if feed_dict["linkprecede"]:
-                        link = str(feed_dict["linkprecede"] + link)
-                except Exception as e:
-                    link = None
+        except Exception as e:
+            if forcedisplay:
+                return ["Timestamp Error"]
             else:
-                link = feed_dict["url"]
-            if link:
-                dispmsg.append(link)
-
-            if (int(timeuntil) < 0 and int(timeuntil) > -60) or forcedisplay:
-
-                displayname = feed_dict["displayname"]
-                if not displayname:
-                    displayname = None
-            else:
-                dispmsg = []
-
-        elif feed_type == 'scrapes':
-            if not forcedisplay:
                 return []
 
-            tree = html.fromstring(page.content)
+        timeuntil = (entrytime - now).total_seconds()
+        timecompare = humanized_time((entrytime - now).total_seconds())
+        timecompare = str(timecompare + " from now")
+        dispmsg.append("{Next: " + timecompare + "}")
 
-            scrapetime = feed_dict["scrapetime"]
-            scrapetimezone = feed_dict["scrapetimezone"]
-
+        scrapetitle = feed_dict["scrapetitle"]
+        if scrapetitle:
             try:
-                entrytime = tree.xpath(scrapetime)
-                if isinstance(entrytime, list):
-                    entrytime = entrytime[0]
-                entrytime = str(entrytime)
-                for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
-                    entrytime = entrytime.replace(*r)
-                entrytime = parser.parse(entrytime)
-                if not tz_aware(entrytime):
-                    feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
-                    entrytime = feedtimezone.localize(entrytime)
+                title = tree.xpath(scrapetitle)
+                if isinstance(title, list):
+                    title = title[0]
+                title = str(title)
+                for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+                    title = title.replace(*r)
+                title = unicode_string_cleanup(title)
             except Exception as e:
-                if forcedisplay:
-                    return ["Timestamp Error"]
-                else:
-                    return []
+                title = None
+            if title:
+                dispmsg.append(title)
 
-            timeuntil = (entrytime - now).total_seconds()
-            if timeuntil == 0:
-                timecompare = str("Right now")
-            elif timeuntil > 0:
-                timecompare = humanized_time((entrytime - now).total_seconds())
-                timecompare = str(timecompare + " from now")
+        scrapelink = feed_dict["scrapelink"]
+        if scrapelink:
+            try:
+                link = tree.xpath(scrapelink)
+                if isinstance(link, list):
+                    link = link[0]
+                link = str(link)
+                for r in (("['", ""), ("']", "")):
+                    link = link.replace(*r)
+                if feed_dict["linkprecede"]:
+                    link = str(feed_dict["linkprecede"] + link)
+            except Exception as e:
+                link = None
+        else:
+            link = feed_dict["url"]
+        if link:
+            dispmsg.append(link)
+
+        if (int(timeuntil) < 0 and int(timeuntil) > -60) or forcedisplay:
+
+            displayname = feed_dict["displayname"]
+            if not displayname:
+                displayname = None
+        else:
+            dispmsg = []
+
+    elif feed_type == 'scrapes':
+
+        url = feed_dict["url"]
+        if not url:
+            if forcedisplay:
+                return ["URL missing."]
             else:
-                timecompare = humanized_time((now - entrytime).total_seconds())
-                timecompare = str(timecompare + " ago")
-            # timecompare = arrow_time(now, entrytime)
-            dispmsg.append("{Next: " + timecompare + "}")
+                return []
 
-            scrapetitle = feed_dict["scrapetitle"]
-            if scrapetitle:
-                try:
-                    title = tree.xpath(scrapetitle)
-                    if isinstance(title, list):
-                        title = title[0]
-                    title = str(title)
-                    for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
-                        title = title.replace(*r)
-                    title = unicode_string_cleanup(title)
-                except Exception as e:
-                    title = None
-                if title:
-                    dispmsg.append(title)
-
-            scrapelink = feed_dict["scrapelink"]
-            if scrapelink:
-                try:
-                    link = tree.xpath(scrapelink)
-                    if isinstance(link, list):
-                        link = link[0]
-                    link = str(link)
-                    for r in (("['", ""), ("']", "")):
-                        link = link.replace(*r)
-                    if feed_dict["linkprecede"]:
-                        link = str(feed_dict["linkprecede"] + link)
-                except Exception as e:
-                    link = None
+        page = requests.get(url, headers=header)
+        if page.status_code != 200:
+            if forcedisplay:
+                return ["Recieved http code " + str(page.status_code)]
             else:
-                link = feed_dict["url"]
-            if link:
-                dispmsg.append(link)
+                return []
 
-            if (int(timeuntil) < 0 and int(timeuntil) > -60) or forcedisplay:
+        tree = html.fromstring(page.content)
 
-                displayname = feed_dict["displayname"]
-                if not displayname:
-                    displayname = None
+        scrapetime = feed_dict["scrapetime"]
+        scrapetimezone = feed_dict["scrapetimezone"]
+
+        try:
+            entrytime = tree.xpath(scrapetime)
+            if isinstance(entrytime, list):
+                entrytime = entrytime[0]
+            entrytime = str(entrytime)
+            for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
+                entrytime = entrytime.replace(*r)
+            entrytime = parser.parse(entrytime)
+            if not tz_aware(entrytime):
+                feedtimezone = pytz.timezone(feed_dict["scrapetimezone"])
+                entrytime = feedtimezone.localize(entrytime)
+        except Exception as e:
+            if forcedisplay:
+                return ["Timestamp Error"]
             else:
-                dispmsg = []
+                return []
+
+        timeuntil = (entrytime - now).total_seconds()
+        if timeuntil == 0:
+            timecompare = str("Right now")
+        elif timeuntil > 0:
+            timecompare = humanized_time((entrytime - now).total_seconds())
+            timecompare = str(timecompare + " from now")
+        else:
+            timecompare = humanized_time((now - entrytime).total_seconds())
+            timecompare = str(timecompare + " ago")
+        # timecompare = arrow_time(now, entrytime)
+        dispmsg.append("{Next: " + timecompare + "}")
+
+        scrapetitle = feed_dict["scrapetitle"]
+        if scrapetitle:
+            try:
+                title = tree.xpath(scrapetitle)
+                if isinstance(title, list):
+                    title = title[0]
+                title = str(title)
+                for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+                    title = title.replace(*r)
+                title = unicode_string_cleanup(title)
+            except Exception as e:
+                title = None
+            if title:
+                dispmsg.append(title)
+
+        scrapelink = feed_dict["scrapelink"]
+        if scrapelink:
+            try:
+                link = tree.xpath(scrapelink)
+                if isinstance(link, list):
+                    link = link[0]
+                link = str(link)
+                for r in (("['", ""), ("']", "")):
+                    link = link.replace(*r)
+                if feed_dict["linkprecede"]:
+                    link = str(feed_dict["linkprecede"] + link)
+            except Exception as e:
+                link = None
+        else:
+            link = feed_dict["url"]
+        if link:
+            dispmsg.append(link)
+
+        if (int(timeuntil) < 0 and int(timeuntil) > -60) or forcedisplay:
+
+            displayname = feed_dict["displayname"]
+            if not displayname:
+                displayname = None
+        else:
+            dispmsg = []
 
     if displayname and feed_dict["displayname"]:
         dispmsg.insert(0, "[" + displayname + "]")
