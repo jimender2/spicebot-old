@@ -1,0 +1,11 @@
+{
+
+"validcoms": ['sysadmin', 'sysadminday'],
+
+"?default": {
+              "type": "feeds",
+              "responses": "sysadminday",
+              "selection_allowed": False,
+              },
+
+}
