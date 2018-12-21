@@ -95,7 +95,11 @@ def getJoke():
         for joke in jsonjokes:
             joke = jsonjokes['joke']
             joke = joke.replace('&quot;', '\"')
+            jokes.append(joke)
     except ValueError:
+        jokes = []
+
+    if jokes = []:
         jokes = ["Chuck Norris broke the interwebs."]
 
     return jokes
