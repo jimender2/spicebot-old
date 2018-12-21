@@ -4,7 +4,7 @@
 
 "?default": {
               "type": "simple",
-              "responses": ['You have two choices. tools or day'],
+              "responses": ["Available Options Include: $specialoptions"],
               },
 
 "day": {
