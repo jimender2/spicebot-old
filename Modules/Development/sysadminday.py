@@ -56,21 +56,33 @@ def execute_main(bot, trigger, botcom):
     now = datetime.datetime.utcnow()
     now = now.replace(tzinfo=pytz.UTC)
 
-    entrytime = datetime.datetime(now.year, 7, 27, now.hour, now.minute, 0, 0).replace(tzinfo=pytz.UTC)
+    event = {
+            "name": "SysAdmin day",
+            "month": 7,
+            "day": 27,
+            }
+
+    entrytime = datetime.datetime(now.year, event["month"], event["day"], now.hour, now.minute, 0, 0).replace(tzinfo=pytz.UTC)
     entrytime = str(entrytime)
     entrytime = parser.parse(entrytime)
 
     timeuntil = (entrytime - now).total_seconds()
     if timeuntil == 0:
-        timecompare = str("Right now")
+        timecompare = ["Right now"]
     elif timeuntil > 0:
-        timecompare = humanized_time((entrytime - now).total_seconds())
-        timecompare = str(timecompare + " from now")
+        nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
+        lastyear = now - datetime.timedelta(days=365)
+        previoustime = humanized_time((now - lastyear).total_seconds()) + " ago"
+        timecompare = ["(Previous): " + previoustime, "(Next): " + nextime]
     else:
-        timecompare = humanized_time((now - entrytime).total_seconds())
-        timecompare = str(timecompare + " ago")
+        previoustime = humanized_time((now - entrytime).total_seconds()) + " ago"
+        nextyear = now + datetime.timedelta(days=365)
+        nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
+        timecompare = ["(Previous): " + previoustime, "(Next): " + nextime]
 
-    osd(bot, trigger.sender, 'say', timecompare)
+    timecompare.insert(0, "[" + event["name"] + "]")
+
+    osd(bot, botcom.channel_current, 'say', timecompare)
 
     return
 
