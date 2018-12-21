@@ -97,17 +97,14 @@ def getQuote(bot, query):
             return "No Quotes matched " + str(query) + "!"
 
     # if number searched, random doesn't really do anything
-    quote = spicemanip(bot, links, 'random')
+    quotelink = spicemanip(bot, links, 'random')
+
+    soup = BeautifulSoup(urllib2.urlopen(quotelink).read())
+    quote = soup.find('td', {'class': 'body'}).text
+    quote = unescape_xml_entities(bot, (anyOpenTag | anyCloseTag).suppress().transformString(quote))
 
     return quote
 
-    # unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;": " "})
-    # stripper = (anyOpenTag | anyCloseTag).suppress()
-    soup = BeautifulSoup(urllib2.urlopen(url).read())
-    txt = soup.find('td', {'class': 'body'}).text
-    txt = unescape_xml_entities(stripper.transformString(txt))
-    if len(txt) > 200:
-        quote = url
-    else:
-        quote = txt
-    return quote
+
+def unescape_xml_entities(bot, s):
+    return unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;": " "})
