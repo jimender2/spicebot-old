@@ -155,6 +155,26 @@ def feed_configs(bot):
                                     if "linkprecede" not in dict_from_file.keys():
                                         dict_from_file["linkprecede"] = None
 
+                                if dict_from_file["type"] == "events":
+
+                                    if "scrapetitle" not in dict_from_file.keys():
+                                        dict_from_file["scrapetitle"] = None
+
+                                    if "eventmonth" not in dict_from_file.keys():
+                                        dict_from_file["eventmonth"] = 1
+
+                                    if "eventday" not in dict_from_file.keys():
+                                        dict_from_file["eventday"] = 1
+
+                                    if "eventhour" not in dict_from_file.keys():
+                                        dict_from_file["eventhour"] = 0
+
+                                    if "eventminute" not in dict_from_file.keys():
+                                        dict_from_file["eventminute"] = 0
+
+                                    if "rightnow" not in dict_from_file.keys():
+                                        dict_from_file["rightnow"] = None
+
                                 if dict_from_file["type"] == "scrapes":
 
                                     if "scrapetitle" not in dict_from_file.keys():

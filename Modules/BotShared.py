@@ -1344,6 +1344,43 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             else:
                 dispmsg = []
 
+        elif feed_type == 'events':
+
+            now = datetime.datetime.utcnow()
+            now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0, 0).replace(tzinfo=pytz.UTC)
+
+            entrytime = datetime.datetime(now.year, feed_dict["month"], feed_dict["day"], 0, 0, 0, 0).replace(tzinfo=pytz.UTC)
+            entrytime = str(entrytime)
+            entrytime = parser.parse(entrytime)
+
+            timeuntil = (entrytime - now).total_seconds()
+            if timeuntil == 0:
+                nextyear = now + datetime.timedelta(days=365)
+                nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
+                if feed_dict["rightnow"]:
+                    timecompare = [feed_dict["rightnow"], "(Next): " + nextime]
+                else:
+                    timecompare = ["Right now", "(Next): " + nextime]
+            elif timeuntil > 0:
+                nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
+                lastyear = now - datetime.timedelta(days=365)
+                previoustime = humanized_time((now - lastyear).total_seconds()) + " ago"
+                timecompare = ["(Previous): " + previoustime, "(Next): " + nextime]
+            else:
+                previoustime = humanized_time((now - entrytime).total_seconds()) + " ago"
+                nextyear = now + datetime.timedelta(days=365)
+                nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
+                timecompare = ["(Previous): " + previoustime, "(Next): " + nextime]
+            dispmsg.extend(timecompare)
+
+            if (int(timeuntil) < 900 and int(timeuntil) > 840) or forcedisplay:
+
+                displayname = feed_dict["displayname"]
+                if not displayname:
+                    displayname = None
+            else:
+                dispmsg = []
+
         elif feed_type == 'webinarscrapes':
 
             tree = html.fromstring(page.content)
