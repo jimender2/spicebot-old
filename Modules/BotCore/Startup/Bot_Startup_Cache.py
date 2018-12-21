@@ -34,6 +34,6 @@ def bot_startup_twitter(bot, trigger):
     while not bot_startup_requirements_met(bot, ["ext_conf"]):
         pass
 
-    bot.memory["botdict"]["tempvals"]['api_access'] = dict()
+    bot.memory["botdict"]["tempvals"]['cache'] = dict()
 
-    bot_startup_requirements_set(bot, "api_access")
+    bot_startup_requirements_set(bot, "cache")

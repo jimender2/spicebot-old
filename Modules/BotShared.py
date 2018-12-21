@@ -2090,41 +2090,59 @@ def getGif(bot, searchdict):
         # api key
         url += str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['key']) + str(bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['apikey'])
 
-        page = requests.get(url, headers=None)
-        if not str(page.status_code).startswith(tuple(["4", "5"])):
+        if currentapi not in bot.memory["botdict"]["tempvals"]['cache'].keys():
+            bot.memory["botdict"]["tempvals"]['cache'][currentapi] = dict()
 
-            data = json.loads(urllib2.urlopen(url).read())
+        if str(searchdict["searchquery"]) not in bot.memory["botdict"]["tempvals"]['cache'][currentapi].keys():
+            bot.memory["botdict"]["tempvals"]['cache'][currentapi][str(searchdict["searchquery"])] = []
 
-            results = data[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['results']]
-            resultsarray = []
-            for result in results:
-                appendresult = False
-                cururl = result[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['cururl']]
-                slashsplit = str(cururl).split("/")
-                fileextension = slashsplit[-1]
-                if not fileextension or fileextension == '':
-                    appendresult = True
-                elif str(fileextension).endswith(".gif"):
-                    appendresult = True
-                elif "." not in str(fileextension):
-                    appendresult = True
-                if appendresult:
-                    resultsarray.append(cururl)
+        if bot.memory["botdict"]["tempvals"]['cache'][currentapi][str(searchdict["searchquery"])] == []:
 
-            # make sure there are results
-            resultsamount = len(resultsarray)
-            if resultsarray != []:
+            page = requests.get(url, headers=None)
+            if not str(page.status_code).startswith(tuple(["4", "5"])):
 
-                # Create Temp dict for every result
-                tempresultnum = 0
-                for tempresult in resultsarray:
-                    if tempresult not in bot.memory["botdict"]["tempvals"]["badgiflinks"]:
-                        tempresultnum += 1
-                        tempdict = dict()
-                        tempdict["returnnum"] = tempresultnum
-                        tempdict["returnurl"] = tempresult
-                        tempdict["gifapi"] = currentapi
-                        gifapiresults.append(tempdict)
+                data = json.loads(urllib2.urlopen(url).read())
+
+                results = data[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['results']]
+                resultsarray = []
+                for result in results:
+                    appendresult = False
+                    cururl = result[bot.memory["botdict"]["tempvals"]['valid_gif_api_dict'][currentapi]['cururl']]
+                    slashsplit = str(cururl).split("/")
+                    fileextension = slashsplit[-1]
+                    if not fileextension or fileextension == '':
+                        appendresult = True
+                    elif str(fileextension).endswith(".gif"):
+                        appendresult = True
+                    elif "." not in str(fileextension):
+                        appendresult = True
+                    if appendresult:
+                        resultsarray.append(cururl)
+
+                # make sure there are results
+                resultsamount = len(resultsarray)
+                if resultsarray != []:
+
+                    # Create Temp dict for every result
+                    tempresultnum = 0
+                    for tempresult in resultsarray:
+                        if tempresult not in bot.memory["botdict"]["tempvals"]["badgiflinks"]:
+                            tempresultnum += 1
+                            tempdict = dict()
+                            tempdict["returnnum"] = tempresultnum
+                            tempdict["returnurl"] = tempresult
+                            tempdict["gifapi"] = currentapi
+                            bot.memory["botdict"]["tempvals"]['cache'][currentapi][str(searchdict["searchquery"])].append(tempdict)
+
+        else:
+            verifygoodlinks = []
+            for gifresult in bot.memory["botdict"]["tempvals"]['cache'][currentapi][str(searchdict["searchquery"])]:
+                if gifresult["returnurl"] not in bot.memory["botdict"]["tempvals"]["badgiflinks"]:
+                    verifygoodlinks.append(gifresult)
+            bot.memory["botdict"]["tempvals"]['cache'][currentapi][str(searchdict["searchquery"])] = verifygoodlinks
+
+        if bot.memory["botdict"]["tempvals"]['cache'][currentapi][str(searchdict["searchquery"])] != []:
+            gifapiresults.extend(bot.memory["botdict"]["tempvals"]['cache'][currentapi][str(searchdict["searchquery"])])
 
     if gifapiresults == []:
         return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}

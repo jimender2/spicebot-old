@@ -90,13 +90,13 @@ def execute_main(bot, trigger, botcom):
 
 def getJoke(bot):
 
-    if 'chucknorris' not in bot.memory["botdict"]["tempvals"]['api_access'].keys():
-        bot.memory["botdict"]["tempvals"]['api_access']['chucknorris'] = dict()
+    if 'chucknorris' not in bot.memory["botdict"]["tempvals"]['cache'].keys():
+        bot.memory["botdict"]["tempvals"]['cache']['chucknorris'] = dict()
 
-    if 'list' not in bot.memory["botdict"]["tempvals"]['api_access'].keys():
-        bot.memory["botdict"]["tempvals"]['api_access']['chucknorris']['list'] = []
+    if 'list' not in bot.memory["botdict"]["tempvals"]['cache'].keys():
+        bot.memory["botdict"]["tempvals"]['cache']['chucknorris']['list'] = []
 
-    if bot.memory["botdict"]["tempvals"]['api_access']['chucknorris']['list'] == []:
+    if bot.memory["botdict"]["tempvals"]['cache']['chucknorris']['list'] == []:
 
         url = 'http://api.icndb.com/jokes/'
 
@@ -116,9 +116,9 @@ def getJoke(bot):
         if jokes == []:
             jokes = ["Chuck Norris broke the interwebs."]
         else:
-            bot.memory["botdict"]["tempvals"]['api_access']['chucknorris']['list'] = jokes
+            bot.memory["botdict"]["tempvals"]['cache']['chucknorris']['list'] = jokes
 
     else:
-        jokes = bot.memory["botdict"]["tempvals"]['api_access']['chucknorris']['list']
+        jokes = bot.memory["botdict"]["tempvals"]['cache']['chucknorris']['list']
 
     return jokes
