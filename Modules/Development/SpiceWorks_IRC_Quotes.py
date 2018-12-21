@@ -101,10 +101,6 @@ def getQuote(bot, query):
 
     soup = BeautifulSoup(urllib2.urlopen(quotelink).read())
     quote = soup.find('td', {'class': 'body'}).text
-    quote = unescape_xml_entities(bot, (anyOpenTag | anyCloseTag).suppress().transformString(quote))
+    quote = unescape((anyOpenTag | anyCloseTag).suppress().transformString(quote), {"&apos;": "'", "&quot;": '"', "&nbsp;": " "})
 
     return quote
-
-
-def unescape_xml_entities(bot, s):
-    return unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;": " "})
