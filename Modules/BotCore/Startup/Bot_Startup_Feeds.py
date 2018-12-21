@@ -172,6 +172,9 @@ def feed_configs(bot):
                                     if "eventminute" not in dict_from_file.keys():
                                         dict_from_file["eventminute"] = 0
 
+                                    if "timezone" not in dict_from_file.keys():
+                                        dict_from_file["timezone"] = "UTC"
+
                                     if "rightnow" not in dict_from_file.keys():
                                         dict_from_file["rightnow"] = None
 
