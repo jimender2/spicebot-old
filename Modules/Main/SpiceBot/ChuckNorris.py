@@ -65,9 +65,18 @@ def execute_main(bot, trigger, botcom):
             currentspecified = len(jokes)
         else:
             currentspecified = botcom.specified
+        botcom.replynum = currentspecified
         botcom.replies = spicemanip(bot, jokes, currentspecified)
     else:
-        joke = spicemanip(bot, jokes, 'random')
+        botcom.replies = spicemanip(bot, jokes, 'random')
+        try:
+            botcom.replynum = jokes.index(botcom.replies)
+        except Exception as e:
+            botcom.replynum = 0
+        botcom.replynum += 1
+    botcom.totalreplies = len(jokes)
+
+    botcom.replies = str("(" + str(botcom.replynum) + "/" + str(botcom.totalreplies)) + ") " + botcom.replies
 
     if target:
         targetchecking = bot_target_check(bot, botcom, target, ['self'])
@@ -77,9 +86,9 @@ def execute_main(bot, trigger, botcom):
 
     if target:
         for r in (("Chuck Norris's", targetposession(bot, target)), ("Norris's", targetposession(bot, target)), ("Chuck Norris'", targetposession(bot, target)), ("Norris'", targetposession(bot, target)), ('Chuck Norris', target), ('chuck norris', target), ('Norris', target), ('norris', target), ('Chuck', target), ('chuck', target)):
-            joke = joke.replace(*r)
+            botcom.replies = botcom.replies.replace(*r)
 
-    osd(bot, trigger.sender, 'say', joke)
+    osd(bot, trigger.sender, 'say', botcom.replies)
 
 
 def getJoke(bot):
