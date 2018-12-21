@@ -59,7 +59,15 @@ def execute_main(bot, trigger, botcom):
         bot.say(str(botcom.specified))
 
     jokes = getJoke()
-    joke = spicemanip(bot, jokes, 'random')
+
+    if botcom.specified:
+        if botcom.specified > len(jokes):
+            currentspecified = len(jokes)
+        else:
+            currentspecified = botcom.specified
+        botcom.replies = spicemanip(bot, jokes, currentspecified)
+    else:
+        joke = spicemanip(bot, jokes, 'random')
 
     if target:
         targetchecking = bot_target_check(bot, botcom, target, [])
