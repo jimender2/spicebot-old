@@ -54,21 +54,27 @@ def mainfunctionnobeguine(bot, trigger):
 def execute_main(bot, trigger, botcom):
 
     now = datetime.datetime.utcnow()
-    now = now.replace(tzinfo=pytz.UTC)
+    now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0, 0).replace(tzinfo=pytz.UTC)
 
     event = {
             "name": "SysAdmin day",
             "month": 7,
             "day": 27,
+            "today": "Happy Sysadmin day",
             }
 
-    entrytime = datetime.datetime(now.year, event["month"], event["day"], now.hour, now.minute, 0, 0).replace(tzinfo=pytz.UTC)
+    entrytime = datetime.datetime(now.year, event["month"], event["day"], 0, 0, 0, 0).replace(tzinfo=pytz.UTC)
     entrytime = str(entrytime)
     entrytime = parser.parse(entrytime)
 
     timeuntil = (entrytime - now).total_seconds()
     if timeuntil == 0:
-        timecompare = ["Right now"]
+        nextyear = now + datetime.timedelta(days=365)
+        nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
+        if event["today"]:
+            timecompare = [event["today"], "(Next): " + nextime]
+        else:
+            timecompare = ["Right now", "(Next): " + nextime]
     elif timeuntil > 0:
         nextime = humanized_time((entrytime - now).total_seconds()) + " from now"
         lastyear = now - datetime.timedelta(days=365)
@@ -83,17 +89,3 @@ def execute_main(bot, trigger, botcom):
     timecompare.insert(0, "[" + event["name"] + "]")
 
     osd(bot, botcom.channel_current, 'say', timecompare)
-
-    return
-
-    today = datetime.datetime.now()
-    sysadminday = datetime.datetime.strptime('Jul 27 2018', '%b %d %Y')
-    if sysadminday > today:
-        daystillsysadminday = sysadminday - today
-        message = "There are " + str(daystillsysadminday.days) + " days till SysAdmin day"
-    elif sysadminday < today:
-        daystillsysadminday = sysadminday - today
-        message = "SysAdmin day happened " + str(daystillsysadminday.days) + " ago."
-    else:
-        message = "Happy Sysadmin day"
-    osd(bot, trigger.sender, 'say', message)
