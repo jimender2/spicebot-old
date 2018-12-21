@@ -103,4 +103,7 @@ def getQuote(bot, query):
     quote = soup.find('td', {'class': 'body'}).text
     quote = unescape((anyOpenTag | anyCloseTag).suppress().transformString(quote), {"&apos;": "'", "&quot;": '"', "&nbsp;": " "})
 
+    if len(quote) > 200:
+        quote = quotelink
+
     return quote
