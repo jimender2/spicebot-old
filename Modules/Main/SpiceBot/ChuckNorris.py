@@ -92,8 +92,8 @@ def getJoke():
         result = page.content
         jsonjokes = json.loads(result)
         jsonjokes = jsonjokes['value']
-        for joke in jsonjokes:
-            joke = jsonjokes['joke']
+        for jokenum in jsonjokes:
+            joke = jsonjokes[jokenum]['joke']
             joke = joke.replace('&quot;', '\"')
             jokes.append(joke)
     except ValueError:
