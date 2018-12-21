@@ -1393,7 +1393,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
         now = datetime.datetime.utcnow()
         now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0, 0).replace(tzinfo=pytz.UTC)
 
-        entrytime = datetime.datetime(now.year, feed_dict["month"], feed_dict["day"], 0, 0, 0, 0).replace(tzinfo=pytz.UTC)
+        entrytime = datetime.datetime(now.year, feed_dict["eventmonth"], feed_dict["eventday"], feed_dict["eventhour"], feed_dict["eventminute"], 0, 0).replace(tzinfo=pytz.UTC)
         entrytime = str(entrytime)
         entrytime = parser.parse(entrytime)
 
