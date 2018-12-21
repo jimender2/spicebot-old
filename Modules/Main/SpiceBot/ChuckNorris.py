@@ -55,7 +55,11 @@ def execute_main(bot, trigger, botcom):
 
     target = spicemanip(bot, botcom.triggerargsarray, 1) or None
 
-    joke = getJoke()
+    if botcom.specified:
+        bot.say(str(botcom.specified))
+
+    jokes = getJoke()
+    joke = spicemanip(bot, jokes, 'random')
 
     if target:
         targetchecking = bot_target_check(bot, botcom, target, [])
@@ -74,14 +78,16 @@ def getJoke():
 
     url = 'http://api.icndb.com/jokes/random'
 
+    jokes = []
     try:
         page = requests.get(url)
         result = page.content
-        jsonjoke = json.loads(result)
-        joke = jsonjoke['value']['joke']
-        joke = joke.replace('&quot;', '\"')
-
+        jsonjokes = json.loads(result)
+        jsonjokes = jsonjokes['value']
+        for joke in jsonjokes:
+            joke = jsonjokes['joke']
+            joke = joke.replace('&quot;', '\"')
     except ValueError:
-        joke = "Chuck Norris broke the interwebs."
+        jokes = ["Chuck Norris broke the interwebs."]
 
-    return joke
+    return jokes
