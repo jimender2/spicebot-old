@@ -53,18 +53,15 @@ def mainfunctionnobeguine(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
-    query = trigger.group(2)
+    query = spicemanip(bot, botcom.triggerargsarray, 0) or None
     if query:
         quote = getQuote(bot, query)
-        if 'Invalid quote' not in quote:
-            if 'http://spice.dussed.com' in quote:
-                osd(bot, trigger.sender, 'say', 'That is a long quote! Here is the link: ' + quote)
-            else:
-                osd(bot, trigger.sender, 'say', quote)
+        if 'http://spice.dussed.com' in quote:
+            osd(bot, botcom.channel_current, 'say', 'That is a long quote! Here is the link: ' + quote)
         else:
-            osd(bot, trigger.sender, 'say', "I can't seem to find that quote! Are you sure it exists?")
+            osd(bot, botcom.channel_current, 'say', quote)
     else:
-        osd(bot, trigger.sender, 'say', "Please provide a quote number or search term and try again!")
+        osd(bot, botcom.channel_current, 'say', "Please provide a quote number or search term and try again!")
 
 
 def getQuote(bot, query):
