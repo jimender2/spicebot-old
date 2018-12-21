@@ -93,6 +93,7 @@ def getJoke():
         jsonjokes = json.loads(result)
         jsonjokes = jsonjokes['value']
         for jokenum in jsonjokes:
+            bot.msg("#spicebottest", str(joke))
             joke = jsonjokes[jokenum]['joke']
             joke = joke.replace('&quot;', '\"')
             jokes.append(joke)
