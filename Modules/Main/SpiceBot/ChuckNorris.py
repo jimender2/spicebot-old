@@ -55,9 +55,6 @@ def execute_main(bot, trigger, botcom):
 
     target = spicemanip(bot, botcom.triggerargsarray, 1) or None
 
-    if botcom.specified:
-        bot.say(str(botcom.specified))
-
     jokes = getJoke(bot)
 
     if botcom.specified:
