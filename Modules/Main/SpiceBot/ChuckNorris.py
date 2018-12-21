@@ -93,8 +93,8 @@ def getJoke(bot):
         jsonjokes = json.loads(result)
         jsonjokes = jsonjokes['value']
         for jokenum in jsonjokes:
-            bot.msg("#spicebottest", str(jokenum))
-            joke = jsonjokes[jokenum]['joke']
+            # bot.msg("#spicebottest", str(jokenum))
+            joke = jokenum['joke']
             joke = joke.replace('&quot;', '\"')
             jokes.append(joke)
     except ValueError:
