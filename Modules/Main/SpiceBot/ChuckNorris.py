@@ -70,7 +70,7 @@ def execute_main(bot, trigger, botcom):
         joke = spicemanip(bot, jokes, 'random')
 
     if target:
-        targetchecking = bot_target_check(bot, botcom, target, [])
+        targetchecking = bot_target_check(bot, botcom, target, ['self'])
         if not targetchecking["targetgood"]:
             return osd(bot, botcom.channel_current, 'say', targetchecking["error"])
     target = nick_actual(bot, target)
@@ -93,7 +93,7 @@ def getJoke(bot):
         jsonjokes = json.loads(result)
         jsonjokes = jsonjokes['value']
         for jokenum in jsonjokes:
-            bot.msg("#spicebottest", str(joke))
+            bot.msg("#spicebottest", str(jokenum))
             joke = jsonjokes[jokenum]['joke']
             joke = joke.replace('&quot;', '\"')
             jokes.append(joke)
