@@ -99,7 +99,7 @@ def getJoke():
     except ValueError:
         jokes = []
 
-    if jokes = []:
+    if jokes == []:
         jokes = ["Chuck Norris broke the interwebs."]
 
     return jokes
