@@ -90,23 +90,35 @@ def execute_main(bot, trigger, botcom):
 
 def getJoke(bot):
 
-    url = 'http://api.icndb.com/jokes/'
+    if 'chucknorris' not in bot.memory["botdict"]["tempvals"]['api_access'].keys():
+        bot.memory["botdict"]["tempvals"]['api_access']['chucknorris'] = dict()
 
-    jokes = []
-    try:
-        page = requests.get(url)
-        result = page.content
-        jsonjokes = json.loads(result)
-        jsonjokes = jsonjokes['value']
-        for jokenum in jsonjokes:
-            # bot.msg("#spicebottest", str(jokenum))
-            joke = jokenum['joke']
-            joke = joke.replace('&quot;', '\"')
-            jokes.append(joke)
-    except ValueError:
+    if 'list' not in bot.memory["botdict"]["tempvals"]['api_access'].keys():
+        bot.memory["botdict"]["tempvals"]['api_access']['chucknorris']['list'] = []
+
+    if bot.memory["botdict"]["tempvals"]['api_access']['chucknorris']['list'] == []:
+
+        url = 'http://api.icndb.com/jokes/'
+
         jokes = []
+        try:
+            page = requests.get(url)
+            result = page.content
+            jsonjokes = json.loads(result)
+            jsonjokes = jsonjokes['value']
+            for jokenum in jsonjokes:
+                joke = jokenum['joke']
+                joke = joke.replace('&quot;', '\"')
+                jokes.append(joke)
+        except ValueError:
+            jokes = []
 
-    if jokes == []:
-        jokes = ["Chuck Norris broke the interwebs."]
+        if jokes == []:
+            jokes = ["Chuck Norris broke the interwebs."]
+        else:
+            bot.memory["botdict"]["tempvals"]['api_access']['chucknorris']['list'] = jokes
+
+    else:
+        jokes = bot.memory["botdict"]["tempvals"]['api_access']['chucknorris']['list']
 
     return jokes
