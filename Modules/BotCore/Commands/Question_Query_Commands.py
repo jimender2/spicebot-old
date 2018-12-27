@@ -51,7 +51,7 @@ def execute_main(bot, trigger, botcom):
     for commandstype in ['dict_commands', 'module_commands', 'nickname_commands']:
         for com in bot.memory[commandstype].keys():
             if com not in commands_list.keys():
-                commands_list[com] = bot.memory['botdict']['tempvals'][commandstype][com]
+                commands_list[com] = bot.memory[commandstype][com]
 
     # command issued, check if valid
     botcom.querycommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]

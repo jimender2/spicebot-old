@@ -1910,9 +1910,9 @@ def bot_dictquery_run(bot, trigger):
 
     commands_list = dict()
     for commandstype in ['dict_commands', 'module_commands']:
-        for com in bot.memory['botdict']['tempvals'][commandstype].keys():
+        for com in bot.memory[commandstype].keys():
             if com not in commands_list.keys():
-                commands_list[com] = bot.memory['botdict']['tempvals'][commandstype][com]
+                commands_list[com] = bot.memory[commandstype][com]
 
     # command issued, check if valid
     botcom.querycommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
