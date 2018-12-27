@@ -105,10 +105,8 @@ def execute_main(bot, trigger, botcom):
             else:
                 notinlist.append(social_network)
 
-    bot.msg("#spicebottest", str("inlist"))
-    bot.msg("#spicebottest", str(inlist))
-    bot.msg("#spicebottest", str("notinlist"))
-    bot.msg("#spicebottest", str(notinlist))
+    osd(bot, botcom.channel_current, 'say', ["The username " + username + " is in the following:", spicemanip(bot, inlist, "andlist")])
+    osd(bot, botcom.channel_current, 'say', ["The username " + username + " is NOT in the following:", spicemanip(bot, inlist, "notinlist")])
 
 
 def sherlock_configs(bot):

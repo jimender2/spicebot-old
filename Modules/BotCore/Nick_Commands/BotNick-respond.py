@@ -130,9 +130,9 @@ def bot_nickcom_hub(bot, trigger):
                     osd(bot, botcom.channel_current, 'say', "I have never seen " + str(target) + ".")
         return
 
-    if str(bot.nick) + " " + botcom.command_main.lower() not in bot.memory["botdict"]["tempvals"]["nickname_commands"].keys():
+    if str(bot.nick) + " " + botcom.command_main.lower() not in bot.memory["nickname_commands"].keys():
         sim_com, sim_num = [], []
-        for comm in bot.memory["botdict"]["tempvals"]["nickname_commands"].keys():
+        for comm in bot.memory["nickname_commands"].keys():
             similarlevel = similar(str(bot.nick) + " " + str(botcom.command_main).lower(), comm.lower())
             if similarlevel >= .75:
                 sim_com.append(comm)
