@@ -66,7 +66,7 @@ def configs_dir_read(bot, dirdict):
     bot_config_dir = str(bot_directory_main + "System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
     bot_config_file = str(bot_config_dir + str(bot.nick) + ".cfg")
 
-    botconfig = config_file_to_dict(bot, str(config_file))
+    botconfig = config_file_to_dict(bot, str(bot_config_file))
 
     filecount, fileopenfail = 0, 0
     dirscan = []
