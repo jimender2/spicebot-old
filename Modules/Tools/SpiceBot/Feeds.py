@@ -29,7 +29,8 @@ def auto_feeds(bot, trigger):
     while not bot_startup_requirements_met(bot, ["monologue"]):
         pass
 
-    feed_configs(bot)
+    if "feeds" not in bot.memory:
+        feed_configs(bot)
 
     bot_startup_requirements_set(bot, "feeds")
 
@@ -77,6 +78,9 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, botcom):
+
+    if "feeds" not in bot.memory:
+        feed_configs(bot)
 
     if not len(bot.memory['feeds'].keys()):
         return osd(bot, botcom.channel_current, 'say', "There are no valid feeds!!")
