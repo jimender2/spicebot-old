@@ -102,12 +102,7 @@ def execute_main(bot, trigger, botcom):
             claimdict = get_nick_claims(bot, botcom.instigator)
             if claimdict["ownedby"]:
                 messagelist.append("You are currently owned by " + claimdict["ownedby"])
-            ownings = []
-            for player in bot.memory["botdict"]["users"].keys():
-                playerdict = get_nick_claims(bot, player)
-                if playerdict["ownedby"]:
-                    if playerdict["ownedby"] == botcom.instigator:
-                        ownings.append(player)
+            ownings = get_nick_ownings(bot, botcom.instigator)
             if ownings != []:
                 messagelist.append("You currently own " + spicemanip(bot, ownings, "andlist"))
             if messagelist == []:
@@ -123,12 +118,7 @@ def execute_main(bot, trigger, botcom):
         claimdict = get_nick_claims(bot, posstarget)
         if claimdict["ownedby"]:
             messagelist.append(posstarget + " is currently owned by " + claimdict["ownedby"])
-        ownings = []
-        for player in bot.memory["botdict"]["users"].keys():
-            playerdict = get_nick_claims(bot, player)
-            if playerdict["ownedby"]:
-                if playerdict["ownedby"] == posstarget:
-                    ownings.append(player)
+        ownings = get_nick_ownings(bot, posstarget)
         if ownings != []:
             messagelist.append(posstarget + " currently owns " + spicemanip(bot, ownings, "andlist"))
         if messagelist == []:
@@ -208,6 +198,18 @@ def execute_main(bot, trigger, botcom):
         duration = randint(claim_gamedict["durationmin"], claim_gamedict["durationmax"])
         duration = duration * (bladder.timesince / claim_gamedict["fullbladderseconds"])
         set_nick_claims(bot, botcom.instigator, target, duration)
+
+
+def get_nick_ownings(bot, nick):
+
+    ownings = []
+    for player in bot.memory["botdict"]["users"].keys():
+        playerdict = get_nick_claims(bot, player)
+        if playerdict["ownedby"]:
+            if playerdict["ownedby"] == nick:
+                ownings.append(player)
+
+    return ownings
 
 
 def set_nick_claims(bot, nickclaimer, nickclaimee, duration):
