@@ -38,7 +38,7 @@ claim_gamedict = {
             }
 
 
-@sopel.module.commands('claim','goldenshowers')
+@sopel.module.commands('claim', 'goldenshowers')
 def mainfunction(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
@@ -102,8 +102,13 @@ def execute_main(bot, trigger, botcom):
             claimdict = get_nick_claims(bot, botcom.instigator)
             if claimdict["ownedby"]:
                 messagelist.append("You are currently owned by " + claimdict["ownedby"])
-            if claimdict["ownings"] != []:
-                messagelist.append("You currently own " + spicemanip(bot, claimdict["ownings"], "andlist"))
+            ownings = []
+            for player in bot.memory["botdict"]["users"].keys():
+                playerdict = get_nick_claims(bot, player)
+                if playerdict["ownedby"] == botcom.instigator:
+                    ownings.append(player)
+            if ownings != []:
+                messagelist.append("You currently own " + spicemanip(bot, ownings, "andlist"))
             if messagelist == []:
                 messagelist.append("It looks like you are niether owned, nor own any others!")
             return osd(bot, botcom.channel_current, 'say', messagelist)
@@ -117,8 +122,13 @@ def execute_main(bot, trigger, botcom):
         claimdict = get_nick_claims(bot, posstarget)
         if claimdict["ownedby"]:
             messagelist.append(posstarget + " is currently owned by " + claimdict["ownedby"])
-        if claimdict["ownings"] != []:
-            messagelist.append(posstarget + " currently owns " + spicemanip(bot, claimdict["ownings"], "andlist"))
+        ownings = []
+        for player in bot.memory["botdict"]["users"].keys():
+            playerdict = get_nick_claims(bot, player)
+            if playerdict["ownedby"] == botcom.instigator:
+                ownings.append(player)
+        if ownings != []:
+            messagelist.append(posstarget + " currently owns " + spicemanip(bot, cownings, "andlist"))
         if messagelist == []:
             messagelist.append("It looks like " + posstarget + " is neither owned, nor owns any others!")
         return osd(bot, botcom.channel_current, 'say', messagelist)
@@ -184,6 +194,7 @@ def execute_main(bot, trigger, botcom):
                 return osd(bot, botcom.channel_current, 'say', "You can't claim " + target + ", " + botcom.instigator + ". They already have a claim on you.")
             else:
                 bladdermessage.append("Finally free from " + targetposession(bot, claimerdict["ownedby"]) + " cruel opression!")
+                reset_nick_owner(bot, botcom.instigator)
         else:
             bladdermessage.append("Claimed!")
 
@@ -212,14 +223,24 @@ def set_nick_claims(bot, nickclaimer, nickclaimee, duration):
 
     set_nick_value(bot, nickclaimee, "long", 'claims', "claimdict", claimeedict)
 
-    # set claimer ownership
-    claimerdict = get_nick_claims(bot, nickclaimer)
-    if nickclaimee not in claimerdict["ownings"]:
-        claimerdict["ownings"].append(nickclaimee)
-    set_nick_value(bot, nickclaimer, "long", 'claims', "claimdict", claimerdict)
-
     # empty bladder
     set_nick_value(bot, nickclaimer, "long", 'claims', "bladder", time.time())
+
+
+def reset_nick_owner(bot, nick):
+
+    claimdict = get_nick_value(bot, nick, "long", 'claims', "claimdict") or None
+    if not claimdict or not isinstance(claimdict, dict):
+        claimdict = dict()
+        set_nick_value(bot, nick, "long", 'claims', "claimdict", claimdict)
+
+    claimdict["ownedby"] = None
+
+    claimdict["ownedbyvalid"] = "expired"
+
+    claimdict["ownedbytime"] = 0
+
+    set_nick_value(bot, nick, "long", 'claims', "claimdict", claimdict)
 
 
 def get_nick_claims(bot, nick):
@@ -244,23 +265,6 @@ def get_nick_claims(bot, nick):
     timesinceclaim = claimdict["ownedbytime"] - time.time()
     if timesinceclaim <= 0:
         claimdict["ownedbyvalid"] = "expired"
-
-    if "ownings" not in claimdict.keys():
-        claimdict["ownings"] = []
-
-    for claimnick in claimdict["ownings"]:
-        tempcheckdict = get_nick_value(bot, claimnick, "long", 'claims', "claimdict") or None
-        if not tempcheckdict or not isinstance(tempcheckdict, dict):
-            tempcheckdict = dict()
-            set_nick_value(bot, claimnick, "long", 'claims', "claimdict", tempcheckdict)
-        if "ownedbytime" not in tempcheckdict.keys():
-            tempcheckdict["ownedbytime"] = 0
-        if not tempcheckdict["ownedbytime"]:
-            tempcheckdict["ownedbytime"] = 0
-        timesinceclaim = tempcheckdict["ownedbytime"] - time.time()
-        if timesinceclaim <= 0:
-            tempcheckdict["ownedbyvalid"] = "expired"
-        set_nick_value(bot, claimnick, "long", 'claims', "claimdict", tempcheckdict)
 
     set_nick_value(bot, nick, "long", 'claims', "claimdict", claimdict)
 
