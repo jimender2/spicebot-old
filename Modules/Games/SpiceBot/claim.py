@@ -128,7 +128,7 @@ def execute_main(bot, trigger, botcom):
             if playerdict["ownedby"] == botcom.instigator:
                 ownings.append(player)
         if ownings != []:
-            messagelist.append(posstarget + " currently owns " + spicemanip(bot, cownings, "andlist"))
+            messagelist.append(posstarget + " currently owns " + spicemanip(bot, ownings, "andlist"))
         if messagelist == []:
             messagelist.append("It looks like " + posstarget + " is neither owned, nor owns any others!")
         return osd(bot, botcom.channel_current, 'say', messagelist)
