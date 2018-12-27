@@ -49,7 +49,7 @@ def execute_main(bot, trigger, botcom):
 
     commands_list = dict()
     for commandstype in ['dict_commands', 'module_commands', 'nickname_commands']:
-        for com in bot.memory['botdict']['tempvals'][commandstype].keys():
+        for com in bot.memory[commandstype].keys():
             if com not in commands_list.keys():
                 commands_list[com] = bot.memory['botdict']['tempvals'][commandstype][com]
 

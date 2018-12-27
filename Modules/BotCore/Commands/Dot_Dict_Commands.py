@@ -51,7 +51,7 @@ def execute_main(bot, trigger, botcom):
 
     # command issued, check if valid
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-    if botcom.dotcommand in bot.memory['dict_commands'].keys() and botcom.dotcommand not in bot.memory['botdict']['tempvals']['module_commands'].keys():
+    if botcom.dotcommand in bot.memory['dict_commands'].keys() and botcom.dotcommand not in bot.memory['module_commands'].keys():
         bot_dictcom_handle(bot, botcom)
 
 
@@ -634,7 +634,7 @@ def bot_dictcom_gif(bot, botcom):
 def bot_dictcom_feeds(bot, botcom):
 
     feed = botcom.dotcommand_dict[botcom.responsekey]["responses"][0]
-    if feed not in bot.memory["botdict"]["tempvals"]['feeds'].keys():
+    if feed not in bot.memory['feeds'].keys():
         return osd(bot, botcom.channel_current, 'say', feed + " does not appear to be a valid feed.")
 
     dispmsg = bot_dictcom_feeds_handler(bot, feed, True)
