@@ -75,7 +75,7 @@ def execute_main(bot, trigger, botcom):
             dictcomref = str(mtype + "_commands")
 
             # command dictionary
-            dict_from_file = copy.deepcopy(bot.memory["botdict"]["tempvals"][dictcomref][str(command)])
+            dict_from_file = copy.deepcopy(bot.memory[dictcomref][str(command)])
             if "aliasfor" not in dict_from_file.keys():
 
                 # dotcommand
