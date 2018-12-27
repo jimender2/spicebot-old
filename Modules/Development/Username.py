@@ -92,6 +92,9 @@ def sherlock_configs(bot):
 
         comconf = dict_from_file["filename"]
 
+        if comconf not in bot.memory['sherlock'].keys():
+            bot.memory['sherlock'][comconf] = dict_from_file
+
 
 def make_request(url, error_type, social_network):
     try:
