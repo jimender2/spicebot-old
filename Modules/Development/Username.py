@@ -82,8 +82,6 @@ def execute_main(bot, trigger, botcom):
 
         r, error_type = make_request(url=url, error_type=error_type, social_network=social_network)
 
-        bot.msg("#spicebottest", str(error_type))
-
         if error_type == "message":
             error = data.get(social_network).get("errorMsg")
             # Checks if the error message is in the HTML
@@ -107,10 +105,10 @@ def execute_main(bot, trigger, botcom):
             else:
                 notinlist.append(social_network)
 
-        bot.msg("#spicebottest", str("inlist"))
-        bot.msg("#spicebottest", str(inlist))
-        bot.msg("#spicebottest", str("notinlist"))
-        bot.msg("#spicebottest", str(notinlist))
+    bot.msg("#spicebottest", str("inlist"))
+    bot.msg("#spicebottest", str(inlist))
+    bot.msg("#spicebottest", str("notinlist"))
+    bot.msg("#spicebottest", str(notinlist))
 
 
 def sherlock_configs(bot):
