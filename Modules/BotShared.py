@@ -1298,13 +1298,13 @@ def configs_dir_read(bot, dirdict):
             else:
                 extradirs = str(botconfig[dirdict['configname']]["extra"]).split(",")
             configlocations.extend(extradirs)
-    bot.msg("#spicebottest", str(configlocations))
 
     for confloc in configlocations:
         conf_path = bot_directory_configs + str(confloc) + "/"
         if os.path.exists(conf_path) and os.path.isdir(conf_path):
             if not os.path.isfile(conf_path) and len(os.listdir(conf_path)) > 0:
                 dirscan.append(conf_path)
+    bot.msg("#spicebottest", str(dirscan))
 
     filesprocess = []
 
