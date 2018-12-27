@@ -196,7 +196,7 @@ def dict_command_configs(bot):
     else:
         stderr("Warning: Couldn't load any dict files")
 
-    bot.memory["botdict"]["tempvals"]['dict_count'] = dictcount
+    bot.memory['dict_count'] = dictcount
 
 
 # goes with the above function, is used for iteration over use cases
