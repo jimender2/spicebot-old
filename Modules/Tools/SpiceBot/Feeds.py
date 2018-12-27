@@ -959,7 +959,6 @@ def feed_configs(bot):
                 }
 
     filedicts = configs_dir_read(bot, dirdict)
-    bot.msg("#spicebottest", str(filedicts))
 
     for dict_from_file in filedicts:
 
