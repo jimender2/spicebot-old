@@ -61,7 +61,6 @@ def configs_dir_read(bot, dirdict):
     bot_directory_configs = bot_directory_main + "Modules/Configs/" + dirdict['dirname'] + "/"
 
     if not os.path.exists(bot_directory_configs) or not os.path.isdir(bot_directory_configs):
-        bot.msg("#spicebottest", "path failed completely")
         return
 
     bot_config_dir = str(bot_directory_main + "System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
@@ -150,4 +149,6 @@ def configs_dir_read(bot, dirdict):
     else:
         stderr("Warning: Couldn't load any %d files" % (dirdict['name']))
 
+
+    bot.msg("#spicebottest", str(filedicts))
     return filedicts
