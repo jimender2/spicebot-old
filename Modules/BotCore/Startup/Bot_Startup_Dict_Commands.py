@@ -45,6 +45,7 @@ def dict_command_configs(bot):
     dirdict = {
                 "name": "dict_commands",
                 "dirname": "Dictionary_replies",
+                "configname": "dictcoms",
                 }
 
     filedicts, filecount = configs_dir_read(bot, dirdict)
