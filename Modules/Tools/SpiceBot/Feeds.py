@@ -79,7 +79,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, botcom):
 
     if not len(bot.memory['feeds'].keys()):
-        return osd(bot, botcom.channel_current, 'say', There are no valid feeds!!")
+        return osd(bot, botcom.channel_current, 'say', "There are no valid feeds!!")
 
     valid_commands = ['enable', 'disable', 'reset', 'run', 'subscribe', 'unsubscribe']
     command = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_commands], 1) or 'run'
