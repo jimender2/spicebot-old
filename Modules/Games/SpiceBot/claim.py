@@ -125,7 +125,7 @@ def execute_main(bot, trigger, botcom):
         ownings = []
         for player in bot.memory["botdict"]["users"].keys():
             playerdict = get_nick_claims(bot, player)
-            if playerdict["ownedby"] == botcom.instigator:
+            if playerdict["ownedby"] == posstarget:
                 ownings.append(player)
         if ownings != []:
             messagelist.append(posstarget + " currently owns " + spicemanip(bot, ownings, "andlist"))
