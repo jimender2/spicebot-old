@@ -82,7 +82,9 @@ def dict_command_configs(bot):
 
             # check that type is set, use cases will inherit this if not set
             if "type" not in dict_from_file.keys():
-                dict_from_file["type"] = quick_coms_type.lower()
+                foldername = dict_from_file["filepath"].split("/" + dict_from_file["filename"])[0]
+                foldername = str(foldername).split("/")[-1]
+                dict_from_file["type"] = foldername
             if dict_from_file["type"] not in valid_com_types:
                 dict_from_file["type"] = 'simple'
 
