@@ -29,6 +29,13 @@ comdict = {
             "exampleresponse": "",
             }
 
+
+"""
+Based on
+https://github.com/sdushantha/sherlock
+"""
+
+
 socialmediadict = {
                   "Instagram": {
                                 "url": "https://www.instagram.com/{}",

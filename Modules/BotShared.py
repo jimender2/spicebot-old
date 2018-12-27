@@ -801,6 +801,10 @@ def bot_startup_requirements_met(bot, listreq):
 
 def bot_startup_requirements_set(bot, addonreq):
 
+    # reload if bot is disconnected from server
+    if addonreq == 'connected' and "bot_startup" in bot.memory:
+        bot.memory["bot_startup"] = dict()
+
     if "bot_startup" not in bot.memory:
         bot.memory["bot_startup"] = dict()
 
