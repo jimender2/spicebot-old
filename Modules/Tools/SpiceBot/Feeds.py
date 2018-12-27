@@ -953,6 +953,11 @@ def feed_configs(bot):
 
     bot.memory['feeds'] = dict()
 
+    dirdict = {
+                "name": "feeds",
+                "dirname": "Feeds",
+                }
+
     filedicts = configs_dir_read(bot, dirdict)
 
     for dict_from_file in filedicts:
