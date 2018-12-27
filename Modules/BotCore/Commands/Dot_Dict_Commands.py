@@ -51,18 +51,18 @@ def execute_main(bot, trigger, botcom):
 
     # command issued, check if valid
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-    if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys() and botcom.dotcommand not in bot.memory['botdict']['tempvals']['module_commands'].keys():
+    if botcom.dotcommand in bot.memory['dict_commands'].keys() and botcom.dotcommand not in bot.memory['botdict']['tempvals']['module_commands'].keys():
         bot_dictcom_handle(bot, botcom)
 
 
 def bot_dictcom_handle(bot, botcom):
 
     # command aliases
-    if "aliasfor" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
-        botcom.dotcommand = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["aliasfor"]
+    if "aliasfor" in bot.memory['dict_commands'][botcom.dotcommand].keys():
+        botcom.dotcommand = bot.memory['dict_commands'][botcom.dotcommand]["aliasfor"]
 
     # simplify usage of the bot command going forward
-    botcom.dotcommand_dict = copy.deepcopy(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand])
+    botcom.dotcommand_dict = copy.deepcopy(bot.memory['dict_commands'][botcom.dotcommand])
 
     # remainder, if any is the new arg list
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')

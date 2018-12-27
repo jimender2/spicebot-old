@@ -36,7 +36,7 @@ def initialsetup(bot):
     availablecomsfiles = 0
 
     # dict commands
-    availablecomsnum += len(bot.memory["botdict"]["tempvals"]['dict_commands'].keys())
+    availablecomsnum += len(bot.memory['dict_commands'].keys())
     availablecomsfiles += bot.memory["botdict"]["tempvals"]['dict_module_count']
 
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " modules.")

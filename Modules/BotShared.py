@@ -299,7 +299,7 @@ Core Bot Permissions
 def bot_permissions_check(bot, botcom):
 
     comtypedict = str(botcom.comtype + "_commands")
-    commandslist = bot.memory["botdict"]["tempvals"][comtypedict]
+    commandslist = bot.memory[comtypedict]
     searchitem = botcom.command_main.lower()
     if comtypedict == "nickname_commands":
         searchitem = str(bot.nick) + " " + searchitem
@@ -491,9 +491,9 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         botcom.maincom = bypasscom.lower()
 
     # command aliases
-    if botcom.maincom in bot.memory["botdict"]["tempvals"]['module_commands'].keys():
-        if "aliasfor" in bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom].keys():
-            botcom.maincom = bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom]["aliasfor"]
+    if botcom.maincom in bot.memory['module_commands'].keys():
+        if "aliasfor" in bot.memory['module_commands'][botcom.maincom].keys():
+            botcom.maincom = bot.memory['module_commands'][botcom.maincom]["aliasfor"]
 
     # allow && splitting
     botcom.multiruns = True
@@ -501,7 +501,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
             botcom.multiruns = False
 
-    botcom.dotcommand_dict = copy.deepcopy(bot.memory["botdict"]["tempvals"]['module_commands'][botcom.maincom])
+    botcom.dotcommand_dict = copy.deepcopy(bot.memory['module_commands'][botcom.maincom])
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage", "privs"]

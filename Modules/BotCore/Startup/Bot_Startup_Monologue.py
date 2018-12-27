@@ -55,8 +55,8 @@ def bot_startup_monologue(bot, trigger):
     for comtype in ['dict', 'module', 'nickname', 'rule']:
         comtypedict = str(comtype + "_commands")
         comtypecount = str(comtype + "_count")
-        availablecomsnum += len(bot.memory["botdict"]["tempvals"][comtypedict].keys())
-        availablecomsfiles += bot.memory["botdict"]["tempvals"][comtypecount]
+        availablecomsnum += len(bot.memory[comtypedict].keys())
+        availablecomsfiles += bot.memory[comtypecount]
 
     startupcomplete.append("There are " + str(availablecomsnum) + " commands available in " + str(availablecomsfiles) + " files.")
 

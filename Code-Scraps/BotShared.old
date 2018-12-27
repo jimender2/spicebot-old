@@ -879,7 +879,7 @@ def modules_command_listing(bot):
             modulecount += 1
             validcoms = modules[1]
             for com in validcoms:
-                bot.memory["botdict"]["tempvals"]['module_commands'][com] = dict()
+                bot.memory['module_commands'][com] = dict()
     bot.memory["botdict"]["tempvals"]['module_count'] = modulecount
 
 
@@ -887,7 +887,7 @@ def modules_command_listing(bot):
 def dict_command_configs(bot):
 
     # Don't load commands if already loaded
-    if bot.memory["botdict"]["tempvals"]['dict_commands'] != dict():
+    if bot.memory['dict_commands'] != dict():
         return
 
     dictcount, dictopenfail = 0, 0
@@ -965,7 +965,7 @@ def dict_command_configs(bot):
                                         for var in tuple_bak:
                                             dict_from_file[var] = tuple_contents_bak
 
-                                if maincom not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
+                                if maincom not in bot.memory['dict_commands'].keys():
 
                                     # check that type is set, use cases will inherit this if not set
                                     if "type" not in dict_from_file.keys():
@@ -1014,10 +1014,10 @@ def dict_command_configs(bot):
                                         dict_from_file = bot_dict_use_cases(bot, maincom, dict_from_file, otherkeys)
                                     keysprocessed.extend(otherkeys)
 
-                                    bot.memory["botdict"]["tempvals"]['dict_commands'][maincom] = dict_from_file
+                                    bot.memory['dict_commands'][maincom] = dict_from_file
                                     for comalias in comaliases:
-                                        if comalias not in bot.memory["botdict"]["tempvals"]['dict_commands'].keys():
-                                            bot.memory["botdict"]["tempvals"]['dict_commands'][comalias] = {"aliasfor": maincom}
+                                        if comalias not in bot.memory['dict_commands'].keys():
+                                            bot.memory['dict_commands'][comalias] = {"aliasfor": maincom}
                             else:
                                 dictopenfail += 1
     if dictcount > 1:
@@ -2094,7 +2094,7 @@ def bot_watch_dot_run(bot, trigger):
 
     # command issued, check if valid
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-    if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys() and botcom.dotcommand not in bot.memory['botdict']['tempvals']['module_commands'].keys():
+    if botcom.dotcommand in bot.memory['dict_commands'].keys() and botcom.dotcommand not in bot.memory['botdict']['tempvals']['module_commands'].keys():
         bot_dictcom_handle(bot, botcom)
 
         # save dictionary now
@@ -2153,7 +2153,7 @@ def bot_watch_exclamation(bot, trigger):
 
     # command issued, check if valid
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-    if botcom.dotcommand in bot.memory["botdict"]["tempvals"]['dict_commands'].keys() and botcom.dotcommand not in bot.memory['botdict']['tempvals']['module_commands'].keys():
+    if botcom.dotcommand in bot.memory['dict_commands'].keys() and botcom.dotcommand not in bot.memory['botdict']['tempvals']['module_commands'].keys():
         bot_dictcom_handle(bot, botcom)
 
         # save dictionary now
@@ -3331,11 +3331,11 @@ Dictionary commands
 def bot_dictcom_handle(bot, botcom):
 
     # command aliases
-    if "aliasfor" in bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand].keys():
-        botcom.dotcommand = bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand]["aliasfor"]
+    if "aliasfor" in bot.memory['dict_commands'][botcom.dotcommand].keys():
+        botcom.dotcommand = bot.memory['dict_commands'][botcom.dotcommand]["aliasfor"]
 
     # simplify usage of the bot command going forward
-    botcom.dotcommand_dict = copy.deepcopy(bot.memory["botdict"]["tempvals"]['dict_commands'][botcom.dotcommand])
+    botcom.dotcommand_dict = copy.deepcopy(bot.memory['dict_commands'][botcom.dotcommand])
 
     # remainder, if any is the new arg list
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')

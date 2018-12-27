@@ -36,8 +36,8 @@ def bot_startup_dict_coms(bot, trigger):
 
     bot.memory["botdict"]["tempvals"]['all_coms'] = []
 
-    bot.memory["botdict"]["tempvals"]['all_coms'].extend(bot.memory["botdict"]["tempvals"]['dict_commands'].keys())
+    bot.memory["botdict"]["tempvals"]['all_coms'].extend(bot.memory['dict_commands'].keys())
 
-    bot.memory["botdict"]["tempvals"]['all_coms'].extend(bot.memory["botdict"]["tempvals"]['module_commands'].keys())
+    bot.memory["botdict"]["tempvals"]['all_coms'].extend(bot.memory['module_commands'].keys())
 
     bot_startup_requirements_set(bot, "all_coms")

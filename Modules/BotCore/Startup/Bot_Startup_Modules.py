@@ -37,8 +37,8 @@ def bot_startup_modules(bot, trigger):
     for comtype in ['module', 'nickname', 'rule']:
         comtypedict = str(comtype + "_commands")
         comtypecount = str(comtype + "_count")
-        bot.memory["botdict"]["tempvals"][comtypedict] = dict()
-        bot.memory["botdict"]["tempvals"][comtypecount] = 0
+        bot.memory[comtypedict] = dict()
+        bot.memory[comtypecount] = 0
 
     filenameslist = []
     for modules in bot.command_groups.items():
@@ -123,7 +123,7 @@ def bot_startup_modules(bot, trigger):
             comtypedict = str(comtype + "_commands")
             comtypecount = str(comtype + "_count")
 
-            bot.memory["botdict"]["tempvals"][comtypecount] += 1
+            bot.memory[comtypecount] += 1
 
             if not dict_from_file:
                 dict_from_file = dict()
@@ -180,9 +180,9 @@ def bot_startup_modules(bot, trigger):
             if "privs" not in dict_from_file.keys():
                 dict_from_file["privs"] = []
 
-            bot.memory["botdict"]["tempvals"][comtypedict][maincom] = dict_from_file
+            bot.memory[comtypedict][maincom] = dict_from_file
             for comalias in comaliases:
-                if comalias not in bot.memory["botdict"]["tempvals"][comtypedict].keys():
-                    bot.memory["botdict"]["tempvals"][comtypedict][comalias] = {"aliasfor": maincom}
+                if comalias not in bot.memory[comtypedict].keys():
+                    bot.memory[comtypedict][comalias] = {"aliasfor": maincom}
 
     bot_startup_requirements_set(bot, "modules")
