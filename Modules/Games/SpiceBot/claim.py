@@ -80,7 +80,7 @@ def execute_main(bot, trigger, botcom):
             dispmsg.append("Your bladder is currently at " + str(bladder.percent) + " capacity.")
             dispmsg.append("Your character peed " + bladder.lastpeedisp)
             if bladder.percentnum < 10:
-                osd(bot, botcom.channel_current, 'say', "Current Capacity is not enough to make a valid claim!")
+                dispmsg.append("Current Capacity is not enough to make a valid claim!")
             else:
                 dispmsg.append("Current Capacity can claim anywhere from " + str(bladder.min) + " to " + str(bladder.max))
             return osd(bot, botcom.channel_current, 'say', dispmsg)
@@ -96,7 +96,7 @@ def execute_main(bot, trigger, botcom):
         dispmsg.append(targetposession(bot, posstarget) + " bladder is currently at " + str(targetbladder.percent) + " capacity.")
         dispmsg.append(targetposession(bot, posstarget) + " character peed " + targetbladder.lastpeedisp)
         if bladder.percentnum < 10:
-            osd(bot, botcom.channel_current, 'say', "Current Capacity is not enough to make a valid claim!")
+            dispmsg.append("Current Capacity is not enough to make a valid claim!")
         else:
             dispmsg.append("Current Capacity can claim anywhere from " + str(targetbladder.min) + " to " + str(targetbladder.max))
         return osd(bot, botcom.channel_current, 'say', dispmsg)
