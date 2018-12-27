@@ -26,10 +26,14 @@ sys.setdefaultencoding('utf-8')
 def auto_feeds(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict", "monologue", "feeds"]):
+    while not bot_startup_requirements_met(bot, ["monologue"]):
         pass
 
-    for feed in bot.memory["botdict"]["tempvals"]['feeds'].keys():
+    feed_configs(bot)
+
+    bot_startup_requirements_set(bot, "feeds")
+
+    for feed in bot.memory["feeds"].keys():
         Thread(target=feeds_thread, args=(bot, feed,)).start()
 
 
@@ -79,18 +83,18 @@ def execute_main(bot, trigger, botcom):
     if command in botcom.triggerargsarray:
         botcom.triggerargsarray.remove(command)
 
-    feed_select = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot.memory["botdict"]["tempvals"]['feeds'].keys() or x == 'all'], 1) or None
+    feed_select = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot.memory['feeds'].keys() or x == 'all'], 1) or None
     if not feed_select:
-        feed_list = spicemanip(bot, bot.memory["botdict"]["tempvals"]['feeds'].keys(), 'list')
+        feed_list = spicemanip(bot, bot.memory['feeds'].keys(), 'list')
         osd(bot, botcom.channel_current, 'say', "Valid Feeds are " + feed_list)
         return
 
     if feed_select == 'all':
-        current_feed_list = bot.memory["botdict"]["tempvals"]['feeds'].keys()
+        current_feed_list = bot.memory['feeds'].keys()
     else:
         current_feed_list = []
         for word in botcom.triggerargsarray:
-            if word in bot.memory["botdict"]["tempvals"]['feeds'].keys():
+            if word in bot.memory['feeds'].keys():
                 current_feed_list.append(word)
 
     if command == 'run':
@@ -138,7 +142,7 @@ def execute_main(bot, trigger, botcom):
     if command == 'reset':
         newlist = []
         for feed in current_feed_list:
-            feed_type = bot.memory["botdict"]["tempvals"]['feeds'][feed]["type"]
+            feed_type = bot.memory['feeds'][feed]["type"]
             if feed_type in ['rss', 'youtube', 'github', 'redditrss', 'redditapi', 'twitter']:
                 newlist.append(feed)
         if newlist != []:
@@ -182,7 +186,7 @@ def execute_main(bot, trigger, botcom):
 
 def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
-    feed_dict = bot.memory["botdict"]["tempvals"]['feeds'][feed]
+    feed_dict = bot.memory['feeds'][feed]
 
     dispmsg = []
     displayname = False
@@ -936,3 +940,460 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
     botdict_save(bot)
     return dispmsg
+
+
+def configs_dir_read(bot, dirdict):
+
+    if "name" not in dirdict.keys():
+        return
+
+    if "botmemname" not in dirdict.keys():
+        dirdict['botmemname'] = dirdict['name']
+
+    if "dirname" not in dirdict.keys():
+        dirdict['dirname'] = dirdict['botmemname']
+
+    if "configname" not in dirdict.keys():
+        dirdict['configname'] = dirdict['botmemname']
+
+    bot_directory_main = str("/home/spicebot/.sopel/" + str(bot.nick) + "/")
+    bot_directory_configs = bot_directory_main + "Modules/Configs/" + dirdict['dirname'] + "/"
+
+    bot_config_dir = str(bot_directory_main + "System-Files/Configs/" + bot.memory["botdict"]["tempvals"]['servername'] + "/")
+    bot_config_file = str(bot_config_dir + str(bot.nick) + ".cfg")
+
+    botconfig = config_file_to_dict(bot, str(config_file))
+
+    filecount, fileopenfail = 0, 0
+    dirscan = []
+
+    # Open files within botname dir, check bot config for others
+    configlocations = [str(bot.nick)]
+    if dirdict['configname'] in botconfig.keys():
+        if "extra" in botconfig[dirdict['configname']].keys():
+            if "," not in str(botconfig[dirdict['configname']]["extra"]):
+                extradirs = [str(botconfig[dirdict['configname']]["extra"])]
+            else:
+                extradirs = str(botconfig[dirdict['configname']]["extra"]).split(",")
+            configlocations.extend(extradirs)
+
+    for confloc in configlocations:
+        conf_path = bot_directory_configs + str(confloc) + "/"
+        if os.path.exists(conf_path) and os.path.isdir(conf_path):
+            if not os.path.isfile(conf_path) and len(os.listdir(conf_path)) > 0:
+                dirscan.append(conf_path)
+
+    filesprocess = []
+
+    for directory in dirscan:
+
+        for dir_main_item in os.listdir(directory):
+
+            dir_main_item_path = os.path.join(directory, dir_main_item)
+
+            if os.path.isfile(dir_main_item_path):
+                filesprocess.append(dir_main_item_path)
+
+            elif not os.path.isfile(dir_main_item_path):
+
+                for dir_sub_item in os.listdir(dir_main_item_path):
+
+                    dir_sub_item_path = os.path.join(dir_main_item, dir_sub_item)
+
+                    if os.path.isfile(dir_sub_item_path):
+                        filesprocess.append(dir_sub_item_path)
+
+    # file dicts
+    filedicts = []
+    for filepath in filesprocess:
+
+        # Read dictionary from file, if not, enable an empty dict
+        filereadgood = True
+        inf = codecs.open(filepath, "r", encoding='utf-8')
+        infread = inf.read()
+        try:
+            dict_from_file = eval(infread)
+        except Exception as e:
+            filereadgood = False
+            stderr("Error loading %s %s: %s (%s)" % (dirdict['name'], comconf, e, filepath))
+            dict_from_file = dict()
+        # Close File
+        inf.close()
+
+        if filereadgood and isinstance(dict_from_file, dict):
+
+            filecount += 1
+
+            # current file info
+            if "filepath" not in dict_from_file.keys():
+                dict_from_file["filepath"] = filepath
+
+            slashsplit = str(filepath).split("/")
+            filename = slashsplit[-1]
+
+            if "filename" not in dict_from_file.keys():
+                dict_from_file["filename"] = filename
+
+            filedicts.append(dict_from_file)
+
+        else:
+            fileopenfail += 1
+
+    if filecount > 1:
+        stderr('\n\nRegistered %d %d files,' % (dirdict['name'], filecount))
+        stderr('%d %d files failed to load\n\n' % fileopenfail)
+    else:
+        stderr("Warning: Couldn't load any %d files" % (dirdict['name']))
+
+    return filedicts
+
+
+def feed_configs_poop(bot):
+
+    # proceed with file iteration
+    for directory in filescan:
+
+        # iterate over organizational folder
+        for quick_coms_type in os.listdir(directory):
+            coms_type_file_path = os.path.join(directory, quick_coms_type)
+            if os.path.exists(coms_type_file_path) and not os.path.isfile(coms_type_file_path) and len(os.listdir(coms_type_file_path)) > 0:
+
+                # iterate over files within
+                for comconf in os.listdir(coms_type_file_path):
+                    comconf_file_path = os.path.join(coms_type_file_path, comconf)
+
+                    if os.path.isfile(comconf_file_path):
+
+                        # Read dictionary from file, if not, enable an empty dict
+                        filereadgood = True
+                        inf = codecs.open(os.path.join(coms_type_file_path, comconf), "r", encoding='utf-8')
+                        infread = inf.read()
+                        try:
+                            dict_from_file = eval(infread)
+                        except Exception as e:
+                            filereadgood = False
+                            stderr("Error loading feed %s: %s (%s)" % (comconf, e, comconf_file_path))
+                            dict_from_file = dict()
+                        # Close File
+                        inf.close()
+
+                        if filereadgood and isinstance(dict_from_file, dict):
+
+                            feedcount += 1
+
+                            if "type" not in dict_from_file.keys():
+                                dict_from_file["type"] = quick_coms_type
+
+                            if "displayname" not in dict_from_file.keys():
+                                dict_from_file["displayname"] = None
+
+                            if "url" not in dict_from_file.keys():
+                                dict_from_file["url"] = None
+
+                            if dict_from_file["type"] == "redditapi":
+
+                                if "path" not in dict_from_file.keys():
+                                    dict_from_file["path"] = None
+
+                                if not dict_from_file["url"]:
+                                    dict_from_file["url"] = "https://www.reddit.com"
+
+                            if dict_from_file["type"] == "twitter":
+
+                                if "handle" not in dict_from_file.keys():
+                                    dict_from_file["handle"] = None
+
+                                if not dict_from_file["url"]:
+                                    dict_from_file["url"] = "https://twitter.com"
+
+                            if dict_from_file["type"] == "googlecalendar":
+
+                                if "calendar" not in dict_from_file.keys():
+                                    dict_from_file["calendar"] = None
+
+                                if "link" not in dict_from_file.keys():
+                                    dict_from_file["link"] = None
+
+                                if not dict_from_file["url"]:
+                                    dict_from_file["url"] = "https://google.com"
+
+                            if dict_from_file["type"] == "dailyscrapes":
+
+                                if "scrapetitle" not in dict_from_file.keys():
+                                    dict_from_file["scrapetitle"] = None
+
+                                if "scrapehour" not in dict_from_file.keys():
+                                    dict_from_file["scrapehour"] = 1
+
+                                if "scrapeminute" not in dict_from_file.keys():
+                                    dict_from_file["scrapeminute"] = 1
+
+                                if "scrapetimezone" not in dict_from_file.keys():
+                                    dict_from_file["scrapetimezone"] = "UTC"
+
+                                if "scrapelink" not in dict_from_file.keys():
+                                    dict_from_file["scrapelink"] = None
+
+                                if "linkprecede" not in dict_from_file.keys():
+                                    dict_from_file["linkprecede"] = None
+
+                            if dict_from_file["type"] == "events":
+
+                                if "scrapetitle" not in dict_from_file.keys():
+                                    dict_from_file["scrapetitle"] = None
+
+                                if "eventmonth" not in dict_from_file.keys():
+                                    dict_from_file["eventmonth"] = 1
+
+                                if "eventday" not in dict_from_file.keys():
+                                    dict_from_file["eventday"] = 1
+
+                                if "eventhour" not in dict_from_file.keys():
+                                    dict_from_file["eventhour"] = 0
+
+                                if "eventminute" not in dict_from_file.keys():
+                                    dict_from_file["eventminute"] = 0
+
+                                if "timezone" not in dict_from_file.keys():
+                                    dict_from_file["timezone"] = "UTC"
+
+                                if "rightnow" not in dict_from_file.keys():
+                                    dict_from_file["rightnow"] = None
+
+                            if dict_from_file["type"] == "scrapes":
+
+                                if "scrapetitle" not in dict_from_file.keys():
+                                    dict_from_file["scrapetitle"] = None
+
+                                if "scrapetime" not in dict_from_file.keys():
+                                    dict_from_file["scrapetime"] = None
+
+                                if "scrapetimezone" not in dict_from_file.keys():
+                                    dict_from_file["scrapetimezone"] = "UTC"
+
+                                if "scrapelink" not in dict_from_file.keys():
+                                    dict_from_file["scrapelink"] = None
+
+                                if "linkprecede" not in dict_from_file.keys():
+                                    dict_from_file["linkprecede"] = None
+
+                            if dict_from_file["type"] == "webinarscrapes":
+
+                                if "scrapetime" not in dict_from_file.keys():
+                                    dict_from_file["scrapetime"] = None
+
+                                if "scrapetitle" not in dict_from_file.keys():
+                                    dict_from_file["scrapetitle"] = None
+
+                                if "scrapelink" not in dict_from_file.keys():
+                                    dict_from_file["scrapelink"] = None
+
+                                if "linkprecede" not in dict_from_file.keys():
+                                    dict_from_file["linkprecede"] = None
+
+                                if "scrapebonus" not in dict_from_file.keys():
+                                    dict_from_file["scrapebonus"] = None
+
+                                if "scrapebonussplit" not in dict_from_file.keys():
+                                    dict_from_file["scrapebonussplit"] = None
+
+                                if "scrapetimezone" not in dict_from_file.keys():
+                                    dict_from_file["scrapetimezone"] = "UTC"
+
+                            if comconf not in bot.memory['feeds'].keys():
+                                bot.memory['feeds'][comconf] = dict_from_file
+                        else:
+                            feedopenfail += 1
+    if feedcount > 1:
+        stderr('\n\nRegistered %d feed files,' % (feedcount))
+        stderr('%d feed files failed to load\n\n' % feedopenfail)
+    else:
+        stderr("Warning: Couldn't load any feed files")
+
+    bot.memory["botdict"]["tempvals"]['feed_count'] = feedcount
+
+
+def feed_configs(bot):
+
+    feedcount, feedopenfail = 0, 0
+    filescan = []
+    bot.memory['feeds'] = dict()
+
+    quick_coms_path = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "Modules/Configs/Feeds/" + str(bot.nick) + "/"
+    if os.path.exists(quick_coms_path) and os.path.isdir(quick_coms_path):
+        if not os.path.isfile(quick_coms_path) and len(os.listdir(quick_coms_path)) > 0:
+            filescan.append(quick_coms_path)
+
+    if "feeds" in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration'].keys():
+        if "extra" in bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["feeds"].keys():
+            if "," not in str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["feeds"]["extra"]):
+                extradirs = [str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["feeds"]["extra"])]
+            else:
+                extradirs = str(bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['configuration']["feeds"]["extra"]).split(",")
+            for extra in extradirs:
+                quick_coms_path_extra = bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]["directory_main"] + "Modules/Configs/Feeds/" + str(extra) + "/"
+                if os.path.exists(quick_coms_path_extra) and os.path.isdir(quick_coms_path_extra):
+                    if not os.path.isfile(quick_coms_path_extra) and len(os.listdir(quick_coms_path_extra)) > 0:
+                        filescan.append(quick_coms_path_extra)
+
+    # proceed with file iteration
+    for directory in filescan:
+
+        # iterate over organizational folder
+        for quick_coms_type in os.listdir(directory):
+            coms_type_file_path = os.path.join(directory, quick_coms_type)
+            if os.path.exists(coms_type_file_path) and not os.path.isfile(coms_type_file_path) and len(os.listdir(coms_type_file_path)) > 0:
+
+                # iterate over files within
+                for comconf in os.listdir(coms_type_file_path):
+                    comconf_file_path = os.path.join(coms_type_file_path, comconf)
+
+                    if os.path.isfile(comconf_file_path):
+
+                        # Read dictionary from file, if not, enable an empty dict
+                        filereadgood = True
+                        inf = codecs.open(os.path.join(coms_type_file_path, comconf), "r", encoding='utf-8')
+                        infread = inf.read()
+                        try:
+                            dict_from_file = eval(infread)
+                        except Exception as e:
+                            filereadgood = False
+                            stderr("Error loading feed %s: %s (%s)" % (comconf, e, comconf_file_path))
+                            dict_from_file = dict()
+                        # Close File
+                        inf.close()
+
+                        if filereadgood and isinstance(dict_from_file, dict):
+
+                            feedcount += 1
+
+                            if "type" not in dict_from_file.keys():
+                                dict_from_file["type"] = quick_coms_type
+
+                            if "displayname" not in dict_from_file.keys():
+                                dict_from_file["displayname"] = None
+
+                            if "url" not in dict_from_file.keys():
+                                dict_from_file["url"] = None
+
+                            if dict_from_file["type"] == "redditapi":
+
+                                if "path" not in dict_from_file.keys():
+                                    dict_from_file["path"] = None
+
+                                if not dict_from_file["url"]:
+                                    dict_from_file["url"] = "https://www.reddit.com"
+
+                            if dict_from_file["type"] == "twitter":
+
+                                if "handle" not in dict_from_file.keys():
+                                    dict_from_file["handle"] = None
+
+                                if not dict_from_file["url"]:
+                                    dict_from_file["url"] = "https://twitter.com"
+
+                            if dict_from_file["type"] == "googlecalendar":
+
+                                if "calendar" not in dict_from_file.keys():
+                                    dict_from_file["calendar"] = None
+
+                                if "link" not in dict_from_file.keys():
+                                    dict_from_file["link"] = None
+
+                                if not dict_from_file["url"]:
+                                    dict_from_file["url"] = "https://google.com"
+
+                            if dict_from_file["type"] == "dailyscrapes":
+
+                                if "scrapetitle" not in dict_from_file.keys():
+                                    dict_from_file["scrapetitle"] = None
+
+                                if "scrapehour" not in dict_from_file.keys():
+                                    dict_from_file["scrapehour"] = 1
+
+                                if "scrapeminute" not in dict_from_file.keys():
+                                    dict_from_file["scrapeminute"] = 1
+
+                                if "scrapetimezone" not in dict_from_file.keys():
+                                    dict_from_file["scrapetimezone"] = "UTC"
+
+                                if "scrapelink" not in dict_from_file.keys():
+                                    dict_from_file["scrapelink"] = None
+
+                                if "linkprecede" not in dict_from_file.keys():
+                                    dict_from_file["linkprecede"] = None
+
+                            if dict_from_file["type"] == "events":
+
+                                if "scrapetitle" not in dict_from_file.keys():
+                                    dict_from_file["scrapetitle"] = None
+
+                                if "eventmonth" not in dict_from_file.keys():
+                                    dict_from_file["eventmonth"] = 1
+
+                                if "eventday" not in dict_from_file.keys():
+                                    dict_from_file["eventday"] = 1
+
+                                if "eventhour" not in dict_from_file.keys():
+                                    dict_from_file["eventhour"] = 0
+
+                                if "eventminute" not in dict_from_file.keys():
+                                    dict_from_file["eventminute"] = 0
+
+                                if "timezone" not in dict_from_file.keys():
+                                    dict_from_file["timezone"] = "UTC"
+
+                                if "rightnow" not in dict_from_file.keys():
+                                    dict_from_file["rightnow"] = None
+
+                            if dict_from_file["type"] == "scrapes":
+
+                                if "scrapetitle" not in dict_from_file.keys():
+                                    dict_from_file["scrapetitle"] = None
+
+                                if "scrapetime" not in dict_from_file.keys():
+                                    dict_from_file["scrapetime"] = None
+
+                                if "scrapetimezone" not in dict_from_file.keys():
+                                    dict_from_file["scrapetimezone"] = "UTC"
+
+                                if "scrapelink" not in dict_from_file.keys():
+                                    dict_from_file["scrapelink"] = None
+
+                                if "linkprecede" not in dict_from_file.keys():
+                                    dict_from_file["linkprecede"] = None
+
+                            if dict_from_file["type"] == "webinarscrapes":
+
+                                if "scrapetime" not in dict_from_file.keys():
+                                    dict_from_file["scrapetime"] = None
+
+                                if "scrapetitle" not in dict_from_file.keys():
+                                    dict_from_file["scrapetitle"] = None
+
+                                if "scrapelink" not in dict_from_file.keys():
+                                    dict_from_file["scrapelink"] = None
+
+                                if "linkprecede" not in dict_from_file.keys():
+                                    dict_from_file["linkprecede"] = None
+
+                                if "scrapebonus" not in dict_from_file.keys():
+                                    dict_from_file["scrapebonus"] = None
+
+                                if "scrapebonussplit" not in dict_from_file.keys():
+                                    dict_from_file["scrapebonussplit"] = None
+
+                                if "scrapetimezone" not in dict_from_file.keys():
+                                    dict_from_file["scrapetimezone"] = "UTC"
+
+                            if comconf not in bot.memory['feeds'].keys():
+                                bot.memory['feeds'][comconf] = dict_from_file
+                        else:
+                            feedopenfail += 1
+    if feedcount > 1:
+        stderr('\n\nRegistered %d feed files,' % (feedcount))
+        stderr('%d feed files failed to load\n\n' % feedopenfail)
+    else:
+        stderr("Warning: Couldn't load any feed files")
+
+    bot.memory["botdict"]["tempvals"]['feed_count'] = feedcount
