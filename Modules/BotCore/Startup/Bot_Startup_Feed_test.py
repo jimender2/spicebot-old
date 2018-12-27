@@ -144,9 +144,9 @@ def configs_dir_read(bot, dirdict):
             fileopenfail += 1
 
     if filecount > 1:
-        stderr('\n\nRegistered %d %d files,' % (dirdict['name'], filecount))
+        stderr('\n\nRegistered %s %d files,' % (dirdict['name'], filecount))
         stderr('%d %d files failed to load\n\n' % fileopenfail)
     else:
-        stderr("Warning: Couldn't load any %d files" % (dirdict['name']))
+        stderr("Warning: Couldn't load any %s files" % (dirdict['name']))
 
     return filedicts
