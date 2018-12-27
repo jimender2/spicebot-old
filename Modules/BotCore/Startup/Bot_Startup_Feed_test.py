@@ -35,12 +35,12 @@ def bot_startup_feeds(bot, trigger):
         pass
 
     dirdict = {
-                "name": "feeds",
-                "botmemname": "feeds",
-                "dirname": "Feeds",
+                "name": "sherlock",
+                "dirname": "Sherlock_Usernames",
                 }
 
-    configs_dir_read(bot, dirdict)
+    filedicts = configs_dir_read(bot, dirdict)
+    bot.msg("#spicebottest", str(filedicts))
 
 
 def configs_dir_read(bot, dirdict):
@@ -149,6 +149,4 @@ def configs_dir_read(bot, dirdict):
     else:
         stderr("Warning: Couldn't load any %d files" % (dirdict['name']))
 
-
-    bot.msg("#spicebottest", str(filedicts))
     return filedicts
