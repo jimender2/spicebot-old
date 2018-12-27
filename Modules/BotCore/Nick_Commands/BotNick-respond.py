@@ -47,7 +47,7 @@ def bot_nickcom_hub(bot, trigger):
 
     if not botcom.command_main:
         return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do!")
-    if str(bot.nick) + " " + botcom.command_main.lower() in bot.memory["botdict"]["tempvals"]["nickname_commands"].keys():
+    if str(bot.nick) + " " + botcom.command_main.lower() in bot.memory["nickname_commands"].keys():
         return
 
     specialcomposs = spicemanip(bot, botcom.triggerargsarray, 0).lower()
