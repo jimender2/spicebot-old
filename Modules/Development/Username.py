@@ -106,7 +106,7 @@ def execute_main(bot, trigger, botcom):
                 notinlist.append(social_network)
 
     osd(bot, botcom.channel_current, 'say', ["The username " + username + " is in the following:", spicemanip(bot, inlist, "andlist")])
-    osd(bot, botcom.channel_current, 'say', ["The username " + username + " is NOT in the following:", spicemanip(bot, inlist, "notinlist")])
+    osd(bot, botcom.channel_current, 'say', ["The username " + username + " is NOT in the following:", spicemanip(bot, notinlist, "andlist")])
 
 
 def sherlock_configs(bot):
@@ -133,12 +133,5 @@ def make_request(url, error_type, social_network):
         r = requests.get(url, headers=header)
         if r.status_code:
             return r, error_type
-    except requests.exceptions.HTTPError as errh:
-        print_error(errh, "HTTP Error:", social_network, DEBUG)
-    except requests.exceptions.ConnectionError as errc:
-        print_error(errc, "Error Connecting:", social_network, DEBUG)
-    except requests.exceptions.Timeout as errt:
-        print_error(errt, "Timeout Error:", social_network, DEBUG)
-    except requests.exceptions.RequestException as err:
-        print_error(err, "Unknown error:", social_network, DEBUG)
-    return None, ""
+    except Exception as e:
+        return None, ""
