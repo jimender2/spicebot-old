@@ -2094,7 +2094,7 @@ def bot_watch_dot_run(bot, trigger):
 
     # command issued, check if valid
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-    if botcom.dotcommand in bot.memory['dict_commands'].keys() and botcom.dotcommand not in bot.memory['botdict']['tempvals']['module_commands'].keys():
+    if botcom.dotcommand in bot.memory['dict_commands'].keys() and botcom.dotcommand not in bot.memory['module_commands'].keys():
         bot_dictcom_handle(bot, botcom)
 
         # save dictionary now
@@ -2153,7 +2153,7 @@ def bot_watch_exclamation(bot, trigger):
 
     # command issued, check if valid
     botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-    if botcom.dotcommand in bot.memory['dict_commands'].keys() and botcom.dotcommand not in bot.memory['botdict']['tempvals']['module_commands'].keys():
+    if botcom.dotcommand in bot.memory['dict_commands'].keys() and botcom.dotcommand not in bot.memory['module_commands'].keys():
         bot_dictcom_handle(bot, botcom)
 
         # save dictionary now

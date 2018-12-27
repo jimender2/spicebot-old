@@ -58,5 +58,5 @@ def execute_main(bot, trigger, botcom):
     if not botcom.dotcommand:
         return
 
-    if botcom.dotcommand not in bot.memory['dict_commands'].keys() and botcom.dotcommand not in bot.memory['botdict']['tempvals']['module_commands'].keys():
+    if botcom.dotcommand not in bot.memory['dict_commands'].keys() and botcom.dotcommand not in bot.memory['module_commands'].keys():
         osd(bot, botcom.instigator, 'notice', ["I don't seem to have a command for " + str(botcom.dotcommand) + "!", "If you have a suggestion for this command, you can run .feature ." + str(botcom.dotcommand), " ADD DESCRIPTION HERE!"])
