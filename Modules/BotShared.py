@@ -1313,17 +1313,19 @@ def configs_dir_read(bot, dirdict):
 
             dir_main_item_path = os.path.join(directory, dir_main_item)
 
-            if os.path.isfile(dir_main_item_path):
+            if os.path.isdir(dir_main_item_path):
+
+                if len(os.listdir(dir_main_item_path)) > 0:
+
+                    for dir_sub_item in os.listdir(dir_main_item_path):
+
+                        dir_sub_item_path = os.path.join(dir_main_item, dir_sub_item)
+
+                        if os.path.isfile(dir_sub_item_path):
+                            filesprocess.append(dir_sub_item_path)
+
+            else:
                 filesprocess.append(dir_main_item_path)
-
-            elif len(os.listdir(dir_main_item_path)) > 0:
-
-                for dir_sub_item in os.listdir(dir_main_item_path):
-
-                    dir_sub_item_path = os.path.join(dir_main_item, dir_sub_item)
-
-                    if os.path.isfile(dir_sub_item_path):
-                        filesprocess.append(dir_sub_item_path)
 
     bot.msg("#spicebottest", str(filesprocess))
 
