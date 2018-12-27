@@ -1325,6 +1325,8 @@ def configs_dir_read(bot, dirdict):
                     if os.path.isfile(dir_sub_item_path):
                         filesprocess.append(dir_sub_item_path)
 
+    bot.msg("#spicebottest", str(filesprocess))
+
     # file dicts
     filedicts = []
     for filepath in filesprocess:
