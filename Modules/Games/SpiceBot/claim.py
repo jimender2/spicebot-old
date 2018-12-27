@@ -269,6 +269,11 @@ def get_nick_claims(bot, nick):
     if "ownedbytime" not in claimdict.keys():
         claimdict["ownedbytime"] = 0
 
+    ownings = get_nick_ownings(bot, nick)
+    if claimdict["ownedby"]:
+        if claimdict["ownedby"] in ownings:
+            claimdict["ownedby"] = None
+
     # expired claims
     if not claimdict["ownedbytime"]:
         claimdict["ownedbytime"] = 0
