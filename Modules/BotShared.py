@@ -1298,6 +1298,7 @@ def configs_dir_read(bot, dirdict):
             else:
                 extradirs = str(botconfig[dirdict['configname']]["extra"]).split(",")
             configlocations.extend(extradirs)
+    bot.msg("#spicebottest", str(configlocations))
 
     for confloc in configlocations:
         conf_path = bot_directory_configs + str(confloc) + "/"
