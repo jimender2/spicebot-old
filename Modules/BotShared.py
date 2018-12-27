@@ -1312,6 +1312,7 @@ def configs_dir_read(bot, dirdict):
         for dir_main_item in os.listdir(directory):
 
             dir_main_item_path = os.path.join(directory, dir_main_item)
+            bot.msg("#spicebottest", str(dir_main_item_path))
 
             if os.path.isdir(dir_main_item_path):
 
