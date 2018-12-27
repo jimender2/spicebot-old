@@ -1302,9 +1302,8 @@ def configs_dir_read(bot, dirdict):
     for confloc in configlocations:
         conf_path = bot_directory_configs + str(confloc) + "/"
         if os.path.exists(conf_path) and os.path.isdir(conf_path):
-            if not os.path.isfile(conf_path) and len(os.listdir(conf_path)) > 0:
+            if len(os.listdir(conf_path)) > 0:
                 dirscan.append(conf_path)
-    bot.msg("#spicebottest", str(dirscan))
 
     filesprocess = []
 
@@ -1317,7 +1316,7 @@ def configs_dir_read(bot, dirdict):
             if os.path.isfile(dir_main_item_path):
                 filesprocess.append(dir_main_item_path)
 
-            elif not os.path.isfile(dir_main_item_path):
+            else:
 
                 for dir_sub_item in os.listdir(dir_main_item_path):
 
