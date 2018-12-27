@@ -1316,9 +1316,10 @@ def configs_dir_read(bot, dirdict):
             if os.path.isfile(dir_main_item_path):
                 filesprocess.append(dir_main_item_path)
 
-            else:
+            elif len(os.listdir(dir_main_item_path)) > 0:
 
                 for dir_sub_item in os.listdir(dir_main_item_path):
+                    bot.msg("#spicebbottest", str(dir_sub_item))
 
                     dir_sub_item_path = os.path.join(dir_main_item, dir_sub_item)
 
