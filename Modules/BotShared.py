@@ -1309,9 +1309,9 @@ def configs_dir_read(bot, dirdict):
 
     for directory in dirscan:
 
-        for dir_main_item in os.listdir(directory):
+        bot.msg("#spicebbottest", str(directory))
 
-            bot.msg("#spicebbottest", str(dir_main_item))
+        for dir_main_item in os.listdir(directory):
 
             dir_main_item_path = os.path.join(directory, dir_main_item)
 
