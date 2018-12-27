@@ -154,7 +154,7 @@ def execute_main(bot, trigger, botcom):
     channelselect = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot.privileges.keys()], 1) or botcom.channel_current
 
     if command == 'enable':
-        feeds_enabled = get_channel_value(bot, channel, "long", "feeds", "enabled") or []
+        feeds_enabled = get_channel_value(bot, channelselect, "long", "feeds", "enabled") or []
         newlist = []
         for feed in current_feed_list:
             if feed not in feeds_enabled:
@@ -167,7 +167,7 @@ def execute_main(bot, trigger, botcom):
         return
 
     if command == 'disable':
-        feeds_enabled = get_channel_value(bot, channel, "long", "feeds", "enabled") or []
+        feeds_enabled = get_channel_value(bot, channelselect, "long", "feeds", "enabled") or []
         newlist = []
         for feed in current_feed_list:
             if feed in feeds_enabled:
