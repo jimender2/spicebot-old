@@ -210,7 +210,31 @@ def get_nick_ownings(bot, nick):
 
     ownings = []
     for player in bot.memory["botdict"]["users"].keys():
-        playerdict = get_nick_claims(bot, player)
+
+        playerdict = get_nick_value(bot, player, "long", 'claims', "claimdict") or None
+
+        if not playerdict or not isinstance(playerdict, dict):
+            playerdict = dict()
+            set_nick_value(bot, nick, "long", 'claims', "claimdict", playerdict)
+
+        if "ownedby" not in playerdict.keys():
+            playerdict["ownedby"] = None
+
+        if "ownedbyvalid" not in playerdict.keys():
+            playerdict["ownedbyvalid"] = "expired"
+
+        if "ownedbytime" not in playerdict.keys():
+            playerdict["ownedbytime"] = 0
+
+        # expired claims
+        if not playerdict["ownedbytime"]:
+            playerdict["ownedbytime"] = 0
+        timesinceclaim = playerdict["ownedbytime"] - time.time()
+        if timesinceclaim <= 0:
+            playerdict["ownedbyvalid"] = "expired"
+
+        set_nick_value(bot, player, "long", 'claims', "claimdict", playerdict)
+
         if playerdict["ownedby"]:
             if playerdict["ownedby"] == nick:
                 ownings.append(player)
