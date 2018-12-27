@@ -944,6 +944,139 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
 
 def feed_configs(bot):
 
+    bot.memory['feeds'] = dict()
+
+    filedicts = configs_dir_read(bot, dirdict)
+
+    for dict_from_file in filedicts:
+
+        comconf = dict_from_file["filename"]
+
+        if "type" not in dict_from_file.keys():
+            dict_from_file["type"] = quick_coms_type
+
+        if "displayname" not in dict_from_file.keys():
+            dict_from_file["displayname"] = None
+
+        if "url" not in dict_from_file.keys():
+            dict_from_file["url"] = None
+
+        if dict_from_file["type"] == "redditapi":
+
+            if "path" not in dict_from_file.keys():
+                dict_from_file["path"] = None
+
+            if not dict_from_file["url"]:
+                dict_from_file["url"] = "https://www.reddit.com"
+
+        if dict_from_file["type"] == "twitter":
+
+            if "handle" not in dict_from_file.keys():
+                dict_from_file["handle"] = None
+
+            if not dict_from_file["url"]:
+                dict_from_file["url"] = "https://twitter.com"
+
+        if dict_from_file["type"] == "googlecalendar":
+
+            if "calendar" not in dict_from_file.keys():
+                dict_from_file["calendar"] = None
+
+            if "link" not in dict_from_file.keys():
+                dict_from_file["link"] = None
+
+            if not dict_from_file["url"]:
+                dict_from_file["url"] = "https://google.com"
+
+        if dict_from_file["type"] == "dailyscrapes":
+
+            if "scrapetitle" not in dict_from_file.keys():
+                dict_from_file["scrapetitle"] = None
+
+            if "scrapehour" not in dict_from_file.keys():
+                dict_from_file["scrapehour"] = 1
+
+            if "scrapeminute" not in dict_from_file.keys():
+                dict_from_file["scrapeminute"] = 1
+
+            if "scrapetimezone" not in dict_from_file.keys():
+                dict_from_file["scrapetimezone"] = "UTC"
+
+            if "scrapelink" not in dict_from_file.keys():
+                dict_from_file["scrapelink"] = None
+
+            if "linkprecede" not in dict_from_file.keys():
+                dict_from_file["linkprecede"] = None
+
+        if dict_from_file["type"] == "events":
+
+            if "scrapetitle" not in dict_from_file.keys():
+                dict_from_file["scrapetitle"] = None
+
+            if "eventmonth" not in dict_from_file.keys():
+                dict_from_file["eventmonth"] = 1
+
+            if "eventday" not in dict_from_file.keys():
+                dict_from_file["eventday"] = 1
+
+            if "eventhour" not in dict_from_file.keys():
+                dict_from_file["eventhour"] = 0
+
+            if "eventminute" not in dict_from_file.keys():
+                dict_from_file["eventminute"] = 0
+
+            if "timezone" not in dict_from_file.keys():
+                dict_from_file["timezone"] = "UTC"
+
+            if "rightnow" not in dict_from_file.keys():
+                dict_from_file["rightnow"] = None
+
+        if dict_from_file["type"] == "scrapes":
+
+            if "scrapetitle" not in dict_from_file.keys():
+                dict_from_file["scrapetitle"] = None
+
+            if "scrapetime" not in dict_from_file.keys():
+                dict_from_file["scrapetime"] = None
+
+            if "scrapetimezone" not in dict_from_file.keys():
+                dict_from_file["scrapetimezone"] = "UTC"
+
+            if "scrapelink" not in dict_from_file.keys():
+                dict_from_file["scrapelink"] = None
+
+            if "linkprecede" not in dict_from_file.keys():
+                dict_from_file["linkprecede"] = None
+
+        if dict_from_file["type"] == "webinarscrapes":
+
+            if "scrapetime" not in dict_from_file.keys():
+                dict_from_file["scrapetime"] = None
+
+            if "scrapetitle" not in dict_from_file.keys():
+                dict_from_file["scrapetitle"] = None
+
+            if "scrapelink" not in dict_from_file.keys():
+                dict_from_file["scrapelink"] = None
+
+            if "linkprecede" not in dict_from_file.keys():
+                dict_from_file["linkprecede"] = None
+
+            if "scrapebonus" not in dict_from_file.keys():
+                dict_from_file["scrapebonus"] = None
+
+            if "scrapebonussplit" not in dict_from_file.keys():
+                dict_from_file["scrapebonussplit"] = None
+
+            if "scrapetimezone" not in dict_from_file.keys():
+                dict_from_file["scrapetimezone"] = "UTC"
+
+        if comconf not in bot.memory['feeds'].keys():
+            bot.memory['feeds'][comconf] = dict_from_file
+
+
+def feed_configs_good(bot):
+
     feedcount, feedopenfail = 0, 0
     filescan = []
     bot.memory['feeds'] = dict()
