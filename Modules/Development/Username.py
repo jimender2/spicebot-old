@@ -67,6 +67,9 @@ def execute_main(bot, trigger, botcom):
 
     data = bot.memory['sherlock']
 
+    inlist = []
+    notinlist = []
+
     for social_network in data:
 
         url = data.get(social_network).get("url").format(username)
@@ -80,6 +83,34 @@ def execute_main(bot, trigger, botcom):
         r, error_type = make_request(url=url, error_type=error_type, social_network=social_network)
 
         bot.msg("#spicebottest", str(error_type))
+
+        if error_type == "message":
+            error = data.get(social_network).get("errorMsg")
+            # Checks if the error message is in the HTML
+            if error not in r.text:
+                inlist.append(social_network)
+            else:
+                notinlist.append(social_network)
+
+        elif error_type == "status_code":
+            # Checks if the status code of the repsonse is 404
+            if not r.status_code == 404:
+                inlist.append(social_network)
+            else:
+                notinlist.append(social_network)
+
+        elif error_type == "response_url":
+            error = data.get(social_network).get("errorUrl")
+            # Checks if the redirect url is the same as the one defined in data.json
+            if error not in r.url:
+                inlist.append(social_network)
+            else:
+                notinlist.append(social_network)
+
+        bot.msg("#spicebottest", str("inlist"))
+        bot.msg("#spicebottest", str(inlist))
+        bot.msg("#spicebottest", str("notinlist"))
+        bot.msg("#spicebottest", str(notinlist))
 
 
 def sherlock_configs(bot):
@@ -115,46 +146,3 @@ def make_request(url, error_type, social_network):
     except requests.exceptions.RequestException as err:
         print_error(err, "Unknown error:", social_network, DEBUG)
     return None, ""
-
-
-def sherlock(username):
-
-    for social_network in data:
-        url = data.get(social_network).get("url").format(username)
-        error_type = data.get(social_network).get("errorType")
-        cant_have_period = data.get(social_network).get("noPeriod")
-
-        r, error_type = make_request(url=url, error_type=error_type, social_network=social_network)
-
-        if error_type == "message":
-            error = data.get(social_network).get("errorMsg")
-            # Checks if the error message is in the HTML
-            if not error in r.text:
-                print("\033[37;1m[\033[92;1m+\033[37;1m]\033[92;1m {}:\033[0m".format(social_network), url)
-                write_to_file(url, fname)
-
-            else:
-            	print("\033[37;1m[\033[91;1m-\033[37;1m]\033[92;1m {}:\033[93;1m Not Found!".format(social_network))
-
-        elif error_type == "status_code":
-            # Checks if the status code of the repsonse is 404
-            if not r.status_code == 404:
-                print("\033[37;1m[\033[92;1m+\033[37;1m]\033[92;1m {}:\033[0m".format(social_network), url)
-                write_to_file(url, fname)
-
-            else:
-            	print("\033[37;1m[\033[91;1m-\033[37;1m]\033[92;1m {}:\033[93;1m Not Found!".format(social_network))
-
-        elif error_type == "response_url":
-            error = data.get(social_network).get("errorUrl")
-            # Checks if the redirect url is the same as the one defined in data.json
-            if not error in r.url:
-                print("\033[37;1m[\033[92;1m+\033[37;1m]\033[92;1m {}:\033[0m".format(social_network), url)
-                write_to_file(url, fname)
-            else:
-            	print("\033[37;1m[\033[91;1m-\033[37;1m]\033[92;1m {}:\033[93;1m Not Found!".format(social_network))
-
-        elif error_type == "":
-            print("\033[37;1m[\033[91;1m-\033[37;1m]\033[92;1m {}:\033[93;1m Error!".format(social_network))
-
-    print("\033[1;92m[\033[0m\033[1;77m*\033[0m\033[1;92m] Saved: \033[37;1m{}\033[0m".format(username+".txt"))
