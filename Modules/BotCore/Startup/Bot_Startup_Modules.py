@@ -36,7 +36,7 @@ def bot_startup_modules(bot, trigger):
 
     for comtype in ['module', 'nickname', 'rule']:
         comtypedict = str(comtype + "_commands")
-        comtypecount = str(comtype + "_count")
+        comtypecount = str(comtype + "_commands_count")
         bot.memory[comtypedict] = dict()
         bot.memory[comtypecount] = 0
 
@@ -121,7 +121,7 @@ def bot_startup_modules(bot, trigger):
             validcoms = atlinefound["validcoms"]
 
             comtypedict = str(comtype + "_commands")
-            comtypecount = str(comtype + "_count")
+            comtypecount = str(comtype + "_commands_count")
 
             bot.memory[comtypecount] += 1
 

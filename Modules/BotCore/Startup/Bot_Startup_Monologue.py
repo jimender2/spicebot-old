@@ -54,7 +54,7 @@ def bot_startup_monologue(bot, trigger):
         pass
     for comtype in ['dict', 'module', 'nickname', 'rule']:
         comtypedict = str(comtype + "_commands")
-        comtypecount = str(comtype + "_count")
+        comtypecount = str(comtype + "_commands_count")
         availablecomsnum += len(bot.memory[comtypedict].keys())
         availablecomsfiles += bot.memory[comtypecount]
 

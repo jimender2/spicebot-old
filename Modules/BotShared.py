@@ -1369,7 +1369,7 @@ def configs_dir_read(bot, dirdict):
     else:
         stderr("Warning: Couldn't load any %s files" % (dirdict['name']))
 
-    return filedicts
+    return filedicts, filecount
 
 
 """

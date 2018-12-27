@@ -958,7 +958,7 @@ def feed_configs(bot):
                 "dirname": "Feeds",
                 }
 
-    filedicts = configs_dir_read(bot, dirdict)
+    filedicts, filecount = configs_dir_read(bot, dirdict)
 
     for dict_from_file in filedicts:
 
