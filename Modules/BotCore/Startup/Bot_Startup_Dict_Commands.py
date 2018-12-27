@@ -47,7 +47,8 @@ def dict_command_configs(bot):
                 "dirname": "Dictionary_replies",
                 }
 
-    filedicts = configs_dir_read(bot, dirdict)
+    filedicts, filecount = configs_dir_read(bot, dirdict)
+    bot.memory["botdict"]["tempvals"]['dict_commands_count'] = filecount
 
     for dict_from_file in filedicts:
 
