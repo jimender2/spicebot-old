@@ -68,13 +68,14 @@ def execute_main(bot, trigger, botcom):
     data = bot.memory['sherlock']
 
     for social_network in data:
+
         url = data.get(social_network).get("url").format(username)
         error_type = data.get(social_network).get("errorType")
         cant_have_period = data.get(social_network).get("noPeriod")
 
-        bot.msg("#spicebottest", str(url))
-        bot.msg("#spicebottest", str(error_type))
-        bot.msg("#spicebottest", str(cant_have_period))
+        if ("." in username) and (cant_have_period == "True"):
+            bot.msg("#spicebottest", "User Name Not Allowed!".format(social_network))
+            continue
 
 
 def sherlock_configs(bot):

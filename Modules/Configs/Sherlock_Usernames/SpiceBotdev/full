@@ -1,10 +1,5 @@
 {
 
-                  "Blogger": {
-                                "url": "https://{}.blogspot.com",
-                                "errorType": "status_code",
-                                "noPeriod": "True"
-                              },
                   "Google Plus": {
                                     "url": "https://plus.google.com/+{}",
                                     "errorType": "status_code"
