@@ -65,7 +65,7 @@ def execute_main(bot, trigger, botcom):
     # bot.msg("#spicebottest", str(data))
 
     username = spicemanip(bot, botcom.triggerargsarray, 1) or botcom.instigator
-    checklist = data
+    checklist = data.keys()
     checklistname = 'all'
     if bot_check_inlist(bot, username, data.keys()):
         checklist = [nick_actual(bot, username, data.keys())]
