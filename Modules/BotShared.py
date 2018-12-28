@@ -1066,7 +1066,7 @@ def bot_check_inlist(bot, searchterm, searchlist):
 
 def nick_actual(bot, nick, altlist=None):
     nick_actual = nick
-    if "botdict_loaded" not in bot.memory:
+    if not bot_startup_requirements_met(bot, ["users"]):
         for u in bot.users:
             if u.lower() == str(nick).lower():
                 nick_actual = u
