@@ -36,7 +36,7 @@ https://github.com/sdushantha/sherlock
 """
 
 
-@sopel.module.commands('username')
+@sopel.module.commands('username', 'sherlock')
 def mainfunction(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
@@ -61,16 +61,22 @@ def execute_main(bot, trigger, botcom):
 
     if "sherlock" not in bot.memory:
         sherlock_configs(bot)
+    data = bot.memory['sherlock']
 
     username = spicemanip(bot, botcom.triggerargsarray, 1) or botcom.instigator
-    osd(bot, botcom.channel_current, 'say', "Checking username " + username)
+    checklist = data
+    checklistname = 'all'
+    if bot_check_inlist(bot, username, str(data)):
+        checklist = [nick_actual(bot, username, data)]
+        checklistname = username
+        username = spicemanip(bot, botcom.triggerargsarray, 2) or botcom.instigator
 
-    data = bot.memory['sherlock']
+    osd(bot, botcom.channel_current, 'say', "Checking username " + username + " in " + checklistname + " network.")
 
     inlist = []
     notinlist = []
 
-    for social_network in data:
+    for social_network in checklist:
 
         url = data.get(social_network).get("url").format(username)
         error_type = data.get(social_network).get("errorType")
