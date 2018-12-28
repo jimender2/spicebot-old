@@ -63,7 +63,7 @@ def execute_main(bot, trigger, botcom):
         sherlock_configs(bot)
     data = bot.memory['sherlock']
     netlist = []
-    for social_network in checklist:
+    for social_network in data:
         netlist.append(str(social_network))
     bot.say(str(netlist))
     return
