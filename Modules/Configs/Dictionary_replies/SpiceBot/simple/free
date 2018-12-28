@@ -10,14 +10,14 @@
 "gog": {
               "type": "simple",
               "responses": [
-                            "[$responsekey] Link $index: https://www.gog.com/games?page=1&sort=popularity&price=free",
+                            "[Free on $responsekey] Link $index: https://www.gog.com/games?page=1&sort=popularity&price=free",
                             ],
               },
 
 "steam": {
               "type": "simple",
               "responses": [
-                            "[$responsekey] Link $index: https://store.steampowered.com/genre/Free%20to%20Play/",
+                            "[Free on $responsekey] Link $index: https://store.steampowered.com/genre/Free%20to%20Play/",
                             ],
               },
 }
