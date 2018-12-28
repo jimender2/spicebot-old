@@ -137,6 +137,12 @@ def bot_startup_modules(bot, trigger):
             if "filepath" not in dict_from_file.keys():
                 dict_from_file["filepath"] = str(module)
 
+            slashsplit = str(dict_from_file["filepath"]).split("/")
+            filename = slashsplit[-1]
+
+            if "filename" not in dict_from_file.keys():
+                dict_from_file["filename"] = filename
+
             # default command to filename
             if "validcoms" not in dict_from_file.keys():
                 dict_from_file["validcoms"] = validcoms

@@ -91,7 +91,7 @@ def dict_command_configs(bot):
 
             # Don't process these.
             keysprocessed = []
-            keysprocessed.extend(["validcoms", "filepath"])
+            keysprocessed.extend(["validcoms", "filepath", "filename"])
 
             # the command must have an author
             if "author" not in dict_from_file.keys():
@@ -125,7 +125,7 @@ def dict_command_configs(bot):
             if "privs" not in dict_from_file.keys():
                 dict_from_file["privs"] = []
 
-            keysprocessed.extend(["validcoms", "filepath", "description", "exampleresponse", "example", "privs"])
+            keysprocessed.extend(["validcoms", "filepath", "filename", "description", "exampleresponse", "example", "privs"])
 
             # handle basic required dict handling
             dict_required = ["?default"]

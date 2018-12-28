@@ -115,11 +115,11 @@ def bot_dictcom_process(bot, botcom):
 
     botcom.nonstockoptions = []
     for command in botcom.dotcommand_dict.keys():
-        if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block", "description", "exampleresponse", "example", "privs"]:
+        if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "filename", "hardcoded_channel_block", "description", "exampleresponse", "example", "privs"]:
             botcom.nonstockoptions.append(command)
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
-    validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage", "privs"]
+    validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "filename", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage", "privs"]
     botcom.specified = None
     argone = spicemanip(bot, botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
@@ -294,6 +294,9 @@ def bot_dictcom_process(bot, botcom):
 
     elif botcom.specified == 'filepath':
         return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " file is located at " + str(botcom.dotcommand_dict["filepath"]))
+
+    elif botcom.specified == 'filename':
+        return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " file is located at " + str(botcom.dotcommand_dict["filename"]))
 
     elif botcom.specified == 'author':
         return osd(bot, botcom.channel_current, 'say', "The author of the " + str(botcom.maincom) + " command is " + botcom.dotcommand_dict["author"] + ".")
@@ -571,7 +574,7 @@ def bot_dictcom_reply_shared(bot, botcom):
             if "$specialoptions" in rply:
                 nonstockoptions = []
                 for command in botcom.dotcommand_dict.keys():
-                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "hardcoded_channel_block", "description", "exampleresponse", "example", "usage", "privs"]:
+                    if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "filename", "hardcoded_channel_block", "description", "exampleresponse", "example", "usage", "privs"]:
                         nonstockoptions.append(command)
                 nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
                 rply = rply.replace("$specialoptions", nonstockoptions)
