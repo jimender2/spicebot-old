@@ -567,6 +567,9 @@ def bot_dictcom_reply_shared(bot, botcom):
                     rply = rply.replace("$replyvariation", '')
 
             # smaller variations for the text
+            if "$responsekey" in rply:
+                rply = rply.replace("$responsekey", str(botcom.responsekey))
+
             if "$index" in rply:
                 rply = rply.replace("$index", str(str(botcom.replynum) + "/" + str(botcom.totalreplies)))
 
