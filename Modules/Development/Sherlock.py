@@ -65,16 +65,16 @@ def execute_main(bot, trigger, botcom):
     netlist = []
     for social_network in data:
         netlist.append(str(social_network))
-    bot.say(str(netlist))
-    return
 
     username = spicemanip(bot, botcom.triggerargsarray, 1) or botcom.instigator
-    checklist = data.keys()
+    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, "2+", 'list')
+
+    checklist = netlist
     checklistname = 'all'
-    if bot_check_inlist(bot, username, data.keys()):
-        checklist = [nick_actual(bot, username, data.keys())]
+    if bot_check_inlist(bot, username, netlist):
+        checklist = [nick_actual(bot, username, netlist)]
         checklistname = username
-        username = spicemanip(bot, botcom.triggerargsarray, 2) or botcom.instigator
+        username = spicemanip(bot, botcom.triggerargsarray, 1) or botcom.instigator
 
     osd(bot, botcom.channel_current, 'say', "Checking username " + username + " in " + checklistname + " network.")
 
