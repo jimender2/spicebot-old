@@ -22,4 +22,12 @@
                             "https://store.steampowered.com/genre/Free%20to%20Play/",
                             ],
               },
+
+"ebooks": {
+            "type": "simple",
+            "prefixtext": "[Free on $responsekey] (Link $index): ",
+            "responses": [
+                          "https://www.packtpub.com/packt/offers/free-learning",
+                          ],
+            },
 }
