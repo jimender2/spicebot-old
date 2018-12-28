@@ -72,8 +72,8 @@ def execute_main(bot, trigger, botcom):
     checklist = netlist
     checklistname = 'all'
     if bot_check_inlist(bot, username, netlist):
-        checklist = [nick_actual(bot, username, netlist)]
-        checklistname = username
+        checklistname = nick_actual(bot, username, netlist)
+        checklist = [checklistname]
         username = spicemanip(bot, botcom.triggerargsarray, 1) or botcom.instigator
 
     osd(bot, botcom.channel_current, 'say', "Checking username " + username + " in " + checklistname + " network.")
