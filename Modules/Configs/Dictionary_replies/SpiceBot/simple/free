@@ -1,0 +1,16 @@
+{
+
+"validcoms": ['free'],
+
+"?default": {
+              "type": "simple",
+              "responses": ["Available Options Include: $specialoptions"],
+              },
+
+"gog": {
+              "type": "simple",
+              "responses": [
+                            "Link $index: https://www.gog.com/games?page=1&sort=popularity&price=free",
+                            ],
+              },
+}
