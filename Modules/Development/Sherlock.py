@@ -117,7 +117,10 @@ def execute_main(bot, trigger, botcom):
                 notinlist.append(social_network)
 
     if inlist != []:
-        osd(bot, botcom.channel_current, 'say', ["The username " + username + " is in the following:", spicemanip(bot, inlist, "andlist")])
+        if len(checklist) == 1:
+            osd(bot, botcom.channel_current, 'say', ["The username " + username + " is in " + checklist[0]])
+        else:
+            osd(bot, botcom.channel_current, 'say', ["The username " + username + " is in the following:", spicemanip(bot, inlist, "andlist")])
     if notinlist != []:
         osd(bot, botcom.channel_current, 'say', ["The username " + username + " is NOT in the following:", spicemanip(bot, notinlist, "andlist")])
 
