@@ -15,11 +15,12 @@
 
 "tools": {
               "type": "simple",
+              "prefixtext": "[SysAdmin $responsekey] (Link $index): ",
               "responses": [
-                            "Link $index: https://sysadmin.it-landscape.info/",
-                            "Link $index: https://sysadmin.libhunt.com/",
-                            "Link $index: https://github.com/n1trux/awesome-sysadmin",
-                            "Link $index: https://docs.microsoft.com/en-us/sysinternals/"
+                            "https://sysadmin.it-landscape.info/",
+                            "https://sysadmin.libhunt.com/",
+                            "https://github.com/n1trux/awesome-sysadmin",
+                            "https://docs.microsoft.com/en-us/sysinternals/"
                             ],
               },
 }
