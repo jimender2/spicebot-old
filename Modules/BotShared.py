@@ -1081,6 +1081,14 @@ def nick_actual(bot, nick, altlist=None):
     return nick_actual
 
 
+def inlist_match(bot, term, altlist):
+    actual = term
+    for u in altlist:
+        if u.lower() == str(term).lower():
+            actual = u
+    return actual
+
+
 def bot_random_valid_target(bot, botcom, outputtype):
     validtargs = []
     if botcom.channel_priv:
