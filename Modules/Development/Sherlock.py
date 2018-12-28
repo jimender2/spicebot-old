@@ -62,12 +62,12 @@ def execute_main(bot, trigger, botcom):
     if "sherlock" not in bot.memory:
         sherlock_configs(bot)
     data = bot.memory['sherlock']
-    bot.msg("#spicebottest", str(data))
+    # bot.msg("#spicebottest", str(data))
 
     username = spicemanip(bot, botcom.triggerargsarray, 1) or botcom.instigator
     checklist = data
     checklistname = 'all'
-    if bot_check_inlist(bot, username, str(data)):
+    if bot_check_inlist(bot, username, data):
         checklist = [nick_actual(bot, username, data)]
         checklistname = username
         username = spicemanip(bot, botcom.triggerargsarray, 2) or botcom.instigator
