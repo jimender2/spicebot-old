@@ -1340,7 +1340,7 @@ def configs_dir_read(bot, dirdict):
             dict_from_file = eval(infread)
         except Exception as e:
             filereadgood = False
-            stderr("Error loading %s %s: %s (%s)" % (dirdict['name'], comconf, e, filepath))
+            stderr("Error loading %s: %s (%s)" % (dirdict['name'], e, filepath))
             dict_from_file = dict()
         # Close File
         inf.close()
