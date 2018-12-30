@@ -1692,7 +1692,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 return ["Feed page issue " + str(e)]
             else:
                 return []
-        if not str(page.status_code).startswith(tuple(["4", "5"])):
+        if str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
@@ -1786,7 +1786,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 return ["Feed page issue " + str(e)]
             else:
                 return []
-        if not str(page.status_code).startswith(tuple(["4", "5"])):
+        if str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
@@ -1926,7 +1926,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 return ["Feed page issue " + str(e)]
             else:
                 return []
-        if not str(page.status_code).startswith(tuple(["4", "5"])):
+        if str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
@@ -2010,7 +2010,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 return ["Feed page issue " + str(e)]
             else:
                 return []
-        if not str(page.status_code).startswith(tuple(["4", "5"])):
+        if str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
@@ -2173,7 +2173,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 return ["Feed page issue " + str(e)]
             else:
                 return []
-        if not str(page.status_code).startswith(tuple(["4", "5"])):
+        if str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
@@ -2286,7 +2286,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 return ["Feed page issue " + str(e)]
             else:
                 return []
-        if not str(page.status_code).startswith(tuple(["4", "5"])):
+        if str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
@@ -2376,7 +2376,7 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
                 return ["Feed page issue " + str(e)]
             else:
                 return []
-        if not str(page.status_code).startswith(tuple(["4", "5"])):
+        if str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
