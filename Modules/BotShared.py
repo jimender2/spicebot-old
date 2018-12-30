@@ -1245,8 +1245,10 @@ def seen_search(bot, botcom, target):
     howlongago = humanized_time(time.time() - lastseenwinner["time"])
 
     message = str(target)
-    if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]["servers_list"][botcom.server]['all_current_users']) or bot_check_inlist(bot, target, otherbotcurrentusers):
+    if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]["servers_list"][botcom.server]['all_current_users']):
         message = str(message + " is online right now,")
+    elif bot_check_inlist(bot, target, otherbotcurrentusers):
+        message = str(message + " is online* right now,")
 
     message = str(message + " was last seen " + str(howlongago) + " ago,")
 
