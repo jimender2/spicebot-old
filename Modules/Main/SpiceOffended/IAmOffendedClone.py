@@ -53,6 +53,8 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
+    bot.say("here")
+
     # make sure bot is OP
     if bot.privileges[trigger.sender.lower()][bot.nick.lower()] >= module.OP:
         bot.write(['KICK', trigger.sender, trigger.nick], "You can't talk like that in " + trigger.sender)
