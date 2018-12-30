@@ -54,8 +54,8 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, botcom):
 
     # make sure bot is OP
-    if bot.privileges[trigger.sender.lower()][bot.nick.lower()] >= module.OP:
-        bot.write(['KICK', trigger.sender, trigger.nick], "You can't talk like that in " + str(trigger.sender))
+    if bot.privileges[botcom.channel_current][bot.nick.lower()] >= module.OP:
+        bot.write(['KICK', botcom.channel_current, botcom.instigator], "You can't talk like that in " + str(trigger.sender))
         bot.say(trigger.nick + " had that coming. Anybody got a problem with that?")
     else:
         bot.say("I need to be OP to kick unauthorized users such as " + trigger.nick + " from " + trigger.sender + " for being offended.")
