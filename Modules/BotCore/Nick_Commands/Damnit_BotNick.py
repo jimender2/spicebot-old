@@ -30,7 +30,7 @@ comdict = {
             }
 
 
-@rule(r'(?i)(Damnit|Lazy) ,? $nickname[ \t]*$')
+@rule(r'(?i)(Damnit|Lazy)? $nickname[ \t]*$')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
