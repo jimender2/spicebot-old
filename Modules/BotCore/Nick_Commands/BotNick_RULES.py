@@ -30,7 +30,7 @@ comdict = {
             }
 
 
-@rule(r'(?i)(Fuck|Screw) you,? $nickname[ \t]*$')
+@rule(r'(?i)(Fuck|Screw) (you|off),? $nickname[ \t]*$')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
