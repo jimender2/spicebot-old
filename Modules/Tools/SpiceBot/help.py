@@ -75,7 +75,13 @@ def execute_main(bot, trigger, botcom):
             dictcomref = str(mtype + "_commands")
 
             # command dictionary
-            dict_from_file = copy.deepcopy(bot.memory[dictcomref][str(command)])
+            deepcopy_fails = True
+            while deepcopy_fails:
+                try:
+                    dict_from_file = copy.deepcopy(bot.memory[dictcomref][str(command)])
+                    deepcopy_fails = False
+                except RuntimeError:
+                    pass
             if "aliasfor" not in dict_from_file.keys():
 
                 # dotcommand

@@ -196,7 +196,13 @@ def merge_botdict(a, b, path=None):
 
 # This is how the dict is saved to the database
 def botdict_save(bot):
-    savedict = copy.deepcopy(bot.memory["botdict"])
+    deepcopy_fails = True
+    while deepcopy_fails:
+        try:
+            savedict = copy.deepcopy(bot.memory["botdict"])
+            deepcopy_fails = False
+        except RuntimeError:
+            pass
 
     # Values to not save to database
     savedict_del = ['tempvals', 'static']
@@ -274,7 +280,13 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
             botcom.multiruns = False
 
-    botcom.dotcommand_dict = copy.deepcopy(bot.memory['module_commands'][botcom.maincom])
+    deepcopy_fails = True
+    while deepcopy_fails:
+        try:
+            botcom.dotcommand_dict = copy.deepcopy(bot.memory['module_commands'][botcom.maincom])
+            deepcopy_fails = False
+        except RuntimeError:
+            pass
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "filename", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage", "privs"]
