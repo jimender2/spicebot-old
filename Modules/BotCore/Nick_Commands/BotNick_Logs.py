@@ -54,6 +54,8 @@ def bot_command_hub(bot, trigger):
     if not logtype or not bot_check_inlist(bot, logtype, bot.memory['logs'].keys()):
         return osd(bot, botcom.channel_current, 'action', "Current valid log(s) include: " + spicemanip(bot, bot.memory['logs'].keys(), 'andlist'))
 
+    logtype = inlist_match(bot, logtype, bot.memory['logs'].keys())
+
     if len(bot.memory['logs'][logtype]) == 0:
         return osd(bot, botcom.channel_current, 'action', "No logs found for " + str(logtype) + ".")
     osd(bot, botcom.channel_current, 'action', "Is Examining " + str(logtype) + " log(s).")
