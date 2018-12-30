@@ -30,7 +30,7 @@ comdict = {
             }
 
 
-@rule(r'(?i)(Fuck|Screw) (you|off),? $nickname[ \t]*$')
+@rule(r'(?i)(hi|hello|hey),? $nickname[ \t]*$')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
@@ -45,4 +45,4 @@ def bot_command_hub(bot, trigger):
         if bot_check_inlist(bot, botcom.instigator, bot.memory["altbots"].keys()):
             return
 
-    osd(bot, botcom.channel_current, 'say', "Watch your mouth, " + botcom.instigator + ", or I'll tell your mother!")
+    osd(bot, botcom.channel_current, 'say', spicemanip(bot, ['Hi', 'Hey', 'Hello'], "random") + ' ' + botcom.instigator + spicemanip(bot, ['', '!', '?'], "random"))
