@@ -1189,6 +1189,7 @@ def seen_search(bot, botcom, target):
 
     # current bot
     if bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
+        target = inlist_match(bot, target, bot.memory["botdict"]["users"].keys())
         lastseenrecord = get_nick_value(bot, str(target), 'long', 'user_activity', 'list') or []
         if lastseenrecord != []:
             lastseen.extend(lastseenrecord)
@@ -1197,9 +1198,12 @@ def seen_search(bot, botcom, target):
     otherbotusers = []
     if "altbots" in bot.memory:
         for botname in bot.memory["altbots"].keys():
-            lastseenrecord = get_nick_value_api(bot, botname, str(target), 'long', 'user_activity', 'list') or []
-            if lastseenrecord != []:
-                lastseen.extend(lastseenrecord)
+            if bot_check_inlist(bot, target, bot.memory["altbots"][botname]["users"].keys()):
+                temptarget = inlist_match(bot, target, bot.memory["altbots"][botname]["users"].keys())
+                lastseenrecord = get_nick_value_api(bot, botname, str(temptarget), 'long', 'user_activity', 'list') or []
+                if lastseenrecord != []:
+                    lastseen.extend(lastseenrecord)
+
             for user in bot.memory["altbots"][botname]["users"].keys():
                 if user not in otherbotusers:
                     otherbotusers.append(user)
@@ -1207,6 +1211,10 @@ def seen_search(bot, botcom, target):
     if lastseen == []:
         message = str("Sorry, the network of SpiceBots have never seen " + str(target) + " speaking.")
         if bot_check_inlist(bot, target, otherbotusers) or bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
+            if bot_check_inlist(bot, target, bot.memory["botdict"]["users"].keys()):
+                target = inlist_match(bot, target, bot.memory["botdict"]["users"].keys())
+            elif bot_check_inlist(bot, target, otherbotusers):
+                target = inlist_match(bot, target, otherbotusers)
             message = str(message + " However, they have been seen connected to one of the servers.")
         return message
 
