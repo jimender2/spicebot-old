@@ -5,6 +5,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel.module
 
+
 # imports for system and OS access, directories
 import os
 import sys
@@ -18,6 +19,15 @@ from BotShared import *
 # Ensure Encoding
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
+comdict = {
+            "author": "deathbybandaid",
+            "contributors": [],
+            "description": "",
+            'privs': [],
+            "example": "",
+            "exampleresponse": "",
+            }
 
 
 @event('001')
