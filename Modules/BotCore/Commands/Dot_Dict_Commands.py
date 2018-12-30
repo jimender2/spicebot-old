@@ -63,13 +63,7 @@ def bot_dictcom_handle(bot, botcom):
 
     # simplify usage of the bot command going forward
     # copy dict to not overwrite
-    deepcopy_fails = True
-    while deepcopy_fails:
-        try:
-            botcom.dotcommand_dict = copy.deepcopy(bot.memory['dict_commands'][botcom.dotcommand])
-            deepcopy_fails = False
-        except RuntimeError:
-            pass
+    botcom.dotcommand_dict = copy.deepcopy(bot.memory['dict_commands'][botcom.dotcommand])
 
     # remainder, if any is the new arg list
     botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')

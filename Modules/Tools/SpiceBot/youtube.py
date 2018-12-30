@@ -70,6 +70,14 @@ def execute_main(bot, trigger, botcom):
 def searchfor(bot, data):
     """Search Google."""
     lookfor = data.replace(':', '%3A')
-    var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI')
-    query = str(var.url)
+    try:
+        var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI', headers=header)
+    except Exception as e:
+        var = None
+
+    if var and var.url:
+        var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI')
+        query = str(var.url)
+    else:
+        query = None
     return query

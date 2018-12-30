@@ -108,13 +108,10 @@ def api_socket_run(bot, sock):
                         # Possibly add a api key
 
                         # copy dict to not overwrite
-                        deepcopy_fails = True
-                        while deepcopy_fails:
-                            try:
-                                savedict = copy.deepcopy(bot.memory["botdict"])
-                                deepcopy_fails = False
-                            except RuntimeError:
-                                pass
+                        try:
+                            savedict = copy.deepcopy(bot.memory["botdict"])
+                        except Exception as e:
+                            savedict = {"error": str(e)}
 
                         # don't include this
                         if "tempvals" in savedict:

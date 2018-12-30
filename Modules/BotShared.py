@@ -196,6 +196,7 @@ def merge_botdict(a, b, path=None):
 
 # This is how the dict is saved to the database
 def botdict_save(bot):
+
     deepcopy_fails = True
     while deepcopy_fails:
         try:
@@ -280,13 +281,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
             botcom.multiruns = False
 
-    deepcopy_fails = True
-    while deepcopy_fails:
-        try:
-            botcom.dotcommand_dict = copy.deepcopy(bot.memory['module_commands'][botcom.maincom])
-            deepcopy_fails = False
-        except RuntimeError:
-            pass
+    botcom.dotcommand_dict = copy.deepcopy(bot.memory['module_commands'][botcom.maincom])
 
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "filename", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage", "privs"]
@@ -1474,8 +1469,12 @@ def getGif(bot, searchdict):
 
         if bot.memory["botdict"]["tempvals"]['cache'][currentapi][str(searchdict["searchquery"])] == []:
 
-            page = requests.get(url, headers=None)
-            if not str(page.status_code).startswith(tuple(["4", "5"])):
+            try:
+                page = requests.get(url, headers=header)
+            except Exception as e:
+                page = None
+
+            if page and not str(page.status_code).startswith(tuple(["4", "5"])):
 
                 data = json.loads(urllib2.urlopen(url).read())
 
@@ -1528,8 +1527,13 @@ def getGif(bot, searchdict):
     randombad = True
     while randombad:
         gifdict = spicemanip(bot, gifapiresults, "random")
-        gifpage = requests.get(gifdict["returnurl"], headers=None)
-        if not str(gifpage.status_code).startswith(tuple(["4", "5"])):
+
+        try:
+            gifpage = requests.get(gifdict["returnurl"], headers=None)
+        except Exception as e:
+            gifpage = None
+
+        if gifpage and not str(gifpage.status_code).startswith(tuple(["4", "5"])):
             randombad = False
         else:
             bot.memory["botdict"]["tempvals"]["badgiflinks"].append(tempdict["returnurl"])
@@ -1673,8 +1677,14 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             else:
                 return []
 
-        page = requests.get(url, headers=header)
-        if page.status_code != 200:
+        try:
+            page = requests.get(url, headers=header)
+        except Exception as e:
+            if forcedisplay:
+                return ["Feed page issue " + str(e)]
+            else:
+                return []
+        if not str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
@@ -1761,8 +1771,14 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             else:
                 return []
 
-        page = requests.get(url, headers=header)
-        if page.status_code != 200:
+        try:
+            page = requests.get(url, headers=header)
+        except Exception as e:
+            if forcedisplay:
+                return ["Feed page issue " + str(e)]
+            else:
+                return []
+        if not str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
@@ -1895,8 +1911,14 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             else:
                 return []
 
-        page = requests.get(url, headers=header)
-        if page.status_code != 200:
+        try:
+            page = requests.get(url, headers=header)
+        except Exception as e:
+            if forcedisplay:
+                return ["Feed page issue " + str(e)]
+            else:
+                return []
+        if not str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
@@ -1973,8 +1995,14 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             else:
                 return []
 
-        page = requests.get(url, headers=header)
-        if page.status_code != 200:
+        try:
+            page = requests.get(url, headers=header)
+        except Exception as e:
+            if forcedisplay:
+                return ["Feed page issue " + str(e)]
+            else:
+                return []
+        if not str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
@@ -2130,8 +2158,14 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             else:
                 return []
 
-        page = requests.get(url, headers=header)
-        if page.status_code != 200:
+        try:
+            page = requests.get(url, headers=header)
+        except Exception as e:
+            if forcedisplay:
+                return ["Feed page issue " + str(e)]
+            else:
+                return []
+        if not str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
@@ -2237,8 +2271,14 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             else:
                 return []
 
-        page = requests.get(url, headers=header)
-        if page.status_code != 200:
+        try:
+            page = requests.get(url, headers=header)
+        except Exception as e:
+            if forcedisplay:
+                return ["Feed page issue " + str(e)]
+            else:
+                return []
+        if not str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:
@@ -2321,8 +2361,14 @@ def bot_dictcom_feeds_handler(bot, feed, forcedisplay):
             else:
                 return []
 
-        page = requests.get(url, headers=header)
-        if page.status_code != 200:
+        try:
+            page = requests.get(url, headers=header)
+        except Exception as e:
+            if forcedisplay:
+                return ["Feed page issue " + str(e)]
+            else:
+                return []
+        if not str(page.status_code).startswith(tuple(["4", "5"])):
             if forcedisplay:
                 return ["Recieved http code " + str(page.status_code)]
             else:

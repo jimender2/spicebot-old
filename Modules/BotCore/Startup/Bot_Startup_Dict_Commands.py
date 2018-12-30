@@ -231,9 +231,13 @@ def bot_dict_use_cases(bot, maincom, dict_from_file, process_list):
             if dict_from_file[mustbe]["responses"] in bot.memory["botdict"]["tempvals"]['txt_files'].keys():
                 dict_from_file[mustbe]["responses"] = bot.memory["botdict"]["tempvals"]['txt_files'][dict_from_file[mustbe]["responses"]]
             elif str(dict_from_file[mustbe]["responses"]).startswith(tuple(["https://", "http://"])):
-                page = requests.get(dict_from_file[mustbe]["responses"], headers=header)
-                tree = html.fromstring(page.content)
-                if page.status_code == 200:
+                try:
+                    page = requests.get(dict_from_file[mustbe]["responses"], headers=header)
+                except Exception as e:
+                    page = None
+
+                if page and not str(page.status_code).startswith(tuple(["4", "5"])):
+                    tree = html.fromstring(page.content)
                     htmlfile = urllib.urlopen(dict_from_file[mustbe]["responses"])
                     lines = htmlfile.read().splitlines()
                     dict_from_file[mustbe]["responses"] = lines

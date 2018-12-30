@@ -110,7 +110,7 @@ def getJoke(bot):
                 joke = jokenum['joke']
                 joke = joke.replace('&quot;', '\"')
                 jokes.append(joke)
-        except ValueError:
+        except Exception as e:
             jokes = []
 
         if jokes == []:

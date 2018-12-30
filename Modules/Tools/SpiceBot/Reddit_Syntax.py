@@ -77,11 +77,16 @@ def execute_main(bot, trigger, botcom):
 
     botcom.triggerargsarray.remove(botcom.triggerargsarray[0])
 
-    page = requests.get("https://www.reddit.com/", headers=header)
-    tree = html.fromstring(page.content)
-    if page.status_code != 200:
+    try:
+        page = requests.get("https://www.reddit.com/", headers=header)
+    except Exception as e:
+        page = None
+
+    if not page or not str(page.status_code).startswith(tuple(["4", "5"])):
         osd(bot, rclass.channel_current, 'say', "Reddit appears to be down right now.")
         return
+
+    tree = html.fromstring(page.content)
 
     # Run the command's function
     command_function_run = str('reddit_' + rclass.urltype.lower() + '(bot, botcom, rclass)')

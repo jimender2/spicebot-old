@@ -57,12 +57,15 @@ def bot_nickcom_hub(bot, trigger):
         if searchterm:
             data = searchterm.replace(' ', '+')
             lookfor = data.replace(':', '%3A')
-            var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI')
-            query = str(var.url)
-            if not query:
+            try:
+                var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI', headers=header)
+            except Exception as e:
+                var = None
+
+            if not var or not var.url:
                 osd(bot, botcom.channel_current, 'say', 'I cannot find anything about that')
             else:
-                osd(bot, botcom.channel_current, 'say', query)
+                osd(bot, botcom.channel_current, 'say', str(var.url))
         else:
             osd(bot, botcom.channel_current, 'say', "Do you think this is Jeopardy?")
         return
@@ -78,12 +81,15 @@ def bot_nickcom_hub(bot, trigger):
                 return
             data = searchterm.replace(' ', '+')
             lookfor = data.replace(':', '%3A')
-            var = requests.get(r'http://www.google.com/maps/place/' + lookfor)
-            query = str(var.url)
-            if not query:
+            try:
+                var = requests.get(r'http://www.google.com/maps/place/' + lookfor, headers=header)
+            except Exception as e:
+                var = None
+
+            if not var or not var.url:
                 osd(bot, botcom.channel_current, 'say', 'I cannot find anything about that')
             else:
-                osd(bot, botcom.channel_current, 'say', query)
+                osd(bot, botcom.channel_current, 'say', str(var.url))
         else:
             osd(bot, botcom.channel_current, 'say', "Not sure what you want me to look for.")
         return

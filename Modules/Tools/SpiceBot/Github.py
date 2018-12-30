@@ -147,8 +147,12 @@ def get_github_issue(bot, issue):
     issuelink = None
 
     url = str(github_dict["url_api"] + github_dict["repo_owner"] + "/" + github_dict["repo_name"] + github_dict["url_path_issues"])
-    page = requests.get(url, headers=None)
-    if page.status_code != 500 and page.status_code != 503:
+    try:
+        page = requests.get(url, headers=header)
+    except Exception as e:
+        page = None
+
+    if page and not str(page.status_code).startswith(tuple(["4", "5"])):
 
         data = json.loads(urllib2.urlopen(url).read())
         for i in range(0, 6):
