@@ -118,10 +118,9 @@ def api_socket_run(bot, sock):
 
                         # don't include this
                         if "tempvals" in savedict:
-                            if 'sock' in savedict["tempvals"]:
-                                del savedict["tempvals"]['sock']
-                            if 'reddit' in savedict["tempvals"]:
-                                del savedict["tempvals"]['reddit']
+                            for nonjson in ['sock', 'reddit', 'googlecal']:
+                                if nonjson in savedict["tempvals"]:
+                                    del savedict["tempvals"][nonjson]
 
                         # convert to json
                         msg = json.dumps(savedict, default=json_util.default).encode('utf-8')
