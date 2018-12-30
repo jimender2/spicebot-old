@@ -20,24 +20,15 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-"""
-This Cycles through all of the dictionary commands
-"""
-
-
 @event('001')
 @rule('.*')
 @sopel.module.thread(True)
-def bot_startup_dict_coms(bot, trigger):
+def bot_startup_errors(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict", "modules", "dict_coms"]):
+    while not bot_startup_requirements_met(bot, ["botdict", "monologue"]):
         pass
 
-    bot.memory["botdict"]["tempvals"]['all_coms'] = []
-
-    for comtype in ['dict', 'module', 'nickname', 'rule']:
-        comtypedict = str(comtype + "_commands")
-        bot.memory["botdict"]["tempvals"]['all_coms'].extend(bot.memory[comtypedict].keys())
-
-    bot_startup_requirements_set(bot, "all_coms")
+    # possibly in more than one channel
+    for channel in bot.channels:
+        bot.msg(channel, "Look at all the worthless fleshbags lurking in " + channel + "! Disgusting.")
