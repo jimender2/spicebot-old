@@ -1209,11 +1209,11 @@ def seen_search(bot, botcom, target):
                 if user not in otherbotusers:
                     otherbotusers.append(user)
 
-            try:
-                otherbotscurrent = bot.memory["altbots"][botname]["tempvals"]["servers_list"][botcom.server]['all_current_users']
-                otherbotcurrentusers.extend(otherbotscurrent)
-            except Exception as e:
-                otherbotscurrent = []
+            if "tempvals" in bot.memory["altbots"][botname].keys():
+                if "servers_list" in bot.memory["altbots"][botname]["tempvals"].keys():
+                    for server in bot.memory["altbots"][botname]["tempvals"]["servers_list"].keys():
+                        if 'all_current_users' in bot.memory["altbots"][botname]["tempvals"]["servers_list"][server].keys():
+                            otherbotcurrentusers.extend(otherbotscurrent)
 
     if lastseen == []:
         message = str("Sorry, the network of SpiceBots have never seen " + str(target) + " speaking.")
