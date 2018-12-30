@@ -56,6 +56,11 @@ def botcom_player_return(bot, trigger):
     if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
 
+    # does not apply to bots
+    if "altbots" in bot.memory:
+        if bot_check_inlist(bot, botcom.instigator, bot.memory["altbots"].keys()):
+            return
+
     botcom.target = str(trigger.args[0])
 
     # database entry for user

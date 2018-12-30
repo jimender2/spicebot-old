@@ -257,6 +257,12 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
         botcom.modulerun = False
         return botcom
 
+    # does not apply to bots
+    if "altbots" in bot.memory:
+        if bot_check_inlist(bot, botcom.instigator, bot.memory["altbots"].keys()):
+            botcom.modulerun = False
+            return botcom
+
     # command type
     botcom.comtype = 'module'
 

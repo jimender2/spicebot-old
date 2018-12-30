@@ -56,6 +56,11 @@ def bot_join_hub(bot, trigger):
     if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
 
+    # does not apply to bots
+    if "altbots" in bot.memory:
+        if bot_check_inlist(bot, botcom.instigator, bot.memory["altbots"].keys()):
+            return
+
     # database entry for user
     if botcom.instigator not in bot.memory["botdict"]["users"].keys():
         bot.memory["botdict"]["users"][botcom.instigator] = dict()

@@ -45,8 +45,9 @@ bemoreofapussy = [
 def mainfunction(bot, trigger):
 
     # does not apply to bots
-    if trigger.nick.lower() in bot_config_names(bot):
-        return
+    if "altbots" in bot.memory:
+        if trigger.nick.lower() in bot.memory["altbots"].keys():
+            return
 
     triggerargsarray = spicemanip(bot, trigger, 'create')
     if spicemanip(bot, triggerargsarray, 1).lower() == 'that':

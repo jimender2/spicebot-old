@@ -51,6 +51,11 @@ def bot_automod_flood_run(bot, trigger):
     if botcom.instigator in bot.memory["botdict"]["tempvals"]['bots_list'].keys():
         return
 
+    # does not apply to bots
+    if "altbots" in bot.memory:
+        if bot_check_inlist(bot, botcom.instigator, bot.memory["altbots"].keys()):
+            return
+
     if bot.memory["botdict"]["tempvals"]['automod']["antiflood"] == []:
         bot.memory["botdict"]["tempvals"]['automod']["antiflood"].append({"nick": str(trigger.nick), "message": str(trigger)})
         return

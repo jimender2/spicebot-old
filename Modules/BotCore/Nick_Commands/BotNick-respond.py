@@ -45,6 +45,11 @@ def bot_nickcom_hub(bot, trigger):
     if bot_check_inlist(bot, botcom.instigator, [bot.nick]):
         return
 
+    # does not apply to bots
+    if "altbots" in bot.memory:
+        if bot_check_inlist(bot, botcom.instigator, bot.memory["altbots"].keys()):
+            return
+
     if not botcom.command_main:
         return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do!")
     if str(bot.nick) + " " + botcom.command_main.lower() in bot.memory["nickname_commands"].keys():

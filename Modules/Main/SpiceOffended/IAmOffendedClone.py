@@ -16,8 +16,9 @@ from BotShared import *
 def mainfunction(bot, trigger):
 
     # does not apply to bots
-    if trigger.nick.lower() in bot_config_names(bot):
-        return
+    if "altbots" in bot.memory:
+        if trigger.nick.lower() in bot.memory["altbots"].keys():
+            return
 
     # make sure bot is OP
     if bot.privileges[trigger.sender.lower()][bot.nick.lower()] >= module.OP:
