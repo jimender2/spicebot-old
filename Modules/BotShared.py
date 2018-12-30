@@ -1196,6 +1196,7 @@ def seen_search(bot, botcom, target):
 
     # other bots
     otherbotusers = []
+    otherbotcurrentusers = []
     if "altbots" in bot.memory:
         for botname in bot.memory["altbots"].keys():
             if bot_check_inlist(bot, target, bot.memory["altbots"][botname]["users"].keys()):
@@ -1207,6 +1208,12 @@ def seen_search(bot, botcom, target):
             for user in bot.memory["altbots"][botname]["users"].keys():
                 if user not in otherbotusers:
                     otherbotusers.append(user)
+
+            try:
+                otherbotscurrent = bot.memory["altbots"][botname]["tempvals"]["servers_list"][botcom.server]['all_current_users']
+                otherbotcurrentusers.extend(otherbotscurrent)
+            except Exception as e:
+                otherbotscurrent = []
 
     if lastseen == []:
         message = str("Sorry, the network of SpiceBots have never seen " + str(target) + " speaking.")
@@ -1238,12 +1245,8 @@ def seen_search(bot, botcom, target):
     howlongago = humanized_time(time.time() - lastseenwinner["time"])
 
     message = str(target)
-    if lastseenwinner["server"] == botcom.server:
-        if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]["servers_list"][botcom.server]['all_current_users']):
-            message = str(message + " is online right now,")
-    else:
-        nada = 5
-        # this is where we will check if user is active on another server
+    if bot_check_inlist(bot, target, bot.memory["botdict"]["tempvals"]["servers_list"][botcom.server]['all_current_users']) or bot_check_inlist(bot, target, otherbotcurrentusers):
+        message = str(message + " is online right now,")
 
     message = str(message + " was last seen " + str(howlongago) + " ago,")
 
