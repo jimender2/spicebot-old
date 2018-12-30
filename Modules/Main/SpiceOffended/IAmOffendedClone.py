@@ -37,26 +37,9 @@ def mainfunction(bot, trigger):
     if not botcom.modulerun:
         return
 
-    if not botcom.multiruns:
-        execute_main(bot, trigger, botcom)
-    else:
-        # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
-        if commands_array == []:
-            commands_array = [[]]
-        for command_split_partial in commands_array:
-            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
-            execute_main(bot, trigger, botcom)
-
-    botdict_save(bot)
-
-
-def execute_main(bot, trigger, botcom):
-
     # make sure bot is OP
     if bot.privileges[botcom.channel_current][bot.nick.lower()] >= module.OP:
-        bot.write(['KICK', botcom.channel_current, botcom.instigator], "reason")
-        # bot.write(['KICK', botcom.channel_current, botcom.instigator], "You can't talk like that in " + str(trigger.sender))
-        bot.say(trigger.nick + " had that coming. Anybody got a problem with that?")
+        bot.write(['KICK', botcom.channel_current, botcom.instigator], str("You can't talk like that in " + str(botcom.channel_current)))
+        bot.say(botcom.instigator + " had that coming. Anybody got a problem with that?")
     else:
         bot.say("I need to be OP to kick unauthorized users such as " + trigger.nick + " from " + trigger.sender + " for being offended.")
