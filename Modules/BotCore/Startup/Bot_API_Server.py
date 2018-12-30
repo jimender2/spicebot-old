@@ -118,7 +118,7 @@ def api_socket_run(bot, sock):
 
                         # don't include this
                         if "tempvals" in savedict:
-                            for nonjson in ['sock', 'reddit', 'googlecal']:
+                            for nonjson in ['sock', 'reddit', 'googlecal', 'twitter']:
                                 if nonjson in savedict["tempvals"]:
                                     del savedict["tempvals"][nonjson]
 
