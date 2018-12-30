@@ -30,4 +30,12 @@
                           "https://www.packtpub.com/packt/offers/free-learning",
                           ],
             },
+
+"psn": {
+            "type": "simple",
+            "prefixtext": "[Free on $responsekey] (Link $index): ",
+            "responses": [
+                          "https://www.playstation.com/en-nz/explore/playstation-plus/this-month-on-ps-plus/",
+                          ],
+            },
 }
