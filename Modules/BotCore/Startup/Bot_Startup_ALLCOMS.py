@@ -42,7 +42,6 @@ def bot_startup_dict_coms(bot, trigger):
         comtypedict = str(comtype + "_commands")
         bot.memory["botdict"]["tempvals"]['all_coms'].extend(bot.memory[comtypedict].keys())
 
-    """
     channeldict = dict()
 
     for channel in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
@@ -78,6 +77,5 @@ def bot_startup_dict_coms(bot, trigger):
             else:
                 if valcom not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()]["com_dibs"]:
                     bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()]["com_dibs"].append(valcom)
-                    """
 
     bot_startup_requirements_set(bot, "all_coms")
