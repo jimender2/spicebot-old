@@ -44,6 +44,9 @@ def bot_startup_dict_coms(bot, trigger):
 
     bot_startup_requirements_set(bot, "all_coms")
 
+
+def command_dibs_code(bot):
+
     while True:
 
         channeldict = dict()
