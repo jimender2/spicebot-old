@@ -42,7 +42,9 @@ def savingitall(bot, trigger):
             channeldict[str(channel).lower()]['altdibs'] = []
 
         for botchannel in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
-            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][botchannel]["com_dibs"].extend(bot.memory["botdict"]["tempvals"]['all_coms'])
+            if "com_dibs" not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(botchannel).lower()].keys():
+                bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(botchannel).lower()]["com_dibs"] = []
+            bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(botchannel).lower()]["com_dibs"].extend(bot.memory["botdict"]["tempvals"]['all_coms'])
 
         if "altbots" in bot.memory:
             for botname in bot.memory["altbots"].keys():
