@@ -36,9 +36,9 @@ def savingitall(bot, trigger):
         channeldict = dict()
 
         for channel in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
-            channeldict[channel]['allcoms'] = []
-            channeldict[channel]['allcoms'].extend(bot.memory["botdict"]["tempvals"]['all_coms'])
-            channeldict[channel]['altdibs'] = []
+            channeldict[str(channel).lower()]['allcoms'] = []
+            channeldict[str(channel).lower()]['allcoms'].extend(bot.memory["botdict"]["tempvals"]['all_coms'])
+            channeldict[str(channel).lower()]['altdibs'] = []
 
         for botchannel in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
             bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][botchannel]["com_dibs"].extend(bot.memory["botdict"]["tempvals"]['all_coms'])
@@ -51,17 +51,17 @@ def savingitall(bot, trigger):
                         if altbotserver == currentservername:
                             if "channels_list" in bot.memory["altbots"][botname]["tempvals"]["servers_list"][currentservername].keys():
                                     for altbotchan in bot.memory["altbots"][botname]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
-                                        if altbotchan in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
-                                            if "com_dibs" in bot.memory["altbots"][botname]["tempvals"]["servers_list"][currentservername]["channels_list"][altbotchan].keys():
+                                        if str(altbotchan).lower() in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
+                                            if "com_dibs" in bot.memory["altbots"][botname]["tempvals"]["servers_list"][currentservername]["channels_list"][str(altbotchan).lower()].keys():
                                                 for valcom in bot.memory["botdict"]["tempvals"]['all_coms']:
-                                                    if valcom in bot.memory["altbots"][botname]["tempvals"]["servers_list"][currentservername]["channels_list"][altbotchan]["com_dibs"]:
-                                                        channeldict[altbotchan]['altdibs'].append(valcom)
+                                                    if valcom in bot.memory["altbots"][botname]["tempvals"]["servers_list"][currentservername]["channels_list"][str(altbotchan).lower()]["com_dibs"]:
+                                                        channeldict[str(altbotchan).lower()]['altdibs'].append(valcom)
 
         for channel in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
-            for valcom in channeldict[channel]['allcoms']:
-                if valcom in channeldict[channel]['altdibs']:
-                    if valcom in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][channel]["com_dibs"]:
-                        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][channel]["com_dibs"].remove(valcom)
+            for valcom in channeldict[str(channel).lower()]['allcoms']:
+                if valcom in channeldict[str(channel).lower()]['altdibs']:
+                    if valcom in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()]["com_dibs"]:
+                        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()]["com_dibs"].remove(valcom)
                 else:
-                    if valcom not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][channel]["com_dibs"]:
-                        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][channel]["com_dibs"].append(valcom)
+                    if valcom not in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()]["com_dibs"]:
+                        bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"][str(channel).lower()]["com_dibs"].append(valcom)
