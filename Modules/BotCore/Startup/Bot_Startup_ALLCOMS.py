@@ -45,6 +45,7 @@ def bot_startup_dict_coms(bot, trigger):
     channeldict = dict()
 
     for channel in bot.memory["botdict"]["tempvals"]["servers_list"][currentservername]["channels_list"].keys():
+        channeldict[str(channel).lower()] = dict()
         channeldict[str(channel).lower()]['allcoms'] = []
         channeldict[str(channel).lower()]['allcoms'].extend(bot.memory["botdict"]["tempvals"]['all_coms'])
         channeldict[str(channel).lower()]['altdibs'] = []
