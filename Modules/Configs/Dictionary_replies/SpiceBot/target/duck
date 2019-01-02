@@ -1,7 +1,7 @@
 {
-"validcoms": ['ticket'],
+"validcoms": ['duck'],
 "?default": {
-              "type": "duck",
+              "type": "target",
               "responses": ["$botnick throws a rabid duck at $target"],
               "response_fail": ["$botnick throws a rabid duck at $instigator"],
               },
