@@ -1,5 +1,5 @@
 {
-"validcoms": ['let', 'letit'],
+"validcoms": ['let', 'letit', 'letitgo'],
 "?default": {
               "type": "fillintheblank",
               "blank_phrasehandle": ["a", "an"],
