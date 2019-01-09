@@ -11,11 +11,12 @@ import os
 import sys
 
 # imports based on THIS file
+from BotShared import *
+from random import random
+import string
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
-from BotShared import *
-from random import random
 
 # Ensure Encoding
 reload(sys)
