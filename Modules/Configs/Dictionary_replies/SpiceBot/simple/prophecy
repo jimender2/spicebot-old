@@ -1,5 +1,5 @@
 {
-"validcoms": ['1job', 'onejob'],
+"validcoms": ['proph', 'prophecy', 'prophet'],
 "?default": {
               "type": "simple",
               "responses": ["...as the prophecy foretold..."],
