@@ -38,4 +38,9 @@
                           "https://www.playstation.com/en-nz/explore/playstation-plus/this-month-on-ps-plus/",
                           ],
             },
+
+"beer": {
+            "type": "simple",
+            "responses": ["Yep, everything in this module is free as in 'free beer'."],
+            },
 }
