@@ -1,0 +1,9 @@
+{
+"validcoms": ['fuck','fucks'],
+"?default": {
+              "type": "target",
+              "responses": ["$instigator fucks $target up real good."],
+              "response_fail": ["*a gives $instigator a good old fashioned dry anal fucking."],
+              },
+
+}
