@@ -1,0 +1,8 @@
+{
+"validcoms": ['raid', 'backup'],
+"?default": {
+              "type": "simple",
+              "responses": ["RAID is NOT a Backup"],
+              },
+
+}
