@@ -57,8 +57,7 @@ def execute_main(bot, trigger, botcom):
 #    API_key = "347db727b53caea97419c02f17f4fdf5"
 #    bot.say(API_key)
 #    owm = OWM(API_key)
-    owm = OWM(API_key='347db727b53caea97419c02f17f4fdf5', version='2.5')
+    owm = OWM(API_key="347db727b53caea97419c02f17f4fdf5", version='2.5')
     obs = owm.weather_at_place('London,GB')
     w = obs.get_weather()
     bot.say(w.get_wind())
-    bot.say(API_key)
