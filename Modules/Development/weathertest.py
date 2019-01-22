@@ -2,6 +2,7 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 from pyowm import OWM
+import json
 
 # sopel imports
 import sopel.module
@@ -61,4 +62,6 @@ def execute_main(bot, trigger, botcom):
     obs = owm.weather_at_place('London,GB')
     w = obs.get_weather()
     t = w.get_wind()
+    d_list = json.loads(w.get_wind())
     bot.say(str(t))
+    bot.say(str(d.get('speed')))
