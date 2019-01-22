@@ -62,6 +62,4 @@ def execute_main(bot, trigger, botcom):
     obs = owm.weather_at_place('London,GB')
     w = obs.get_weather()
     t = w.get_wind()
-    d_list = json.loads(t)
     bot.say(str(t))
-    bot.say(str(d.get('speed')))
