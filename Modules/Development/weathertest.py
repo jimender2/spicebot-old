@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
+from pyowm import OWM
 
 # sopel imports
 import sopel.module
@@ -53,3 +54,9 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
     bot.say("Test of weather")
+    API_key = 'G097IueS-9xN712E'
+    owm = OWM(API_key)
+    owm = OWM(API_key='abcdef', version='2.5')
+    obs = owm.weather_at_place('London,GB')
+    w = obs.get_weather()
+    bot.say(w.get_wind())
