@@ -55,6 +55,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, botcom):
     bot.say("Test of weather")
     API_key = "347db727b53caea97419c02f17f4fdf5"
+    bot.say(API_key)
     owm = OWM(API_key)
     owm = OWM(API_key='abcdef', version='2.5')
     obs = owm.weather_at_place('London,GB')
