@@ -66,6 +66,7 @@ def execute_main(bot, trigger, botcom):
 
     bot.say("debug")
     v = json.loads(u)
+    bot.say(str(w))
     bot.say("debug")
     x = v["speed"]
     bot.say("debug")
