@@ -76,7 +76,7 @@ def execute_main(bot, trigger, botcom):
     string = botcom.instigator + " the weather is as follows:"
     bot.say(str(string))
 
-    string = status + " with a temperature of " + temperature + " degrees. The wind is blowing at " + speed + " miles an hour."
+    string = str(status + " with a temperature of " + temperature + " degrees. The wind is blowing at " + speed + " miles an hour.")
     bot.say(str(string))
 
     bot.say(str(t))
