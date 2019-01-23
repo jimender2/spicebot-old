@@ -65,7 +65,7 @@ def execute_main(bot, trigger, botcom):
     u = w.to_JSON()
 
     bot.say("debug")
-    v = json.load(u)
+    v = json.loads(u)
     bot.say("debug")
     x = v["wind"]
     bot.say("debug")
