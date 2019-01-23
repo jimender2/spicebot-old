@@ -23,7 +23,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 comdict = {
-            "author": "deathbybandaid",
+            "author": "jimender2",
             "contributors": [],
             "description": "",
             'privs': [],
@@ -62,4 +62,10 @@ def execute_main(bot, trigger, botcom):
     obs = owm.weather_at_place('London,GB')
     w = obs.get_weather()
     t = w.get_wind()
+    u = w.to_JSON()
+
+    v = json.load(u)
+    x = v["wind"]
+    bot.say(str(x))
+
     bot.say(str(t))
