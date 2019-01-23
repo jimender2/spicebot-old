@@ -66,7 +66,7 @@ def execute_main(bot, trigger, botcom):
 
     bot.say("debug")
     v = json.loads(u)
-    bot.say(str(u))
+    osd(bot, botcom.channel_current, 'say', str(u))
     bot.say("debug")
     x = v["speed"]
     bot.say("debug")
