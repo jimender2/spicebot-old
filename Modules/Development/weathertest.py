@@ -60,26 +60,32 @@ def execute_main(bot, trigger, botcom):
 #    owm = OWM(API_key)
     owm = OWM(API_key="347db727b53caea97419c02f17f4fdf5", version='2.5')
 #    obs = owm.weather_at_place('London,GB')
-    obs = owm.weather_at_place('jsflakj, Ohio')
-    w = obs.get_weather()
-    t = w.get_wind()
-    u = w.to_JSON()
+    try:
+        obs = owm.weather_at_place('asjhfkjh, Ohio')
+    catch:
+        bot.say("Sorry invalid location")
+        valid = false
 
-    weather = json.loads(u)
-    osd(bot, botcom.channel_current, 'say', str(u))
-    wind = weather["wind"]
-    speed = str( wind["speed"] )
-    status = str( weather["status"] )
-    temp = weather["temperature"]
-    high = temp["temp_max"]
-    high = str(((high * (9/5)) - 459.67))
-    low = temp["temp_min"]
-    low = str(((low * (9/5)) - 459.67))
-    temperature = temp["temp"]
-    temperature = str(((temperature * (9/5)) - 459.67))
+    if valid:
+        w = obs.get_weather()
+        t = w.get_wind()
+        u = w.to_JSON()
 
-    string = botcom.instigator + " the weather is as follows:"
-    bot.say(str(string))
+        weather = json.loads(u)
+        osd(bot, botcom.channel_current, 'say', str(u))
+        wind = weather["wind"]
+        speed = str( wind["speed"] )
+        status = str( weather["status"] )
+        temp = weather["temperature"]
+        high = temp["temp_max"]
+        high = str(((high * (9/5)) - 459.67))
+        low = temp["temp_min"]
+        low = str(((low * (9/5)) - 459.67))
+        temperature = temp["temp"]
+        temperature = str(((temperature * (9/5)) - 459.67))
 
-    string = status + " with a current temperature of " + temperature + " degrees.  The high is " + high + " and the low is " + low + ". The wind is blowing at " + speed + " miles an hour."
-    bot.say(string)
+        string = botcom.instigator + " the weather is as follows:"
+        bot.say(str(string))
+
+        string = status + " with a current temperature of " + temperature + " degrees.  The high is " + high + " and the low is " + low + ". The wind is blowing at " + speed + " miles an hour."
+        bot.say(string)
