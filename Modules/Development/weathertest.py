@@ -62,6 +62,7 @@ def execute_main(bot, trigger, botcom):
 #    obs = owm.weather_at_place('London,GB')
     try:
         obs = owm.weather_at_place('asjhfkjh, Ohio')
+        valid = true
     catch:
         bot.say("Sorry invalid location")
         valid = false
