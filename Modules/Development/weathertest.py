@@ -25,7 +25,7 @@ sys.setdefaultencoding('utf-8')
 comdict = {
             "author": "jimender2",
             "contributors": [],
-            "description": "",
+            "description": "version 1.0",
             'privs': [],
             "example": "",
             "exampleresponse": "",
@@ -54,10 +54,6 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, botcom):
-    bot.say("Test of weather")
-#    API_key = "347db727b53caea97419c02f17f4fdf5"
-#    bot.say(API_key)
-#    owm = OWM(API_key)
     owm = OWM(API_key="347db727b53caea97419c02f17f4fdf5", version='2.5')
 #    obs = owm.weather_at_place('London,GB')
 
@@ -79,7 +75,7 @@ def execute_main(bot, trigger, botcom):
         u = w.to_JSON()
 
         weather = json.loads(u)
-        osd(bot, botcom.channel_current, 'say', str(u))
+#        osd(bot, botcom.channel_current, 'say', str(u))
         wind = weather["wind"]
         speed = str( wind["speed"] )
         status = str( weather["status"] )
@@ -91,7 +87,7 @@ def execute_main(bot, trigger, botcom):
         temperature = temp["temp"]
         temperature = str((( 1.8 * (temperature - 273) + 32)))
 
-        string = botcom.instigator + " the weather is as follows:"
+        string = botcom.instigator + " the weather at " + location + " is as follows:"
         bot.say(str(string))
 
         string = status + " with a current temperature of " + temperature + " degrees.  The high is " + high + " and the low is " + low + ". The wind is blowing at " + speed + " miles an hour."
