@@ -83,5 +83,3 @@ def execute_main(bot, trigger, botcom):
 
     string = status + " with a current temperature of " + temperature + " degrees.  The high is " + high + " and the low is " + low + ". The wind is blowing at " + speed + " miles an hour."
     bot.say(string)
-
-    bot.say(str(t))
