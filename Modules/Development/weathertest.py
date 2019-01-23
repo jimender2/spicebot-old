@@ -68,7 +68,8 @@ def execute_main(bot, trigger, botcom):
     v = json.loads(u)
     osd(bot, botcom.channel_current, 'say', str(u))
     bot.say("debug")
-    x = v["speed"]
+    a = v["wind"]
+    x = a["speed"]
     bot.say("debug")
     bot.say(str(x))
 
