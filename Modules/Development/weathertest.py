@@ -67,7 +67,7 @@ def execute_main(bot, trigger, botcom):
             bot.say("Please tell me where you live")
             valid = False
         else:
-            obs = owm.weather_at_place('asjhfkjh, Ohio')
+            obs = owm.weather_at_place(location)
             valid = True
     except:
         bot.say("Sorry invalid location")
