@@ -60,9 +60,15 @@ def execute_main(bot, trigger, botcom):
 #    owm = OWM(API_key)
     owm = OWM(API_key="347db727b53caea97419c02f17f4fdf5", version='2.5')
 #    obs = owm.weather_at_place('London,GB')
+
     try:
-        obs = owm.weather_at_place('asjhfkjh, Ohio')
-        valid = True
+        location = spicemanip(bot, botcom.triggerargsarray, 1+) or ""
+        if location == "":
+            bot.say("Please tell me where you live")
+            valid = False
+        else:
+            obs = owm.weather_at_place('asjhfkjh, Ohio')
+            valid = True
     except:
         bot.say("Sorry invalid location")
         valid = False
