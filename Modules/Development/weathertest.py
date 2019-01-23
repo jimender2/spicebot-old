@@ -62,7 +62,7 @@ def execute_main(bot, trigger, botcom):
 #    obs = owm.weather_at_place('London,GB')
 
     try:
-        location = spicemanip(bot, botcom.triggerargsarray, 1+) or ""
+        location = spicemanip(bot, botcom.triggerargsarray, '1+') or ""
         if location == "":
             bot.say("Please tell me where you live")
             valid = False
