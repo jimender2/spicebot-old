@@ -64,8 +64,11 @@ def execute_main(bot, trigger, botcom):
     t = w.get_wind()
     u = w.to_JSON()
 
+    bot.say("debug")
     v = json.load(u)
+    bot.say("debug")
     x = v["wind"]
+    bot.say("debug")
     bot.say(str(x))
 
     bot.say(str(t))
