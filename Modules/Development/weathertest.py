@@ -67,10 +67,10 @@ def execute_main(bot, trigger, botcom):
 
     weather = json.loads(u)
     osd(bot, botcom.channel_current, 'say', str(u))
-    wind = str( weather["wind"] )
+    wind = weather["wind"]
     speed = str( wind["speed"] )
     status = str( weather["status"] )
-    temp = str( weather["temperature"] )
+    temp = weather["temperature"]
     temperature = str( temp["temp"] )
 
     string = botcom.instigator + " the weather is as follows:"
