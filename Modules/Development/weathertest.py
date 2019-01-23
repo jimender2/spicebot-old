@@ -65,13 +65,18 @@ def execute_main(bot, trigger, botcom):
     t = w.get_wind()
     u = w.to_JSON()
 
-    bot.say("debug")
-    v = json.loads(u)
+    weather = json.loads(u)
     osd(bot, botcom.channel_current, 'say', str(u))
-    bot.say("debug")
-    a = v["wind"]
-    x = a["speed"]
-    bot.say("debug")
-    bot.say(str(x))
+    wind = weather["wind"]
+    speed = wind["speed"]
+    status = weather["status"]
+    temp = weather["temperature"]
+    temperature = temp["temp"]
+
+    string = bot.instigator + " the weather is as follows:"
+    bot.say(str(string))
+
+    string = status + " with a temperature of " + temperature + " degrees. The wind is blowing at " + speed + " miles an hour."
+    bot.say(str(string))
 
     bot.say(str(t))
