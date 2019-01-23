@@ -32,7 +32,7 @@ comdict = {
             }
 
 
-@sopel.module.commands('weathertest')
+@sopel.module.commands('weather')
 def mainfunction(bot, trigger):
 
     botcom = bot_module_prerun(bot, trigger)
