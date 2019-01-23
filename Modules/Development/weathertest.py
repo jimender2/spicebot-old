@@ -71,7 +71,8 @@ def execute_main(bot, trigger, botcom):
     speed = str( wind["speed"] )
     status = str( weather["status"] )
     temp = weather["temperature"]
-    temperature = str( temp["temp"] )
+    temperature = temp["temp"]
+    temperature = str(((temperature * (9/5)) - 459.67))
 
     string = botcom.instigator + " the weather is as follows:"
     bot.say(str(string))
