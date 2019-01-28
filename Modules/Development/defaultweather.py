@@ -15,7 +15,7 @@ import requests
 
 # Define our sopel weather configuration
 class WeatherSection(StaticSection):
-    api_key = ValidatedAttribute('api_key', str, default='')
+    api_key = ValidatedAttribute('api_key', str, default='347db727b53caea97419c02f17f4fdf5')
 
 
 def setup(bot):
