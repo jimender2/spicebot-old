@@ -39,8 +39,6 @@ This will show that the bot is running
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
 
-    bot.say(str(os.uname()[1]))
-
     botcom = botcom_nick(bot, trigger)
 
     # Bots block
