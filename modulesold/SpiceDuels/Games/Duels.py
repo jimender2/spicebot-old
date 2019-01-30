@@ -7335,7 +7335,7 @@ Duels Version
 def versionnumber(bot):
     duels_version_plainnow = duels_version_plain
     page = requests.get(duels_version_github_page, headers=None)
-    if not str(page.status_code).startswith(tuple(["4", "5"]))::
+    if not str(page.status_code).startswith(tuple(["4", "5"])):
         tree = html.fromstring(page.content)
         duels_version_plainnow = str(tree.xpath(duels_version_github_xpath))
         for r in (("\\n", ""), ("['", ""), ("']", ""), ("'", ""), ('"', ""), (',', ""), ('Commits on', "")):
