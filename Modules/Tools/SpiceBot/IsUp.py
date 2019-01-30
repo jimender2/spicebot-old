@@ -61,6 +61,7 @@ def execute_main(bot, trigger, botcom):
         page = requests.get("http://" + checksite, headers=header)
         tree = html.fromstring(page.content)
         statusrefurl = str("https://httpstatuses.com/" + str(page.status_code))
-        osd(bot, botcom.channel_current, 'say', ["I am getting a " + str(page.status_code) + " status code for " + str(checksite), " For details, see:", statusrefurl])
+        funstatusurl = str("https://http.cat/" + str(page.status_code))
+        osd(bot, botcom.channel_current, 'say', ["I am getting a " + str(page.status_code) + " status code for " + str(checksite), " For details, see:", statusrefurl + " or " + funstatusurl])
     except Exception as e:
         osd(bot, botcom.channel_current, 'say', "I am unable to get a status code for " + str(checksite))

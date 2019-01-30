@@ -7,11 +7,11 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 from sopel.config.types import StaticSection, ValidatedAttribute
 from sopel.module import commands, example, NOLIMIT
-from sopel.modules.units import c_to_f
+#  from sopel.modules.units import c_to_f
 
 import re
 import requests
-
+from units import c_to_f
 
 # Define our sopel weather configuration
 class WeatherSection(StaticSection):
