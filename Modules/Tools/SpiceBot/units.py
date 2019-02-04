@@ -9,26 +9,28 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 from sopel.module import commands, example, NOLIMIT
 import re
+import BotShared
+
 
 find_temp = re.compile(r'(-?[0-9]*\.?[0-9]*)[ °]*(K|C|F)', re.IGNORECASE)
 find_length = re.compile(r'([0-9]*\.?[0-9]*)[ ]*(mile[s]?|mi|inch|in|foot|feet|ft|yard[s]?|yd|(?:milli|centi|kilo|)meter[s]?|[mkc]?m|ly|light-year[s]?|au|astronomical unit[s]?|parsec[s]?|pc)', re.IGNORECASE)
 find_mass = re.compile(r'([0-9]*\.?[0-9]*)[ ]*(lb|lbm|pound[s]?|ounce|oz|(?:kilo|)gram(?:me|)[s]?|[k]?g)', re.IGNORECASE)
 
-
-def f_to_c(temp):
-    return (float(temp) - 32) * 5 / 9
-
-
-def c_to_k(temp):
-    return temp + 273.15
-
-
-def c_to_f(temp):
-    return (9.0 / 5.0 * temp + 32)
-
-
-def k_to_c(temp):
-    return temp - 273.15
+#
+# def f_to_c(temp):
+#     return (float(temp) - 32) * 5 / 9
+#
+#
+# def c_to_k(temp):
+#     return temp + 273.15
+#
+#
+# def c_to_f(temp):
+#     return (9.0 / 5.0 * temp + 32)
+#
+#
+# def k_to_c(temp):
+#     return temp - 273.15
 
 
 @commands('temp')
