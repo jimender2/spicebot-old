@@ -64,9 +64,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, botcom):
-    """
-    Convert temperatures.
-    """
+    """Convert temperatures."""
     try:
         source = find_temp.match(trigger.group(2)).groups()
     except (AttributeError, TypeError):
