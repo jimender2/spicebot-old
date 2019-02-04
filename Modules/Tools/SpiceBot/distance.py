@@ -112,7 +112,7 @@ def execute_main(bot, trigger, botcom):
     else:
         metric_part = '{:.2f}m'.format(meter)
 
-    # Shit like this makes me hate being an American.
+    # Shit like this makes glad I'm not an American.
     inch = meter * 39.37
     foot = int(inch) // 12
     inch = inch - (foot * 12)
