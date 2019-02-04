@@ -1,8 +1,8 @@
 {
 "?default": {
               "type": "targetplusreason",
-              "responses": ["$target should really consider selling everything and moving $blank to sell drugs on a beach."],
-              "blank_backup": 'to somewhere tropical',
+              "responses": ["$target should really consider selling everything and moving to $blank to sell drugs on a beach."],
+              "blank_backup": 'somewhere tropical',
               "target_backup": 'instigator',
               },
 
