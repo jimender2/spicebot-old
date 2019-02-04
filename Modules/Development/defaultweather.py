@@ -11,7 +11,7 @@ from sopel.module import commands, example, NOLIMIT
 
 import re
 import requests
-from units import c_to_f
+from BotShared import c_to_f
 
 # Define our sopel weather configuration
 class WeatherSection(StaticSection):

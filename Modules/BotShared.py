@@ -3840,3 +3840,24 @@ def class_create(classname):
     exec(compile("class class_" + str(classname) + ": " + compiletext, "", "exec"))
     newclass = eval('class_'+classname+"()")
     return newclass
+
+
+"""
+# Units - Temperature
+"""
+
+
+def f_to_c(temp):
+    return (float(temp) - 32) * 5 / 9
+
+
+def c_to_k(temp):
+    return temp + 273.15
+
+
+def c_to_f(temp):
+    return (9.0 / 5.0 * temp + 32)
+
+
+def k_to_c(temp):
+    return temp - 273.15
