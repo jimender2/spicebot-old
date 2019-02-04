@@ -9,7 +9,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 from sopel.module import commands, example, NOLIMIT
 import re
-import BotShared
+from BotShared import *
 
 
 find_temp = re.compile(r'(-?[0-9]*\.?[0-9]*)[ °]*(K|C|F)', re.IGNORECASE)
