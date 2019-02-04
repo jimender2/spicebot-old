@@ -1,5 +1,5 @@
 {
-"validcoms": ['raid', 'backup'],
+"validcoms": ['raid', 'notbackup'],
 "?default": {
               "type": "simple",
               "responses": ["RAID is NOT a Backup"],
