@@ -12,7 +12,7 @@ import re
 from BotShared import *
 
 
-find_temp = re.compile(r'(-?[0-9]*\.?[0-9]*)[ °]*(K|C|F)', re.IGNORECASE)
+#find_temp = re.compile(r'(-?[0-9]*\.?[0-9]*)[ °]*(K|C|F)', re.IGNORECASE)
 find_length = re.compile(r'([0-9]*\.?[0-9]*)[ ]*(mile[s]?|mi|inch|in|foot|feet|ft|yard[s]?|yd|(?:milli|centi|kilo|)meter[s]?|[mkc]?m|ly|light-year[s]?|au|astronomical unit[s]?|parsec[s]?|pc)', re.IGNORECASE)
 find_mass = re.compile(r'([0-9]*\.?[0-9]*)[ ]*(lb|lbm|pound[s]?|ounce|oz|(?:kilo|)gram(?:me|)[s]?|[k]?g)', re.IGNORECASE)
 
@@ -33,36 +33,36 @@ find_mass = re.compile(r'([0-9]*\.?[0-9]*)[ ]*(lb|lbm|pound[s]?|ounce|oz|(?:kilo
 #     return temp - 273.15
 
 
-@commands('temp')
-@example('.temp 100F', '37.78°C = 100.00°F = 310.93K')
-@example('.temp 100C', '100.00°C = 212.00°F = 373.15K')
-@example('.temp 100K', '-173.15°C = -279.67°F = 100.00K')
-def temperature(bot, trigger):
-    """
-    Convert temperatures
-    """
-    try:
-        source = find_temp.match(trigger.group(2)).groups()
-    except (AttributeError, TypeError):
-        bot.reply("That's not a valid temperature.")
-        return NOLIMIT
-    unit = source[1].upper()
-    numeric = float(source[0])
-    celsius = 0
-    if unit == 'C':
-        celsius = numeric
-    elif unit == 'F':
-        celsius = f_to_c(numeric)
-    elif unit == 'K':
-        celsius = k_to_c(numeric)
-
-    kelvin = c_to_k(celsius)
-    fahrenheit = c_to_f(celsius)
-
-    if kelvin >= 0:
-        bot.reply("{:.2f}°C = {:.2f}°F = {:.2f}K".format(celsius, fahrenheit, kelvin))
-    else:
-        bot.reply("Physically impossible temperature.")
+# @commands('temp')
+# @example('.temp 100F', '37.78°C = 100.00°F = 310.93K')
+# @example('.temp 100C', '100.00°C = 212.00°F = 373.15K')
+# @example('.temp 100K', '-173.15°C = -279.67°F = 100.00K')
+# def temperature(bot, trigger):
+#     """
+#     Convert temperatures
+#     """
+#     try:
+#         source = find_temp.match(trigger.group(2)).groups()
+#     except (AttributeError, TypeError):
+#         bot.reply("That's not a valid temperature.")
+#         return NOLIMIT
+#     unit = source[1].upper()
+#     numeric = float(source[0])
+#     celsius = 0
+#     if unit == 'C':
+#         celsius = numeric
+#     elif unit == 'F':
+#         celsius = f_to_c(numeric)
+#     elif unit == 'K':
+#         celsius = k_to_c(numeric)
+#
+#     kelvin = c_to_k(celsius)
+#     fahrenheit = c_to_f(celsius)
+#
+#     if kelvin >= 0:
+#         bot.reply("{:.2f}°C = {:.2f}°F = {:.2f}K".format(celsius, fahrenheit, kelvin))
+#     else:
+#         bot.reply("Physically impossible temperature.")
 
 
 @commands('length', 'distance')
