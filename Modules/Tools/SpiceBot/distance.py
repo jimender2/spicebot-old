@@ -24,10 +24,10 @@ sys.setdefaultencoding('utf-8')
 comdict = {
             "author": "dysonparkes",
             "contributors": [],
-            "description": "A tool for converting temperatures",
+            "description": "A tool for converting distances",
             'privs': [],
-            "example": ".temp 100F",
-            "exampleresponse": "Instigator: 37.78°C = 100.00°F = 310.93K",
+            "example": ".distance 24 mile",
+            "exampleresponse": "Instigator: 38.62km = 24.00 miles",
             }
 
 
