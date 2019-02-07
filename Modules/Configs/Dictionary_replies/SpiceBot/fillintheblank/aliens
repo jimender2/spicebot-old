@@ -5,9 +5,6 @@
               "blank_phrasehandle": ["a", "an"],
               "responses": ["I'm not saying it was $blank, but it was $blank!"],
               "blank_backup": "aliens",
-              "example_use": ".aliens monkeys",
-              "example_response": ""I'm not saying it was monkeys, but it was monkeys",
-              "module_reason": "This module takes input and returns it in the "I'm not saying it was, but it was" meme format.",
               },
 
 }
