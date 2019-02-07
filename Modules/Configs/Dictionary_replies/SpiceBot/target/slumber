@@ -1,5 +1,5 @@
 {
-"validcoms": ['airbiscuit', 'float', 'fart', 'farts'],
+"validcoms": ['slumber'],
 "?default": {
               "type": "target",
               "responses": ["$instigator disturbs $target's slumber"],
