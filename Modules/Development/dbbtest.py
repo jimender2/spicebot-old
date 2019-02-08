@@ -54,4 +54,4 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, botcom):
     bot.say("DBB Testing")
 
-    osd(bot, botcom.channel_current, 'say', str(dir(sopel.module)))
+    osd(bot, botcom.channel_current, 'say', str(dir(sopel.module.commands)))
