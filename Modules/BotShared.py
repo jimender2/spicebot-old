@@ -3821,7 +3821,7 @@ def array_arrangesort(bot, sortbyarray, arrayb):
 
 
 """
-# Empty Classes
+Classes
 """
 
 
@@ -3840,6 +3840,19 @@ def class_create(classname):
     exec(compile("class class_" + str(classname) + ": " + compiletext, "", "exec"))
     newclass = eval('class_'+classname+"()")
     return newclass
+
+
+def class_directory(inputclass):
+
+    # make sure input is a class
+    # if not isinstance(inputclass, class):
+        # return []
+
+    classdirlistfull, classdirlistclean = dir(inputclass), []
+    for classdiritem in classdirlistfull:
+        if not classdiritem.startswith("_"):
+            classdirlistclean.append(classdiritem)
+    return classdirlistclean
 
 
 """
