@@ -84,7 +84,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if not target:
             target = 'everyone'
         if target == instigator:
-            osd(bot, trigger.sender, 'say', "You cannot take " + pointsstring + " from yourself!")
+            if pointsstring == 'pants':
+                osd(bot, trigger.sender, 'say', "No " + instigator + ", I will not help you take your " + pointsstring + " off!")
+            else:
+                osd(bot, trigger.sender, 'say', "You cannot take " + pointsstring + " from yourself!")
         elif target == 'all' or target == 'everybody' or target == 'everyone':
             randopoints = str(instigator + " takes " + str(rando) + ' ' + pointsstring + ' from everyone' + str(pointsreasonmsg))
             osd(bot, trigger.sender, 'say', randopoints)
