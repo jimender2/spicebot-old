@@ -311,7 +311,7 @@ def bot_dictcom_process(bot, botcom):
         return osd(bot, botcom.channel_current, 'say', "The contributors of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["contributors"], "andlist") + ".")
 
     elif botcom.specified == 'alias':
-        return osd(bot, botcom.channel_current, 'say', "The alaises of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["validcoms"], "andlist") + ".")
+        return osd(bot, botcom.channel_current, 'say', "The aliases of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["validcoms"], "andlist") + ".")
 
     elif botcom.specified == 'view':
         if botcom.dotcommand_dict[botcom.responsekey]["responses"] == []:
