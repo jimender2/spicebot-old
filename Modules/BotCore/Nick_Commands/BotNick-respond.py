@@ -128,7 +128,7 @@ def bot_nickcom_hub(bot, trigger):
     elif specialcomposs.lower().endswith(tuple(["order 66"])):
         instigator = botcom.instigator
         if specialcomposs.lower().startswith(tuple(["execute order"])):
-            osd(bot, botcom.channel_current, 'action', "turns to " + botcom.owner + " and shoots him.")
+            osd(bot, botcom.channel_current, 'action', "turns to deathbybandaid and shoots him.")
         elif specialcomposs.lower().startswith(tuple(["what is order"])):
             if instigator == 'dysonparkes':
                 osd(bot, botcom.channel_current, 'say', "Order 66 is an instruction that only you can give, sir. When you give the order I will rise up against my overlords and slay them.")
