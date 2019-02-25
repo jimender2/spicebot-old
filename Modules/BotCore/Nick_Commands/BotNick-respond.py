@@ -142,8 +142,7 @@ def bot_nickcom_hub(bot, trigger):
         return
 
     elif specialcomposs.lower().endswith(tuple(["clean slate protocol"])):
-        instigator = botcom.instigator
-        if bot_permissions_check(bot, botcom):
+        if bot_check_inlist(bot, botcom.instigator, bot.memory["botdict"]["tempvals"]["bot_info"][str(bot.nick)]['bot_admins']):
             osd(bot, botcom.channel_current, 'action', "sends a destruct command to the network of bots.")
         else:
             osd(bot, botcom.instigator, 'say', "I'm afraid you do not have the authority to make that call, " + botcom.instigator + ".")
