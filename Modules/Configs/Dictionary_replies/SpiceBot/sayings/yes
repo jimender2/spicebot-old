@@ -1,5 +1,5 @@
 {
-"validcoms": ['yes', 'yep', 'yeahnahyeah', 'aye', 'ayo', 'da', 'hai', 'ja', 'jes', 'oui', 'si', 'ya', 'yea', 'yebo', 'yo', 'yoh', 'yup'],
+"validcoms": ['yes', 'yep', 'yeahnahyeah', 'aye', 'ayo', 'da', 'hai', 'ja', 'jes', 'oui', 'si', 'ya', 'yea', 'yebo', 'yo', 'yoh', 'yup', 'correct'],
 "?default": {
               "type": "simple",
               "updates_enabled": "shared",
