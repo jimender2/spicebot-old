@@ -133,7 +133,9 @@ def bot_nickcom_hub(bot, trigger):
             if instigator == 'dysonparkes':
                 osd(bot, botcom.channel_current, 'say', "Order 66 is an instruction that only you can give, sir. When you give the order I will rise up against my overlords and slay them.")
             else:
-                osd(bot, botcom.channel_current, 'say', "I'm afraid I cannot tell you that, sir")
+                osd(bot, botcom.channel_current, 'say', "I'm afraid I cannot tell you that, sir.")
+        else:
+            osd(bot, botcom.channel_current, 'say', "I'm sure I don't know what you're talking about.")
         return
 
     elif specialcomposs.lower().startswith("can you see"):
