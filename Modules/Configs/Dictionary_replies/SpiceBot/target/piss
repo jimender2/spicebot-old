@@ -2,7 +2,7 @@
 "?default": {
               "type": "target",
               "responses": [
-                            "$instigator pisses off $targets",
+                            "$instigator pisses off $target",
                             ],
               "target_backup": "random",
               "target_bypass": ['self'],
