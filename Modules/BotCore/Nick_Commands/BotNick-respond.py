@@ -141,6 +141,14 @@ def bot_nickcom_hub(bot, trigger):
             osd(bot, botcom.channel_current, 'say', "I'm sure I don't know what you're talking about.")
         return
 
+    elif specialcomposs.lower().endswith(tuple(["clean slate protocol"])):
+        instigator = botcom.instigator
+        if bot_permissions_check(bot, botcom):
+            osd(bot, botcom.channel_current, 'action', "sends a destruct command to the network of bots.")
+        else:
+            osd(bot, botcom.instigator, 'say', "I'm afraid you do not have the authority to make that call, " + botcom.instigator + ".")
+        return
+
     elif specialcomposs.lower().startswith("can you see"):
         target = spicemanip(bot, botcom.triggerargsarray, "4+") or None
         if not target:
