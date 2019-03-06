@@ -1,0 +1,8 @@
+{
+"validcoms": ['tmi', 'toomuchinfo', 'toomuchinformation']
+"?default": {
+              "type": "simple",
+              "responses": ["Too much information...", "*a hurls"],
+              },
+
+}
