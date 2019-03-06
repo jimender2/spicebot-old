@@ -3,7 +3,7 @@
 "?default": {
               "type": "target",
               "responses": ["$target runs on batteries, not gas, IS a funky boogie bass!"],
-              "target_backup": "$instigator",
+              "target_backup": "instigator",
               },
 
 }
