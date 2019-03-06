@@ -645,6 +645,11 @@ def bot_dictcom_gif(bot, botcom):
 
 def bot_dictcom_feeds(bot, botcom):
 
+    if "feeds" not in bot.memory:
+        feed_configs(bot)
+
+    bot_startup_requirements_set(bot, "feeds")
+
     feed = botcom.dotcommand_dict[botcom.responsekey]["responses"][0]
     if feed not in bot.memory['feeds'].keys():
         return osd(bot, botcom.channel_current, 'say', feed + " does not appear to be a valid feed.")
