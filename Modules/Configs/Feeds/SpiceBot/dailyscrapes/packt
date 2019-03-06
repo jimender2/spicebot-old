@@ -3,7 +3,7 @@
 "type": "dailyscrapes",
 "displayname": "Packt",
 "url": "https://www.packtpub.com/packt/offers/free-learning",
-"scrapetitle": '//*[@id="product__title"]/div/div/div[2]/div[2]/h2/text()',
+"scrapetitle": '//*[@id="deal-of-the-day"]/div/div/div/div[2]/div[2]/h2/text()',
 "scrapelink": None,
 "scrapetimezone": "Europe/London",
 "scrapehour": 1,
