@@ -1556,7 +1556,7 @@ def getGif(bot, searchdict):
         if gifpage and not str(gifpage.status_code).startswith(tuple(["4", "5"])):
             randombad = False
         else:
-            bot.memory["botdict"]["tempvals"]["badgiflinks"].append(tempdict["returnurl"])
+            bot.memory["botdict"]["tempvals"]["badgiflinks"].append(gifdict["returnurl"])
             newlist = []
             for tempdict in gifapiresults:
                 if tempdict["returnurl"] != gifdict["returnurl"]:
