@@ -1,8 +1,0 @@
-{
-"validcoms": ['nsjs'],
-"?default": {
-              "type": "simple",
-              "responses": ["$instigator is not saying, but $instigator IS just saying. prolly"],
-              },
-
-}
