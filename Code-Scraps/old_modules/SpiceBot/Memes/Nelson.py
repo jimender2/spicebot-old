@@ -27,7 +27,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = spicemanip(bot, triggerargsarray, 1)
     isvalid, validmsg = targetcheck(bot, botcom, target, instigator)
     if not target:
-        message = "Who are we laughing at?"
+        message = "Ha Haaaaa"
     elif isvalid == 2:
         message = "Is your self esteem really that low?"
     elif isvalid == 0:
