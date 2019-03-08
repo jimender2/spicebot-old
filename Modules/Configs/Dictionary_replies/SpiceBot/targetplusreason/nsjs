@@ -1,9 +1,9 @@
 {
 "?default": {
-              "type": "targetplusreason",
-              "responses": ["$instigator is not saying $blank, but $instigator IS just saying $blank. prolly"],
-              "blank_fail": ["",],
-              "target_backup": '',
-              },
+"type": "targetplusreason",
+"responses": ["$target is not saying $blank, but $target IS just saying $blank. prolly"],
+"blank_fail": ["",],
+"target_backup": "instigator",
+},
 
 }
