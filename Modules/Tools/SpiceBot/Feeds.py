@@ -20,8 +20,26 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-@event('001')
-@rule('.*')
+# @event('001')
+# @rule('.*')
+# @sopel.module.thread(True)
+# def auto_feeds(bot, trigger):
+#
+#    # don't run jobs if not ready
+#    while not bot_startup_requirements_met(bot, ["monologue"]):
+#        pass
+#
+#    if "feeds" not in bot.memory:
+#        feed_configs(bot)
+#
+#    bot_startup_requirements_set(bot, "feeds")
+#
+#    for feed in bot.memory["feeds"].keys():
+#        feeds_grab(bot, feed)
+#        # Thread(target=feeds_thread, args=(bot, feed,)).start()
+
+
+@sopel.module.interval(57)
 @sopel.module.thread(True)
 def auto_feeds(bot, trigger):
 
@@ -35,7 +53,7 @@ def auto_feeds(bot, trigger):
     bot_startup_requirements_set(bot, "feeds")
 
     for feed in bot.memory["feeds"].keys():
-        Thread(target=feeds_thread, args=(bot, feed,)).start()
+        feeds_grab(bot, feed)
 
 
 def feeds_thread(bot, feed):
@@ -53,6 +71,21 @@ def feeds_thread(bot, feed):
                 feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
                 if feed in feed_enabled:
                     osd(bot, user, 'priv', dispmsg)
+
+
+def feeds_grab(bot, feed):
+    dispmsg = bot_dictcom_feeds_handler(bot, feed, False)
+    if dispmsg != []:
+
+        for channel in bot.privileges.keys():
+            feeds_enabled = get_channel_value(bot, channel, "long", "feeds", "enabled") or []
+            if feed in feeds_enabled:
+                osd(bot, str(channel), 'say', dispmsg)
+
+        for user in bot.memory["botdict"]["tempvals"]["servers_list"][str(bot.memory["botdict"]["tempvals"]['server'])]['all_current_users']:
+            feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
+            if feed in feed_enabled:
+                osd(bot, user, 'priv', dispmsg)
 
 
 @sopel.module.commands('feed', "feeds")
