@@ -29,7 +29,7 @@ comdict = {
             "exampleresponse": "",
             }
 
-from pip._internal.utils.misc import get_installed_distributions
+# from pip._internal.utils.misc import get_installed_distributions
 
 
 @sopel.module.commands('dbbtest', 'deathbybandaidtest')
@@ -58,5 +58,6 @@ def execute_main(bot, trigger, botcom):
 
     osd(bot, botcom.channel_current, 'say', 'Generating list of installed pip modules.')
 
-    pipinstalled = sorted(["%s" % (i.key) for i in get_installed_distributions()])
+    # pipinstalled = sorted(["%s" % (i.key) for i in get_installed_distributions()])
+    pipinstalled = sys.modules.keys()
     osd(bot, botcom.channel_current, 'say', str(pipinstalled))
