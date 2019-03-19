@@ -29,6 +29,9 @@ comdict = {
             "exampleresponse": "",
             }
 
+from pip._internal import main as pipmain
+from pip._internal.utils.misc import get_installed_distributions as getpiplist
+
 
 @sopel.module.commands('dbbtest', 'deathbybandaidtest')
 def mainfunction(bot, trigger):
@@ -54,4 +57,19 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, botcom):
     bot.say("DBB Testing")
 
-    osd(bot, botcom.channel_current, 'say', str(dir(sopel.module.commands)))
+    osd(bot, botcom.channel_current, 'say', 'Generating list of installed pip modules.')
+
+    pipinstalled = []
+    pipinstalledlist = getpiplist()
+    pipinstalledlist = sorted(["%s==%s" % (i.key, i.version) for i in pipinstalledlist])
+    osd(bot, botcom.channel_current, 'say', str(pipinstalledlist))
+    """for pipitem in pipinstalledlist:
+        if pipitem not in ['']:
+            if "=" in pipitem:
+                pipitem = pipitem.split("=")[0]
+            if ">" in pipitem:
+                pipitem = pipitem.split(">")[0]
+            if "<" in pipitem:
+                pipitem = pipitem.split("<")[0]
+            pipinstalled.append(pipitem)
+    print('\n' * 1)"""
