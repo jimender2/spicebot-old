@@ -61,6 +61,5 @@ def execute_main(bot, trigger, botcom):
 
     # pipinstalled = sorted(["%s" % (i.key) for i in get_installed_distributions()])
     # pipinstalled = sys.modules.keys()
-    installed_packages = pkg_resources.working_set
-    pipinstalled = sorted(["%s" % (i.key for i in installed_packages)])
+    pipinstalled = sorted(["%s" % (i.key for i in [str(d).replace("", "==") for d in pkg_resources.working_set])])
     osd(bot, botcom.channel_current, 'say', str(pipinstalled))
