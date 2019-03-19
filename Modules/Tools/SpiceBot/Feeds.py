@@ -41,7 +41,7 @@ sys.setdefaultencoding('utf-8')
 
 @sopel.module.interval(57)
 @sopel.module.thread(True)
-def auto_feeds(bot, trigger):
+def auto_feeds(bot):
 
     # don't run jobs if not ready
     while not bot_startup_requirements_met(bot, ["monologue"]):
