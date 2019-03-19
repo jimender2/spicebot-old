@@ -61,7 +61,7 @@ def execute_main(bot, trigger, botcom):
 
     pipinstalled = []
     pipinstalledlist = getpiplist()
-    pipinstalledlist = sorted(["%s==%s" % (i.key, i.version) for i in pipinstalledlist])
+    pipinstalledlist = sorted(["%s" % (i.key) for i in pipinstalledlist])
     osd(bot, botcom.channel_current, 'say', str(pipinstalledlist))
     """for pipitem in pipinstalledlist:
         if pipitem not in ['']:
