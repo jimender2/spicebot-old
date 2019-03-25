@@ -1,0 +1,8 @@
+{
+"validcoms": ['dns'],
+"?default": {
+              "type": "simple",
+              "responses": ["It’s not DNS  \  There is a no way it’s DNS  \  It was DNS"],
+              },
+
+}
