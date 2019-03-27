@@ -33,10 +33,6 @@ bot.nick do this
 @sopel.module.thread(True)
 def mainfunction(bot, trigger):
 
-    # command must start with
-    if not str(trigger).startswith(tuple(['.'])):
-        return
-
     botcom = botcom_symbol_trigger(bot, trigger)
 
     # Bots block

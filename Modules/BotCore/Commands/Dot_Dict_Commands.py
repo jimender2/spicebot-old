@@ -29,14 +29,9 @@ bot.nick do this
 
 
 # TODO make sure restart and update save database
-@rule('^' + bot.config.core.prefix + '(.*)')
+@rule('^\.|!(.*)')
 @sopel.module.thread(True)
 def mainfunction(bot, trigger):
-
-    # command must start with
-    # if not str(trigger).startswith(tuple(['.'])):
-    # if not str(trigger).startswith(bot.config.core.prefix):
-    #    return
 
     botcom = botcom_symbol_trigger(bot, trigger)
 
