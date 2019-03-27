@@ -25,4 +25,8 @@
               "responses": ['C printf("Hello World!");'],
               },
 
+"Brainfuck": {
+              "type": "simple",
+              "responses": ['Brainfuck +[-[<<[+[--->]-[<<<]]]>>>-]>-.---.>..>.<<<<-.<+.>>>>>.>.<<.<-.'],
+              },
 }
