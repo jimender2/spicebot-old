@@ -1437,7 +1437,7 @@ def getGif(bot, searchdict):
     if not searchdict["query"]:
         return {"error": 'No Query to Search'}
     # searchdict["searchquery"] = searchdict["query"].replace(' ', '%20')
-    searchdict["searchquery"] = urllib.pathname2url(searchdict["searchquery"])
+    searchdict["searchquery"] = urllib.pathname2url(searchdict["query"])
 
     # set api usage
     if not isinstance(searchdict['gifsearch'], list):
