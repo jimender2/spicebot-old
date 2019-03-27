@@ -29,7 +29,7 @@ bot.nick do this
 
 
 # TODO make sure restart and update save database
-@rule('^\.(.*)')
+@rule('^\.|!(.*)')
 @sopel.module.thread(True)
 def mainfunction(bot, trigger):
 
