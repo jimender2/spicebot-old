@@ -56,7 +56,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, botcom):
     bot.say("DBB Testing")
 
-    bot.say(str(bot.config.core.prefix))
+    bot.say(str(sopel.__file__))
 
     return
 
