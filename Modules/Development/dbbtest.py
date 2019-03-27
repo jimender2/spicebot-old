@@ -56,6 +56,10 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, botcom):
     bot.say("DBB Testing")
 
+    bot.say(str(bot.config.core.prefix))
+
+    return
+
     osd(bot, botcom.channel_current, 'say', 'Generating list of installed pip modules.')
 
     # pipinstalled = sorted(["%s" % (i.key) for i in get_installed_distributions()])
