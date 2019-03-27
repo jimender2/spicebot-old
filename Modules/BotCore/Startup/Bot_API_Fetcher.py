@@ -29,7 +29,7 @@ sys.setdefaultencoding('utf-8')
 def api_socket_client(bot, trigger):
 
     # don't run jobs if not ready
-    while not bot_startup_requirements_met(bot, ["botdict", "server", "channels", "users", "altbots"]):
+    while not bot_startup_requirements_met(bot, ["botdict", "server", "channels", "users", "altbots", "ip_address"]):
         pass
 
     bot_startup_requirements_set(bot, "bot_api_client")
