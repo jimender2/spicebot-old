@@ -61,7 +61,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             osd(bot, trigger.sender, 'say', 'https://xkcd.com/' + str(mynumber))
         else:
             data.lower()
-            data = data.replace(' ', '%20')
+            # data = data.replace(' ', '%20')
+            data = urllib.pathname2url(data)
             if (data == 'today' or data == 'latest' or data == 'new'):
                 mynumber = maxcomics
                 osd(bot, trigger.sender, 'say', 'https://xkcd.com/' + str(mynumber))

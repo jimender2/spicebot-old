@@ -1436,7 +1436,8 @@ def getGif(bot, searchdict):
     # Replace spaces in search query
     if not searchdict["query"]:
         return {"error": 'No Query to Search'}
-    searchdict["searchquery"] = searchdict["query"].replace(' ', '%20')
+    # searchdict["searchquery"] = searchdict["query"].replace(' ', '%20')
+    searchdict["searchquery"] = urllib.pathname2url(searchdict["searchquery"])
 
     # set api usage
     if not isinstance(searchdict['gifsearch'], list):
