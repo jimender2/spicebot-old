@@ -40,14 +40,33 @@ def bot_startup_modules(bot, trigger):
         bot.memory[comtypedict] = dict()
         bot.memory[comtypecount] = 0
 
-    filenameslist = []
-    for modules in bot.command_groups.items():
-        filename = modules[0]
-        if filename not in ["coretasks"]:
-            filenameslist.append(filename + ".py")
+    filepathlisting = []
 
+    # main Modules directory
+    main_dir = os.path.dirname(os.path.abspath(sopel.__file__))
+    modules_dir = os.path.join(main_dir, 'modules')
+    filepathlisting.append(modules_dir)
+
+    # Home Directory
+    home_modules_dir = os.path.join(bot.config.homedir, 'modules')
+    if os.path.isdir(home_modules_dir):
+        filepathlisting.append(home_modules_dir)
+
+    # pypi installed
+    try:
+        pypi_modules = os.path.dirname(os.path.abspath(sopel_modules.__file__))
+        pypi_modules_dir = os.path.join(pypi_modules, 'modules')
+        filepathlisting.append(pypi_modules_dir)
+    except Exception:
+        pass
+
+    # Extra directories
     filepathlist = []
     for directory in bot.config.core.extra:
+        filepathlisting.append(directory)
+
+    filepathlist = []
+    for directory in filepathlisting:
         for pathname in os.listdir(directory):
             path = os.path.join(directory, pathname)
             if (os.path.isfile(path) and path.endswith('.py') and not path.startswith('_')):
