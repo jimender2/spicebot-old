@@ -58,7 +58,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, botcom):
     bot.say("DBB Testing")
 
-    functions_list = [o for o in getmembers(__file__) if isfunction(o[1])]
+    functions_list = __file__.__all__
     bot.say(str(functions_list))
 
     return
