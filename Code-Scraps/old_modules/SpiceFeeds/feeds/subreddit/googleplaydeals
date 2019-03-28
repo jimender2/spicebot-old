@@ -1,5 +1,0 @@
-[configuration]
-type = subreddit
-displayname =	Reddit r/googleplaydeals
-url = https://www.reddit.com
-rslash = googleplaydeals
