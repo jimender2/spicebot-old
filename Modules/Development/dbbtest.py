@@ -31,6 +31,8 @@ comdict = {
 
 # from pip._internal.utils.misc import get_installed_distributions
 
+from inspect import getmembers, isfunction
+
 
 @sopel.module.commands('dbbtest', 'deathbybandaidtest')
 def mainfunction(bot, trigger):
