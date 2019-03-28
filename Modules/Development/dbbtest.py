@@ -56,6 +56,11 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, botcom):
     bot.say("DBB Testing")
 
+    functions_list = [o for o in getmembers(__file__) if isfunction(o[1])]
+    bot.say(str(functions_list))
+
+    return
+
     main_dir = os.path.dirname(os.path.abspath(sopel.__file__))
     modules_dir = os.path.join(main_dir, 'modules')
 
