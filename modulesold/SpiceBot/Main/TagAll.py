@@ -17,19 +17,19 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'tagall')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+            triggerargsarray_part = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     allUsers = [u.lower() for u in bot.users]
-    users = spicemanip(bot, allUsers, 0) or 'spicebot'
-    reason = spicemanip(bot, triggerargsarray, '1+')
+    users = spicemanip.main(allUsers, 0) or 'spicebot'
+    reason = spicemanip.main(triggerargsarray, '1+')
     if not reason:
         message = instigator + " is tagging everyone. " + users
     else:

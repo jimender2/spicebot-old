@@ -66,7 +66,7 @@ def bot_command_hub(bot, trigger):
 
     # Channel
     targetchannels = []
-    targetword = spicemanip(bot, botcom.triggerargsarray, 1)
+    targetword = spicemanip.main(botcom.triggerargsarray, 1)
     if targetword not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'].keys() and targetword != 'all':
         if not botcom.channel_priv:
             targetchannels.append(botcom.channel_current)
@@ -74,7 +74,7 @@ def bot_command_hub(bot, trigger):
             osd(bot, botcom.instigator, 'notice', "You must specify a valid channel.")
             return
     elif targetword == 'all':
-        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+        botcom.triggerargsarray = spicemanip.main(botcom.triggerargsarray, '2+', 'list')
         for targetchan in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'].keys():
             targetchannels.append(targetchan)
     else:
@@ -86,7 +86,7 @@ def bot_command_hub(bot, trigger):
         if channeltarget in botcom.triggerargsarray:
             botcom.triggerargsarray.remove(channeltarget)
 
-    botmessage = spicemanip(bot, botcom.triggerargsarray, 0)
+    botmessage = spicemanip.main(botcom.triggerargsarray, 0)
     if not botmessage:
         osd(bot, botcom.instigator, 'notice', "You must specify a message.")
         return

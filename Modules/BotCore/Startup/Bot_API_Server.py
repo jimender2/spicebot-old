@@ -103,7 +103,7 @@ def api_socket_run(bot, sock):
                 bot_logging(bot, "API", "[API] Received data.")
                 if data:
 
-                    if spicemanip(bot, str(data), 1) == "GET":
+                    if spicemanip.main(str(data), 1) == "GET":
 
                         # Possibly add a api key
 
@@ -192,7 +192,7 @@ def api_socket_run(bot, sock):
                                     failedtargets.append(target)
 
                             if failedtargets != []:
-                                bot_logging(bot, "API", "[API] " + str(spicemanip(bot, failedtargets, 'andlist')) + " is/are not current channel(s) or user(s).")
+                                bot_logging(bot, "API", "[API] " + str(spicemanip.main(failedtargets, 'andlist')) + " is/are not current channel(s) or user(s).")
 
                             if goodtargets == []:
                                 bot_logging(bot, "API", "[API] No current channel or user to target.")

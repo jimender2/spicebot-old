@@ -47,7 +47,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
-    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, 'lower', 'list')
+    botcom.triggerargsarray = spicemanip.main(botcom.triggerargsarray, 'lower', 'list')
 
     if not bot.memory["botdict"]["tempvals"]['reddit']:
         return osd(bot, botcom.channel_current, 'say', "Reddit Functionality is not operational at the moment.")
@@ -56,17 +56,17 @@ def execute_main(bot, trigger, botcom):
 
     rclass.channel_current = trigger.sender
 
-    rclass.urlinput = spicemanip(bot, botcom.triggerargsarray, 1)
+    rclass.urlinput = spicemanip.main(botcom.triggerargsarray, 1)
     if rclass.urlinput.endswith("/"):
-        searchterm = spicemanip(bot, botcom.triggerargsarray, 2)
+        searchterm = spicemanip.main(botcom.triggerargsarray, 2)
         rclass.urlinput = str(rclass.urlinput + searchterm)
         botcom.triggerargsarray.remove(botcom.triggerargsarray[0])
         botcom.triggerargsarray.remove(botcom.triggerargsarray[0])
         botcom.triggerargsarray.insert(0, rclass.urlinput)
 
     urlsplit = rclass.urlinput.split("/", 1)
-    rclass.urltype = spicemanip(bot, urlsplit, 1)
-    rclass.urlsearch = spicemanip(bot, urlsplit, 2)
+    rclass.urltype = spicemanip.main(urlsplit, 1)
+    rclass.urlsearch = spicemanip.main(urlsplit, 2)
     if rclass.urltype.lower() == 'r':
         rclass.urltypetxt = 'subreddit'
     elif rclass.urltype.lower() == 'u':
@@ -96,7 +96,7 @@ def execute_main(bot, trigger, botcom):
 def reddit_u(bot, botcom, rclass):
 
     subcommand_valid = ['check']
-    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in subcommand_valid], 1) or 'check'
+    subcommand = spicemanip.main([x for x in botcom.triggerargsarray if x in subcommand_valid], 1) or 'check'
 
     userreal = reddit_user_exists(bot, user)
     if not userreal["exists"]:
@@ -111,7 +111,7 @@ def reddit_u(bot, botcom, rclass):
 def reddit_r(bot, botcom, rclass):
 
     subcommand_valid = ['check', 'hot', 'new', 'top', 'random', 'controversial', 'gilded', 'rising', 'best']
-    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in subcommand_valid], 1) or 'check'
+    subcommand = spicemanip.main([x for x in botcom.triggerargsarray if x in subcommand_valid], 1) or 'check'
 
     rclass.fullrurul = str("https://www.reddit.com/" + rclass.urltype + "/" + rclass.urlsearch)
 
@@ -131,9 +131,9 @@ def reddit_r(bot, botcom, rclass):
         return
 
     if subcommand == 'random':
-        targnum = spicemanip(bot, [x for x in botcom.triggerargsarray if str(x).isdigit()], 1) or 500
+        targnum = spicemanip.main([x for x in botcom.triggerargsarray if str(x).isdigit()], 1) or 500
     else:
-        targnum = spicemanip(bot, [x for x in botcom.triggerargsarray if str(x).isdigit()], 1) or 1
+        targnum = spicemanip.main([x for x in botcom.triggerargsarray if str(x).isdigit()], 1) or 1
     targnum = int(targnum)
 
     if subcommand == 'new':

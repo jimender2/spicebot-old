@@ -35,11 +35,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, botcom)
     else:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(botcom.triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            botcom.triggerargsarray = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, botcom)
 
     botdict_save(bot)
@@ -50,7 +50,7 @@ def execute_main(bot, trigger, botcom):
     if botcom.triggerargsarray == []:
         return osd(bot, trigger.sender, 'say', "please enter a site")
 
-    checksite = spicemanip(bot, botcom.triggerargsarray, 0)
+    checksite = spicemanip.main(botcom.triggerargsarray, 0)
 
     if str(checksite).startswith("https://"):
         checksite = checksite.replace("https://", "")

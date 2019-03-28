@@ -47,11 +47,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, botcom)
     else:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(botcom.triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            botcom.triggerargsarray = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, botcom)
 
     botdict_save(bot)
@@ -66,15 +66,15 @@ def execute_main(bot, trigger, botcom):
     for social_network in data:
         netlist.append(str(social_network))
 
-    username = spicemanip(bot, botcom.triggerargsarray, 1) or botcom.instigator
-    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, "2+", 'list')
+    username = spicemanip.main(botcom.triggerargsarray, 1) or botcom.instigator
+    botcom.triggerargsarray = spicemanip.main(botcom.triggerargsarray, "2+", 'list')
 
     checklist = netlist
     checklistname = 'all'
     if bot_check_inlist(bot, username, netlist):
         checklistname = inlist_match(bot, username, netlist)
         checklist = [checklistname]
-        username = spicemanip(bot, botcom.triggerargsarray, 1) or botcom.instigator
+        username = spicemanip.main(botcom.triggerargsarray, 1) or botcom.instigator
 
     osd(bot, botcom.channel_current, 'say', "Checking username " + username + " in " + checklistname + " network.")
 
@@ -120,9 +120,9 @@ def execute_main(bot, trigger, botcom):
         if checklistname != 'all':
             osd(bot, botcom.channel_current, 'say', ["The username " + username + " is in " + checklist[0]])
         else:
-            osd(bot, botcom.channel_current, 'say', ["The username " + username + " is in the following:", spicemanip(bot, inlist, "andlist")])
+            osd(bot, botcom.channel_current, 'say', ["The username " + username + " is in the following:", spicemanip.main(inlist, "andlist")])
     if notinlist != []:
-        osd(bot, botcom.channel_current, 'say', ["The username " + username + " is NOT in the following:", spicemanip(bot, notinlist, "andlist")])
+        osd(bot, botcom.channel_current, 'say', ["The username " + username + " is NOT in the following:", spicemanip.main(notinlist, "andlist")])
 
 
 def sherlock_configs(bot):

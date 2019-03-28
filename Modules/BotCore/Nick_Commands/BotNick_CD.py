@@ -61,7 +61,7 @@ def bot_command_hub(bot, trigger):
         if filefoldertype == 'folder':
             validfolderoptions.append(filename)
 
-    movepath = spicemanip(bot, botcom.triggerargsarray, 0)
+    movepath = spicemanip.main(botcom.triggerargsarray, 0)
     if movepath not in validfolderoptions:
         if movepath in botcom.directory_listing and movepath not in validfolderoptions:
             osd(bot, botcom.channel_current, 'say', "You can't Change Directory into a File!")

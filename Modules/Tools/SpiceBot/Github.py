@@ -38,11 +38,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, botcom)
     else:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(botcom.triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            botcom.triggerargsarray = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, botcom)
 
     botdict_save(bot)
@@ -88,7 +88,7 @@ def execute_main(bot, trigger, botcom):
     reqrepdict = github_types[reqreptype]
 
     # Special Handling for modules
-    subtype = spicemanip(bot, botcom.triggerargsarray, 1)
+    subtype = spicemanip.main(botcom.triggerargsarray, 1)
 
     # Duel/RPG
     if subtype.lower() in ["duel", ".duel", "rpg", ".rpg", "challenge", ".challenge"]:
@@ -106,7 +106,7 @@ def execute_main(bot, trigger, botcom):
 
     # manual assigning
     if not reqrepdict['assignee']:
-        assignee = spicemanip(bot, [x for x in botcom.triggerargsarray if x.startswith("@")], 1) or None
+        assignee = spicemanip.main([x for x in botcom.triggerargsarray if x.startswith("@")], 1) or None
         if assignee:
             assignee = str(assignee).replace("@", "")
             if assignee in valid_colabs:
@@ -116,7 +116,7 @@ def execute_main(bot, trigger, botcom):
             del reqrepdict['assignee']
 
     # Body text
-    inputtext = spicemanip(bot, botcom.triggerargsarray, 0)
+    inputtext = spicemanip.main(botcom.triggerargsarray, 0)
     reqrepdict['body'] = botcom.instigator + " " + reqrepdict['body'] + ": " + inputtext
 
     # make it happen

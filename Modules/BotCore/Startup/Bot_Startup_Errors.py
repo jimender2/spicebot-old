@@ -44,7 +44,7 @@ def bot_startup_errors(bot, trigger):
             if not str(line).startswith("sudo"):
                 lineparts = str(line).split(": ")
                 del lineparts[0]
-                line = spicemanip(bot, lineparts, 0)
+                line = spicemanip.main(lineparts, 0)
                 debuglines.append(str(line))
         else:
             debuglines.append(str(line))

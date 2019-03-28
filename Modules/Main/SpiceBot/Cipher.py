@@ -106,11 +106,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, botcom)
     else:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(botcom.triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            botcom.triggerargsarray = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, botcom)
 
     botdict_save(bot)
@@ -118,15 +118,15 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
-    target = spicemanip(bot, botcom.triggerargsarray, 1) or None
+    target = spicemanip.main(botcom.triggerargsarray, 1) or None
 
     if (bot_check_inlist(bot, botcom.instigator, str('Cipher-0')) and not target) or bot_check_inlist(bot, target, str('Cipher-0')):
 
-        modelnumber = spicemanip(bot, terminatordict["modelnumbers"], 'random').upper()
+        modelnumber = spicemanip.main(terminatordict["modelnumbers"], 'random').upper()
 
-        missiontype = spicemanip(bot, terminatordict["missiontypes"].keys(), 'random')
+        missiontype = spicemanip.main(terminatordict["missiontypes"].keys(), 'random')
 
-        mission = spicemanip(bot, terminatordict["missiontypes"][missiontype], 'random').upper()
+        mission = spicemanip.main(terminatordict["missiontypes"][missiontype], 'random').upper()
 
         osd(bot, botcom.channel_current, 'say', 'CYBORG TISSUE GENERATION ' + modelnumber + ' SEQUENCE INITIATED')
 

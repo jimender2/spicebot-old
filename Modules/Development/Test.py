@@ -34,11 +34,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, botcom)
     else:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(botcom.triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            botcom.triggerargsarray = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, botcom)
 
     botdict_save(bot)
@@ -46,7 +46,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
     """Run requested command with all possible triggers."""
-    commandtotest = spicemanip(bot, triggerargsarray, 1)  # This is the module being tested, entered in chat.
+    commandtotest = spicemanip.main(triggerargsarray, 1)  # This is the module being tested, entered in chat.
     randomnumber = random.randint(1, 27)
     # The things used to test.
     instigator = trigger.nick

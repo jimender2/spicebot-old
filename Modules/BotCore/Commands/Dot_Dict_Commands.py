@@ -51,7 +51,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, botcom):
 
     # command issued, check if valid
-    botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
+    botcom.dotcommand = spicemanip.main(botcom.triggerargsarray, 1).lower()[1:]
     if botcom.dotcommand in bot.memory['dict_commands'].keys() and botcom.dotcommand not in bot.memory['module_commands'].keys():
         bot_dictcom_handle(bot, botcom)
 
@@ -67,7 +67,7 @@ def bot_dictcom_handle(bot, botcom):
     botcom.dotcommand_dict = copy.deepcopy(bot.memory['dict_commands'][botcom.dotcommand])
 
     # remainder, if any is the new arg list
-    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+')
+    botcom.triggerargsarray = spicemanip.main(botcom.triggerargsarray, '2+')
 
     # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
     if not botcom.dotcommand:
@@ -88,14 +88,14 @@ def bot_dictcom_handle(bot, botcom):
         bot_dictcom_process(bot, botcom)
     else:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(botcom.triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            botcom.triggerargsarray = spicemanip.main(command_split_partial, 'create')
 
             # bot_dictcom_simple(bot, botcom)  # TODO rename
-            botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0)
+            botcom.completestring = spicemanip.main(botcom.triggerargsarray, 0)
 
             bot_dictcom_process(bot, botcom)
 
@@ -106,13 +106,13 @@ def bot_dictcom_process(bot, botcom):
     botcom.responsekey = "?default"
 
     # handling for special cases
-    posscom = spicemanip(bot, botcom.triggerargsarray, 1)
+    posscom = spicemanip.main(botcom.triggerargsarray, 1)
     if posscom.lower() in [command.lower() for command in botcom.dotcommand_dict.keys()]:
         for command in botcom.dotcommand_dict.keys():
             if command.lower() == posscom.lower():
                 posscom = command
         botcom.responsekey = posscom
-        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+        botcom.triggerargsarray = spicemanip.main(botcom.triggerargsarray, '2+', 'list')
     botcom.commandtype = botcom.dotcommand_dict[botcom.responsekey]["type"]
 
     botcom.nonstockoptions = []
@@ -123,7 +123,7 @@ def bot_dictcom_process(bot, botcom):
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "filename", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage", "privs"]
     botcom.specified = None
-    argone = spicemanip(bot, botcom.triggerargsarray, 1)
+    argone = spicemanip.main(botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
         if str(argone[2:]).isdigit():
             botcom.specified = int(argone[2:])
@@ -139,7 +139,7 @@ def bot_dictcom_process(bot, botcom):
             except ValueError:
                 botcom.specified = None
         if botcom.specified:
-            botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+            botcom.triggerargsarray = spicemanip.main(botcom.triggerargsarray, '2+', 'list')
 
     # commands that can be updated
     if botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"]:
@@ -178,7 +178,7 @@ def bot_dictcom_process(bot, botcom):
         if not bot_command_modding_auth(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
 
-        trailingmessage = spicemanip(bot, botcom.triggerargsarray, 0) or "No reason given."
+        trailingmessage = spicemanip.main(botcom.triggerargsarray, 0) or "No reason given."
         timestamp = str(datetime.datetime.utcnow())
         bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom] = {"reason": trailingmessage, "timestamp": timestamp, "disabledby": botcom.instigator}
         osd(bot, botcom.channel_current, 'say', botcom.maincom + " is now " + botcom.specified + "d in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + trailingmessage)
@@ -195,7 +195,7 @@ def bot_dictcom_process(bot, botcom):
             osd(bot, botcom.channel_current, 'say', "You are not authorized to turn " + botcom.specified + " multicom usage in " + str(botcom.channel_current))
             return
 
-        onoff = spicemanip(bot, botcom.triggerargsarray, 1)
+        onoff = spicemanip.main(botcom.triggerargsarray, 1)
         if onoff == 'on':
             if botcom.maincom not in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
                 osd(bot, botcom.channel_current, 'say', botcom.maincom + " already has multicom usage " + onoff + " in " + str(botcom.channel_current))
@@ -206,7 +206,7 @@ def bot_dictcom_process(bot, botcom):
             if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
                 osd(bot, botcom.channel_current, 'say', botcom.maincom + " already has multicom usage " + onoff + " in " + str(botcom.channel_current))
             else:
-                trailingmessage = spicemanip(bot, botcom.triggerargsarray, "2+") or "No reason given."
+                trailingmessage = spicemanip.main(botcom.triggerargsarray, "2+") or "No reason given."
                 timestamp = str(datetime.datetime.utcnow())
                 bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"][botcom.maincom] = {"reason": trailingmessage, "timestamp": timestamp, "multi_disabledby": botcom.instigator}
                 osd(bot, botcom.channel_current, 'say', botcom.maincom + " now has multicom usage " + onoff + " in " + str(botcom.channel_current))
@@ -225,7 +225,7 @@ def bot_dictcom_process(bot, botcom):
         if not bot_command_modding_auth(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "You are not authorized to enable/disable command usage.")
 
-        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
+        posstarget = spicemanip.main(botcom.triggerargsarray, 1) or 0
         if not posstarget:
             return osd(bot, botcom.channel_current, 'say', "Who am I blocking from " + str(botcom.maincom) + " usage?")
 
@@ -247,7 +247,7 @@ def bot_dictcom_process(bot, botcom):
         if not bot_command_modding_auth(bot, botcom):
             return osd(bot, botcom.channel_current, 'say', "You are not authorized to enable/disable command usage.")
 
-        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
+        posstarget = spicemanip.main(botcom.triggerargsarray, 1) or 0
         if not posstarget:
             return osd(bot, botcom.channel_current, 'say', "Who am I unblocking from " + str(botcom.maincom) + " usage?")
 
@@ -264,7 +264,7 @@ def bot_dictcom_process(bot, botcom):
         return osd(bot, botcom.channel_current, 'say', str(posstarget) + " has been unblocked from using " + botcom.maincom + ".")
 
     elif botcom.specified == 'special':
-        nonstockoptions = spicemanip(bot, botcom.nonstockoptions, "andlist")
+        nonstockoptions = spicemanip.main(botcom.nonstockoptions, "andlist")
         return osd(bot, botcom.channel_current, 'say', "The special options for " + str(botcom.maincom) + " command include: " + str(nonstockoptions) + ".")
 
     elif botcom.specified == 'count':
@@ -285,7 +285,7 @@ def bot_dictcom_process(bot, botcom):
     elif botcom.specified == 'privs':
         botcom.modulerun = False
 
-        osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + spicemanip(bot, botcom.dotcommand_dict["privs"], "andlist"))
+        osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + spicemanip.main(botcom.dotcommand_dict["privs"], "andlist"))
         return
 
     elif botcom.specified in ['example', 'usage']:
@@ -304,10 +304,10 @@ def bot_dictcom_process(bot, botcom):
         return osd(bot, botcom.channel_current, 'say', "The author of the " + str(botcom.maincom) + " command is " + botcom.dotcommand_dict["author"] + ".")
 
     elif botcom.specified in ['contrib', "contributors"]:
-        return osd(bot, botcom.channel_current, 'say', "The contributors of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["contributors"], "andlist") + ".")
+        return osd(bot, botcom.channel_current, 'say', "The contributors of the " + str(botcom.maincom) + " command are " + spicemanip.main(botcom.dotcommand_dict["contributors"], "andlist") + ".")
 
     elif botcom.specified == 'alias':
-        return osd(bot, botcom.channel_current, 'say', "The aliases of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["validcoms"], "andlist") + ".")
+        return osd(bot, botcom.channel_current, 'say', "The aliases of the " + str(botcom.maincom) + " command are " + spicemanip.main(botcom.dotcommand_dict["validcoms"], "andlist") + ".")
 
     elif botcom.specified == 'view':
         if botcom.dotcommand_dict[botcom.responsekey]["responses"] == []:
@@ -334,7 +334,7 @@ def bot_dictcom_process(bot, botcom):
         if not botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"]:
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list cannot be updated.")
 
-        fulltext = spicemanip(bot, botcom.triggerargsarray, 0)
+        fulltext = spicemanip.main(botcom.triggerargsarray, 0)
         if not fulltext:
             return osd(bot, botcom.channel_current, 'say', "What would you like to add to the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list?")
 
@@ -353,7 +353,7 @@ def bot_dictcom_process(bot, botcom):
         if not botcom.dotcommand_dict[botcom.responsekey]["updates_enabled"]:
             return osd(bot, botcom.channel_current, 'say', "The " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list cannot be updated.")
 
-        fulltext = spicemanip(bot, botcom.triggerargsarray, 0)
+        fulltext = spicemanip.main(botcom.triggerargsarray, 0)
         if not fulltext:
             return osd(bot, botcom.channel_current, 'say', "What would you like to remove from the " + str(botcom.maincom) + " " + str(botcom.responsekey or '') + " entry list?")
 
@@ -411,7 +411,7 @@ def bot_dictcom_responses(bot, botcom):
     if botcom.dotcommand_dict[botcom.responsekey]["target_required"]:
 
         # try first term as a target
-        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
+        posstarget = spicemanip.main(botcom.triggerargsarray, 1) or 0
         targetbypass = botcom.dotcommand_dict[botcom.responsekey]["target_bypass"]
         targetchecking = bot_target_check(bot, botcom, posstarget, targetbypass)
         if not targetchecking["targetgood"]:
@@ -430,11 +430,11 @@ def bot_dictcom_responses(bot, botcom):
                 if not reaction:
                     commandrunconsensus.append([targetchecking["error"]])
         else:
-            botcom.target = spicemanip(bot, botcom.triggerargsarray, 1)
-            botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+            botcom.target = spicemanip.main(botcom.triggerargsarray, 1)
+            botcom.triggerargsarray = spicemanip.main(botcom.triggerargsarray, '2+', 'list')
 
     # $blank input
-    botcom.completestring = spicemanip(bot, botcom.triggerargsarray, 0) or ''
+    botcom.completestring = spicemanip.main(botcom.triggerargsarray, 0) or ''
     if botcom.dotcommand_dict[botcom.responsekey]["blank_required"]:
 
         if botcom.completestring == '' or not botcom.completestring:
@@ -446,13 +446,13 @@ def bot_dictcom_responses(bot, botcom):
 
         if botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
             if botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"] != []:
-                if spicemanip(bot, botcom.completestring, 1).lower() not in botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
+                if spicemanip.main(botcom.completestring, 1).lower() not in botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
                     botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0] + " " + botcom.completestring
-                elif spicemanip(bot, botcom.completestring, 1).lower() in botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
-                    if spicemanip(bot, botcom.completestring, 1).lower() != botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0]:
-                        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+                elif spicemanip.main(botcom.completestring, 1).lower() in botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"]:
+                    if spicemanip.main(botcom.completestring, 1).lower() != botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0]:
+                        botcom.triggerargsarray = spicemanip.main(botcom.triggerargsarray, '2+', 'list')
                         if botcom.triggerargsarray != []:
-                            botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0] + " " + spicemanip(bot, botcom.triggerargsarray, 0)
+                            botcom.completestring = botcom.dotcommand_dict[botcom.responsekey]["blank_phrasehandle"][0] + " " + spicemanip.main(botcom.triggerargsarray, 0)
 
     if commandrunconsensus != []:
         botcom.success = False
@@ -471,10 +471,10 @@ def bot_dictcom_reply_shared(bot, botcom):
             currentspecified = len(botcom.dotcommand_dict[botcom.responsekey]["responses"])
         else:
             currentspecified = botcom.specified
-        botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], currentspecified, 'return')
+        botcom.replies = spicemanip.main(botcom.dotcommand_dict[botcom.responsekey]["responses"], currentspecified, 'return')
         botcom.replynum = currentspecified
     else:
-        botcom.replies = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
+        botcom.replies = spicemanip.main(botcom.dotcommand_dict[botcom.responsekey]["responses"], 'random', 'return')
         try:
             botcom.replynum = botcom.dotcommand_dict[botcom.responsekey]["responses"].index(botcom.replies)
         except Exception as e:
@@ -507,7 +507,7 @@ def bot_dictcom_reply_shared(bot, botcom):
 
             # the remaining input
             if "$input" in rply:
-                rply = rply.replace("$input", spicemanip(bot, botcom.triggerargsarray, 0) or botcom.maincom)
+                rply = rply.replace("$input", spicemanip.main(botcom.triggerargsarray, 0) or botcom.maincom)
 
             # translation
             if botcom.dotcommand_dict[botcom.responsekey]["translations"]:
@@ -515,11 +515,11 @@ def bot_dictcom_reply_shared(bot, botcom):
 
             # text to precede the output
             if botcom.dotcommand_dict[botcom.responsekey]["prefixtext"] and botcom.success:
-                rply = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["prefixtext"], 'random') + rply
+                rply = spicemanip.main(botcom.dotcommand_dict[botcom.responsekey]["prefixtext"], 'random') + rply
 
             # text to follow the output
             if botcom.dotcommand_dict[botcom.responsekey]["suffixtext"] and botcom.success:
-                rply = rply + spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["suffixtext"], 'random')
+                rply = rply + spicemanip.main(botcom.dotcommand_dict[botcom.responsekey]["suffixtext"], 'random')
 
             # trigger.nick
             if "$instigator" in rply:
@@ -528,7 +528,7 @@ def bot_dictcom_reply_shared(bot, botcom):
             # random user
             if "$randuser" in rply:
                 if not botcom.channel_priv:
-                    randuser = spicemanip(bot, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['current_users'], 'random')
+                    randuser = spicemanip.main(bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][botcom.channel_current]['current_users'], 'random')
                 else:
                     randuser = botcom.instigator
                 rply = rply.replace("$randuser", randuser)
@@ -563,7 +563,7 @@ def bot_dictcom_reply_shared(bot, botcom):
             # smaller variations for the text
             if "$replyvariation" in rply:
                 if botcom.dotcommand_dict[botcom.responsekey]["replyvariation"] != []:
-                    variation = spicemanip(bot, botcom.dotcommand_dict[botcom.responsekey]["replyvariation"], 'random')
+                    variation = spicemanip.main(botcom.dotcommand_dict[botcom.responsekey]["replyvariation"], 'random')
                     rply = rply.replace("$replyvariation", variation)
                 else:
                     rply = rply.replace("$replyvariation", '')
@@ -581,7 +581,7 @@ def bot_dictcom_reply_shared(bot, botcom):
                 for command in botcom.dotcommand_dict.keys():
                     if command not in ["?default", "validcoms", "contributors", "author", "type", "filepath", "filename", "hardcoded_channel_block", "description", "exampleresponse", "example", "usage", "privs"]:
                         nonstockoptions.append(command)
-                nonstockoptions = spicemanip(bot, nonstockoptions, "andlist")
+                nonstockoptions = spicemanip.main(nonstockoptions, "andlist")
                 rply = rply.replace("$specialoptions", nonstockoptions)
 
             # saying, or action?
@@ -615,9 +615,9 @@ def bot_dictcom_gif(bot, botcom):
     if botcom.specified:
         if botcom.specified > len(queries):
             botcom.specified = len(queries)
-        query = spicemanip(bot, queries, botcom.specified, 'return')
+        query = spicemanip.main(queries, botcom.specified, 'return')
     else:
-        query = spicemanip(bot, queries, 'random', 'return')
+        query = spicemanip.main(queries, 'random', 'return')
 
     searchdict = {"query": query, "gifsearch": searchapis}
 

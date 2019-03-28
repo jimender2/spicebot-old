@@ -77,7 +77,7 @@ def mainfunction(bot, trigger):
         if bot_check_inlist(bot, trigger.nick, bot.memory["altbots"].keys()):
             return
 
-    triggerargsarray = spicemanip(bot, trigger, 'create')
-    if spicemanip(bot, triggerargsarray, 1).lower() == 'that':
+    triggerargsarray = spicemanip.main(trigger, 'create')
+    if spicemanip.main(triggerargsarray, 1).lower() == 'that':
 
-        osd(bot, trigger.sender, 'say', str(spicemanip(bot, bemoreofapussy, 'random')))
+        osd(bot, trigger.sender, 'say', str(spicemanip.main(bemoreofapussy, 'random')))

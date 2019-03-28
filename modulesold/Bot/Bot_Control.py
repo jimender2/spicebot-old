@@ -32,9 +32,9 @@ GITWIKIURL = "https://github.com/SpiceBot/SpiceBot/wiki"
 @nickname_commands('uptime', 'modules', 'msg', 'action', 'block', 'github', 'on', 'off', 'devmode', 'update', 'restart', 'permfix', 'debug', 'pip', 'channel', 'gender', 'owner', 'admin', 'canyouseeme', 'help', 'docs', 'cd', 'dir', 'gitpull')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
-    triggerargsarray = spicemanip(bot, trigger.group(0), 'create')
-    triggerargsarray = spicemanip(bot, triggerargsarray, '2+')
-    triggerargsarray = spicemanip(bot, triggerargsarray, 'create')
+    triggerargsarray = spicemanip.main(trigger.group(0), 'create')
+    triggerargsarray = spicemanip.main(triggerargsarray, '2+')
+    triggerargsarray = spicemanip.main(triggerargsarray, 'create')
     bot_command_process(bot, trigger, triggerargsarray)
 
 
@@ -55,7 +55,7 @@ def bot_command_process(bot, trigger, triggerargsarray):
     botcom = bot_command_channels(bot, botcom, trigger)
 
     # Command Used
-    botcom.command_main = spicemanip(bot, triggerargsarray, 1)
+    botcom.command_main = spicemanip.main(triggerargsarray, 1)
     if botcom.command_main in triggerargsarray:
         triggerargsarray.remove(botcom.command_main)
     if botcom.command_main == 'help':
@@ -110,7 +110,7 @@ def bot_command_function_cd(bot, trigger, botcom, instigator):
         if filefoldertype == 'folder':
             validfolderoptions.append(filename)
 
-    movepath = spicemanip(bot, botcom.triggerargsarray, 0)
+    movepath = spicemanip.main(botcom.triggerargsarray, 0)
     if movepath not in validfolderoptions:
         if movepath in botcom.directory_listing and movepath not in validfolderoptions:
             osd(bot, botcom.channel_current, 'say', "You can't Change Directory into a File!")
@@ -139,12 +139,12 @@ def bot_command_function_canyouseeme(bot, trigger, botcom, instigator):
 
 
 def bot_command_function_owner(bot, trigger, botcom, instigator):
-    ownerlist = spicemanip(bot, botcom.owner, 'list')
+    ownerlist = spicemanip.main(botcom.owner, 'list')
     osd(bot, botcom.instigator, 'notice', "Bot Owners are: " + ownerlist)
 
 
 def bot_command_function_admin(bot, trigger, botcom, instigator):
-    adminlist = spicemanip(bot, botcom.botadmins, 'list')
+    adminlist = spicemanip.main(botcom.botadmins, 'list')
     osd(bot, botcom.instigator, 'notice', "Bot Admin are: " + adminlist)
 
 
@@ -156,33 +156,33 @@ def bot_command_function_channel(bot, trigger, botcom, instigator):
 
     # SubCommand used
     valid_subcommands = ['list', 'op', 'voice']
-    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'list'
+    subcommand = spicemanip.main([x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'list'
 
     # list channels
     if subcommand == 'list':
         channelarray = []
         for c in bot.channels:
             channelarray.append(c)
-        chanlist = spicemanip(bot, channelarray, 'list')
+        chanlist = spicemanip.main(channelarray, 'list')
         osd(bot, botcom.channel_current, 'say', "You can find me in " + chanlist)
         return
 
     # OP list
     if subcommand.lower() == 'op':
-        oplist = spicemanip(bot, botcom.chanops, 'list')
+        oplist = spicemanip.main(botcom.chanops, 'list')
         osd(bot, botcom.instigator, 'notice', "Channel Operators are: " + oplist)
         return
 
     # Voice List
     if subcommand.lower() == 'voice':
-        voicelist = spicemanip(bot, botcom.chanvoice, 'list')
+        voicelist = spicemanip.main(botcom.chanvoice, 'list')
         osd(bot, botcom.instigator, 'notice', "Channel VOICE are: " + voicelist)
         return
 
 
 def bot_command_function_on(bot, trigger, botcom, instigator):
 
-    target = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or botcom.instigator
+    target = spicemanip.main([x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or botcom.instigator
     if target != botcom.instigator and botcom.instigator not in botcom.opadmin:
         osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function on other users.")
         return
@@ -201,7 +201,7 @@ def bot_command_function_on(bot, trigger, botcom, instigator):
 
 
 def bot_command_function_off(bot, trigger, botcom, instigator):
-    target = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or botcom.instigator
+    target = spicemanip.main([x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or botcom.instigator
     if target != botcom.instigator and botcom.instigator not in botcom.opadmin:
         osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function on other users.")
         return
@@ -222,7 +222,7 @@ def bot_command_function_off(bot, trigger, botcom, instigator):
 def bot_command_function_modules(bot, trigger, botcom, instigator):
 
     # Channel
-    channeltarget = spicemanip(bot, [x for x in botcom.triggerargsarray if x.startswith('#')], 1)
+    channeltarget = spicemanip.main([x for x in botcom.triggerargsarray if x.startswith('#')], 1)
     if not channeltarget:
         if botcom.channel_current.startswith('#'):
             channeltarget = botcom.channel_current
@@ -232,7 +232,7 @@ def bot_command_function_modules(bot, trigger, botcom, instigator):
 
     # SubCommand used
     valid_subcommands = ['enable', 'disable', 'list', 'count']
-    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'list'
+    subcommand = spicemanip.main([x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'list'
 
     bot_visible_coms = []
     for cmds in bot.command_groups.items():
@@ -264,7 +264,7 @@ def bot_command_function_modules(bot, trigger, botcom, instigator):
             osd(bot, botcom.instigator, 'notice', "You are unauthorized to use this function.")
             return
 
-        module_adjust = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot_visible_coms or x == 'all'], 1) or 'no_module'
+        module_adjust = spicemanip.main([x for x in botcom.triggerargsarray if x in bot_visible_coms or x == 'all'], 1) or 'no_module'
         if module_adjust == 'no_module':
             osd(bot, botcom.instigator, 'notice', "What module do you want to "+str(subcommand)+" for " + channeltarget + "?")
             return
@@ -296,7 +296,7 @@ def bot_command_function_msg(bot, trigger, botcom, instigator):
         return
 
     # Channel
-    channeltarget = spicemanip(bot, [x for x in botcom.triggerargsarray if x.startswith('#')], 1)
+    channeltarget = spicemanip.main([x for x in botcom.triggerargsarray if x.startswith('#')], 1)
     if not channeltarget:
         if botcom.channel_current.startswith('#'):
             channeltarget = botcom.channel_current
@@ -306,7 +306,7 @@ def bot_command_function_msg(bot, trigger, botcom, instigator):
     if channeltarget in botcom.triggerargsarray:
         botcom.triggerargsarray.remove(channeltarget)
 
-    botmessage = spicemanip(bot, botcom.triggerargsarray, 0)
+    botmessage = spicemanip.main(botcom.triggerargsarray, 0)
     if not botmessage:
         osd(bot, botcom.instigator, 'notice', "You must specify a message.")
         return
@@ -320,7 +320,7 @@ def bot_command_function_action(bot, trigger, botcom, instigator):
         return
 
     # Channel
-    channeltarget = spicemanip(bot, [x for x in botcom.triggerargsarray if x.startswith('#')], 1)
+    channeltarget = spicemanip.main([x for x in botcom.triggerargsarray if x.startswith('#')], 1)
     if not channeltarget:
         if botcom.channel_current.startswith('#'):
             channeltarget = botcom.channel_current
@@ -330,7 +330,7 @@ def bot_command_function_action(bot, trigger, botcom, instigator):
     if channeltarget in botcom.triggerargsarray:
         botcom.triggerargsarray.remove(channeltarget)
 
-    botmessage = spicemanip(bot, botcom.triggerargsarray, 0)
+    botmessage = spicemanip.main(botcom.triggerargsarray, 0)
     if not botmessage:
         osd(bot, botcom.instigator, 'notice', "You must specify a message.")
         return
@@ -344,7 +344,7 @@ def bot_command_function_block(bot, trigger, botcom, instigator):
         return
 
     # Channel
-    channeltarget = spicemanip(bot, [x for x in botcom.triggerargsarray if x.startswith('#')], 1)
+    channeltarget = spicemanip.main([x for x in botcom.triggerargsarray if x.startswith('#')], 1)
     if not channeltarget:
         if botcom.channel_current.startswith('#'):
             channeltarget = botcom.channel_current
@@ -356,7 +356,7 @@ def bot_command_function_block(bot, trigger, botcom, instigator):
 
     # SubCommand used
     valid_subcommands = ['current', 'add', 'del']
-    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'current'
+    subcommand = spicemanip.main([x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'current'
 
     bot_blocked_users = get_database_value(bot, channeltarget, 'users_blocked') or []
 
@@ -364,7 +364,7 @@ def bot_command_function_block(bot, trigger, botcom, instigator):
         botmessage = []
         if bot_blocked_users != []:
             botmessage.append("The following users are currently blocked:")
-            current_block_list = spicemanip(bot, bot_blocked_users, 'list')
+            current_block_list = spicemanip.main(bot_blocked_users, 'list')
             botmessage.append(str(current_block_list))
         else:
             botmessage.append("No users are currently blocked")
@@ -391,7 +391,7 @@ def bot_command_function_block(bot, trigger, botcom, instigator):
             osd(bot, botcom.instigator, 'notice', "No Valid Users found to block.")
             return
 
-        blocknewlisttext = spicemanip(bot, blocknewlist, 'list')
+        blocknewlisttext = spicemanip.main(blocknewlist, 'list')
 
         if subcommand == 'add':
             adjust_database_array(bot, channeltarget, blocknewlist, 'users_blocked', 'add')
@@ -407,7 +407,7 @@ def bot_command_function_github(bot, trigger, botcom, instigator):
 
     # main subcom
     valid_main_subcom = ['show', 'block']
-    main_subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_main_subcom], 1) or 'show'
+    main_subcommand = spicemanip.main([x for x in botcom.triggerargsarray if x in valid_main_subcom], 1) or 'show'
 
     if main_subcommand == 'show':
         osd(bot, botcom.channel_current, 'say', 'Spiceworks IRC Modules     https://github.com/SpiceBot/SpiceBot')
@@ -420,7 +420,7 @@ def bot_command_function_github(bot, trigger, botcom, instigator):
             return
 
         # Channel
-        channeltarget = spicemanip(bot, [x for x in botcom.triggerargsarray if x.startswith('#')], 1)
+        channeltarget = spicemanip.main([x for x in botcom.triggerargsarray if x.startswith('#')], 1)
         if not channeltarget:
             if botcom.channel_current.startswith('#'):
                 channeltarget = botcom.channel_current
@@ -432,7 +432,7 @@ def bot_command_function_github(bot, trigger, botcom, instigator):
 
         # SubCommand used
         valid_subcommands = ['current', 'add', 'del']
-        subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'current'
+        subcommand = spicemanip.main([x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'current'
 
         bot_blocked_users_github = get_database_value(bot, channeltarget, 'users_blocked_github') or []
 
@@ -440,7 +440,7 @@ def bot_command_function_github(bot, trigger, botcom, instigator):
             botmessage = []
             if bot_blocked_users_github != []:
                 botmessage.append("The following users are currently blocked:")
-                current_block_list = spicemanip(bot, bot_blocked_users_github, 'list')
+                current_block_list = spicemanip.main(bot_blocked_users_github, 'list')
                 botmessage.append(str(current_block_list))
             else:
                 botmessage.append("No users are currently blocked from github.")
@@ -467,7 +467,7 @@ def bot_command_function_github(bot, trigger, botcom, instigator):
                 osd(bot, botcom.instigator, 'notice', "No Valid Users found to block from github.")
                 return
 
-            blocknewlisttext = spicemanip(bot, blocknewlist, 'list')
+            blocknewlisttext = spicemanip.main(blocknewlist, 'list')
 
             if subcommand == 'add':
                 adjust_database_array(bot, channeltarget, blocknewlist, 'users_blocked_github', 'add')
@@ -486,7 +486,7 @@ def bot_command_function_devmode(bot, trigger, botcom, instigator):
         return
 
     # Channel
-    channeltarget = spicemanip(bot, [x for x in botcom.triggerargsarray if x.startswith('#')], 1)
+    channeltarget = spicemanip.main([x for x in botcom.triggerargsarray if x.startswith('#')], 1)
     if not channeltarget:
         if botcom.channel_current.startswith('#'):
             channeltarget = botcom.channel_current
@@ -498,7 +498,7 @@ def bot_command_function_devmode(bot, trigger, botcom, instigator):
 
     # SubCommand used
     valid_subcommands = ['on', 'off']
-    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1)
+    subcommand = spicemanip.main([x for x in botcom.triggerargsarray if x in valid_subcommands], 1)
     if not subcommand:
         osd(bot, botcom.instigator, 'notice', "Do you want devmode on or off in " + channeltarget + "?")
         return
@@ -554,7 +554,7 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
             else:
                 osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
     else:
-        targetbotlist = spicemanip(bot, targetbots, 'list')
+        targetbotlist = spicemanip.main(targetbots, 'list')
         osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbotlist + " from Github and restart.")
     for targetbot in targetbots:
         update(bot, botcom, trigger, targetbot)
@@ -605,7 +605,7 @@ def bot_command_function_restart(bot, trigger, botcom, instigator):
             else:
                 osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to restart. Be Back Soon!")
     else:
-        targetbotlist = spicemanip(bot, targetbots, 'list')
+        targetbotlist = spicemanip.main(targetbots, 'list')
         osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to restart " + targetbotlist)
     for targetbot in targetbots:
         restart(bot, botcom, trigger, targetbot)
@@ -628,14 +628,14 @@ def bot_command_function_pip(bot, trigger, botcom, instigator):
         return
 
     pipcoms = ['install', 'remove']
-    subcom = spicemanip(bot, [x for x in botcom.triggerargsarray if x in pipcoms], 1) or None
+    subcom = spicemanip.main([x for x in botcom.triggerargsarray if x in pipcoms], 1) or None
     if not subcom:
-        return osd(bot, trigger.sender, 'say', "pip requires a subcommand. Valid options: " + spicemanip(bot, pipcoms, 'andlist'))
+        return osd(bot, trigger.sender, 'say', "pip requires a subcommand. Valid options: " + spicemanip.main(pipcoms, 'andlist'))
 
     if subcom in botcom.triggerargsarray:
         botcom.triggerargsarray.remove(subcom)
 
-    pippackage = spicemanip(bot, botcom.triggerargsarray, 0)
+    pippackage = spicemanip.main(botcom.triggerargsarray, 0)
     if not pippackage:
         return osd(bot, botcom.channel_current, 'say', "You must specify a pip package.")
 
@@ -650,7 +650,7 @@ def bot_command_function_pip(bot, trigger, botcom, instigator):
             installines.append(str(line))
 
     if previouslysatisfied != []:
-        previouslysatisfiedall = spicemanip(bot, previouslysatisfied, 'andlist')
+        previouslysatisfiedall = spicemanip.main(previouslysatisfied, 'andlist')
         installines.insert(0, "The following required packages have already been satisfied: " + previouslysatisfiedall)
 
     if installines == []:
@@ -664,7 +664,7 @@ def bot_command_function_pip(bot, trigger, botcom, instigator):
 def bot_command_function_debug(bot, trigger, botcom, instigator):
 
     botcom = bot_config_directory(bot, botcom)
-    targetbot = spicemanip(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
+    targetbot = spicemanip.main([x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
 
     if targetbot == bot.nick:
         if botcom.instigator not in botcom.botadmins:

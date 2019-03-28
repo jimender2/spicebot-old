@@ -51,11 +51,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, botcom)
     else:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(botcom.triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            botcom.triggerargsarray = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, botcom)
 
     botdict_save(bot)
@@ -63,10 +63,10 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, botcom):
 
-    posstarget = spicemanip(bot, botcom.triggerargsarray, 1)
+    posstarget = spicemanip.main(botcom.triggerargsarray, 1)
     if not posstarget:
         return osd(bot, botcom.channel_current, 'say', "Who do you want to claim?")
-    botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, "2+", 'list')
+    botcom.triggerargsarray = spicemanip.main(botcom.triggerargsarray, "2+", 'list')
 
     if botcom.channel_priv:
         return osd(bot, botcom.channel_current, 'notice', "Claims must be done in channel")
@@ -74,7 +74,7 @@ def execute_main(bot, trigger, botcom):
     bladder = get_nick_bladder(bot, botcom.instigator)
 
     if posstarget == 'bladder':
-        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 'self'
+        posstarget = spicemanip.main(botcom.triggerargsarray, 1) or 'self'
         if bot_check_inlist(bot, posstarget, ['self', botcom.instigator]):
             dispmsg = []
             dispmsg.append("Your bladder is currently at " + str(bladder.percent) + " capacity.")
@@ -102,7 +102,7 @@ def execute_main(bot, trigger, botcom):
         return osd(bot, botcom.channel_current, 'say', dispmsg)
 
     elif posstarget == 'check':
-        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 'self'
+        posstarget = spicemanip.main(botcom.triggerargsarray, 1) or 'self'
         messagelist = []
         if bot_check_inlist(bot, posstarget, ['self', botcom.instigator]):
             claimdict = get_nick_claims(bot, botcom.instigator)
@@ -110,7 +110,7 @@ def execute_main(bot, trigger, botcom):
                 messagelist.append("You are currently owned by " + claimdict["ownedby"])
             ownings = get_nick_ownings(bot, botcom.instigator)
             if ownings != []:
-                messagelist.append("You currently own " + spicemanip(bot, ownings, "andlist"))
+                messagelist.append("You currently own " + spicemanip.main(ownings, "andlist"))
             if messagelist == []:
                 messagelist.append("It looks like you are niether owned, nor own any others!")
             return osd(bot, botcom.channel_current, 'say', messagelist)
@@ -126,7 +126,7 @@ def execute_main(bot, trigger, botcom):
             messagelist.append(posstarget + " is currently owned by " + claimdict["ownedby"])
         ownings = get_nick_ownings(bot, posstarget)
         if ownings != []:
-            messagelist.append(posstarget + " currently owns " + spicemanip(bot, ownings, "andlist"))
+            messagelist.append(posstarget + " currently owns " + spicemanip.main(ownings, "andlist"))
         if messagelist == []:
             messagelist.append("It looks like " + posstarget + " is neither owned, nor owns any others!")
         return osd(bot, botcom.channel_current, 'say', messagelist)

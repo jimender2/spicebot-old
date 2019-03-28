@@ -54,14 +54,14 @@ def bot_command_hub(bot, trigger):
         return osd(bot, botcom.instigator, 'notice', "I was unable to process this Bot Nick command due to privilege issues.")
 
     pipcoms = ['install', 'remove']
-    subcom = spicemanip(bot, [x for x in botcom.triggerargsarray if x in pipcoms], 1) or None
+    subcom = spicemanip.main([x for x in botcom.triggerargsarray if x in pipcoms], 1) or None
     if not subcom:
-        return osd(bot, botcom.channel_current, 'say', "pip requires a subcommand. Valid options: " + spicemanip(bot, pipcoms, 'andlist'))
+        return osd(bot, botcom.channel_current, 'say', "pip requires a subcommand. Valid options: " + spicemanip.main(pipcoms, 'andlist'))
 
     if subcom in botcom.triggerargsarray:
         botcom.triggerargsarray.remove(subcom)
 
-    pippackage = spicemanip(bot, botcom.triggerargsarray, 0)
+    pippackage = spicemanip.main(botcom.triggerargsarray, 0)
     if not pippackage:
         return osd(bot, botcom.channel_current, 'say', "You must specify a pip package.")
 
@@ -76,7 +76,7 @@ def bot_command_hub(bot, trigger):
             installines.append(str(line))
 
     if previouslysatisfied != []:
-        previouslysatisfiedall = spicemanip(bot, previouslysatisfied, 'andlist')
+        previouslysatisfiedall = spicemanip.main(previouslysatisfied, 'andlist')
         installines.insert(0, "The following required packages have already been satisfied: " + previouslysatisfiedall)
 
     if installines == []:

@@ -22,11 +22,11 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'race')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+            triggerargsarray_part = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
@@ -35,7 +35,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     # setting up variables
     osd(bot, trigger.sender, 'say', "")
     instigator = trigger.nick
-    command = spicemanip(bot, triggerargsarray, 1)
+    command = spicemanip.main(triggerargsarray, 1)
 
     if command == "help":
         osd(bot, trigger.sender, 'say', "For right now do .race random or .race person to race")
@@ -127,15 +127,15 @@ def damage(vehicleStats):
 
 def pickVehicle(bot, botcom, target):
     rand = random.randint(1,5)
-    vehicle = spicemanip(bot, vehicleType, rand) or 'walkin'
-    maxHealth = spicemanip(bot, maximumHealth, rand)
+    vehicle = spicemanip.main(vehicleType, rand) or 'walkin'
+    maxHealth = spicemanip.main(maximumHealth, rand)
     maxHealth = int(maxHealth)
     return vehicle, maxHealth
 
 
 def randomUser(bot, botcom, instigator):
     allUsers = [u.lower() for u in bot.users]
-    user = spicemanip(bot, allUsers, "random") or 'spicebot'
+    user = spicemanip.main(allUsers, "random") or 'spicebot'
     return user
 
 

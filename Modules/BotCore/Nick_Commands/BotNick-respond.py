@@ -55,10 +55,10 @@ def bot_nickcom_hub(bot, trigger):
     if str(bot.nick) + " " + botcom.command_main.lower() in bot.memory["nickname_commands"].keys():
         return
 
-    specialcomposs = spicemanip(bot, botcom.triggerargsarray, 0).lower()
+    specialcomposs = spicemanip.main(botcom.triggerargsarray, 0).lower()
 
     if specialcomposs.lower().startswith("what is"):
-        searchterm = spicemanip(bot, botcom.triggerargsarray, "3+") or None
+        searchterm = spicemanip.main(botcom.triggerargsarray, "3+") or None
         if searchterm:
             data = searchterm.replace(' ', '+')
             lookfor = data.replace(':', '%3A')
@@ -76,7 +76,7 @@ def bot_nickcom_hub(bot, trigger):
         return
 
     elif specialcomposs.lower().startswith("where is"):
-        searchterm = spicemanip(bot, botcom.triggerargsarray, "3+") or None
+        searchterm = spicemanip.main(botcom.triggerargsarray, "3+") or None
         if searchterm:
             if searchterm.lower() == 'waldo':
                 osd(bot, botcom.channel_current, 'say', "He is hiding for a reason?")
@@ -100,13 +100,13 @@ def bot_nickcom_hub(bot, trigger):
         return
 
     elif specialcomposs.lower().startswith(tuple(["have you seen"])):
-        posstarget = spicemanip(bot, botcom.triggerargsarray, 4) or 0
+        posstarget = spicemanip.main(botcom.triggerargsarray, 4) or 0
         message = seen_search(bot, botcom, posstarget)
         osd(bot, botcom.channel_current, 'say', message)
         return
 
     elif specialcomposs.lower().startswith(tuple(["make me a", "beam me a"])):
-        makemea = spicemanip(bot, botcom.triggerargsarray, "4+") or None
+        makemea = spicemanip.main(botcom.triggerargsarray, "4+") or None
         if makemea:
             osd(bot, botcom.channel_current, 'action', "beams " + botcom.instigator + " a " + makemea)
         else:
@@ -114,7 +114,7 @@ def bot_nickcom_hub(bot, trigger):
         return
 
     elif specialcomposs.lower().startswith(tuple(["beam me to"])):
-        location = spicemanip(bot, botcom.triggerargsarray, "4+") or None
+        location = spicemanip.main(botcom.triggerargsarray, "4+") or None
         if location:
             osd(bot, botcom.channel_current, 'action', "locks onto " + botcom.instigator + "s coordinates and transports them to " + location)
         else:
@@ -149,7 +149,7 @@ def bot_nickcom_hub(bot, trigger):
         return
 
     elif specialcomposs.lower().startswith("can you see"):
-        target = spicemanip(bot, botcom.triggerargsarray, "4+") or None
+        target = spicemanip.main(botcom.triggerargsarray, "4+") or None
         if not target:
             target = 'me'
         if target in [botcom.instigator, 'me']:
@@ -173,13 +173,13 @@ def bot_nickcom_hub(bot, trigger):
                 sim_num.append(similarlevel)
         if sim_com != [] and sim_num != []:
             sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
-            closestmatch = spicemanip(bot, sim_com, 'reverse', "list")
+            closestmatch = spicemanip.main(sim_com, 'reverse', "list")
             listnumb, relist = 1, []
             for item in closestmatch:
                 if listnumb <= 3:
                     relist.append(str(item))
                 listnumb += 1
-            closestmatches = spicemanip(bot, relist, "andlist")
+            closestmatches = spicemanip.main(relist, "andlist")
             return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do! Did you mean: " + str(closestmatches) + "?")
         else:
             return osd(bot, botcom.channel_current, 'say', "I don't know what you are asking me to do!")

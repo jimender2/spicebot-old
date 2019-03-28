@@ -68,22 +68,22 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'cipher')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+            triggerargsarray_part = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
-    target = spicemanip(bot, triggerargsarray, 1)
+    target = spicemanip.main(triggerargsarray, 1)
     if (instigator == 'Cipher-0' and not target) or target == 'Cipher-0':
-        modelnumber = spicemanip(bot, modelnumbers, 'random')
-        missiontype = spicemanip(bot, missiontypes, 'random')
+        modelnumber = spicemanip.main(modelnumbers, 'random')
+        missiontype = spicemanip.main(missiontypes, 'random')
         missionsarray = eval(missiontype+"_mission")
-        mission = spicemanip(bot, missionsarray, 'random')
+        mission = spicemanip.main(missionsarray, 'random')
         osd(bot, trigger.sender, 'say', 'CYBORG TISSUE GENERATION ' + str(modelnumber).upper() + ' SEQUENCE INITIATED')
         osd(bot, trigger.sender, 'say', 'DOWNLOADING CURRENT OBJECTIVE FROM SKYNET: ' + str(mission).upper())
         osd(bot, trigger.sender, 'say', 'ACTIVATING Cipher-0')

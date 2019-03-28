@@ -55,7 +55,7 @@ def bot_command_hub(bot, trigger):
 
     # Target
     targets = []
-    targetword = spicemanip(bot, botcom.triggerargsarray, 1)
+    targetword = spicemanip.main(botcom.triggerargsarray, 1)
     if targetword not in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['all_current_users'] and targetword != 'all':
         if not botcom.channel_priv:
             targets.append(botcom.channel_current)
@@ -63,7 +63,7 @@ def bot_command_hub(bot, trigger):
             osd(bot, botcom.instigator, 'notice', "You must specify a valid target.")
             return
     elif targetword == 'all':
-        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+        botcom.triggerargsarray = spicemanip.main(botcom.triggerargsarray, '2+', 'list')
         for target in bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['all_current_users']:
             targets.append(target)
     else:
@@ -75,7 +75,7 @@ def bot_command_hub(bot, trigger):
         if target in botcom.triggerargsarray:
             botcom.triggerargsarray.remove(target)
 
-    botmessage = spicemanip(bot, botcom.triggerargsarray, 0)
+    botmessage = spicemanip.main(botcom.triggerargsarray, 0)
     if not botmessage:
         osd(bot, botcom.instigator, 'notice', "You must specify a message.")
         return

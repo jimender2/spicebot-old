@@ -55,14 +55,14 @@ def bot_command_hub(bot, trigger):
 
     # SubCommand used
     valid_subcommands = ['list', 'op', 'hop', 'voice', 'owner', 'admin', 'users']
-    subcommand = spicemanip(bot, [x for x in botcom.triggerargsarray if x.lower() in valid_subcommands], 1) or 'list'
+    subcommand = spicemanip.main([x for x in botcom.triggerargsarray if x.lower() in valid_subcommands], 1) or 'list'
     if subcommand in botcom.triggerargsarray:
         botcom.triggerargsarray.remove(subcommand)
     subcommand = subcommand.lower()
 
     # list channels
     if subcommand == 'list':
-        chanlist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'].keys(), 'andlist')
+        chanlist = spicemanip.main(bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'].keys(), 'andlist')
         osd(bot, botcom.channel_current, 'say', "You can find me in " + chanlist)
         return
 
@@ -90,9 +90,9 @@ def bot_command_hub(bot, trigger):
             if bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanops'] == []:
                 dispmsg.append("There are no Channel Operators for " + str(channeltarget))
             else:
-                oplist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanops'], 'andlist')
+                oplist = spicemanip.main(bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanops'], 'andlist')
                 dispmsg.append("Channel Operators for " + str(channeltarget) + "  are: " + oplist)
-        osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        osd(bot, botcom.instigator, 'notice', spicemanip.main(dispmsg, 'andlist'))
         return
 
     # HOP list
@@ -101,9 +101,9 @@ def bot_command_hub(bot, trigger):
             if bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanhalfops'] == []:
                 dispmsg.append("There are no Channel Half Operators for " + str(channeltarget))
             else:
-                hoplist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanhalfops'], 'andlist')
+                hoplist = spicemanip.main(bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanhalfops'], 'andlist')
                 dispmsg.append("Channel Half Operators for " + str(channeltarget) + "  are: " + hoplist)
-        osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        osd(bot, botcom.instigator, 'notice', spicemanip.main(dispmsg, 'andlist'))
         return
 
     # Voice List
@@ -112,9 +112,9 @@ def bot_command_hub(bot, trigger):
             if bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanvoices'] == []:
                 dispmsg.append("There are no Channel VOICE for " + str(channeltarget))
             else:
-                voicelist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanvoices'], 'andlist')
+                voicelist = spicemanip.main(bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanvoices'], 'andlist')
                 dispmsg.append("Channel VOICE for " + str(channeltarget) + " are: " + voicelist)
-        osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        osd(bot, botcom.instigator, 'notice', spicemanip.main(dispmsg, 'andlist'))
         return
 
     # owner List
@@ -123,9 +123,9 @@ def bot_command_hub(bot, trigger):
             if bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanowners'] == []:
                 dispmsg.append("There are no Channel OWNER for " + str(channeltarget))
             else:
-                ownerlist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanowners'], 'andlist')
+                ownerlist = spicemanip.main(bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanowners'], 'andlist')
                 dispmsg.append("Channel OWNER for " + str(channeltarget) + " are: " + ownerlist)
-        osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        osd(bot, botcom.instigator, 'notice', spicemanip.main(dispmsg, 'andlist'))
         return
 
     # admin List
@@ -134,9 +134,9 @@ def bot_command_hub(bot, trigger):
             if bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanadmins'] == []:
                 dispmsg.append("There are no Channel ADMIN for " + str(channeltarget))
             else:
-                adminlist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanadmins'], 'andlist')
+                adminlist = spicemanip.main(bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['chanadmins'], 'andlist')
                 dispmsg.append("Channel ADMIN for " + str(channeltarget) + " are: " + adminlist)
-        osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        osd(bot, botcom.instigator, 'notice', spicemanip.main(dispmsg, 'andlist'))
         return
 
     # Users List
@@ -145,7 +145,7 @@ def bot_command_hub(bot, trigger):
             if bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['current_users'] == []:
                 dispmsg.append("There are no Channel users for " + str(channeltarget))
             else:
-                userslist = spicemanip(bot, bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['current_users'], 'andlist')
+                userslist = spicemanip.main(bot.memory["botdict"]["tempvals"]['servers_list'][botcom.server]['channels_list'][channeltarget]['current_users'], 'andlist')
                 dispmsg.append("Channel users for " + str(channeltarget) + " are: " + userslist)
-        osd(bot, botcom.instigator, 'notice', spicemanip(bot, dispmsg, 'andlist'))
+        osd(bot, botcom.instigator, 'notice', spicemanip.main(dispmsg, 'andlist'))
         return

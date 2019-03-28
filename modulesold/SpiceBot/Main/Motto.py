@@ -20,11 +20,11 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'motto')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+            triggerargsarray_part = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
@@ -32,8 +32,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     inchannel = trigger.sender
 
-    command = spicemanip(bot, triggerargsarray, 1)
-    inputstring = spicemanip(bot, triggerargsarray, '2+')
+    command = spicemanip.main(triggerargsarray, 1)
+    inputstring = spicemanip.main(triggerargsarray, '2+')
     existingarray = get_database_value(bot, instigator, databasekey) or []
     if command == "add":
         if inputstring not in existingarray:
@@ -56,11 +56,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "There are currently " + str(messagecount) + " mottos in the database."
         osd(bot, trigger.sender, 'say', message)
     elif command == "last":
-        message = spicemanip(bot, existingarray, "last")
+        message = spicemanip.main(existingarray, "last")
         osd(bot, trigger.sender, 'say', message)
 
     else:
-        motto = spicemanip(bot, existingarray, "random") or 'You have no flair. Add some now!!'
+        motto = spicemanip.main(existingarray, "random") or 'You have no flair. Add some now!!'
         osd(bot, trigger.sender, 'say', motto)
 
 

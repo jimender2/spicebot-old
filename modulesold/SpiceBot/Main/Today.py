@@ -18,11 +18,11 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'today')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+            triggerargsarray_part = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
@@ -50,7 +50,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 def howlonguntilfriday(bot, whatistoday):
     fridaynumber = '4'
     if whatistoday == fridaynumber:
-        deityofchoice = spicemanip(bot, deities, 'random')
+        deityofchoice = spicemanip.main(deities, 'random')
         daystilfriday = "Thank " + str(deityofchoice) + " It's Friday! It's finally here!!!"
     elif whatistoday == '5' or whatistoday == '6':
         daystilfriday = "It's the Weekend!"

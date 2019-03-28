@@ -62,14 +62,14 @@ def watch_all_hub(bot, trigger):
             return
 
     # what they said
-    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+    botcom.triggerargsarray = spicemanip.main(trigger, 'create')
 
     if botcom.channel_priv:
         return
 
     botcom.timestart = time.time()
 
-    spoken = spicemanip(bot, botcom.triggerargsarray, 0)
+    spoken = spicemanip.main(botcom.triggerargsarray, 0)
     if 'all' not in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["auth_block"]:
         spoken = "<REDACTED>"
 

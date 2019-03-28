@@ -100,11 +100,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, botcom)
     else:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(botcom.triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            botcom.triggerargsarray = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, botcom)
 
     botdict_save(bot)
@@ -119,13 +119,13 @@ def execute_main(bot, trigger, botcom):
         return osd(bot, botcom.channel_current, 'say', "There are no valid feeds!!")
 
     valid_commands = ['enable', 'disable', 'reset', 'run', 'subscribe', 'unsubscribe']
-    command = spicemanip(bot, [x for x in botcom.triggerargsarray if x in valid_commands], 1) or 'run'
+    command = spicemanip.main([x for x in botcom.triggerargsarray if x in valid_commands], 1) or 'run'
     if command in botcom.triggerargsarray:
         botcom.triggerargsarray.remove(command)
 
-    feed_select = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot.memory['feeds'].keys() or x == 'all'], 1) or None
+    feed_select = spicemanip.main([x for x in botcom.triggerargsarray if x in bot.memory['feeds'].keys() or x == 'all'], 1) or None
     if not feed_select:
-        feed_list = spicemanip(bot, bot.memory['feeds'].keys(), 'list')
+        feed_list = spicemanip.main(bot.memory['feeds'].keys(), 'list')
         osd(bot, botcom.channel_current, 'say', "Valid Feeds are " + feed_list)
         return
 
@@ -157,7 +157,7 @@ def execute_main(bot, trigger, botcom):
                 newlist.append(feed)
         if newlist != []:
             adjust_nick_array(bot, botcom.instigator, "long", "feeds", "enabled", newlist, "add")
-            osd(bot, botcom.channel_current, 'say', "You are now " + command + "d to " + spicemanip(bot, newlist, 'list'))
+            osd(bot, botcom.channel_current, 'say', "You are now " + command + "d to " + spicemanip.main(newlist, 'list'))
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
@@ -170,7 +170,7 @@ def execute_main(bot, trigger, botcom):
                 newlist.append(feed)
         if newlist != []:
             adjust_nick_array(bot, botcom.instigator, "long", "feeds", "enabled", newlist, "del")
-            osd(bot, botcom.channel_current, 'say', "You are now " + command + "d from " + spicemanip(bot, newlist, 'list'))
+            osd(bot, botcom.channel_current, 'say', "You are now " + command + "d from " + spicemanip.main(newlist, 'list'))
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
@@ -190,12 +190,12 @@ def execute_main(bot, trigger, botcom):
                 reset_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtime')
                 reset_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildtitle')
                 reset_nick_value(bot, str(bot.nick), 'long', 'feeds', feed + '_lastbuildlink')
-            osd(bot, botcom.channel_current, 'say', spicemanip(bot, newlist, 'list') + " " + hashave(newlist) + " been " + command + ".")
+            osd(bot, botcom.channel_current, 'say', spicemanip.main(newlist, 'list') + " " + hashave(newlist) + " been " + command + ".")
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
 
-    channelselect = spicemanip(bot, [x for x in botcom.triggerargsarray if x in bot.privileges.keys()], 1) or botcom.channel_current
+    channelselect = spicemanip.main([x for x in botcom.triggerargsarray if x in bot.privileges.keys()], 1) or botcom.channel_current
 
     if command == 'enable':
         feeds_enabled = get_channel_value(bot, channelselect, "long", "feeds", "enabled") or []
@@ -205,7 +205,7 @@ def execute_main(bot, trigger, botcom):
                 newlist.append(feed)
         if newlist != []:
             adjust_channel_array(bot, channelselect, "long", "feeds", "enabled", newlist, "add")
-            osd(bot, botcom.channel_current, 'say', spicemanip(bot, newlist, 'list') + " " + hashave(newlist) + " been " + command + "d for " + str(channelselect) + ".")
+            osd(bot, botcom.channel_current, 'say', spicemanip.main(newlist, 'list') + " " + hashave(newlist) + " been " + command + "d for " + str(channelselect) + ".")
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
@@ -218,7 +218,7 @@ def execute_main(bot, trigger, botcom):
                 newlist.append(feed)
         if newlist != []:
             adjust_channel_array(bot, channelselect, "long", "feeds", "enabled", newlist, "del")
-            osd(bot, botcom.channel_current, 'say', spicemanip(bot, newlist, 'list') + " " + hashave(newlist) + " been " + command + "d for " + str(channelselect) + ".")
+            osd(bot, botcom.channel_current, 'say', spicemanip.main(newlist, 'list') + " " + hashave(newlist) + " been " + command + "d for " + str(channelselect) + ".")
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return

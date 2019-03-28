@@ -168,7 +168,7 @@ def bot_startup_modules(bot, trigger):
 
             maincom = dict_from_file["validcoms"][0]
             if len(dict_from_file["validcoms"]) > 1:
-                comaliases = spicemanip(bot, dict_from_file["validcoms"], '2+', 'list')
+                comaliases = spicemanip.main(dict_from_file["validcoms"], '2+', 'list')
             else:
                 comaliases = []
 

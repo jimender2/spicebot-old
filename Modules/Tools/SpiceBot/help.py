@@ -46,9 +46,9 @@ def execute_main(bot, trigger, botcom):
                     "Online Documentation:     https://github.com/SpiceBot/SpiceBot/wiki",
                     "     ",
                     "Lead Developer: deathbybandaid",
-                    "BotDevTeam: " + str(spicemanip(bot, ['zsutton92', 'josh-cunning', 'Berserkir-Wolf', 'thetechnerd', 'SniperClif', 'jimender2'], "andlist")),
+                    "BotDevTeam: " + str(spicemanip.main(['zsutton92', 'josh-cunning', 'Berserkir-Wolf', 'thetechnerd', 'SniperClif', 'jimender2'], "andlist")),
                     "     ",
-                    "The Command list is broken up into " + str(spicemanip(bot, ['dict', 'module', 'nickname', 'rule'], "andlist") + " commands sections."),
+                    "The Command list is broken up into " + str(spicemanip.main(['dict', 'module', 'nickname', 'rule'], "andlist") + " commands sections."),
                     "     ",
                     ]
     dispmsg.append(mainbodytext)
@@ -87,7 +87,7 @@ def execute_main(bot, trigger, botcom):
 
                 if 'privs' in dict_from_file.keys():
                     if len(dict_from_file['privs']) > 0:
-                        comstring.append("Required Permissions: " + str(spicemanip(bot, dict_from_file["privs"], "orlist")))
+                        comstring.append("Required Permissions: " + str(spicemanip.main(dict_from_file["privs"], "orlist")))
 
                 # description
                 if dict_from_file["description"]:
@@ -99,7 +99,7 @@ def execute_main(bot, trigger, botcom):
 
                 # contributors
                 if dict_from_file["contributors"]:
-                    comstring.append("Contributors:  " + str(spicemanip(bot, dict_from_file["contributors"], "andlist")))
+                    comstring.append("Contributors:  " + str(spicemanip.main(dict_from_file["contributors"], "andlist")))
 
                 # filepath
                 if dict_from_file["filepath"]:
@@ -110,7 +110,7 @@ def execute_main(bot, trigger, botcom):
                 if dict_from_file["validcoms"]:
                     del dict_from_file["validcoms"][0]
                     if len(dict_from_file["validcoms"]):
-                        comstring.append("Valid Alternates: " + str(spicemanip(bot, dict_from_file["validcoms"], "orlist")))
+                        comstring.append("Valid Alternates: " + str(spicemanip.main(dict_from_file["validcoms"], "orlist")))
 
                 # Usage
                 if dict_from_file["example"]:

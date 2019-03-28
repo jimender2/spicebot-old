@@ -77,18 +77,18 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'insult')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+            triggerargsarray_part = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    answer1 = spicemanip(bot, insalton, 'random')
-    answer2 = spicemanip(bot, insalttw, 'random')
-    answer3 = spicemanip(bot, insaltth, 'random')
+    answer1 = spicemanip.main(insalton, 'random')
+    answer2 = spicemanip.main(insalttw, 'random')
+    answer3 = spicemanip.main(insaltth, 'random')
 
     message = "You are a " + answer1 + " " + answer2 + " " + answer3 + "."
     osd(bot, trigger.sender, 'say', message)

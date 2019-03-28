@@ -32,11 +32,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, botcom)
     else:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(botcom.triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            botcom.triggerargsarray = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, botcom)
 
     botdict_save(bot)
@@ -45,9 +45,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, botcom):
 
     if len(botcom.triggerargsarray) >= 1:
-        mysite = spicemanip(bot, botcom.triggerargsarray, 1).lower()
-        searchterm = spicemanip(bot, botcom.triggerargsarray, '1+')
-        querystring = spicemanip(bot, botcom.triggerargsarray, '2+')
+        mysite = spicemanip.main(botcom.triggerargsarray, 1).lower()
+        searchterm = spicemanip.main(botcom.triggerargsarray, '1+')
+        querystring = spicemanip.main(botcom.triggerargsarray, '2+')
         data = querystring.replace(' ', '+')
         site = '+site%3Ayoutube.com'
         url = 'https://www.youtube.com/'

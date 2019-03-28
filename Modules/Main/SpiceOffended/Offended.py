@@ -46,7 +46,7 @@ def offensedetect(bot, trigger):
         if bot_check_inlist(bot, trigger.nick, bot.memory["altbots"].keys()):
             return
 
-    triggerargsarray = spicemanip(bot, trigger, 'create')
+    triggerargsarray = spicemanip.main(trigger, 'create')
     for x in triggerargsarray:
         stringx = x.lower()
 

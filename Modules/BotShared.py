@@ -84,6 +84,8 @@ import speedtest
 from sopel.logger import get_logger
 LOGGER = get_logger(__name__)
 
+import spicemanip
+
 
 # user agent and header
 ua = UserAgent()
@@ -266,12 +268,12 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     botcom.comtype = 'module'
 
     # create arg list
-    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+    botcom.triggerargsarray = spicemanip.main(trigger, 'create')
 
     # the command that was run
     if not bypasscom:
-        botcom.maincom = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
-        botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', "list")
+        botcom.maincom = spicemanip.main(botcom.triggerargsarray, 1).lower()[1:]
+        botcom.triggerargsarray = spicemanip.main(botcom.triggerargsarray, '2+', "list")
     else:
         botcom.maincom = bypasscom.lower()
 
@@ -291,7 +293,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     # This allows users to specify which reply by number by using an ! and a digit (first or last in string)
     validspecifides = ['block', 'unblock', 'last', 'random', 'count', 'view', 'add', 'del', 'remove', 'special', 'contribs', 'contrib', "contributors", 'author', "alias", "filepath", "filename", "enable", "disable", "multiruns", "description", "exampleresponse", "example", "usage", "privs"]
     botcom.specified = None
-    argone = spicemanip(bot, botcom.triggerargsarray, 1)
+    argone = spicemanip.main(botcom.triggerargsarray, 1)
     if str(argone).startswith("--") and len(str(argone)) > 2:
         if str(argone[2:]).isdigit():
             botcom.specified = int(argone[2:])
@@ -303,7 +305,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
             except ValueError:
                 botcom.specified = None
         if botcom.specified:
-            botcom.triggerargsarray = spicemanip(bot, botcom.triggerargsarray, '2+', 'list')
+            botcom.triggerargsarray = spicemanip.main(botcom.triggerargsarray, '2+', 'list')
 
     # Hardcoded commands Below
     if botcom.specified == 'enable':
@@ -341,7 +343,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
             osd(bot, botcom.channel_current, 'say', "You are not authorized to " + botcom.specified + " " + botcom.maincom + " in " + str(botcom.channel_current))
             return botcom
 
-        trailingmessage = spicemanip(bot, botcom.triggerargsarray, 0) or "No reason given."
+        trailingmessage = spicemanip.main(botcom.triggerargsarray, 0) or "No reason given."
         timestamp = str(datetime.datetime.utcnow())
         bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["disabled_commands"][botcom.maincom] = {"reason": trailingmessage, "timestamp": timestamp, "disabledby": botcom.instigator}
         osd(bot, botcom.channel_current, 'say', botcom.maincom + " is now " + botcom.specified + "d in " + str(botcom.channel_current) + " at " + str(timestamp) + " for the following reason: " + trailingmessage)
@@ -359,7 +361,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
             osd(bot, botcom.channel_current, 'say', "You are not authorized to turn " + botcom.specified + " multicom usage in " + str(botcom.channel_current))
             return botcom
 
-        onoff = spicemanip(bot, botcom.triggerargsarray, 1)
+        onoff = spicemanip.main(botcom.triggerargsarray, 1)
         if onoff == 'on':
             if botcom.maincom not in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
                 osd(bot, botcom.channel_current, 'say', botcom.maincom + " already has multicom usage " + onoff + " in " + str(botcom.channel_current))
@@ -370,7 +372,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
             if botcom.maincom in bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"].keys():
                 osd(bot, botcom.channel_current, 'say', botcom.maincom + " already has multicom usage " + onoff + " in " + str(botcom.channel_current))
             else:
-                trailingmessage = spicemanip(bot, botcom.triggerargsarray, "2+") or "No reason given."
+                trailingmessage = spicemanip.main(botcom.triggerargsarray, "2+") or "No reason given."
                 timestamp = str(datetime.datetime.utcnow())
                 bot.memory["botdict"]['servers_list'][botcom.server]['channels_list'][str(botcom.channel_current)]["multirun_disabled_commands"][botcom.maincom] = {"reason": trailingmessage, "timestamp": timestamp, "multi_disabledby": botcom.instigator}
                 osd(bot, botcom.channel_current, 'say', botcom.maincom + " now has multicom usage " + onoff + " in " + str(botcom.channel_current))
@@ -389,7 +391,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
             osd(bot, botcom.channel_current, 'say', "You are not authorized to enable/disable command usage.")
             return botcom
 
-        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
+        posstarget = spicemanip.main(botcom.triggerargsarray, 1) or 0
         if not posstarget:
             osd(bot, botcom.channel_current, 'say', "Who am I blocking from " + str(botcom.maincom) + " usage?")
             return botcom
@@ -416,7 +418,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
             osd(bot, botcom.channel_current, 'say', "You are not authorized to enable/disable command usage.")
             return botcom
 
-        posstarget = spicemanip(bot, botcom.triggerargsarray, 1) or 0
+        posstarget = spicemanip.main(botcom.triggerargsarray, 1) or 0
         if not posstarget:
             osd(bot, botcom.channel_current, 'say', "Who am I unblocking from " + str(botcom.maincom) + " usage?")
             return botcom
@@ -463,7 +465,7 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     elif botcom.specified == 'privs':
         botcom.modulerun = False
 
-        osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + spicemanip(bot, botcom.dotcommand_dict["privs"], "andlist"))
+        osd(bot, botcom.channel_current, 'say', str(botcom.specified).title() + ": " + spicemanip.main(botcom.dotcommand_dict["privs"], "andlist"))
         return botcom
 
     elif botcom.specified in ['example', 'usage']:
@@ -493,13 +495,13 @@ def bot_module_prerun(bot, trigger, bypasscom=None):
     elif botcom.specified in ['contribs', 'contrib', "contributors"]:
         botcom.modulerun = False
 
-        osd(bot, botcom.channel_current, 'say', "The contributors of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["contributors"], "andlist") + ".")
+        osd(bot, botcom.channel_current, 'say', "The contributors of the " + str(botcom.maincom) + " command are " + spicemanip.main(botcom.dotcommand_dict["contributors"], "andlist") + ".")
         return botcom
 
     elif botcom.specified == 'alias':
         botcom.modulerun = False
 
-        osd(bot, botcom.channel_current, 'say', "The alaises of the " + str(botcom.maincom) + " command are " + spicemanip(bot, botcom.dotcommand_dict["validcoms"], "andlist") + ".")
+        osd(bot, botcom.channel_current, 'say', "The alaises of the " + str(botcom.maincom) + " command are " + spicemanip.main(botcom.dotcommand_dict["validcoms"], "andlist") + ".")
         return botcom
 
     elif botcom.specified == 'view':
@@ -596,9 +598,9 @@ def botcom_nick(bot, trigger):
     botcom.comtype = 'nickname'
 
     # create arg list
-    botcom.triggerargsarray = spicemanip(bot, trigger, '2+', 'list')
+    botcom.triggerargsarray = spicemanip.main(trigger, '2+', 'list')
 
-    botcom.command_main = spicemanip(bot, botcom.triggerargsarray, 1)
+    botcom.command_main = spicemanip.main(botcom.triggerargsarray, 1)
 
     return botcom
 
@@ -636,7 +638,7 @@ def botcom_symbol_trigger(bot, trigger):
     botcom.comtype = 'dict'
 
     # create arg list
-    botcom.triggerargsarray = spicemanip(bot, trigger, 'create')
+    botcom.triggerargsarray = spicemanip.main(trigger, 'create')
 
     return botcom
 
@@ -1113,7 +1115,7 @@ def bot_random_valid_target(bot, botcom, outputtype):
     if outputtype == 'list':
         return validtargs
     elif outputtype == 'random':
-        return spicemanip(bot, validtargs, 'random')
+        return spicemanip.main(validtargs, 'random')
 
 
 def bot_target_check(bot, botcom, target, targetbypass):
@@ -1150,13 +1152,13 @@ def bot_target_check(bot, botcom, target, targetbypass):
                     sim_num.append(similarlevel)
             if sim_user != [] and sim_num != []:
                 sim_num, sim_user = array_arrangesort(bot, sim_num, sim_user)
-                closestmatch = spicemanip(bot, sim_user, 'reverse', "list")
+                closestmatch = spicemanip.main(sim_user, 'reverse', "list")
                 listnumb, relist = 1, []
                 for item in closestmatch:
                     if listnumb <= 3:
                         relist.append(str(item))
                     listnumb += 1
-                closestmatches = spicemanip(bot, relist, "andlist")
+                closestmatches = spicemanip.main(relist, "andlist")
                 targetgooderror = "It looks like you're trying to target someone! Did you mean: " + str(closestmatches) + "?"
             else:
                 targetgooderror = "I am not sure who that is."
@@ -1271,7 +1273,7 @@ def seen_search(bot, botcom, target):
 
     intent = 'saying'
     spoken = str(lastseenwinner["spoken"])
-    posscom = spicemanip(bot, str(lastseenwinner["spoken"]), 1)
+    posscom = spicemanip.main(str(lastseenwinner["spoken"]), 1)
     if str(posscom).startswith("."):
         posscom = posscom.lower()[1:]
         if posscom in bot.memory["botdict"]["tempvals"]['all_coms']:
@@ -1540,13 +1542,13 @@ def getGif(bot, searchdict):
             gifapiresults.extend(bot.memory["botdict"]["tempvals"]['cache'][currentapi][str(searchdict["searchquery"])])
 
     if gifapiresults == []:
-        return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}
+        return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip.main(searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
     random.shuffle(gifapiresults)
     random.shuffle(gifapiresults)
     randombad = True
     while randombad:
-        gifdict = spicemanip(bot, gifapiresults, "random")
+        gifdict = spicemanip.main(gifapiresults, "random")
 
         try:
             gifpage = requests.get(gifdict["returnurl"], headers=None)
@@ -1564,7 +1566,7 @@ def getGif(bot, searchdict):
             gifapiresults = newlist
 
     if gifapiresults == []:
-        return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip(bot, searchdict['gifsearch'], 'orlist')) + " api(s)"}
+        return {"error": "No Results were found for '" + searchdict["query"] + "' in the " + str(spicemanip.main(searchdict['gifsearch'], 'orlist')) + " api(s)"}
 
     # return dict
     gifdict['error'] = None
@@ -2533,10 +2535,10 @@ def bot_translate_process(bot, totranslate, translationtypes):
     for translationtype in translationtypes:
 
         if translationtype == "hyphen":
-            totranslate = spicemanip(bot, totranslate, 0).replace(' ', '-')
+            totranslate = spicemanip.main(totranslate, 0).replace(' ', '-')
 
         elif translationtype == "underscore":
-            totranslate = spicemanip(bot, totranslate, 0).replace(' ', '_')
+            totranslate = spicemanip.main(totranslate, 0).replace(' ', '_')
 
         elif translationtype == "ermahgerd":
             totranslate = trernslert(bot, totranslate)
@@ -2554,10 +2556,10 @@ def bot_translate_process(bot, totranslate, translationtypes):
             totranslate = text_one_to_zero_swap(bot, totranslate)
 
         elif translationtype == "upper":
-            totranslate = spicemanip(bot, totranslate, 0).upper()
+            totranslate = spicemanip.main(totranslate, 0).upper()
 
         elif translationtype == "lower":
-            totranslate = spicemanip(bot, totranslate, 0).lower()
+            totranslate = spicemanip.main(totranslate, 0).lower()
 
     return totranslate
 
@@ -2580,7 +2582,7 @@ def text_piglatin(bot, words):
         else:
             new_word = word[1:] + first + 'ay'
         rebuildarray.append(new_word)
-    words = spicemanip(bot, rebuildarray, 0)
+    words = spicemanip.main(rebuildarray, 0)
     return words
 
 
@@ -2660,7 +2662,7 @@ def text_one_to_zero_swap(bot, words):
         return "No input provided"
     if not isinstance(words, list):
         words = [words]
-    words = spicemanip(bot, words, 0).split(" ")
+    words = spicemanip.main(words, 0).split(" ")
     outputarray = []
     for word in words:
         if not isitbinary(word):
@@ -2669,7 +2671,7 @@ def text_one_to_zero_swap(bot, words):
         word = str(word).replace('0', '1')
         word = str(word).replace('2', '0')
         outputarray.append(str(word))
-    outputarray = spicemanip(bot, outputarray, 0)
+    outputarray = spicemanip.main(outputarray, 0)
     return outputarray
 
 
@@ -2678,16 +2680,16 @@ def text_binary_swap(bot, words):
         return "No input provided"
     if not isinstance(words, list):
         words = [words]
-    words = spicemanip(bot, words, 0).split(" ")
+    words = spicemanip.main(words, 0).split(" ")
     outputarray = []
     for word in words:
         if isitbinary(word):
             word = bits2string(word) or 'error'
         else:
             word = string2bits(word) or 1
-            word = spicemanip(bot, word, 0)
+            word = spicemanip.main(word, 0)
         outputarray.append(str(word))
-    outputarray = spicemanip(bot, outputarray, 0)
+    outputarray = spicemanip.main(outputarray, 0)
     return outputarray
 
 
@@ -3487,332 +3489,6 @@ def osd(bot, target_array, text_type_array, text_array):
 """
 Array/List/String Manipulation
 """
-
-
-# Hub
-def spicemanip(bot, inputs, outputtask, output_type='default'):
-
-    # TODO 'this*that' or '1*that' replace either all strings matching, or an index value
-    # TODO reverse sort z.sort(reverse = True)
-    # list.extend adds lists to eachother
-
-    mainoutputtask, suboutputtask = None, None
-
-    # Input needs to be a list, but don't split a word into letters
-    if not inputs:
-        inputs = []
-    if not isinstance(inputs, list):
-        inputs = list(inputs.split(" "))
-        inputs = [x for x in inputs if x and x not in ['', ' ']]
-        inputs = [inputspart.strip() for inputspart in inputs]
-
-    # Create return
-    if outputtask == 'create':
-        return inputs
-
-    # Make temparray to preserve original order
-    temparray = []
-    for inputpart in inputs:
-        temparray.append(inputpart)
-    inputs = temparray
-
-    # Convert outputtask to standard
-    if outputtask in [0, 'complete']:
-        outputtask = 'string'
-    elif outputtask == 'index':
-        mainoutputtask = inputs[1]
-        suboutputtask = inputs[2]
-        inputs = inputs[0]
-    elif str(outputtask).isdigit():
-        mainoutputtask, outputtask = int(outputtask), 'number'
-    elif "^" in str(outputtask):
-        mainoutputtask = str(outputtask).split("^", 1)[0]
-        suboutputtask = str(outputtask).split("^", 1)[1]
-        outputtask = 'rangebetween'
-        if int(suboutputtask) < int(mainoutputtask):
-            mainoutputtask, suboutputtask = suboutputtask, mainoutputtask
-    elif str(outputtask).startswith("split_"):
-        mainoutputtask = str(outputtask).replace("split_", "")
-        outputtask = 'split'
-    elif str(outputtask).endswith(tuple(["!", "+", "-", "<", ">"])):
-        mainoutputtask = str(outputtask)
-        if str(outputtask).endswith("!"):
-            outputtask = 'exclude'
-        if str(outputtask).endswith("+"):
-            outputtask = 'incrange_plus'
-        if str(outputtask).endswith("-"):
-            outputtask = 'incrange_minus'
-        if str(outputtask).endswith(">"):
-            outputtask = 'excrange_plus'
-        if str(outputtask).endswith("<"):
-            outputtask = 'excrange_minus'
-        for r in (("!", ""), ("+", ""), ("-", ""), ("<", ""), (">", "")):
-            mainoutputtask = mainoutputtask.replace(*r)
-    if mainoutputtask == 'last':
-        mainoutputtask = len(inputs)
-
-    if outputtask == 'string':
-        returnvalue = inputs
-    else:
-        returnvalue = eval('spicemanip_' + outputtask + '(bot, inputs, outputtask, mainoutputtask, suboutputtask)')
-
-    # default return if not specified
-    if output_type == 'default':
-        if outputtask in [
-                            'string', 'number', 'rangebetween', 'exclude', 'random',
-                            'incrange_plus', 'incrange_minus', 'excrange_plus', 'excrange_minus'
-                            ]:
-            output_type = 'string'
-        elif outputtask in ['count']:
-            output_type = 'dict'
-
-    # verify output is correct
-    if output_type == 'return':
-        return returnvalue
-    if output_type == 'string':
-        if isinstance(returnvalue, list):
-            returnvalue = ' '.join(returnvalue)
-    elif output_type in ['list', 'array']:
-        if not isinstance(returnvalue, list):
-            returnvalue = list(returnvalue.split(" "))
-            returnvalue = [x for x in returnvalue if x and x not in ['', ' ']]
-            returnvalue = [inputspart.strip() for inputspart in returnvalue]
-    return returnvalue
-
-
-# compare 2 lists, based on the location of an index item, passthrough needs to be [indexitem, arraytoindex, arraytocompare]
-def spicemanip_index(bot, indexitem, outputtask, arraytoindex, arraytocompare):
-    item = ''
-    for x, y in zip(arraytoindex, arraytocompare):
-        if x == indexitem:
-            item = y
-    return item
-
-
-# split list by string
-def spicemanip_split(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    split_array = []
-    restring = ' '.join(inputs)
-    if mainoutputtask not in inputs:
-        split_array = [restring]
-    else:
-        split_array = restring.split(mainoutputtask)
-    split_array = [x for x in split_array if x and x not in ['', ' ']]
-    split_array = [inputspart.strip() for inputspart in split_array]
-    if split_array == []:
-        split_array = [[]]
-    return split_array
-
-
-# dedupe list
-def spicemanip_dedupe(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    newlist = []
-    for inputspart in inputs:
-        if inputspart not in newlist:
-            newlist.append(inputspart)
-    return newlist
-
-
-# Sort list
-def spicemanip_sort(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return sorted(inputs)
-
-
-# reverse sort list
-def spicemanip_rsort(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    return sorted(inputs)[::-1]
-
-
-# count items in list, return dictionary
-def spicemanip_count(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    returndict = dict()
-    if inputs == []:
-        return returndict
-    uniqueinputitems, uniquecount = [], []
-    for inputspart in inputs:
-        if inputspart not in uniqueinputitems:
-            uniqueinputitems.append(inputspart)
-    for uniqueinputspart in uniqueinputitems:
-        count = 0
-        for ele in inputs:
-            if (ele == uniqueinputspart):
-                count += 1
-        uniquecount.append(count)
-    for inputsitem, unumber in zip(uniqueinputitems, uniquecount):
-        returndict[inputsitem] = unumber
-    return returndict
-
-
-# random item from list
-def spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    randomselectlist = []
-    for temppart in inputs:
-        randomselectlist.append(temppart)
-    while len(randomselectlist) > 1:
-        random.shuffle(randomselectlist)
-        randomselect = randomselectlist[random.randint(0, len(randomselectlist) - 1)]
-        randomselectlist.remove(randomselect)
-    randomselect = randomselectlist[0]
-    return randomselect
-
-
-# remove random item from list
-def spicemanip_exrandom(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return []
-    randremove = spicemanip_random(bot, inputs, outputtask, mainoutputtask, suboutputtask)
-    inputs.remove(randremove)
-    return inputs
-
-
-# Convert list into lowercase
-def spicemanip_lower(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    return [inputspart.lower() for inputspart in inputs]
-
-
-# Convert list to uppercase
-def spicemanip_upper(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    return [inputspart.upper() for inputspart in inputs]
-
-
-# Convert list to uppercase
-def spicemanip_title(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    return [inputspart.title() for inputspart in inputs]
-
-
-# Reverse List Order
-def spicemanip_reverse(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return []
-    return inputs[::-1]
-
-
-# comma seperated list
-def spicemanip_list(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    return ', '.join(str(x) for x in inputs)
-
-
-# comma seperated list with and
-def spicemanip_andlist(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    if len(inputs) < 2:
-        return ' '.join(inputs)
-    lastentry = str("and " + str(inputs[len(inputs) - 1]))
-    del inputs[-1]
-    inputs.append(lastentry)
-    if len(inputs) == 2:
-        return ' '.join(inputs)
-    return ', '.join(str(x) for x in inputs)
-
-
-# comma seperated list with or
-def spicemanip_orlist(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    if len(inputs) < 2:
-        return ' '.join(inputs)
-    lastentry = str("or " + str(inputs[len(inputs) - 1]))
-    del inputs[-1]
-    inputs.append(lastentry)
-    if len(inputs) == 2:
-        return ' '.join(inputs)
-    return ', '.join(str(x) for x in inputs)
-
-
-# exclude number
-def spicemanip_exclude(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    del inputs[int(mainoutputtask) - 1]
-    return ' '.join(inputs)
-
-
-# Convert list to string
-def spicemanip_string(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    return ' '.join(inputs)
-
-
-# Get number item from list
-def spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    elif len(inputs) == 1:
-        return inputs[0]
-    elif int(mainoutputtask) > len(inputs) or int(mainoutputtask) < 0:
-        return ''
-    else:
-        return inputs[int(mainoutputtask) - 1]
-
-
-# Get Last item from list
-def spicemanip_last(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    return inputs[len(inputs) - 1]
-
-
-# range between items in list
-def spicemanip_rangebetween(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    if not str(mainoutputtask).isdigit() or not str(suboutputtask).isdigit():
-        return ''
-    mainoutputtask, suboutputtask = int(mainoutputtask), int(suboutputtask)
-    if suboutputtask == mainoutputtask:
-        return spicemanip_number(bot, inputs, outputtask, mainoutputtask, suboutputtask)
-    if suboutputtask < mainoutputtask:
-        return []
-    if mainoutputtask < 0:
-        mainoutputtask = 1
-    if suboutputtask > len(inputs):
-        suboutputtask = len(inputs)
-    newlist = []
-    for i in range(mainoutputtask, suboutputtask + 1):
-        newlist.append(str(spicemanip_number(bot, inputs, outputtask, i, suboutputtask)))
-    if newlist == []:
-        return ''
-    return ' '.join(newlist)
-
-
-# Forward Range includes index number
-def spicemanip_incrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    return spicemanip_rangebetween(bot, inputs, outputtask, int(mainoutputtask), len(inputs))
-
-
-# Reverse Range includes index number
-def spicemanip_incrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    return spicemanip_rangebetween(bot, inputs, outputtask, 1, int(mainoutputtask))
-
-
-# Forward Range excludes index number
-def spicemanip_excrange_plus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    return spicemanip_rangebetween(bot, inputs, outputtask, int(mainoutputtask) + 1, len(inputs))
-
-
-# Reverse Range excludes index number
-def spicemanip_excrange_minus(bot, inputs, outputtask, mainoutputtask, suboutputtask):
-    if inputs == []:
-        return ''
-    return spicemanip_rangebetween(bot, inputs, outputtask, 1, int(mainoutputtask) - 1)
 
 
 def array_arrangesort(bot, sortbyarray, arrayb):

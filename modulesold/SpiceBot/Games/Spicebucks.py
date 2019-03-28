@@ -18,18 +18,18 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'spicebucksold')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+            triggerargsarray_part = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
     channel = trigger.sender
-    commandused = spicemanip(bot, triggerargsarray, 1) or 'nocommand'
+    commandused = spicemanip.main(triggerargsarray, 1) or 'nocommand'
     botuseron = []
     for u in bot.users:
         if u in botusersarray and u != bot.nick:
@@ -52,7 +52,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             if not channel.startswith("#"):
                 osd(bot, trigger.nick, 'notice', commandused + " can only be used in a channel.")
             else:
-                    target = spicemanip(bot, triggerargsarray, 2) or 'notarget'
+                    target = spicemanip.main(triggerargsarray, 2) or 'notarget'
                     if (target == 'notarget' or target == 'everyone'):
                         target = 'Everyone'
                         osd(bot, trigger.sender, 'action', "rains " + trigger.nick + "'s Spicebucks down on " + target)
@@ -94,7 +94,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                             osd(bot, trigger.sender, 'say', trigger.nick + ", you have already been paid today")
         # Reset
         elif commandused == 'reset' and trigger.admin:  # admin only command
-            target = spicemanip(bot, triggerargsarray, 2) or 'notarget'
+            target = spicemanip.main(triggerargsarray, 2) or 'notarget'
             validtarget = targetcheck(bot, target, trigger.nick)
             if target == 'notarget' or target == trigger.nick:
                 reset(bot, target)
@@ -108,7 +108,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         # Funds
         elif commandused == 'funds' and trigger.admin:  # admin only command
             success = 0
-            target = spicemanip(bot, triggerargsarray, 2) or 'notarget'
+            target = spicemanip.main(triggerargsarray, 2) or 'notarget'
             if not target == 'notarget':
                 if target.lower() == 'spicebank':
                     target = 'SpiceBank'
@@ -119,7 +119,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 else:
                     success = 1
             if success == 1:
-                amount = spicemanip(bot, triggerargsarray, 3) or 'noamount'
+                amount = spicemanip.main(triggerargsarray, 3) or 'noamount'
                 if not amount == 'noamount':
                     if amount.isdigit():
                         amount = int(amount)
@@ -139,7 +139,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             if not channel.startswith("#"):
                 osd(bot, trigger.nick, 'notice', commandused + " can only be used in a channel.")
             else:
-                target = spicemanip(bot, triggerargsarray, 2) or 'notarget'
+                target = spicemanip.main(triggerargsarray, 2) or 'notarget'
                 if not target == 'notarget':
                     if targetcheck(bot, target, trigger.nick) == 0:
                         osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
@@ -177,7 +177,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     taxtotal = paytaxes(bot, trigger.nick)
 
         elif commandused == 'rob':
-            target = spicemanip(bot, triggerargsarray, 2) or 'notarget'
+            target = spicemanip.main(triggerargsarray, 2) or 'notarget'
             balance = bank(bot, target)
             if targetcheck(bot, target, trigger.nick) == 0:
                 osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
@@ -204,7 +204,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
         # Bank
         elif commandused == 'bank':
-            target = spicemanip(bot, triggerargsarray, 2) or 'notarget'
+            target = spicemanip.main(triggerargsarray, 2) or 'notarget'
             checkedtarget = targetcheck(bot, target, trigger.nick) or 0
 
             if not target == 'notarget':
@@ -309,5 +309,5 @@ def randomuser(bot, nick):
     for u in bot.users:
         if u in botusersarray and u != bot.nick and u != nick:
             randompersons.append(u)
-    randomperson = spicemanip(bot, randompersons, 'random')
+    randomperson = spicemanip.main(randompersons, 'random')
     return randomperson

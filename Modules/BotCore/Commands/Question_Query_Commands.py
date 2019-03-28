@@ -59,7 +59,7 @@ def execute_main(bot, trigger, botcom):
                 commands_list[com] = bot.memory[commandstype][com]
 
     # command issued, check if valid
-    botcom.querycommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
+    botcom.querycommand = spicemanip.main(botcom.triggerargsarray, 1).lower()[1:]
     if len(botcom.querycommand) == 1:
         commandlist = []
         for command in commands_list.keys():
@@ -68,7 +68,7 @@ def execute_main(bot, trigger, botcom):
         if commandlist == []:
             return osd(bot, botcom.instigator, 'say', "No commands match " + str(botcom.querycommand) + ".")
         else:
-            return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
+            return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".")
 
     elif botcom.querycommand.endswith(tuple(["+"])):
         botcom.querycommand = botcom.querycommand[:-1]
@@ -78,7 +78,7 @@ def execute_main(bot, trigger, botcom):
         if "aliasfor" in commands_list[botcom.querycommand].keys():
             realcom = commands_list[botcom.querycommand]["aliasfor"]
         validcomlist = commands_list[realcom]["validcoms"]
-        return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, validcomlist, 'andlist') + ".")
+        return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip.main(validcomlist, 'andlist') + ".")
 
     elif botcom.querycommand.endswith(tuple(['?'])):
         botcom.querycommand = botcom.querycommand[:-1]
@@ -88,13 +88,13 @@ def execute_main(bot, trigger, botcom):
             sim_com.append(com)
             sim_num.append(similarlevel)
         sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
-        closestmatch = spicemanip(bot, sim_com, 'reverse', "list")
+        closestmatch = spicemanip.main(sim_com, 'reverse', "list")
         listnumb, relist = 1, []
         for item in closestmatch:
             if listnumb <= 10:
                 relist.append(str(item))
             listnumb += 1
-        return osd(bot, botcom.instigator, 'say', "The following commands may match " + str(botcom.querycommand) + ": " + spicemanip(bot, relist, 'andlist') + ".")
+        return osd(bot, botcom.instigator, 'say', "The following commands may match " + str(botcom.querycommand) + ": " + spicemanip.main(relist, 'andlist') + ".")
 
     elif botcom.querycommand in commands_list.keys():
         return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + str(botcom.querycommand) + ".")
@@ -110,4 +110,4 @@ def execute_main(bot, trigger, botcom):
         if commandlist == []:
             return osd(bot, botcom.instigator, 'say', "No commands match " + str(botcom.querycommand) + ".")
         else:
-            return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip(bot, commandlist, 'andlist') + ".")
+            return osd(bot, botcom.instigator, 'say', "The following commands match " + str(botcom.querycommand) + ": " + spicemanip.main(commandlist, 'andlist') + ".")

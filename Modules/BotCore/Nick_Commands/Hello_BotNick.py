@@ -45,4 +45,4 @@ def bot_command_hub(bot, trigger):
         if bot_check_inlist(bot, botcom.instigator, bot.memory["altbots"].keys()):
             return
 
-    osd(bot, botcom.channel_current, 'say', spicemanip(bot, ['Hi', 'Hey', 'Hello'], "random") + ' ' + botcom.instigator + spicemanip(bot, ['', '!', '?'], "random"))
+    osd(bot, botcom.channel_current, 'say', spicemanip.main(['Hi', 'Hey', 'Hello'], "random") + ' ' + botcom.instigator + spicemanip.main(['', '!', '?'], "random"))

@@ -43,11 +43,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, botcom)
     else:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, botcom.triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(botcom.triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            botcom.triggerargsarray = spicemanip(bot, command_split_partial, 'create')
+            botcom.triggerargsarray = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, botcom)
 
     botdict_save(bot)
@@ -58,13 +58,13 @@ def execute_main(bot, trigger, botcom):
     channel = trigger.sender
     instigator = trigger.nick
     pointsstring = trigger.group(1)
-    pointsreason = spicemanip(bot, botcom.triggerargsarray, '2+')
+    pointsreason = spicemanip.main(botcom.triggerargsarray, '2+')
     pointsreasonmsg = '.'
     if not channel.startswith("#"):
         osd(bot, trigger.nick, 'notice', pointsstring.title() + " must be in a channel.")
         return
     rando = randint(1, 666)
-    commortarget = spicemanip(bot, botcom.triggerargsarray, 1)
+    commortarget = spicemanip.main(botcom.triggerargsarray, 1)
     botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
 
     if not commortarget:
@@ -74,7 +74,7 @@ def execute_main(bot, trigger, botcom):
         osd(bot, trigger.sender, 'say', "You cannot award " + pointsstring + " to yourself!")
 
     elif commortarget == "check":
-        target = spicemanip(bot, botcom.triggerargsarray, 2) or instigator
+        target = spicemanip.main(botcom.triggerargsarray, 2) or instigator
         if target.lower() not in [u.lower() for u in bot.users]:
             osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
             return
@@ -99,8 +99,8 @@ def execute_main(bot, trigger, botcom):
                 adjust_database_value(bot, u, 'points', rando)
 
     elif commortarget == 'take':
-        target = spicemanip(bot, botcom.triggerargsarray, 2)
-        pointsreason = spicemanip(bot, botcom.triggerargsarray, '3+')
+        target = spicemanip.main(botcom.triggerargsarray, 2)
+        pointsreason = spicemanip.main(botcom.triggerargsarray, '3+')
         if pointsreason:
             if pointsreason.startswith('for'):
                 pointsreasonmsg = ' ' + str(pointsreason) + '.'
@@ -129,8 +129,8 @@ def execute_main(bot, trigger, botcom):
             adjust_database_value(bot, target, 'points', -abs(rando))
 
     elif commortarget == 'low':
-        target = spicemanip(bot, botcom.triggerargsarray, 2)
-        pointsreason = spicemanip(bot, botcom.triggerargsarray, '3+')
+        target = spicemanip.main(botcom.triggerargsarray, 2)
+        pointsreason = spicemanip.main(botcom.triggerargsarray, '3+')
         rando = randint(1, 333)
         if pointsreason:
             if pointsreason.startswith('for'):
@@ -157,8 +157,8 @@ def execute_main(bot, trigger, botcom):
             adjust_database_value(bot, target, 'points', abs(rando))
 
     elif commortarget == 'high':
-        target = spicemanip(bot, botcom.triggerargsarray, 2)
-        pointsreason = spicemanip(bot, botcom.triggerargsarray, '3+')
+        target = spicemanip.main(botcom.triggerargsarray, 2)
+        pointsreason = spicemanip.main(botcom.triggerargsarray, '3+')
         rando = randint(334, 666)
         if pointsreason:
             if pointsreason[-1] not in string.punctuation:
@@ -185,8 +185,8 @@ def execute_main(bot, trigger, botcom):
             adjust_database_value(bot, target, 'points', abs(rando))
 
     elif commortarget == 'except':
-        target = spicemanip(bot, botcom.triggerargsarray, 2)
-        pointsreason = spicemanip(bot, botcom.triggerargsarray, '3+')
+        target = spicemanip.main(botcom.triggerargsarray, 2)
+        pointsreason = spicemanip.main(botcom.triggerargsarray, '3+')
         if pointsreason:
             if pointsreason[-1] not in string.punctuation:
                 pointsreason = pointsreason + "."

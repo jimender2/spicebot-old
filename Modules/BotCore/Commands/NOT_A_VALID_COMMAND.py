@@ -51,7 +51,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, botcom):
 
     # command issued, check if valid
-    botcom.dotcommand = spicemanip(bot, botcom.triggerargsarray, 1).lower()[1:]
+    botcom.dotcommand = spicemanip.main(botcom.triggerargsarray, 1).lower()[1:]
 
     # patch for people typing "...", maybe other stuff, but this verifies that there is still a command here
     while botcom.dotcommand.startswith("."):

@@ -21,19 +21,19 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'thermostat')
     if not enablestatus:
         # IF "&&" is in the full input, it is treated as multiple commands, and is split
-        commands_array = spicemanip(bot, triggerargsarray, "split_&&")
+        commands_array = spicemanip.main(triggerargsarray, "split_&&")
         if commands_array == []:
             commands_array = [[]]
         for command_split_partial in commands_array:
-            triggerargsarray_part = spicemanip(bot, command_split_partial, 'create')
+            triggerargsarray_part = spicemanip.main(command_split_partial, 'create')
             execute_main(bot, trigger, triggerargsarray_part, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
-    triggerargsarray = spicemanip(bot, triggerargsarray, 'lower')
+    triggerargsarray = spicemanip.main(triggerargsarray, 'lower')
 
-    tempcommand = spicemanip(bot, triggerargsarray, 1) or 0
+    tempcommand = spicemanip.main(triggerargsarray, 1) or 0
 
     currenttemp = get_database_value(bot, botcom.channel_current, 'temperature') or 32
     currentscale = get_database_value(bot, botcom.channel_current, 'temperature_scale') or 'fahrenheit'
@@ -41,10 +41,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not tempcommand or tempcommand in temp_scales or tempcommand in temp_scales_short:
         if tempcommand in temp_scales or tempcommand in temp_scales_short:
             if tempcommand in temp_scales_short:
-                tempcommand = spicemanip(bot, [tempcommand, temp_scales_short, temp_scales], 'index')
+                tempcommand = spicemanip.main([tempcommand, temp_scales_short, temp_scales], 'index')
             tempconvert = tempcommand
         else:
-            tempconvert = spicemanip(bot, temp_scales, 'random')
+            tempconvert = spicemanip.main(temp_scales, 'random')
         currenttemp = temperature(bot, currenttemp, currentscale, tempconvert)
         tempcond = temp_condition(bot, currenttemp, tempconvert)
         osd(bot, botcom.channel_current, 'say', "The current temperature in " + botcom.channel_current + " is " + str(currenttemp) + "° " + str(tempconvert.title()) + ". " + tempcond)
@@ -52,21 +52,21 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     missingarray = []
 
-    number = spicemanip(bot, [x for x in triggerargsarray if str(x).isdigit], 1) or 0
+    number = spicemanip.main([x for x in triggerargsarray if str(x).isdigit], 1) or 0
     if not number:
         missingarray.append("number")
 
-    tempscale = spicemanip(bot, [x for x in triggerargsarray if x in temp_scales or x in temp_scales_short], 1) or 0
+    tempscale = spicemanip.main([x for x in triggerargsarray if x in temp_scales or x in temp_scales_short], 1) or 0
     if not tempscale:
         missingarray.append("temperature scale")
 
     if missingarray != []:
-        missinglist = spicemanip(bot, missingarray, 'list')
+        missinglist = spicemanip.main(missingarray, 'list')
         osd(bot, botcom.channel_current, 'say', "The following values were missing: " + missinglist)
         return
 
     if tempscale in temp_scales_short:
-        tempscale = spicemanip(bot, [tempscale, temp_scales_short, temp_scales], 'index')
+        tempscale = spicemanip.main([tempscale, temp_scales_short, temp_scales], 'index')
 
     tempcond = temp_condition(bot, number, tempscale)
 
