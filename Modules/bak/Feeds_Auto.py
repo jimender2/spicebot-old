@@ -47,4 +47,4 @@ def feeds_thread(bot, feed):
             for user in bot.memory["botdict"]["tempvals"]["servers_list"][str(bot.memory["botdict"]["tempvals"]['server'])]['all_current_users']:
                 feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
                 if feed in feed_enabled:
-                    osd(bot, user, 'priv', dispmsg)
+                    osd(bot, user, 'notice', dispmsg)

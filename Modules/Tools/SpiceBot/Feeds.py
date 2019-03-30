@@ -70,7 +70,7 @@ def feeds_thread(bot, feed):
             for user in bot.memory["botdict"]["tempvals"]["servers_list"][str(bot.memory["botdict"]["tempvals"]['server'])]['all_current_users']:
                 feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
                 if feed in feed_enabled:
-                    osd(bot, user, 'priv', dispmsg)
+                    osd(bot, user, 'notice', dispmsg)
 
 
 def feeds_grab(bot, feed):
@@ -85,7 +85,7 @@ def feeds_grab(bot, feed):
         for user in bot.memory["botdict"]["tempvals"]["servers_list"][str(bot.memory["botdict"]["tempvals"]['server'])]['all_current_users']:
             feed_enabled = get_nick_value(bot, user, "long", "feeds", "enabled") or []
             if feed in feed_enabled:
-                osd(bot, user, 'priv', dispmsg)
+                osd(bot, user, 'notice', dispmsg)
 
 
 @sopel.module.commands('feed', "feeds")
@@ -144,7 +144,7 @@ def execute_main(bot, trigger, botcom):
                 osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
             else:
                 if feed_select == 'all':
-                    osd(bot, botcom.instigator, 'priv', dispmsg)
+                    osd(bot, botcom.instigator, 'notice', dispmsg)
                 else:
                     osd(bot, botcom.channel_current, 'say', dispmsg)
         return
