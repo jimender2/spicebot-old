@@ -83,7 +83,7 @@ def api_socket_setup(bot):
     bot.memory['sock_port'] = sockport
 
     if bot_startup_requirements_met(bot, ["monologue"]):
-        osd(bot, bot.privileges.keys(), 'notice', "API Port set to " + str(bot.memory['sock_port']))
+        osd(bot, bot.privileges.keys(), 'say', "API Port set to " + str(bot.memory['sock_port']))
 
 
 def api_socket_run(bot, sock):

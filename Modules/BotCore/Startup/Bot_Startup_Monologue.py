@@ -75,6 +75,6 @@ def bot_startup_monologue(bot, trigger):
         pass
 
     # Announce to chan, then handle some closing stuff
-    osd(bot, bot.privileges.keys(), 'notice', startupcomplete)
+    osd(bot, bot.privileges.keys(), 'say', startupcomplete)
 
     bot_startup_requirements_set(bot, "monologue")
