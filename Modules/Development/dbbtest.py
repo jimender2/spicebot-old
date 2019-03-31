@@ -42,6 +42,15 @@ def mainfunction(bot, trigger):
     bot.say("bytes " + str(bytecount(triggerargs)))
     bot.say("len " + str(len(triggerargs)))
     bot.say(triggerargs)
+
+    available_bytes = 512
+    available_bytes -= bytecount(recipients)
+    available_bytes -= bytecount(bot.nick)
+    available_bytes -= bytecount("@Clk-6386200E.dbb.local")
+    # "@131-150-186-190.res.spectrum.com"
+    # available_bytes -= 25
+
+    bot.say(str(available_bytes))
     return
 
     botcom = bot_module_prerun(bot, trigger)
