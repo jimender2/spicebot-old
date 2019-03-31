@@ -3380,7 +3380,7 @@ def osd(bot, recipients, text_type, messages):
             if not chunknum:
                 if messages_refactor[-1] == '':
                     if len(chunk) <= 420:
-                        messages_refactor.append(chunk)
+                        messages_refactor[-1] = chunk
                     else:
                         chunksplit = map(''.join, zip(*[iter(chunk)]*420))
                         messages_refactor.extend(chunksplit)
