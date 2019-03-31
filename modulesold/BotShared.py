@@ -830,5 +830,4 @@ def unique_id_create(bot):
 
 
 def bytecount(s):
-    return sys.getsizeof(s)
     return len(s.encode('utf-8'))
