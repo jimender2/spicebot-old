@@ -699,11 +699,6 @@ def osd(bot, recipients, text_type, messages):
         recipients = [recipients]
     recipients = ','.join(str(x) for x in recipients)
 
-    available_bytes = 512
-    available_bytes -= bytecount(recipients)
-    available_bytes -= bytecount(bot.nick)
-    available_bytes -= 25
-
     messages_refactor = ['']
     for message in messages:
         chunknum = 0
@@ -712,12 +707,12 @@ def osd(bot, recipients, text_type, messages):
             if not chunknum:
                 if messages_refactor[-1] == '':
                     messages_refactor.append(chunk)
-                elif bytecount(messages_refactor[-1] + "   " + chunk) <= available_bytes:
+                elif len(messages_refactor[-1] + "   " + chunk) <= 420:
                     messages_refactor[-1] = messages_refactor[-1] + "   " + chunk
                 else:
                     messages_refactor.append(chunk)
             else:
-                if bytecount(messages_refactor[-1] + " " + chunk) <= available_bytes:
+                if len(messages_refactor[-1] + " " + chunk) <= 420:
                     messages_refactor[-1] = messages_refactor[-1] + " " + chunk
                 else:
                     messages_refactor.append(chunk)
