@@ -38,7 +38,8 @@ from inspect import getmembers, isfunction
 def mainfunction(bot, trigger):
 
     triggerargs = spicemanip.main(trigger.args[1], '2+', 'string')
-    bot.say(str(bytecount(triggerargs)))
+    bot.say("bytes " + str(bytecount(triggerargs)))
+    bot.say("len " + str(len(triggerargs)))
     bot.say(triggerargs)
     return
 
