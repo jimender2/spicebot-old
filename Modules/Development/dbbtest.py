@@ -37,9 +37,9 @@ from inspect import getmembers, isfunction
 @sopel.module.commands('dbbtest', 'deathbybandaidtest')
 def mainfunction(bot, trigger):
 
-    # triggerargs = spicemanip.main(trigger.args[1], '2+', 'string')
-    triggerargs = "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffhsdfghdfghdfghdflkgjhgs.dlkfjg;lskdfjglksdjfglksjdlfkgjsoeirht0[iwerjhtgjiksnhdfkbmnsdkmfbnhsdoijfhjgskjdfhgkljsdfgsdfgsd;lkfhjgkl;sjdfhjgkljshdfgkjlhsdkjfghskjdfhglksdhjfglksjdfklgjslkdfjglk;sdjfglksdjflk;gjsd;lkfgjs;lkdfjgs;lkdjfg;lksdjfg;lksjdfl;kgjsd;lkgasdkfgjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"
-    bot.say("bytes " + str(bytecount(triggerargs)))
+    triggerargs = spicemanip.main(trigger.args[1], '2+', 'string')
+    # bot.say("bytes " + str(bytecount(triggerargs)))
+    bot.say("bytes " + str(len(triggerargs.encode('utf-8'))))
     bot.say("len " + str(len(triggerargs)))
     bot.say(triggerargs)
     return
