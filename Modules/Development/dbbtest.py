@@ -42,7 +42,6 @@ def mainfunction(bot, trigger):
     bot.say(triggerargs)
     return
 
-
     botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:
         return
