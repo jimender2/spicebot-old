@@ -3372,6 +3372,44 @@ def osd(bot, recipients, text_type, messages):
         recipients = [recipients]
     recipients = ','.join(str(x) for x in recipients)
 
+    messages_refactor = ['']
+    for message in messages:
+        chunknum = 0
+        chunks = message.split()
+        for chunk in chunks:
+            if not chunknum:
+                if messages_refactor[-1] == '':
+                    messages_refactor.append(chunk)
+                elif len(messages_refactor[-1] + "   " + chunk) <= 420:
+                    messages_refactor[-1] = messages_refactor[-1] + "   " + chunk
+                else:
+                    messages_refactor.append(chunk)
+            else:
+                if len(messages_refactor[-1] + " " + chunk) <= 420:
+                    messages_refactor[-1] = messages_refactor[-1] + " " + chunk
+                else:
+                    messages_refactor.append(chunk)
+            chunknum += 1
+
+    for combinedline in messages_refactor:
+        if text_type == 'action':
+            bot.action(combinedline, recipients)
+            text_type = 'say'
+        elif text_type == 'notice':
+            bot.notice(combinedline, recipients)
+        else:
+            bot.say(combinedline, recipients)
+
+
+def osd_bytes(bot, recipients, text_type, messages):
+
+    if not isinstance(messages, list):
+        messages = [messages]
+
+    if not isinstance(recipients, list):
+        recipients = [recipients]
+    recipients = ','.join(str(x) for x in recipients)
+
     available_bytes = 512
     available_bytes -= bytecount(recipients)
     available_bytes -= bytecount(bot.nick)
