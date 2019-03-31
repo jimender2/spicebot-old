@@ -37,6 +37,12 @@ from inspect import getmembers, isfunction
 @sopel.module.commands('dbbtest', 'deathbybandaidtest')
 def mainfunction(bot, trigger):
 
+    triggerargs = spicemanip.main(trigger.args[1], '2+', 'string')
+    bot.say(str(bytecount(triggerargs)))
+    bot.say(triggerargs)
+    return
+
+
     botcom = bot_module_prerun(bot, trigger)
     if not botcom.modulerun:
         return
