@@ -807,3 +807,21 @@ def randomFileLine(path):
         line = file.readline()
         i = i + 1
     return line
+
+
+"""
+Other Python Functions
+"""
+
+
+def unique_id_create(bot):
+    unique_id = 0
+    while unique_id in bot.memory['rpg']['message_display']["used_ids"]:
+        unique_id = uuid.uuid4()
+    bot.memory['rpg']['message_display']["used_ids"].append(unique_id)
+    return unique_id
+
+
+def bytecount(s):
+    return sys.getsizeof(s)
+    return len(s.encode('utf-8'))
