@@ -37,7 +37,8 @@ from inspect import getmembers, isfunction
 @sopel.module.commands('dbbtest', 'deathbybandaidtest')
 def mainfunction(bot, trigger):
 
-    triggerargs = spicemanip.main(trigger.args[1], '2+', 'string')
+    # triggerargs = spicemanip.main(trigger.args[1], '2+', 'string')
+    triggerargs = "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffhsdfghdfghdfghdflkgjhgs.dlkfjg;lskdfjglksdjfglksjdlfkgjsoeirht0[iwerjhtgjiksnhdfkbmnsdkmfbnhsdoijfhjgskj"
     # bot.say("bytes " + str(bytecount(triggerargs)))
     bot.say("bytes " + str(len(triggerargs.encode('utf-8'))))
     bot.say("len " + str(len(triggerargs)))
