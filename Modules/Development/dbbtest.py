@@ -38,7 +38,7 @@ from inspect import getmembers, isfunction
 def mainfunction(bot, trigger):
 
     # triggerargs = spicemanip.main(trigger.args[1], '2+', 'string')
-    triggerargs = "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffhsdfghdfghdfghdflkgjhgs.dlkfjg;lskdfjglksdjfglksjdlfkgjsoeirht0[iwerjhtgjiksnhdfkbmnsdkmfbnhsdoijfhjgskj"
+    triggerargs = "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffhsdfghdfghdfghdflkgjhgs.dlkfjg;lskdfjglksdjfglksjdlfkgjsoeirht0[iwerjhtgjiksnhdfkbmnsdkmfbnhsdoijfhjgskjsgdfgsdfgsdfgsdfhigskjdfhgkjshdfgkjhsdkfjg"
     # bot.say("bytes " + str(bytecount(triggerargs)))
     bot.say("bytes " + str(len(triggerargs.encode('utf-8'))))
     bot.say("len " + str(len(triggerargs)))
