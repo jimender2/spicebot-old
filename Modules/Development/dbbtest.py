@@ -44,7 +44,7 @@ def mainfunction(bot, trigger):
     bot.say(triggerargs)
 
     available_bytes = 512
-    available_bytes -= bytecount(recipients)
+    available_bytes -= bytecount(trigger.sender)
     available_bytes -= bytecount(bot.nick)
     available_bytes -= bytecount("@Clk-6386200E.dbb.local")
     # "@131-150-186-190.res.spectrum.com"
