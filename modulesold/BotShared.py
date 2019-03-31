@@ -699,21 +699,30 @@ def osd(bot, recipients, text_type, messages):
         recipients = [recipients]
     recipients = ','.join(str(x) for x in recipients)
 
-    # process content to be said to not exceed 420 characters per line
-    messages_refactor = []
-    currentstring = None
-    for message in messages:
-        if not currentstring:
-            currentstring = message
-        elif len(currentstring + "   " + message) <= 420:
-            currentstring = currentstring + "   " + message
-        else:
-            messages_refactor.append(currentstring)
-            currentstring = message
-    if currentstring:
-        messages_refactor.append(currentstring)
+    available_bytes = 512
+    available_bytes -= bytecount(recipients)
+    available_bytes -= bytecount(bot.nick)
+    available_bytes -= 25
 
-    # display
+    messages_refactor = ['']
+    for message in messages:
+        chunknum = 0
+        chunks = message.split()
+        for chunk in chunks:
+            if not chunknum:
+                if messages_refactor[-1] == '':
+                    messages_refactor.append(chunk)
+                elif bytecount(messages_refactor[-1] + "   " + chunk) <= available_bytes:
+                    messages_refactor[-1] = messages_refactor[-1] + "   " + chunk
+                else:
+                    messages_refactor.append(chunk)
+            else:
+                if bytecount(messages_refactor[-1] + " " + chunk) <= available_bytes:
+                    messages_refactor[-1] = messages_refactor[-1] + " " + chunk
+                else:
+                    messages_refactor.append(chunk)
+            chunknum += 1
+
     for combinedline in messages_refactor:
         if text_type == 'action':
             bot.action(combinedline, recipients)
