@@ -37,9 +37,9 @@ from inspect import getmembers, isfunction
 @sopel.module.commands('dbbtest', 'deathbybandaidtest')
 def mainfunction(bot, trigger):
 
-    bot.say(str(trigger.hostmask))
+    # bot.say(str(trigger.hostmask))
 
-    return
+    # return
 
     # triggerargs = spicemanip.main(trigger.args[1], '2+', 'string')
     triggerargs = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum"
@@ -50,7 +50,7 @@ def mainfunction(bot, trigger):
     available_bytes = 512
     available_bytes -= bytecount(trigger.sender)
     available_bytes -= bytecount(bot.nick)
-    available_bytes -= bytecount("@Clk-6386200E.dbb.local")
+    available_bytes -= bytecount("SpiceBotde@Clk-6386200E.dbb.local")
     # "@131-150-186-190.res.spectrum.com"
     # available_bytes -= 25
 
